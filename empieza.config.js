@@ -1,16 +1,5 @@
-module.exports = (options) => {
+module.exports = (defaultOptions) => {
   
-
-  const ADMIN_ROLE = {
-    id: 'admin',
-    name: 'Administrator'
-  }
-  
-  const USER_ROLE = {
-    id: 'user',
-    name: 'Authenticated User'
-  }
-
 
   const postContentType = {
     title: [{
@@ -21,10 +10,10 @@ module.exports = (options) => {
     slug: 'post',
     permissions: {
       read: ['public'],
-      write: [USER_ROLE.id, ADMIN_ROLE.id],
-      delete: [USER_ROLE.id, ADMIN_ROLE.id],
-      crossWrite: [ADMIN_ROLE.id],
-      crossDelete: [ADMIN_ROLE.id]
+      write: [defaultOptions.roles.admin, defaultOptions.roles.user],
+      delete: [defaultOptions.roles.admin],
+      crossWrite: [defaultOptions.roles.admin],
+      crossDelete: [defaultOptions.roles.admin]
     },
     
     fields: [{
@@ -49,37 +38,9 @@ module.exports = (options) => {
   return {
     storage: {
       type: 'firestore',
-      credentials: {
-        secret: '',
-        public: ''
-      }
     },
     database: {
       type: 'FIREBASE',
-      dbname: 'my-database'
-    },
-    language: {
-      default: 'en',
-      available: ['en', 'es', 'de']
-    },
-    admin: {
-      permissions: {
-        access: [ADMIN_ROLE.id]
-      }
-    },
-    auth: {
-      signup: {
-        public: true,
-        newUserRoles: [USER_ROLE.id],
-      }
-    },
-    user: {
-      roles: [USER_ROLE, ADMIN_ROLE],
-      permissions: {
-        read: [ADMIN_ROLE.id],
-        write: [ADMIN_ROLE.id],
-        changeRole: [ADMIN_ROLE.id]
-      }
     },
     content: {
       types: [postContentType] 

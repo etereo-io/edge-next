@@ -1,9 +1,25 @@
 import methods from '../../lib/api-helpers/methods'
+import db from '../../lib/db'
 
+const getTestData = () => {
+  
+  return db.collection('test').doc('test')
+    .get()
+    .then(doc => {
+      return doc.data()
+    })
+}
 const getUsers = (id) => (req, res) => {
-  res.status(200).send({
-    id
+  getTestData().then(testData => {
+    res.status(200).send({
+      testData
+    })
   })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({err: err.message})
+  })
+
 }
 
 const addUser = (user) => (req, res) => {

@@ -27,22 +27,48 @@ database: {
 
 ### Firebase 
 
-If you want to use Firebase you must set the following environment variable:
+If you want to use Firebase you must set the following environment variables in the `.env` file:
 
 ````
-export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/service-account-file.json"
+FIREBASE_PROJECT_ID=XX
+FIREBASE_CLIENT_EMAIL=XX
+FIREBASE_DATABASE_URL=XX
+FIREBASE_PRIVATE_KEY=XX
 ````
 
 Also in the config you must set the following values:
 
 ````javascript
 database: {
-  type: 'FIREBASE',
-  dbname: 'DATABASE_NAME'
+  type: 'FIREBASE'
 }
 ````
 
+If you want your deployment in Zeit to recognize the `.env` values, you will need to add the secrets:
 
+```
+$ now secrets add firebase-api-key ■■■■■■■■-■■■■■■■■
+
+$ now secrets add firebase-auth-domain ■■■■■■■■.firebaseapp.com
+
+$ now secrets add firebase-database-url https://■■■■■■■■.firebaseio.com
+
+$ now secrets add firebase-project-id ■■■■■■■■
+
+$ now secrets add firebase-storage-bucket ■■■■■■■■.appspot.com
+
+$ now secrets add firebase-messaging-sender-id ■■■■■■■■
+
+$ now secrets add firebase-app-id 1:■■■■■■■■:web:■■■■■■■■
+
+$ now secrets add firebase-measurement-id G-■■■■■■■■
+
+$ now secrets add firebase-client-email firebase-adminsdk-■■■■@■■■■■■■■.iam.gserviceaccount.com
+
+$ now secrets add -- firebase-private-key "-----BEGIN PRIVATE KEY-----\n■■■■■■■■\n-----END PRIVATE KEY-----\n"
+```
+
+See [this post](https://dev.to/benzguo/getting-started-with-next-js-now-firebase-4ejg) for more information
 
 ## Passport
 
@@ -93,6 +119,12 @@ yarn dev
 
 Deploy it to the cloud with [ZEIT Now](https://zeit.co/import?filter=next.js&utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
 
+
+## i18n
+
+Internationalization can be done using `react-intl` and getInitialProps in the server side, for loading only the correct language.
+
+https://github.com/PaulPCIO/nextjs-with-react-intl
 
 
 ## TODO List
