@@ -47,15 +47,34 @@ module.exports = (options) => {
 
 
   return {
-    firebase: {
-      secret: '',
-      public: ''
+    storage: {
+      type: 'firestore',
+      credentials: {
+        secret: '',
+        public: ''
+      }
     },
-    language: options.languages.en,
-    availableLanguages: [options.languages.en, options.languages.es],
+    database: {
+      type: 'firebase',
+      credentials: {
+        secret: '',
+        public: ''
+      }
+    },
+    language: {
+      default: 'en',
+      available: ['en', 'es', 'de']
+    },
+    admin: {
+      permissions: {
+        access: [ADMIN_ROLE.id]
+      }
+    },
     auth: {
-      allowRegister: true,
-      newUserRoles: [USER_ROLE.id],
+      signup: {
+        public: true,
+        newUserRoles: [USER_ROLE.id],
+      }
     },
     users: {
       roles: [USER_ROLE, ADMIN_ROLE],
@@ -65,7 +84,9 @@ module.exports = (options) => {
         changeRole: [ADMIN_ROLE.id]
       }
     },
-    contentTypes: [postContentType],
+    content: {
+      types: [postContentType] 
+    },
     tags: {
       initialTags: [{
         slug: 'software',

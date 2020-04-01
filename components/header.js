@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useUser } from '../lib/hooks'
+import { hasPermission } from '../lib/permissions'
 
 const Header = () => {
   const user = useUser()
@@ -14,6 +15,13 @@ const Header = () => {
               <a>Home</a>
             </Link>
           </li>
+          { hasPermission(user, 'admin.access') && (
+            <li>
+              <Link href="/admin">
+                <a>admin</a>
+              </Link>
+            </li>
+          )}
           {user ? (
             <>
               <li>
