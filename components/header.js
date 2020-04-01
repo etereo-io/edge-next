@@ -7,6 +7,7 @@ const Header = () => {
   return (
     <header>
       <nav>
+        
         <ul>
           <li>
             <Link href="/">
@@ -21,7 +22,7 @@ const Header = () => {
                 </Link>
               </li>
               <li>
-                <a href="/api/logout">Logout</a>
+                <a href="/api/auth/logout">Logout</a>
               </li>
             </>
           ) : (

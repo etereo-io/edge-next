@@ -4,6 +4,7 @@ import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
 
+
 const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
 
@@ -20,7 +21,7 @@ const Login = () => {
     }
 
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch('/api/auht/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

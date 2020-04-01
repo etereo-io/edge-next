@@ -1,4 +1,15 @@
-# Passport.js Example
+# Empieza - Next Admin Kit
+
+## Features
+
+- Dynamic Admin dashboard
+- Dynamic API
+- Demo home page
+- Login with [Passport.js](http://www.passportjs.org)
+- ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
+- Integrated with Firebase and MongoAtlas
+
+## Passport
 
 This example show how to use [Passport.js](http://www.passportjs.org) with Next.js. The example features cookie based authentication with username and password.
 

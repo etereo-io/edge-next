@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Router from 'next/router'
 import { useUser } from '../lib/hooks'
+
 import Layout from '../components/layout'
 import Form from '../components/form'
 
@@ -25,7 +26,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await fetch('/api/signup', {
+      const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),

@@ -22,7 +22,7 @@ app.use(passport.initialize())
 
 passport.use(localStrategy)
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
   try {
     const user = await authenticate('local', req, res)
     // session is the payload to save in the token, it may contain basic info about the user
