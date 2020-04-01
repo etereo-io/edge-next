@@ -22,10 +22,11 @@ module.exports = (options) => {
     permissions: {
       read: ['public'],
       write: [USER_ROLE.id, ADMIN_ROLE.id],
-      delete: [USER_ROLE.id],
+      delete: [USER_ROLE.id, ADMIN_ROLE.id],
       crossWrite: [ADMIN_ROLE.id],
       crossDelete: [ADMIN_ROLE.id]
     },
+    
     fields: [{
       name: 'title',
       type: 'text'
@@ -38,6 +39,9 @@ module.exports = (options) => {
     }, {
       name: 'file',
       type: 'file'
+    }, {
+      name: 'tags',
+      type: 'tags'
     }]
   }
 
@@ -47,8 +51,8 @@ module.exports = (options) => {
       secret: '',
       public: ''
     },
-    language: options.languages.EN,
-    availableLanguages: [options.languages.EN, options.languages.ES],
+    language: options.languages.en,
+    availableLanguages: [options.languages.en, options.languages.es],
     auth: {
       allowRegister: true,
       newUserRoles: [USER_ROLE.id],
@@ -58,9 +62,25 @@ module.exports = (options) => {
       permissions: {
         read: [ADMIN_ROLE.id],
         write: [ADMIN_ROLE.id],
-        change_role: [ADMIN_ROLE.id]
+        changeRole: [ADMIN_ROLE.id]
       }
     },
     contentTypes: [postContentType],
+    tags: {
+      initialTags: [{
+        slug: 'software',
+        label: {
+          en: 'Software',
+          es: 'Software'
+        }
+      }, {
+        slug: 'ai',
+        label: {
+          en: 'Artificial Inteligence',
+          es: 'Inteligencia Artificial'
+        }
+      }]
+
+    }
   }
 }

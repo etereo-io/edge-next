@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@hapi/iron": "6.0.0",
-    "@hapi/joi": "^17.1.1",
     "cookie": "0.4.0",
     "express": "4.17.1",
     "next": "latest",
@@ -15,7 +14,8 @@
     "passport-local": "1.0.0",
     "react": "latest",
     "react-dom": "latest",
-    "swr": "0.1.16"
+    "swr": "0.1.16",
+    "yup": "^0.28.3"
   },
   "license": "ISC"
 }
