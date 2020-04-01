@@ -55,11 +55,8 @@ module.exports = (options) => {
       }
     },
     database: {
-      type: 'firebase',
-      credentials: {
-        secret: '',
-        public: ''
-      }
+      type: 'FIREBASE',
+      dbname: 'my-database'
     },
     language: {
       default: 'en',
@@ -76,7 +73,7 @@ module.exports = (options) => {
         newUserRoles: [USER_ROLE.id],
       }
     },
-    users: {
+    user: {
       roles: [USER_ROLE, ADMIN_ROLE],
       permissions: {
         read: [ADMIN_ROLE.id],

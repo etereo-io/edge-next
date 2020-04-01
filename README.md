@@ -9,6 +9,41 @@
 - ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
 - Integrated with Firebase and MongoAtlas
 
+
+## Databases
+
+
+### In memory DB (only local)
+
+There is a In memory DB for development
+
+Set the following config (default)
+
+```javascript
+database: {
+  type: 'IN_MEMORY'
+}
+```
+
+### Firebase 
+
+If you want to use Firebase you must set the following environment variable:
+
+````
+export GOOGLE_APPLICATION_CREDENTIALS="/home/user/Downloads/service-account-file.json"
+````
+
+Also in the config you must set the following values:
+
+````javascript
+database: {
+  type: 'FIREBASE',
+  dbname: 'DATABASE_NAME'
+}
+````
+
+
+
 ## Passport
 
 This example show how to use [Passport.js](http://www.passportjs.org) with Next.js. The example features cookie based authentication with username and password.
