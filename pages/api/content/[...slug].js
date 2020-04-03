@@ -1,7 +1,9 @@
 import methods from '../../../lib/api-helpers/methods'
 import runMiddleware from '../../../lib/api-helpers/run-middleware'
-import { getContentType } from '../../../lib/config'
+import { getContentTypeDefinition } from '../../../lib/config'
 import { getSession } from '../../../lib/iron'
+import { hasPermission } from '../../../lib/permissions'
+import db from '../../../lib/db'
 
 const isValidContentType = (req, res, cb) => {
   const {
@@ -9,7 +11,7 @@ const isValidContentType = (req, res, cb) => {
   } = req
 
   const type = slug[0]
-  const contentType = getContentType(type)
+  const contentType = getContentTypeDefinition(type)
 
   if (!type || !contentType) {
     cb(new Error('Invalid content type'))
@@ -19,11 +21,33 @@ const isValidContentType = (req, res, cb) => {
   }
 }
 
-const hasPermissions = async(req, res, cb) => {
+
+const getAction = (method)  => {
+  // TODO: See how to handle actions for updating documents from other users
+  switch(method) {
+    case 'GET':
+      return 'read'
+      break;
+    case 'POST', 'PUT':
+      return 'write'
+      break;
+    case 'DELETE':
+      return 'delete'
+      break;
+    default:
+      return '';
+      break;
+  }
+}
+
+const hasPermissionsForContent = async(req, res, cb) => {
   const session = await getSession(req)
-  // TODO: Mirar si tiene permisos para realizar la acción 
-  if (!session) {
-    cb(new Error('Not authorized'))
+
+  const action = getAction(req.method)
+  const permission = `content.${req.contentType.slug}.${action}`
+
+  if (!hasPermission(session, permission)) {
+    cb(new Error('User not authorized to ' + permission))
   } else {
     req.user = session
     cb()
@@ -31,13 +55,19 @@ const hasPermissions = async(req, res, cb) => {
 }
 
 
-const getContent = (req, res) => {
+const getContent = searchParams => (req, res) => {
   const type = req.contentType
 
-  res.status(200).json({
-    type,
-    user: req.user
-  })
+  db.collection(req.contentType.slug).get()
+    .then(data => {
+
+      res.status(200).json(data)
+    })
+    .catch(err => {
+      res.status(500).json({
+        err: 'Error while loading content ' + err.message
+      })
+    })
 }
 
 const deleteContent = (req, res) => {
@@ -94,7 +124,7 @@ export default async(req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasPermissions)
+    await runMiddleware(req, res, hasPermissionsForContent)
   } catch (e) {
     return res.status(401).json({
       message: e.message

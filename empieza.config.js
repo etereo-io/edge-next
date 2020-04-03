@@ -1,12 +1,20 @@
+const initialContent = [{
+  type: 'post',
+  id: '1',
+  title: 'Example post',
+  description: 'This is an example description'
+}]
+
+
+
 module.exports = (defaultOptions) => {
   
 
   const postContentType = {
-    title: [{
-      en: 'Post'
-    }, {
+    title: {
+      en: 'Post',
       es: 'Artículo'
-    }],
+    },
     slug: 'post',
     permissions: {
       read: ['public'],
@@ -40,10 +48,11 @@ module.exports = (defaultOptions) => {
       type: 'firestore',
     },
     database: {
-      type: 'FIREBASE',
+      type: 'IN_MEMORY',
     },
     content: {
-      types: [postContentType] 
+      types: [postContentType],
+      initialContent: initialContent
     },
     tags: {
       initialTags: [{
