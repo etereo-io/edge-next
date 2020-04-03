@@ -18,7 +18,7 @@ const fetcher = url =>
  
 
 const Home = (props) => {
-  const user = useUser()
+  const { user } = useUser()
   const initialData = props.data
   const { data } = useSWR(API.content.post, fetcher, { initialData })
 

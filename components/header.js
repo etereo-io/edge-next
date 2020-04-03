@@ -4,7 +4,7 @@ import { hasPermission } from '../lib/permissions'
 import config from '../lib/config'
 
 const Header = () => {
-  const user = useUser()
+  const {user} = useUser()
 
   return (
     <header>

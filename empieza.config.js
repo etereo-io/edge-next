@@ -20,8 +20,7 @@ module.exports = (defaultOptions) => {
       read: ['public'],
       write: [defaultOptions.roles.admin, defaultOptions.roles.user],
       delete: [defaultOptions.roles.admin],
-      crossWrite: [defaultOptions.roles.admin],
-      crossDelete: [defaultOptions.roles.admin]
+      admin: [defaultOptions.roles.admin],
     },
     
     fields: [{
