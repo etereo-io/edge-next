@@ -1,3 +1,5 @@
+import './table-list.scss'
+
 const ListItem = props => {
   return (
     <div className="list-item">

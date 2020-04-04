@@ -3,7 +3,7 @@ import { hasPermission } from '../../../lib/permissions'
 import config from '../../../lib/config'
 import Layout from '../../../components/layout-admin'
 import { useRouter } from 'next/router'
-import TableList from '../../../components/content/admin-content/table-list'
+import TableList from '../../../components/content/admin-content/table-list/table-list'
 
 import useSWR from 'swr'
 import fetch from 'isomorphic-unfetch'
