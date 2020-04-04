@@ -1,6 +1,4 @@
-import { useUser, usePermission } from '../../../lib/hooks'
-import { hasPermission } from '../../../lib/permissions'
-import config from '../../../lib/config'
+import { usePermission } from '../../../lib/hooks'
 import Layout from '../../../components/layout-admin'
 import { useRouter } from 'next/router'
 import TableList from '../../../components/content/admin-content/table-list/table-list'

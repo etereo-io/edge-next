@@ -25,22 +25,32 @@ module.exports = (defaultOptions) => {
       {
         name: 'title',
         type: 'text',
+        label: 'Title',
+        placeholder: 'Title'
       },
       {
         name: 'description',
         type: 'textarea',
+        label: 'Description',
+        placeholder: 'Description'
       },
       {
         name: 'image',
         type: 'img',
+        label: 'Image',
+        placeholder: 'Image'
       },
       {
         name: 'file',
         type: 'file',
+        label: 'File',
+        placeholder: 'File'
       },
       {
         name: 'tags',
         type: 'tags',
+        label: 'Tags',
+        placeholder: 'Tags'
       },
     ],
   }
