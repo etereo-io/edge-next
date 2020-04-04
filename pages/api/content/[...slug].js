@@ -21,26 +21,25 @@ const isValidContentType = (req, res, cb) => {
   }
 }
 
-
-const getAction = (method)  => {
+const getAction = (method) => {
   // TODO: See how to handle actions for updating documents from other users
-  switch(method) {
+  switch (method) {
     case 'GET':
       return 'read'
-      break;
-    case 'POST', 'PUT':
+      break
+    case ('POST', 'PUT'):
       return 'write'
-      break;
+      break
     case 'DELETE':
       return 'delete'
-      break;
+      break
     default:
-      return '';
-      break;
+      return ''
+      break
   }
 }
 
-const hasPermissionsForContent = async(req, res, cb) => {
+const hasPermissionsForContent = async (req, res, cb) => {
   const session = await getSession(req)
 
   const action = getAction(req.method)
@@ -54,18 +53,17 @@ const hasPermissionsForContent = async(req, res, cb) => {
   }
 }
 
-
-const getContent = searchParams => (req, res) => {
+const getContent = (searchParams) => (req, res) => {
   const type = req.contentType
 
-  db.collection(req.contentType.slug).get()
-    .then(data => {
-
+  db.collection(req.contentType.slug)
+    .get()
+    .then((data) => {
       res.status(200).json(data)
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).json({
-        err: 'Error while loading content ' + err.message
+        err: 'Error while loading content ' + err.message,
       })
     })
 }
@@ -74,7 +72,7 @@ const deleteContent = (req, res) => {
   const type = req.contentType
 
   res.status(200).json({
-    type
+    type,
   })
 }
 
@@ -82,7 +80,7 @@ const updateContent = (req, res) => {
   const type = req.contentType
 
   res.status(200).json({
-    type
+    type,
   })
 }
 
@@ -90,21 +88,13 @@ const createContent = (req, res) => {
   const type = req.contentType
 
   res.status(200).json({
-    type
+    type,
   })
 }
 
-export default async(req, res) => {
-  
+export default async (req, res) => {
   const {
-    query: {
-      slug,
-      search, 
-      sortBy,
-      sortOrder,
-      page,
-      pageSize
-    },
+    query: { slug, search, sortBy, sortOrder, page, pageSize },
   } = req
 
   const searchParams = {
@@ -112,14 +102,14 @@ export default async(req, res) => {
     sortBy,
     sortOrder,
     page,
-    pageSize
+    pageSize,
   }
 
   try {
     await runMiddleware(req, res, isValidContentType)
   } catch (e) {
     return res.status(405).json({
-      message: e.message
+      message: e.message,
     })
   }
 
@@ -127,7 +117,7 @@ export default async(req, res) => {
     await runMiddleware(req, res, hasPermissionsForContent)
   } catch (e) {
     return res.status(401).json({
-      message: e.message
+      message: e.message,
     })
   }
 
@@ -135,6 +125,6 @@ export default async(req, res) => {
     get: getContent(searchParams),
     del: deleteContent,
     put: updateContent,
-    post: createContent
+    post: createContent,
   })
 }

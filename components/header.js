@@ -4,23 +4,22 @@ import { hasPermission } from '../lib/permissions'
 import config from '../lib/config'
 
 const Header = () => {
-  const {user} = useUser()
+  const { user } = useUser()
 
   return (
     <header>
       <nav>
-        
         <ul>
           <li>
             <Link href="/">
               <a>Home</a>
             </Link>
           </li>
-          {
-            config.content.types.filter(type => {
+          {config.content.types
+            .filter((type) => {
               return hasPermission(user, `content.${type.slug}.write`)
             })
-            .map(type => {
+            .map((type) => {
               return (
                 <li>
                   <Link href={`/create/${type.slug}`}>
@@ -28,9 +27,8 @@ const Header = () => {
                   </Link>
                 </li>
               )
-            })
-          }
-          { hasPermission(user, 'admin.access') && (
+            })}
+          {hasPermission(user, 'admin.access') && (
             <li>
               <Link href="/admin">
                 <a>Admin Dashboard</a>

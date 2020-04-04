@@ -2,10 +2,12 @@ import Head from 'next/head'
 import Header from './header'
 import config from '../lib/config'
 
-const Layout = props => (
+const Layout = (props) => (
   <>
     <Head>
-      <title>{config.title} - {props.title}</title>
+      <title>
+        {config.title} - {props.title}
+      </title>
     </Head>
 
     <Header />

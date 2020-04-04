@@ -2,24 +2,25 @@ import methods from '../../lib/api-helpers/methods'
 import db from '../../lib/db'
 
 const getTestData = () => {
-  
-  return db.collection('test').doc('test')
+  return db
+    .collection('test')
+    .doc('test')
     .get()
-    .then(doc => {
+    .then((doc) => {
       return doc.data()
     })
 }
 const getUsers = (id) => (req, res) => {
-  getTestData().then(testData => {
-    res.status(200).send({
-      testData
+  getTestData()
+    .then((testData) => {
+      res.status(200).send({
+        testData,
+      })
     })
-  })
-  .catch(err => {
-    console.log(err)
-    res.status(500).json({err: err.message})
-  })
-
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ err: err.message })
+    })
 }
 
 const addUser = (user) => (req, res) => {
@@ -27,20 +28,13 @@ const addUser = (user) => (req, res) => {
   // Validate data
   // if fails, throw error
   res.status(200).send({
-    deleted: true
+    deleted: true,
   })
 }
 
-
 export default (req, res) => {
   const {
-    query: {
-      search, 
-      sortBy,
-      sortOrder,
-      page,
-      pageSize
-    },
+    query: { search, sortBy, sortOrder, page, pageSize },
   } = req
 
   const searchParams = {
@@ -48,11 +42,11 @@ export default (req, res) => {
     sortBy,
     sortOrder,
     page,
-    pageSize
+    pageSize,
   }
 
   methods(req, res, {
     get: getUsers(searchParams),
-    post: addUser(req.body)
+    post: addUser(req.body),
   })
 }

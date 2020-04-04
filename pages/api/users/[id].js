@@ -2,19 +2,19 @@ import methods from '../../../lib/api-helpers/methods'
 
 const getUser = (id) => (req, res) => {
   res.status(200).send({
-    id
+    id,
   })
 }
 
 const delUser = (id) => (req, res) => {
   res.status(200).send({
-    deleted: true
+    deleted: true,
   })
 }
 
 const updateUser = (id) => (req, res) => {
   res.status(200).send({
-    updated: true
+    updated: true,
   })
 }
 
@@ -26,6 +26,6 @@ export default (req, res) => {
   methods(req, res, {
     get: getUser(id),
     del: delUser(id),
-    put: updateUser(id)
+    put: updateUser(id),
   })
 }

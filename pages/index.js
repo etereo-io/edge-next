@@ -5,17 +5,12 @@ import fetch from 'isomorphic-unfetch'
 
 import API from '../lib/api-endpoints'
 
-const fetcher = url =>
-  fetch(url)
-    .then(r => r.json())
-    
-
+const fetcher = (url) => fetch(url).then((r) => r.json())
 
 // export async function getServerSideProps() {
 //   const data = await fetcher(API.content.post)
 //   return { props: { data } }
 // }
- 
 
 const Home = (props) => {
   const { user } = useUser()
@@ -26,7 +21,7 @@ const Home = (props) => {
     <Layout title="Home page">
       <h1>Empieza Next</h1>
 
-      { JSON.stringify(data)}
+      {JSON.stringify(data)}
       {user && <p>Currently logged in as: {JSON.stringify(user)}</p>}
 
       <style jsx>{`

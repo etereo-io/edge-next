@@ -4,7 +4,6 @@ import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
 
-
 const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
 

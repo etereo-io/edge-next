@@ -1,4 +1,4 @@
-import { useUser, usePermission} from '../../../lib/hooks'
+import { useUser, usePermission } from '../../../lib/hooks'
 import { hasPermission } from '../../../lib/permissions'
 import config from '../../../lib/config'
 import Layout from '../../../components/layout-admin'
@@ -10,27 +10,25 @@ import fetch from 'isomorphic-unfetch'
 
 import API from '../../../lib/api-endpoints'
 
-const fetcher = url =>
-  fetch(url)
-    .then(r => r.json())
-
+const fetcher = (url) => fetch(url).then((r) => r.json())
 
 const AdminPage = () => {
-  
   const router = useRouter()
   const { slug } = router.query
   const locked = usePermission(`content.${slug}.admin`, '/', 'slug')
-  
-  // Load data
-  
-  const { data } = useSWR(API.content[slug], fetcher)
-  
-  return !locked && (
-    <Layout title="Content">
-      <h1>Content administration for {slug}</h1>
 
-      <TableList items={data} loading={false} />
-    </Layout>
+  // Load data
+
+  const { data } = useSWR(API.content[slug], fetcher)
+
+  return (
+    !locked && (
+      <Layout title="Content">
+        <h1>Content administration for {slug}</h1>
+
+        <TableList items={data} loading={false} />
+      </Layout>
+    )
   )
 }
 
