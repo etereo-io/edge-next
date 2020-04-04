@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import fetch from 'isomorphic-unfetch'
 
 import API from '../lib/api-endpoints'
-console.log(API)
+
 const fetcher = url =>
   fetch(url)
     .then(r => r.json())
@@ -23,7 +23,7 @@ const Home = (props) => {
   const { data } = useSWR(API.content.post, fetcher, { initialData })
 
   return (
-    <Layout>
+    <Layout title="Home page">
       <h1>Empieza Next</h1>
 
       { JSON.stringify(data)}

@@ -43,7 +43,7 @@ const Signup = () => {
   }
 
   return (
-    <Layout>
+    <Layout title="Signup">
       <div className="login">
         <Form isLogin={false} errorMessage={errorMsg} onSubmit={handleSubmit} />
       </div>

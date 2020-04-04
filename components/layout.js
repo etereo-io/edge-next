@@ -1,10 +1,11 @@
 import Head from 'next/head'
 import Header from './header'
+import config from '../lib/config'
 
 const Layout = props => (
   <>
     <Head>
-      <title>With Cookies</title>
+      <title>{config.title} - {props.title}</title>
     </Head>
 
     <Header />

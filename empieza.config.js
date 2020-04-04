@@ -43,6 +43,7 @@ module.exports = (defaultOptions) => {
 
 
   return {
+    title: 'Dashboard Demo',
     storage: {
       type: 'firestore',
     },

@@ -9,7 +9,7 @@ const AdminPage = () => {
   const locked = usePermission('admin.access', '/')
 
   return (
-    !locked && <Layout>
+    !locked && <Layout title="Administration area">
       <h1>Administration</h1>
 
       <ul>

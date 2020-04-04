@@ -2,10 +2,10 @@ import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 
 const Profile = () => {
-  const {user} = useUser({ redirectTo: '/login' })
+  const { user } = useUser({ redirectTo: '/login' })
 
   return (
-    <Layout>
+    <Layout title="Profile">
       <h1>Profile</h1>
       {user && <p>Your session: {JSON.stringify(user)}</p>}
     </Layout>
