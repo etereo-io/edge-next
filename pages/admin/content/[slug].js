@@ -26,7 +26,7 @@ const AdminPage = () => {
       <Layout title="Content">
         <h1>Content administration for {slug}</h1>
 
-        <TableList items={data} loading={false} />
+        <TableList items={data || []} loading={false} />
       </Layout>
     )
   )
