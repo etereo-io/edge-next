@@ -21,6 +21,13 @@ const AdminPage = () => {
               </Link>
             </li>
           )}
+          {hasPermission(user, `admin.stats`) && (
+            <li>
+              <Link href="/admin/stats">
+                <a>Site stats</a>
+              </Link>
+            </li>
+          )}
           {config.content.types
             .filter((type) => {
               return hasPermission(user, `content.${type.slug}.admin`)
