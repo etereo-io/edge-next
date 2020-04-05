@@ -1,5 +1,5 @@
-import methods from '../../lib/api-helpers/methods'
-import db from '../../lib/db'
+import methods from '../../lib/api/api-helpers/methods'
+import db from '../../lib/api/db'
 
 const getTestData = () => {
   return db

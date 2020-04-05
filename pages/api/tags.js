@@ -1,4 +1,4 @@
-import methods from '../../lib/api-helpers/methods'
+import methods from '../../lib/api/api-helpers/methods'
 
 const getTags = (text = (req, res) => {
   res.status(200).send([

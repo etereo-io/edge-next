@@ -1,4 +1,4 @@
-import { createUser } from '../../../lib/user'
+import { createUser } from '../../../lib/api/users/user'
 
 export default async function signup(req, res) {
   try {

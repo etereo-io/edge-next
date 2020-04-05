@@ -1,8 +1,8 @@
 import express from 'express'
 import passport from 'passport'
-import { localStrategy } from '../../../lib/password-local'
-import { encryptSession } from '../../../lib/iron'
-import { setTokenCookie } from '../../../lib/auth-cookies'
+import { localStrategy } from '../../../lib/api/auth/password-local'
+import { encryptSession } from '../../../lib/api/auth/iron'
+import { setTokenCookie } from '../../../lib/api/auth/auth-cookies'
 
 const app = express()
 const authenticate = (method, req, res) =>

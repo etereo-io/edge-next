@@ -1,4 +1,4 @@
-import API from '../../../../lib/api-endpoints'
+import API from '../../../../lib/api/api-endpoints'
 import fetch from 'isomorphic-unfetch'
 
 

@@ -1,9 +1,9 @@
-import methods from '../../../lib/api-helpers/methods'
-import runMiddleware from '../../../lib/api-helpers/run-middleware'
+import methods from '../../../lib/api/api-helpers/methods'
+import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { getContentTypeDefinition } from '../../../lib/config'
-import { getSession } from '../../../lib/iron'
+import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermission } from '../../../lib/permissions'
-import db from '../../../lib/db'
+import { findContent } from '../../../lib/api/content/content'
 
 const isValidContentType = (req, res, cb) => {
   const {
@@ -56,8 +56,7 @@ const hasPermissionsForContent = async (req, res, cb) => {
 const getContent = (searchParams) => (req, res) => {
   const type = req.contentType
 
-  db.collection(req.contentType.slug)
-    .get()
+  findContent(type.slug)
     .then((data) => {
       res.status(200).json(data)
     })

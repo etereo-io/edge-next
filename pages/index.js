@@ -3,7 +3,7 @@ import Layout from '../components/layout'
 import useSWR from 'swr'
 import fetch from 'isomorphic-unfetch'
 
-import API from '../lib/api-endpoints'
+import API from '../lib/api/api-endpoints'
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
