@@ -3,7 +3,7 @@ import Layout from '../../components/layout-admin'
 import TableList from '../../components/content/admin-content/table-list/table-list'
 
 import useSWR from 'swr'
-import fetch from 'isomorphic-unfetch'
+import fetch from '../../lib/fetcher'
 
 import API from '../../lib/api/api-endpoints'
 
@@ -14,7 +14,7 @@ const AdminPage = () => {
   const locked = usePermission(`user.admin`, '/')
 
   // Load data
-  const { data } = useSWR(API.users, fetcher)
+  const { data } = useSWR(API.users, fetch)
 
   return (
     !locked && (

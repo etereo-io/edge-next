@@ -1,11 +1,10 @@
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import useSWR from 'swr'
-import fetch from 'isomorphic-unfetch'
+import fetch from '../lib/fetcher'
 
 import API from '../lib/api/api-endpoints'
 
-const fetcher = (url) => fetch(url).then((r) => r.json())
 
 // export async function getServerSideProps() {
 //   const data = await fetcher(API.content.post)
@@ -15,7 +14,7 @@ const fetcher = (url) => fetch(url).then((r) => r.json())
 const Home = (props) => {
   const { user } = useUser()
   const initialData = props.data
-  const { data } = useSWR(API.content.post, fetcher, { initialData })
+  const { data } = useSWR(API.content.post, fetch, { initialData })
 
   return (
     <Layout title="Home page">

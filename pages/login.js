@@ -3,6 +3,7 @@ import Router from 'next/router'
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
 import Form from '../components/form'
+import fetch from '../lib/fetcher'
 
 const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })

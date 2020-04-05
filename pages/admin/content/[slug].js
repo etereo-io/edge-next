@@ -4,11 +4,9 @@ import { useRouter } from 'next/router'
 import TableList from '../../../components/content/admin-content/table-list/table-list'
 
 import useSWR from 'swr'
-import fetch from 'isomorphic-unfetch'
+import fetch from '../../../lib/fetcher'
 
 import API from '../../../lib/api/api-endpoints'
-
-const fetcher = (url) => fetch(url).then((r) => r.json())
 
 const AdminPage = () => {
   const router = useRouter()
@@ -17,7 +15,7 @@ const AdminPage = () => {
 
   // Load data
 
-  const { data } = useSWR(API.content[slug], fetcher)
+  const { data } = useSWR(API.content[slug], fetch)
 
   return (
     !locked && (

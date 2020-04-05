@@ -1,5 +1,7 @@
 import API from '../../../../lib/api/api-endpoints'
-import fetch from 'isomorphic-unfetch'
+import fetch from '../../../../lib/fetcher'
+import Button from '../../../button/button'
+import { useState } from 'react'
 
 
 function InputText(props) {
@@ -73,9 +75,14 @@ function Field(props) {
 
 export default function (props) {
 
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState(false)
+
+
   const submitRequest = data => {
     const url = API.content[props.type.slug]
-    fetch(url, {
+    return fetch(url, {
       method: 'post',
       body: data,
       headers: new Headers({
@@ -83,16 +90,42 @@ export default function (props) {
         'Accept': 'application/json, application/xml, text/plain, text/html, *.*'
       }),
     })
-    .then(() => {
-      // Trigger on save
-    })
-    .catch(err => {
-      // SHOW ERROR
-    })
+    
   }
   
-  const onSubmit = () => {
+  const onSubmit = (ev) => {
+    ev.preventDefault()
+    
+    const data = {}
+    props.type.fields.forEach(field => {
+      const fieldValue = ev.target[field.name].value
+      // TODO: Do validations
+      data[field.name] = fieldValue
+    })
 
+    setLoading(true)
+    setSuccess(false)
+    setError(false)
+
+    submitRequest(data)
+      .then((result) => {
+        console.log(result)
+        setLoading(false)
+        setSuccess(true)
+        setError(false)
+        
+        if (props.onSave) {
+          props.onSave(result)
+        }
+      })
+      .catch(err => {
+        setLoading(false)
+        setSuccess(false)
+        setError(true)
+        console.error(err)
+      })
+
+    console.log(data)
   }
 
   // It needs the type definition
@@ -102,10 +135,18 @@ export default function (props) {
 
   return (
     <div className="content-form">
-      <form onSubmit={onSubmit} >
+      <form name="content-form" onSubmit={onSubmit} >
         {/* {JSON.stringify(props.type)} */}
         {props.type.fields.map(field => <Field field={field} />)}
+
+        <Button alt={true} type="submit">Save</Button>
       </form>
+
+      {loading && (<div className="loading">Loading...</div>)}
+      {success && (<div className="success">Saved</div>)}
+      {error && (<div className="error">Error saving </div>)}
+
+
     </div>
   )
 }
