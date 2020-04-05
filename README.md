@@ -129,7 +129,15 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
 
 ## TODO List
 - Connect to a database
-- User CRUD
+  - Firebase
+  - MongoDB
 - Content CRUD
+  - Add validations on client side and server side
+  - Allow to upload files
+  - Link author
+- Demo
+  - Client side content routing: Add SEO optimizations
+- User CRUD
+  - Allow Google / Facebook signup (?)
 - Startup script
-- 
+  - Preseed database 
