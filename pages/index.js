@@ -1,10 +1,10 @@
 import { useUser } from '../lib/hooks'
 import Layout from '../components/layout'
+import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
+import { getContentTypeDefinition } from '../lib/config'
 import useSWR from 'swr'
 import fetch from '../lib/fetcher'
-
 import API from '../lib/api/api-endpoints'
-
 
 // export async function getServerSideProps() {
 //   const data = await fetcher(API.content.post)
@@ -14,20 +14,23 @@ import API from '../lib/api/api-endpoints'
 const Home = (props) => {
   const { user } = useUser()
   const initialData = props.data
+
+  // Fetch Posts
   const { data } = useSWR(API.content.post, fetch, { initialData })
+
+  // Get the definition for the post content type
+  const contentTypeDefinition = getContentTypeDefinition('post')
 
   return (
     <Layout title="Home page">
       <h1>Empieza Next</h1>
 
-      {JSON.stringify(data)}
-      {user && <p>Currently logged in as: {JSON.stringify(user)}</p>}
-
-      <style jsx>{`
-        li {
-          margin-bottom: 0.5rem;
-        }
-      `}</style>
+      { (data || [] ).map(item => {
+        return (
+          <ContentSummaryView content={item} type={contentTypeDefinition } />
+        )
+      })}
+      
     </Layout>
   )
 }

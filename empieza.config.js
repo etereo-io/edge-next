@@ -5,6 +5,12 @@ const initialContent = [
     title: 'Example post',
     description: 'This is an example description',
   },
+    {type: 'post',
+    id: '2',
+    title: 'Example post number 2',
+    description: 'This is an example description',
+    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg'
+  },
 ]
 
 module.exports = (defaultOptions) => {
