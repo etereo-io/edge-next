@@ -26,11 +26,13 @@ const Login = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-      if (res.status === 200) {
+      .then(() => {
         Router.push('/')
-      } else {
-        throw new Error(await res.text())
-      }
+      })
+      .catch(err => {
+        throw new Error(err)
+      })
+     
     } catch (error) {
       console.error('An unexpected error happened occurred:', error)
       setErrorMsg(error.message)
