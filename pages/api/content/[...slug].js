@@ -3,7 +3,8 @@ import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { getContentTypeDefinition } from '../../../lib/config'
 import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermission } from '../../../lib/permissions'
-import { findContent } from '../../../lib/api/content/content'
+import { findContent,  addContent } from '../../../lib/api/content/content'
+import { contentValidations } from '../../../lib/validations/content'
 
 const isValidContentType = (req, res, cb) => {
   const {
@@ -27,7 +28,8 @@ const getAction = (method) => {
     case 'GET':
       return 'read'
       break
-    case ('POST', 'PUT'):
+    case 'POST':
+    case 'PUT':
       return 'write'
       break
     case 'DELETE':
@@ -84,11 +86,31 @@ const updateContent = (req, res) => {
 }
 
 const createContent = (req, res) => {
-  const type = req.contentType
+ const type = req.contentType
 
-  res.status(200).json({
-    type,
+ const content = req.body 
+ console.log(content)
+ contentValidations(type, content)
+  .then(() => {
+    // Content is valid
+    addContent(type.slug, req.body)
+    .then((data) => {
+      res.status(200).json(data)
+    })
+    .catch((err) => {
+      res.status(500).json({
+        err: 'Error while saving content ' + err.message,
+      })
+    })
+
   })
+  .catch(err => {
+    res.status(400)
+      .json({
+        err: 'Invalid data: ' + err.message
+      })
+  })
+
 }
 
 export default async (req, res) => {

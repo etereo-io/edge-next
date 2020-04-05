@@ -85,10 +85,13 @@ export default function (props) {
     return fetch(url, {
       method: 'post',
       body: data,
-      headers: new Headers({
+     /* headers: new Headers({
         'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
         'Accept': 'application/json, application/xml, text/plain, text/html, *.*'
-      }),
+      }),*/
+      headers: {
+         'Content-Type': 'application/x-www-form-urlencoded',
+      },
     })
     
   }
@@ -96,11 +99,12 @@ export default function (props) {
   const onSubmit = (ev) => {
     ev.preventDefault()
     
-    const data = {}
+    const data = new URLSearchParams()
     props.type.fields.forEach(field => {
+ 
       const fieldValue = ev.target[field.name].value
-      // TODO: Do validations
-      data[field.name] = fieldValue
+      // TODO: Do client side validations
+      data.append(field.name, fieldValue)
     })
 
     setLoading(true)
