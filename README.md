@@ -128,9 +128,12 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
 
 
 ## TODO List
+- Load config
+  - Add the correct schema validation
 - Connect to a database
   - Firebase
   - MongoDB
+  - In Memory DB
 - Content CRUD
   - Add validations on client side and server side
   - Allow to upload files

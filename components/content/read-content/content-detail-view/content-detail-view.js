@@ -1,7 +1,14 @@
 
 import './content-detail-view.scss'
+import CommentsFeed from '../../../comments/comments-feed/comments-feed'
+import CommentForm from '../../../comments/comment-form/comment-form'
+import {usePermission} from '../../../../lib/hooks'
 
 export default function(props) {
+  
+  const lockReadComments = usePermission(`content.${props.type.slug}.comments.read`)
+  const lockWriteComments = usePermission(`content.${props.type.slug}.comments.write`)
+  
   return (
     <div className="content-detail-view">
         <div className="content-detail-content">
@@ -11,6 +18,15 @@ export default function(props) {
             )
           })}
         </div>
+        
+        { props.type.comments.enabled && !lockWriteComments && (
+          <CommentForm content={props.content.id} />
+        )}
+        
+        { props.type.comments.enabled && !lockReadComments && (
+          <CommentsFeed content={props.content.id} />
+        )}
+        
       
     </div>
   )

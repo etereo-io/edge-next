@@ -29,6 +29,16 @@ module.exports = (defaultOptions) => {
       admin: [defaultOptions.roles.admin],
     },
 
+    comments: {
+      enabled: true,
+      permissions: {
+        read: ['public'],
+        write: [defaultOptions.roles.user, defaultOptions.roles.admin],
+        delete: [defaultOptions.roles.admin],
+        admin: [defaultOptions.roles.admin],
+      }
+    },
+
     fields: [
       {
         name: 'title',
@@ -64,7 +74,7 @@ module.exports = (defaultOptions) => {
   }
 
   return {
-    title: 'Dashboard Demo',
+    title: 'Software Posts',
     storage: {
       type: 'firestore',
     },
