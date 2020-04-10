@@ -23,7 +23,7 @@ const Home = (props) => {
 
   return (
     <Layout title="Home page">
-      <h1>Empieza Next</h1>
+      <h1>Demo Site</h1>
 
       { (data || [] ).map(item => {
         return (

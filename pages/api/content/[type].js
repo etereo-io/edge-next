@@ -8,10 +8,9 @@ import { contentValidations } from '../../../lib/validations/content'
 
 const isValidContentType = (req, res, cb) => {
   const {
-    query: { slug },
+    query: { type },
   } = req
 
-  const type = slug[0]
   const contentType = getContentTypeDefinition(type)
 
   if (!type || !contentType) {
@@ -115,7 +114,7 @@ const createContent = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { slug, search, sortBy, sortOrder, page, pageSize },
+    query: { type, search, sortBy, sortOrder, page, pageSize },
   } = req
 
   const searchParams = {
