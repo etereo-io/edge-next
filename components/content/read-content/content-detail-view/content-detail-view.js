@@ -20,11 +20,11 @@ export default function(props) {
         </div>
         
         { props.type.comments.enabled && !lockWriteComments && (
-          <CommentForm content={props.content.id} />
+          <CommentForm type={props.type} contentId={props.content.id} />
         )}
         
         { props.type.comments.enabled && !lockReadComments && (
-          <CommentsFeed content={props.content.id} />
+          <CommentsFeed type={props.type} contentId={props.content.id} />
         )}
         
       

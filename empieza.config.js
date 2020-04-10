@@ -6,13 +6,33 @@ const initialContent = [
     slug: 'example-post',
     description: 'This is an example description',
   },
-    {type: 'post',
+  { type: 'post',
     id: '2',
     title: 'Example post number 2',
     slug: 'post-number-2',
     description: 'This is an example description',
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg'
   },
+  {
+    type: 'comment',
+    contentType: 'post',
+    contentId: '1',
+    message: 'A demo comment'
+  },
+  {
+    type: 'comment',
+    contentType: 'post',
+    contentId: '2',
+    message: 'A 2 demo comment'
+  },
+  
+   {
+     type: 'comment',
+    contentType: 'post',
+    contentId: '2',
+    message: 'A demo comment'
+  },
+
 ]
 
 module.exports = (defaultOptions) => {

@@ -10,6 +10,7 @@ import useSWR from 'swr'
 import fetch from '../../lib/fetcher'
 import API from '../../lib/api/api-endpoints'
 
+
 function LoadingView() {
   return (<h1>Loading...</h1>)
 }
