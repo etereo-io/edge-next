@@ -71,7 +71,7 @@ const hasPermissionsForContent = async (req, res, cb) => {
   const action = getAction(req.method)
   const permission = `content.${req.contentType.slug}.${action}`
 
-  const isOwner = session && req.item.authorId === session.id
+  const isOwner = session && req.item.author === session.id
 
   if (!hasPermission(session, permission) && !isOwner ) {
     cb(new Error('User not authorized to ' + permission))

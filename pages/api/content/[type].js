@@ -26,17 +26,10 @@ const getAction = (method) => {
   switch (method) {
     case 'GET':
       return 'read'
-      break
     case 'POST':
-    case 'PUT':
       return 'write'
-      break
-    case 'DELETE':
-      return 'delete'
-      break
     default:
       return ''
-      break
   }
 }
 
@@ -54,10 +47,10 @@ const hasPermissionsForContent = async (req, res, cb) => {
   }
 }
 
-const getContent = (searchParams) => (req, res) => {
+const getContent = (filterParams, searchParams, paginationParams) => (req, res) => {
   const type = req.contentType
 
-  findContent(type.slug)
+  findContent(type.slug, filterParams)
     .then((data) => {
       res.status(200).json(data)
     })
@@ -68,21 +61,6 @@ const getContent = (searchParams) => (req, res) => {
     })
 }
 
-const deleteContent = (req, res) => {
-  const type = req.contentType
-
-  res.status(200).json({
-    type,
-  })
-}
-
-const updateContent = (req, res) => {
-  const type = req.contentType
-
-  res.status(200).json({
-    type,
-  })
-}
 
 const createContent = (req, res) => {
  const type = req.contentType
@@ -114,15 +92,22 @@ const createContent = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, page, pageSize },
+    query: { type, search, sortBy, sortOrder, page, pageSize, author },
   } = req
 
+  const filterParams = {
+    author
+  }
+
   const searchParams = {
-    search,
+    search
+  }
+
+  const paginationParams = {
     sortBy,
     sortOrder,
     page,
-    pageSize,
+    pageSize
   }
 
   try {
@@ -142,9 +127,7 @@ export default async (req, res) => {
   }
 
   methods(req, res, {
-    get: getContent(searchParams),
-    del: deleteContent,
-    put: updateContent,
+    get: getContent(filterParams, searchParams, paginationParams),
     post: createContent,
   })
 }
