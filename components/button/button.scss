@@ -1,28 +1,30 @@
 .button {
-  background: #fff;
+  
   border: 0;
   border-radius: 4px;
-  color: #33cccc;
-  color: #00aaa5;
+ 
+  background: #33cccc;
+  color: #fff;
   cursor: pointer;
   display: inline-block;
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 500;
   padding: 12px 16px;
   transition: 0.3s ease;
   text-transform: uppercase;
   -webkit-appearance: none;
 
   &:hover {
-    background: #e6e6e6;
+    background: #248f8f;
+
   }
 
   &.alt {
-    background: #33cccc;
-    color: #fff;
+    background: #fff;
+    color: #00aaa5;
 
     &:hover {
-      background: #248f8f;
+          background: #e6e6e6;
     }
   }
 }

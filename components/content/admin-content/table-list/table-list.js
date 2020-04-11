@@ -1,7 +1,16 @@
 import './table-list.scss'
 import Link from 'next/link'
+import Button from '../../../button/button'
 
 const ListItem = (props) => {
+
+  const onClickDelete = () => {
+    const result = window.confirm('Are you sure you want to delete this item?')
+
+    if (result) {
+      props.onDeleteItem(props.item)
+    }
+  }
   
   return <div className="list-item row">
     { props.type.fields.map((field, index) => {
@@ -12,6 +21,10 @@ const ListItem = (props) => {
         {content}
       </div>)
     })}
+    <div className="field-column column">
+      <Button href={`/edit/${props.type.slug}/${props.item.id}`}>Edit</Button>
+      <Button alt={true} onClick={onClickDelete}>Delete</Button>
+    </div>
   </div>
 }
 
@@ -24,6 +37,9 @@ const TableHeader = (props) => {
         {field.name}
       </div>)
     })}
+    <div className="header-column column">
+      Actions
+    </div>
   </div>
 }
 
