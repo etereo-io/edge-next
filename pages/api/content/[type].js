@@ -50,7 +50,7 @@ const hasPermissionsForContent = async (req, res, cb) => {
 const getContent = (filterParams, searchParams, paginationParams) => (req, res) => {
   const type = req.contentType
 
-  findContent(type.slug, filterParams)
+  findContent(type.slug, filterParams, searchParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })

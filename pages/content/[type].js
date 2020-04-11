@@ -36,7 +36,7 @@ const ContentPage = () => {
       <Layout title="Content">
         <h1>List of {type}</h1>
 
-        { (data || [] ).map(item => {
+        { (data ? data.data : []).map(item => {
           return (
             <ContentSummaryView content={item} type={contentType } />
           )

@@ -1,5 +1,32 @@
 import Link from 'next/link'
+import TagsField from '../fields/tags-field/tags-field'
 import './content-summary-view.scss'
+
+function getField(field, value) {
+  
+  
+    switch(field.type) {
+      case 'textarea':
+        return <p>{value}</p>
+  
+      case 'img':
+        return <img src={value} />
+  
+      case 'number':
+        return <p>{value}</p>
+  
+      case 'file':
+        return <p>{value}</p>
+
+      case 'tags':
+      
+          return <TagsField tags={value} />
+  
+      default: 
+        return <p>{value}</p>
+  
+    } 
+  }
 
 export default function(props) {
   return (
@@ -7,7 +34,7 @@ export default function(props) {
         <div className="content-summary-content">
           {props.type.fields.map(field => {
             return (
-              <div className="field">{field.name} : {props.content[field.name]}</div>
+              <div className="field">{getField(field, props.content[field.name])}</div>
             )
           })}
         </div>

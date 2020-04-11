@@ -1,20 +1,20 @@
-const initialContent = [
-  {
+const posts = []
+
+for (var i = 0; i < 100; i++) {
+  posts.push({
     type: 'post',
-    id: '1',
+    id: i,
     author: '1',
     title: 'Example post',
-    slug: 'example-post',
+    slug: 'example-post-' + i,
+    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
     description: 'This is an example description',
-  },
-  { type: 'post',
-    id: '2',
-    author: '2',
-    title: 'Example post number 2',
-    slug: 'post-number-2',
-    description: 'This is an example description',
-    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg'
-  },
+    tags: ['software', 'ai']
+  })
+}
+
+const initialContent = [
+  ...posts,
   {
     type: 'comment',
     contentType: 'post',
@@ -107,23 +107,22 @@ module.exports = (defaultOptions) => {
       types: [postContentType],
       initialContent: initialContent,
     },
-    tags: {
-      initialTags: [
-        {
-          slug: 'software',
-          label: {
-            en: 'Software',
-            es: 'Software',
-          },
+    tags: [
+      {
+        slug: 'software',
+        label: {
+          en: 'Software',
+          es: 'Software',
         },
-        {
-          slug: 'ai',
-          label: {
-            en: 'Artificial Inteligence',
-            es: 'Inteligencia Artificial',
-          },
+      },
+      {
+        slug: 'ai',
+        label: {
+          en: 'Artificial Inteligence',
+          es: 'Inteligencia Artificial',
         },
-      ],
-    },
+      },
+  ],
+    
   }
 }

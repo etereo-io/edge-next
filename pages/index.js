@@ -25,7 +25,7 @@ const Home = (props) => {
     <Layout title="Home page">
       <h1>Demo Site</h1>
 
-      { (data || [] ).map(item => {
+      { (data ? data.data : [] ).map(item => {
         return (
           <ContentSummaryView content={item} type={contentTypeDefinition } />
         )
