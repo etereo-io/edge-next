@@ -27,5 +27,10 @@
           background: #e6e6e6;
     }
   }
+
+  &.loading {
+    padding: 5px 13px;
+    background: grey;
+  }
 }
 

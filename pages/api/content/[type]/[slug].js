@@ -27,18 +27,42 @@ const getAction = (method) => {
   switch (method) {
     case 'GET':
       return 'read'
-      break
     case 'POST':
     case 'PUT':
       return 'write'
-      break
     case 'DELETE':
       return 'delete'
-      break
     default:
       return ''
-      break
   }
+}
+
+const loadContentItemMiddleware = async(req, res, cb) => {
+  const type = req.contentType
+
+  const searchOptions = {}
+
+  // Allow to accept ID in the api call 
+  // by default the API wors like /api/content/post/the-content-slug but it can accept and ID if specified
+  // /api/content/post/ID?field=id
+  if (req.query.field === 'id') {
+    searchOptions['id'] = req.query.slug
+  } else {
+    searchOptions['slug'] = req.query.slug
+  }
+
+  findOneContent(type.slug, searchOptions)
+    .then((data) => {
+      if (!data) {
+        cb(new Error('Content not found'))
+      } else {
+        req.item = data
+        cb()
+      }
+    })
+    .catch((err) => {
+      cb(new Error('Error while loading content ' + err.message))
+    })
 }
 
 const hasPermissionsForContent = async (req, res, cb) => {
@@ -47,7 +71,9 @@ const hasPermissionsForContent = async (req, res, cb) => {
   const action = getAction(req.method)
   const permission = `content.${req.contentType.slug}.${action}`
 
-  if (!hasPermission(session, permission)) {
+  const isOwner = session && req.item.authorId === session.id
+
+  if (!hasPermission(session, permission) && !isOwner ) {
     cb(new Error('User not authorized to ' + permission))
   } else {
     req.user = session
@@ -56,30 +82,14 @@ const hasPermissionsForContent = async (req, res, cb) => {
 }
 
 const getContent = (searchParams) => (req, res) => {
-  const type = req.contentType
-
-  findOneContent(type.slug, {slug: req.query.slug})
-    .then((data) => {
-      if (!data) {
-        res.status(404).json({
-          err: 'Content not found'
-        })
-      } else {
-        res.status(200).json(data)
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({
-        err: 'Error while loading content ' + err.message,
-      })
-    })
+  res.status(200).json(req.item)
 }
 
 const deleteContent = (req, res) => {
-  const type = req.contentType
+  const item = req.item
 
   res.status(200).json({
-    type,
+    item
   })
 }
 
@@ -136,6 +146,14 @@ export default async (req, res) => {
     await runMiddleware(req, res, isValidContentType)
   } catch (e) {
     return res.status(405).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    await runMiddleware(req, res, loadContentItemMiddleware)
+  } catch (e) {
+    return res.status(404).json({
       message: e.message,
     })
   }
