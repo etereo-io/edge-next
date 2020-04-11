@@ -9,6 +9,21 @@
 - ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
 - Integrated with Firebase and MongoAtlas
 
+## API
+
+The Content API is defined on your set of rules in the configuration file, the other APIs are standard.
+
+### Users
+- `GET /api/users`
+  - Access limited to users with permission `user.list` or `user.admin`
+- `GET /api/users/ID`
+  - Access limited to own user or users with permission `user.read` or `user.admin`
+- `POST /api/users`
+  - Access limited to `user.admin`
+- `PUT /api/users/ID`
+  - Access limited to own user or users with permission `user.admin` and `user.write`
+- `DELETE /api/users/ID`
+  - Access limited to own user or users with permission `user.admin` and `user.delete`
 
 ## Databases
 
@@ -135,6 +150,7 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
   - MongoDB
   - In Memory DB
 - Content CRUD
+  - [] Document and finish permissions on content api
   - Add validations on client side and server side
   - Allow to upload files
   - Link author
