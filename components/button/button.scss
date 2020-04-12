@@ -3,7 +3,7 @@
   border: 0;
   border-radius: 4px;
  
-  background: #33cccc;
+  background: black;
   color: #fff;
   cursor: pointer;
   display: inline-block;
@@ -21,7 +21,8 @@
 
   &.alt {
     background: #fff;
-    color: #00aaa5;
+    color: black;
+    border: 1px solid black;
 
     &:hover {
           background: #e6e6e6;

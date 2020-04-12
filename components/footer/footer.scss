@@ -1,0 +1,56 @@
+@import '../../styles/layout.scss';
+@import '../../styles/colors.scss';
+
+footer {
+  background: black;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: white;
+
+  .site-logo {
+    background: white;
+    padding: 10px;
+    width: 80px;
+    margin-bottom: 30px;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  .footer-content {
+    max-width: $content-max-width;
+    margin: 0 auto;
+  }
+
+  .links {
+
+    font-weight: 600;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .strong {
+      color: grey;
+    }
+
+    ul {
+      display: flex;
+      margin-bottom: 10px;
+      list-style: none;
+
+      li {
+        margin-right: 30px;
+      }
+    }
+  }
+
+  .copy {
+    color: $light-grey;
+    margin-top: 30px;
+  }
+}

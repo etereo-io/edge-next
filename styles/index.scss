@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap");
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -10,3 +16,16 @@
 }
 
 
+body {
+  background: url('/static/bg.svg');
+  background-size: 200px;
+  margin: 0;
+  color: #333;
+}
+
+
+.container {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem;
+}
