@@ -3,7 +3,10 @@
 
 .header {
   color: $dark-grey;
-  background-color: $light-grey;
+  background: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 6px -17px 20px 10px rgba(0,0,0,0.3);
+
 
   .header-content {
     max-width: $content-max-width;
