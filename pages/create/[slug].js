@@ -4,6 +4,7 @@ import {getContentTypeDefinition} from '../../lib/config'
 import Layout from '../../components/layout'
 import { useRouter } from 'next/router'
 import ContentForm from '../../components/content/write-content/content-form/content-form'
+import './create.scss'
 
 const CreateContent = () => {
   const router = useRouter()
@@ -18,7 +19,7 @@ const CreateContent = () => {
 
   return (
     !locked && (
-      <Layout title="New content">
+      <Layout title="New content" className="create-page">
         <h1>Create new {type.title.en}</h1>
 
         <ContentForm type={type} onSaved={onSaved} />

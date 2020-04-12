@@ -1,0 +1,29 @@
+.content-form {
+  background: white;
+  padding: 15px;
+  border: 1px solid rgba(0,0,0,0.2);
+
+  .field-item {
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    padding-bottom: 15px;
+    padding-top: 15px;
+
+    .label-zone label {
+      font-weight: bold;
+      margin-bottom: 15px;
+      display: block;
+    }
+  }
+
+  .actions {
+    padding-top: 15px;
+  }
+
+  input[type=text] {
+    padding: 15px;
+  }
+
+  textarea {
+    padding: 15px;
+  }
+}

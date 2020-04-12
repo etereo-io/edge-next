@@ -1,8 +1,9 @@
 import API from '../../../../lib/api/api-endpoints'
 import fetch from '../../../../lib/fetcher'
 import Button from '../../../button/button'
-import { useState } from 'react'
+import './content-form.scss'
 
+import { useState } from 'react'
 
 function InputText(props) {
   return (
@@ -67,8 +68,12 @@ function Field(props) {
   
   return (
     <div className="field-item">
-      { props.field.label && (<label>{props.field.label}</label>) }
-      { getInput(props.field)}
+      <div className="label-zone">
+        { props.field.label && (<label>{props.field.label}</label>) }
+      </div>
+      <div className="input-zone">
+        { getInput(props.field)}
+      </div>
     </div>
   )
 }
@@ -143,7 +148,9 @@ export default function (props) {
         {/* {JSON.stringify(props.type)} */}
         {props.type.fields.map(field => <Field field={field} />)}
 
-        <Button alt={true} type="submit">Save</Button>
+        <div className="actions">
+          <Button alt={true} type="submit">Save</Button>
+        </div>
       </form>
 
       {loading && (<div className="loading">Loading...</div>)}

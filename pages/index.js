@@ -6,10 +6,21 @@ import useSWR from 'swr'
 import fetch from '../lib/fetcher'
 import API from '../lib/api/api-endpoints'
 
-// export async function getServerSideProps() {
-//   const data = await fetcher(API.content.post)
-//   return { props: { data } }
-// }
+
+// Get serversideProps is important for SEO, and only available at the pages level
+export async function getServerSideProps({ req }) {
+  
+  // TODO: Extract the API url from an environment variable
+  const baseUrl = 'http://localhost:3000'
+  const response = await fetch(baseUrl  + API.content.post);
+
+  return {
+    props: {
+      data: response
+    }
+  }
+  
+}
 
 const Home = (props) => {
   const { user } = useUser()

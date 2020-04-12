@@ -1,0 +1,13 @@
+.tags-list {
+
+  display: flex;
+
+  .tag {
+    padding: 5px;
+    background: black;
+    border-radius: 5px;
+    color: white;
+    margin: 5px;
+    cursor: pointer;
+  }
+}
