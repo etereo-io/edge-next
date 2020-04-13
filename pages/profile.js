@@ -8,19 +8,17 @@ import API from '../lib/api/api-endpoints'
 
 const Profile = () => {
   const { user, finished } = useUser({ redirectTo: '/login' })
-  
 
   // Fetch all the content from this user
   const contentDatas = []
-  config.content.types.forEach(type => {
-    const url = `${API.content[type.slug]}?author=${user ? user.id: null}`
-    const { data } = useSWR(url , fetch)
+  config.content.types.forEach((type) => {
+    const url = `${API.content[type.slug]}?author=${user ? user.id : null}`
+    const { data } = useSWR(url, fetch)
     contentDatas.push({
       type,
-      data: data ? data.data : []
+      data: data ? data.data : [],
     })
   })
-
 
   // Loading
   if (!user && !finished) {
@@ -31,27 +29,22 @@ const Profile = () => {
       </Layout>
     )
   }
-  
 
   return (
     <Layout title="Profile">
       <h1>Profile</h1>
       {user && <p>Your session: {JSON.stringify(user)}</p>}
 
-      { contentDatas.map(cData => {
+      {contentDatas.map((cData) => {
         return (
           <div className="content-block">
             <h3>User's {cData.type.title.en}s</h3>
-            { cData.data.map(item => {
-              return (
-                <ContentSummaryView content={item} type={cData.type } />
-              )
+            {cData.data.map((item) => {
+              return <ContentSummaryView content={item} type={cData.type} />
             })}
           </div>
         )
       })}
-
-       
     </Layout>
   )
 }

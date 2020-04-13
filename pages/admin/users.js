@@ -10,7 +10,6 @@ import API from '../../lib/api/api-endpoints'
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
 const AdminPage = () => {
-  
   const locked = usePermission(`user.admin`, '/')
 
   // Load data

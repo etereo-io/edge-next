@@ -32,12 +32,12 @@ const Signup = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-      .then(() => {
-        Router.push('/login')
-      })
-      .catch(err => {
-        throw new Error(err)
-      })
+        .then(() => {
+          Router.push('/login')
+        })
+        .catch((err) => {
+          throw new Error(err)
+        })
     } catch (error) {
       console.error('An unexpected error happened occurred:', error)
       setErrorMsg(error.message)

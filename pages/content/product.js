@@ -15,34 +15,29 @@ function LoadingView() {
 }
 
 const ContentPage = () => {
-  const router = useRouter()
-  const {
-    query: { type },
-  } = router
-
-  if (!type) {
-    return <LoadingView />
-  }
+  const type = 'product'
 
   const contentType = getContentTypeDefinition(type)
 
-  const locked = usePermission(`content.${type}.read`, '/', 'type')
+  const locked = usePermission(`content.${type}.read`, '/')
 
   const { data } = useSWR(API.content[type], fetch)
 
   return (
-    <Layout title="Content">
-      {!locked && (
-        <div>
-          <h1>List of {type}</h1>
+    !locked && (
+      <Layout title="Content">
+        <h1>Custom page demo: For {type}</h1>
 
-          {(data ? data.data : []).map((item) => {
-            return <ContentSummaryView content={item} type={contentType} />
-          })}
-        </div>
-      )}
-      {locked && <LoadingView />}
-    </Layout>
+        {(data ? data.data : []).map((item) => {
+          return (
+            <div className="product">
+              {JSON.stringify(item)}
+              <button>Buy now</button>
+            </div>
+          )
+        })}
+      </Layout>
+    )
   )
 }
 

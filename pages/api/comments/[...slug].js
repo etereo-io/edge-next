@@ -61,7 +61,7 @@ const getContent = (searchParams) => (req, res) => {
   const type = req.contentType
 
   findComments(type.slug, {
-    contentId: req.contentId
+    contentId: req.contentId,
   })
     .then((data) => {
       res.status(200).json(data)
@@ -90,31 +90,28 @@ const updateContent = (req, res) => {
 }
 
 const createContent = (req, res) => {
- const type = req.contentType
+  const type = req.contentType
 
- const content = req.body 
- console.log(content)
- contentValidations(type, content)
-  .then(() => {
-    // Content is valid
-    addContent(type.slug, req.body)
-    .then((data) => {
-      res.status(200).json(data)
+  const content = req.body
+  console.log(content)
+  contentValidations(type, content)
+    .then(() => {
+      // Content is valid
+      addContent(type.slug, req.body)
+        .then((data) => {
+          res.status(200).json(data)
+        })
+        .catch((err) => {
+          res.status(500).json({
+            err: 'Error while saving content ' + err.message,
+          })
+        })
     })
     .catch((err) => {
-      res.status(500).json({
-        err: 'Error while saving content ' + err.message,
+      res.status(400).json({
+        err: 'Invalid data: ' + err.message,
       })
     })
-
-  })
-  .catch(err => {
-    res.status(400)
-      .json({
-        err: 'Invalid data: ' + err.message
-      })
-  })
-
 }
 
 export default async (req, res) => {

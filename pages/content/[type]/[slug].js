@@ -3,7 +3,7 @@ import ContentDetailView from '../../../components/content/read-content/content-
 import ContentSummaryView from '../../../components/content/read-content/content-summary-view/content-summary-view'
 import { usePermission } from '../../../lib/hooks'
 
-import {getContentTypeDefinition } from '../../../lib/config'
+import { getContentTypeDefinition } from '../../../lib/config'
 
 import Layout from '../../../components/layout'
 
@@ -12,7 +12,7 @@ import fetch from '../../../lib/fetcher'
 import API from '../../../lib/api/api-endpoints'
 
 function LoadingView() {
-  return (<h1>Loading...</h1>)
+  return <h1>Loading...</h1>
 }
 
 const ContentPage = () => {
@@ -25,15 +25,13 @@ const ContentPage = () => {
     return <LoadingView />
   }
 
-  
   const contentType = getContentTypeDefinition(type)
 
   const locked = usePermission(`content.${type}.read`, '/', 'slug')
 
-  // Load data  
-  const { data } = useSWR(API.content[type] + '/' + slug, fetch )
-    
-  
+  // Load data
+  const { data } = useSWR(API.content[type] + '/' + slug, fetch)
+
   return (
     !locked && (
       <Layout title="Content">

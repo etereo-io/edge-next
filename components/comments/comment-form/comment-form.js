@@ -1,4 +1,4 @@
-export default function(props) {
+export default function (props) {
   return (
     <div className="comment-form">
       <textarea placeholder="Your comment" />

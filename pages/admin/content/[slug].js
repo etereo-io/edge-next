@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { usePermission } from '../../../lib/hooks'
 
-import {getContentTypeDefinition } from '../../../lib/config'
+import { getContentTypeDefinition } from '../../../lib/config'
 
 import TableList from '../../../components/content/admin-content/table-list/table-list'
 import Layout from '../../../components/layout-admin'
@@ -9,7 +9,6 @@ import Layout from '../../../components/layout-admin'
 import useSWR from 'swr'
 import fetch from '../../../lib/fetcher'
 import API from '../../../lib/api/api-endpoints'
-
 
 const AdminPage = () => {
   const router = useRouter()
@@ -25,7 +24,11 @@ const AdminPage = () => {
       <Layout title="Content">
         <h1>Content administration for {slug}</h1>
 
-        <TableList items={data ? data.data : []} loading={false} type={contentTypeDefinition} />
+        <TableList
+          items={data ? data.data : []}
+          loading={false}
+          type={contentTypeDefinition}
+        />
       </Layout>
     )
   )

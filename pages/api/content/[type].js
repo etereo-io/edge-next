@@ -3,7 +3,7 @@ import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { getContentTypeDefinition } from '../../../lib/config'
 import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermission } from '../../../lib/permissions'
-import { findContent,  addContent } from '../../../lib/api/content/content'
+import { findContent, addContent } from '../../../lib/api/content/content'
 import { contentValidations } from '../../../lib/validations/content'
 
 const isValidContentType = (req, res, cb) => {
@@ -47,7 +47,10 @@ const hasPermissionsForContent = async (req, res, cb) => {
   }
 }
 
-const getContent = (filterParams, searchParams, paginationParams) => (req, res) => {
+const getContent = (filterParams, searchParams, paginationParams) => (
+  req,
+  res
+) => {
   const type = req.contentType
 
   findContent(type.slug, filterParams, searchParams, paginationParams)
@@ -61,33 +64,29 @@ const getContent = (filterParams, searchParams, paginationParams) => (req, res) 
     })
 }
 
-
 const createContent = (req, res) => {
- const type = req.contentType
+  const type = req.contentType
 
- const content = req.body 
- console.log(content)
- contentValidations(type, content)
-  .then(() => {
-    // Content is valid
-    addContent(type.slug, req.body)
-    .then((data) => {
-      res.status(200).json(data)
+  const content = req.body
+  console.log(content)
+  contentValidations(type, content)
+    .then(() => {
+      // Content is valid
+      addContent(type.slug, req.body)
+        .then((data) => {
+          res.status(200).json(data)
+        })
+        .catch((err) => {
+          res.status(500).json({
+            err: 'Error while saving content ' + err.message,
+          })
+        })
     })
     .catch((err) => {
-      res.status(500).json({
-        err: 'Error while saving content ' + err.message,
+      res.status(400).json({
+        err: 'Invalid data: ' + err.message,
       })
     })
-
-  })
-  .catch(err => {
-    res.status(400)
-      .json({
-        err: 'Invalid data: ' + err.message
-      })
-  })
-
 }
 
 export default async (req, res) => {
@@ -96,18 +95,18 @@ export default async (req, res) => {
   } = req
 
   const filterParams = {
-    author
+    author,
   }
 
   const searchParams = {
-    search
+    search,
   }
 
   const paginationParams = {
     sortBy,
     sortOrder,
     page,
-    pageSize
+    pageSize,
   }
 
   try {

@@ -16,7 +16,9 @@ const Layout = (props) => (
     <Header />
 
     <main>
-      <div className={`container ${props.className ? props.className: ''}`}>{props.children}</div>
+      <div className={`container ${props.className ? props.className : ''}`}>
+        {props.children}
+      </div>
     </main>
 
     <Footer />
