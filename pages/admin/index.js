@@ -6,10 +6,10 @@ import Link from 'next/link'
 
 const AdminPage = () => {
   const { user } = useUser()
-  const locked = usePermission('admin.access', '/')
+  const available = usePermission('admin.access', '/')
 
   return (
-    !locked && (
+    available && (
       <Layout title="Administration area">
         <h1>Administration</h1>
 

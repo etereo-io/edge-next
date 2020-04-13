@@ -2,10 +2,10 @@ import { usePermission } from '../../lib/hooks'
 import Layout from '../../components/layout-admin'
 
 const AdminPage = () => {
-  const locked = usePermission(`admin.stats`, '/')
+  const available = usePermission(`admin.stats`, '/')
 
   return (
-    !locked && (
+    available && (
       <Layout title="Stats">
         <h1>Site Stats</h1>
       </Layout>

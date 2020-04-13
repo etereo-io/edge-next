@@ -26,13 +26,13 @@ const ContentPage = () => {
 
   const contentType = getContentTypeDefinition(type)
 
-  const locked = usePermission(`content.${type}.read`, '/', 'type')
+  const available = usePermission(`content.${type}.read`, '/', 'type')
 
   const { data } = useSWR(API.content[type], fetch)
 
   return (
     <Layout title="Content">
-      {!locked && (
+      {available && (
         <div>
           <h1>List of {type}</h1>
 

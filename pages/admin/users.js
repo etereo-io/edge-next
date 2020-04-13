@@ -10,13 +10,13 @@ import API from '../../lib/api/api-endpoints'
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
 const AdminPage = () => {
-  const locked = usePermission(`user.admin`, '/')
+  const available = usePermission(`user.admin`, '/')
 
   // Load data
   const { data } = useSWR(API.users, fetch)
 
   return (
-    !locked && (
+    available && (
       <Layout title="User administration">
         <h1>User adminsitration</h1>
 

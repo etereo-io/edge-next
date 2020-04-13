@@ -9,7 +9,7 @@ import './create.scss'
 const CreateContent = () => {
   const router = useRouter()
   const { slug } = router.query
-  const locked = usePermission(`content.${slug}.write`, '/', 'slug')
+  const available = usePermission(`content.${slug}.write`, '/', 'slug')
 
   const type = getContentTypeDefinition(slug)
 
@@ -18,7 +18,7 @@ const CreateContent = () => {
   }
 
   return (
-    !locked && (
+    available && (
       <Layout title="New content" className="create-page">
         <h1>Create new {type.title.en}</h1>
 

@@ -13,14 +13,14 @@ import API from '../../../lib/api/api-endpoints'
 const AdminPage = () => {
   const router = useRouter()
   const { slug } = router.query
-  const locked = usePermission(`content.${slug}.admin`, '/', 'slug')
+  const available = usePermission(`content.${slug}.admin`, '/', 'slug')
 
   // Load data
 
   const { data } = useSWR(API.content[slug], fetch)
   const contentTypeDefinition = getContentTypeDefinition(slug)
   return (
-    !locked && (
+    available && (
       <Layout title="Content">
         <h1>Content administration for {slug}</h1>
 

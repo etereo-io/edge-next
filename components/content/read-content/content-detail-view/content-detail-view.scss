@@ -1,0 +1,25 @@
+.content-detail-view {
+  .content-detail-wrapper {
+    display: flex;
+
+    .content-actions {
+      padding: 15px;
+      max-width: 200px;
+    }
+  }
+
+  .content-detail-content {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 15px;
+    margin-bottom: 30px;
+    
+    .label {
+      font-weight: bold;
+    }
+
+    .field {
+      margin-bottom: 15px
+    }
+  }
+}
