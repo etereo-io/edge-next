@@ -41,7 +41,7 @@ const ContentPage = () => {
           })}
         </div>
       )}
-      {locked && <LoadingView />}
+      {!available && <LoadingView />}
     </Layout>
   )
 }
