@@ -9,6 +9,11 @@
 - ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
 - Integrated with Firebase and MongoAtlas
 
+## Content Types
+Content types may be defined in `empieza.config.js`. You can create as many content types with different definitions and permissions. The API will validate the access to the endpoints based on the permissions you defined.
+
+You can see [the example config file](/empieza.config.js) for more details.
+
 ## API
 
 The Content API is defined on your set of rules in the configuration file, the other APIs are standard.
@@ -25,12 +30,25 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `DELETE /api/users/ID`
   - Access limited to own user or users with permission `user.admin` and `user.delete`
 
-## Databases
+### Content
+- `GET /api/content/[TYPE]`
+  - Access limited to users with permission `content.TYPE.read` or `content.TYPE.admin`
+- `GET /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
+  - Access limited to own user or users with permission `content.TYPE.read` or `content.TYPE.admin`
+- `POST /api/content/[TYPE]`
+  - Access limited to `content.TYPE.admin`, or `content.TYPE.write`
+- `PUT /api/content/[TYPE]/[CONTENT_SLUG]` | `POST /api/content/[TYPE]/[CONTENT_SLUG]` |  `PUT /api/content/[TYPE]/[CONTENT_ID]?field=id` |  `POST /api/content/[TYPE]/[CONTENT_ID]?field=id`
+  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.write`
+- `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
+  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.delete`
 
+
+## Databases
+Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"
 
 ### In memory DB (only local)
 
-There is a In memory DB for development
+There is a "In memory" database for development and testing purposes. It allows you to work with Mock data easily.
 
 Set the following config (default)
 
@@ -50,6 +68,8 @@ FIREBASE_CLIENT_EMAIL=XX
 FIREBASE_DATABASE_URL=XX
 FIREBASE_PRIVATE_KEY=XX
 ````
+
+See the [example .env.build file](/.env.build)
 
 Also in the config you must set the following values:
 
@@ -143,6 +163,16 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
 
 
 ## TODO List
+- i18n
+  - Choose a good i18n libray
+- Redux
+  - Study if we will add redux for the dashboard 
+    - https://github.com/willianantunes/nextjs-playground
+    - https://github.com/kirill-konshin/next-redux-wrapper
+- Test
+  - Test config loading and initialization
+  - Test config validation
+  - Add coverage with codeclimate
 - Load config
   - Add the correct schema validation
 - Connect to a database
@@ -160,3 +190,5 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
   - Allow Google / Facebook signup (?)
 - Startup script
   - Preseed database 
+- Dockerfile
+  - See how to complete a good example
