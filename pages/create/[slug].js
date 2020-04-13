@@ -1,7 +1,7 @@
 import { usePermission } from '../../lib/hooks'
 
 import { getContentTypeDefinition } from '../../lib/config'
-import Layout from '../../components/layout'
+import Layout from '../../components/layout/normal/layout'
 import { useRouter } from 'next/router'
 import ContentForm from '../../components/content/write-content/content-form/content-form'
 import './create.scss'

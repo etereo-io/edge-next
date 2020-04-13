@@ -5,16 +5,21 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    border-bottom: 1px solid black;
+    
 
     .column {
       padding: 15px;
-      border-right: 1px solid black;
-      flex: 1;
+      border: 1px solid rgba(0,0,0,0.2);
+      
+      flex-basis: 100%;
+      flex: 1 1 0px;
     }
   }
 
   .table-header {
     font-weight: bold;
+    background: black;
+    color: white;
+    border: 1px solid rgba(0,0,0, 0.2);
   }
 }

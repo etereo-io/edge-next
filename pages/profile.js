@@ -1,5 +1,5 @@
 import { useUser } from '../lib/hooks'
-import Layout from '../components/layout'
+import Layout from '../components/layout/normal/layout'
 import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
 import config from '../lib/config'
 import useSWR from 'swr'

@@ -1,5 +1,5 @@
 import { usePermission } from '../../lib/hooks'
-import Layout from '../../components/layout-admin'
+import Layout from '../../components/layout/admin/layout-admin'
 import TableList from '../../components/content/admin-content/table-list/table-list'
 
 import useSWR from 'swr'

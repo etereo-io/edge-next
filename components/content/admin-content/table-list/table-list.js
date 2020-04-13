@@ -57,8 +57,8 @@ const ListItem = (props) => {
 
           return <div className="field-column column">{content}</div>
         })}
-      </div>
-      <div className="row">
+        <div className="field-column column">0 Comments</div>
+        <div className="field-column column">0 times</div>
         <div className="column">
           {!success && (
             <Button href={`/edit/${props.type.slug}/${props.item.slug}`}>
@@ -71,6 +71,9 @@ const ListItem = (props) => {
             </Button>
           )}
         </div>
+      </div>
+      <div className="row">
+        
 
         <div className="column">
           {error && <div className="error">Error deleting item</div>}
@@ -85,8 +88,10 @@ const TableHeader = (props) => {
   return (
     <div className="table-header row ">
       {props.type.fields.map((field) => {
-        return <div className="header-column column">{field.name}</div>
+        return <div className="header-column column sortable">{field.name}</div>
       })}
+      <div className="header-column column sortable">Comments</div>
+      <div className="header-column column sortable">Reported</div>
       <div className="header-column column">Actions</div>
     </div>
   )

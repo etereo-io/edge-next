@@ -4,7 +4,7 @@ import { usePermission } from '../../lib/hooks'
 
 import { getContentTypeDefinition } from '../../lib/config'
 
-import Layout from '../../components/layout'
+import Layout from '../../components/layout/normal/layout'
 
 import useSWR from 'swr'
 import fetch from '../../lib/fetcher'

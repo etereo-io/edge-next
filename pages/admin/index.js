@@ -1,7 +1,7 @@
 import { useUser, usePermission } from '../../lib/hooks'
 import { hasPermission } from '../../lib/permissions'
 import config from '../../lib/config'
-import Layout from '../../components/layout-admin'
+import Layout from '../../components/layout/admin/layout-admin'
 import Link from 'next/link'
 
 const AdminPage = () => {
