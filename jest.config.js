@@ -9,13 +9,14 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/.next/'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
-    '^.+\\.css$': '<rootDir>/test/config-jest/cssTransform.js',
+    ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform"
+    // '^.+\\.(css)$': '<rootDir>/test/config-jest/cssTransform.js',
   },
   transformIgnorePatterns: [
     '/node_modules/',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   moduleNameMapper: {
-    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
+    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy'
   },
 }
