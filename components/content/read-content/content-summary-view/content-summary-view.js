@@ -37,7 +37,7 @@ export default function (props) {
         })}
       </div>
       <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
-        Read more{' '}
+        Read more
       </Link>
     </div>
   )
