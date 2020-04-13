@@ -8,21 +8,21 @@ import './create.scss'
 
 const CreateContent = () => {
   const router = useRouter()
-  const { slug } = router.query
-  const available = usePermission(`content.${slug}.write`, '/', 'slug')
+  const { type } = router.query
+  const available = usePermission(`content.${type}.write`, '/', 'type')
 
-  const type = getContentTypeDefinition(slug)
+  const contentType = getContentTypeDefinition(type)
 
   const onSaved = (newItem) => {
-    // Router.go to /content/slug/id
+    // Router.go to /content/type/id
   }
 
   return (
     available && (
       <Layout title="New content" className="create-page">
-        <h1>Create new {type.title.en}</h1>
+        <h1>Create new {contentType.title.en}</h1>
 
-        <ContentForm type={type} onSaved={onSaved} />
+        <ContentForm type={contentType} onSaved={onSaved} />
       </Layout>
     )
   )

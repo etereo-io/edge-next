@@ -68,7 +68,7 @@ const createContent = (req, res) => {
   const type = req.contentType
 
   const content = req.body
-  console.log(content)
+  
   contentValidations(type, content)
     .then(() => {
       // Content is valid

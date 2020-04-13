@@ -11,7 +11,7 @@ function InputText(props) {
       type="text"
       name={props.field.name}
       placeholder={props.field.placeholder}
-      value={props.field.value}
+      defaultValue={props.value}
     />
   )
 }
@@ -22,7 +22,7 @@ function InputNumber(props) {
       type="number"
       name={props.field.name}
       placeholder={props.field.placeholder}
-      value={props.field.value}
+      defaultValue={props.value}
     />
   )
 }
@@ -34,7 +34,7 @@ function InputImage(props) {
       accept="image/png, image/jpeg"
       name={props.field.name}
       placeholder={props.field.placeholder}
-      value={props.field.value}
+      // defaultValue={props.value}
     />
   )
 }
@@ -46,7 +46,7 @@ function InputFile(props) {
       accept="image/png, image/jpeg"
       name={props.field.name}
       placeholder={props.field.placeholder}
-      value={props.field.value}
+//       defaultValue={props.value}
     />
   )
 }
@@ -57,7 +57,7 @@ function InputTags(props) {
       type="text"
       name={props.field.name}
       placeholder={props.field.placeholder}
-      value={props.field.value}
+      defaultValue={props.value}
     />
   )
 }
@@ -67,7 +67,7 @@ function TextArea(props) {
     <textarea
       name={props.field.name}
       placeholder={props.field.placeholder}
-      value={props.field.value}
+      defaultValue={props.value}
     ></textarea>
   )
 }
@@ -76,22 +76,22 @@ function Field(props) {
   const getInput = (field) => {
     switch (field.type) {
       case 'textarea':
-        return <TextArea field={field} />
+        return <TextArea field={field} value={props.value} />
 
       case 'img':
-        return <InputImage field={field} />
+        return <InputImage field={field}  value={props.value} />
 
       case 'number':
-        return <InputNumber field={field} />
+        return <InputNumber field={field}  value={props.value} />
 
       case 'file':
-        return <InputFile field={field} />
+        return <InputFile field={field}  value={props.value} />
 
       case 'tags':
-        return <InputTags field={field} />
+        return <InputTags field={field}  value={props.value} />
 
       default:
-        return <InputText field={field} />
+        return <InputText field={field}  value={props.value} />
     }
   }
 
@@ -111,9 +111,10 @@ export default function (props) {
   const [error, setError] = useState(false)
 
   const submitRequest = (data) => {
-    const url = API.content[props.type.slug]
+    const url = `${API.content[props.type.slug]}${props.content ? '/' + props.content.id + '?field=id' : ''}`
+    
     return fetch(url, {
-      method: 'post',
+      method:'post',
       body: data,
       /* headers: new Headers({
         'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -170,7 +171,7 @@ export default function (props) {
       <form name="content-form" onSubmit={onSubmit}>
         {/* {JSON.stringify(props.type)} */}
         {props.type.fields.map((field) => (
-          <Field field={field} />
+          <Field field={field} value={props.content ? props.content[field.name] : null}/>
         ))}
 
         <div className="actions">

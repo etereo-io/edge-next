@@ -3,7 +3,7 @@ import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
 import { getContentTypeDefinition } from '../../../../lib/config'
 import { getSession } from '../../../../lib/api/auth/iron'
 import { hasPermission } from '../../../../lib/permissions'
-import { findOneContent, addContent } from '../../../../lib/api/content/content'
+import { findOneContent, updateOneContent } from '../../../../lib/api/content/content'
 import { contentValidations } from '../../../../lib/validations/content'
 
 const isValidContentType = (req, res, cb) => {
@@ -22,6 +22,7 @@ const isValidContentType = (req, res, cb) => {
 }
 
 const getAction = (method) => {
+  
   // TODO: See how to handle actions for updating documents from other users
   switch (method) {
     case 'GET':
@@ -95,20 +96,12 @@ const deleteContent = (req, res) => {
 const updateContent = (req, res) => {
   const type = req.contentType
 
-  res.status(200).json({
-    type,
-  })
-}
-
-const createContent = (req, res) => {
-  const type = req.contentType
-
   const content = req.body
-  console.log(content)
+  
   contentValidations(type, content)
     .then(() => {
       // Content is valid
-      addContent(type.slug, req.body)
+      updateOneContent(type.slug, req.item.id, req.body)
         .then((data) => {
           res.status(200).json(data)
         })
@@ -166,6 +159,6 @@ export default async (req, res) => {
     get: getContent(searchParams),
     del: deleteContent,
     put: updateContent,
-    post: createContent,
+    post: updateContent,
   })
 }
