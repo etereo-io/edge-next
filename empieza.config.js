@@ -52,7 +52,11 @@ module.exports = (defaultOptions) => {
       en: 'Post',
       es: 'Artículo',
     },
+
     slug: 'post',
+
+    slugGeneration: ['title', 'createdAt'],
+
     permissions: {
       read: ['public'],
       write: [defaultOptions.roles.admin, defaultOptions.roles.user],
@@ -109,7 +113,10 @@ module.exports = (defaultOptions) => {
       en: 'Product',
       es: 'Producto',
     },
+
     slug: 'product',
+
+    slugGeneration: ['title', 'createdAt'],
 
     permissions: {
       read: ['public'],

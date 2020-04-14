@@ -5,6 +5,8 @@ import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermission } from '../../../lib/permissions'
 import { findContent, addContent } from '../../../lib/api/content/content'
 import { contentValidations } from '../../../lib/validations/content'
+import { v4 as uuidv4 } from 'uuid'
+import slugify from 'slugify'
 
 const isValidContentType = (req, res, cb) => {
   const {
@@ -64,6 +66,37 @@ const getContent = (filterParams, searchParams, paginationParams) => (
     })
 }
 
+
+export function fillContentWithDefaultData(contentType, content, user) {
+  try {
+    const defaultEmptyFields = {}
+
+    contentType.fields.forEach(f => {
+      defaultEmptyFields[f.name] = f.defaultValue || null
+    })
+
+    // Fill in the mandatory data like author, id, date, type
+    const newContent = {
+      id: uuidv4(),
+      author: user.id,
+      createdAt: Date.now(),
+      type: contentType.slug,
+      ...content
+    }
+
+    const slug =  slugify(contentType.slugGeneration.reduce((prev, next) => prev + newContent[next], ''))
+    
+    const extraFields = {
+      slug: slug
+    }
+    
+    return Object.assign({}, defaultEmptyFields, newContent, extraFields)
+  } catch(err) {
+    throw new Error('Invalid slug or default data generation ' + err.message)
+  }
+
+}
+
 const createContent = (req, res) => {
   const type = req.contentType
 
@@ -72,7 +105,11 @@ const createContent = (req, res) => {
   contentValidations(type, content)
     .then(() => {
       // Content is valid
-      addContent(type.slug, req.body)
+
+      // Add default value to missing fields
+      const newContent = fillContentWithDefaultData(type, content, req.user)
+
+      addContent(type.slug, newContent)
         .then((data) => {
           res.status(200).json(data)
         })
@@ -84,7 +121,7 @@ const createContent = (req, res) => {
     })
     .catch((err) => {
       res.status(400).json({
-        err: 'Invalid data: ' + err.message,
+        err: 'Invalid data: ' + err,
       })
     })
 }

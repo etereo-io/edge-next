@@ -23,7 +23,9 @@
     "passport-local": "1.0.0",
     "react": "latest",
     "react-dom": "latest",
+    "slugify": "^1.4.0",
     "swr": "0.1.16",
+    "uuid": "^7.0.3",
     "yup": "^0.28.3"
   },
   "license": "ISC",
