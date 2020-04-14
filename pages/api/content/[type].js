@@ -37,7 +37,7 @@ const hasPermissionsForContent = async (req, res, cb) => {
   const session = await getSession(req)
 
   const action = getAction(req.method)
-  const permission = `content.${req.contentType.slug}.${action}`
+  const permission = [`content.${req.contentType.slug}.${action}`, `content.${req.contentType.slug}.admin`]
 
   if (!hasPermission(session, permission)) {
     cb(new Error('User not authorized to ' + permission))

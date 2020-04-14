@@ -5,7 +5,7 @@ for (var i = 0; i < 100; i++) {
   posts.push({
     type: 'post',
     id: i,
-    author: '1',
+    author: Math.round(Math.random() * 10),
     title: 'Example post',
     slug: 'example-post-' + i,
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
@@ -15,7 +15,7 @@ for (var i = 0; i < 100; i++) {
   products.push({
     type: 'product',
     id: i,
-    author: '1',
+    author: Math.round(Math.random() * 10),
     title: 'Example product',
     slug: 'example-product-' + i,
     description: 'This is an example description',

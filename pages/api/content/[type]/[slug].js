@@ -13,8 +13,8 @@ const isValidContentType = (req, res, cb) => {
 
   const contentType = getContentTypeDefinition(type)
 
-  if (!type || !contentType) {
-    cb(new Error('Invalid content type'))
+  if (!type || !contentType || !slug) {
+    cb(new Error('Invalid parameters'))
   } else {
     req.contentType = contentType
     cb()
@@ -69,7 +69,7 @@ const hasPermissionsForContent = async (req, res, cb) => {
   const session = await getSession(req)
 
   const action = getAction(req.method)
-  const permission = `content.${req.contentType.slug}.${action}`
+  const permission = [`content.${req.contentType.slug}.${action}`, `content.${req.contentType.slug}.admin`]
 
   const isOwner = session && req.item.author === session.id
 
