@@ -81,16 +81,17 @@ export function fillContentWithDefaultData(contentType, content, user) {
       author: user.id,
       createdAt: Date.now(),
       type: contentType.slug,
+      ...defaultEmptyFields,
       ...content
     }
 
-    const slug =  slugify(contentType.slugGeneration.reduce((prev, next) => prev + newContent[next], ''))
+    const slug =  slugify(contentType.slugGeneration.reduce((prev, next) => prev + ' ' + newContent[next], ''))
     
     const extraFields = {
       slug: slug
     }
     
-    return Object.assign({}, defaultEmptyFields, newContent, extraFields)
+    return Object.assign({}, newContent, extraFields)
   } catch(err) {
     throw new Error('Invalid slug or default data generation ' + err.message)
   }
