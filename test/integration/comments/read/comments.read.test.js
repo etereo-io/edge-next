@@ -12,7 +12,7 @@ import { getSession } from '../../../../lib/api/auth/iron'
 
 import handler from '../../../../pages/api/comments/[contentType]/[contentId]'
 
-describe('Integrations tests for comment creation endpoint', () => {
+describe('Integrations tests for comment read endpoint', () => {
   let server
   let url
 
@@ -44,59 +44,75 @@ describe('Integrations tests for comment creation endpoint', () => {
 
     Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
 
-
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({})
-    })
-
+    const response = await fetch(urlToBeUsed.href)
 
     expect(response.status).toBe(405)
   })
 
-  test('Should return comment details given a valid request', async () => {
+  test('Should return 401 if user is not allowed', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: '0' }
+    const params = { contentType: 'post', contentId: 'example-post-0' }
 
     Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
 
     getPermissions.mockReturnValueOnce({
-      'content.post.comments.write': ['USER'],
-      'content.post.comments.admin': ['ADMIN'],
+      'content.post.comments.read': ['USER']
     })
 
-    getSession.mockReturnValueOnce({
-      roles: ['USER'],
-      id: 'test-id'
+    const response = await fetch(urlToBeUsed.href)
+
+    expect(response.status).toBe(401)
+  })
+
+  test('Should return empty list if contentId is fake', async () => {
+    const urlToBeUsed = new URL(url)
+    const params = { contentType: 'post', contentId: 'example-post-0' }
+
+    Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+
+    getPermissions.mockReturnValueOnce({
+      'content.post.comments.read': ['public']
     })
 
-    const newComment = {
-      message: 'test @anotheruser test'
-    }
+    const response = await fetch(urlToBeUsed.href)
 
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newComment)
-    })
+    expect(response.status).toBe(200)
 
     const jsonResult = await response.json()
     
-
-    expect(response.status).toBe(200)
     expect(jsonResult).toMatchObject({
-      contentType: 'post',
-      contentId: '0',
-      slug: expect.any(String),
-      message: newComment.message,
-      author: 'test-id',
-      id: expect.anything()
+      data: [],
+      page: 0,
+      pageSize: 15
     })
   })
+
+  test('Should return the first 15 items if contentId is OK', async() => {
+    const urlToBeUsed = new URL(url)
+    const params = { contentType: 'post', contentId: 0 }
+
+    Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+
+    getPermissions.mockReturnValueOnce({
+      'content.post.comments.read': ['public']
+    })
+
+    const response = await fetch(urlToBeUsed.href)
+
+    expect(response.status).toBe(200)
+
+    const jsonResult = await response.json()
+    
+    expect(jsonResult).toMatchObject({
+      data: expect.any(Array),
+      page: 0,
+      pageSize: 15
+    })
+
+    expect(jsonResult.data.length).toEqual(15)
+  })
+
+
+
 
 })

@@ -33,6 +33,9 @@ const getComments = (filterParams, searchParams, paginationParams) => (
 
 export function fillCommentWithDefaultData(contentType, contentId, comment, user) {
   try {
+
+    // TODO: Parse message to extract mentions, links, images, etc
+    // Best way to store mentions https://stackoverflow.com/questions/31821751/best-way-to-store-comments-with-mentions-firstname-in-database
     
     // Fill in the mandatory data like author, id, date, type
     const newComment = {

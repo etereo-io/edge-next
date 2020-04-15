@@ -137,7 +137,7 @@ describe('Integrations tests for content endpoint', () => {
 
 
   describe('Pagination', () => {
-    test('Should return page 1 and elements from 15 to 30', async () => {
+    test('Should return page 1 and elements from 15 to 29', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', page: 1, pageSize: 15 }
   
@@ -161,10 +161,10 @@ describe('Integrations tests for content endpoint', () => {
       expect(jsonResult.page).toEqual("1")
       expect(jsonResult.pageSize).toEqual("15")
       expect(jsonResult.data[0].id).toEqual(15)
-      expect(jsonResult.data[jsonResult.data.length -1].id).toEqual(30)
+      expect(jsonResult.data[jsonResult.data.length -1].id).toEqual(29)
     })
 
-    test('Should return page 2 and elements from 40 to 60', async () => {
+    test('Should return page 2 and elements from 40 to 59', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', page: 2, pageSize: 20 }
   
@@ -188,7 +188,7 @@ describe('Integrations tests for content endpoint', () => {
       expect(jsonResult.page).toEqual("2")
       expect(jsonResult.pageSize).toEqual("20")
       expect(jsonResult.data[0].id).toEqual(40)
-      expect(jsonResult.data[jsonResult.data.length -1].id).toEqual(60)
+      expect(jsonResult.data[jsonResult.data.length -1].id).toEqual(59)
     })
   })
 

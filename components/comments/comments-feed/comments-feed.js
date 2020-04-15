@@ -12,7 +12,7 @@ export default function (props) {
 
   return (
     <div className="comments-feed">
-      {(data || []).map((comment) => {
+      {(data ? data.data : []).map((comment) => {
         return <CommentItem comment={comment} />
       })}
     </div>

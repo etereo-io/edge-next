@@ -1,5 +1,6 @@
 const posts = []
 const products = []
+const comments = []
 
 for (var i = 0; i < 100; i++) {
   posts.push({
@@ -20,30 +21,23 @@ for (var i = 0; i < 100; i++) {
     slug: 'example-product-' + i,
     description: 'This is an example description',
   })
+
+  for(var j = 0; j < 50; j++) {
+    comments.push({
+      type: 'comment',
+      contentType: 'post',
+      contentId: i,
+      message: 'A demo comment',
+      author: Math.round(Math.random() * 10),
+      slug: 'test-comment-' + j
+    })
+  }
 }
 
 const initialContent = [
   ...posts,
   ...products,
-  {
-    type: 'comment',
-    contentType: 'post',
-    contentId: '1',
-    message: 'A demo comment',
-  },
-  {
-    type: 'comment',
-    contentType: 'post',
-    contentId: '2',
-    message: 'A 2 demo comment',
-  },
-
-  {
-    type: 'comment',
-    contentType: 'post',
-    contentId: '2',
-    message: 'A demo comment',
-  },
+  ...comments
 ]
 
 module.exports = (defaultOptions) => {
