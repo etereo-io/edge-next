@@ -1,24 +1,23 @@
-import methods from '../../../../lib/api/api-helpers/methods'
-import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
-import { findOneContent, updateOneContent } from '../../../../lib/api/content/content'
-import { contentValidations } from '../../../../lib/validations/content'
-import { isValidContentType, hasQueryParameters, hasPermissionsForContent } from '../../../../lib/api/middlewares'
+import methods from '../../../../../lib/api/api-helpers/methods'
+import runMiddleware from '../../../../../lib/api/api-helpers/run-middleware'
+import { findOneComment, updateOneComment } from '../../../../../lib/api/comments/comments'
+import { contentValidations } from '../../../../../lib/validations/content'
+import { isValidContentType, hasQueryParameters, hasPermissionsForComment } from '../../../../../lib/api/middlewares'
 
 const loadContentItemMiddleware = async (req, res, cb) => {
-  const type = req.contentType
-
-  const searchOptions = {}
-
-  // Allow to accept ID in the api call
-  // by default the API wors like /api/content/post/the-content-slug but it can accept and ID if specified
-  // /api/content/post/ID?field=id
-  if (req.query.field === 'id') {
-    searchOptions['id'] = req.query.slug
-  } else {
-    searchOptions['slug'] = req.query.slug
+  const searchOptions = {
+    type: req.query.type,
+    contentSlug: req.query.contentSlug,
   }
 
-  findOneContent(type.slug, searchOptions)
+  // By default filter by comment slug
+  if (req.query.field && req.query.field === 'id') {
+    searchOptions['id'] = req.query.id
+  } else {
+    searchOptions['slug'] = req.query.id
+  }
+
+  findOneComment(searchOptions)
     .then((data) => {
       if (!data) {
         cb(new Error('Content not found'))
@@ -71,7 +70,7 @@ const updateContent = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, page, pageSize },
+    query: { search, sortBy, sortOrder, page, pageSize },
   } = req
 
   const searchParams = {
@@ -83,7 +82,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, isValidContentType(type))
+    await runMiddleware(req, res, isValidContentType(req.query.type))
   } catch (e) {
     return res.status(405).json({
       message: e.message,
@@ -91,7 +90,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasQueryParameters(['slug']))
+    await runMiddleware(req, res, hasQueryParameters(['contentSlug', 'id']))
   } catch (e) {
     return res.status(405).json({
       message: e.message,
@@ -108,7 +107,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForContent(req.item))
+    await runMiddleware(req, res, hasPermissionsForComment(req.item))
   } catch (e) {
     return res.status(401).json({
       message: e.message,

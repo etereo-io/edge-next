@@ -1,18 +1,18 @@
-import methods from '../../../lib/api/api-helpers/methods'
-import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
-import { findContent, addContent } from '../../../lib/api/content/content'
-import { contentValidations } from '../../../lib/validations/content'
+import methods from '../../../../lib/api/api-helpers/methods'
+import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
+import { findComments, addComment } from '../../../../lib/api/comments/comments'
+import { commentsValidations } from '../../../../lib/validations/comment'
 import { v4 as uuidv4 } from 'uuid'
 import slugify from 'slugify'
-import { isValidContentType, hasPermissionsForContent } from '../../../lib/api/middlewares'
+import { isValidContentType, hasPermissionsForComment } from '../../../../lib/api/middlewares'
 
-const getContent = (filterParams, searchParams, paginationParams) => (
+const getComments = (filterParams, searchParams, paginationParams) => (
   req,
   res
 ) => {
   const type = req.contentType
 
-  findContent(type.slug, filterParams, searchParams, paginationParams)
+  findComments(type.slug, filterParams, searchParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })
@@ -33,7 +33,7 @@ export function fillContentWithDefaultData(contentType, content, user) {
     })
 
     // Fill in the mandatory data like author, id, date, type
-    const newContent = {
+    const newComment = {
       id: uuidv4(),
       author: user.id,
       createdAt: Date.now(),
@@ -42,20 +42,20 @@ export function fillContentWithDefaultData(contentType, content, user) {
       ...content
     }
 
-    const slug =  slugify(contentType.slugGeneration.reduce((prev, next) => prev + ' ' + newContent[next], ''))
+    const slug =  slugify(contentType.slugGeneration.reduce((prev, next) => prev + ' ' + newComment[next], ''))
     
     const extraFields = {
       slug: slug
     }
     
-    return Object.assign({}, newContent, extraFields)
+    return Object.assign({}, newComment, extraFields)
   } catch(err) {
     throw new Error('Invalid slug or default data generation ' + err.message)
   }
 
 }
 
-const createContent = (req, res) => {
+const createComment = (req, res) => {
   const type = req.contentType
 
   const content = req.body
@@ -103,18 +103,26 @@ export default async (req, res) => {
     page,
     pageSize,
   }
-  
+
   try {
-    await runMiddleware(req, res, isValidContentType(type))
+    await runMiddleware(req, res, isValidContentType(req.query.type))
   } catch (e) {
-    console.log(e)
     return res.status(405).json({
       message: e.message,
     })
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForContent())
+    await runMiddleware(req, res, hasQueryParameters(['contentSlug']))
+  } catch (e) {
+    return res.status(405).json({
+      message: e.message,
+    })
+  }
+
+
+  try {
+    await runMiddleware(req, res, hasPermissionsForComment())
   } catch (e) {
     return res.status(401).json({
       message: e.message,
@@ -122,7 +130,7 @@ export default async (req, res) => {
   }
 
   methods(req, res, {
-    get: getContent(filterParams, searchParams, paginationParams),
-    post: createContent,
+    get: getComments(filterParams, searchParams, paginationParams),
+    post: createComment,
   })
 }

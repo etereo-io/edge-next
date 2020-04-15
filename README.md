@@ -42,6 +42,19 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
   - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.delete`
 
+### Comments
+
+- `GET /api/comments/[TYPE]/[CONTENT_ID]`
+  - Access limited to users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
+- `GET /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
+  - Access limited to own user or users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
+- `POST /api/comments/[TYPE]/[CONTENT_ID]`
+  - Access limited to `content.TYPE.comments.admin`, or `content.TYPE.comments.write`
+- `PUT /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
+  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.write`
+- `DELETE /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]` 
+  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.delete`
+
 
 ## Databases
 Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"
@@ -179,6 +192,9 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
   - Firebase
   - MongoDB
   - In Memory DB
+- Comments
+  - Add integration tests and complete functionality
+  - https://docs.mongodb.com/drivers/use-cases/storing-comments
 - Content CRUD
   - [] Document and finish permissions on content api
   - Add validations on client side and server side

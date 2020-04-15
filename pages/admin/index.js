@@ -43,7 +43,6 @@ const AdminPage = () => {
         <h1>Administration</h1>
         <LinkList links={[...links, ...contentLinks]} />
 
-       
       </Layout>
     )
   )

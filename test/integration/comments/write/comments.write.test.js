@@ -1,0 +1,102 @@
+// See discussion https://github.com/zeit/next.js/discussions/11784
+// See example
+import http from "http"
+import fetch from "isomorphic-unfetch"
+import listen from "test-listen"
+import { apiResolver } from "next/dist/next-server/server/api-utils"
+
+jest.mock('../../../../lib/api/auth/iron')
+jest.mock('../../../../lib/permissions/get-permissions')
+import getPermissions from '../../../../lib/permissions/get-permissions'
+import { getSession } from '../../../../lib/api/auth/iron'
+
+import handler from '../../../../pages/api/comments/[type]/[contentSlug]'
+
+describe.skip('Integrations tests for comment creation endpoint', () => {
+  let server
+  let url
+
+  afterEach(() => {
+    getPermissions.mockClear()
+    getSession.mockClear()
+  })
+
+  beforeAll(async done => {
+    server = http.createServer((req, res) => apiResolver(req, res, undefined, handler))
+    url = await listen(server)
+    
+    done()
+  })
+
+  afterAll(done => {
+    server.close(done)
+  })
+
+  test('Should return 405 if required query string is missing', async () => {
+    const response = await fetch(url)
+    expect(response.status).toBe(405)
+  })
+
+
+  test('Should return 405 if contentSlug is missing', async () => {
+    const urlToBeUsed = new URL(url)
+    const params = { type: 'post' }
+
+    Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})
+    })
+
+
+    expect(response.status).toBe(405)
+  })
+
+  test('Should return comment details given a valid request', async () => {
+    const urlToBeUsed = new URL(url)
+    const params = { type: 'post', contentSlug: 'example-post-0' }
+
+    Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+
+    
+    getPermissions.mockReturnValueOnce({
+      'content.post.comments.write': ['USER'],
+      'content.post.comments.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER'],
+      id: 'test-id'
+    })
+
+    const newComment = {
+      message: 'test @anotheruser test'
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newComment)
+    })
+
+    const jsonResult = await response.json()
+    
+
+    expect(response.status).toBe(200)
+    expect(jsonResult).toMatchObject({
+      contentSlug: 'post',
+      slug: expect.any(String),
+      message: newComment.message,
+      author: 'test-id',
+      id: expect.anything()
+    })
+  })
+
+})
