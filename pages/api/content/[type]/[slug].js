@@ -71,16 +71,9 @@ const updateContent = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, page, pageSize },
+    query: { type },
   } = req
 
-  const searchParams = {
-    search,
-    sortBy,
-    sortOrder,
-    page,
-    pageSize,
-  }
 
   try {
     await runMiddleware(req, res, isValidContentType(type))
@@ -97,7 +90,6 @@ export default async (req, res) => {
       message: e.message,
     })
   }
-
 
   try {
     await runMiddleware(req, res, loadContentItemMiddleware)

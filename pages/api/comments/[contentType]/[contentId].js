@@ -1,18 +1,26 @@
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
 import { findComments, addComment } from '../../../../lib/api/comments/comments'
-import { commentsValidations } from '../../../../lib/validations/comment'
+import { commentValidations } from '../../../../lib/validations/comment'
 import { v4 as uuidv4 } from 'uuid'
 import slugify from 'slugify'
-import { isValidContentType, hasPermissionsForComment } from '../../../../lib/api/middlewares'
+import { isValidContentType, hasQueryParameters, hasPermissionsForComment } from '../../../../lib/api/middlewares'
+
+// Check that the comments are allowed for this content type
+function contentTypeAllowsCommentsMiddleware(req, res, cb) {
+  if (!req.contentType.comments.enabled) {
+    cb(new Error('Content type ' + req.contentType.slug + ' does not allow comments'))
+  } else {
+    cb()
+  }
+}
 
 const getComments = (filterParams, searchParams, paginationParams) => (
   req,
   res
 ) => {
-  const type = req.contentType
 
-  findComments(type.slug, filterParams, searchParams, paginationParams)
+  findComments(filterParams, searchParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })
@@ -23,26 +31,20 @@ const getComments = (filterParams, searchParams, paginationParams) => (
     })
 }
 
-
-export function fillContentWithDefaultData(contentType, content, user) {
+export function fillCommentWithDefaultData(contentType, contentId, comment, user) {
   try {
-    const defaultEmptyFields = {}
-
-    contentType.fields.forEach(f => {
-      defaultEmptyFields[f.name] = f.defaultValue || null
-    })
-
+    
     // Fill in the mandatory data like author, id, date, type
     const newComment = {
       id: uuidv4(),
       author: user.id,
       createdAt: Date.now(),
-      type: contentType.slug,
-      ...defaultEmptyFields,
-      ...content
+      contentType: contentType.slug,
+      contentId: contentId,
+      message: comment.message
     }
 
-    const slug =  slugify(contentType.slugGeneration.reduce((prev, next) => prev + ' ' + newComment[next], ''))
+    const slug =  slugify(newComment.createdAt + ' ' + newComment.author)
     
     const extraFields = {
       slug: slug
@@ -55,19 +57,20 @@ export function fillContentWithDefaultData(contentType, content, user) {
 
 }
 
+
 const createComment = (req, res) => {
   const type = req.contentType
+  const contentId = req.query.contentId
 
-  const content = req.body
+  const comment = req.body
   
-  contentValidations(type, content)
+  commentValidations(comment)
     .then(() => {
-      // Content is valid
 
       // Add default value to missing fields
-      const newContent = fillContentWithDefaultData(type, content, req.user)
+      const newComment = fillCommentWithDefaultData(type, contentId, comment, req.user)
 
-      addContent(type.slug, newContent)
+      addComment(newComment)
         .then((data) => {
           res.status(200).json(data)
         })
@@ -86,11 +89,13 @@ const createComment = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, page, pageSize, author },
+    query: { contentType, contentId, search, sortBy, sortOrder, page, pageSize, author },
   } = req
 
   const filterParams = {
     author,
+    contentId,
+    contentType
   }
 
   const searchParams = {
@@ -105,7 +110,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, isValidContentType(req.query.type))
+    await runMiddleware(req, res, isValidContentType(contentType))
   } catch (e) {
     return res.status(405).json({
       message: e.message,
@@ -113,7 +118,15 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasQueryParameters(['contentSlug']))
+    await runMiddleware(req, res, contentTypeAllowsCommentsMiddleware)
+  } catch (e) {
+    return res.status(401).json({
+      message: e.message
+    })
+  }
+
+  try {
+    await runMiddleware(req, res, hasQueryParameters(['contentId']))
   } catch (e) {
     return res.status(405).json({
       message: e.message,

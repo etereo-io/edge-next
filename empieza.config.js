@@ -62,6 +62,13 @@ module.exports = (defaultOptions) => {
       write: [defaultOptions.roles.admin, defaultOptions.roles.user],
       delete: [defaultOptions.roles.admin],
       admin: [defaultOptions.roles.admin],
+      approval: [defaultOptions.roles.admin],
+      report: [defaultOptions.roles.user]
+    },
+
+    publishing: {
+      needsApproval: true,
+      allowsDraft: true,
     },
 
     comments: {
@@ -124,6 +131,7 @@ module.exports = (defaultOptions) => {
       delete: [defaultOptions.roles.admin],
       admin: [defaultOptions.roles.admin],
       approval: [defaultOptions.roles.admin],
+      report: [defaultOptions.roles.user]
     },
 
     publishing: {
@@ -183,7 +191,7 @@ module.exports = (defaultOptions) => {
   }
 
   return {
-    title: 'Software Posts',
+    title: 'The Demo Site',
     storage: {
       type: 'firestore',
     },

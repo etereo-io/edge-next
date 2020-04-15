@@ -10,9 +10,9 @@ jest.mock('../../../../lib/permissions/get-permissions')
 import getPermissions from '../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../lib/api/auth/iron'
 
-import handler from '../../../../pages/api/comments/[type]/[contentSlug]'
+import handler from '../../../../pages/api/comments/[contentType]/[contentId]'
 
-describe.skip('Integrations tests for comment creation endpoint', () => {
+describe('Integrations tests for comment creation endpoint', () => {
   let server
   let url
 
@@ -38,9 +38,9 @@ describe.skip('Integrations tests for comment creation endpoint', () => {
   })
 
 
-  test('Should return 405 if contentSlug is missing', async () => {
+  test('Should return 405 if contentId is missing', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
+    const params = { contentType: 'post' }
 
     Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
 
@@ -59,11 +59,10 @@ describe.skip('Integrations tests for comment creation endpoint', () => {
 
   test('Should return comment details given a valid request', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { type: 'post', contentSlug: 'example-post-0' }
+    const params = { contentType: 'post', contentId: '0' }
 
     Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
 
-    
     getPermissions.mockReturnValueOnce({
       'content.post.comments.write': ['USER'],
       'content.post.comments.admin': ['ADMIN'],
