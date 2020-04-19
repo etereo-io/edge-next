@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import Router from 'next/router'
-import { useUser } from '../lib/hooks'
+import Form from '../components/auth/login-register.form'
 import Layout from '../components/layout/normal/layout'
-import Form from '../components/form'
+import Router from 'next/router'
 import fetch from '../lib/fetcher'
+import { useState } from 'react'
+import { useUser } from '../lib/hooks'
 
 const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
