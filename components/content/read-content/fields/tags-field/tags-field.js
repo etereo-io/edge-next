@@ -8,7 +8,7 @@ function Tag(props) {
 
   return (
     <Link href={`/tag/${tag.slug}`}>
-      <a className="tag">{tag.label.en}</a>
+      <a className={styles.tag}>{tag.label.en}</a>
     </Link>
   )
 }

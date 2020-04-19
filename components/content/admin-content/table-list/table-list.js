@@ -1,9 +1,9 @@
-import styles from './table-list.module.scss'
-import Link from 'next/link'
-import { useState } from 'react'
-import Button from '../../../button/button'
 import API from '../../../../lib/api/api-endpoints'
+import Button from '../../../button/button'
+import Link from 'next/link'
 import fetch from '../../../../lib/fetcher'
+import styles from './table-list.module.scss'
+import { useState } from 'react'
 
 const ListItem = (props) => {
   const [loading, setLoading] = useState(false)
@@ -43,7 +43,7 @@ const ListItem = (props) => {
 
   return (
     <div className="list-item">
-      <div className="row">
+      <div className={styles.row}>
         {props.type.fields.map((field, index) => {
           const value = props.item[field.name] ? props.item[field.name] : '-'
           const content =
@@ -55,11 +55,11 @@ const ListItem = (props) => {
               value
             )
 
-          return <div className="field-column column">{content}</div>
+          return <div className={styles.column}>{content}</div>
         })}
-        <div className="field-column column">0 Comments</div>
-        <div className="field-column column">0 times</div>
-        <div className="column">
+        <div className={styles.column}>0 Comments</div>
+        <div className={styles.column}>0 times</div>
+        <div className={styles.column}>
           {!success && (
             <Button href={`/edit/${props.type.slug}/${props.item.slug}`}>
               Edit
@@ -72,10 +72,10 @@ const ListItem = (props) => {
           )}
         </div>
       </div>
-      <div className="row">
+      <div className={styles.row}>
         
 
-        <div className="column">
+        <div className={styles.column}>
           {error && <div className="error">Error deleting item</div>}
           {success && <div className="success">Item deleted</div>}
         </div>
@@ -86,13 +86,13 @@ const ListItem = (props) => {
 
 const TableHeader = (props) => {
   return (
-    <div className="table-header row ">
+    <div className={`${styles['table-header']} ${styles.row} `}>
       {props.type.fields.map((field) => {
-        return <div className="header-column column sortable">{field.name}</div>
+        return <div className={`header-column ${styles.column} sortable`}>{field.name}</div>
       })}
-      <div className="header-column column sortable">Comments</div>
-      <div className="header-column column sortable">Reported</div>
-      <div className="header-column column">Actions</div>
+      <div className={`header-column  ${styles.column} sortable`}>Comments</div>
+      <div className={`header-column  ${styles.column} sortable`}>Reported</div>
+      <div className={`header-column  ${styles.column}`}>Actions</div>
     </div>
   )
 }

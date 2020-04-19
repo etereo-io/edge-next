@@ -6,7 +6,7 @@ export default function (props) {
   const { children, loading, alt, className, href, onClick, restProps, reference } = props
   const buttonItem = (
     <button
-      className={`${styles.button} ${alt ? 'alt' : ''} ${className}`}
+      className={`${styles.button} ${alt ? styles.alt : ''} ${className}`}
       {...restProps}
       ref={reference}
       onClick={onClick}
@@ -17,7 +17,7 @@ export default function (props) {
 
   if (loading) {
     return (
-      <button ref={reference} className={`${styles.button} ${alt ? 'alt' : ''} ${className} loading`}>
+      <button ref={reference} className={`${styles.button} ${alt ? styles.alt : ''} ${className} ${styles.loading}`}>
         <LoadingSpinner />
       </button>
     )

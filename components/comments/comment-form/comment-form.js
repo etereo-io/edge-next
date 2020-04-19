@@ -8,8 +8,8 @@ export default function (props) {
   }
   return (
     <div className={styles.commentForm}>
-      <form onSubmit={onSubmit}>
-        <textarea placeholder="Your comment" />
+      <form onSubmit={onSubmit} className={styles.form}>
+        <textarea className={styles.textarea} placeholder="Your comment" />
         <Button type="submit">Send</Button>
       </form>
     </div>

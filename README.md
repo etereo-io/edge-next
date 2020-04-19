@@ -178,6 +178,8 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
 ## TODO List
 - Pagination:
   - Ensure limit and from are numbers
+- Profile: 
+  - Add recent activity section
 - i18n
   - Choose a good i18n libray
 - Redux

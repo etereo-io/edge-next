@@ -8,7 +8,7 @@ function getField(field, value) {
       return <p>{value}</p>
 
     case 'img':
-      return <img src={value} />
+      return <img className={styles.img} src={value} />
 
     case 'number':
       return <p>{value}</p>
@@ -26,7 +26,7 @@ function getField(field, value) {
 
 export default function (props) {
   return (
-    <div className={styles.contentSummaryView}>
+    <div className={`${styles.contentSummaryView} ${props.className}`}>
       <div className="content-summary-content">
         {props.type.fields.map((field) => {
           return (

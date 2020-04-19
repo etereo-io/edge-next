@@ -1,14 +1,13 @@
-import { usePermission, useContentOwner } from '../../../lib/hooks'
+import { useContentOwner, usePermission } from '../../../lib/hooks'
 
-import { getContentTypeDefinition } from '../../../lib/config'
-import Layout from '../../../components/layout/normal/layout'
-import { useRouter } from 'next/router'
-import ContentForm from '../../../components/content/write-content/content-form/content-form'
-import './edit.scss'
-
-import useSWR from 'swr'
-import fetch from '../../../lib/fetcher'
 import API from '../../../lib/api/api-endpoints'
+import ContentForm from '../../../components/content/write-content/content-form/content-form'
+import Layout from '../../../components/layout/normal/layout'
+import fetch from '../../../lib/fetcher'
+import { getContentTypeDefinition } from '../../../lib/config'
+import styles from './[slug].module.scss'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 function LoadingView() {
   return <h1>Loading...</h1>
@@ -37,8 +36,8 @@ const EditContent = () => {
 
   return (
     isOwnerPermission && (
-      <Layout title="Edit content" className="edit-page">
-        <h1>Edit: {data.title}</h1>
+      <Layout title="Edit content" className={styles['edit-page']}>
+        <h1 className={styles.h1}>Edit: {data.title}</h1>
 
         <ContentForm type={contentType} onSaved={onSaved} content={data}/>
       </Layout>

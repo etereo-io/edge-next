@@ -14,10 +14,10 @@
     padding: 10px;
     width: 80px;
     margin-bottom: 30px;
+  }
 
-    img {
+  .site-logoImg {
       max-width: 100%;
-    }
   }
 
   .footer-content {
@@ -26,27 +26,27 @@
   }
 
   .links {
-
     font-weight: 600;
 
-    a {
-      color: white;
-      text-decoration: none;
-    }
+  }
+  
+  a {
+    color: white;
+    text-decoration: none;
+  }  
 
-    .strong {
-      color: grey;
-    }
+  .strong {
+    color: grey;
+  }
+  
+  ul {
+    display: flex;
+    margin-bottom: 10px;
+    list-style: none;
+  }
 
-    ul {
-      display: flex;
-      margin-bottom: 10px;
-      list-style: none;
-
-      li {
-        margin-right: 30px;
-      }
-    }
+  li {
+    margin-right: 30px;
   }
 
   .copy {

@@ -5,15 +5,14 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+  
+  .column {
+    padding: 15px;
+    border: 1px solid rgba(0,0,0,0.2);
     
-
-    .column {
-      padding: 15px;
-      border: 1px solid rgba(0,0,0,0.2);
-      
-      flex-basis: 100%;
-      flex: 1 1 0px;
-    }
+    flex-basis: 100%;
+    flex: 1 1 0px;
   }
 
   .table-header {

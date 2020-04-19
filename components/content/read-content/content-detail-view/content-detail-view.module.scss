@@ -1,11 +1,10 @@
 .contentDetailView {
   .content-detail-wrapper {
     display: flex;
-
-    .content-actions {
-      padding: 15px;
-      max-width: 200px;
-    }
+  }
+  .content-actions {
+    padding: 15px;
+    max-width: 200px;
   }
 
   .content-detail-content {
@@ -14,13 +13,13 @@
     padding: 15px;
     margin-bottom: 30px;
     flex: 1;
+  }
 
-    .label {
-      font-weight: bold;
-    }
+  .label {
+    font-weight: bold;
+  }
 
-    .field {
-      margin-bottom: 15px
-    }
+  .field {
+    margin-bottom: 15px
   }
 }

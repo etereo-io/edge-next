@@ -1,14 +1,14 @@
 import API from '../../../../lib/api/api-endpoints'
-import fetch from '../../../../lib/fetcher'
 import Button from '../../../button/button'
+import fetch from '../../../../lib/fetcher'
 import styles from './content-form.module.scss'
-
 import { useState } from 'react'
 
 function InputText(props) {
   return (
     <input
       type="text"
+      className={styles.inputText}
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
@@ -20,6 +20,7 @@ function InputNumber(props) {
   return (
     <input
       type="number"
+      className={styles.inputText}
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
@@ -55,6 +56,7 @@ function InputTags(props) {
   return (
     <input
       type="text"
+      className={styles.inputText}
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
@@ -65,6 +67,7 @@ function InputTags(props) {
 function TextArea(props) {
   return (
     <textarea
+      className={styles.textarea}
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
@@ -96,9 +99,9 @@ function Field(props) {
   }
 
   return (
-    <div className="field-item">
+    <div className={styles['field-item']}>
       <div className="label-zone">
-        {props.field.label && <label>{props.field.label}</label>}
+        {props.field.label && <label className={styles['label-zoneLabel']}>{props.field.label}</label>}
       </div>
       <div className="input-zone">{getInput(props.field)}</div>
     </div>
@@ -174,7 +177,7 @@ export default function (props) {
           <Field field={field} value={props.content ? props.content[field.name] : null}/>
         ))}
 
-        <div className="actions">
+        <div className={styles.actions}>
           <Button alt={true} type="submit">
             Save
           </Button>

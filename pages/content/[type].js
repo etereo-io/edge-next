@@ -1,14 +1,8 @@
-import { useRouter } from 'next/router'
-import ContentSummaryView from '../../components/content/read-content/content-summary-view/content-summary-view'
-import { usePermission } from '../../lib/hooks'
-
-import { getContentTypeDefinition } from '../../lib/config'
-
+import ContentListView from '../../components/content/read-content/content-list-view/content-list-view'
 import Layout from '../../components/layout/normal/layout'
-
-import useSWR from 'swr'
-import fetch from '../../lib/fetcher'
-import API from '../../lib/api/api-endpoints'
+import { getContentTypeDefinition } from '../../lib/config'
+import { usePermission } from '../../lib/hooks'
+import { useRouter } from 'next/router'
 
 function LoadingView() {
   return <h1>Loading...</h1>
@@ -24,24 +18,17 @@ const ContentPage = () => {
     return <LoadingView />
   }
 
-  const contentType = getContentTypeDefinition(type)
+  const contentTypeDefinition = getContentTypeDefinition(type)
 
   const available = usePermission(`content.${type}.read`, '/', 'type')
 
-  const { data } = useSWR(API.content[type], fetch)
-
   return (
     <Layout title="Content">
-      {available && (
-        <div>
-          <h1>List of {type}</h1>
-
-          {(data ? data.results : []).map((item) => {
-            return <ContentSummaryView content={item} type={contentType} />
-          })}
-        </div>
-      )}
-      {!available && <LoadingView />}
+      {available && <div>
+        <h1>List of {type}</h1>
+        <ContentListView initialData={[]} type={contentTypeDefinition} />
+        </div>}
+      {!available && <LoadingView/> }
     </Layout>
   )
 }

@@ -1,10 +1,9 @@
-import { usePermission } from '../../lib/hooks'
-
-import { getContentTypeDefinition } from '../../lib/config'
-import Layout from '../../components/layout/normal/layout'
-import { useRouter } from 'next/router'
 import ContentForm from '../../components/content/write-content/content-form/content-form'
-import './create.scss'
+import Layout from '../../components/layout/normal/layout'
+import { getContentTypeDefinition } from '../../lib/config'
+import styles from './[type].module.scss'
+import { usePermission } from '../../lib/hooks'
+import { useRouter } from 'next/router'
 
 const CreateContent = () => {
   const router = useRouter()
@@ -18,13 +17,13 @@ const CreateContent = () => {
   }
 
   return (
-    available && (
-      <Layout title="New content" className="create-page">
-        <h1>Create new {contentType.title.en}</h1>
+     
+      <Layout title="New content" className={styles['create-page']}>
+        <h1>Create new {contentType ? contentType.title.en: 'content'}</h1>
 
-        <ContentForm type={contentType} onSaved={onSaved} />
+        {available && <ContentForm type={contentType} onSaved={onSaved} />}
       </Layout>
-    )
+    
   )
 }
 

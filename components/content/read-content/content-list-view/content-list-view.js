@@ -1,12 +1,12 @@
+import { useEffect, useRef, useState } from 'react'
 import useSWR , { useSWRPages } from 'swr'
-import { useState, useRef, useEffect } from 'react'
-import fetch from '../../../../lib/fetcher'
-import API from '../../../../lib/api/api-endpoints'
-import { useOnScreen } from '../../../../lib/hooks'
-import Button from '../../../button/button'
 
+import API from '../../../../lib/api/api-endpoints'
+import Button from '../../../button/button'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
+import fetch from '../../../../lib/fetcher'
 import styles from './content-list-view.module.scss'
+import { useOnScreen } from '../../../../lib/hooks'
 
 function Placeholder() {
   return <div className="placeholders">
@@ -18,10 +18,16 @@ function Placeholder() {
   </div>
 }
 
+function EmptyComponent() {
+  return <div className="empty">
+    Sorry, no items found.
+  </div>
+}
+
 export default function(props) {
 
   // Fetch content type page by page
-  const { pages, isLoadingMore, loadMore, isReachingEnd } = useSWRPages(
+  const { pages, isLoadingMore, loadMore, isEmpty, isReachingEnd } = useSWRPages(
     "content-list",
     ({ offset, withSWR }) => {
       
@@ -32,7 +38,7 @@ export default function(props) {
 
       const { results } = data;
       return results.map(item => {
-         return <ContentSummaryView key={item.id} content={item} type={props.type} />
+         return <ContentSummaryView className={styles['content-summary-view']} key={item.id} content={item} type={props.type} />
       })
     },
     SWR => {
@@ -49,9 +55,9 @@ export default function(props) {
     if (isOnScreen) loadMore();
   }, [isOnScreen]);
 
-
+  
   return <div className={styles.contentListView}>
-    { pages }
+    { !isEmpty ? pages : <EmptyComponent /> }
     <div id="load-more">
       {isReachingEnd
         ? null

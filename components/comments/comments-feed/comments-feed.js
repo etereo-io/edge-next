@@ -1,8 +1,7 @@
-import CommentItem from '../comment-item/comment-item'
-
-import useSWR from 'swr'
-import fetch from '../../../lib/fetcher'
 import API from '../../../lib/api/api-endpoints'
+import CommentItem from '../comment-item/comment-item'
+import fetch from '../../../lib/fetcher'
+import useSWR from 'swr'
 
 export default function (props) {
   const { data } = useSWR(
@@ -12,7 +11,7 @@ export default function (props) {
 
   return (
     <div className="comments-feed">
-      {(data ? data.data : []).map((comment) => {
+      {(data ? data.results : []).map((comment) => {
         return <CommentItem key={comment.id} comment={comment} />
       })}
     </div>

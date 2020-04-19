@@ -1,9 +1,9 @@
-import { useUser, usePermission } from '../../lib/hooks'
-import { hasPermission } from '../../lib/permissions'
-import config from '../../lib/config'
+import { usePermission, useUser } from '../../lib/hooks'
+
 import Layout from '../../components/layout/admin/layout-admin'
 import LinkList from '../../components/link-list/link-list'
-import Link from 'next/link'
+import config from '../../lib/config'
+import { hasPermission } from '../../lib/permissions'
 
 const AdminPage = () => {
   const { user } = useUser()
@@ -32,12 +32,11 @@ const AdminPage = () => {
   })
   .map((type) => {
      return {
-        link: `/admin/conetnt/${type.slug}`,
+        link: `/admin/content/${type.slug}`,
         title: `Administer ${type.title.en}s`
       }
   })
   
-
 
   return (
     available && (
