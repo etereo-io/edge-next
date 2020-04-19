@@ -1,4 +1,4 @@
-import './table-list.scss'
+import styles from './table-list.module.scss'
 import Link from 'next/link'
 import { useState } from 'react'
 import Button from '../../../button/button'
@@ -102,7 +102,7 @@ export default function (props) {
     <ListItem type={props.type} item={item} />
   ))
   return (
-    <div className="table-list">
+    <div className={styles.tableList}>
       <TableHeader type={props.type} />
       <div className="table-items">
         {props.loading ? <DummyItems /> : listItems}

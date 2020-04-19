@@ -3,7 +3,7 @@ import config from '../../../../lib/config'
 import { hasPermission } from '../../../../lib/permissions'
 import Link from 'next/link'
 import LinkList from '../../../link-list/link-list'
-import './list-content-types.scss'
+import styles from './list-content-types.module.scss'
 
 export default function () {
   const { user } = useUser()
@@ -20,7 +20,7 @@ export default function () {
     })
 
   return (
-    <div className="list-content-types">
+    <div className={styles.listContentTypes}>
       <LinkList links={links} />
     </div>
   )

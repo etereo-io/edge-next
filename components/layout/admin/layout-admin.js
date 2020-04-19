@@ -2,8 +2,7 @@ import Head from 'next/head'
 import Header from '../../header/header'
 import config from '../../../lib/config'
 
-import '../../../styles/index.scss'
-import './layout-admin.scss'
+import syles from './layout-admin.module.scss'
 
 const Layout = (props) => (
   <>
@@ -16,7 +15,7 @@ const Layout = (props) => (
     <Header />
 
     <main>
-      <div className="admin-container">{props.children}</div>
+      <div className={styles.adminContainer}>{props.children}</div>
     </main>
   </>
 )

@@ -1,10 +1,10 @@
 import config from '../../lib/config'
 import Link from 'next/link'
-import './footer.scss'
+import styles from  './footer.module.scss'
 
 export default function () {
   return (
-    <footer>
+    <footer className={styles.footer}>
       <div className="footer-content">
         <div className="site-logo">
           <img className="logo" src="/static/logos/logo.svg" alt="Site logo" />

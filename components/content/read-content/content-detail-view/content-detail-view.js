@@ -1,4 +1,4 @@
-import './content-detail-view.scss'
+import './content-detail-view.module.scss'
 import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import CommentForm from '../../../comments/comment-form/comment-form'
 import ContentActions from '../../content-actions/content-actions'

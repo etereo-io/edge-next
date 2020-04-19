@@ -3,8 +3,7 @@ import Header from '../../header/header'
 import Footer from '../../footer/footer'
 import config from '../../../lib/config'
 
-import '../../../styles/index.scss'
-import './layout.scss'
+import styles from './layout.module.scss'
 
 const Layout = (props) => (
   <>
@@ -17,7 +16,7 @@ const Layout = (props) => (
     <Header />
 
     <main>
-      <div className={`normal-container ${props.className ? props.className : ''}`}>
+      <div className={`${styles.normalContainer}  ${props.className ? props.className : ''}`}>
         {props.children}
       </div>
     </main>

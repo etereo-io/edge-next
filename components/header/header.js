@@ -3,7 +3,7 @@ import { useUser } from '../../lib/hooks'
 import { hasPermission } from '../../lib/permissions'
 import config from '../../lib/config'
 import Button from '../button/button'
-import './header.scss'
+import styles from './header.module.scss'
 
 function PublicUserHeader() {
   return (
@@ -63,17 +63,17 @@ function LoggedInUserHeader(props) {
 
 const Header = () => {
   const { user } = useUser()
-
+  console.log(styles)
   return (
-    <header className="header">
-      <div className="header-content">
-        <div className="left-header">
+    <header className={styles.header}>
+      <div className={styles["header-content"]}>
+        <div className={styles["left-header"]}>
           <Link href="/">
-            <a title="Home page"><img className="logo" src="/static/logos/logo.svg" /></a>
+            <a title="Home page"><img className={styles["logo"]} src="/static/logos/logo.svg" /></a>
           </Link>
         </div>
 
-        <div className="right-header">
+        <div className={styles["right-header"]}>
           {user && <LoggedInUserHeader user={user} />}
           {!user && <PublicUserHeader />}
         </div>

@@ -1,7 +1,7 @@
 @import '../../../styles/layout.scss';
 
-.admin-container {
-  max-width: 95vw;
+.normalContainer {
+  max-width: $content-max-width;
   margin: 0 auto;
   padding: 2rem 1.25rem;
 }

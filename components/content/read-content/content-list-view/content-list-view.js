@@ -6,7 +6,7 @@ import { useOnScreen } from '../../../../lib/hooks'
 import Button from '../../../button/button'
 
 import ContentSummaryView from '../content-summary-view/content-summary-view'
-import './content-list-view.scss'
+import styles from './content-list-view.module.scss'
 
 function Placeholder() {
   return <div className="placeholders">
@@ -50,7 +50,7 @@ export default function(props) {
   }, [isOnScreen]);
 
 
-  return <div className="content-list-view">
+  return <div className={styles.contentListView}>
     { pages }
     <div id="load-more">
       {isReachingEnd

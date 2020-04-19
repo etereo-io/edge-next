@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import TagsField from '../fields/tags-field/tags-field'
-import './content-summary-view.scss'
+import styles from './content-summary-view.module.scss'
 
 function getField(field, value) {
   switch (field.type) {
@@ -26,7 +26,7 @@ function getField(field, value) {
 
 export default function (props) {
   return (
-    <div className="content-summary-view" >
+    <div className={styles.contentSummaryView}>
       <div className="content-summary-content">
         {props.type.fields.map((field) => {
           return (

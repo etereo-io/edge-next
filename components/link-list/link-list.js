@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import './link-list.scss'
+import styles from './link-list.module.scss'
 
 export default function(props) {
   return (
-    <div className="link-list">
+    <div className={styles.linkList}>
       <ul>
         {props.links.map(i => <li key={i.title}>
             <Link href={i.link}>

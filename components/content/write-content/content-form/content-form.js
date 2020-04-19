@@ -1,7 +1,7 @@
 import API from '../../../../lib/api/api-endpoints'
 import fetch from '../../../../lib/fetcher'
 import Button from '../../../button/button'
-import './content-form.scss'
+import styles from './content-form.module.scss'
 
 import { useState } from 'react'
 
@@ -167,7 +167,7 @@ export default function (props) {
   }
 
   return (
-    <div className="content-form">
+    <div className={styles.contentForm}>
       <form name="content-form" onSubmit={onSubmit}>
         {/* {JSON.stringify(props.type)} */}
         {props.type.fields.map((field) => (

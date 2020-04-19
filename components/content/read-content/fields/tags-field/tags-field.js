@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import config from '../../../../../lib/config'
-import './tags-field.scss'
+import styles from './tags-field.module.scss'
 
 function Tag(props) {
   // Todo: maybe tags need to be managed differently
@@ -15,7 +15,7 @@ function Tag(props) {
 
 export default function (props) {
   return (
-    <div className="tags-list">
+    <div className={styles.TagsField}>
       {props.tags.map((tag) => {
         return <Tag tag={tag} key={tag.slug} />
       })}

@@ -1,4 +1,4 @@
-import './button.scss'
+import styles from './button.module.scss'
 import Link from 'next/link'
 import LoadingSpinner from '../loading/loading-spinner/loading-spinner'
 
@@ -6,7 +6,7 @@ export default function (props) {
   const { children, loading, alt, className, href, onClick, restProps, reference } = props
   const buttonItem = (
     <button
-      className={`button ${alt ? 'alt' : ''} ${className}`}
+      className={`${styles.button} ${alt ? 'alt' : ''} ${className}`}
       {...restProps}
       ref={reference}
       onClick={onClick}
@@ -17,7 +17,7 @@ export default function (props) {
 
   if (loading) {
     return (
-      <button ref={reference} className={`button ${alt ? 'alt' : ''} ${className} loading`}>
+      <button ref={reference} className={`${styles.button} ${alt ? 'alt' : ''} ${className} loading`}>
         <LoadingSpinner />
       </button>
     )

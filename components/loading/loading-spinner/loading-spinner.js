@@ -1,8 +1,8 @@
-import './loading-spinner.scss'
+import styles from './loading-spinner.module.scss'
 
 export default function () {
   return (
-    <div className="loading-spinner">
+    <div className={styles.loadingSpinner}>
       <div className="lds-dual-ring"></div>
     </div>
   )
