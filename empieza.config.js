@@ -186,6 +186,7 @@ module.exports = (defaultOptions) => {
 
   return {
     title: 'The Demo Site',
+    description: 'A super NextJS demo site starter pro pack super sexy',
     storage: {
       type: 'firestore',
     },

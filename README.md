@@ -1,13 +1,20 @@
 # Empieza - Next Admin Kit
 
+
 ## Features
 
 - Dynamic Admin dashboard
 - Dynamic API
-- Demo home page
+- Static Pages setup
+- Demo Pages with infinite scroll
 - Login with [Passport.js](http://www.passportjs.org)
 - ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
 - Integrated with Firebase and MongoAtlas
+ 
+## Static Pages
+
+SSG (Static Site Generation) Feature is implemented. In the folder `static-pages` you can find the different static pages the application uses. Pages like **About**, **Privacy Policy**, etc.
+
 
 ## Content Types
 Content types may be defined in `empieza.config.js`. You can create as many content types with different definitions and permissions. The API will validate the access to the endpoints based on the permissions you defined.

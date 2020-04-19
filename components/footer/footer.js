@@ -24,10 +24,19 @@ export default function () {
 
           <ul className={styles.ul}>
             <li className={styles.li}>
-              <Link href="/about"><a className={styles.a} title="about">About</a></Link>
+              <Link href="/p/about"><a className={styles.a} title="about">About</a></Link>
             </li>
             <li className={styles.li}>
-              <Link href="/careers"><a className={styles.a} title="careers">Careers</a></Link>
+              <Link href="/p/faq"><a className={styles.a} title="FAQ">FAQ</a></Link>
+            </li>
+            <li className={styles.li}>
+              <Link href="/p/privacy-policy"><a className={styles.a} title="Privacy policy">Privacy policy</a></Link>
+            </li>
+            <li className={styles.li}>
+              <Link href="/p/copyright-policy"><a className={styles.a} title="Copyright policy">Copyright policy</a></Link>
+            </li>
+            <li className={styles.li}>
+              <Link href="/p/terms-of-service"><a className={styles.a} title="Terms of service">Terms of service</a></Link>
             </li>
           </ul>
         </div>
