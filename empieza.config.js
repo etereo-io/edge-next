@@ -77,12 +77,6 @@ module.exports = (defaultOptions) => {
 
     fields: [
       {
-        name: 'pepino', 
-        type: 'text',
-        label: 'pepino',
-        placeholder: 'pepino'
-      },
-      {
         name: 'title',
         type: 'text',
         label: 'Title',
@@ -190,81 +184,6 @@ module.exports = (defaultOptions) => {
     ],
   }
 
-  const shoesProduct = {
-    title: {
-      en: 'Shoes',
-      es: 'Zapato',
-    },
-
-    slug: 'shoe',
-
-    slugGeneration: ['title', 'createdAt'],
-
-    permissions: {
-      read: ['public'],
-      write: [defaultOptions.roles.admin, defaultOptions.roles.user],
-      delete: [defaultOptions.roles.admin],
-      admin: [defaultOptions.roles.admin],
-      approval: [defaultOptions.roles.admin],
-      report: [defaultOptions.roles.user]
-    },
-
-    publishing: {
-      needsApproval: true,
-      allowsDraft: true,
-    },
-
-    comments: {
-      enabled: false,
-      permissions: {
-        read: ['public'],
-        write: [defaultOptions.roles.user, defaultOptions.roles.admin],
-        delete: [defaultOptions.roles.admin],
-        admin: [defaultOptions.roles.admin],
-      },
-    },
-
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-        placeholder: 'Title',
-      },
-      {
-        name: 'description',
-        type: 'textarea',
-        label: 'Description',
-        placeholder: 'Description',
-      },
-      {
-        name: 'image',
-        type: 'img',
-        label: 'Image',
-        multiple: true,
-        placeholder: 'Image',
-      },
-      {
-        name: 'stocknumber',
-        type: 'text',
-        label: 'Stock Number',
-        placeholder: 'SKU',
-      },
-      {
-        name: 'price',
-        type: 'number',
-        label: 'Price',
-        placeholder: 'Price',
-      },
-      {
-        name: 'stockamount',
-        type: 'number',
-        label: 'Stock Amount',
-        placeholder: 'Stock Amount',
-      },
-    ],
-  }
-
   return {
     title: 'The Demo Site',
     storage: {
@@ -274,7 +193,7 @@ module.exports = (defaultOptions) => {
       type: 'IN_MEMORY',
     },
     content: {
-      types: [postContentType, productContentType, shoesProduct],
+      types: [postContentType, productContentType],
       initialContent: initialContent,
     },
     tags: [

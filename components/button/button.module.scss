@@ -29,6 +29,10 @@
     }
   }
 
+  &.big {
+    width: 100%;
+  }
+
   &.loading {
     padding: 5px 13px;
     background: grey;

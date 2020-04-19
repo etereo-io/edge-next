@@ -1,8 +1,8 @@
 .loadingSpinner {
-  .lds-dual-ring {
+  .ring {
     display: inline-block;
   }
-  .lds-dual-ring:after {
+  .ring:after {
     content: " ";
     display: block;
     width: 1.5em;

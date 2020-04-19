@@ -1,9 +1,11 @@
+import { useEffect, useState } from 'react'
+import useSWR , { useSWRPages } from 'swr'
+
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../button/button'
 import Link from 'next/link'
 import fetch from '../../../../lib/fetcher'
 import styles from './table-list.module.scss'
-import { useState } from 'react'
 
 const ListItem = (props) => {
   const [loading, setLoading] = useState(false)
@@ -97,16 +99,60 @@ const TableHeader = (props) => {
   )
 }
 
+function Placeholder() {
+  return <div className="placeholders">
+    <div className="p"></div>
+    <div className="p"></div>
+    <div className="p"></div>
+    <div className="p"></div>
+    <div className="p"></div>
+  </div>
+}
+
+function EmptyComponent() {
+  return <div className="empty">
+    Sorry, no items found.
+  </div>
+}
+
+
 export default function (props) {
-  const listItems = props.items.map((item) => (
-    <ListItem type={props.type} item={item} />
-  ))
+
+  // Fetch content type page by page
+  const { pages, isLoadingMore, loadMore, isEmpty, isReachingEnd } = useSWRPages(
+    `admin-content-${props.type.slug}-list`,
+    ({ offset, withSWR }) => {
+      
+      const apiUrl = `${API.content[props.type.slug]}?limit=10${offset ? '&from=' + offset : ''}`
+      const { data } = withSWR(useSWR(apiUrl, fetch, props.data || []));
+
+      if (!data) return <Placeholder/>;
+
+      const { results } = data;
+      return results.map(item => {
+         return <ListItem key={item.id} type={props.type} item={item} />
+      })
+    },
+    SWR => {
+      // Calculates the next page offset
+      return SWR.data && SWR.data.results && SWR.data.results.length >= 10 ? SWR.data.from * 1 + SWR.data.limit * 1 : null
+    },
+    []
+  );
+ 
   return (
     <div className={styles.tableList}>
       <TableHeader type={props.type} />
       <div className="table-items">
-        {props.loading ? <DummyItems /> : listItems}
+        {!isEmpty ? pages: <EmptyComponent />}
       </div>
+      <div id="load-more">
+          {isReachingEnd
+            ? null
+            : <Button loading={isLoadingMore} big={true} onClick={loadMore}>Load More</Button>}
+        
+        </div>
+
     </div>
   )
 }
