@@ -25,7 +25,7 @@ const AdminPage = () => {
         <h1>Content administration for {slug}</h1>
 
         <TableList
-          items={data ? data.data : []}
+          items={data ? data.results : []}
           loading={false}
           type={contentTypeDefinition}
         />

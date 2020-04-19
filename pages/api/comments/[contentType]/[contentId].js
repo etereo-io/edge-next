@@ -92,7 +92,7 @@ const createComment = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { contentType, contentId, search, sortBy, sortOrder, page, pageSize, author },
+    query: { contentType, contentId, search, sortBy, sortOrder, from, limit, author },
   } = req
 
   const filterParams = {
@@ -108,8 +108,8 @@ export default async (req, res) => {
   const paginationParams = {
     sortBy,
     sortOrder,
-    page,
-    pageSize,
+    from,
+    limit,
   }
 
   try {

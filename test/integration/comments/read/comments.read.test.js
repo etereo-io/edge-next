@@ -81,9 +81,9 @@ describe('Integrations tests for comment read endpoint', () => {
     const jsonResult = await response.json()
     
     expect(jsonResult).toMatchObject({
-      data: [],
-      page: 0,
-      pageSize: 15
+      results: [],
+      from: 0,
+      limit: 15
     })
   })
 
@@ -104,12 +104,12 @@ describe('Integrations tests for comment read endpoint', () => {
     const jsonResult = await response.json()
     
     expect(jsonResult).toMatchObject({
-      data: expect.any(Array),
-      page: 0,
-      pageSize: 15
+      results: expect.any(Array),
+      from: 0,
+      limit: 15
     })
 
-    expect(jsonResult.data.length).toEqual(15)
+    expect(jsonResult.results.length).toEqual(15)
   })
 
 

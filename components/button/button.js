@@ -3,11 +3,12 @@ import Link from 'next/link'
 import LoadingSpinner from '../loading/loading-spinner/loading-spinner'
 
 export default function (props) {
-  const { children, loading, alt, className, href, onClick, restProps } = props
+  const { children, loading, alt, className, href, onClick, restProps, reference } = props
   const buttonItem = (
     <button
       className={`button ${alt ? 'alt' : ''} ${className}`}
       {...restProps}
+      ref={reference}
       onClick={onClick}
     >
       {children}
@@ -16,11 +17,11 @@ export default function (props) {
 
   if (loading) {
     return (
-      <button className={`button ${alt ? 'alt' : ''} ${className} loading`}>
+      <button ref={reference} className={`button ${alt ? 'alt' : ''} ${className} loading`}>
         <LoadingSpinner />
       </button>
     )
   }
 
-  return href ? <Link href={href}>{buttonItem}</Link> : buttonItem
+  return href ? <Link href={href}><a>{buttonItem}</a></Link> : buttonItem
 }

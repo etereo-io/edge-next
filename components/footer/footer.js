@@ -14,19 +14,19 @@ export default function () {
           <ul>
             <li>
               <span className="strong">Already have an account? </span>
-              <Link href="/login">Sign-in</Link>
+              <Link href="/login"><a title="sign in">Sign-in</a></Link>
             </li>
             <li>
-              <Link href="/signup">Get Started</Link>
+              <Link href="/signup"><a title="get started">Get Started</a></Link>
             </li>
           </ul>
 
           <ul>
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/about"><a title="about">About</a></Link>
             </li>
             <li>
-              <Link href="/careers">Careers</Link>
+              <Link href="/careers"><a title="careers">Careers</a></Link>
             </li>
           </ul>
         </div>

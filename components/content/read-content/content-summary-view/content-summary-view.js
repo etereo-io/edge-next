@@ -26,18 +26,18 @@ function getField(field, value) {
 
 export default function (props) {
   return (
-    <div className="content-summary-view">
+    <div className="content-summary-view" >
       <div className="content-summary-content">
         {props.type.fields.map((field) => {
           return (
-            <div className="field">
+            <div className="field" key={field.name}>
               {getField(field, props.content[field.name])}
             </div>
           )
         })}
       </div>
       <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
-        Read more
+        <a title="Read more">Read more</a> 
       </Link>
     </div>
   )

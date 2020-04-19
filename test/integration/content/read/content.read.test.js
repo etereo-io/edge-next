@@ -53,9 +53,9 @@ describe('Integrations tests for content endpoint', () => {
 
     expect(response.status).toBe(200)
     expect(jsonResult).toMatchObject({
-      data: expect.any(Array),
-      page: expect.any(Number),
-      pageSize: expect.any(Number)
+      results: expect.any(Array),
+      from: expect.any(Number),
+      limit: expect.any(Number)
     })
   })
 
@@ -137,9 +137,9 @@ describe('Integrations tests for content endpoint', () => {
 
 
   describe('Pagination', () => {
-    test('Should return page 1 and elements from 15 to 29', async () => {
+    test('Should return from 1 and elements from 15 to 29', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', page: 1, pageSize: 15 }
+      const params = { type: 'post', from: 15, limit: 15 }
   
       Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
   
@@ -153,20 +153,20 @@ describe('Integrations tests for content endpoint', () => {
   
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
-        data: expect.any(Array),
-        page: expect.any(String),
-        pageSize: expect.any(String)
+        results: expect.any(Array),
+        from: expect.any(String),
+        limit: expect.any(String)
       })
 
-      expect(jsonResult.page).toEqual("1")
-      expect(jsonResult.pageSize).toEqual("15")
-      expect(jsonResult.data[0].id).toEqual(15)
-      expect(jsonResult.data[jsonResult.data.length -1].id).toEqual(29)
+      expect(jsonResult.from).toEqual("15")
+      expect(jsonResult.limit).toEqual("15")
+      expect(jsonResult.results[0].id).toEqual(15)
+      expect(jsonResult.results[jsonResult.results.length -1].id).toEqual(29)
     })
 
-    test('Should return page 2 and elements from 40 to 59', async () => {
+    test('Should return from 2 and elements from 40 to 59', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', page: 2, pageSize: 20 }
+      const params = { type: 'post', from: 40, limit: 20 }
   
       Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
   
@@ -180,22 +180,22 @@ describe('Integrations tests for content endpoint', () => {
   
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
-        data: expect.any(Array),
-        page: expect.any(String),
-        pageSize: expect.any(String)
+        results: expect.any(Array),
+        from: expect.any(String),
+        limit: expect.any(String)
       })
 
-      expect(jsonResult.page).toEqual("2")
-      expect(jsonResult.pageSize).toEqual("20")
-      expect(jsonResult.data[0].id).toEqual(40)
-      expect(jsonResult.data[jsonResult.data.length -1].id).toEqual(59)
+      expect(jsonResult.from).toEqual("40")
+      expect(jsonResult.limit).toEqual("20")
+      expect(jsonResult.results[0].id).toEqual(40)
+      expect(jsonResult.results[jsonResult.results.length -1].id).toEqual(59)
     })
   })
 
   describe('Filter by author', () => {
     test('Should return only items for that author', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', page: 1, pageSize: 15, author: 2 }
+      const params = { type: 'post', from: 15, limit: 15, author: 2 }
   
       Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
   
@@ -208,8 +208,8 @@ describe('Integrations tests for content endpoint', () => {
       const jsonResult = await response.json()
   
       expect(response.status).toBe(200)
-      for(var i = 0; i < jsonResult.data.length; i++) {
-        expect(jsonResult.data[i].author).toEqual(2)
+      for(var i = 0; i < jsonResult.results.length; i++) {
+        expect(jsonResult.results[i].author).toEqual(2)
       }
     })
 

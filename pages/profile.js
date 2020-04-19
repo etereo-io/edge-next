@@ -16,7 +16,7 @@ const Profile = () => {
     const { data } = useSWR(url, fetch)
     contentDatas.push({
       type,
-      data: data ? data.data : [],
+      data: data ? data.results : [],
     })
   })
 

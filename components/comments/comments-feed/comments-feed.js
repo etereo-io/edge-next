@@ -13,7 +13,7 @@ export default function (props) {
   return (
     <div className="comments-feed">
       {(data ? data.data : []).map((comment) => {
-        return <CommentItem comment={comment} />
+        return <CommentItem key={comment.id} comment={comment} />
       })}
     </div>
   )

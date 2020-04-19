@@ -13,11 +13,10 @@ export default function () {
       return hasPermission(user, `content.${type.slug}.read`)
     })
     .map((type) => {
-      return (
-        <Link href={`/content/${type.slug}`}>
-          <a>Read all {type.title.en}s</a>
-        </Link>
-      )
+      return {
+        link: `/content/${type.slug}`,
+        title: `Read all ${type.title.en}s`
+      }
     })
 
   return (

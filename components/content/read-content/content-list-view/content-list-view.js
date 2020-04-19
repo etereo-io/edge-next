@@ -1,46 +1,62 @@
-import useSWR from 'swr'
-import { useState, useEffect } from 'react'
+import useSWR , { useSWRPages } from 'swr'
+import { useState, useRef, useEffect } from 'react'
 import fetch from '../../../../lib/fetcher'
 import API from '../../../../lib/api/api-endpoints'
+import { useOnScreen } from '../../../../lib/hooks'
+import Button from '../../../button/button'
 
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import './content-list-view.scss'
 
+function Placeholder() {
+  return <div className="placeholders">
+    <div className="p"></div>
+    <div className="p"></div>
+    <div className="p"></div>
+    <div className="p"></div>
+    <div className="p"></div>
+  </div>
+}
+
 export default function(props) {
 
-  const [page, setPage] = useState(0)
-  const [data, setData] = useState(props.initialData || [])
+  // Fetch content type page by page
+  const { pages, isLoadingMore, loadMore, isReachingEnd } = useSWRPages(
+    "content-list",
+    ({ offset, withSWR }) => {
+      
+      const apiUrl = `${API.content[props.type.slug]}?limit=10${offset ? '&from=' + offset : ''}`
+      const { data } = withSWR(useSWR(apiUrl, fetch, props.data || []));
 
+      if (!data) return <Placeholder/>;
 
-  // Fetch Posts
-  const { data: response } = loadItems()
+      const { results } = data;
+      return results.map(item => {
+         return <ContentSummaryView key={item.id} content={item} type={props.type} />
+      })
+    },
+    SWR => {
+      // Calculates the next page offset
+      return SWR.data && SWR.data.results && SWR.data.results.length >= 10 ? SWR.data.from * 1 + SWR.data.limit * 1 : null
+    },
+    []
+  );
 
-
-
-  function loadItems() {
-    return useSWR(`${API.content[props.type.slug]}?page=${page}`, fetch)
-  }
-
-  function loadMoreItems() {
-    setPage(page + 1)
-    const { data: response } = loadItems()
-    console.log(response)
-    setData([...data, ...response.data])
-  }
+  const $loadMoreButton = useRef(null);
+  const isOnScreen = useOnScreen($loadMoreButton, "200px");
 
   useEffect(() => {
-    if (response && response.data) {
-      setData(response.data)
-    }
-  }, [response, setData])
+    if (isOnScreen) loadMore();
+  }, [isOnScreen]);
 
-  // TODO Implement infinite scrolling
 
   return <div className="content-list-view">
-    { data.map((item) => {
-    return (
-      <ContentSummaryView content={item} type={props.type} />
-    )
-  })}
+    { pages }
+    <div id="load-more">
+      {isReachingEnd
+        ? null
+        : <Button reference={$loadMoreButton} loading={isLoadingMore} onClick={loadMore}>Load More</Button>}
+    
+    </div>
   </div>
 }

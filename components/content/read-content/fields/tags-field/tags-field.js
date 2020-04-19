@@ -8,7 +8,7 @@ function Tag(props) {
 
   return (
     <Link href={`/tag/${tag.slug}`}>
-      <div className="tag">{tag.label.en}</div>
+      <a className="tag">{tag.label.en}</a>
     </Link>
   )
 }
@@ -17,7 +17,7 @@ export default function (props) {
   return (
     <div className="tags-list">
       {props.tags.map((tag) => {
-        return <Tag tag={tag} />
+        return <Tag tag={tag} key={tag.slug} />
       })}
     </div>
   )

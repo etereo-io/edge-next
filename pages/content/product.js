@@ -28,7 +28,7 @@ const ContentPage = () => {
       <Layout title="Content">
         <h1>Custom page demo: For {type}</h1>
 
-        {(data ? data.data : []).map((item) => {
+        {(data ? data.results : []).map((item) => {
           return (
             <div className="product">
               {JSON.stringify(item)}

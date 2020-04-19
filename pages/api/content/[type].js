@@ -86,7 +86,7 @@ const createContent = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, page, pageSize, author },
+    query: { type, search, sortBy, sortOrder, from, limit, author },
   } = req
 
   const filterParams = {
@@ -100,8 +100,8 @@ export default async (req, res) => {
   const paginationParams = {
     sortBy,
     sortOrder,
-    page,
-    pageSize,
+    from,
+    limit,
   }
   
   try {

@@ -70,15 +70,15 @@ const updateContent = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { search, sortBy, sortOrder, page, pageSize },
+    query: { search, sortBy, sortOrder, from, limit },
   } = req
 
   const searchParams = {
     search,
     sortBy,
     sortOrder,
-    page,
-    pageSize,
+    from,
+    limit,
   }
 
   try {
