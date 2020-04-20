@@ -13,7 +13,6 @@ describe('Load configuration file', () => {
 
   test('Should complain about missing required fields', async () => {
 
-
     config.mockReturnValueOnce({
       title: '',
       description: ''
@@ -23,7 +22,19 @@ describe('Load configuration file', () => {
       const conf = loadConfig()
     })
     .toThrowError(/Invalid configuration file: Required site title/)
-    
+  })
+
+  test('Should not throw when the config file is valid', async () => {
+
+    config.mockReturnValueOnce({
+      title: 'A valid config',
+      description: 'This is the description',
+    })
+
+    expect(() => {
+      const conf = loadConfig()
+    })
+    .not.toThrow()
   })
 
 })
