@@ -1,5 +1,6 @@
-import methods from '../../lib/api/api-helpers/methods'
 import db from '../../lib/api/db'
+import methods from '../../lib/api/api-helpers/methods'
+import {onUserAdded} from '../../lib/api/hooks/user.hooks'
 
 const getTestData = () => {
   return db
@@ -27,6 +28,8 @@ const addUser = (user) => (req, res) => {
   // run middleware for permissions
   // Validate data
   // if fails, throw error
+  onUserAdded(user)
+  
   res.status(200).send({
     deleted: true,
   })

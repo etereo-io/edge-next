@@ -1,8 +1,10 @@
+import { findOneContent, updateOneContent } from '../../../../lib/api/content/content'
+import { hasPermissionsForContent, hasQueryParameters, isValidContentType } from '../../../../lib/api/middlewares'
+import { onContentDeleted, onContentUpdated } from '../../../../lib/api/hooks/content.hooks'
+
+import { contentValidations } from '../../../../lib/validations/content'
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
-import { findOneContent, updateOneContent } from '../../../../lib/api/content/content'
-import { contentValidations } from '../../../../lib/validations/content'
-import { isValidContentType, hasQueryParameters, hasPermissionsForContent } from '../../../../lib/api/middlewares'
 
 const loadContentItemMiddleware = async (req, res, cb) => {
   const type = req.contentType
@@ -39,6 +41,9 @@ const getContent = (req, res) => {
 const deleteContent = (req, res) => {
   const item = req.item
 
+  // Trigger on content deleted hook
+  onContentDeleted(item, req.user)
+
   res.status(200).json({
     item,
   })
@@ -54,6 +59,10 @@ const updateContent = (req, res) => {
       // Content is valid
       updateOneContent(type.slug, req.item.id, req.body)
         .then((data) => {
+          // Trigger on updated hook
+          onContentUpdated(content, req.user)
+          
+          // Respond
           res.status(200).json(data)
         })
         .catch((err) => {

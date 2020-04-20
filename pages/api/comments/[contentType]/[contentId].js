@@ -1,10 +1,12 @@
-import methods from '../../../../lib/api/api-helpers/methods'
-import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
-import { findComments, addComment } from '../../../../lib/api/comments/comments'
+import { addComment, findComments } from '../../../../lib/api/comments/comments'
+import { hasPermissionsForComment, hasQueryParameters, isValidContentType } from '../../../../lib/api/middlewares'
+
 import { commentValidations } from '../../../../lib/validations/comment'
-import { v4 as uuidv4 } from 'uuid'
+import methods from '../../../../lib/api/api-helpers/methods'
+import { onCommentAdded } from '../../../../lib/api/hooks/comment.hooks'
+import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
-import { isValidContentType, hasQueryParameters, hasPermissionsForComment } from '../../../../lib/api/middlewares'
+import { v4 as uuidv4 } from 'uuid'
 
 // Check that the comments are allowed for this content type
 function contentTypeAllowsCommentsMiddleware(req, res, cb) {
@@ -75,6 +77,10 @@ const createComment = (req, res) => {
 
       addComment(newComment)
         .then((data) => {
+          // Trigger hook
+          onCommentAdded(comment, req.user)
+          
+          // Respond
           res.status(200).json(data)
         })
         .catch((err) => {

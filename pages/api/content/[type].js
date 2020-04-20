@@ -1,10 +1,12 @@
-import methods from '../../../lib/api/api-helpers/methods'
-import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
-import { findContent, addContent } from '../../../lib/api/content/content'
+import { addContent, findContent } from '../../../lib/api/content/content'
+import { hasPermissionsForContent, isValidContentType } from '../../../lib/api/middlewares'
+
 import { contentValidations } from '../../../lib/validations/content'
-import { v4 as uuidv4 } from 'uuid'
+import methods from '../../../lib/api/api-helpers/methods'
+import {onContentAdded} from '../../../lib/api/hooks/content.hooks'
+import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
-import { isValidContentType, hasPermissionsForContent } from '../../../lib/api/middlewares'
+import { v4 as uuidv4 } from 'uuid'
 
 const getContent = (filterParams, searchParams, paginationParams) => (
   req,
@@ -63,12 +65,15 @@ const createContent = (req, res) => {
   contentValidations(type, content)
     .then(() => {
       // Content is valid
-
       // Add default value to missing fields
       const newContent = fillContentWithDefaultData(type, content, req.user)
 
       addContent(type.slug, newContent)
         .then((data) => {
+          // Trigger on content added hook
+          onContentAdded(data, req.user)
+
+          // Respond
           res.status(200).json(data)
         })
         .catch((err) => {

@@ -1,8 +1,10 @@
+import { findOneComment, updateOneComment } from '../../../../../lib/api/comments/comments'
+import { hasPermissionsForComment, hasQueryParameters, isValidContentType } from '../../../../../lib/api/middlewares'
+import { onCommentDeleted, onCommentUpdated } from '../../../../../lib/api/hooks/comment.hooks'
+
+import { contentValidations } from '../../../../../lib/validations/content'
 import methods from '../../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../../lib/api/api-helpers/run-middleware'
-import { findOneComment, updateOneComment } from '../../../../../lib/api/comments/comments'
-import { contentValidations } from '../../../../../lib/validations/content'
-import { isValidContentType, hasQueryParameters, hasPermissionsForComment } from '../../../../../lib/api/middlewares'
 
 const loadContentItemMiddleware = async (req, res, cb) => {
   const searchOptions = {
@@ -38,6 +40,9 @@ const getContent = (req, res) => {
 const deleteContent = (req, res) => {
   const item = req.item
 
+  // Trigger hook
+  onCommentDeleted(item, req.user)
+
   res.status(200).json({
     item,
   })
@@ -53,6 +58,10 @@ const updateContent = (req, res) => {
       // Content is valid
       updateOneContent(type.slug, req.item.id, req.body)
         .then((data) => {
+          // Trigger hook
+          onCommentUpdated(req.item, req.user)
+          
+          // Respond
           res.status(200).json(data)
         })
         .catch((err) => {
