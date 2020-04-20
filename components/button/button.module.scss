@@ -2,7 +2,7 @@
   
   border: 0;
   border-radius: 4px;
- 
+  border: 1px solid black;
   background: black;
   color: #fff;
   cursor: pointer;
@@ -22,7 +22,7 @@
   &.alt {
     background: #fff;
     color: black;
-    border: 1px solid black;
+    border: 1px solid rgba(0,0,0,0.2);
 
     &:hover {
           background: #e6e6e6;

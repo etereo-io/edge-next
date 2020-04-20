@@ -1,3 +1,14 @@
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinShareButton,
+  PinterestIcon,
+  PinterestShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+} from "react-share";
+
 import Link from 'next/link'
 import TagsField from '../fields/tags-field/tags-field'
 import styles from './content-summary-view.module.scss'
@@ -36,9 +47,29 @@ export default function (props) {
           )
         })}
       </div>
-      <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
-        <a title="Read more">Read more</a> 
-      </Link>
+      <div className="bottom-actions">
+        <div className="read-more">
+          <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
+            <a title="Read more">Read more</a> 
+          </Link>
+        </div>
+        <div className="social-share">
+          <FacebookShareButton
+            url={''}
+            quote={'Share'}
+          >
+            <FacebookIcon size={32} round />
+          </FacebookShareButton>
+
+          <PinterestShareButton
+            url={String(window.location)}
+            media={`${String(window.location)}/content/${props.type.slug}/${props.content.slug}`}
+          >
+            <PinterestIcon size={32} round />
+          </PinterestShareButton>
+        </div>
+
+      </div>
     </div>
   )
 }

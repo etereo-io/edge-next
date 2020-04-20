@@ -33,7 +33,7 @@ const Profile = () => {
         <div className="name">
           <div className="title">
             <div className="title-left"><h2>User Profile</h2></div>
-            <div className="title-right"><Button>Edit Profile</Button></div>
+            <div className="title-right"><Button alt={true}>Follow</Button><Button>Edit Profile</Button></div>
           </div>
           <div className="dashboar-bar">
             <h4>Followers</h4>

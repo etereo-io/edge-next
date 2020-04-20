@@ -32,6 +32,8 @@ export default function(props) {
 
       .activity-item {
         display: flex;
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+        align-items: center;
       }
       `
     }</style>
