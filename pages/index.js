@@ -1,10 +1,10 @@
-import Layout from '../components/layout/normal/layout'
+import API from '../lib/api/api-endpoints'
 import ContentListView from '../components/content/read-content/content-list-view/content-list-view'
+import Layout from '../components/layout/normal/layout'
 import ListContentTypes from '../components/content/read-content/list-content-types/list-content-types'
+import fetch from '../lib/fetcher'
 import { getContentTypeDefinition } from '../lib/config'
 import useSWR from 'swr'
-import fetch from '../lib/fetcher'
-import API from '../lib/api/api-endpoints'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 /*export async function getServerSideProps({ req }) {
@@ -35,7 +35,7 @@ const Home = (props) => {
 
       <h1>Demo Site</h1>
 
-      <ContentListView initialData={[]} type={contentTypeDefinition} />
+      <ContentListView infiniteScroll={true} initialData={[]} type={contentTypeDefinition} />
 
       
     </Layout>

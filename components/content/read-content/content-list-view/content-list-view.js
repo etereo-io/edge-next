@@ -25,13 +25,16 @@ function EmptyComponent() {
 }
 
 export default function(props) {
+  const infiniteScroll = props.infiniteScroll
+  const query = props.query
+  const identificator = 'content-list-'+props.type.slug+'-'+ query
 
   // Fetch content type page by page
   const { pages, isLoadingMore, loadMore, isEmpty, isReachingEnd } = useSWRPages(
-    "content-list",
+    identificator,
     ({ offset, withSWR }) => {
       
-      const apiUrl = `${API.content[props.type.slug]}?limit=10${offset ? '&from=' + offset : ''}`
+      const apiUrl = `${API.content[props.type.slug]}?limit=10${offset ? '&from=' + offset : ''}${query ? `&${query}`: ''}`
       const { data } = withSWR(useSWR(apiUrl, fetch, props.data || []));
 
       if (!data) return <Placeholder/>;
@@ -52,16 +55,16 @@ export default function(props) {
   const isOnScreen = useOnScreen($loadMoreButton, "200px");
 
   useEffect(() => {
-    if (isOnScreen) loadMore();
+    if (isOnScreen && infiniteScroll) loadMore();
   }, [isOnScreen]);
 
   
   return <div className={styles.contentListView}>
     { !isEmpty ? pages : <EmptyComponent /> }
-    <div id="load-more">
+    <div class="load-more">
       {isReachingEnd
         ? null
-        : <Button reference={$loadMoreButton} loading={isLoadingMore} onClick={loadMore}>Load More</Button>}
+        : <Button reference={$loadMoreButton} loading={isLoadingMore} big={true} onClick={loadMore}>Load More</Button>}
     
     </div>
   </div>

@@ -1,9 +1,9 @@
-import Link from 'next/link'
-import { useUser } from '../../lib/hooks'
-import { hasPermission } from '../../lib/permissions'
-import config from '../../lib/config'
 import Button from '../button/button'
+import Link from 'next/link'
+import config from '../../lib/config'
+import { hasPermission } from '../../lib/permissions'
 import styles from './header.module.scss'
+import { useUser } from '../../lib/hooks'
 
 function PublicUserHeader() {
   return (
@@ -63,7 +63,7 @@ function LoggedInUserHeader(props) {
 
 const Header = () => {
   const { user } = useUser()
-  console.log(styles)
+  
   return (
     <header className={styles.header}>
       <div className={styles["header-content"]}>
