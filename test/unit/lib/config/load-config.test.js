@@ -1,8 +1,29 @@
+import config from '../../../../empieza.config'
 import loadConfig from '../../../../lib/config/load-config'
 
-test('Loads configuration', () => {
-  const config = loadConfig()
-  expect(config.permissions).not.toBe(null)
+jest.mock('../../../../empieza.config.js')
 
-  expect(config.permissions['admin.access'][0]).toBe('ADMIN')
+
+describe('Load configuration file', () => {
+
+  afterEach(() => {
+    config.mockClear()
+  })
+
+
+  test('Should complain about missing required fields', async () => {
+
+
+    config.mockReturnValueOnce({
+      title: '',
+      description: ''
+    })
+
+    expect(() => {
+      const conf = loadConfig()
+    })
+    .toThrowError(/Invalid configuration file: Required site title/)
+    
+  })
+
 })

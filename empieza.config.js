@@ -193,25 +193,48 @@ module.exports = (defaultOptions) => {
     database: {
       type: 'IN_MEMORY',
     },
+    activity: {
+      enabled: true, // Enables Activity API and stores content, comment and user activities,
+      permissions: {
+        content: {
+          created: ['public'],
+          deleted: [defaultOptions.roles.admin],
+          edited: [defaultOptions.roles.admin]
+        },
+        comments: {
+          created: ['public'],
+          deleted: [defaultOptions.roles.admin],
+          edited: [defaultOptions.roles.admin]
+        },
+        users: {
+          created: [defaultOptions.roles.admin],
+          deleted: [defaultOptions.roles.admin],
+          edited: [defaultOptions.roles.admin]
+        }
+      }
+    },
+
     content: {
       types: [postContentType, productContentType],
       initialContent: initialContent,
     },
-    tags: [
-      {
-        slug: 'software',
-        label: {
-          en: 'Software',
-          es: 'Software',
+    tags: {
+      initialTags: [
+        {
+          slug: 'software',
+          label: {
+            en: 'Software',
+            es: 'Software',
+          },
         },
-      },
-      {
-        slug: 'ai',
-        label: {
-          en: 'Artificial Inteligence',
-          es: 'Inteligencia Artificial',
+        {
+          slug: 'ai',
+          label: {
+            en: 'Artificial Inteligence',
+            es: 'Inteligencia Artificial',
+          },
         },
-      },
-    ],
+      ],
+    }
   }
 }

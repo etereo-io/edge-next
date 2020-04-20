@@ -4,7 +4,7 @@ import styles from './tags-field.module.scss'
 
 function Tag(props) {
   // Todo: maybe tags need to be managed differently
-  const tag = config.tags.find((i) => i.slug === props.tag)
+  const tag = config.tags.initialTags.find((i) => i.slug === props.tag)
 
   return (
     <Link href={`/tag/${tag.slug}`}>
