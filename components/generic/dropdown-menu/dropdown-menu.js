@@ -1,19 +1,21 @@
 import { useState } from 'react'
 export default function(props) {
   const [open, setOpened] =useState(props.open || false)
+  const align = props.align || 'left'
   const toggleMenu = () => {
-    
     setOpened(!open)
   }
+
+
   return (
     <>
       <div className="dropdown-menu">
         <div onClick={toggleMenu} className={`dropdown-menu-indicator ${open ? 'open' : 'closed'}`} aria-label={`${open ? 'close menu': 'open menu'}`}>
 
         </div>
-        {open &&<div className="dropdown-menu-wrapper">
+        {open && (<div className={`dropdown-menu-wrapper ${align}`}>
               <nav className="dropdown-menu-nav">{ props.children }</nav>
-        </div> }
+        </div>) }
       </div>
       <style jsx>{`
         .dropdown-menu {
@@ -73,10 +75,17 @@ export default function(props) {
         .dropdown-menu-wrapper {
           top: 35px;
           position: absolute;
-          left: 0;
           background: white;
           padding: 15px;
           box-shadow: var(--shadow-medium);
+        }
+
+        .dropdown-menu-wrapper.left {
+          left: 0;
+        }
+
+        .dropdown-menu-wrapper.right {
+          right: 0;
         }
 
         nav.dropdown-menu-nav > :global(ul) {

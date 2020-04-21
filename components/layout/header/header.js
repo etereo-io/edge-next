@@ -4,11 +4,12 @@ import config from '../../../lib/config'
 import { hasPermission } from '../../../lib/permissions'
 import styles from './header.module.scss'
 import { useUser } from '../../../lib/hooks'
+import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
 
 function PublicUserHeader() {
   return (
     <nav>
-      <ul>
+      <ul className={styles.navigation}>
         <li>
           <Link href="/login">
             <a>Login</a>
@@ -26,7 +27,7 @@ function LoggedInUserHeader(props) {
   const user = props.user
   return (
     <nav>
-      <ul>
+      <ul className={styles.navigation}>
         {config.content.types
           .filter((type) => {
             return hasPermission(user, `content.${type.slug}.write`)
@@ -48,14 +49,19 @@ function LoggedInUserHeader(props) {
           </li>
         )}
 
-        <li>
-          <Link href="/profile">
-            <a>Profile</a>
-          </Link>
-        </li>
-        <li>
-          <a href="/api/auth/logout">Logout</a>
-        </li>
+        <DropdownMenu align='right'>
+          <ul>
+            <li>
+              <Link href="/profile">
+                <a>Profile</a>
+              </Link>
+            </li>
+            <li>
+              <a href="/api/auth/logout">Logout</a>
+            </li>
+          </ul>
+        </DropdownMenu>
+
       </ul>
     </nav>
   )

@@ -31,7 +31,7 @@ const Components = () => {
             <h3>Dropdown menu</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <DropdownMenu>
+                <DropdownMenu align={'left'}>
                   <ul>
                     <li><Link href="/" ><a title="Home">Home</a></Link></li>
                     <li><Link href="/profile" ><a title="Home">Profile</a></Link></li>

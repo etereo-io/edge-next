@@ -43,10 +43,12 @@
     display: flex;
     margin-bottom: 10px;
     list-style: none;
+    flex-wrap: wrap;
   }
 
   li {
     margin-right: 30px;
+    margin-bottom: 30px;
   }
 
   .copy {
