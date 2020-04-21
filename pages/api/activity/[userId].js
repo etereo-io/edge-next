@@ -22,7 +22,7 @@ const hasPermissionForActivity = async (req, res, cb) => {
 }
 
 const userExist = userId => async (req, res, cb) => {
-  const user = await findOneUser(userId)
+  const user = await findOneUser({id: userId})
 
   if(!user) {
     cb(new Error('User not found'))

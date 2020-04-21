@@ -1,26 +1,36 @@
-import db from '../../lib/api/db'
-import methods from '../../lib/api/api-helpers/methods'
-import {onUserAdded} from '../../lib/api/hooks/user.hooks'
+import methods, { getAction } from '../../lib/api/api-helpers/methods'
 
-const getTestData = () => {
-  return db
-    .collection('test')
-    .doc('test')
-    .get()
-    .then((doc) => {
-      return doc.data()
-    })
+import { findUsers } from '../../lib/api/users/user'
+import { getSession } from '../../lib/api/auth/iron'
+import { hasPermission } from '../../lib/permissions'
+import {onUserAdded} from '../../lib/api/hooks/user.hooks'
+import runMiddleware from '../../lib/api/api-helpers/run-middleware'
+
+const hasPermissionsForUsers = async (req, res, cb) => {
+  const session = await getSession(req)
+  const action = getAction(req.method)
+
+  const permission = [`user.${action}`, `user.admin`]
+
+  const canAccess = hasPermission(session, permission)
+
+  if (!canAccess) {
+    cb(new Error('User not authorized to ' + permission))
+  } else {
+    cb()
+  }
 }
-const getUsers = (id) => (req, res) => {
-  getTestData()
-    .then((testData) => {
-      res.status(200).send({
-        testData,
+
+
+const getUsers = (filterParams, searchParams, paginationParams) => (req, res) => {
+  findUsers(filterParams, searchParams, paginationParams)
+    .then((docs) => {
+      res.status(200).json({
+        docs,
       })
     })
     .catch((err) => {
-      console.log(err)
-      res.status(500).json({ err: err.message })
+      res.status(500).json({ err: 'Error while loading users: ' + err.message })
     })
 }
 
@@ -35,21 +45,36 @@ const addUser = (user) => (req, res) => {
   })
 }
 
-export default (req, res) => {
+export default async (req, res) => {
   const {
     query: { search, sortBy, sortOrder, from, limit },
   } = req
 
+  const filterParams = {
+    
+  }
+
   const searchParams = {
     search,
+  }
+
+  const paginationParams = {
     sortBy,
     sortOrder,
     from,
     limit,
   }
 
+  try {
+    await runMiddleware(req, res, hasPermissionsForUsers)
+  } catch (e) {
+    return res.status(401).json({
+      message: e.message,
+    })
+  }
+  
   methods(req, res, {
-    get: getUsers(searchParams),
+    get: getUsers(filterParams, searchParams, paginationParams),
     post: addUser(req.body),
   })
 }

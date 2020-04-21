@@ -3,6 +3,7 @@ import { hasPermissionsForContent, hasQueryParameters, isValidContentType } from
 import { onContentDeleted, onContentUpdated } from '../../../../lib/api/hooks/content.hooks'
 
 import { contentValidations } from '../../../../lib/validations/content'
+import { findOneUser } from '../../../../lib/api/users/user'
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
 
@@ -34,8 +35,13 @@ const loadContentItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getContent = (req, res) => {
-  res.status(200).json(req.item)
+const getContent = async (req, res) => {
+  const user = await findOneUser({ id: req.item.author })
+  console.log(user, req.item.author)
+  res.status(200).json({
+    ...req.item,
+    user: user
+  })
 }
 
 const deleteContent = (req, res) => {

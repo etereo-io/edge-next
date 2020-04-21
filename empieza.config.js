@@ -224,14 +224,20 @@ module.exports = (defaultOptions) => {
         createdAt: Date.now(),
         roles: [defaultOptions.roles.admin, defaultOptions.roles.user],
         id: '1',
-        password: 'admin'
+        password: 'admin',
+        profile: {
+          img: '/static/demo-images/profile.jpeg'
+        }
       }, {
         username: 'user',
         email: 'user@demo.com',
         createdAt: Date.now(),
         roles: [defaultOptions.roles.user],
         id: '2',
-        password: 'user'
+        password: 'user',
+        profile: {
+          img: ''
+        }
       }]
     },
 

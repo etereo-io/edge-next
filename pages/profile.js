@@ -28,11 +28,11 @@ const Profile = () => {
     <Layout title="Profile">
       <div className="profile-user-info">
         <div className="avatar">
-          <Avatar />
+          <Avatar src={user ? user.profile.img : null} />
         </div>
         <div className="name">
           <div className="title">
-            <div className="title-left"><h2>User Profile</h2></div>
+            <div className="title-left"><h2>{user ? user.username : 'User Profile'}</h2></div>
             <div className="title-right"><Button alt={true}>Follow</Button><Button>Edit Profile</Button></div>
           </div>
           <div className="dashboar-bar">
@@ -56,7 +56,7 @@ const Profile = () => {
 
         <div className="activity-report">
           <h3>Recent activity</h3>
-          {user && <UserActivity user={user.id } />}
+          {user && <UserActivity user={user } />}
         </div>
 
       </div>
@@ -97,9 +97,16 @@ const Profile = () => {
             display: flex;
             flex-wrap: wrap;
             background: #fafafa;
-            border-top: 1px solid rgba(0,0,0, 0.2);
+            border-top: var(--light-border);
             margin-top: 30px;
             padding: 15px;
+
+          }
+          
+          @media (max-width: 600px) {
+            .content-container {
+              flex-direction: column;
+            }
           }
 
           .content-types {

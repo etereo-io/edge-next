@@ -17,7 +17,7 @@ export default function(props) {
       {activities.map(ac => {
         return (
           <div className="activity-item">
-            <div className="avatar"><Avatar width={60}/></div>
+            <div className="avatar"><Avatar width={60} src={props.user ? props.user.profile.img : null}/></div>
             <div className="message">{ac.text}</div>
           </div>
         )
