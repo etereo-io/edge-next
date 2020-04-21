@@ -1,5 +1,26 @@
 .contentSummaryView {
+  background: white;
+  border: var(--light-border);
+  padding: 15px;
+  border-radius: 4px;
+
   img {
     max-width: 100%;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
+  }
+
+  .field {
+    margin: 15px;
+  }
+
+  .bottomActions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
   }
 }

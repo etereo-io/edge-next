@@ -80,6 +80,7 @@ module.exports = (defaultOptions) => {
         name: 'title',
         type: 'text',
         label: 'Title',
+        title: true,
         placeholder: 'Title',
       },
       {
@@ -149,6 +150,7 @@ module.exports = (defaultOptions) => {
         type: 'text',
         label: 'Title',
         placeholder: 'Title',
+        title: true
       },
       {
         name: 'description',

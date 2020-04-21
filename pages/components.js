@@ -1,9 +1,10 @@
+import Avatar from '../components/user/avatar/avatar'
+import Button from '../components/generic/button/button'
 import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
-import Button from '../components/generic/button/button'
-import Avatar from '../components/user/avatar/avatar'
+import SocialShare from '../components/generic/social-share/social-share'
 
 const Components = () => {
   
@@ -24,7 +25,10 @@ const Components = () => {
               <a href="#avatar">Avatar</a>
             </li>
             <li>
-              <a href="#activity">Activity List</a>
+              <a href="#button">Button</a>
+            </li>
+            <li>
+              <a href="#socialshare">Social Share</a>
             </li>
           </ul>
         </div>
@@ -131,6 +135,22 @@ const links = [{
             </div>
             <pre>{`
 <Button />
+            `           
+            }</pre>
+          </div>
+
+
+          <div id="socialshare" className="component">
+            <h3>Social Share</h3>
+            <div className="component-demo">
+              <p>shareUrl defaults to window.location</p>
+              <div className="item-wrapper">
+                <SocialShare />
+              </div>
+              
+            </div>
+            <pre>{`
+<SocialShare shareUrl='' />
             `           
             }</pre>
           </div>

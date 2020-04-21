@@ -33,8 +33,6 @@ const Home = (props) => {
     <Layout title="Home page">
       <ListContentTypes />
 
-      <h1>Demo Site</h1>
-
       <ContentListView infiniteScroll={true} initialData={[]} type={contentTypeDefinition} />
 
       

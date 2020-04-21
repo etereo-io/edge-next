@@ -1,10 +1,10 @@
 import Button from '../../generic/button/button'
+import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
 import Link from 'next/link'
 import config from '../../../lib/config'
 import { hasPermission } from '../../../lib/permissions'
 import styles from './header.module.scss'
 import { useUser } from '../../../lib/hooks'
-import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
 
 function PublicUserHeader() {
   return (
