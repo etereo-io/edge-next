@@ -17,7 +17,7 @@ export default function(props) {
       {activities.map(ac => {
         return (
           <div className="activity-item">
-            <div className="avatar"><Avatar /></div>
+            <div className="avatar"><Avatar width={60}/></div>
             <div className="message">{ac.text}</div>
           </div>
         )
@@ -26,7 +26,6 @@ export default function(props) {
     <style jsx>{
       `
       .avatar {
-        width: 30px;
         margin-right: 15px;
       }
 
