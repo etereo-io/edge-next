@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Header from '../../header/header'
+import Header from '../header/header'
 import config from '../../../lib/config'
 
 import styles from './layout-admin.module.scss'

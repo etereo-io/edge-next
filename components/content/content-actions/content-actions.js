@@ -1,7 +1,6 @@
 import { useContentOwner, useUser } from '../../../lib/hooks'
 
-import Button from '../../button/button'
-import Link from 'next/link'
+import Button from '../../generic/button/button'
 import { hasPermission } from '../../../lib/permissions'
 
 export default function(props) {

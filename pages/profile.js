@@ -1,6 +1,6 @@
 import API from '../lib/api/api-endpoints'
 import Avatar from '../components/user/avatar/avatar'
-import Button from '../components/button/button'
+import Button from '../components/generic/button/button'
 import ContentListView from '../components/content/read-content/content-list-view/content-list-view'
 import Layout from '../components/layout/normal/layout'
 import UserActivity from '../components/user/activity/activity'

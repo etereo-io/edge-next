@@ -1,9 +1,8 @@
-import { useUser } from '../../../../lib/hooks'
+import LinkList from '../../../generic/link-list/link-list'
 import config from '../../../../lib/config'
 import { hasPermission } from '../../../../lib/permissions'
-import Link from 'next/link'
-import LinkList from '../../../link-list/link-list'
 import styles from './list-content-types.module.scss'
+import { useUser } from '../../../../lib/hooks'
 
 export default function () {
   const { user } = useUser()

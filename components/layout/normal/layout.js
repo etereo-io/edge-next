@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import Header from '../../header/header'
-import Footer from '../../footer/footer'
+import Header from '../header/header'
+import Footer from '../footer/footer'
 import config from '../../../lib/config'
 
 import styles from './layout.module.scss'

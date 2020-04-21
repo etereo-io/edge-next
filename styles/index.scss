@@ -23,10 +23,50 @@ body {
   color: #333;
 }
 
+// Theme variables
+:root {
+  --empz-foreground: #000;
+  --empz-background: #fff;
+  --empz-selection: var(--empz-cyan);
+  --accents-1: #fafafa;
+  --accents-2: #eaeaea;
+  --accents-3: #999;
+  --accents-4: #888;
+  --accents-5: #666;
+  --accents-6: #444;
+  --accents-7: #333;
+  --accents-8: #111;
+  --empz-link-color: var(--empz-success);
+  --empz-marketing-gray: #fafbfc;
+  --empz-code: var(--empz-purple);
+  --empz-success-light: #3291ff;
+  --empz-success: #0070f3;
+  --empz-success-dark: #0366d6;
+  --empz-error-light: #ff1a1a;
+  --empz-error: #e00;
+  --empz-error-dark: #c00;
+  --empz-warning-light: #f7b955;
+  --empz-warning: #f5a623;
+  --empz-warning-dark: #f49b0b;
+  --empz-secondary-light: var(--accents-3);
+  --empz-secondary: var(--accents-5);
+  --empz-secondary-dark: var(--accents-7);
+  --dropdown-box-shadow: 0 4px 4px 0 rgba(0,0,0,0.02);
+  --dropdown-triangle-stroke: #fff;
+  --scroller-start: #fff;
+  --scroller-end: hsla(0,0%,100%,0);
+  --shadow-smallest: 0px 4px 8px rgba(0,0,0,0.12);
+  --shadow-small: 0 5px 10px rgba(0,0,0,0.12);
+  --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
+  --shadow-large: 0 30px 60px rgba(0,0,0,0.12);
+  --shadow-hover: 0 30px 60px rgba(0,0,0,0.12);
+  --shadow-sticky: 0 12px 10px -10px rgba(0,0,0,0.12);
+  --portal-opacity: 0.25;
+}
+
 
 .markdown {
 
-  
   .anchor {
     float: left;
     line-height: 1;

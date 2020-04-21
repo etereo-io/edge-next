@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import useSWR , { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
-import Button from '../../../button/button'
+import Button from '../../../generic/button/button'
 import Link from 'next/link'
 import fetch from '../../../../lib/fetcher'
 import styles from './table-list.module.scss'

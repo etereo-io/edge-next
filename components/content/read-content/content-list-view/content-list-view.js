@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import useSWR , { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
-import Button from '../../../button/button'
+import Button from '../../../generic/button/button'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import fetch from '../../../../lib/fetcher'
 import styles from './content-list-view.module.scss'

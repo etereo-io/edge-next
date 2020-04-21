@@ -1,5 +1,5 @@
 import API from '../../../../lib/api/api-endpoints'
-import Button from '../../../button/button'
+import Button from '../../../generic/button/button'
 import fetch from '../../../../lib/fetcher'
 import styles from './content-form.module.scss'
 import { useState } from 'react'

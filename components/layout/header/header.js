@@ -1,9 +1,9 @@
-import Button from '../button/button'
+import Button from '../../generic/button/button'
 import Link from 'next/link'
-import config from '../../lib/config'
-import { hasPermission } from '../../lib/permissions'
+import config from '../../../lib/config'
+import { hasPermission } from '../../../lib/permissions'
 import styles from './header.module.scss'
-import { useUser } from '../../lib/hooks'
+import { useUser } from '../../../lib/hooks'
 
 function PublicUserHeader() {
   return (

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import config from '../../lib/config'
+import config from '../../../lib/config'
 import styles from  './footer.module.scss'
 
 export default function () {

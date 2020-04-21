@@ -1,7 +1,7 @@
 import { usePermission, useUser } from '../../lib/hooks'
 
 import Layout from '../../components/layout/admin/layout-admin'
-import LinkList from '../../components/link-list/link-list'
+import LinkList from '../../components/generic/link-list/link-list'
 import config from '../../lib/config'
 import { hasPermission } from '../../lib/permissions'
 
