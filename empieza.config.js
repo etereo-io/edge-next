@@ -193,6 +193,8 @@ module.exports = (defaultOptions) => {
     database: {
       type: 'IN_MEMORY',
     },
+
+    // Users activity logging & API
     activity: {
       enabled: true, // Enables Activity API and stores content, comment and user activities,
       permissions: {
@@ -214,10 +216,32 @@ module.exports = (defaultOptions) => {
       }
     },
 
+    // Users configuration
+    user: {
+      initialUsers: [{
+        username: 'admin',
+        email: 'admin@demo.com',
+        createdAt: Date.now(),
+        roles: [defaultOptions.roles.admin, defaultOptions.roles.user],
+        id: '1',
+        password: 'admin'
+      }, {
+        username: 'user',
+        email: 'user@demo.com',
+        createdAt: Date.now(),
+        roles: [defaultOptions.roles.user],
+        id: '2',
+        password: 'user'
+      }]
+    },
+
+    // Content configuration
     content: {
       types: [postContentType, productContentType],
       initialContent: initialContent,
     },
+
+    // Tags configuration
     tags: {
       initialTags: [
         {
