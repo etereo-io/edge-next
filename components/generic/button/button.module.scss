@@ -25,7 +25,11 @@
     border: 1px solid rgba(0,0,0,0.2);
 
     &:hover {
-          background: #e6e6e6;
+      background: #e6e6e6;
+    }
+
+    &.loading {
+      background: #b1b1b1;
     }
   }
 
@@ -35,7 +39,6 @@
 
   &.loading {
     padding: 5px 13px;
-    background: grey;
   }
 }
 

@@ -2,6 +2,8 @@ import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
+import Button from '../components/generic/button/button'
+import Avatar from '../components/user/avatar/avatar'
 
 const Components = () => {
   
@@ -27,6 +29,7 @@ const Components = () => {
           </ul>
         </div>
         <div className="components">
+          
           <div id="drop-menu" className="component">
             <h3>Dropdown menu</h3>
             <div className="component-demo">
@@ -45,26 +48,93 @@ const Components = () => {
                   </ul>
                 </DropdownMenu>
               </div>
-
-              
             </div>
             <pre>{`
-              <DropdownMenu>
-                <ul>
-                  <li><Link href="/" ><a title="Home">Home</a></Link></li>
-                  <li><Link href="/profile" ><a title="Home">Profile</a></Link></li>
-                  <li><Link href="/components" ><a title="Components">Components</a></Link></li>
-                </ul>
-                <span className="spacer"></span>
-                <h4>Content</h4>
-                <ul>
-                  <li><Link href="/create/post" ><a title="New Post">New Post</a></Link></li>
-                  <li><Link href="/content/post" ><a title="Read posts">Read posts</a></Link></li>
-                </ul>
-              </DropdownMenu>
+<DropdownMenu>
+  <ul>
+    <li><Link href="/" ><a title="Home">Home</a></Link></li>
+    <li><Link href="/profile" ><a title="Home">Profile</a></Link></li>
+    <li><Link href="/components" ><a title="Components">Components</a></Link></li>
+  </ul>
+  <span className="spacer"></span>
+  <h4>Content</h4>
+  <ul>
+    <li><Link href="/create/post" ><a title="New Post">New Post</a></Link></li>
+    <li><Link href="/content/post" ><a title="Read posts">Read posts</a></Link></li>
+  </ul>
+</DropdownMenu>
             `           
             }</pre>
           </div>
+
+          <div id="linklist" className="component">
+            <h3>Link list</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <LinkList links={[{title: 'test', link: 'test'}, {title: 'test', link: 'test'}, {title: 'test', link: 'test'}]} />
+              </div>
+            </div>
+            <pre>{`
+const links = [{
+  title: 'test',
+  link: 'test
+}, {
+  title: 'test',
+  link: 'test
+}]
+
+<LinkList links={links} />
+            `           
+            }</pre>
+          </div>
+
+
+          <div id="avatar" className="component">
+            <h3>Avatar</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Avatar />
+              </div>
+              <div className="item-wrapper">
+                <Avatar src="/static/demo-images/profile.jpeg" />
+                <Avatar src="/static/demo-images/profile.jpeg" width={60}/>
+                <Avatar src="/static/demo-images/profile.jpeg" width={30} />
+              </div>
+            </div>
+            <pre>{`
+<Avatar />
+            `           
+            }</pre>
+          </div>
+
+
+          <div id="button" className="component">
+            <h3>Button</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Button >Button</Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button loading={true}></Button>
+              </div>
+              
+
+              <div className="item-wrapper">
+                <Button alt={true} >Button</Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button alt={true} loading={true}></Button>
+              </div>
+              
+            </div>
+            <pre>{`
+<Button />
+            `           
+            }</pre>
+          </div>
+
         </div>
 
       </div>
