@@ -1,16 +1,15 @@
-@import '../../../styles/layout.scss';
-@import '../../../styles/colors.scss';
-@import '../../../styles/media-queries.scss';
+
+$breakpoint-tablet: 960px;
 
 .header {
-  color: $dark-grey;
-  background: white;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  color: var(--empz-foreground);
+  background: var(--empz-background);
+  border-bottom: var(--light-border);
   box-shadow: 6px -17px 20px 10px rgba(0,0,0,0.3);
 
 
   .header-content {
-    max-width: $content-max-width;
+    max-width: var(--empz-page-width);
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
@@ -20,10 +19,10 @@
 
   .logo {
     width: 75px;
-    padding: 15px;
+    padding: var(--empz-gap);
     cursor: pointer;
 
-    @include media('<tablet') {
+    @media (max-width: $breakpoint-tablet) {
       width: 50px;
       padding: 5px;
     }
@@ -50,8 +49,7 @@
     margin-left: auto;
   }
   a {
-    color: $dark-grey;
-    color: rgba(0,0,0,.84);
+    color: var(--empz-foreground);
     text-decoration: none;
   }
   

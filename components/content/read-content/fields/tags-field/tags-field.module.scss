@@ -4,9 +4,9 @@
 
   .tag {
     padding: 5px;
-    background: black;
+    background: var(--empz-background);
     border-radius: 5px;
-    color: white;
+    color: var(--empz-foreground);
     margin: 5px;
     cursor: pointer;
   }

@@ -3,15 +3,15 @@
     display: flex;
   }
   .content-actions {
-    padding: 15px;
+    padding: var(--empz-gap);
     max-width: 200px;
   }
 
   .content-detail-content {
-    background: white;
-    border: 1px solid rgba(0,0,0,0.2);
-    padding: 15px;
-    margin-bottom: 30px;
+    background: var(--empz-background);
+    border: var(--light-border);
+    padding: var(--empz-gap);
+    margin-bottom: var(--empz-gap-double);
     flex: 1;
   }
 
@@ -20,6 +20,6 @@
   }
 
   .field {
-    margin-bottom: 15px
+    margin-bottom: var(--empz-gap)
   }
 }

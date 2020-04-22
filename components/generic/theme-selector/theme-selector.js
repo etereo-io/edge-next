@@ -10,10 +10,10 @@ function ColorBubble(props) {
     <style jsx>{
       `
       .color-bubble {
-        width: 15px;
-        height: 15px;
+        width: var(--empz-gap);
+        height: var(--empz-gap);
         border-radius: 100%;
-        border: 1px solid black;
+        border: 1px solid ${props.border || 'black'};
         background: ${props.color || 'white'};
       }
 
@@ -40,7 +40,6 @@ export default function(props) {
   }]
 
   const onChange = (ev) => {
-    console.log(ev.target.value)
     switchMode(ev.target.value)
   }
 
@@ -49,10 +48,10 @@ export default function(props) {
     prefix: <ColorBubble color="white" />
   }, {
     value: MODE.DARK,
-    prefix: <ColorBubble color="black" />
+    prefix: <ColorBubble color="black" border="white" />
   }, {
     value: MODE.ROBOT,
-    prefix: <ColorBubble color="green" />
+    prefix: <ColorBubble color="#33cf33" />
   }]
 
   return (
@@ -62,11 +61,6 @@ export default function(props) {
           {availableThemes.map(t => <option key={t.id } selected={selectedTheme === t.id} value={t.id}>{t.title}</option>)}
         </Select>
       </div>
-      <style jsx>{
-        `
-        
-        `
-      }</style>
     </>
   )
 

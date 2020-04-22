@@ -1,36 +1,31 @@
 .button {
-  
-  border: 0;
-  border-radius: 4px;
-  border: 1px solid black;
-  background: black;
-  color: #fff;
+
+  border-radius: var(--empz-radius);
+  border: var(--light-border);
+  background: var(--empz-background);
+  color: var(--empz-foreground);
   cursor: pointer;
   display: inline-block;
   font-size: 15px;
   font-weight: 500;
-  padding: 12px 16px;
+  padding: 8px var(--empz-gap);
   transition: 0.3s ease;
   text-transform: uppercase;
   -webkit-appearance: none;
 
   &:hover {
-    background: #248f8f;
-
+    background: var(--empz-secondary);
   }
 
   &.alt {
-    background: #fff;
-    color: black;
-    border: 1px solid rgba(0,0,0,0.2);
+    background: var(--empz-foreground);
+    color: var(--empz-background);
+    border: var(--light-border);
 
     &:hover {
-      background: #e6e6e6;
+      background: var(--empz-secondary);
     }
 
-    &.loading {
-      background: #b1b1b1;
-    }
   }
 
   &.big {
@@ -38,7 +33,7 @@
   }
 
   &.loading {
-    padding: 5px 13px;
+    padding: 5px 12px;
   }
 }
 

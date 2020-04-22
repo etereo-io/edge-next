@@ -26,13 +26,14 @@ export default function(props) {
     <style jsx>{
       `
       .avatar {
-        margin-right: 15px;
+        margin-right: var(--empz-gap);
       }
 
       .activity-item {
         display: flex;
-        border-bottom: 1px solid rgba(0,0,0,0.2);
+        border-bottom: var(--light-border);
         align-items: center;
+        color: var(--empz-secondary);
       }
       `
     }</style>

@@ -42,15 +42,16 @@ export default function(props) {
           display: flex;
           justify-content: center;
           align-items: center;
-          color: var(--themed-fg);
+          color: var(--empz-foreground);
+          background: var(--empz-background);
         }
 
         .select-prefix {
           display: inline-flex;
           position: absolute;
           pointer-events: none;
-          width: 15px;´
-          height: 15px;
+          width: var(--empz-gap);´
+          height: var(--empz-gap);
           left: 10px;
         }
 
@@ -58,12 +59,15 @@ export default function(props) {
 
         }
         select {
-          padding: 5px 15px;
-          padding-left: 30px;
+          padding: 5px var(--empz-gap);
+          padding-left: var(--empz-gap-double);
+          border: var(--light-border);
+          color: var(--empz-foreground);
+          background: var(--empz-background);
         }
 
         .no-prefixes select {
-          padding-left: 15px;
+          padding-left: var(--empz-gap);
         }
       `
       }</style>

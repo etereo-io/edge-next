@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { FacebookLoginButton, GoogleLoginButton, InstagramLoginButton, GithubLoginButton, TwitterLoginButton } from "react-social-login-buttons";
-
+import Button from '../generic/button/button'
 
 const Form = ({ isLogin, errorMessage, onSubmit }) => {
   return (
@@ -50,14 +50,14 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
             <Link href="/signup">
               <a>I don't have an account</a>
             </Link>
-            <button type="submit">Login</button>
+            <Button type="submit">Login</Button>
           </>
         ) : (
           <>
             <Link href="/login">
               <a>I already have an account</a>
             </Link>
-            <button type="submit">Signup</button>
+            <Button type="submit">Signup</Button>
           </>
         )}
       </div>
@@ -69,8 +69,8 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
         h2 {
           font-weight: 300;
           font-size: 15px;
-          margin-top: 15px;
-          margin-bottom: 15px;
+          margin-top: var(--empz-gap);
+          margin-bottom: var(--empz-gap);
         }
         form,
         label {
@@ -83,11 +83,11 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
         input {
           padding: 8px;
           margin: 0.3rem 0 1rem;
-          border: 1px solid #ccc;
+          border: var(--light-border);
           border-radius: 4px;
         }
         .social-buttons {
-          margin-bottom: 30px;
+          margin-bottom: var(--empz-gap-double);
         }
         .social-buttons .social-button {
           
@@ -100,17 +100,9 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
         }
         .submit > a {
           text-decoration: none;
+          color: var(--empz-foreground);
         }
-        .submit > button {
-          padding: 0.5rem 1rem;
-          cursor: pointer;
-          background: #fff;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-        }
-        .submit > button:hover {
-          border-color: #888;
-        }
+        
         .error {
           color: brown;
           margin: 1rem 0 0;

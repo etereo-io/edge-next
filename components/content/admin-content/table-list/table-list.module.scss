@@ -1,5 +1,5 @@
 .tableList {
-  background: white;
+  background: var(--empz-background);
 
   .row {
     display: flex;
@@ -8,8 +8,8 @@
   }
   
   .column {
-    padding: 15px;
-    border: 1px solid rgba(0,0,0,0.2);
+    padding: var(--empz-gap);
+    border: var(--light-border);
     
     flex-basis: 100%;
     flex: 1 1 0px;
@@ -17,8 +17,8 @@
 
   .table-header {
     font-weight: bold;
-    background: black;
-    color: white;
-    border: 1px solid rgba(0,0,0, 0.2);
+    background: var(--empz-secondary);
+    color: var(--empz-foreground);
+    border: var(--light-border);
   }
 }

@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
     EmpiezaThemeContext
   )
 
-  return <div className={mode}>
+  return <div id="app-container" className={mode}>
     <Component {...pageProps} />
   </div>
 }

@@ -4,12 +4,12 @@
     display: flex;
 
     li {
-      margin-right: 15px;
+      margin-right: var(--empz-gap);
       
       a {
-        border: 1px solid rgba(0,0,0,0.2);
-        padding: 15px;
-        color: black;
+        border: var(--light-border);
+        padding: var(--empz-gap);
+        color: var(--empz-foreground);
         text-decoration: none;
         display: block;
       }

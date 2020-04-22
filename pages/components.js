@@ -1,5 +1,6 @@
 import Avatar from '../components/user/avatar/avatar'
 import Button from '../components/generic/button/button'
+import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
 import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
@@ -9,7 +10,37 @@ import SocialShare from '../components/generic/social-share/social-share'
 import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 
 const Components = () => {
-  
+  const demoContent = {
+    title: 'This is an example content',
+    textarea: 'Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,  Lorem ipsum dolor sit amet,  Lorem ipsum dolor sit amet, ',
+    slug: 'the-slug',
+    type: 'demo-content-type'
+  }
+
+  const demoContentWithImage = {
+    title: 'This is an example content',
+    img: 'https://i.picsum.photos/id/400/200/200.jpg',
+    slug: 'the-slug',
+    type: 'demo-content-type'
+  }
+
+  const demoContentType = {
+    slug: 'demo-content-type',
+    fields: [{
+      type: 'text',
+      name: 'title',
+      title: true,
+      label: 'title'
+    }, {
+      type: 'img',
+      name: 'img',
+      label: 'img'
+    }, {
+      type: 'textarea',
+      name: 'textarea',
+      label: 'textarea'
+    }]
+  }
 
   return (
     <Layout title="Components showcase">
@@ -34,6 +65,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#themeselector">Theme selector</a>
+            </li>
+            <li>
+              <a href="#contentsummaryview">Content Summary View</a>
             </li>
           </ul>
         </div>
@@ -221,21 +255,41 @@ const links = [{
             }</pre>
           </div>
 
+          <div id="contentsummaryview" className="component">
+            <h3>Content Summary View</h3>
+            <div className="component-demo">
+              <p>See <b>Content Types</b> documentation for more details</p>
+              <div className="item-wrapper">
+                <ContentSummaryView type={demoContentType} content={demoContent} />
+              </div>
+
+              <div className="item-wrapper">
+                <ContentSummaryView type={demoContentType} content={demoContentWithImage} />
+              </div>
+              
+            </div>
+            <pre>{`
+<ContentSummaryView type={demoContentType} content={demoContent} />
+            `           
+            }</pre>
+          </div>
+
         </div>
 
       </div>
       <style jsx>{`
         h1 {
-          margin-bottom: 15px;
+          margin-bottom: var(--empz-gap);
         }
         .components-layout {
           display: flex;
         }
 
         .list-menu {
-          background: white;
-          border: 1px solid rgba(0,0,0,0.2);
-          border-radius: 4px;
+          background: var(--empz-background);
+          color: var(--empz-foreground);
+          border: var(--light-border);
+          border-radius: var(--empz-radius);
         }
 
         .list-menu ul{
@@ -243,44 +297,45 @@ const links = [{
         }
 
         .list-menu li a {
-          padding: 15px;
+          padding: var(--empz-gap);
           display: block;
-          color: black;
           text-decoration: none;
-          border-bottom: 1px solid rgba(0,0,0, 0.2);
+          color: var(--empz-foreground);
+          border: var(--light-border);
         }
 
         .components {
-          padding: 15px;
-          background: white;
-          border: 1px solid rgba(0,0,0,0.2);
-          border-radius: 4px;
-          margin-left: 15px;
+          padding: var(--empz-gap);
+          background: var(--empz-background);
+          color: var(--empz-foreground);
+          border: var(--light-border);
+          border-radius: var(--empz-radius);
+          margin-left: var(--empz-gap);
           flex: 1;
         }
 
         .item-wrapper {
-          margin-top: 15px;
-          margin-bottom: 15px;
+          margin-top: var(--empz-gap);
+          margin-bottom: var(--empz-gap);
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
         .components pre {
-          background: grey;
-          color: white;
-          padding: 15px;
-          border: 1px solid black;
-          border-radius: 4px;
-          margin: 15px;
+          background: var(--empz-foreground);
+          color: var(--empz-background);
+          padding: var(--empz-gap);
+          border: 1px solid var(--empz-background);
+          border-radius: var(--empz-radius);
+          margin: var(--empz-gap);
           font-size: 13px;
         }
 
         .component {
-          border-bottom: 1px solid rgba(0,0,0,0.2);
-          margin-bottom: 15px;
-          padding-bottom: 15px;
+          border-bottom: var(--light-border);
+          margin-bottom: var(--empz-gap);
+          padding-bottom: var(--empz-gap);
         }
       `}</style>
     </Layout>

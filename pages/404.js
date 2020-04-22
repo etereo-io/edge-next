@@ -20,8 +20,8 @@ export default function Custom404() {
             max-width: 42rem;
             margin: 0 auto;
             padding: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            border: var(--light-border);
+            border-radius: var(--empz-radius);
             text-align: center;
           }
 
@@ -33,7 +33,7 @@ export default function Custom404() {
           .links {
             display: flex;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: var(--empz-gap);
           }
         `}</style>
       </div>

@@ -8,9 +8,14 @@
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
-    border: 0.25em solid #fff;
-    border-color: #fff transparent #fff transparent;
+    border: 0.25em solid var(--empz-foreground);
+    border-color: var(--empz-foreground) transparent var(--empz-foreground) transparent;
     animation: lds-dual-ring 1.2s linear infinite;
+
+  }
+  &.alt .ring:after {
+    border: 0.25em solid var(--empz-background);
+    border-color: var(--empz-background) transparent var(--empz-background) transparent;
   }
   @keyframes lds-dual-ring {
     0% {

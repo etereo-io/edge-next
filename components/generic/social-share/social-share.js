@@ -13,7 +13,7 @@ import {
 export default function (props) {
   const shareUrl = props.shareUrl ? props.shareUrl : (typeof window !== 'undefined' ?  String(window.location) : '')
   return (
-    shareUrl && <>
+    <>
       <div className="social-share">
         <div className="social-icon">
           <FacebookShareButton

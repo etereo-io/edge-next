@@ -1,20 +1,22 @@
 .contentSummaryView {
-  background: white;
+  color: var(--empz-foreground);
+  background: var(--empz-background);
   border: var(--light-border);
-  padding: 15px;
-  border-radius: 4px;
+  padding: var(--empz-gap);
+  border-radius: var(--empz-radius);
 
   img {
     max-width: 100%;
+    width: 100%;
   }
 
   a {
     text-decoration: none;
-    color: black;
+    color: var(--empz-foreground);
   }
 
   .field {
-    margin: 15px;
+    margin: var(--empz-gap);
   }
 
   .bottomActions {

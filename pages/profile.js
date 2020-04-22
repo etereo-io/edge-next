@@ -78,19 +78,19 @@ const Profile = () => {
           }
 
           h3 {
-            margin-bottom: 30px;
+            margin-bottom: var(--empz-gap-double);
           }
 
           .avatar {
             width: 100px;
-            margin-right: 30px;
+            margin-right: var(--empz-gap-double);
           }
 
           .title {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            margin-bottom: 15px;
+            margin-bottom: var(--empz-gap);
           }
 
           .content-container {
@@ -98,8 +98,8 @@ const Profile = () => {
             flex-wrap: wrap;
             background: #fafafa;
             border-top: var(--light-border);
-            margin-top: 30px;
-            padding: 15px;
+            margin-top: var(--empz-gap-double);
+            padding: var(--empz-gap);
 
           }
           
@@ -112,19 +112,19 @@ const Profile = () => {
           .content-types {
             flex: 0.5;
             transform: translateY(-60px);
-            padding: 15px;
+            padding: var(--empz-gap);
           }
 
           .activity-report {
             flex: 0.5;
             transform: translateY(-60px);
-            padding: 15px;
+            padding: var(--empz-gap);
           }
 
           .content-summary-content {
-            padding: 15px;
-            border-radius: 4px;
-            background: white;
+            padding: var(--empz-gap);
+            border-radius: var(--empz-radius);
+            background: var(--empz-foreground);
           }
           `
         }

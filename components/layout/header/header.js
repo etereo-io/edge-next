@@ -1,6 +1,7 @@
 import Button from '../../generic/button/button'
 import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
 import Link from 'next/link'
+import ThemeSelector from '../../generic/theme-selector/theme-selector'
 import config from '../../../lib/config'
 import { hasPermission } from '../../../lib/permissions'
 import styles from './header.module.scss'
@@ -18,6 +19,20 @@ function PublicUserHeader() {
         <li>
           <Button href="/signup">Get Started</Button>
         </li>
+
+        <DropdownMenu align='right'>
+          <ul>
+            <li>
+              <ThemeSelector />
+            </li>
+            <li>
+              <Link href="/components">
+                <a>Components</a>
+              </Link>
+            </li>
+          </ul>
+        </DropdownMenu>
+        
       </ul>
     </nav>
   )
@@ -51,6 +66,9 @@ function LoggedInUserHeader(props) {
 
         <DropdownMenu align='right'>
           <ul>
+            <li>
+              <ThemeSelector />
+            </li>
             <li>
               <Link href="/profile">
                 <a>Profile</a>

@@ -18,7 +18,7 @@ export default function (props) {
   if (loading) {
     return (
       <button ref={reference} className={`${styles.button} ${alt ? styles.alt : ''} ${big? styles.big : ''} ${className} ${styles.loading}`}>
-        <LoadingSpinner />
+        <LoadingSpinner alt={alt}/>
       </button>
     )
   }
