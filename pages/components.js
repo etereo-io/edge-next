@@ -4,7 +4,9 @@ import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
+import Select from '../components/generic/select/select'
 import SocialShare from '../components/generic/social-share/social-share'
+import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 
 const Components = () => {
   
@@ -29,6 +31,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#socialshare">Social Share</a>
+            </li>
+            <li>
+              <a href="#themeselector">Theme selector</a>
             </li>
           </ul>
         </div>
@@ -151,6 +156,67 @@ const links = [{
             </div>
             <pre>{`
 <SocialShare shareUrl='' />
+            `           
+            }</pre>
+          </div>
+
+          <div id="select" className="component">
+            <h3>Select</h3>
+            <div className="component-demo">
+              
+              <div className="item-wrapper">
+                <Select value={'ipsum'}>
+                  <option>Lorem</option>
+                  <option value='ipsum'>Ipsum</option>
+                </Select>
+              </div>
+
+              <div className="item-wrapper">
+                
+                <Select value={'ipsum'} prefixes={[{
+                  value: 'lorem',
+                  prefix: <img style={{'max-width': '100%' }} src="https://i.picsum.photos/id/519/50/50.jpg" />
+                }, {
+                  value: 'ipsum',
+                  prefix: <img style={{'max-width': '100%' }}  src="https://i.picsum.photos/id/212/50/50.jpg" />
+                }]}>
+                  <option value='lorem'>Lorem</option>
+                  <option value='ipsum'>Ipsum</option>
+                </Select>
+              </div>
+              
+            </div>
+            <pre>{`
+<Select name='' onChange={} >
+  <option value="something">Something</option>
+</Select>
+
+
+<Select value={'ipsum'} prefixes={[{
+  value: 'lorem',
+  prefix: <img style={{'max-width': '100%' }} src="https://i.picsum.photos/id/519/50/50.jpg" />
+}, {
+  value: 'ipsum',
+  prefix: <img style={{'max-width': '100%' }}  src="https://i.picsum.photos/id/212/50/50.jpg" />
+}]}>
+  <option value='lorem'>Lorem</option>
+  <option value='ipsum'>Ipsum</option>
+</Select>
+            `           
+            }</pre>
+          </div>
+
+          <div id="themeselector" className="component">
+            <h3>Theme Selector</h3>
+            <div className="component-demo">
+              
+              <div className="item-wrapper">
+                <ThemeSelector selectedTheme='Robot'/>
+              </div>
+              
+            </div>
+            <pre>{`
+<ThemeSelector selectedTheme='Light' />
             `           
             }</pre>
           </div>
