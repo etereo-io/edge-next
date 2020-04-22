@@ -4,11 +4,15 @@ import fs from 'fs'
 import marked from 'marked'
 import matter from 'gray-matter'
 import path from 'path'
+import styles from '../../styles/markdown.module.scss'
 
 const Page = ({ htmlString, data}) => {
   return <Layout title={data.title} description={data.description}>
-    <div className="markdown" dangerouslySetInnerHTML={{__html: htmlString}}></div>
-    
+    <div className={styles.markdown} dangerouslySetInnerHTML={{__html: htmlString}}></div>
+<style jsx>{`
+  
+
+`}</style>
   </Layout>
 }
 

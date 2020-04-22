@@ -56,7 +56,7 @@ export default function (props) {
       </div>
       <div className={styles.bottomActions}>
         <SocialShare shareUrl={shareUrl} />
-        <DropDown>
+        <DropDown align={'right'}>
           <ul>
             <li>Report</li>
             <li>Email</li>

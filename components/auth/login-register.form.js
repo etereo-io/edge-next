@@ -100,7 +100,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
         }
         .submit > a {
           text-decoration: none;
-          color: var(--empz-foreground);
+          color: var(--empz-link-color);
         }
         
         .error {

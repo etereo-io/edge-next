@@ -17,7 +17,7 @@ export default function (props) {
       <div className="social-share">
         <div className="social-icon">
           <FacebookShareButton
-            url={''}
+            url={shareUrl}
             quote={'Share'}
           >
             <FacebookIcon size={32} round />
@@ -27,7 +27,7 @@ export default function (props) {
 
         <div className="social-icon">
           <PinterestShareButton
-            url={String(window.location)}
+            url={shareUrl}
             media={shareUrl}
           >
             <PinterestIcon size={32} round />

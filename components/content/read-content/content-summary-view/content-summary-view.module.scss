@@ -5,6 +5,10 @@
   padding: var(--empz-gap);
   border-radius: var(--empz-radius);
 
+  @media (max-width: 600px) {
+    padding: var(--empz-gap-half);
+  }
+
   img {
     max-width: 100%;
     width: 100%;
@@ -12,11 +16,14 @@
 
   a {
     text-decoration: none;
-    color: var(--empz-foreground);
+    color: var(--empz-link-color);
   }
 
   .field {
     margin: var(--empz-gap);
+    @media (max-width: 600px) {
+      margin: var(--empz-gap-half);
+    }
   }
 
   .bottomActions {

@@ -300,7 +300,7 @@ const links = [{
           padding: var(--empz-gap);
           display: block;
           text-decoration: none;
-          color: var(--empz-foreground);
+          color: var(--empz-link-color);
           border: var(--light-border);
         }
 

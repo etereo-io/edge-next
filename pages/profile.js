@@ -106,19 +106,22 @@ const Profile = () => {
           @media (max-width: 600px) {
             .content-container {
               flex-direction: column;
+              padding: 0;
+              margin-top: var(--empz-gap);
             }
           }
 
-          .content-types {
+          .content-types, .activity-report {
             flex: 0.5;
-            transform: translateY(-60px);
+            transform: translateY(-75px);
             padding: var(--empz-gap);
           }
 
-          .activity-report {
-            flex: 0.5;
-            transform: translateY(-60px);
-            padding: var(--empz-gap);
+          @media (max-width: 600px) {
+            .content-types, .activity-report {
+              transform: none;
+              flex: 1;
+            }
           }
 
           .content-summary-content {

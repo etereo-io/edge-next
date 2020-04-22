@@ -7,7 +7,7 @@ $breakpoint-tablet: 960px;
   border-bottom: var(--light-border);
   box-shadow: 6px -17px 20px 10px rgba(0,0,0,0.3);
 
-
+  
   .header-content {
     max-width: var(--empz-page-width);
     display: flex;
@@ -15,6 +15,15 @@ $breakpoint-tablet: 960px;
     margin: 0 auto;
     justify-content: space-between;
     align-items: center;
+    padding: 0 var(--empz-gap);
+  }
+
+  .left-header {
+    flex: 0.2;
+  }
+
+  .right-header {
+    flex: 0.8;
   }
 
   .logo {
@@ -27,12 +36,6 @@ $breakpoint-tablet: 960px;
       padding: 5px;
     }
   }
-
-  nav {
-    max-width: 42rem;
-    margin: 0 auto;
-    padding: 0.2rem 1.25rem;
-  }
   
   .navigation {
     display: flex;
@@ -44,12 +47,17 @@ $breakpoint-tablet: 960px;
 
   li {
     margin-right: 1rem;
+
+    @media (max-width: 600px) {
+      font-size: 13px;
+    }
   }
+
   li:first-child {
     margin-left: auto;
   }
   a {
-    color: var(--empz-foreground);
+    color: var(--empz-link-color);
     text-decoration: none;
   }
   

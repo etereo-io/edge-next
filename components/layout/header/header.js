@@ -19,7 +19,7 @@ function PublicUserHeader() {
         <li>
           <Button href="/signup">Get Started</Button>
         </li>
-
+        
         <DropdownMenu align='right'>
           <ul>
             <li>
