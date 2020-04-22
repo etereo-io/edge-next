@@ -175,10 +175,10 @@ const links = [{
                 
                 <Select value={'ipsum'} prefixes={[{
                   value: 'lorem',
-                  prefix: <img style={{'max-width': '100%' }} src="https://i.picsum.photos/id/519/50/50.jpg" />
+                  prefix: <img style={{maxWidth: '100%' }} src="https://i.picsum.photos/id/519/50/50.jpg" />
                 }, {
                   value: 'ipsum',
-                  prefix: <img style={{'max-width': '100%' }}  src="https://i.picsum.photos/id/212/50/50.jpg" />
+                  prefix: <img style={{maxWidth: '100%' }}  src="https://i.picsum.photos/id/212/50/50.jpg" />
                 }]}>
                   <option value='lorem'>Lorem</option>
                   <option value='ipsum'>Ipsum</option>

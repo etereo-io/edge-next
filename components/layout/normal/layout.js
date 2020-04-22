@@ -9,7 +9,7 @@ const Layout = (props) => (
   <>
     <Head>
       <title>
-        {props.title} - {config.title}
+        {props.title} - {config.title} 
       </title>
       <meta title="description" content={props.description || config.description} />
     </Head>

@@ -21,6 +21,7 @@ import useSWR from 'swr'
 
 const Home = (props) => {
 
+
   const initialData = props.data
 
   // Fetch Posts
@@ -30,7 +31,7 @@ const Home = (props) => {
   const contentTypeDefinition = getContentTypeDefinition('post')
 
   return (
-    <Layout title="Home page">
+    <Layout title="Home page" >
       <ListContentTypes />
 
       <ContentListView infiniteScroll={true} initialData={[]} type={contentTypeDefinition} />

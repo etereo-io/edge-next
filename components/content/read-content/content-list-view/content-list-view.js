@@ -61,7 +61,7 @@ export default function(props) {
   
   return <div className={styles.contentListView}>
     { !isEmpty ? pages : <EmptyComponent /> }
-    <div class="load-more">
+    <div className="load-more">
       {isReachingEnd
         ? null
         : <Button reference={$loadMoreButton} loading={isLoadingMore} big={true} onClick={loadMore}>Load More</Button>}

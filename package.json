@@ -21,6 +21,7 @@
     "marked": "^0.8.2",
     "next": "latest",
     "node-sass": "^4.13.1",
+    "nookies": "^2.2.2",
     "passport": "0.4.1",
     "passport-local": "1.0.0",
     "react": "latest",

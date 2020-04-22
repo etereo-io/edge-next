@@ -1,5 +1,8 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import Select from '../select/select'
+
+import { EmpiezaThemeContext, MODE } from '../../../lib/contexts/empieza-theme'
+
 
 function ColorBubble(props) {
   return <>
@@ -20,30 +23,35 @@ function ColorBubble(props) {
 }
 
 export default function(props) {
-  const [selectedTheme, setSelectedTheme] = useState(props.selectedTheme || 'Light')
+  const { mode, switchMode } = useContext(
+    EmpiezaThemeContext
+  )
+  
+  const [selectedTheme, setSelectedTheme] = useState(mode || MODE.LIGHT)
   const availableThemes = [{
     title: 'Light',
-    id: 'Light'
+    id: MODE.LIGHT
   }, {
     title: 'Dark',
-    id: 'Dark'
+    id: MODE.DARK
   }, {
     title: 'Robot',
-    id: 'Robot'
+    id: MODE.ROBOT
   }]
 
   const onChange = (ev) => {
     console.log(ev.target.value)
+    switchMode(ev.target.value)
   }
 
   const prefixes = [{
-    value: 'Light',
+    value: MODE.LIGHT,
     prefix: <ColorBubble color="white" />
   }, {
-    value: 'Dark',
+    value: MODE.DARK,
     prefix: <ColorBubble color="black" />
   }, {
-    value: 'Robot',
+    value: MODE.ROBOT,
     prefix: <ColorBubble color="green" />
   }]
 

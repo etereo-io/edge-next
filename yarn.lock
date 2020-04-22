@@ -2611,6 +2611,11 @@ cookie@0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.0.tgz#beb437e7022b3b6d49019d088665303ebe9c14ba"
 
+cookie@^0.4.0:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.1.tgz#afd713fe26ebd21ba95ceb61f9a8116e50a537d1"
+  integrity sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
+
 copy-concurrently@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/copy-concurrently/-/copy-concurrently-1.0.5.tgz#92297398cae34937fcafd6ec8139c18051f0b5e0"
@@ -5109,6 +5114,11 @@ jsesc@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
 
+jsmin@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jsmin/-/jsmin-1.0.1.tgz#e7bd0dcd6496c3bf4863235bf461a3d98aa3b98c"
+  integrity sha1-570NzWSWw79IYyNb9GGj2YqjuYw=
+
 json-bigint@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/json-bigint/-/json-bigint-0.3.0.tgz#0ccd912c4b8270d05f056fbd13814b53d3825b1e"
@@ -5953,6 +5963,15 @@ node-sass@^4.13.1:
     sass-graph "^2.2.4"
     stdout-stream "^1.4.0"
     "true-case-path" "^1.0.2"
+
+nookies@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/nookies/-/nookies-2.2.2.tgz#fd0c53bc54ee971d8b64699968f3873abac65423"
+  integrity sha512-eJNpZ2n85wmdUEFU8/pAl9iqmklKXZBYiLuU1PLtSWLp0CXPMUPJZa2gmy16hLkjPuDIMkapPI0VxnOtI4hRGQ==
+  dependencies:
+    cookie "^0.4.0"
+    jsmin "^1.0.1"
+    set-cookie-parser "^2.4.3"
 
 "nopt@2 || 3":
   version "3.0.6"
@@ -7540,6 +7559,11 @@ serve-static@1.14.1:
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
+
+set-cookie-parser@^2.4.3:
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/set-cookie-parser/-/set-cookie-parser-2.4.5.tgz#94a5060724e614c56c65588010594dc4b848fb8d"
+  integrity sha512-LkSDwseogN5l6TerqGzFzL9mUDTxSq3hX2b5AaynjC1nSCNWiDypEgHatfc0v6KcnfgV3/6F6h4ABh6igjzlQQ==
 
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"
