@@ -189,6 +189,8 @@ https://github.com/PaulPCIO/nextjs-with-react-intl
 
 
 ## TODO List
+- Sitemap xml
+- Content detail, get stataic props, better loading
 - Pagination:
   - Ensure limit and from are numbers
 - Profile: 

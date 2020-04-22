@@ -1,29 +1,24 @@
-import { useRouter } from 'next/router'
+import API from '../../../lib/api/api-endpoints'
 import ContentDetailView from '../../../components/content/read-content/content-detail-view/content-detail-view'
 import ContentSummaryView from '../../../components/content/read-content/content-summary-view/content-summary-view'
-import { usePermission } from '../../../lib/hooks'
-
-import { getContentTypeDefinition } from '../../../lib/config'
-
 import Layout from '../../../components/layout/normal/layout'
-
-import useSWR from 'swr'
 import fetch from '../../../lib/fetcher'
-import API from '../../../lib/api/api-endpoints'
+import { getContentTypeDefinition } from '../../../lib/config'
+import { usePermission } from '../../../lib/hooks'
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 function LoadingView() {
   return <h1>Loading...</h1>
 }
+
+// TODO: Add get static props, figure a better loading mechanism with a redirect to 404 if not found
 
 const ContentPage = () => {
   const router = useRouter()
   const {
     query: { slug, type },
   } = router
-
-  if (!slug) {
-    return <LoadingView />
-  }
 
   const contentType = getContentTypeDefinition(type)
 
@@ -33,13 +28,12 @@ const ContentPage = () => {
   const { data } = useSWR(API.content[type] + '/' + slug, fetch)
 
   return (
-    available && (
-      <Layout title="Content">
-        <h1>Detail of {type}</h1>
-        {!data && <div className="nothing">Not found</div>}
-        {data && <ContentDetailView type={contentType} content={data} />}
-      </Layout>
-    )
+    <Layout title="Content">
+      {available && <h1>Detail of {type}</h1>}
+      {!available && <LoadingView/> }
+      {available && !data && <div className="nothing">Not found</div>}
+      {available && data && <ContentDetailView type={contentType} content={data} />}
+    </Layout>
   )
 }
 
