@@ -4,9 +4,15 @@
 ## Features
 
 - Dynamic Admin dashboard
+  - Administration of users
+  - Administration of content
+  - Administration of comments
 - Dynamic API
-- Static Pages setup
-- Demo Pages with infinite scroll
+  - REST API for content, users, comments, users-activity
+- Static Content Generation
+  - Write Markdown and get static HTML generated pages for high performance
+- Themes (Dark, Light, Robot)
+  - Multi Theme support, cookie based
 - Login with [Passport.js](http://www.passportjs.org)
 - ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
 - Integrated with Firebase and MongoAtlas
