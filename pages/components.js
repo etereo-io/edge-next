@@ -7,6 +7,7 @@ import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
 import Select from '../components/generic/select/select'
 import SocialShare from '../components/generic/social-share/social-share'
+import TagsInput from '../components/generic/tags-input/tags-input'
 import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 
 const Components = () => {
@@ -68,6 +69,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#contentsummaryview">Content Summary View</a>
+            </li>
+            <li>
+              <a href="#tagsinput">Tags Input</a>
             </li>
           </ul>
         </div>
@@ -274,6 +278,25 @@ const links = [{
             }</pre>
           </div>
 
+          <div id="tagsinput" className="component">
+            <h3>Tags Input</h3>
+            <div className="component-demo">
+              
+              <div className="item-wrapper">
+                <TagsInput placeholder="Add some tags"/>
+              </div>
+
+              <div className="item-wrapper">
+                <TagsInput defaultTags={[{label: 'Software', slug:'software'}, {label: 'Web dev', slug: 'web-dev'}]} placeholder="Your tags"/>
+              </div>
+              
+            </div>
+            <pre>{`
+<TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
+            `           
+            }</pre>
+          </div>
+
         </div>
 
       </div>
@@ -283,6 +306,13 @@ const links = [{
         }
         .components-layout {
           display: flex;
+          flex-wrap: wrap;
+        }
+
+        @media (max-width: 780px) {
+          .components-layout {
+            flex-direction: column;
+          }
         }
 
         .list-menu {
@@ -330,6 +360,19 @@ const links = [{
           border-radius: var(--empz-radius);
           margin: var(--empz-gap);
           font-size: 13px;
+          overflow-x: scroll;
+        }
+
+        @media (max-width: 780px) {
+          .components pre {
+            max-width: 80vw;
+            margin: 0;
+            padding: 5px;
+          }
+
+          .components {
+            margin: 0;
+          }
         }
 
         .component {

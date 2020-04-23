@@ -34,7 +34,7 @@ The Content API is defined on your set of rules in the configuration file, the o
 ### Users
 - `GET /api/users`
   - Access limited to users with permission `user.list` or `user.admin`
-- `GET /api/users/ID`
+- `GET /api/users/ID` | `GET /api/users/me`
   - Access limited to own user or users with permission `user.read` or `user.admin`
 - `POST /api/users`
   - Access limited to `user.admin`

@@ -255,17 +255,11 @@ module.exports = (defaultOptions) => {
       initialTags: [
         {
           slug: 'software',
-          label: {
-            en: 'Software',
-            es: 'Software',
-          },
+          label: 'Software',
         },
         {
           slug: 'ai',
-          label: {
-            en: 'Artificial Inteligence',
-            es: 'Inteligencia Artificial',
-          },
+          label: 'Artificial Inteligence'
         },
       ],
     }

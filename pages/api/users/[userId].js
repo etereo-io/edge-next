@@ -14,7 +14,7 @@ const hasPermissionForUserDetail = async (req, res, cb) => {
 
   // If there is a item we need to check also if the content owner is the current user
   const isOwner = session && req.userId === session.id
-  const canAccess = hasPermission(session, permission) || isOwner
+  const canAccess = hasPermission(session, permission) || isOwner || req.query.userId === 'me'
 
   if (!canAccess) {
     cb(new Error('User not authorized to ' + permission))
@@ -23,14 +23,30 @@ const hasPermissionForUserDetail = async (req, res, cb) => {
   }
 }
 
-const userExist = userId => async (req, res, cb) => {
-  const user = await findOneUser({id: userId})
 
-  if(!user) {
-    cb(new Error('User not found'))
+const userExist = userId => async (req, res, cb) => {
+  if (userId === 'me') {
+    try {
+      const session = await getSession(req)
+
+      if (!session) {
+        cb(new Error('User not found'))
+      } else {
+        req.user = session
+        cb()
+      }
+    } catch(e) {
+      cb(new Error('Error while getting current user'))
+    }
   } else {
-    req.user = user
-    cb()
+    const user = await findOneUser({id: userId})
+  
+    if(!user) {
+      cb(new Error('User not found'))
+    } else {
+      req.user = user
+      cb()
+    }
   }
 }
 
