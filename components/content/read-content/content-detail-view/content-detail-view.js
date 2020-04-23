@@ -1,7 +1,7 @@
 import CommentForm from '../../../comments/comment-form/comment-form'
 import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import ContentActions from '../../content-actions/content-actions'
-import styles from './content-detail-view.module.scss'
+import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { usePermission } from '../../../../lib/hooks'
 
 export default function (props) {
@@ -13,23 +13,16 @@ export default function (props) {
   )
 
   return (
-    <div className={styles.contentDetailView}>
-      <div className={styles['content-detail-wrapper']}>
-        <div className={styles['content-detail-content']}>
-          {props.type.fields.map((field) => {
-            return (
-              <div className={styles.field}>
-                <div className={styles.label}>{field.name}</div>
-                <div className="value">
-                  {props.content[field.name]}
-                </div>
-              </div>
-            )
-          })}
+    <>
+    <div >
+      <div className={'content-detail-wrapper'}>
+        <div className={'content-detail-content'}>
+          <ContentSummaryView content={props.content} links={false} type={props.type} />
+          {/*<UserBlock title="Author" user={author} />*/}
         </div>
 
-        <ContentActions className={styles['content-actions']} content={props.content} />
-
+        <ContentActions className={'content-actions'} content={props.content} />
+        
       </div>
 
       {props.type.comments.enabled && canWriteComments && (
@@ -40,5 +33,30 @@ export default function (props) {
         <CommentsFeed type={props.type} contentId={props.content.id} />
       )}
     </div>
+      <style jsx>{`
+      .content-detail-wrapper {
+        display: flex;
+      }
+      .content-actions {
+        padding: var(--empz-gap);
+        max-width: 200px;
+      }
+    
+      .content-detail-content {
+        background: var(--empz-background);
+        padding: var(--empz-gap);
+        margin-bottom: var(--empz-gap-double);
+        flex: 1;
+      }
+    
+      .label {
+        font-weight: bold;
+      }
+    
+      .field {
+        margin-bottom: var(--empz-gap)
+      }
+      `}</style>
+    </>
   )
 }

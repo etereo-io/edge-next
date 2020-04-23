@@ -1,25 +1,55 @@
 const posts = []
 const products = []
 const comments = []
+const initialActivity = []
 
 for (var i = 0; i < 100; i++) {
+  const userId = Math.round(Math.random() * 10)
+
   posts.push({
     type: 'post',
     id: i,
-    author: Math.round(Math.random() * 10),
+    author: userId,
     title: 'Example post',
     slug: 'example-post-' + i,
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
     description: 'This is an example description',
-    tags: ['software', 'ai'],
+    tags: [{
+      slug: 'software',
+      label: 'SOFTWARE'
+    }, {
+      slug: 'ai',
+      label: 'AI'
+    }],
   })
+
   products.push({
     type: 'product',
     id: i,
-    author: Math.round(Math.random() * 10),
+    author: userId,
     title: 'Example product',
     slug: 'example-product-' + i,
     description: 'This is an example description',
+  })
+
+  initialActivity.push({
+    author: userId,
+    type: 'content_added',
+    meta: {
+      contentTitle: 'Example post', // This will not work with dynamic fields
+      contentType: 'post',
+      contentId: i
+    }
+  })
+
+  initialActivity.push({
+    author: userId,
+    type: 'content_added',
+    meta: {
+      contentTitle: 'Example product', // This will not work with dynamic fields
+      contentType: 'product',
+      contentId: i
+    }
   })
 
   for(var j = 0; j < 50; j++) {
@@ -30,6 +60,16 @@ for (var i = 0; i < 100; i++) {
       message: 'A demo comment',
       author: Math.round(Math.random() * 10),
       slug: 'test-comment-' + j
+    })
+
+    initialActivity.push({
+      author: userId,
+      type: 'comment_added',
+      meta: {
+        commentId: j,
+        contentId: i,
+        contentType: 'post'
+      }
     })
   }
 }
@@ -216,7 +256,8 @@ module.exports = (defaultOptions) => {
           deleted: [defaultOptions.roles.admin],
           edited: [defaultOptions.roles.admin]
         }
-      }
+      },
+      initialActivity: initialActivity
     },
 
     // Users configuration
@@ -249,19 +290,5 @@ module.exports = (defaultOptions) => {
       types: [postContentType, productContentType],
       initialContent: initialContent,
     },
-
-    // Tags configuration
-    tags: {
-      initialTags: [
-        {
-          slug: 'software',
-          label: 'Software',
-        },
-        {
-          slug: 'ai',
-          label: 'Artificial Inteligence'
-        },
-      ],
-    }
   }
 }

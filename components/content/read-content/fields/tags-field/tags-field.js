@@ -1,22 +1,17 @@
 import Link from 'next/link'
-import config from '../../../../../lib/config'
 
 function Tag(props) {
-  // Todo: maybe tags need to be managed differently
- 
-  const tag = config.tags.initialTags.find((i) => i.slug === props.tag)
-
   return (
     <>
-      <Link href={`/tag/${tag.slug}`}>
-        <a className='tag'>{tag.label}</a>
+      <Link href={`/tag/${props.tag.slug}`}>
+        <a className='tag'>{props.tag.label}</a>
       </Link>
     <style jsx>{`
     .tag {
       padding: 5px;
-      background: var(--empz-background);
+      background: var(--empz-foreground);
       border-radius: 5px;
-      color: var(--empz-foreground);
+      color: var(--empz-background);
       margin: 5px;
       cursor: pointer;
     }

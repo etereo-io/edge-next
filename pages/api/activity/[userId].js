@@ -12,7 +12,7 @@ const hasPermissionForActivity = async (req, res, cb) => {
 
   // If there is a item we need to check also if the content owner is the current user
   const isOwner = session && req.userId === session.id
-  canAccess = hasPermission(session, permission) || isOwner
+  const canAccess = hasPermission(session, permission) || isOwner
 
   if (!canAccess) {
     cb(new Error('User not authorized to ' + permission))
@@ -55,7 +55,7 @@ export default async (req, res) => {
   } = req
 
   const filterParams = {
-    user: userId
+    author: userId
   }
 
   const searchParams = {

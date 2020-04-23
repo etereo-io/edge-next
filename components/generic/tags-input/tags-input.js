@@ -23,6 +23,7 @@ function Tag(props) {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      text-transform: uppercase;
     }
 
     .close {
@@ -68,7 +69,10 @@ export default function(props) {
           makeNewTag(ev.target.value)
         ]
         setTags(newTags)
-        props.onChange(newTags)
+        
+        if(props.onChange) {
+          props.onChange(newTags)
+        }
       }
 
       setInputValue('')
@@ -85,7 +89,9 @@ export default function(props) {
 
     setTags(newTags)
     
-    props.onChange(newTags)
+    if (props.onChange) {
+      props.onChange(newTags)
+    }
   }
 
   return (
@@ -116,6 +122,7 @@ export default function(props) {
       padding: 5px;
       width: 100%;
       flex: 1;
+      text-transform: uppercase;
     }
 
   `}</style>

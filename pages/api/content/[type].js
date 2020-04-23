@@ -32,6 +32,7 @@ export function fillContentWithDefaultData(contentType, content, user) {
 
     contentType.fields.forEach(f => {
       defaultEmptyFields[f.name] = f.defaultValue || null
+     
     })
 
     // Fill in the mandatory data like author, id, date, type

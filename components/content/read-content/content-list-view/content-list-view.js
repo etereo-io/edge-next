@@ -5,7 +5,6 @@ import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import fetch from '../../../../lib/fetcher'
-import styles from './content-list-view.module.scss'
 import { useOnScreen } from '../../../../lib/hooks'
 
 function Placeholder() {
@@ -41,7 +40,10 @@ export default function(props) {
 
       const { results } = data;
       return results.map(item => {
-         return <ContentSummaryView className={styles['content-summary-view']} key={item.id} content={item} type={props.type} />
+         return <div key={item.id}><div className="item">
+          <ContentSummaryView content={item} type={props.type} links={true} />
+         </div>
+        <style jsx>{`.item { margin-bottom: 30px;}`}</style> </div>
       })
     },
     SWR => {
@@ -59,7 +61,8 @@ export default function(props) {
   }, [isOnScreen]);
 
   
-  return <div className={styles.contentListView}>
+  return <>
+   <div className='contentListView'>
     { !isEmpty ? pages : <EmptyComponent /> }
     <div className="load-more">
       {isReachingEnd
@@ -68,4 +71,14 @@ export default function(props) {
     
     </div>
   </div>
+  <style jsx>{`
+  
+    .content-summary-wrapper {
+      margin-bottom: var(--empz-gap-double);
+      border-bottom: var(--light-border);
+      padding-bottom: var(--empz-gap-double);
+    }
+  
+  `}</style>
+  </>
 }

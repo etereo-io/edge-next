@@ -49,7 +49,7 @@ function LoggedInUserHeader(props) {
           })
           .map((type) => {
             return (
-              <li>
+              <li key={type.slug}>
                 <Link href={`/create/${type.slug}`}>
                   <a>Create {type.title.en}</a>
                 </Link>

@@ -141,6 +141,13 @@ const links = [{
             <div className="component-demo">
               <div className="item-wrapper">
                 <Avatar />
+                <Avatar width={60}/>
+                <Avatar width={30}/>
+              </div>
+              <div className="item-wrapper">
+                <Avatar loading={true}/>
+                <Avatar loading={true} width={60}/>
+                <Avatar loading={true} width={30}/>
               </div>
               <div className="item-wrapper">
                 <Avatar src="/static/demo-images/profile.jpeg" />
@@ -361,6 +368,9 @@ const links = [{
           margin: var(--empz-gap);
           font-size: 13px;
           overflow-x: scroll;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          text-align: justify;
         }
 
         @media (max-width: 780px) {

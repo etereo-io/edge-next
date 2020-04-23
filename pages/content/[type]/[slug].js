@@ -1,6 +1,5 @@
 import API from '../../../lib/api/api-endpoints'
 import ContentDetailView from '../../../components/content/read-content/content-detail-view/content-detail-view'
-import ContentSummaryView from '../../../components/content/read-content/content-summary-view/content-summary-view'
 import Layout from '../../../components/layout/normal/layout'
 import fetch from '../../../lib/fetcher'
 import { getContentTypeDefinition } from '../../../lib/config'
@@ -29,7 +28,6 @@ const ContentPage = () => {
 
   return (
     <Layout title="Content">
-      {available && <h1>Detail of {type}</h1>}
       {!available && <LoadingView/> }
       {available && !data && <div className="nothing">Not found</div>}
       {available && data && <ContentDetailView type={contentType} content={data} />}

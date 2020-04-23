@@ -1,16 +1,20 @@
 // See discussion https://github.com/zeit/next.js/discussions/11784
 // See example
-import http from "http"
-import fetch from "isomorphic-unfetch"
-import listen from "test-listen"
+
 import { apiResolver } from "next/dist/next-server/server/api-utils"
+import fetch from "isomorphic-unfetch"
+import getPermissions from '../../../../lib/permissions/get-permissions'
+import { getSession } from '../../../../lib/api/auth/iron'
+import handler from '../../../../pages/api/content/[type]'
+import http from "http"
+import listen from "test-listen"
 
 jest.mock('../../../../lib/api/auth/iron')
 jest.mock('../../../../lib/permissions/get-permissions')
-import getPermissions from '../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../lib/api/auth/iron'
 
-import handler from '../../../../pages/api/content/[type]'
+
+
+
 
 describe('Integrations tests for content creation endpoint', () => {
   let server
@@ -143,6 +147,53 @@ describe('Integrations tests for content creation endpoint', () => {
     })
 
     expect(response.status).toBe(200)
+  })
+
+
+  describe('form data', () => {
+    test('should allow to send data as a form', async () => {
+
+      const urlToBeUsed = new URL(url)
+      const params = { type: 'post' }
+      Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+
+      getPermissions.mockReturnValueOnce({
+        'content.post.write': ['public'],
+      })
+
+      getSession.mockReturnValueOnce({
+        roles: ['public'],
+        id: 'a-user-id'
+      })
+
+      const data = new URLSearchParams()
+      data.append('title', 'the title')
+      data.append('tags', 'tag 1')
+      data.append('tags', 'tag 2')
+      data.append('tags', 'tag 3')
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: data
+      })
+
+      expect(response.status).toBe(200)
+      const jsonResult = await response.json()
+
+      expect(jsonResult).toMatchObject({
+        title: 'the title',
+        type: 'post',
+        slug: expect.any(String),
+        description: null,
+        tags: ['tag 1', 'tag 2' , 'tag 3'],
+        image: null,
+        author: 'a-user-id',
+        id: expect.anything()
+      })
+    })
   })
 
 })

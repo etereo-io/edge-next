@@ -158,6 +158,7 @@ export default function (props) {
   const onSubmit = (ev) => {
     ev.preventDefault()
 
+    
     console.log('THe state, st', state)
 
     const data = new URLSearchParams()
@@ -204,7 +205,7 @@ export default function (props) {
       <form name="content-form" onSubmit={onSubmit}>
         {/* {JSON.stringify(props.type)} */}
         {props.type.fields.map((field) => (
-          <Field field={field} value={state[field.name]} onChange={handleFieldChange(field.name)}/>
+          <Field key={field.name} field={field} value={state[field.name]} onChange={handleFieldChange(field.name)}/>
         ))}
 
         <div className={styles.actions}>

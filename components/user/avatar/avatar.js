@@ -7,7 +7,8 @@ export default function(props) {
   return (
     <>
     <div className="avatar">
-      <img title={title} src={src} ></img>
+      {!props.loading && <img title={title} src={src} ></img>}
+      {props.loading && <span className="empty-avatar"></span>}
     </div>
     <style jsx>{
       `
@@ -15,6 +16,14 @@ export default function(props) {
         border-radius: 100%;
         overflow: hidden;
         width: 100%;
+      }
+
+      .empty-avatar {
+        width: 100%;
+        height: ${width}px;
+        border: var(--light-border);
+        display: block;
+        border-radius: 100%;
       }
       
       .avatar {
