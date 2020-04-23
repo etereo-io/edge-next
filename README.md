@@ -68,6 +68,11 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `DELETE /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]` 
   - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.delete`
 
+### Activity
+
+- `GET /api/activity/[USER_ID]`
+  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin`
+
 
 ## Databases
 Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"

@@ -25,7 +25,7 @@ const ContentPage = () => {
 
   // Load data
   const { data } = useSWR(slug && type ? API.content[type] + '/' + slug :  null, fetch)
-  console.log(data, available)
+  
   return (
     <Layout title="Content">
       {!available && <LoadingView/> }
