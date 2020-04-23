@@ -51,10 +51,10 @@ const ListItem = (props) => {
           const content =
             index === 0 ? (
               <Link href={`/content/${props.type.slug}/${props.item.slug}`}>
-                {value}
+                {typeof value === 'string' ? value : JSON.stringify(value)}
               </Link>
             ) : (
-              value
+              typeof value === 'string' ? value : JSON.stringify(value)
             )
 
           return <div className={styles.column}>{content}</div>
