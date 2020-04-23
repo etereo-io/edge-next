@@ -24,8 +24,8 @@ const ContentPage = () => {
   const available = usePermission(`content.${type}.read`, '/', 'slug')
 
   // Load data
-  const { data } = useSWR(API.content[type] + '/' + slug, fetch)
-
+  const { data } = useSWR(slug && type ? API.content[type] + '/' + slug :  null, fetch)
+  console.log(data, available)
   return (
     <Layout title="Content">
       {!available && <LoadingView/> }
