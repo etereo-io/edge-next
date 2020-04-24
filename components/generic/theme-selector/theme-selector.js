@@ -37,6 +37,9 @@ export default function(props) {
   }, {
     title: 'Robot',
     id: MODE.ROBOT
+  }, {
+    title: 'Kawaii',
+    id: MODE.KAWAII
   }]
 
   const onChange = (ev) => {
@@ -52,6 +55,9 @@ export default function(props) {
   }, {
     value: MODE.ROBOT,
     prefix: <ColorBubble color="#33cf33" />
+  },  {
+    value: MODE.KAWAII,
+    prefix: <ColorBubble color="pink" />
   }]
 
   return (
