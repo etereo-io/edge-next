@@ -48,7 +48,7 @@ const Profile = () => {
             return (
               <div className="content-block">
                 <h3>User's {cData.title.en}s</h3>
-                <ContentListView infiniteScroll={false} initialData={[]} type={cData} query={`author=${user ? user.id : null}`} />
+                <ContentListView infiniteScroll={false} type={cData} query={`author=${user ? user.id : null}`} />
               </div>
             )
           })}
