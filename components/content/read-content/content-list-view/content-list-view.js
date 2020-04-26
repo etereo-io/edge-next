@@ -27,14 +27,14 @@ export default function(props) {
   const infiniteScroll = props.infiniteScroll
   const query = props.query
   const identificator = 'content-list-'+props.type.slug+'-'+ query
-
+  console.log('THE INITIAL' , props.initialData)
   // Fetch content type page by page
   const { pages, isLoadingMore, loadMore, isEmpty, isReachingEnd } = useSWRPages(
     identificator,
     ({ offset, withSWR }) => {
       
       const apiUrl = `${API.content[props.type.slug]}?limit=10${offset ? '&from=' + offset : ''}${query ? `&${query}`: ''}`
-      const { data } = withSWR(useSWR(apiUrl, fetch, props.data || []));
+      const { data } = withSWR(useSWR(apiUrl, fetch, { initialData: props.initialData }));
 
       if (!data) return <Placeholder/>;
 
