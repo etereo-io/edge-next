@@ -1,0 +1,24 @@
+.loadingSpinner .ring:after {
+  content: " ";
+  display: block;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  border: 0.15em solid var(--empz-foreground);
+  border-color: var(--empz-foreground) transparent var(--empz-foreground)
+    transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+.loadingSpinner.alt .ring:after {
+  border: 0.15em solid var(--empz-background);
+  border-color: var(--empz-background) transparent var(--empz-background)
+    transparent;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
