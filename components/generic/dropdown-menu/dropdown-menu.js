@@ -19,14 +19,14 @@ export default function(props) {
       </div>
       <style jsx>{`
         .dropdown-menu {
-          width: 40px;
-          height: 40px;
-          border: var(--light-border);
+          width: 36px;
+          height: 36px;
           display: flex;
           justify-content: center;
           align-items: center;
           border-radius: var(--empz-radius);
           background: transparent;
+          cursor: pointer;
           transition: background-color .2s ease;
           position: relative;
           -webkit-user-select: none;
@@ -50,8 +50,8 @@ export default function(props) {
         .dropdown-menu-indicator::before, .dropdown-menu-indicator::after {
           content: "";
           display: block;
-          height: 1px;
-          width: 22px;
+          height: 2px;
+          width: 24px;
           background-color: var(--empz-foreground);
           transition: transform .15s ease;
         }
@@ -69,7 +69,7 @@ export default function(props) {
         }
 
         .dropdown-menu-indicator.open::after {
-          transform: translateY(1px) rotate(-45deg);
+          transform: translateY(0) rotate(-45deg);
         }
 
         .dropdown-menu-wrapper {
@@ -79,6 +79,7 @@ export default function(props) {
           color: var(--empz-foreground);
           padding: var(--empz-gap);
           box-shadow: var(--shadow-medium);
+          z-index: 1;
         }
 
         .dropdown-menu-wrapper.left {
@@ -99,8 +100,7 @@ export default function(props) {
           align-items: center;
           width: 100%;
           font-size: 1rem;
-          border-bottom: var(--light-border);
-          padding: 8px;
+          padding: 4px;
         }
 
         nav.dropdown-menu-nav > :global(ul li a) {

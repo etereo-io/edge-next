@@ -6,13 +6,10 @@
   padding-left: var(--empz-gap);
   padding-right: var(--empz-gap);
   color: var(--empz-background);
-  margin-top: 120px;
 
   .site-logo {
-    background: var(--empz-background);
-    padding: 10px;
-    width: 80px;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    width: 40px;
   }
 
   .site-logoImg {
@@ -25,7 +22,7 @@
   }
 
   .links {
-    font-weight: 600;
+    font-weight: 500;
 
   }
   
@@ -36,6 +33,7 @@
 
   .strong {
     color: var(--empz-secondary);
+    padding-right: var(--empz-gap);
   }
   
   ul {
@@ -46,8 +44,8 @@
   }
 
   li {
-    margin-right: 30px;
-    margin-bottom: 30px;
+    padding-bottom: var(--empz-gap);
+    padding-right: var(--empz-gap);
   }
 
   .copy {

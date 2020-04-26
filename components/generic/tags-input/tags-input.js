@@ -14,16 +14,15 @@ function Tag(props) {
       <div className="tag">{props.tag.label} <span className="close" onClick={props.onClickRemove}><svg width="100%" height="auto"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path id="close-path" d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm0 10.293l5.293-5.293.707.707-5.293 5.293 5.293 5.293-.707.707-5.293-5.293-5.293 5.293-.707-.707 5.293-5.293-5.293-5.293.707-.707 5.293 5.293z"/></svg></span></div>
   <style jsx>{`
     .tag {
-      padding: 5px 5px 5px 10px;
+      padding: 4px 4px 4px 8px;
       border-radius: var(--empz-radius);
-      color: var(--empz-background);
-      background: var(--empz-secondary);
-      margin: 5px;
+      color: var(--empz-foreground);
+      background: var(--accents-2);
+      margin-right: 8px;
       font-size: 13px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      text-transform: uppercase;
     }
 
     .close {
@@ -38,7 +37,7 @@ function Tag(props) {
     }
 
     #close-path {
-      fill: var(--empz-background);
+      fill: var(--empz-foreground);
     }
   `}</style>
     </>
@@ -122,7 +121,6 @@ export default function(props) {
       padding: 5px;
       width: 100%;
       flex: 1;
-      text-transform: uppercase;
     }
 
   `}</style>

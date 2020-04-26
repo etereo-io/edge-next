@@ -1,20 +1,19 @@
 .button {
-
   border-radius: var(--empz-radius);
   border: var(--light-border);
   background: var(--empz-background);
   color: var(--empz-foreground);
   cursor: pointer;
   display: inline-block;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   padding: 8px var(--empz-gap);
   transition: 0.3s ease;
-  text-transform: uppercase;
   -webkit-appearance: none;
 
   &:hover {
     background: var(--empz-secondary);
+    color: var(--empz-background);
   }
 
   &.alt {

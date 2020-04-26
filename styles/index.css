@@ -1,23 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;700&family=IBM+Plex+Sans:wght@300;400;700&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;700&family=IBM+Plex+Sans:wght@300;400;700&display=swap");
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
   scroll-behavior: smooth;
 }
-
-
-// Global variables
 :root {
   --empz-gap: 16pt;
   --empz-gap-negative: -16pt;
@@ -42,11 +37,14 @@
   --empz-purple: #f81ce5;
   --empz-violet: #7928ca;
   --empz-alert: #ff0080;
-  --font-sans: "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
-  --font-mono: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  --font-mono: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
   --header-height: 64px;
-  --header-border-bottom: inset 0 -1px 0 0 rgba(0,0,0,0.1);
-  --header-background: hsla(0,0%,100%,0.8);
+  --header-border-bottom: inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  --header-background: rgba(255, 255, 255, 0.8);
   --empz-form-large-font: 1rem;
   --empz-form-large-height: 3rem;
   --empz-form-large-line-height: 1.5rem;
@@ -57,8 +55,6 @@
   --empz-form-height: 2.5rem;
   --empz-form-line-height: 1.25rem;
 }
-
-// Theme variables
 :root {
   --empz-foreground: #000;
   --empz-background: #fff;
@@ -86,21 +82,20 @@
   --empz-secondary-light: var(--accents-3);
   --empz-secondary: var(--accents-5);
   --empz-secondary-dark: var(--accents-7);
-  --dropdown-box-shadow: 0 4px 4px 0 rgba(0,0,0,0.02);
+  --dropdown-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   --dropdown-triangle-stroke: #fff;
   --scroller-start: #fff;
-  --scroller-end: hsla(0,0%,100%,0);
-  --shadow-smallest: 0px 4px 8px rgba(0,0,0,0.12);
-  --shadow-small: 0 5px 10px rgba(0,0,0,0.12);
-  --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
-  --shadow-large: 0 30px 60px rgba(0,0,0,0.12);
-  --shadow-hover: 0 30px 60px rgba(0,0,0,0.12);
-  --shadow-sticky: 0 12px 10px -10px rgba(0,0,0,0.12);
+  --scroller-end: rgba(255, 255, 255, 0);
+  --shadow-smallest: 0px 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-small: 0 5px 10px rgba(0, 0, 0, 0.12);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-large: 0 30px 60px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 30px 60px rgba(0, 0, 0, 0.12);
+  --shadow-sticky: 0 12px 10px -10px rgba(0, 0, 0, 0.12);
   --portal-opacity: 0.25;
-  --light-border-color: rgba(0,0,0, 0.2);
+  --light-border-color: rgba(0, 0, 0, 0.2);
   --light-border: 1px solid var(--light-border-color);
 }
-
 .dark-theme {
   --empz-foreground: #fff;
   --empz-background: #000;
@@ -132,20 +127,18 @@
   --dropdown-triangle-stroke: #333;
   --scroller-start: #000;
   --scroller-end: transparent;
-  --header-background: rgba(0,0,0,0.5);
-  --header-border-bottom: inset 0 -1px 0 0 hsla(0,0%,100%,0.1);
+  --header-background: rgba(0, 0, 0, 0.5);
+  --header-border-bottom: inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
   --shadow-small: 0 0 0 1px var(--accents-2);
   --shadow-medium: 0 0 0 1px var(--accents-2);
   --shadow-large: 0 0 0 1px var(--accents-2);
   --shadow-sticky: 0 0 0 1px var(--accents-2);
   --shadow-hover: 0 0 0 1px var(--empz-foreground);
   --portal-opacity: 0.75;
-  --light-border-color: rgba(255,255,255, 0.3);
+  --light-border-color: rgba(255, 255, 255, 0.3);
   --light-border: 1px solid var(--light-border-color);
 }
-
 .robot-theme {
-  
   --empz-foreground: #33cf33;
   --empz-background: #000;
   --empz-selection: var(--empz-purple);
@@ -176,8 +169,8 @@
   --dropdown-triangle-stroke: #333;
   --scroller-start: #000;
   --scroller-end: transparent;
-  --header-background: rgba(0,0,0,0.5);
-  --header-border-bottom: inset 0 -1px 0 0 hsla(0,0%,100%,0.1);
+  --header-background: rgba(0, 0, 0, 0.5);
+  --header-border-bottom: inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
   --shadow-small: 0 0 0 1px var(--accents-2);
   --shadow-medium: 0 0 0 1px var(--accents-2);
   --shadow-large: 0 0 0 1px var(--accents-2);
@@ -187,8 +180,6 @@
   --light-border-color: rgba(0, 255, 55, 0.3);
   --light-border: 1px solid var(--light-border-color);
 }
-
-
 .kawaii-theme {
   --empz-gap: 20pt;
   --empz-gap-negative: -20pt;
@@ -205,8 +196,6 @@
   --empz-breakpoint-mobile: 600px;
   --empz-breakpoint-tablet: 960px;
   --empz-radius: 24px;
-
-  
   --empz-foreground: white;
   --empz-background: pink;
   --empz-selection: var(--empz-purple);
@@ -237,8 +226,8 @@
   --dropdown-triangle-stroke: #333;
   --scroller-start: #000;
   --scroller-end: transparent;
-  --header-background: rgba(0,0,0,0.5);
-  --header-border-bottom: inset 0 -1px 0 0 hsla(0,0%,100%,0.1);
+  --header-background: rgba(0, 0, 0, 0.5);
+  --header-border-bottom: inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
   --shadow-small: 0 0 0 1px var(--accents-2);
   --shadow-medium: 0 0 0 1px var(--accents-2);
   --shadow-large: 0 0 0 1px var(--accents-2);
@@ -248,8 +237,6 @@
   --light-border-color: white;
   --light-border: 1px solid var(--light-border-color);
 }
-
-
 #app-container {
   margin: 0;
   background-color: var(--empz-background);

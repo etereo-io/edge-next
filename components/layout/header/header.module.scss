@@ -1,15 +1,16 @@
-
 $breakpoint-tablet: 960px;
 
 .header {
   color: var(--empz-foreground);
   background: var(--empz-background);
-  border-bottom: var(--light-border);
-  box-shadow: 6px -17px 20px 10px rgba(0,0,0,0.3);
+  border-bottom: 1px solid var(--accents-2);
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 4;
 
-  
   .header-content {
-    max-width: var(--empz-page-width);
+    //max-width: var(--empz-page-max-width);
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
@@ -30,13 +31,8 @@ $breakpoint-tablet: 960px;
     width: 75px;
     padding: var(--empz-gap);
     cursor: pointer;
-
-    @media (max-width: $breakpoint-tablet) {
-      width: 50px;
-      padding: 5px;
-    }
   }
-  
+
   .navigation {
     display: flex;
     list-style: none;
@@ -58,7 +54,7 @@ $breakpoint-tablet: 960px;
   }
   a {
     color: var(--empz-link-color);
+    font-size: 14px;
     text-decoration: none;
   }
-  
 }

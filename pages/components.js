@@ -13,39 +13,43 @@ import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 const Components = () => {
   const demoContent = {
     title: 'This is an example content',
-    textarea: 'Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,  Lorem ipsum dolor sit amet,  Lorem ipsum dolor sit amet, ',
+    textarea:
+      'Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet,  Lorem ipsum dolor sit amet,  Lorem ipsum dolor sit amet, ',
     slug: 'the-slug',
-    type: 'demo-content-type'
+    type: 'demo-content-type',
   }
 
   const demoContentWithImage = {
     title: 'This is an example content',
     img: 'https://i.picsum.photos/id/400/200/200.jpg',
     slug: 'the-slug',
-    type: 'demo-content-type'
+    type: 'demo-content-type',
   }
 
   const demoContentType = {
     slug: 'demo-content-type',
-    fields: [{
-      type: 'text',
-      name: 'title',
-      title: true,
-      label: 'title'
-    }, {
-      type: 'img',
-      name: 'img',
-      label: 'img'
-    }, {
-      type: 'textarea',
-      name: 'textarea',
-      label: 'textarea'
-    }]
+    fields: [
+      {
+        type: 'text',
+        name: 'title',
+        title: true,
+        label: 'title',
+      },
+      {
+        type: 'img',
+        name: 'img',
+        label: 'img',
+      },
+      {
+        type: 'textarea',
+        name: 'textarea',
+        label: 'textarea',
+      },
+    ],
   }
 
   return (
-    <Layout title="Components showcase">
-      <h1>Components showcase</h1>
+    <Layout title="Components showcase" fullWidth={true}>
       <div className="components-layout">
         <div className="list-menu">
           <ul>
@@ -76,22 +80,43 @@ const Components = () => {
           </ul>
         </div>
         <div className="components">
-          
+          <h1>Components showcase</h1>
+
           <div id="drop-menu" className="component">
             <h3>Dropdown menu</h3>
             <div className="component-demo">
               <div className="item-wrapper">
                 <DropdownMenu align={'left'}>
                   <ul>
-                    <li><Link href="/" ><a title="Home">Home</a></Link></li>
-                    <li><Link href="/profile" ><a title="Home">Profile</a></Link></li>
-                    <li><Link href="/components" ><a title="Components">Components</a></Link></li>
+                    <li>
+                      <Link href="/">
+                        <a title="Home">Home</a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/profile">
+                        <a title="Home">Profile</a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/components">
+                        <a title="Components">Components</a>
+                      </Link>
+                    </li>
                   </ul>
                   <span className="spacer"></span>
                   <h4>Content</h4>
                   <ul>
-                    <li><Link href="/create/post" ><a title="New Post">New Post</a></Link></li>
-                    <li><Link href="/content/post" ><a title="Read posts">Read posts</a></Link></li>
+                    <li>
+                      <Link href="/create/post">
+                        <a title="New Post">New Post</a>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/content/post">
+                        <a title="Read posts">Read posts</a>
+                      </Link>
+                    </li>
                   </ul>
                 </DropdownMenu>
               </div>
@@ -110,15 +135,20 @@ const Components = () => {
     <li><Link href="/content/post" ><a title="Read posts">Read posts</a></Link></li>
   </ul>
 </DropdownMenu>
-            `           
-            }</pre>
+            `}</pre>
           </div>
 
           <div id="linklist" className="component">
             <h3>Link list</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <LinkList links={[{title: 'test', link: 'test'}, {title: 'test', link: 'test'}, {title: 'test', link: 'test'}]} />
+                <LinkList
+                  links={[
+                    { title: 'test', link: 'test' },
+                    { title: 'test', link: 'test' },
+                    { title: 'test', link: 'test' },
+                  ]}
+                />
               </div>
             </div>
             <pre>{`
@@ -131,64 +161,56 @@ const links = [{
 }]
 
 <LinkList links={links} />
-            `           
-            }</pre>
+            `}</pre>
           </div>
-
 
           <div id="avatar" className="component">
             <h3>Avatar</h3>
             <div className="component-demo">
               <div className="item-wrapper">
                 <Avatar />
-                <Avatar width={60}/>
-                <Avatar width={30}/>
+                <Avatar width={60} />
+                <Avatar width={30} />
               </div>
               <div className="item-wrapper">
-                <Avatar loading={true}/>
-                <Avatar loading={true} width={60}/>
-                <Avatar loading={true} width={30}/>
+                <Avatar loading={true} />
+                <Avatar loading={true} width={60} />
+                <Avatar loading={true} width={30} />
               </div>
               <div className="item-wrapper">
                 <Avatar src="/static/demo-images/profile.jpeg" />
-                <Avatar src="/static/demo-images/profile.jpeg" width={60}/>
+                <Avatar src="/static/demo-images/profile.jpeg" width={60} />
                 <Avatar src="/static/demo-images/profile.jpeg" width={30} />
               </div>
             </div>
             <pre>{`
 <Avatar />
-            `           
-            }</pre>
+            `}</pre>
           </div>
-
 
           <div id="button" className="component">
             <h3>Button</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Button >Button</Button>
+                <Button>Button</Button>
               </div>
 
               <div className="item-wrapper">
                 <Button loading={true}></Button>
               </div>
-              
 
               <div className="item-wrapper">
-                <Button alt={true} >Button</Button>
+                <Button alt={true}>Button</Button>
               </div>
 
               <div className="item-wrapper">
                 <Button alt={true} loading={true}></Button>
               </div>
-              
             </div>
             <pre>{`
 <Button />
-            `           
-            }</pre>
+            `}</pre>
           </div>
-
 
           <div id="socialshare" className="component">
             <h3>Social Share</h3>
@@ -197,39 +219,50 @@ const links = [{
               <div className="item-wrapper">
                 <SocialShare />
               </div>
-              
             </div>
             <pre>{`
 <SocialShare shareUrl='' />
-            `           
-            }</pre>
+            `}</pre>
           </div>
 
           <div id="select" className="component">
             <h3>Select</h3>
             <div className="component-demo">
-              
               <div className="item-wrapper">
                 <Select value={'ipsum'}>
                   <option>Lorem</option>
-                  <option value='ipsum'>Ipsum</option>
+                  <option value="ipsum">Ipsum</option>
                 </Select>
               </div>
 
               <div className="item-wrapper">
-                
-                <Select value={'ipsum'} prefixes={[{
-                  value: 'lorem',
-                  prefix: <img style={{maxWidth: '100%' }} src="https://i.picsum.photos/id/519/50/50.jpg" />
-                }, {
-                  value: 'ipsum',
-                  prefix: <img style={{maxWidth: '100%' }}  src="https://i.picsum.photos/id/212/50/50.jpg" />
-                }]}>
-                  <option value='lorem'>Lorem</option>
-                  <option value='ipsum'>Ipsum</option>
+                <Select
+                  value={'ipsum'}
+                  prefixes={[
+                    {
+                      value: 'lorem',
+                      prefix: (
+                        <img
+                          style={{ maxWidth: '100%' }}
+                          src="https://i.picsum.photos/id/519/50/50.jpg"
+                        />
+                      ),
+                    },
+                    {
+                      value: 'ipsum',
+                      prefix: (
+                        <img
+                          style={{ maxWidth: '100%' }}
+                          src="https://i.picsum.photos/id/212/50/50.jpg"
+                        />
+                      ),
+                    },
+                  ]}
+                >
+                  <option value="lorem">Lorem</option>
+                  <option value="ipsum">Ipsum</option>
                 </Select>
               </div>
-              
             </div>
             <pre>{`
 <Select name='' onChange={} >
@@ -247,71 +280,76 @@ const links = [{
   <option value='lorem'>Lorem</option>
   <option value='ipsum'>Ipsum</option>
 </Select>
-            `           
-            }</pre>
+            `}</pre>
           </div>
 
           <div id="themeselector" className="component">
             <h3>Theme Selector</h3>
             <div className="component-demo">
-              
               <div className="item-wrapper">
-                <ThemeSelector selectedTheme='Robot'/>
+                <ThemeSelector selectedTheme="Robot" />
               </div>
-              
             </div>
             <pre>{`
 <ThemeSelector selectedTheme='Light' />
-            `           
-            }</pre>
+            `}</pre>
           </div>
 
           <div id="contentsummaryview" className="component">
             <h3>Content Summary View</h3>
             <div className="component-demo">
-              <p>See <b>Content Types</b> documentation for more details</p>
+              <p>
+                See <b>Content Types</b> documentation for more details
+              </p>
               <div className="item-wrapper">
-                <ContentSummaryView type={demoContentType} content={demoContent} />
+                <ContentSummaryView
+                  type={demoContentType}
+                  content={demoContent}
+                />
               </div>
 
               <div className="item-wrapper">
-                <ContentSummaryView type={demoContentType} content={demoContentWithImage} />
+                <ContentSummaryView
+                  type={demoContentType}
+                  content={demoContentWithImage}
+                />
               </div>
-              
             </div>
             <pre>{`
 <ContentSummaryView type={demoContentType} content={demoContent} />
-            `           
-            }</pre>
+            `}</pre>
           </div>
 
           <div id="tagsinput" className="component">
             <h3>Tags Input</h3>
             <div className="component-demo">
-              
               <div className="item-wrapper">
-                <TagsInput placeholder="Add some tags"/>
+                <TagsInput placeholder="Add some tags" />
               </div>
 
               <div className="item-wrapper">
-                <TagsInput defaultTags={[{label: 'Software', slug:'software'}, {label: 'Web dev', slug: 'web-dev'}]} placeholder="Your tags"/>
+                <TagsInput
+                  defaultTags={[
+                    { label: 'Software', slug: 'software' },
+                    { label: 'Web dev', slug: 'web-dev' },
+                  ]}
+                  placeholder="Your tags"
+                />
               </div>
-              
             </div>
             <pre>{`
 <TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
-            `           
-            }</pre>
+            `}</pre>
           </div>
-
         </div>
-
       </div>
       <style jsx>{`
         h1 {
+          padding-left: var(--empz-gap-double);
           margin-bottom: var(--empz-gap);
         }
         .components-layout {
+          align-items: flex-start;
           display: flex;
           flex-wrap: wrap;
         }
@@ -323,31 +361,43 @@ const links = [{
         }
 
         .list-menu {
-          background: var(--empz-background);
-          color: var(--empz-foreground);
-          border: var(--light-border);
-          border-radius: var(--empz-radius);
+          background: var(--accents-1);
+          position: sticky;
+          top: 70px;
+          padding: var(--empz-gap-double);
+          box-sizing: border-box;
+          height: 100vh;
+          z-index: 3;
         }
 
-        .list-menu ul{
+        .list-menu h3 {
+          padding: var(--empz-gap-half) 0 var(--empz-gap);
+        }
+
+        .list-menu ul {
           list-style: none;
         }
 
         .list-menu li a {
-          padding: var(--empz-gap);
+          color: var(--accents-6);
+          font-size: 14px;
+          font-weight: 500;
+          padding: var(--empz-gap-half);
           display: block;
           text-decoration: none;
-          color: var(--empz-link-color);
-          border: var(--light-border);
+        }
+
+        .list-menu li a:hover {
+          background: var(--accents-2);
+          border-radius: var(--empz-radius);
         }
 
         .components {
-          padding: var(--empz-gap);
+          padding: var(--empz-gap-double);
           background: var(--empz-background);
           color: var(--empz-foreground);
-          border: var(--light-border);
-          border-radius: var(--empz-radius);
           margin-left: var(--empz-gap);
+          max-width: var(--empz-page-extra-width);
           flex: 1;
         }
 
@@ -356,28 +406,41 @@ const links = [{
           margin-bottom: var(--empz-gap);
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
         }
 
         .components pre {
-          background: var(--empz-foreground);
-          color: var(--empz-background);
-          padding: var(--empz-gap);
-          border: 1px solid var(--empz-background);
+          background: var(--empz-background);
+          box-sizing: border-box;
+          color: var(--accents-5);
+          padding: var(--empz-gap-double) var(--empz-gap) var(--empz-gap);
+          border: 1px solid var(--accents-2);
           border-radius: var(--empz-radius);
-          margin: var(--empz-gap);
+          font-family: 'IBM Plex Mono', monospace;
           font-size: 13px;
-          overflow-x: scroll;
+          position: relative;
           white-space: pre-wrap;
           word-wrap: break-word;
           text-align: justify;
         }
 
+        .components pre::before{
+          border-top-left-radius: var(--empz-radius);
+          border-top-right-radius: var(--empz-radius);
+          box-sizing: border-box;
+          content: 'Code';
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding: 8px var(--empz-gap);
+          background: var(--accents-1);
+          width: 100%;
+        }
+
         @media (max-width: 780px) {
           .components pre {
-            max-width: 80vw;
             margin: 0;
-            padding: 5px;
+            padding: 16px;
           }
 
           .components {
@@ -386,9 +449,29 @@ const links = [{
         }
 
         .component {
-          border-bottom: var(--light-border);
-          margin-bottom: var(--empz-gap);
-          padding-bottom: var(--empz-gap);
+          padding: var(--empz-gap-double);
+        }
+
+        .component h3  {
+          font-size: 24px;
+        }
+
+        .component p {
+          color: var(--accents-4);
+          display: block;
+          padding-top: var(--empz-gap-half);
+        }
+
+        @media all and (max-width: 960px) {
+          .list-menu{
+            position: fixed;
+            transform: translateX(-100%);
+          }
+
+          .components{
+            margin-left: 0;
+            padding: var(--empz-gap-double) 0;
+          }
         }
       `}</style>
     </Layout>

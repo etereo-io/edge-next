@@ -17,7 +17,7 @@ const Layout = (props) => (
     <Header />
 
     <main>
-      <div className={`${styles.normalContainer}  ${props.className ? props.className : ''}`}>
+      <div className={`${styles.normalContainer} ${props.fullWidth ? styles.fullWidth : ''} ${props.className ? props.className : ''}`}>
         {props.children}
       </div>
     </main>

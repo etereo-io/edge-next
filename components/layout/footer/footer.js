@@ -8,7 +8,7 @@ export default function () {
     <footer className={styles.footer}>
       <div className={styles['footer-content']}>
         <div className={styles['site-logo']}>
-          <img className={styles['site-logoImg']} src="/static/logos/logo.svg" alt="Site logo" />
+          <img className={styles['site-logoImg']} src="/static/logos/logo_dark.svg" alt="Site logo" />
         </div>
 
         <div className={styles.links}>
