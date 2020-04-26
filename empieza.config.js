@@ -270,7 +270,7 @@ module.exports = (defaultOptions) => {
         id: '1',
         password: 'admin',
         profile: {
-          img: '/static/demo-images/profile.jpeg'
+          img: '/static/demo-images/default-avatar.jpg'
         }
       }, {
         username: 'user',
