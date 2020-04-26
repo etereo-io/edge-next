@@ -392,7 +392,7 @@ const links = [{
         .list-menu {
           background: var(--accents-1);
           position: sticky;
-          top: 70px;
+          top: 56px;
           padding: var(--empz-gap-double);
           box-sizing: border-box;
           height: 100vh;
@@ -478,7 +478,7 @@ const links = [{
         }
 
         .component {
-          padding: var(--empz-gap-double);
+          padding: calc(var(--empz-gap-double) * 1.6) var(--empz-gap-double) var(--empz-gap-double);
         }
 
         .component h3  {

@@ -1,14 +1,14 @@
 import { useState } from 'react'
 
-export default function(props) {
+export default function (props) {
   const { name, children, prefixes = [] } = props
 
   const [selectedValue, setSelectedValue] = useState(props.value)
 
-  let selectedPrefix 
-  
+  let selectedPrefix
+
   if (prefixes.length > 0) {
-    selectedPrefix = prefixes.find(p => p.value === selectedValue)
+    selectedPrefix = prefixes.find((p) => p.value === selectedValue)
     if (!selectedPrefix) {
       selectedPrefix = prefixes[0].prefix
     } else {
@@ -18,23 +18,23 @@ export default function(props) {
 
   const onChange = (ev) => {
     setSelectedValue(ev.target.value)
-    if(props.onChange) {
+    if (props.onChange) {
       props.onChange(ev)
     }
   }
 
   return (
     <>
-      <div className={`select-wrapper ${prefixes.length === 0 ? 'no-prefixes': ''}`}>
-        <div className="select-prefix">
-          { selectedPrefix }
-        </div>
+      <div
+        className={`select-wrapper ${
+          prefixes.length === 0 ? 'no-prefixes' : ''
+        }`}
+      >
+        <div className="select-prefix">{selectedPrefix}</div>
         <select name={name} value={selectedValue} onChange={onChange}>
           {children}
         </select>
-        <div className="select-sufix">
-
-        </div>
+        <div className="select-sufix"></div>
       </div>
       <style jsx>{`
         .select-wrapper {
@@ -55,22 +55,58 @@ export default function(props) {
           left: 10px;
         }
 
-        .prefix {
-
-        }
-        select {
-          padding: 5px var(--empz-gap);
-          padding-left: var(--empz-gap-double);
-          border: var(--light-border);
-          color: var(--empz-foreground);
-          background: var(--empz-background);
-        }
-
         .no-prefixes select {
-          padding-left: var(--empz-gap);
+          padding-left: var(--empz-gap-double);
         }
-      `
-      }</style>
+
+        select {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          -ms-appearance: none;
+          appearance: none;
+          outline: 0;
+          box-shadow: none;
+          border: 0 !important;
+          background: var(--accents-2);
+          background-image: none;
+          color: var(--accents-5);
+          font-size: 14px;
+          flex: 1;
+          padding: var(--empz-gap-half) var(--empz-gap-half) var(--empz-gap-half) var(--empz-gap-double);
+          cursor: pointer;
+        }
+        
+        select::-ms-expand {
+          display: none;
+        }
+        
+        .select-wrapper {
+          position: relative;
+          display: flex;
+          overflow: hidden;
+          border-radius: var(--empz-radius);
+        }
+        
+        .select-wrapper.no-prefixes::after {
+          border-bottom: 2px solid var(--accents-5);
+          border-right: 2px solid var(--accents-5);
+          content: '';
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%) rotate(45deg);
+          left: 16px;
+          height: 8px;
+          background: transparent;
+          cursor: pointer;
+          pointer-events: none;
+          transition: .25s ease;
+          width: 8px;
+        }
+        
+        .select-wrapper:hover:after {
+          transform: translateY(-50%) rotate(225deg);
+        }
+      `}</style>
     </>
   )
 }

@@ -13,7 +13,7 @@ function ColorBubble(props) {
         width: var(--empz-gap);
         height: var(--empz-gap);
         border-radius: 100%;
-        border: 1px solid ${props.border || 'black'};
+        border: 1px solid ${props.border || 'var(--accents-5)'};
         background: ${props.color || 'white'};
       }
 
