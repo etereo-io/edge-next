@@ -79,7 +79,7 @@ const updateContent = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { search, sortBy, sortOrder, from, limit },
+    query: { contentType, search, sortBy, sortOrder, from, limit },
   } = req
 
   const searchParams = {
@@ -91,7 +91,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, isValidContentType(req.query.type))
+    await runMiddleware(req, res, isValidContentType(contentType))
   } catch (e) {
     return res.status(405).json({
       message: e.message,
@@ -99,7 +99,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasQueryParameters(['contentSlug', 'id']))
+    await runMiddleware(req, res, hasQueryParameters(['contentType', 'contentId', 'id']))
   } catch (e) {
     return res.status(405).json({
       message: e.message,
@@ -116,7 +116,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForComment(req.item))
+    await runMiddleware(req, res, hasPermissionsForComment(contentType, req.item))
   } catch (e) {
     return res.status(401).json({
       message: e.message,

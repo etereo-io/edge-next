@@ -144,7 +144,7 @@ export default async (req, res) => {
 
 
   try {
-    await runMiddleware(req, res, hasPermissionsForComment())
+    await runMiddleware(req, res, hasPermissionsForComment(contentType))
   } catch (e) {
     return res.status(401).json({
       message: e.message,

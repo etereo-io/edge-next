@@ -27,7 +27,7 @@ export default function(props) {
   const infiniteScroll = props.infiniteScroll
   const query = props.query
   const identificator = 'content-list-'+props.type.slug+'-'+ query
-  console.log('THE INITIAL' , props.initialData)
+  
   // Fetch content type page by page
   const { pages, isLoadingMore, loadMore, isEmpty, isReachingEnd } = useSWRPages(
     identificator,
