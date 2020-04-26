@@ -8,7 +8,7 @@ export default function(props) {
     <>
     <div className="avatar">
       {!props.loading && <img title={title} src={src} ></img>}
-      {props.loading && <div className="empty-avatar"> <img src="./static/demo-images/loading-avatar.gif"/></div>}
+      {props.loading && <div className="empty-avatar"> <img src="/static/demo-images/loading-avatar.gif"/></div>}
     </div>
     <style jsx>{
       `
