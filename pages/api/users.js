@@ -25,9 +25,7 @@ const hasPermissionsForUsers = async (req, res, cb) => {
 const getUsers = (filterParams, searchParams, paginationParams) => (req, res) => {
   findUsers(filterParams, searchParams, paginationParams)
     .then((docs) => {
-      res.status(200).json({
-        docs,
-      })
+      res.status(200).json(docs)
     })
     .catch((err) => {
       res.status(500).json({ err: 'Error while loading users: ' + err.message })

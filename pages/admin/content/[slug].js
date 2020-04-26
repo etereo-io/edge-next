@@ -1,14 +1,8 @@
-import { useRouter } from 'next/router'
-import { usePermission } from '../../../lib/hooks'
-
-import { getContentTypeDefinition } from '../../../lib/config'
-
-import TableList from '../../../components/content/admin-content/table-list/table-list'
+import ContentTable from '../../../components/content/admin-content/content-table/content-table'
 import Layout from '../../../components/layout/admin/layout-admin'
-
-import useSWR from 'swr'
-import fetch from '../../../lib/fetcher'
-import API from '../../../lib/api/api-endpoints'
+import { getContentTypeDefinition } from '../../../lib/config'
+import { usePermission } from '../../../lib/hooks'
+import { useRouter } from 'next/router'
 
 const AdminPage = () => {
   const router = useRouter()
@@ -16,17 +10,13 @@ const AdminPage = () => {
   const available = usePermission(`content.${slug}.admin`, '/', 'slug')
 
   // Load data
-
-  const { data } = useSWR(API.content[slug], fetch)
   const contentTypeDefinition = getContentTypeDefinition(slug)
   return (
     available && (
       <Layout title="Content">
         <h1>Content administration for {slug}</h1>
 
-        <TableList
-          items={data ? data.results : []}
-          loading={false}
+        <ContentTable
           type={contentTypeDefinition}
         />
       </Layout>
