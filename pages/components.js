@@ -377,12 +377,18 @@ const links = [{
               
             </div>
             <pre>{`
-<select><option>Example</option></select>
-
-<input type="text" placeholder="Example input"></input>
-
-<textarea placeholder="Example textarea"></textarea>
-
+<Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
+  <TableRow key="1">
+    <TableCell>User</TableCell>
+    <TableCell>user@user.com</TableCell>
+    <TableCell><Button>Delete</Button></TableCell>
+  </TableRow>
+  <TableRow key="2">
+    <TableCell>User</TableCell>
+    <TableCell>user@user.com</TableCell>
+    <TableCell><Button>Delete</Button></TableCell>
+  </TableRow>
+</Table>
             `}</pre>
           </div>
           
