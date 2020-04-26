@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
+import Table, { TableCell, TableRow } from '../../../generic/table/table'
 import useSWR , { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import Link from 'next/link'
 import fetch from '../../../../lib/fetcher'
-import styles from './table-list.module.scss'
+import { useState } from 'react'
 
 const ListItem = (props) => {
   const [loading, setLoading] = useState(false)
@@ -44,8 +44,7 @@ const ListItem = (props) => {
   }
 
   return (
-    <div className="list-item">
-      <div className={styles.row}>
+      <TableRow>
         {props.type.fields.map((field, index) => {
           const value = props.item[field.name] ? props.item[field.name] : '-'
           const content =
@@ -57,11 +56,11 @@ const ListItem = (props) => {
               typeof value === 'string' ? value : JSON.stringify(value)
             )
 
-          return <div className={styles.column}>{content}</div>
+          return <TableCell>{content}</TableCell>
         })}
-        <div className={styles.column}>0 Comments</div>
-        <div className={styles.column}>0 times</div>
-        <div className={styles.column}>
+        <TableCell>0 Comments</TableCell>
+        <TableCell>0 times</TableCell>
+        <TableCell>
           {!success && (
             <Button href={`/edit/${props.type.slug}/${props.item.slug}`}>
               Edit
@@ -72,32 +71,13 @@ const ListItem = (props) => {
               Delete
             </Button>
           )}
-        </div>
-      </div>
-      <div className={styles.row}>
-        
-
-        <div className={styles.column}>
           {error && <div className="error">Error deleting item</div>}
           {success && <div className="success">Item deleted</div>}
-        </div>
-      </div>
-    </div>
+        </TableCell>
+      </TableRow>
   )
 }
 
-const TableHeader = (props) => {
-  return (
-    <div className={`${styles['table-header']} ${styles.row} `}>
-      {props.type.fields.map((field) => {
-        return <div className={`header-column ${styles.column} sortable`}>{field.name}</div>
-      })}
-      <div className={`header-column  ${styles.column} sortable`}>Comments</div>
-      <div className={`header-column  ${styles.column} sortable`}>Reported</div>
-      <div className={`header-column  ${styles.column}`}>Actions</div>
-    </div>
-  )
-}
 
 function Placeholder() {
   return <div className="placeholders">
@@ -124,7 +104,7 @@ export default function (props) {
     ({ offset, withSWR }) => {
       
       const apiUrl = `${API.content[props.type.slug]}?limit=10${offset ? '&from=' + offset : ''}`
-      const { data } = withSWR(useSWR(apiUrl, fetch, props.data || []));
+      const { data } = withSWR(useSWR(apiUrl, fetch));
 
       if (!data) return <Placeholder/>;
 
@@ -139,20 +119,27 @@ export default function (props) {
     },
     []
   );
+
+  const headerCells = props.type.fields.map((field) => {
+    return <TableCell>{field.name}</TableCell>
+  })
+
+  headerCells.push(<TableCell>Comments</TableCell>)
+  headerCells.push(<TableCell>Reported</TableCell>)
+  headerCells.push(<TableCell>Actions</TableCell>)
  
   return (
-    <div className={styles.tableList}>
-      <TableHeader type={props.type} />
-      <div className="table-items">
+    <div className='content-list'>
+      <Table headerCells={headerCells}>
         {!isEmpty ? pages: <EmptyComponent />}
-      </div>
+      </Table>
+      
       <div id="load-more">
           {isReachingEnd
             ? null
             : <Button loading={isLoadingMore} big={true} onClick={loadMore}>Load More</Button>}
         
         </div>
-
     </div>
   )
 }
