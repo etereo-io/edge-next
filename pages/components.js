@@ -1,3 +1,5 @@
+import Table, {TableCell, TableRow} from '../components/generic/table/table'
+
 import Avatar from '../components/user/avatar/avatar'
 import Button from '../components/generic/button/button'
 import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
@@ -76,6 +78,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#tagsinput">Tags Input</a>
+            </li>
+            <li>
+              <a href="#table">Table</a>
             </li>
             <li>
               <a href="#generic">Generic components</a>
@@ -352,6 +357,35 @@ const links = [{
             `}</pre>
           </div>
 
+          <div id="table" className="component">
+            <h3>Table</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
+                  <TableRow key="1">
+                    <TableCell>User</TableCell>
+                    <TableCell>user@user.com</TableCell>
+                    <TableCell><Button>Delete</Button></TableCell>
+                  </TableRow>
+                  <TableRow key="2">
+                    <TableCell>User</TableCell>
+                    <TableCell>user@user.com</TableCell>
+                    <TableCell><Button>Delete</Button></TableCell>
+                  </TableRow>
+                </Table>
+              </div>
+              
+            </div>
+            <pre>{`
+<select><option>Example</option></select>
+
+<input type="text" placeholder="Example input"></input>
+
+<textarea placeholder="Example textarea"></textarea>
+
+            `}</pre>
+          </div>
+          
           <div id="generic" className="component">
             <h3>HTML Generic components</h3>
             <div className="component-demo">
@@ -377,6 +411,8 @@ const links = [{
 
             `}</pre>
           </div>
+
+
         </div>
       </div>
       <style jsx>{`
