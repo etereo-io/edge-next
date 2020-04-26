@@ -120,7 +120,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForContent())
+    await runMiddleware(req, res, hasPermissionsForContent(type))
   } catch (e) {
     return res.status(401).json({
       message: e.message,
