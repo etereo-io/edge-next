@@ -4,25 +4,8 @@ import {onUserDeleted, onUserUpdated} from '../../../lib/api/hooks/user.hooks'
 
 import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermission } from '../../../lib/permissions'
+import { hasPermissionsForUser } from '../../../lib/api/middlewares'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
-
-const hasPermissionForUserDetail = async (req, res, cb) => {
-  const session = await getSession(req)
-  const action = getAction(req.method)
-
-  const permission = [`user.${action}`, `user.admin`]
-
-  // If there is a item we need to check also if the content owner is the current user
-  const isOwner = session && req.userId === session.id
-  const canAccess = hasPermission(session, permission) || isOwner || req.query.userId === 'me'
-
-  if (!canAccess) {
-    cb(new Error('User not authorized to ' + permission))
-  } else {
-    cb()
-  }
-}
-
 
 const userExist = userId => async (req, res, cb) => {
   if (userId === 'me') {
@@ -88,7 +71,7 @@ export default async (req, res) => {
   } = req
 
   try {
-    await runMiddleware(req, res, hasPermissionForUserDetail)
+    await runMiddleware(req, res, hasPermissionsForUser(userId))
   } catch (e) {
     return res.status(401).json({
       message: e.message,

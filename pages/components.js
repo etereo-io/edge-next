@@ -77,6 +77,10 @@ const Components = () => {
             <li>
               <a href="#tagsinput">Tags Input</a>
             </li>
+            <li>
+              <a href="#generic">Generic components</a>
+            </li>
+            
           </ul>
         </div>
         <div className="components">
@@ -339,6 +343,31 @@ const links = [{
             </div>
             <pre>{`
 <TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
+            `}</pre>
+          </div>
+
+          <div id="generic" className="component">
+            <h3>HTML Generic components</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <select><option>Example</option></select>
+              </div>
+              <div className="item-wrapper">
+                <input type="text" placeholder="Example input"></input>
+              </div>
+
+              <div className="item-wrapper">
+                <textarea placeholder="Example textarea"></textarea>
+              </div>
+
+            </div>
+            <pre>{`
+<select><option>Example</option></select>
+
+<input type="text" placeholder="Example input"></input>
+
+<textarea placeholder="Example textarea"></textarea>
+
             `}</pre>
           </div>
         </div>

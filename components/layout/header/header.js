@@ -70,7 +70,7 @@ function LoggedInUserHeader(props) {
               <ThemeSelector />
             </li>
             <li>
-              <Link href="/profile">
+              <Link href="/profile/me">
                 <a>Profile</a>
               </Link>
             </li>

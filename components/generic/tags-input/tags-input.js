@@ -11,7 +11,7 @@ const makeNewTag = val => {
 function Tag(props) {
   return (
     <>
-      <div className="tag">{props.tag.label} <span className="close" onClick={props.onClickRemove}><svg width="100%" height="auto"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path id="close-path" d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm0 10.293l5.293-5.293.707.707-5.293 5.293 5.293 5.293-.707.707-5.293-5.293-5.293 5.293-.707-.707 5.293-5.293-5.293-5.293.707-.707 5.293 5.293z"/></svg></span></div>
+      <div className="tag">{props.tag.label} <span className="close" onClick={props.onClickRemove}><svg width="100%" height="auto"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd"><path id="close-path" d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 1c6.071 0 11 4.929 11 11s-4.929 11-11 11-11-4.929-11-11 4.929-11 11-11zm0 10.293l5.293-5.293.707.707-5.293 5.293 5.293 5.293-.707.707-5.293-5.293-5.293 5.293-.707-.707 5.293-5.293-5.293-5.293.707-.707 5.293 5.293z"/></svg></span></div>
   <style jsx>{`
     .tag {
       padding: 4px 4px 4px 8px;
@@ -65,7 +65,7 @@ export default function(props) {
       if (ev.target.value) {
         const newTags = [
           ...tags,
-          makeNewTag(ev.target.value)
+          makeNewTag(ev.target.value.replace(',', ''))
         ]
         setTags(newTags)
         

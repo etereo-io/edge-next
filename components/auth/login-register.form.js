@@ -81,10 +81,7 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
           font-weight: 600;
         }
         input {
-          padding: 8px;
           margin: 0.3rem 0 1rem;
-          border: var(--light-border);
-          border-radius: 4px;
         }
         .social-buttons {
           margin-bottom: var(--empz-gap-double);

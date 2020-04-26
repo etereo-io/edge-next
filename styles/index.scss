@@ -255,3 +255,19 @@
   background-color: var(--empz-background);
   color: var(--empz-foreground);
 }
+
+// Generic fields styles
+input[type=text] {
+  padding: var(--empz-gap-half);
+  border: var(--light-border);
+}
+
+input[type=password] {
+  padding: var(--empz-gap-half);
+  border: var(--light-border);
+}
+
+textarea {
+  padding: var(--empz-gap-half);
+  border: var(--light-border);
+}

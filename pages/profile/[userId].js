@@ -1,19 +1,29 @@
-import API from '../lib/api/api-endpoints'
-import Avatar from '../components/user/avatar/avatar'
-import Button from '../components/generic/button/button'
-import ContentListView from '../components/content/read-content/content-list-view/content-list-view'
-import Layout from '../components/layout/normal/layout'
-import UserActivity from '../components/user/activity/activity'
-import config from '../lib/config'
-import fetch from '../lib/fetcher'
+import API from '../../lib/api/api-endpoints'
+import Avatar from '../../components/user/avatar/avatar'
+import Button from '../../components/generic/button/button'
+import ContentListView from '../../components/content/read-content/content-list-view/content-list-view'
+import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
+import Layout from '../../components/layout/normal/layout'
+import UserActivity from '../../components/user/activity/activity'
+import config from '../../lib/config'
+import fetch from '../../lib/fetcher'
+import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { useUser } from '../lib/hooks'
 
-const Profile = () => {
-  const { user, finished } = useUser({ redirectTo: '/login' })
+const Profile = (props) => {
+  console.log(props)
+  
+  
+  const router = useRouter()
+  const { userId } = router.query
+  // const available = usePermission(`user.read`, '/', 'slug')
 
+  const { data, error } = useSWR(userId ? `${API.users}/${userId}` : null, fetch, { initialData: null})
+  const finished = Boolean(data) || Boolean(error)
+  // TODO : add permissions to access
+  console.log(data, finished)
   // Loading
-  if (!user && !finished) {
+  if (!data && !finished) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -21,8 +31,9 @@ const Profile = () => {
       </Layout>
     )
   }
+
+  const user = data
   
-  console.log(user)
 
   return (
     <Layout title="Profile">
@@ -33,7 +44,23 @@ const Profile = () => {
         <div className="name">
           <div className="title">
             <div className="title-left"><h2>{user ? user.username : 'User Profile'}</h2></div>
-            <div className="title-right"><Button alt={true}>Follow</Button><Button>Edit Profile</Button></div>
+            <div className="title-right">
+              <div className="item">
+                <Button alt={true}>Follow</Button>
+              </div>
+              
+              <div className="item">
+                <Button href={`/settings/${user ? user.id: ''}`}>Edit Profile</Button>
+              </div>
+              
+              <div className="item">
+                <DropdownMenu align={'right'}>
+                  <ul>
+                    <li>Report</li>
+                  </ul>
+                </DropdownMenu>
+              </div>
+            </div>
           </div>
           <div className="dashboar-bar">
             <h4>Followers</h4>
@@ -93,10 +120,18 @@ const Profile = () => {
             margin-bottom: var(--empz-gap);
           }
 
+          .title-right {
+            display: flex;
+          }
+
+          .title-right .item {
+            margin-left: var(--empz-gap);
+          }
+
           .content-container {
             display: flex;
             flex-wrap: wrap;
-            background: #fafafa;
+            background: var(--accents-3);
             border-top: var(--light-border);
             margin-top: var(--empz-gap-double);
             padding: var(--empz-gap);
