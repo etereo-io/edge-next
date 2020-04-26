@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;700&family=IBM+Plex+Sans:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;700&family=IBM+Plex+Sans:wght@300;400;500;700&display=swap");
 *,
 *::before,
 *::after {
@@ -29,7 +29,7 @@
   --empz-page-width-with-margin: 782pt;
   --empz-breakpoint-mobile: 600px;
   --empz-breakpoint-tablet: 960px;
-  --empz-radius: 5px;
+  --empz-radius: 4px;
   --empz-marketing-radius: 8px;
   --empz-cyan: #79ffe1;
   --empz-cyan-dark: #50e3c2;
