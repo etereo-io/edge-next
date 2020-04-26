@@ -21,7 +21,7 @@ const Components = () => {
 
   const demoContentWithImage = {
     title: 'This is an example content',
-    img: 'https://i.picsum.photos/id/400/200/200.jpg',
+    img: '/static/demo-images/default-background.jpg',
     slug: 'the-slug',
     type: 'demo-content-type',
   }
@@ -80,7 +80,6 @@ const Components = () => {
             <li>
               <a href="#generic">Generic components</a>
             </li>
-            
           </ul>
         </div>
         <div className="components">
@@ -172,19 +171,26 @@ const links = [{
             <h3>Avatar</h3>
             <div className="component-demo">
               <div className="item-wrapper">
+                <Avatar src="/static/demo-images/empieza-avatar.jpg" />
+                <Avatar
+                  src="/static/demo-images/empieza-avatar.jpg"
+                  width={60}
+                />
+                <Avatar
+                  src="/static/demo-images/empieza-avatar.jpg"
+                  width={30}
+                />
+              </div>
+              <div className="item-wrapper">
                 <Avatar />
                 <Avatar width={60} />
                 <Avatar width={30} />
               </div>
+
               <div className="item-wrapper">
                 <Avatar loading={true} />
                 <Avatar loading={true} width={60} />
                 <Avatar loading={true} width={30} />
-              </div>
-              <div className="item-wrapper">
-                <Avatar src="/static/demo-images/profile.jpeg" />
-                <Avatar src="/static/demo-images/profile.jpeg" width={60} />
-                <Avatar src="/static/demo-images/profile.jpeg" width={30} />
               </div>
             </div>
             <pre>{`
@@ -350,7 +356,9 @@ const links = [{
             <h3>HTML Generic components</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <select><option>Example</option></select>
+                <select>
+                  <option>Example</option>
+                </select>
               </div>
               <div className="item-wrapper">
                 <input type="text" placeholder="Example input"></input>
@@ -359,7 +367,6 @@ const links = [{
               <div className="item-wrapper">
                 <textarea placeholder="Example textarea"></textarea>
               </div>
-
             </div>
             <pre>{`
 <select><option>Example</option></select>
@@ -453,7 +460,7 @@ const links = [{
           text-align: justify;
         }
 
-        .components pre::before{
+        .components pre::before {
           border-top-left-radius: var(--empz-radius);
           border-top-right-radius: var(--empz-radius);
           box-sizing: border-box;
@@ -478,7 +485,8 @@ const links = [{
         }
 
         .component {
-          padding: calc(var(--empz-gap-double) * 1.6) var(--empz-gap-double) var(--empz-gap-double);
+          padding: calc(var(--empz-gap-double) * 1.6) var(--empz-gap-double)
+            var(--empz-gap-double);
         }
 
         .component h3  {
@@ -492,12 +500,12 @@ const links = [{
         }
 
         @media all and (max-width: 960px) {
-          .list-menu{
+          .list-menu {
             position: fixed;
             transform: translateX(-100%);
           }
 
-          .components{
+          .components {
             margin-left: 0;
             padding: var(--empz-gap-double) 0;
           }
