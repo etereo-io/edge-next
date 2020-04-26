@@ -1,8 +1,9 @@
 .header {
   color: var(--empz-foreground);
   background: var(--empz-background);
+  display: flex;
   border-bottom: 1px solid var(--accents-2);
-  height: 70px;
+  height: 56px;
   position: sticky;
   top: 0;
   z-index: 4;
@@ -13,17 +14,11 @@
   margin: 0 auto;
   justify-content: space-between;
   align-items: center;
-  padding: 0 var(--empz-gap);
-}
-.header .left-header {
-  flex: 0.2;
-}
-.header .right-header {
-  flex: 0.8;
+  padding: 0 var(--empz-gap-double);
+  width: 100%;
 }
 .header .logo {
-  width: 75px;
-  padding: var(--empz-gap);
+  width: 32px;
   cursor: pointer;
 }
 .header .navigation {
@@ -46,6 +41,7 @@
 }
 .header a {
   color: var(--empz-link-color);
+  display: block;
   font-size: 14px;
   text-decoration: none;
 }
