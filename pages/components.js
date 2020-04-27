@@ -76,14 +76,28 @@ const Components = () => {
             <li>
               <a href="#contentsummaryview">Content Summary View</a>
             </li>
+            <li className="submenu">
+              <a href="#generic">Form elements</a>
+              <ul>
+                <li>
+                  <a>Input text</a>
+                </li>
+                <li>
+                  <a>Input checkbox</a>
+                </li>
+                <li>
+                  <a>Textarea</a>
+                </li>
+                <li>
+                  <a>Select</a>
+                </li>
+              </ul>
+            </li>
             <li>
               <a href="#tagsinput">Tags Input</a>
             </li>
             <li>
               <a href="#table">Table</a>
-            </li>
-            <li>
-              <a href="#generic">Generic components</a>
             </li>
           </ul>
         </div>
@@ -334,66 +348,9 @@ const links = [{
 <ContentSummaryView type={demoContentType} content={demoContent} />
             `}</pre>
           </div>
-
-          <div id="tagsinput" className="component">
-            <h3>Tags Input</h3>
-            <div className="component-demo">
-              <div className="item-wrapper">
-                <TagsInput placeholder="Add some tags" />
-              </div>
-
-              <div className="item-wrapper">
-                <TagsInput
-                  defaultTags={[
-                    { label: 'Software', slug: 'software' },
-                    { label: 'Web dev', slug: 'web-dev' },
-                  ]}
-                  placeholder="Your tags"
-                />
-              </div>
-            </div>
-            <pre>{`
-<TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
-            `}</pre>
-          </div>
-
-          <div id="table" className="component">
-            <h3>Table</h3>
-            <div className="component-demo">
-              <div className="item-wrapper">
-                <Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
-                  <TableRow key="1">
-                    <TableCell>User</TableCell>
-                    <TableCell>user@user.com</TableCell>
-                    <TableCell><Button>Delete</Button></TableCell>
-                  </TableRow>
-                  <TableRow key="2">
-                    <TableCell>User</TableCell>
-                    <TableCell>user@user.com</TableCell>
-                    <TableCell><Button>Delete</Button></TableCell>
-                  </TableRow>
-                </Table>
-              </div>
-              
-            </div>
-            <pre>{`
-<Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
-  <TableRow key="1">
-    <TableCell>User</TableCell>
-    <TableCell>user@user.com</TableCell>
-    <TableCell><Button>Delete</Button></TableCell>
-  </TableRow>
-  <TableRow key="2">
-    <TableCell>User</TableCell>
-    <TableCell>user@user.com</TableCell>
-    <TableCell><Button>Delete</Button></TableCell>
-  </TableRow>
-</Table>
-            `}</pre>
-          </div>
           
           <div id="generic" className="component">
-            <h3>HTML Generic components</h3>
+            <h3>Form Elements</h3>
             <div className="component-demo">
               <div className="item-wrapper">
                 <select>
@@ -417,6 +374,63 @@ const links = [{
 
             `}</pre>
           </div>
+
+<div id="tagsinput" className="component">
+  <h3>Tags Input</h3>
+  <div className="component-demo">
+    <div className="item-wrapper">
+      <TagsInput placeholder="Add some tags" />
+    </div>
+
+    <div className="item-wrapper">
+      <TagsInput
+        defaultTags={[
+          { label: 'Software', slug: 'software' },
+          { label: 'Web dev', slug: 'web-dev' },
+        ]}
+        placeholder="Your tags"
+      />
+    </div>
+  </div>
+  <pre>{`
+<TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
+  `}</pre>
+</div>
+
+<div id="table" className="component">
+  <h3>Table</h3>
+  <div className="component-demo">
+    <div className="item-wrapper">
+      <Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
+        <TableRow key="1">
+          <TableCell>User</TableCell>
+          <TableCell>user@user.com</TableCell>
+          <TableCell><Button>Delete</Button></TableCell>
+        </TableRow>
+        <TableRow key="2">
+          <TableCell>User</TableCell>
+          <TableCell>user@user.com</TableCell>
+          <TableCell><Button>Delete</Button></TableCell>
+        </TableRow>
+      </Table>
+    </div>
+    
+  </div>
+  <pre>{`
+<Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
+<TableRow key="1">
+<TableCell>User</TableCell>
+<TableCell>user@user.com</TableCell>
+<TableCell><Button>Delete</Button></TableCell>
+</TableRow>
+<TableRow key="2">
+<TableCell>User</TableCell>
+<TableCell>user@user.com</TableCell>
+<TableCell><Button>Delete</Button></TableCell>
+</TableRow>
+</Table>
+  `}</pre>
+</div>
 
 
         </div>
@@ -446,6 +460,45 @@ const links = [{
           box-sizing: border-box;
           height: 100vh;
           z-index: 3;
+        }
+
+        .list-menu .submenu a::after{
+            background: transparent;
+            border-bottom: 2px solid var(--accents-6);
+            border-right: 2px solid var(--accents-6);
+            content: '';
+            display: inline-block;
+            height: 8px;
+            margin: 0 0 2px 8px;
+            transform: rotate(45deg);
+            transform-origin: 50% 50%;
+            transition: 0.3s ease;
+            width: 8px;
+        }
+
+        .list-menu .submenu ul li a::after{
+          display: none;
+        }
+
+        .list-menu .submenu ul{
+          max-height: 0;
+          border-left: 2px solid var(--accents-2);
+          opacity: 0;
+          overflow: hidden;
+          transition: 0.3s ease;
+          padding-left: var(--empz-gap-half);
+          margin-left: var(--empz-gap-half);
+          visibility: hidden;
+        }
+
+        .list-menu .submenu:hover ul{
+          max-height: 260px;
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .list-menu .submenu:hover a::after{
+          transform: rotate(-135deg) translate(-2px, -2px);
         }
 
         .list-menu h3 {
