@@ -1,4 +1,4 @@
-import { createUser, findOneUser, findUsers } from '../../lib/api/users/user'
+import { createUser, findOneUser, findUsers, validateUser } from '../../lib/api/users/user'
 import methods, { getAction } from '../../lib/api/api-helpers/methods'
 
 import { connect } from '../../lib/api/db'
@@ -36,9 +36,16 @@ const getUsers = (filterParams, searchParams, paginationParams) => (
 }
 
 const addUser = (user) => async (req, res) => {
-  // run middleware for permissions
-  // Validate data
-  // if fails, throw error
+  // TODO : run middleware for permissions
+  
+  
+  try {
+    validateUser(user)
+  } catch(err) {
+    return res.status(400).json({
+      error: err.message
+    })
+  }
   
   const userWithSameEmail = await findOneUser({email: user.email})
 
