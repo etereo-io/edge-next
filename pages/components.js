@@ -1,4 +1,9 @@
-import Table, {TableCell, TableRow} from '../components/generic/table/table'
+import Table, {
+  TableCellHeader,
+  TableCellBody,
+  TableRow,
+  TableRowBody,
+} from '../components/generic/table/table'
 
 import Avatar from '../components/user/avatar/avatar'
 import Button from '../components/generic/button/button'
@@ -348,7 +353,7 @@ const links = [{
 <ContentSummaryView type={demoContentType} content={demoContent} />
             `}</pre>
           </div>
-          
+
           <div id="generic" className="component">
             <h3>Form Elements</h3>
             <div className="component-demo">
@@ -375,48 +380,201 @@ const links = [{
             `}</pre>
           </div>
 
-<div id="tagsinput" className="component">
-  <h3>Tags Input</h3>
-  <div className="component-demo">
-    <div className="item-wrapper">
-      <TagsInput placeholder="Add some tags" />
-    </div>
+          <div id="tagsinput" className="component">
+            <h3>Tags Input</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <TagsInput placeholder="Add some tags" />
+              </div>
 
-    <div className="item-wrapper">
-      <TagsInput
-        defaultTags={[
-          { label: 'Software', slug: 'software' },
-          { label: 'Web dev', slug: 'web-dev' },
-        ]}
-        placeholder="Your tags"
-      />
-    </div>
-  </div>
-  <pre>{`
+              <div className="item-wrapper">
+                <TagsInput
+                  defaultTags={[
+                    { label: 'Software', slug: 'software' },
+                    { label: 'Web dev', slug: 'web-dev' },
+                  ]}
+                  placeholder="Your tags"
+                />
+              </div>
+            </div>
+            <pre>{`
 <TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
   `}</pre>
-</div>
+          </div>
 
-<div id="table" className="component">
-  <h3>Table</h3>
-  <div className="component-demo">
-    <div className="item-wrapper">
-      <Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
-        <TableRow key="1">
-          <TableCell>User</TableCell>
-          <TableCell>user@user.com</TableCell>
-          <TableCell><Button>Delete</Button></TableCell>
-        </TableRow>
-        <TableRow key="2">
-          <TableCell>User</TableCell>
-          <TableCell>user@user.com</TableCell>
-          <TableCell><Button>Delete</Button></TableCell>
-        </TableRow>
-      </Table>
-    </div>
-    
-  </div>
-  <pre>{`
+          <div id="table" className="component">
+            <h3>Table</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Table
+                  headerCells={[
+                    <TableCellHeader>User</TableCellHeader>,
+                    <TableCellHeader>Email</TableCellHeader>,
+                    <TableCellHeader>Last Activity</TableCellHeader>,
+                    <TableCellHeader>Actions</TableCellHeader>,
+                  ]}
+                >
+                  <TableRowBody>
+                    <TableCellBody>
+                      {' '}
+                      <Avatar
+                        src="/static/demo-images/empieza-avatar.jpg"
+                        width={30}
+                      />
+                      Rafael Ventura
+                    </TableCellBody>
+                    <TableCellBody>rafael@etereo.io</TableCellBody>
+                    <TableCellBody>Today</TableCellBody>
+                    <TableCellBody>
+                      <Button>Delete</Button>
+                    </TableCellBody>
+                  </TableRowBody>
+                  <TableRowBody>
+                    <TableCellBody>
+                      {' '}
+                      <Avatar
+                        src="/static/demo-images/empieza-avatar.jpg"
+                        width={30}
+                      />
+                      Hayder Al-Deen
+                    </TableCellBody>
+                    <TableCellBody>hayder@etereo.io</TableCellBody>
+                    <TableCellBody>Today</TableCellBody>
+                    <TableCellBody>
+                      <Button>Delete</Button>
+                    </TableCellBody>
+                  </TableRowBody>
+                  <TableRowBody>
+                    <TableCellBody>
+                      {' '}
+                      <Avatar
+                        src="/static/demo-images/empieza-avatar.jpg"
+                        width={30}
+                      />
+                      Rafael Ventura
+                    </TableCellBody>
+                    <TableCellBody>rafael@etereo.io</TableCellBody>
+                    <TableCellBody>Today</TableCellBody>
+                    <TableCellBody>
+                      <Button>Delete</Button>
+                    </TableCellBody>
+                  </TableRowBody>
+                  <TableRowBody>
+                    <TableCellBody>
+                      {' '}
+                      <Avatar
+                        src="/static/demo-images/empieza-avatar.jpg"
+                        width={30}
+                      />
+                      Hayder Al-Deen
+                    </TableCellBody>
+                    <TableCellBody>hayder@etereo.io</TableCellBody>
+                    <TableCellBody>Today</TableCellBody>
+                    <TableCellBody>
+                      <Button>Delete</Button>
+                    </TableCellBody>
+                  </TableRowBody>
+                  <TableRowBody>
+                    <TableCellBody>
+                      {' '}
+                      <Avatar
+                        src="/static/demo-images/empieza-avatar.jpg"
+                        width={30}
+                      />
+                      Rafael Ventura
+                    </TableCellBody>
+                    <TableCellBody>rafael@etereo.io</TableCellBody>
+                    <TableCellBody>Today</TableCellBody>
+                    <TableCellBody>
+                      <Button>Delete</Button>
+                    </TableCellBody>
+                  </TableRowBody>
+                </Table>
+
+                {/*
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">
+                        <span className="table-header">User</span>
+                      </th>
+                      <th scope="col">
+                        <span className="table-header">Role</span>
+                      </th>
+                      <th scope="col">
+                        <span className="table-header">Last Activity</span>
+                      </th>
+                      <th scope="col">
+                        <span className="table-header">Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody aria-live="polite">
+                    <tr>
+                      <td>
+                        <Avatar
+                          src="/static/demo-images/empieza-avatar.jpg"
+                          width={30}
+                        />
+                        Rafael Ventura
+                      </td>
+                      <td>Admin</td>
+                      <td>Today</td>
+                      <td><Button>Delete</Button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Avatar
+                          src="/static/demo-images/empieza-avatar.jpg"
+                          width={30}
+                        />
+                        Rafael Ventura
+                      </td>
+                      <td>Admin</td>
+                      <td>Today</td>
+                      <td><Button>Delete</Button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Avatar
+                          src="/static/demo-images/empieza-avatar.jpg"
+                          width={30}
+                        />
+                        Rafael Ventura
+                      </td>
+                      <td>Admin</td>
+                      <td>Today</td>
+                      <td><Button>Delete</Button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Avatar
+                          src="/static/demo-images/empieza-avatar.jpg"
+                          width={30}
+                        />
+                        Rafael Ventura
+                      </td>
+                      <td>Admin</td>
+                      <td>Today</td>
+                      <td><Button>Delete</Button></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Avatar
+                          src="/static/demo-images/empieza-avatar.jpg"
+                          width={30}
+                        />
+                        Rafael Ventura
+                      </td>
+                      <td>Admin</td>
+                      <td>Today</td>
+                      <td><Button>Delete</Button></td>
+                    </tr>
+                  </tbody>
+                </table>*/}
+              </div>
+            </div>
+            <pre>{`
 <Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
 <TableRow key="1">
 <TableCell>User</TableCell>
@@ -430,12 +588,54 @@ const links = [{
 </TableRow>
 </Table>
   `}</pre>
-</div>
-
-
+          </div>
         </div>
       </div>
       <style jsx>{`
+        table {
+          border-collapse: collapse;
+          border-spacing: 0;
+          font-size: 14px;
+          width: 100%;
+        }
+
+        table tr {
+          border: none;
+          height: var(--cds-layout-04, 3rem);
+          transition: 0.3s ease;
+          width: 100%;
+        }
+
+        table tr:hover {
+          background: var(--accents-2);
+        }
+
+        table thead {
+          background: var(--accents-2);
+          z-index: 1;
+        }
+
+        table thead th {
+          background: var(--accents-2)
+          border-bottom: 1px solid rgba(0,0,0,0.1);
+          padding: var(--empz-gap-half);
+          position: sticky;
+          top: 0;
+        }
+
+        table td {
+          border-bottom: 1px solid var(--accents-2);
+          padding: var(--empz-gap-half);
+          white-space: nowrap;
+        }
+
+        table tr:first-of-type td {
+          border-top: 1px solid var(--accents-2);
+        }
+
+        table th {
+          text-align: left;
+        }
         h1 {
           padding-left: var(--empz-gap-double);
           margin-bottom: var(--empz-gap);
@@ -454,6 +654,7 @@ const links = [{
 
         .list-menu {
           background: var(--accents-1);
+          overflow: scroll;
           position: sticky;
           top: 56px;
           padding: var(--empz-gap-double);
@@ -462,25 +663,25 @@ const links = [{
           z-index: 3;
         }
 
-        .list-menu .submenu a::after{
-            background: transparent;
-            border-bottom: 2px solid var(--accents-6);
-            border-right: 2px solid var(--accents-6);
-            content: '';
-            display: inline-block;
-            height: 8px;
-            margin: 0 0 2px 8px;
-            transform: rotate(45deg);
-            transform-origin: 50% 50%;
-            transition: 0.3s ease;
-            width: 8px;
+        .list-menu .submenu a::after {
+          background: transparent;
+          border-bottom: 2px solid var(--accents-6);
+          border-right: 2px solid var(--accents-6);
+          content: '';
+          display: inline-block;
+          height: 8px;
+          margin: 0 0 2px 8px;
+          transform: rotate(45deg);
+          transform-origin: 50% 50%;
+          transition: 0.3s ease;
+          width: 8px;
         }
 
-        .list-menu .submenu ul li a::after{
+        .list-menu .submenu ul li a::after {
           display: none;
         }
 
-        .list-menu .submenu ul{
+        .list-menu .submenu ul {
           max-height: 0;
           border-left: 2px solid var(--accents-2);
           opacity: 0;
@@ -491,13 +692,13 @@ const links = [{
           visibility: hidden;
         }
 
-        .list-menu .submenu:hover ul{
+        .list-menu .submenu:hover ul {
           max-height: 260px;
           opacity: 1;
           visibility: visible;
         }
 
-        .list-menu .submenu:hover a::after{
+        .list-menu .submenu:hover a::after {
           transform: rotate(-135deg) translate(-2px, -2px);
         }
 

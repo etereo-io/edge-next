@@ -27,7 +27,9 @@ export default function(props) {
       }
       
       .avatar {
+        display: inline-block;
         margin: ${margin}px;
+        vertical-align: middle;
         width: ${width}px;
       }
       `

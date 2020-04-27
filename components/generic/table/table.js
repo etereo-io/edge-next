@@ -1,74 +1,94 @@
-export function TableCell({children, ...props}) {
+export function TableCellHeader({ children, ...props }) {
   return (
     <>
-      <div className="column" {...props}>
-        {children}
-      </div>
-      <style jsx>{
-        `
-        .column {
-          padding: var(--empz-gap);
-          border: var(--light-border);
-          
-          flex-basis: 100%;
-          flex: 1 1 0px;
-        }
-        `
-      }</style>
+      <th scope="col" {...props}>
+        <span className="table-header">{children}</span>
+      </th>
+      <style jsx>{`
+      th{
+        background: var(--accents-2);
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        padding: var(--empz-gap-half);
+        position: sticky;
+        text-align: left;
+        top: 0;
+      }
+      `}</style>
     </>
   )
 }
 
-
-export function TableRow({children, ...props}) {
+export function TableCellBody({ children, ...props }) {
   return (
     <>
-      <div className="row" {...props}>
-        {children}
-      </div>
-      <style jsx>{
-        `
-        .row {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
+      <td {...props}>{children}</td>
+      <style jsx>{`
+        td {
+          border-bottom: 1px solid var(--accents-2);
+          padding: var(--empz-gap-half);
+          white-space: nowrap;
         }
-        
-        `
-      }</style>
+      `}</style>
     </>
   )
 }
 
-export default function(props) {
+export function TableRow({ children, ...props }) {
+  return <>{children}</>
+}
+
+export function TableRowBody({ children, ...props }) {
   return (
-    <>  
-      <div className="table">
-        <div className="table-header">
-          <TableRow>
-            {props.headerCells}
-          </TableRow>
-        </div>
-        <div className="header-body">
-          {props.children}
-        </div>
-      </div>
-      <style jsx>{
-        `
-        .table {
-          background: var(--empz-background);
+    <>
+      <tr>{children}</tr>
+      <style jsx>{`
+        tr {
+          border: none;
+          height: var(--cds-layout-04, 3rem);
+          transition: 0.3s ease;
+          width: 100%;
         }
-        
-      
-        .table-header {
-          font-weight: bold;
-          background: var(--empz-secondary);
-          color: var(--empz-foreground);
-          border: var(--light-border);
+        tr:hover {
+          background: var(--accents-2);
         }
-        
-        `
-      }</style>
+      `}</style>
+    </>
+  )
+}
+
+export default function (props) {
+  return (
+    <>
+      <table className="table">
+        <thead>
+          <tr>
+            <TableRow>{props.headerCells}</TableRow>
+          </tr>
+        </thead>
+        <tbody aria-live="polite">
+          <TableRow>{props.children}</TableRow>
+        </tbody>
+      </table>
+      <style jsx>{`
+        table {
+          border-collapse: collapse;
+          border-spacing: 0;
+          font-size: 14px;
+          width: 100%;
+        }
+
+        table tr {
+          border: none;
+          height: var(--cds-layout-04, 3rem);
+          transition: 0.3s ease;
+          width: 100%;
+        }
+
+        table thead {
+          background: var(--accents-2);
+          z-index: 1;
+        }
+      `}</style>
     </>
   )
 }
