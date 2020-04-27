@@ -1,5 +1,6 @@
 import methods, { getAction } from '../../lib/api/api-helpers/methods'
 
+import { connect } from '../../lib/api/db'
 import { findUsers } from '../../lib/api/users/user'
 import { getSession } from '../../lib/api/auth/iron'
 import { hasPermission } from '../../lib/permissions'
@@ -61,6 +62,16 @@ export default async (req, res) => {
     sortOrder,
     from,
     limit,
+  }
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
+      message: e.message,
+    })
   }
 
   try {

@@ -2,6 +2,7 @@ import { findOneUser, updateOneUser } from '../../../lib/api/users/user'
 import methods, { getAction } from '../../../lib/api/api-helpers/methods'
 import {onUserDeleted, onUserUpdated} from '../../../lib/api/hooks/user.hooks'
 
+import { connect } from '../../../lib/api/db'
 import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermission } from '../../../lib/permissions'
 import { hasPermissionsForUser } from '../../../lib/api/middlewares'
@@ -69,6 +70,16 @@ export default async (req, res) => {
   const {
     query: { userId },
   } = req
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
+      message: e.message,
+    })
+  }
 
   try {
     await runMiddleware(req, res, hasPermissionsForUser(userId))

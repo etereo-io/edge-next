@@ -1,12 +1,12 @@
 import { addContent, findContent } from '../../../lib/api/content/content'
 import { hasPermissionsForContent, isValidContentType } from '../../../lib/api/middlewares'
 
+import { connect } from '../../../lib/api/db'
 import { contentValidations } from '../../../lib/validations/content'
 import methods from '../../../lib/api/api-helpers/methods'
 import {onContentAdded} from '../../../lib/api/hooks/content.hooks'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
-import { v4 as uuidv4 } from 'uuid'
 
 const getContent = (filterParams, searchParams, paginationParams) => (
   req,
@@ -35,9 +35,8 @@ export function fillContentWithDefaultData(contentType, content, user) {
      
     })
 
-    // Fill in the mandatory data like author, id, date, type
+    // Fill in the mandatory data like author, date, type
     const newContent = {
-      id: uuidv4(),
       author: user.id,
       createdAt: Date.now(),
       type: contentType.slug,
@@ -95,8 +94,10 @@ export default async (req, res) => {
     query: { type, search, sortBy, sortOrder, from, limit, author },
   } = req
 
-  const filterParams = {
-    author,
+  const filterParams = { }
+
+  if (author) {
+    filterParams.author = author
   }
 
   const searchParams = {
@@ -115,6 +116,16 @@ export default async (req, res) => {
   } catch (e) {
     console.log(e)
     return res.status(405).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
       message: e.message,
     })
   }

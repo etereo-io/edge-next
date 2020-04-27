@@ -1,3 +1,4 @@
+import { connect } from '../../../lib/api/db'
 import { findActivity } from '../../../lib/api/activity/activity'
 import { findOneUser } from '../../../lib/api/users/user'
 import { getSession } from '../../../lib/api/auth/iron'
@@ -67,6 +68,16 @@ export default async (req, res) => {
     sortOrder,
     from,
     limit,
+  }
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
+      message: e.message,
+    })
   }
   
   try {

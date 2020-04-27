@@ -38,7 +38,7 @@ export default function(props) {
 
       if (!data) return <Placeholder/>;
 
-      const { results } = data;
+      const { results = [] } = data;
       return results.map(item => {
          return <div key={item.id}><div className="item">
           <ContentSummaryView content={item} type={props.type} links={true} />

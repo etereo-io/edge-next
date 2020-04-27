@@ -77,6 +77,46 @@ The Content API is defined on your set of rules in the configuration file, the o
 ## Databases
 Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"
 
+### Database API
+
+All the Databases use the same API abstraction
+
+#### Adding items
+
+```javascript
+db.collection('collection')
+  .add(item)
+```
+
+#### Finding items
+
+```javascript
+db.collection('collection')
+  .find({name: 'test'})
+```
+
+```javascript
+db.collection('collection')
+  .findOne({name: 'test'})
+```
+
+#### Updating an item
+
+```javascript
+db.collection('collection')
+  .doc('ID')
+  .set({name: 'test'})
+```
+
+#### Deleting an item
+
+```javascript
+db.collection('collection')
+  .doc('ID')
+  .delete()
+```
+
+
 ### In memory DB (only local)
 
 There is a "In memory" database for development and testing purposes. It allows you to work with Mock data easily.

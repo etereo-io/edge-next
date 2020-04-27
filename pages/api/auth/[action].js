@@ -24,6 +24,17 @@ app.use(passport.initialize())
 
 passport.use(localStrategy)
 
+app.use(async (req, res, next) => {
+  try {
+    // Connect to database
+    await connect()
+    next()
+  } catch (e) {
+    console.log(e)
+    next(e)
+  }
+})
+
 app.post('/api/auth/login', async (req, res) => {
   try {
     const user = await authenticate('local', req, res)

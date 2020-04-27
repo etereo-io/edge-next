@@ -2,6 +2,7 @@ import { findOneContent, updateOneContent } from '../../../../lib/api/content/co
 import { hasPermissionsForContent, hasQueryParameters, isValidContentType } from '../../../../lib/api/middlewares'
 import { onContentDeleted, onContentUpdated } from '../../../../lib/api/hooks/content.hooks'
 
+import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
 import { findOneUser } from '../../../../lib/api/users/user'
 import methods from '../../../../lib/api/api-helpers/methods'
@@ -102,6 +103,16 @@ export default async (req, res) => {
     await runMiddleware(req, res, hasQueryParameters(['slug']))
   } catch (e) {
     return res.status(405).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
       message: e.message,
     })
   }

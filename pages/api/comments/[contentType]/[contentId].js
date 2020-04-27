@@ -2,11 +2,11 @@ import { addComment, findComments } from '../../../../lib/api/comments/comments'
 import { hasPermissionsForComment, hasQueryParameters, isValidContentType } from '../../../../lib/api/middlewares'
 
 import { commentValidations } from '../../../../lib/validations/comment'
+import { connect } from '../../../../lib/api/db'
 import methods from '../../../../lib/api/api-helpers/methods'
 import { onCommentAdded } from '../../../../lib/api/hooks/comment.hooks'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
-import { v4 as uuidv4 } from 'uuid'
 
 // Check that the comments are allowed for this content type
 function contentTypeAllowsCommentsMiddleware(req, res, cb) {
@@ -39,9 +39,8 @@ export function fillCommentWithDefaultData(contentType, contentId, comment, user
     // TODO: Parse message to extract mentions, links, images, etc
     // Best way to store mentions https://stackoverflow.com/questions/31821751/best-way-to-store-comments-with-mentions-firstname-in-database
     
-    // Fill in the mandatory data like author, id, date, type
+    // Fill in the mandatory data like author, date, type
     const newComment = {
-      id: uuidv4(),
       author: user.id,
       createdAt: Date.now(),
       contentType: contentType.slug,
@@ -102,9 +101,12 @@ export default async (req, res) => {
   } = req
 
   const filterParams = {
-    author,
     contentId,
     contentType
+  }
+
+  if (author) {
+    filterParams.author = author
   }
 
   const searchParams = {
@@ -147,6 +149,16 @@ export default async (req, res) => {
     await runMiddleware(req, res, hasPermissionsForComment(contentType))
   } catch (e) {
     return res.status(401).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
       message: e.message,
     })
   }

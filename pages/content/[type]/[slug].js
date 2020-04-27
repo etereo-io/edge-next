@@ -1,6 +1,7 @@
 import API from '../../../lib/api/api-endpoints'
 import ContentDetailView from '../../../components/content/read-content/content-detail-view/content-detail-view'
 import Layout from '../../../components/layout/normal/layout'
+import { connect } from '../../../lib/api/db'
 import fetch from '../../../lib/fetcher'
 import { findOneContent } from '../../../lib/api/content/content'
 import { getContentTypeDefinition } from '../../../lib/config'
@@ -12,7 +13,7 @@ import useSWR from 'swr'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export async function getServerSideProps({ req, res, query }) { 
-  
+  await connect()
   const item = await findOneContent(query.type, {
     slug: query.slug
   })

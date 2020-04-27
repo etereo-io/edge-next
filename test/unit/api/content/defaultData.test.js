@@ -26,7 +26,6 @@ test('Should create the default data for new content', () => {
     type: contentType.slug,
     slug: 'xyz-the-title',
     img: 'xyz',
-    title: 'the title',
-    id: expect.anything()
+    title: 'the title'
   })
 })
