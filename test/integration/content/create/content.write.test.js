@@ -48,7 +48,7 @@ describe('Integrations tests for content creation endpoint', () => {
     )
 
     getPermissions.mockReturnValueOnce({
-      'content.post.write': ['USER'],
+      'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
 
@@ -90,7 +90,7 @@ describe('Integrations tests for content creation endpoint', () => {
     const params = { type: 'post' }
 
     getPermissions.mockReturnValueOnce({
-      'content.post.write': ['USER'],
+      'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
 
@@ -123,7 +123,7 @@ describe('Integrations tests for content creation endpoint', () => {
     const params = { type: 'post' }
 
     getPermissions.mockReturnValueOnce({
-      'content.post.write': ['USER'],
+      'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
 
@@ -160,7 +160,7 @@ describe('Integrations tests for content creation endpoint', () => {
       )
 
       getPermissions.mockReturnValueOnce({
-        'content.post.write': ['public'],
+        'content.post.create': ['public'],
       })
 
       getSession.mockReturnValueOnce({

@@ -55,7 +55,7 @@ const ListItem = (props) => {
       <TableCellBody>{'-'}</TableCellBody>
       <TableCellBody>
         {!success && (
-          <Button href={`/settings/${props.item.id}/${props.item.slug}`}>
+          <Button href={`/settings/${props.item.id}`}>
             Edit
           </Button>
         )}

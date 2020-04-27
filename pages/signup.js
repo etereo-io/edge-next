@@ -16,6 +16,7 @@ const Signup = () => {
     if (errorMsg) setErrorMsg('')
 
     const body = {
+      email: e.currentTarget.email.value,
       username: e.currentTarget.username.value,
       password: e.currentTarget.password.value,
     }
