@@ -1,6 +1,16 @@
-import { findOneComment, updateOneComment } from '../../../../../lib/api/comments/comments'
-import { hasPermissionsForComment, hasQueryParameters, isValidContentType } from '../../../../../lib/api/middlewares'
-import { onCommentDeleted, onCommentUpdated } from '../../../../../lib/api/hooks/comment.hooks'
+import {
+  findOneComment,
+  updateOneComment,
+} from '../../../../../lib/api/comments/comments'
+import {
+  hasPermissionsForComment,
+  hasQueryParameters,
+  isValidContentType,
+} from '../../../../../lib/api/middlewares'
+import {
+  onCommentDeleted,
+  onCommentUpdated,
+} from '../../../../../lib/api/hooks/comment.hooks'
 
 import { connect } from '../../../../../lib/api/db'
 import { contentValidations } from '../../../../../lib/validations/content'
@@ -53,7 +63,7 @@ const updateContent = (req, res) => {
   const type = req.contentType
 
   const content = req.body
-  
+
   contentValidations(type, content)
     .then(() => {
       // Content is valid
@@ -61,7 +71,7 @@ const updateContent = (req, res) => {
         .then((data) => {
           // Trigger hook
           onCommentUpdated(req.item, req.user)
-          
+
           // Respond
           res.status(200).json(data)
         })
@@ -100,7 +110,11 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasQueryParameters(['contentType', 'contentId', 'id']))
+    await runMiddleware(
+      req,
+      res,
+      hasQueryParameters(['contentType', 'contentId', 'id'])
+    )
   } catch (e) {
     return res.status(405).json({
       message: e.message,
@@ -117,7 +131,6 @@ export default async (req, res) => {
     })
   }
 
-
   try {
     await runMiddleware(req, res, loadContentItemMiddleware)
   } catch (e) {
@@ -127,7 +140,11 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForComment(contentType, req.item))
+    await runMiddleware(
+      req,
+      res,
+      hasPermissionsForComment(contentType, req.item)
+    )
   } catch (e) {
     return res.status(401).json({
       message: e.message,

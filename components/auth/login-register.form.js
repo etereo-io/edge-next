@@ -1,70 +1,79 @@
 import Link from 'next/link'
-import { FacebookLoginButton, GoogleLoginButton, InstagramLoginButton, GithubLoginButton, TwitterLoginButton } from "react-social-login-buttons";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+  InstagramLoginButton,
+  GithubLoginButton,
+  TwitterLoginButton,
+} from 'react-social-login-buttons'
 import Button from '../generic/button/button'
 
 const Form = ({ isLogin, errorMessage, onSubmit }) => {
   return (
-  <div className="auth-form">
-    <h1>{isLogin ? 'Log in': 'Register'}</h1>
-    <div className="social">
-      <h2>{isLogin ? 'Access with a social network': 'Register with a social network'}</h2>
-      <div className="social-buttons">
-        <div className="social-button">
-          <FacebookLoginButton />
-        </div>
-        <div className="social-button">
-          <GoogleLoginButton />
-        </div>
-        <div className="social-button">
-          <GithubLoginButton />
-        </div>
-        <div className="social-button">
-          <TwitterLoginButton />
-        </div>
-        <div className="social-button">
-          <InstagramLoginButton />
+    <div className="auth-form">
+      <h1>{isLogin ? 'Log in' : 'Register'}</h1>
+      <div className="social">
+        <h2>
+          {isLogin
+            ? 'Access with a social network'
+            : 'Register with a social network'}
+        </h2>
+        <div className="social-buttons">
+          <div className="social-button">
+            <FacebookLoginButton />
+          </div>
+          <div className="social-button">
+            <GoogleLoginButton />
+          </div>
+          <div className="social-button">
+            <GithubLoginButton />
+          </div>
+          <div className="social-button">
+            <TwitterLoginButton />
+          </div>
+          <div className="social-button">
+            <InstagramLoginButton />
+          </div>
         </div>
       </div>
-    </div>
 
-    <h2>Or {isLogin ? 'log in': 'register'} with e-mail</h2>
-    <form onSubmit={onSubmit}>
-      <label>
-        <span>Username</span>
-        <input type="text" name="username" required />
-      </label>
-      <label>
-        <span>Password</span>
-        <input type="password" name="password" required />
-      </label>
-      {!isLogin && (
+      <h2>Or {isLogin ? 'log in' : 'register'} with e-mail</h2>
+      <form onSubmit={onSubmit}>
         <label>
-          <span>Repeat password</span>
-          <input type="password" name="rpassword" required />
+          <span>Username</span>
+          <input type="text" name="username" required />
         </label>
-      )}
-
-      <div className="submit">
-        {isLogin ? (
-          <>
-            <Link href="/signup">
-              <a>I don't have an account</a>
-            </Link>
-            <Button type="submit">Login</Button>
-          </>
-        ) : (
-          <>
-            <Link href="/login">
-              <a>I already have an account</a>
-            </Link>
-            <Button type="submit">Signup</Button>
-          </>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" required />
+        </label>
+        {!isLogin && (
+          <label>
+            <span>Repeat password</span>
+            <input type="password" name="rpassword" required />
+          </label>
         )}
-      </div>
 
-      {errorMessage && <p className="error">{errorMessage}</p>}
+        <div className="submit">
+          {isLogin ? (
+            <>
+              <Link href="/signup">
+                <a>I don't have an account</a>
+              </Link>
+              <Button type="submit">Login</Button>
+            </>
+          ) : (
+            <>
+              <Link href="/login">
+                <a>I already have an account</a>
+              </Link>
+              <Button type="submit">Signup</Button>
+            </>
+          )}
+        </div>
 
-    </form>
+        {errorMessage && <p className="error">{errorMessage}</p>}
+      </form>
       <style jsx>{`
         h2 {
           font-weight: 300;
@@ -87,7 +96,6 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
           margin-bottom: var(--empz-gap-double);
         }
         .social-buttons .social-button {
-          
         }
         .submit {
           display: flex;
@@ -99,15 +107,14 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
           text-decoration: none;
           color: var(--empz-link-color);
         }
-        
+
         .error {
           color: brown;
           margin: 1rem 0 0;
         }
       `}</style>
-  </div>
+    </div>
   )
 }
-
 
 export default Form

@@ -9,15 +9,22 @@ const Layout = (props) => (
   <>
     <Head>
       <title>
-        {props.title} - {config.title} 
+        {props.title} - {config.title}
       </title>
-      <meta title="description" content={props.description || config.description} />
+      <meta
+        title="description"
+        content={props.description || config.description}
+      />
     </Head>
 
     <Header />
 
     <main>
-      <div className={`${styles.normalContainer} ${props.fullWidth ? styles.fullWidth : ''} ${props.className ? props.className : ''}`}>
+      <div
+        className={`${styles.normalContainer} ${
+          props.fullWidth ? styles.fullWidth : ''
+        } ${props.className ? props.className : ''}`}
+      >
         {props.children}
       </div>
     </main>

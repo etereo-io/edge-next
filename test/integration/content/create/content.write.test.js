@@ -1,20 +1,16 @@
 // See discussion https://github.com/zeit/next.js/discussions/11784
 // See example
 
-import { apiResolver } from "next/dist/next-server/server/api-utils"
-import fetch from "isomorphic-unfetch"
+import { apiResolver } from 'next/dist/next-server/server/api-utils'
+import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../lib/api/auth/iron'
 import handler from '../../../../pages/api/content/[type]'
-import http from "http"
-import listen from "test-listen"
+import http from 'http'
+import listen from 'test-listen'
 
 jest.mock('../../../../lib/api/auth/iron')
 jest.mock('../../../../lib/permissions/get-permissions')
-
-
-
-
 
 describe('Integrations tests for content creation endpoint', () => {
   let server
@@ -25,14 +21,16 @@ describe('Integrations tests for content creation endpoint', () => {
     getSession.mockClear()
   })
 
-  beforeAll(async done => {
-    server = http.createServer((req, res) => apiResolver(req, res, undefined, handler))
+  beforeAll(async (done) => {
+    server = http.createServer((req, res) =>
+      apiResolver(req, res, undefined, handler)
+    )
     url = await listen(server)
-    
+
     done()
   })
 
-  afterAll(done => {
+  afterAll((done) => {
     server.close(done)
   })
 
@@ -45,9 +43,10 @@ describe('Integrations tests for content creation endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
-    Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
 
-    
     getPermissions.mockReturnValueOnce({
       'content.post.write': ['USER'],
       'content.post.admin': ['ADMIN'],
@@ -55,24 +54,23 @@ describe('Integrations tests for content creation endpoint', () => {
 
     getSession.mockReturnValueOnce({
       roles: ['USER'],
-      id: 'test-id'
+      id: 'test-id',
     })
 
     const newPost = {
       title: 'test',
-      description: 'Wea body test', 
+      description: 'Wea body test',
     }
 
     const response = await fetch(urlToBeUsed.href, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost)
+      body: JSON.stringify(newPost),
     })
 
     const jsonResult = await response.json()
-    
 
     expect(response.status).toBe(200)
     expect(jsonResult).toMatchObject({
@@ -83,7 +81,7 @@ describe('Integrations tests for content creation endpoint', () => {
       tags: null,
       image: null,
       author: 'test-id',
-      id: expect.anything()
+      id: expect.anything(),
     })
   })
 
@@ -97,22 +95,24 @@ describe('Integrations tests for content creation endpoint', () => {
     })
 
     getSession.mockReturnValueOnce({
-      roles: ['public']
+      roles: ['public'],
     })
 
-    Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
 
     const newPost = {
       title: 'test',
-      description: 'Wea body test', 
+      description: 'Wea body test',
     }
 
     const response = await fetch(urlToBeUsed.href, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost)
+      body: JSON.stringify(newPost),
     })
 
     expect(response.status).toBe(401)
@@ -128,34 +128,36 @@ describe('Integrations tests for content creation endpoint', () => {
     })
 
     getSession.mockReturnValueOnce({
-      roles: ['ADMIN']
+      roles: ['ADMIN'],
     })
 
-    Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
 
     const newPost = {
       title: 'test',
-      description: 'Wea body test', 
+      description: 'Wea body test',
     }
 
     const response = await fetch(urlToBeUsed.href, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost)
+      body: JSON.stringify(newPost),
     })
 
     expect(response.status).toBe(200)
   })
 
-
   describe('form data', () => {
     test('should allow to send data as a form', async () => {
-
       const urlToBeUsed = new URL(url)
       const params = { type: 'post' }
-      Object.keys(params).forEach(key => urlToBeUsed.searchParams.append(key, params[key]))
+      Object.keys(params).forEach((key) =>
+        urlToBeUsed.searchParams.append(key, params[key])
+      )
 
       getPermissions.mockReturnValueOnce({
         'content.post.write': ['public'],
@@ -163,7 +165,7 @@ describe('Integrations tests for content creation endpoint', () => {
 
       getSession.mockReturnValueOnce({
         roles: ['public'],
-        id: 'a-user-id'
+        id: 'a-user-id',
       })
 
       const data = new URLSearchParams()
@@ -177,7 +179,7 @@ describe('Integrations tests for content creation endpoint', () => {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: data
+        body: data,
       })
 
       expect(response.status).toBe(200)
@@ -188,12 +190,11 @@ describe('Integrations tests for content creation endpoint', () => {
         type: 'post',
         slug: expect.any(String),
         description: null,
-        tags: ['tag 1', 'tag 2' , 'tag 3'],
+        tags: ['tag 1', 'tag 2', 'tag 3'],
         image: null,
         author: 'a-user-id',
-        id: expect.anything()
+        id: expect.anything(),
       })
     })
   })
-
 })

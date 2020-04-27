@@ -19,8 +19,8 @@ function PublicUserHeader() {
         <li>
           <Button href="/signup">Get Started</Button>
         </li>
-        
-        <DropdownMenu align='right'>
+
+        <DropdownMenu align="right">
           <ul>
             <li>
               <ThemeSelector />
@@ -32,7 +32,6 @@ function PublicUserHeader() {
             </li>
           </ul>
         </DropdownMenu>
-        
       </ul>
     </nav>
   )
@@ -64,7 +63,7 @@ function LoggedInUserHeader(props) {
           </li>
         )}
 
-        <DropdownMenu align='right'>
+        <DropdownMenu align="right">
           <ul>
             <li>
               <ThemeSelector />
@@ -79,7 +78,6 @@ function LoggedInUserHeader(props) {
             </li>
           </ul>
         </DropdownMenu>
-
       </ul>
     </nav>
   )
@@ -87,17 +85,19 @@ function LoggedInUserHeader(props) {
 
 const Header = () => {
   const { user } = useUser()
-  
+
   return (
     <header className={styles.header}>
-      <div className={styles["header-content"]}>
-        <div className={styles["left-header"]}>
+      <div className={styles['header-content']}>
+        <div className={styles['left-header']}>
           <Link href="/">
-            <a title="Home page"><img className={styles["logo"]} src="/static/logos/logo.svg" /></a>
+            <a title="Home page">
+              <img className={styles['logo']} src="/static/logos/logo.svg" />
+            </a>
           </Link>
         </div>
 
-        <div className={styles["right-header"]}>
+        <div className={styles['right-header']}>
           {user && <LoggedInUserHeader user={user} />}
           {!user && <PublicUserHeader />}
         </div>

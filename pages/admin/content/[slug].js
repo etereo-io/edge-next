@@ -16,9 +16,7 @@ const AdminPage = () => {
       <Layout title="Content">
         <h1>Content administration for {slug}</h1>
 
-        <ContentTable
-          type={contentTypeDefinition}
-        />
+        <ContentTable type={contentTypeDefinition} />
       </Layout>
     )
   )

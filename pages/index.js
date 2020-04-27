@@ -6,10 +6,10 @@ import { findContent } from '../lib/api/content/content'
 import { getContentTypeDefinition } from '../lib/config'
 
 // Get serversideProps is important for SEO, and only available at the pages level
-export async function getServerSideProps({ req }) { 
+export async function getServerSideProps({ req }) {
   await connect()
   const response = await findContent('post')
-  
+
   return {
     props: {
       data: response,
@@ -18,17 +18,20 @@ export async function getServerSideProps({ req }) {
 }
 
 const Home = (props) => {
-  
   const initialData = props.data
 
   // Get the definition for the post content type
   const contentTypeDefinition = getContentTypeDefinition('post')
 
   return (
-    <Layout title="Home page" >
+    <Layout title="Home page">
       <ListContentTypes />
 
-      <ContentListView infiniteScroll={true} initialData={initialData} type={contentTypeDefinition} />
+      <ContentListView
+        infiniteScroll={true}
+        initialData={initialData}
+        type={contentTypeDefinition}
+      />
     </Layout>
   )
 }

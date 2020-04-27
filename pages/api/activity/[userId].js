@@ -22,10 +22,10 @@ const hasPermissionForActivity = async (req, res, cb) => {
   }
 }
 
-const userExist = userId => async (req, res, cb) => {
-  const user = await findOneUser({id: userId})
+const userExist = (userId) => async (req, res, cb) => {
+  const user = await findOneUser({ id: userId })
 
-  if(!user) {
+  if (!user) {
     cb(new Error('User not found'))
   } else {
     req.user = user
@@ -37,7 +37,6 @@ const getActivities = (filterParams, searchParams, paginationParams) => (
   req,
   res
 ) => {
-
   findActivity(filterParams, searchParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
@@ -49,20 +48,19 @@ const getActivities = (filterParams, searchParams, paginationParams) => (
     })
 }
 
-
 export default async (req, res) => {
   const {
     query: { userId, sortBy, sortOrder, from, limit },
   } = req
 
   const filterParams = {
-    author: userId
+    author: userId,
   }
 
   const searchParams = {
     // TODO: implement filter activities
   }
- 
+
   const paginationParams = {
     sortBy,
     sortOrder,
@@ -79,7 +77,7 @@ export default async (req, res) => {
       message: e.message,
     })
   }
-  
+
   try {
     await runMiddleware(req, res, userExist(userId))
   } catch (e) {

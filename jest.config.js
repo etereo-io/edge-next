@@ -6,16 +6,21 @@ module.exports = {
     '**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
-    '!**/*.config.js'
+    '!**/*.config.js',
   ],
   collectCoverage: true,
-  coveragePathIgnorePatterns: ['/node_modules/', 'enzyme.js', '/jest.config.js', '/.next/'],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    'enzyme.js',
+    '/jest.config.js',
+    '/.next/',
+  ],
   testMatch: ['<rootDir>/test/**/*.test.js'],
   setupFilesAfterEnv: ['<rootDir>/test/setupTests.js'],
   testPathIgnorePatterns: ['/node_modules/', '/.next/'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
-    ".+\\.(css|styl|less|sass|scss)$": "jest-css-modules-transform"
+    '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform',
     // '^.+\\.(css)$': '<rootDir>/test/config-jest/cssTransform.js',
   },
   transformIgnorePatterns: [
@@ -23,6 +28,6 @@ module.exports = {
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   moduleNameMapper: {
-    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy'
+    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
   },
 }

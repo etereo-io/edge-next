@@ -39,7 +39,7 @@ const EditContent = () => {
       <Layout title="Edit content" className={styles['edit-page']}>
         <h1 className={styles.h1}>Edit: {data.title}</h1>
 
-        <ContentForm type={contentType} onSaved={onSaved} content={data}/>
+        <ContentForm type={contentType} onSaved={onSaved} content={data} />
       </Layout>
     )
   )

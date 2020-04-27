@@ -17,13 +17,11 @@ const CreateContent = () => {
   }
 
   return (
-     
-      <Layout title="New content" className={styles['create-page']}>
-        <h1>Create new {contentType ? contentType.title.en: 'content'}</h1>
+    <Layout title="New content" className={styles['create-page']}>
+      <h1>Create new {contentType ? contentType.title.en : 'content'}</h1>
 
-        {available && <ContentForm type={contentType} onSaved={onSaved} />}
-      </Layout>
-    
+      {available && <ContentForm type={contentType} onSaved={onSaved} />}
+    </Layout>
   )
 }
 

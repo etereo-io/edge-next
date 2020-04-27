@@ -8,5 +8,4 @@ describe('header test suite', () => {
     const linkElement = getByText(/Login/)
     expect(linkElement).toBeInTheDocument()
   })
-
 })

@@ -1,4 +1,4 @@
-import Table, {TableCell, TableRow} from '../components/generic/table/table'
+import Table, { TableCell, TableRow } from '../components/generic/table/table'
 
 import Avatar from '../components/user/avatar/avatar'
 import Button from '../components/generic/button/button'
@@ -348,7 +348,7 @@ const links = [{
 <ContentSummaryView type={demoContentType} content={demoContent} />
             `}</pre>
           </div>
-          
+
           <div id="generic" className="component">
             <h3>Form Elements</h3>
             <div className="component-demo">
@@ -375,64 +375,71 @@ const links = [{
             `}</pre>
           </div>
 
-<div id="tagsinput" className="component">
-  <h3>Tags Input</h3>
-  <div className="component-demo">
-    <div className="item-wrapper">
-      <TagsInput placeholder="Add some tags" />
-    </div>
+          <div id="tagsinput" className="component">
+            <h3>Tags Input</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <TagsInput placeholder="Add some tags" />
+              </div>
 
-    <div className="item-wrapper">
-      <TagsInput
-        defaultTags={[
-          { label: 'Software', slug: 'software' },
-          { label: 'Web dev', slug: 'web-dev' },
-        ]}
-        placeholder="Your tags"
-      />
-    </div>
-  </div>
-  <pre>{`
+              <div className="item-wrapper">
+                <TagsInput
+                  defaultTags={[
+                    { label: 'Software', slug: 'software' },
+                    { label: 'Web dev', slug: 'web-dev' },
+                  ]}
+                  placeholder="Your tags"
+                />
+              </div>
+            </div>
+            <pre>{`
 <TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
   `}</pre>
-</div>
+          </div>
 
-<div id="table" className="component">
-  <h3>Table</h3>
-  <div className="component-demo">
-    <div className="item-wrapper">
-      <Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
-        <TableRow key="1">
-          <TableCell>User</TableCell>
-          <TableCell>user@user.com</TableCell>
-          <TableCell><Button>Delete</Button></TableCell>
-        </TableRow>
-        <TableRow key="2">
-          <TableCell>User</TableCell>
-          <TableCell>user@user.com</TableCell>
-          <TableCell><Button>Delete</Button></TableCell>
-        </TableRow>
-      </Table>
-    </div>
-    
-  </div>
-  <pre>{`
+          <div id="table" className="component">
+            <h3>Table</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Table
+                  headerCells={[
+                    <TableCell>Name</TableCell>,
+                    <TableCell>Email</TableCell>,
+                    <TableCell>Actions</TableCell>,
+                  ]}
+                >
+                  <TableRow key="1">
+                    <TableCell>User</TableCell>
+                    <TableCell>user@user.com</TableCell>
+                    <TableCell>
+                      <Button>Delete</Button>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow key="2">
+                    <TableCell>User</TableCell>
+                    <TableCell>user@user.com</TableCell>
+                    <TableCell>
+                      <Button>Delete</Button>
+                    </TableCell>
+                  </TableRow>
+                </Table>
+              </div>
+            </div>
+            <pre>{`
 <Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
-<TableRow key="1">
-<TableCell>User</TableCell>
-<TableCell>user@user.com</TableCell>
-<TableCell><Button>Delete</Button></TableCell>
-</TableRow>
-<TableRow key="2">
-<TableCell>User</TableCell>
-<TableCell>user@user.com</TableCell>
-<TableCell><Button>Delete</Button></TableCell>
-</TableRow>
+  <TableRow key="1">
+    <TableCell>User</TableCell>
+    <TableCell>user@user.com</TableCell>
+    <TableCell><Button>Delete</Button></TableCell>
+  </TableRow>
+  <TableRow key="2">
+    <TableCell>User</TableCell>
+    <TableCell>user@user.com</TableCell>
+    <TableCell><Button>Delete</Button></TableCell>
+  </TableRow>
 </Table>
   `}</pre>
-</div>
-
-
+          </div>
         </div>
       </div>
       <style jsx>{`
@@ -462,25 +469,25 @@ const links = [{
           z-index: 3;
         }
 
-        .list-menu .submenu a::after{
-            background: transparent;
-            border-bottom: 2px solid var(--accents-6);
-            border-right: 2px solid var(--accents-6);
-            content: '';
-            display: inline-block;
-            height: 8px;
-            margin: 0 0 2px 8px;
-            transform: rotate(45deg);
-            transform-origin: 50% 50%;
-            transition: 0.3s ease;
-            width: 8px;
+        .list-menu .submenu a::after {
+          background: transparent;
+          border-bottom: 2px solid var(--accents-6);
+          border-right: 2px solid var(--accents-6);
+          content: '';
+          display: inline-block;
+          height: 8px;
+          margin: 0 0 2px 8px;
+          transform: rotate(45deg);
+          transform-origin: 50% 50%;
+          transition: 0.3s ease;
+          width: 8px;
         }
 
-        .list-menu .submenu ul li a::after{
+        .list-menu .submenu ul li a::after {
           display: none;
         }
 
-        .list-menu .submenu ul{
+        .list-menu .submenu ul {
           max-height: 0;
           border-left: 2px solid var(--accents-2);
           opacity: 0;
@@ -491,13 +498,13 @@ const links = [{
           visibility: hidden;
         }
 
-        .list-menu .submenu:hover ul{
+        .list-menu .submenu:hover ul {
           max-height: 260px;
           opacity: 1;
           visibility: visible;
         }
 
-        .list-menu .submenu:hover a::after{
+        .list-menu .submenu:hover a::after {
           transform: rotate(-135deg) translate(-2px, -2px);
         }
 

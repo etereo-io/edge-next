@@ -12,13 +12,16 @@ import useSWR from 'swr'
 
 const Profile = (props) => {
   console.log(props)
-  
-  
+
   const router = useRouter()
   const { userId } = router.query
   // const available = usePermission(`user.read`, '/', 'slug')
 
-  const { data, error } = useSWR(userId ? `${API.users}/${userId}` : null, fetch, { initialData: null})
+  const { data, error } = useSWR(
+    userId ? `${API.users}/${userId}` : null,
+    fetch,
+    { initialData: null }
+  )
   const finished = Boolean(data) || Boolean(error)
   // TODO : add permissions to access
   console.log(data, finished)
@@ -33,7 +36,6 @@ const Profile = (props) => {
   }
 
   const user = data
-  
 
   return (
     <Layout title="Profile">
@@ -43,16 +45,20 @@ const Profile = (props) => {
         </div>
         <div className="name">
           <div className="title">
-            <div className="title-left"><h2>{user ? user.username : 'User Profile'}</h2></div>
+            <div className="title-left">
+              <h2>{user ? user.username : 'User Profile'}</h2>
+            </div>
             <div className="title-right">
               <div className="item">
                 <Button alt={true}>Follow</Button>
               </div>
-              
+
               <div className="item">
-                <Button href={`/settings/${user ? user.id: ''}`}>Edit Profile</Button>
+                <Button href={`/settings/${user ? user.id : ''}`}>
+                  Edit Profile
+                </Button>
               </div>
-              
+
               <div className="item">
                 <DropdownMenu align={'right'}>
                   <ul>
@@ -67,7 +73,6 @@ const Profile = (props) => {
           </div>
         </div>
       </div>
-      
 
       <div className="content-container">
         <div className="content-types">
@@ -75,7 +80,11 @@ const Profile = (props) => {
             return (
               <div className="content-block">
                 <h3>User's {cData.title.en}s</h3>
-                <ContentListView infiniteScroll={false} type={cData} query={`author=${user ? user.id : null}`} />
+                <ContentListView
+                  infiniteScroll={false}
+                  type={cData}
+                  query={`author=${user ? user.id : null}`}
+                />
               </div>
             )
           })}
@@ -83,19 +92,17 @@ const Profile = (props) => {
 
         <div className="activity-report">
           <h3>Recent activity</h3>
-          {user && <UserActivity user={user } />}
+          {user && <UserActivity user={user} />}
         </div>
-
       </div>
       <style jsx>
-        {
-          `
+        {`
           .profile-user-info {
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 60px;
           }
-          
+
           .name {
             flex: 1;
           }
@@ -135,9 +142,8 @@ const Profile = (props) => {
             border-top: var(--light-border);
             margin-top: var(--empz-gap-double);
             padding: var(--empz-gap);
-
           }
-          
+
           @media (max-width: 600px) {
             .content-container {
               flex-direction: column;
@@ -146,14 +152,16 @@ const Profile = (props) => {
             }
           }
 
-          .content-types, .activity-report {
+          .content-types,
+          .activity-report {
             flex: 0.5;
             transform: translateY(-75px);
             padding: var(--empz-gap);
           }
 
           @media (max-width: 600px) {
-            .content-types, .activity-report {
+            .content-types,
+            .activity-report {
               transform: none;
               flex: 1;
             }
@@ -164,8 +172,7 @@ const Profile = (props) => {
             border-radius: var(--empz-radius);
             background: var(--empz-foreground);
           }
-          `
-        }
+        `}
       </style>
     </Layout>
   )

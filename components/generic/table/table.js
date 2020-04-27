@@ -1,74 +1,60 @@
-export function TableCell({children, ...props}) {
+export function TableCell({ children, ...props }) {
   return (
     <>
       <div className="column" {...props}>
         {children}
       </div>
-      <style jsx>{
-        `
+      <style jsx>{`
         .column {
           padding: var(--empz-gap);
           border: var(--light-border);
-          
+
           flex-basis: 100%;
           flex: 1 1 0px;
         }
-        `
-      }</style>
+      `}</style>
     </>
   )
 }
 
-
-export function TableRow({children, ...props}) {
+export function TableRow({ children, ...props }) {
   return (
     <>
       <div className="row" {...props}>
         {children}
       </div>
-      <style jsx>{
-        `
+      <style jsx>{`
         .row {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
         }
-        
-        `
-      }</style>
+      `}</style>
     </>
   )
 }
 
-export default function(props) {
+export default function (props) {
   return (
-    <>  
+    <>
       <div className="table">
         <div className="table-header">
-          <TableRow>
-            {props.headerCells}
-          </TableRow>
+          <TableRow>{props.headerCells}</TableRow>
         </div>
-        <div className="header-body">
-          {props.children}
-        </div>
+        <div className="header-body">{props.children}</div>
       </div>
-      <style jsx>{
-        `
+      <style jsx>{`
         .table {
           background: var(--empz-background);
         }
-        
-      
+
         .table-header {
           font-weight: bold;
           background: var(--empz-secondary);
           color: var(--empz-foreground);
           border: var(--light-border);
         }
-        
-        `
-      }</style>
+      `}</style>
     </>
   )
 }

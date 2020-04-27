@@ -7,16 +7,17 @@ test('Should create the default data for new content', () => {
     fields: [
       {
         name: 'img',
-        defaultValue: 'xyz'
-      }, {
+        defaultValue: 'xyz',
+      },
+      {
         name: 'title',
-        defaultValue: 'the title'
-      }
-    ]
+        defaultValue: 'the title',
+      },
+    ],
   }
   const content = {}
   const user = {
-    id: 'test-user'
+    id: 'test-user',
   }
 
   const newContent = fillContentWithDefaultData(contentType, content, user)
@@ -26,6 +27,6 @@ test('Should create the default data for new content', () => {
     type: contentType.slug,
     slug: 'xyz-the-title',
     img: 'xyz',
-    title: 'the title'
+    title: 'the title',
   })
 })

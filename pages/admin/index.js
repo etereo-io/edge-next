@@ -11,32 +11,30 @@ const AdminPage = () => {
 
   const links = []
 
-  if(hasPermission(user, `user.admin`) ) {
-    
+  if (hasPermission(user, `user.admin`)) {
     links.push({
       title: 'Users',
-      link: '/admin/users'
+      link: '/admin/users',
     })
   }
 
-  if(hasPermission(user, `admin.stats`)){
+  if (hasPermission(user, `admin.stats`)) {
     links.push({
       title: 'Site stats',
-      link: '/admin/stats'
+      link: '/admin/stats',
     })
   }
 
   const contentLinks = config.content.types
-  .filter((type) => {
-    return hasPermission(user, `content.${type.slug}.admin`)
-  })
-  .map((type) => {
-     return {
+    .filter((type) => {
+      return hasPermission(user, `content.${type.slug}.admin`)
+    })
+    .map((type) => {
+      return {
         link: `/admin/content/${type.slug}`,
-        title: `Administer ${type.title.en}s`
+        title: `Administer ${type.title.en}s`,
       }
-  })
-  
+    })
 
   return (
     available && (

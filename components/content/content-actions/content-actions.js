@@ -3,15 +3,18 @@ import { useContentOwner, useUser } from '../../../lib/hooks'
 import Button from '../../generic/button/button'
 import { hasPermission } from '../../../lib/permissions'
 
-export default function(props) {
+export default function (props) {
   const { user } = useUser()
 
-  const hasEditPermission = hasPermission(user, `content.${props.content.type}.admin`)
+  const hasEditPermission = hasPermission(
+    user,
+    `content.${props.content.type}.admin`
+  )
   const isContentOwner = useContentOwner(props.content)
 
   return (
     <div className={`content-actions ${props.className}`}>
-      { (hasEditPermission || isContentOwner) && (
+      {(hasEditPermission || isContentOwner) && (
         <Button href={`/edit/${props.content.type}/${props.content.slug}`}>
           Edit
         </Button>

@@ -1,6 +1,16 @@
-import { findOneContent, updateOneContent } from '../../../../lib/api/content/content'
-import { hasPermissionsForContent, hasQueryParameters, isValidContentType } from '../../../../lib/api/middlewares'
-import { onContentDeleted, onContentUpdated } from '../../../../lib/api/hooks/content.hooks'
+import {
+  findOneContent,
+  updateOneContent,
+} from '../../../../lib/api/content/content'
+import {
+  hasPermissionsForContent,
+  hasQueryParameters,
+  isValidContentType,
+} from '../../../../lib/api/middlewares'
+import {
+  onContentDeleted,
+  onContentUpdated,
+} from '../../../../lib/api/hooks/content.hooks'
 
 import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
@@ -41,7 +51,7 @@ const getContent = async (req, res) => {
   console.log(user, req.item.author)
   res.status(200).json({
     ...req.item,
-    user: user
+    user: user,
   })
 }
 
@@ -60,7 +70,7 @@ const updateContent = (req, res) => {
   const type = req.contentType
 
   const content = req.body
-  
+
   contentValidations(type, content)
     .then(() => {
       // Content is valid
@@ -68,7 +78,7 @@ const updateContent = (req, res) => {
         .then((data) => {
           // Trigger on updated hook
           onContentUpdated(content, req.user)
-          
+
           // Respond
           res.status(200).json(data)
         })
@@ -89,7 +99,6 @@ export default async (req, res) => {
   const {
     query: { type },
   } = req
-
 
   try {
     await runMiddleware(req, res, isValidContentType(type))
