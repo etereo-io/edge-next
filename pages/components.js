@@ -1,7 +1,6 @@
 import Table, {
-  TableCellHeader,
   TableCellBody,
-  TableRow,
+  TableCellHeader,
   TableRowBody,
 } from '../components/generic/table/table'
 

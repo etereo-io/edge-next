@@ -1,4 +1,4 @@
-import Table, { TableCell, TableRow } from '../../../generic/table/table'
+import Table, { TableCellBody, TableCellHeader, TableRowBody } from '../../../generic/table/table'
 import useSWR, { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
@@ -44,16 +44,16 @@ const ListItem = (props) => {
   }
 
   return (
-    <TableRow>
-      <TableCell>
+    <TableRowBody>
+      <TableCellBody>
         <Link href={`/profile/${props.item.id}`}>
           <a>{props.item.username}</a>
         </Link>
-      </TableCell>
-      <TableCell>{props.item.email}</TableCell>
-      <TableCell>{props.item.name || '-'}</TableCell>
-      <TableCell>{'-'}</TableCell>
-      <TableCell>
+      </TableCellBody>
+      <TableCellBody>{props.item.email}</TableCellBody>
+      <TableCellBody>{props.item.name || '-'}</TableCellBody>
+      <TableCellBody>{'-'}</TableCellBody>
+      <TableCellBody>
         {!success && (
           <Button href={`/settings/${props.item.id}/${props.item.slug}`}>
             Edit
@@ -66,8 +66,8 @@ const ListItem = (props) => {
         )}
         {error && <div className="error">Error deleting item</div>}
         {success && <div className="success">Item deleted</div>}
-      </TableCell>
-    </TableRow>
+      </TableCellBody>
+    </TableRowBody>
   )
 }
 
@@ -118,11 +118,11 @@ export default function (props) {
   )
 
   const headerCells = [
-    <TableCell>Username</TableCell>,
-    <TableCell>Email</TableCell>,
-    <TableCell>Name</TableCell>,
-    <TableCell>Last Login</TableCell>,
-    <TableCell>Actions</TableCell>,
+    <TableCellHeader>Username</TableCellHeader>,
+    <TableCellHeader>Email</TableCellHeader>,
+    <TableCellHeader>Name</TableCellHeader>,
+    <TableCellHeader>Last Login</TableCellHeader>,
+    <TableCellHeader>Actions</TableCellHeader>,
   ]
 
   return (
