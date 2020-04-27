@@ -490,152 +490,39 @@ const links = [{
                     </TableCellBody>
                   </TableRowBody>
                 </Table>
-
-                {/*
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th scope="col">
-                        <span className="table-header">User</span>
-                      </th>
-                      <th scope="col">
-                        <span className="table-header">Role</span>
-                      </th>
-                      <th scope="col">
-                        <span className="table-header">Last Activity</span>
-                      </th>
-                      <th scope="col">
-                        <span className="table-header">Actions</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody aria-live="polite">
-                    <tr>
-                      <td>
-                        <Avatar
-                          src="/static/demo-images/empieza-avatar.jpg"
-                          width={30}
-                        />
-                        Rafael Ventura
-                      </td>
-                      <td>Admin</td>
-                      <td>Today</td>
-                      <td><Button>Delete</Button></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Avatar
-                          src="/static/demo-images/empieza-avatar.jpg"
-                          width={30}
-                        />
-                        Rafael Ventura
-                      </td>
-                      <td>Admin</td>
-                      <td>Today</td>
-                      <td><Button>Delete</Button></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Avatar
-                          src="/static/demo-images/empieza-avatar.jpg"
-                          width={30}
-                        />
-                        Rafael Ventura
-                      </td>
-                      <td>Admin</td>
-                      <td>Today</td>
-                      <td><Button>Delete</Button></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Avatar
-                          src="/static/demo-images/empieza-avatar.jpg"
-                          width={30}
-                        />
-                        Rafael Ventura
-                      </td>
-                      <td>Admin</td>
-                      <td>Today</td>
-                      <td><Button>Delete</Button></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <Avatar
-                          src="/static/demo-images/empieza-avatar.jpg"
-                          width={30}
-                        />
-                        Rafael Ventura
-                      </td>
-                      <td>Admin</td>
-                      <td>Today</td>
-                      <td><Button>Delete</Button></td>
-                    </tr>
-                  </tbody>
-                </table>*/}
               </div>
             </div>
             <pre>{`
-<Table headerCells={[<TableCell>Name</TableCell>, <TableCell>Email</TableCell>, <TableCell>Actions</TableCell>]}>
-<TableRow key="1">
-<TableCell>User</TableCell>
-<TableCell>user@user.com</TableCell>
-<TableCell><Button>Delete</Button></TableCell>
-</TableRow>
-<TableRow key="2">
-<TableCell>User</TableCell>
-<TableCell>user@user.com</TableCell>
-<TableCell><Button>Delete</Button></TableCell>
-</TableRow>
+<Table
+  //Header Sections
+  headerCells={[
+    <TableCellHeader>User</TableCellHeader>,
+    <TableCellHeader>Email</TableCellHeader>,
+    <TableCellHeader>Last Activity</TableCellHeader>,
+    <TableCellHeader>Actions</TableCellHeader>,
+  ]}
+  >
+  //Body Content Unit
+  <TableRowBody>
+    <TableCellBody>
+      <Avatar/> User Name
+    </TableCellBody>
+    <TableCellBody>
+      user@user.com
+    </TableCellBody>
+    <TableCellBody>
+      Today
+    </TableCellBody>
+    <TableCellBody>
+      <Button>Delete</Button>
+    </TableCellBody>
+  </TableRowBody>
 </Table>
   `}</pre>
           </div>
         </div>
       </div>
       <style jsx>{`
-        table {
-          border-collapse: collapse;
-          border-spacing: 0;
-          font-size: 14px;
-          width: 100%;
-        }
-
-        table tr {
-          border: none;
-          height: var(--cds-layout-04, 3rem);
-          transition: 0.3s ease;
-          width: 100%;
-        }
-
-        table tr:hover {
-          background: var(--accents-2);
-        }
-
-        table thead {
-          background: var(--accents-2);
-          z-index: 1;
-        }
-
-        table thead th {
-          background: var(--accents-2)
-          border-bottom: 1px solid rgba(0,0,0,0.1);
-          padding: var(--empz-gap-half);
-          position: sticky;
-          top: 0;
-        }
-
-        table td {
-          border-bottom: 1px solid var(--accents-2);
-          padding: var(--empz-gap-half);
-          white-space: nowrap;
-        }
-
-        table tr:first-of-type td {
-          border-top: 1px solid var(--accents-2);
-        }
-
-        table th {
-          text-align: left;
-        }
         h1 {
           padding-left: var(--empz-gap-double);
           margin-bottom: var(--empz-gap);

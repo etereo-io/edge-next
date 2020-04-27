@@ -1,5 +1,5 @@
 import Table, { TableCell, TableRow } from '../../../generic/table/table'
-import useSWR , { useSWRPages } from 'swr'
+import useSWR, { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
@@ -44,92 +44,100 @@ const ListItem = (props) => {
   }
 
   return (
-      <TableRow>
-        <TableCell><Link href={`/profile/${props.item.id}`}><a>{props.item.username}</a></Link></TableCell>
-        <TableCell>{props.item.email}</TableCell>
-        <TableCell>{props.item.name || '-'}</TableCell>
-        <TableCell>{'-'}</TableCell>
-        <TableCell>
-          {!success && (
-            <Button href={`/settings/${props.item.id}/${props.item.slug}`}>
-              Edit
-            </Button>
-          )}
-          {!success && (
-            <Button loading={loading} alt={true} onClick={onClickDelete}>
-              Delete
-            </Button>
-          )}
-          {error && <div className="error">Error deleting item</div>}
-          {success && <div className="success">Item deleted</div>}
-        </TableCell>
-      </TableRow>
+    <TableRow>
+      <TableCell>
+        <Link href={`/profile/${props.item.id}`}>
+          <a>{props.item.username}</a>
+        </Link>
+      </TableCell>
+      <TableCell>{props.item.email}</TableCell>
+      <TableCell>{props.item.name || '-'}</TableCell>
+      <TableCell>{'-'}</TableCell>
+      <TableCell>
+        {!success && (
+          <Button href={`/settings/${props.item.id}/${props.item.slug}`}>
+            Edit
+          </Button>
+        )}
+        {!success && (
+          <Button loading={loading} alt={true} onClick={onClickDelete}>
+            Delete
+          </Button>
+        )}
+        {error && <div className="error">Error deleting item</div>}
+        {success && <div className="success">Item deleted</div>}
+      </TableCell>
+    </TableRow>
   )
 }
 
-
 function Placeholder() {
-  return <div className="placeholders">
-    <div className="p"></div>
-    <div className="p"></div>
-    <div className="p"></div>
-    <div className="p"></div>
-    <div className="p"></div>
-  </div>
+  return (
+    <div className="placeholders">
+      <div className="p"></div>
+      <div className="p"></div>
+      <div className="p"></div>
+      <div className="p"></div>
+      <div className="p"></div>
+    </div>
+  )
 }
 
 function EmptyComponent() {
-  return <div className="empty">
-    Sorry, no items found.
-  </div>
+  return <div className="empty">Sorry, no items found.</div>
 }
 
-
 export default function (props) {
-
   // Fetch content type page by page
-  const { pages, isLoadingMore, loadMore, isEmpty, isReachingEnd } = useSWRPages(
+  const {
+    pages,
+    isLoadingMore,
+    loadMore,
+    isEmpty,
+    isReachingEnd,
+  } = useSWRPages(
     `admin-users-list`,
     ({ offset, withSWR }) => {
-      
       const apiUrl = `${API.users}?limit=10${offset ? '&from=' + offset : ''}`
-      const { data } = withSWR(useSWR(apiUrl, fetch));
+      const { data } = withSWR(useSWR(apiUrl, fetch))
 
-      if (!data) return <Placeholder/>;
+      if (!data) return <Placeholder />
 
-      const { results } = data;
-      return results.map(item => {
-         return <ListItem key={item.id} type={props.type} item={item} />
+      const { results } = data
+      return results.map((item) => {
+        return <ListItem key={item.id} type={props.type} item={item} />
       })
     },
-    SWR => {
+    (SWR) => {
       // Calculates the next page offset
-      return SWR.data && SWR.data.results && SWR.data.results.length >= 10 ? SWR.data.from * 1 + SWR.data.limit * 1 : null
+      return SWR.data && SWR.data.results && SWR.data.results.length >= 10
+        ? SWR.data.from * 1 + SWR.data.limit * 1
+        : null
     },
     []
-  );
+  )
 
-  const headerCells = [ 
+  const headerCells = [
     <TableCell>Username</TableCell>,
     <TableCell>Email</TableCell>,
     <TableCell>Name</TableCell>,
     <TableCell>Last Login</TableCell>,
-    <TableCell>Actions</TableCell>
+    <TableCell>Actions</TableCell>,
   ]
 
- 
   return (
-    <div className='content-list'>
+    <div className="content-list">
       <Table headerCells={headerCells}>
-        {!isEmpty ? pages: <EmptyComponent />}
+        {!isEmpty ? pages : <EmptyComponent />}
       </Table>
-      
+
       <div id="load-more">
-          {isReachingEnd
-            ? null
-            : <Button loading={isLoadingMore} big={true} onClick={loadMore}>Load More</Button>}
-        
-        </div>
+        {isReachingEnd ? null : (
+          <Button loading={isLoadingMore} big={true} onClick={loadMore}>
+            Load More
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

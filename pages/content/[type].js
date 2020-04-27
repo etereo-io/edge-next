@@ -1,14 +1,14 @@
 import ContentListView from '../../components/content/read-content/content-list-view/content-list-view'
 import Layout from '../../components/layout/normal/layout'
+import { connect } from '../../lib/api/db'
 import { findContent } from '../../lib/api/content/content'
 import { getContentTypeDefinition } from '../../lib/config'
 import { hasPermissionsForContent } from '../../lib/api/middlewares'
 import runMiddleware from '../../lib/api/api-helpers/run-middleware'
 import { usePermission } from '../../lib/hooks'
-
 // Get serversideProps is important for SEO, and only available at the pages level
-export async function getServerSideProps({ req, res, query }) { 
-  
+export async function getServerSideProps({ req, res, query }) {
+  await connect()
   try {
     await runMiddleware(req, res, hasPermissionsForContent(query.type))
   } catch (e) {
@@ -17,36 +17,37 @@ export async function getServerSideProps({ req, res, query }) {
       props: {
         data: null,
         type: query.type,
-        canAccess: false
-      }
+        canAccess: false,
+      },
     }
   }
 
   const response = await findContent(query.type)
-  
+
   return {
     props: {
       data: response,
       type: query.type,
       canAccess: true,
-      user: req.user || {}
+      user: req.user || {},
     },
   }
 }
 
-
 const ContentPage = (props) => {
-  
   const contentTypeDefinition = getContentTypeDefinition(props.type)
 
-  // Will redirect the user out if permission is not granted. 
+  // Will redirect the user out if permission is not granted.
   // For public sites this should be removed
   usePermission(`content.${props.type}.read`, '/', 'type', props.user)
 
   return (
     <Layout title="Content">
       <div>
-        <ContentListView initialData={props.data} type={contentTypeDefinition} />
+        <ContentListView
+          initialData={props.data}
+          type={contentTypeDefinition}
+        />
       </div>
     </Layout>
   )

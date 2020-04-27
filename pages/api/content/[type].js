@@ -1,12 +1,15 @@
 import { addContent, findContent } from '../../../lib/api/content/content'
-import { hasPermissionsForContent, isValidContentType } from '../../../lib/api/middlewares'
+import {
+  hasPermissionsForContent,
+  isValidContentType,
+} from '../../../lib/api/middlewares'
 
+import { connect } from '../../../lib/api/db'
 import { contentValidations } from '../../../lib/validations/content'
 import methods from '../../../lib/api/api-helpers/methods'
-import {onContentAdded} from '../../../lib/api/hooks/content.hooks'
+import { onContentAdded } from '../../../lib/api/hooks/content.hooks'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
-import { v4 as uuidv4 } from 'uuid'
 
 const getContent = (filterParams, searchParams, paginationParams) => (
   req,
@@ -25,44 +28,45 @@ const getContent = (filterParams, searchParams, paginationParams) => (
     })
 }
 
-
 export function fillContentWithDefaultData(contentType, content, user) {
   try {
     const defaultEmptyFields = {}
 
-    contentType.fields.forEach(f => {
+    contentType.fields.forEach((f) => {
       defaultEmptyFields[f.name] = f.defaultValue || null
-     
     })
 
-    // Fill in the mandatory data like author, id, date, type
+    // Fill in the mandatory data like author, date, type
     const newContent = {
-      id: uuidv4(),
       author: user.id,
       createdAt: Date.now(),
       type: contentType.slug,
       ...defaultEmptyFields,
-      ...content
+      ...content,
     }
 
-    const slug =  slugify(contentType.slugGeneration.reduce((prev, next) => prev + ' ' + newContent[next], ''))
-    
+    const slug = slugify(
+      contentType.slugGeneration.reduce(
+        (prev, next) => prev + ' ' + newContent[next],
+        ''
+      )
+    )
+
     const extraFields = {
-      slug: slug
+      slug: slug,
     }
-    
+
     return Object.assign({}, newContent, extraFields)
-  } catch(err) {
+  } catch (err) {
     throw new Error('Invalid slug or default data generation ' + err.message)
   }
-
 }
 
 const createContent = (req, res) => {
   const type = req.contentType
 
   const content = req.body
-  
+
   contentValidations(type, content)
     .then(() => {
       // Content is valid
@@ -95,8 +99,10 @@ export default async (req, res) => {
     query: { type, search, sortBy, sortOrder, from, limit, author },
   } = req
 
-  const filterParams = {
-    author,
+  const filterParams = {}
+
+  if (author) {
+    filterParams.author = author
   }
 
   const searchParams = {
@@ -109,12 +115,22 @@ export default async (req, res) => {
     from,
     limit,
   }
-  
+
   try {
     await runMiddleware(req, res, isValidContentType(type))
   } catch (e) {
     console.log(e)
     return res.status(405).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
       message: e.message,
     })
   }

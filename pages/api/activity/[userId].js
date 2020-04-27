@@ -1,3 +1,4 @@
+import { connect } from '../../../lib/api/db'
 import { findActivity } from '../../../lib/api/activity/activity'
 import { findOneUser } from '../../../lib/api/users/user'
 import { getSession } from '../../../lib/api/auth/iron'
@@ -21,10 +22,10 @@ const hasPermissionForActivity = async (req, res, cb) => {
   }
 }
 
-const userExist = userId => async (req, res, cb) => {
-  const user = await findOneUser({id: userId})
+const userExist = (userId) => async (req, res, cb) => {
+  const user = await findOneUser({ id: userId })
 
-  if(!user) {
+  if (!user) {
     cb(new Error('User not found'))
   } else {
     req.user = user
@@ -36,7 +37,6 @@ const getActivities = (filterParams, searchParams, paginationParams) => (
   req,
   res
 ) => {
-
   findActivity(filterParams, searchParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
@@ -48,27 +48,36 @@ const getActivities = (filterParams, searchParams, paginationParams) => (
     })
 }
 
-
 export default async (req, res) => {
   const {
     query: { userId, sortBy, sortOrder, from, limit },
   } = req
 
   const filterParams = {
-    author: userId
+    author: userId,
   }
 
   const searchParams = {
     // TODO: implement filter activities
   }
- 
+
   const paginationParams = {
     sortBy,
     sortOrder,
     from,
     limit,
   }
-  
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
+      message: e.message,
+    })
+  }
+
   try {
     await runMiddleware(req, res, userExist(userId))
   } catch (e) {

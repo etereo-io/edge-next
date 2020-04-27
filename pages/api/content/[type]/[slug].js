@@ -1,7 +1,18 @@
-import { findOneContent, updateOneContent } from '../../../../lib/api/content/content'
-import { hasPermissionsForContent, hasQueryParameters, isValidContentType } from '../../../../lib/api/middlewares'
-import { onContentDeleted, onContentUpdated } from '../../../../lib/api/hooks/content.hooks'
+import {
+  findOneContent,
+  updateOneContent,
+} from '../../../../lib/api/content/content'
+import {
+  hasPermissionsForContent,
+  hasQueryParameters,
+  isValidContentType,
+} from '../../../../lib/api/middlewares'
+import {
+  onContentDeleted,
+  onContentUpdated,
+} from '../../../../lib/api/hooks/content.hooks'
 
+import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
 import { findOneUser } from '../../../../lib/api/users/user'
 import methods from '../../../../lib/api/api-helpers/methods'
@@ -40,7 +51,7 @@ const getContent = async (req, res) => {
   console.log(user, req.item.author)
   res.status(200).json({
     ...req.item,
-    user: user
+    user: user,
   })
 }
 
@@ -59,7 +70,7 @@ const updateContent = (req, res) => {
   const type = req.contentType
 
   const content = req.body
-  
+
   contentValidations(type, content)
     .then(() => {
       // Content is valid
@@ -67,7 +78,7 @@ const updateContent = (req, res) => {
         .then((data) => {
           // Trigger on updated hook
           onContentUpdated(content, req.user)
-          
+
           // Respond
           res.status(200).json(data)
         })
@@ -89,7 +100,6 @@ export default async (req, res) => {
     query: { type },
   } = req
 
-
   try {
     await runMiddleware(req, res, isValidContentType(type))
   } catch (e) {
@@ -102,6 +112,16 @@ export default async (req, res) => {
     await runMiddleware(req, res, hasQueryParameters(['slug']))
   } catch (e) {
     return res.status(405).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    // Connect to database
+    await connect()
+  } catch (e) {
+    console.log(e)
+    return res.status(500).json({
       message: e.message,
     })
   }

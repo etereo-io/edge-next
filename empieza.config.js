@@ -14,13 +14,16 @@ for (var i = 0; i < 100; i++) {
     slug: 'example-post-' + i,
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
     description: 'This is an example description',
-    tags: [{
-      slug: 'software',
-      label: 'SOFTWARE'
-    }, {
-      slug: 'ai',
-      label: 'AI'
-    }],
+    tags: [
+      {
+        slug: 'software',
+        label: 'SOFTWARE',
+      },
+      {
+        slug: 'ai',
+        label: 'AI',
+      },
+    ],
   })
 
   products.push({
@@ -38,8 +41,8 @@ for (var i = 0; i < 100; i++) {
     meta: {
       contentTitle: 'Example post', // This will not work with dynamic fields
       contentType: 'post',
-      contentId: i
-    }
+      contentId: i,
+    },
   })
 
   initialActivity.push({
@@ -48,18 +51,18 @@ for (var i = 0; i < 100; i++) {
     meta: {
       contentTitle: 'Example product', // This will not work with dynamic fields
       contentType: 'product',
-      contentId: i
-    }
+      contentId: i,
+    },
   })
 
-  for(var j = 0; j < 50; j++) {
+  for (var j = 0; j < 50; j++) {
     comments.push({
       type: 'comment',
       contentType: 'post',
       contentId: i,
       message: 'A demo comment',
       author: Math.round(Math.random() * 10),
-      slug: 'test-comment-' + j
+      slug: 'test-comment-' + j,
     })
 
     initialActivity.push({
@@ -68,17 +71,13 @@ for (var i = 0; i < 100; i++) {
       meta: {
         commentId: j,
         contentId: i,
-        contentType: 'post'
-      }
+        contentType: 'post',
+      },
     })
   }
 }
 
-const initialContent = [
-  ...posts,
-  ...products,
-  ...comments
-]
+const initialContent = [...posts, ...products, ...comments]
 
 module.exports = (defaultOptions) => {
   const postContentType = {
@@ -97,7 +96,7 @@ module.exports = (defaultOptions) => {
       delete: [defaultOptions.roles.admin],
       admin: [defaultOptions.roles.admin],
       approval: [defaultOptions.roles.admin],
-      report: [defaultOptions.roles.user]
+      report: [defaultOptions.roles.user],
     },
 
     publishing: {
@@ -166,7 +165,7 @@ module.exports = (defaultOptions) => {
       delete: [defaultOptions.roles.admin],
       admin: [defaultOptions.roles.admin],
       approval: [defaultOptions.roles.admin],
-      report: [defaultOptions.roles.user]
+      report: [defaultOptions.roles.user],
     },
 
     publishing: {
@@ -190,7 +189,7 @@ module.exports = (defaultOptions) => {
         type: 'text',
         label: 'Title',
         placeholder: 'Title',
-        title: true
+        title: true,
       },
       {
         name: 'description',
@@ -244,45 +243,48 @@ module.exports = (defaultOptions) => {
         content: {
           created: ['public'],
           deleted: [defaultOptions.roles.admin],
-          edited: [defaultOptions.roles.admin]
+          edited: [defaultOptions.roles.admin],
         },
         comments: {
           created: ['public'],
           deleted: [defaultOptions.roles.admin],
-          edited: [defaultOptions.roles.admin]
+          edited: [defaultOptions.roles.admin],
         },
         users: {
           created: [defaultOptions.roles.admin],
           deleted: [defaultOptions.roles.admin],
-          edited: [defaultOptions.roles.admin]
-        }
+          edited: [defaultOptions.roles.admin],
+        },
       },
-      initialActivity: initialActivity
+      initialActivity: initialActivity,
     },
 
     // Users configuration
     user: {
-      initialUsers: [{
-        username: 'admin',
-        email: 'admin@demo.com',
-        createdAt: Date.now(),
-        roles: [defaultOptions.roles.admin, defaultOptions.roles.user],
-        id: '1',
-        password: 'admin',
-        profile: {
-          img: '/static/demo-images/default-avatar.jpg'
-        }
-      }, {
-        username: 'user',
-        email: 'user@demo.com',
-        createdAt: Date.now(),
-        roles: [defaultOptions.roles.user],
-        id: '2',
-        password: 'user',
-        profile: {
-          img: ''
-        }
-      }]
+      initialUsers: [
+        {
+          username: 'admin',
+          email: 'admin@demo.com',
+          createdAt: Date.now(),
+          roles: [defaultOptions.roles.admin, defaultOptions.roles.user],
+          id: '1',
+          password: 'admin',
+          profile: {
+            img: '/static/demo-images/default-avatar.jpg',
+          },
+        },
+        {
+          username: 'user',
+          email: 'user@demo.com',
+          createdAt: Date.now(),
+          roles: [defaultOptions.roles.user],
+          id: '2',
+          password: 'user',
+          profile: {
+            img: '',
+          },
+        },
+      ],
     },
 
     // Content configuration

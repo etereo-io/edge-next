@@ -19,7 +19,7 @@ function getField(field, value) {
       return <p>{value}</p>
 
     case 'tags':
-      return 
+      return
 
     default:
       return <p>{value}</p>
@@ -27,34 +27,59 @@ function getField(field, value) {
 }
 
 export default function (props) {
-  const shareUrl = typeof window !== 'undefined' ? `${String(window.location)}/content/${props.type.slug}/${props.content.slug}`: ''
+  const shareUrl =
+    typeof window !== 'undefined'
+      ? `${String(window.location)}/content/${props.type.slug}/${
+          props.content.slug
+        }`
+      : ''
   const links = !!props.links
   return (
     <div className={`${styles.contentSummaryView} ${props.className}`}>
       <div className="content-summary-content">
-        {props.type.fields.filter(f => !!f.title).map((field) => {
-          return (
-            <div className={styles.field} key={field.name}>
-              {links && <Link href={`/content/${props.type.slug}/${props.content.slug}`}><a><h1>{props.content[field.name]}</h1></a></Link>}
-              {!links && <h1>{props.content[field.name]}</h1>}
-            </div>
-          )
-        })}
-        {props.type.fields.filter(f => !f.title && f.type !== 'tags').map((field) => {
-          return (
-            <div className={styles.field} key={field.name}>
-              {links && <Link href={`/content/${props.type.slug}/${props.content.slug}`}><a>{getField(field, props.content[field.name])}</a></Link>}
-              {!links && getField(field, props.content[field.name])}
-            </div>
-          )
-        })}
-        {props.type.fields.filter(f => !f.title && f.type === 'tags').map((field) => {
-          return (
-            <div className={styles.field} key={field.name}>
-              <TagsField tags={props.content[field.name]} />
-            </div>
-          )
-        })}
+        {props.type.fields
+          .filter((f) => !!f.title)
+          .map((field) => {
+            return (
+              <div className={styles.field} key={field.name}>
+                {links && (
+                  <Link
+                    href={`/content/${props.type.slug}/${props.content.slug}`}
+                  >
+                    <a>
+                      <h1>{props.content[field.name]}</h1>
+                    </a>
+                  </Link>
+                )}
+                {!links && <h1>{props.content[field.name]}</h1>}
+              </div>
+            )
+          })}
+        {props.type.fields
+          .filter((f) => !f.title && f.type !== 'tags')
+          .map((field) => {
+            return (
+              <div className={styles.field} key={field.name}>
+                {links && (
+                  <Link
+                    href={`/content/${props.type.slug}/${props.content.slug}`}
+                  >
+                    <a>{getField(field, props.content[field.name])}</a>
+                  </Link>
+                )}
+                {!links && getField(field, props.content[field.name])}
+              </div>
+            )
+          })}
+        {props.type.fields
+          .filter((f) => !f.title && f.type === 'tags')
+          .map((field) => {
+            return (
+              <div className={styles.field} key={field.name}>
+                <TagsField tags={props.content[field.name]} />
+              </div>
+            )
+          })}
       </div>
       <div className={styles.bottomActions}>
         <SocialShare shareUrl={shareUrl} />
@@ -64,9 +89,7 @@ export default function (props) {
             <li>Email</li>
           </ul>
         </DropDown>
-
       </div>
-      
     </div>
   )
 }

@@ -2,14 +2,15 @@ import Layout from '../components/layout/normal/layout'
 import LinkList from '../components/generic/link-list/link-list'
 
 export default function Custom404() {
-  const links = [{
-    title: 'Home page',
-    link: '/'
-  }]
+  const links = [
+    {
+      title: 'Home page',
+      link: '/',
+    },
+  ]
   return (
     <Layout title="404">
       <div className="page page-404">
-        
         <h1>404 - Page Not Found</h1>
         <div className="links">
           <LinkList links={links} />

@@ -1,21 +1,24 @@
 import { useState } from 'react'
-export default function(props) {
-  const [open, setOpened] =useState(props.open || false)
+export default function (props) {
+  const [open, setOpened] = useState(props.open || false)
   const align = props.align || 'left'
   const toggleMenu = () => {
     setOpened(!open)
   }
 
-
   return (
     <>
       <div className="dropdown-menu">
-        <div onClick={toggleMenu} className={`dropdown-menu-indicator ${open ? 'open' : 'closed'}`} aria-label={`${open ? 'close menu': 'open menu'}`}>
-
-        </div>
-        {open && (<div className={`dropdown-menu-wrapper ${align}`}>
-              <nav className="dropdown-menu-nav">{ props.children }</nav>
-        </div>) }
+        <div
+          onClick={toggleMenu}
+          className={`dropdown-menu-indicator ${open ? 'open' : 'closed'}`}
+          aria-label={`${open ? 'close menu' : 'open menu'}`}
+        ></div>
+        {open && (
+          <div className={`dropdown-menu-wrapper ${align}`}>
+            <nav className="dropdown-menu-nav">{props.children}</nav>
+          </div>
+        )}
       </div>
       <style jsx>{`
         .dropdown-menu {
@@ -27,7 +30,7 @@ export default function(props) {
           border-radius: var(--empz-radius);
           background: transparent;
           cursor: pointer;
-          transition: background-color .2s ease;
+          transition: background-color 0.2s ease;
           position: relative;
           -webkit-user-select: none;
           -moz-user-select: none;
@@ -46,14 +49,14 @@ export default function(props) {
           height: 100%;
         }
 
-        
-        .dropdown-menu-indicator::before, .dropdown-menu-indicator::after {
-          content: "";
+        .dropdown-menu-indicator::before,
+        .dropdown-menu-indicator::after {
+          content: '';
           display: block;
           height: 2px;
           width: 24px;
           background-color: var(--empz-foreground);
-          transition: transform .15s ease;
+          transition: transform 0.15s ease;
         }
 
         .dropdown-menu-indicator::before {
@@ -63,7 +66,7 @@ export default function(props) {
         .dropdown-menu-indicator::after {
           transform: translateY(4px) rotate(0deg);
         }
-        
+
         .dropdown-menu-indicator.open::before {
           transform: translateY(1px) rotate(45deg);
         }
@@ -115,8 +118,6 @@ export default function(props) {
           margin-left: 15.25pt;
           margin-top: 15.25pt;
         }
-
-        
       `}</style>
     </>
   )

@@ -3,10 +3,22 @@ import LoadingSpinner from '../loading/loading-spinner/loading-spinner'
 import styles from './button.module.scss'
 
 export default function (props) {
-  const { children, loading, alt, big, className, href, onClick, restProps, reference } = props
+  const {
+    children,
+    loading,
+    alt,
+    big,
+    className,
+    href,
+    onClick,
+    restProps,
+    reference,
+  } = props
   const buttonItem = (
     <button
-      className={`${styles.button} ${alt ? styles.alt : ''} ${big? styles.big : ''}  ${className}`}
+      className={`${styles.button} ${alt ? styles.alt : ''} ${
+        big ? styles.big : ''
+      }  ${className}`}
       {...restProps}
       ref={reference}
       onClick={onClick}
@@ -17,11 +29,22 @@ export default function (props) {
 
   if (loading) {
     return (
-      <button ref={reference} className={`${styles.button} ${alt ? styles.alt : ''} ${big? styles.big : ''} ${className} ${styles.loading}`}>
-        <LoadingSpinner alt={alt}/>
+      <button
+        ref={reference}
+        className={`${styles.button} ${alt ? styles.alt : ''} ${
+          big ? styles.big : ''
+        } ${className} ${styles.loading}`}
+      >
+        <LoadingSpinner alt={alt} />
       </button>
     )
   }
 
-  return href ? <Link href={href}><a>{buttonItem}</a></Link> : buttonItem
+  return href ? (
+    <Link href={href}>
+      <a>{buttonItem}</a>
+    </Link>
+  ) : (
+    buttonItem
+  )
 }

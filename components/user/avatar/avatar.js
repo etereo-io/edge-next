@@ -1,22 +1,26 @@
-export default function(props) {
-  const src = props.src || "/static/demo-images/default-avatar.jpg"
-  const title = props.title || "Avatar"
-  const width = props.width || 100;
-  const margin = props.margin || 5;
+export default function (props) {
+  const src = props.src || '/static/demo-images/default-avatar.jpg'
+  const title = props.title || 'Avatar'
+  const width = props.width || 100
+  const margin = props.margin || 5
 
   return (
     <>
-    <div className="avatar">
-      {!props.loading && <img title={title} src={src} ></img>}
-      {props.loading && <div className="empty-avatar"> <img src="/static/demo-images/loading-avatar.gif"/></div>}
-    </div>
-    <style jsx>{
-      `
-      img {
-        border-radius: 100%;
-        overflow: hidden;
-        width: 100%;
-      }
+      <div className="avatar">
+        {!props.loading && <img title={title} src={src}></img>}
+        {props.loading && (
+          <div className="empty-avatar">
+            {' '}
+            <img src="/static/demo-images/loading-avatar.gif" />
+          </div>
+        )}
+      </div>
+      <style jsx>{`
+        img {
+          border-radius: 100%;
+          overflow: hidden;
+          width: 100%;
+        }
 
       .empty-avatar {
         width: 100%;

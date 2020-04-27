@@ -1,5 +1,9 @@
-import { removeTokenCookie, setTokenCookie } from '../../../lib/api/auth/auth-cookies'
+import {
+  removeTokenCookie,
+  setTokenCookie,
+} from '../../../lib/api/auth/auth-cookies'
 
+import { connect } from '../../../lib/api/db'
 import { createUser } from '../../../lib/api/users/user'
 import { encryptSession } from '../../../lib/api/auth/iron'
 import express from 'express'
@@ -24,6 +28,17 @@ app.use(passport.initialize())
 
 passport.use(localStrategy)
 
+app.use(async (req, res, next) => {
+  try {
+    // Connect to database
+    await connect()
+    next()
+  } catch (e) {
+    console.log(e)
+    next(e)
+  }
+})
+
 app.post('/api/auth/login', async (req, res) => {
   try {
     const user = await authenticate('local', req, res)
@@ -40,16 +55,16 @@ app.post('/api/auth/login', async (req, res) => {
   }
 })
 
-app.get('/api/auth/logout', async(req, res) => {
+app.get('/api/auth/logout', async (req, res) => {
   removeTokenCookie(res)
   res.writeHead(302, { Location: '/' })
   res.end()
 })
 
-// This could be in another serverless function, as initially. 
+// This could be in another serverless function, as initially.
 // We keep it here to reuse all the auth functions on one single lambda
 // to reduce lambdas for free plan at Vercel.com
-app.post('/api/auth/signup', async(req, res) => {
+app.post('/api/auth/signup', async (req, res) => {
   try {
     await createUser(req.body)
     res.status(200).send({ done: true })

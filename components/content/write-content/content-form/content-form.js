@@ -52,18 +52,18 @@ function InputFile(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       onChange={(ev) => props.onChange(ev.target.value)}
-//       defaultValue={props.value}
+      //       defaultValue={props.value}
     />
   )
 }
 
 function InputTags(props) {
   return (
-    <TagsField 
+    <TagsField
       placeholder={props.field.placeholder}
       name={props.field.name}
       onChange={(val) => props.onChange(val)}
-      />
+    />
   )
 }
 
@@ -75,36 +75,77 @@ function TextArea(props) {
       placeholder={props.field.placeholder}
       defaultValue={props.value}
       onChange={(ev) => props.onChange(ev.target.value)}
-    ></textarea>)
+    ></textarea>
+  )
 }
 
 function Field(props) {
   const getInput = (field) => {
     switch (field.type) {
       case 'textarea':
-        return <TextArea field={field} value={props.value} onChange={props.onChange} />
+        return (
+          <TextArea
+            field={field}
+            value={props.value}
+            onChange={props.onChange}
+          />
+        )
 
       case 'img':
-        return <InputImage field={field}  value={props.value} onChange={props.onChange}/>
+        return (
+          <InputImage
+            field={field}
+            value={props.value}
+            onChange={props.onChange}
+          />
+        )
 
       case 'number':
-        return <InputNumber field={field}  value={props.value} onChange={props.onChange}/>
+        return (
+          <InputNumber
+            field={field}
+            value={props.value}
+            onChange={props.onChange}
+          />
+        )
 
       case 'file':
-        return <InputFile field={field}  value={props.value} onChange={props.onChange}/>
+        return (
+          <InputFile
+            field={field}
+            value={props.value}
+            onChange={props.onChange}
+          />
+        )
 
       case 'tags':
-        return <InputTags field={field}  value={props.value} onChange={props.onChange}/>
+        return (
+          <InputTags
+            field={field}
+            value={props.value}
+            onChange={props.onChange}
+          />
+        )
 
       default:
-        return <InputText field={field}  value={props.value} onChange={props.onChange}/>
+        return (
+          <InputText
+            field={field}
+            value={props.value}
+            onChange={props.onChange}
+          />
+        )
     }
   }
 
   return (
     <div className={styles['field-item']}>
       <div className="label-zone">
-        {props.field.label && <label className={styles['label-zoneLabel']}>{props.field.label}</label>}
+        {props.field.label && (
+          <label className={styles['label-zoneLabel']}>
+            {props.field.label}
+          </label>
+        )}
       </div>
       <div className="input-zone">{getInput(props.field)}</div>
     </div>
@@ -116,7 +157,6 @@ export default function (props) {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
-
   // Store default state with values from the content or default values
   const defaultState = {}
 
@@ -125,25 +165,29 @@ export default function (props) {
     const fieldValue = field.value
 
     // Content value
-    defaultState[field.name] = props.content ? props.content[field.name] : fieldValue
+    defaultState[field.name] = props.content
+      ? props.content[field.name]
+      : fieldValue
   })
 
   const [state, setState] = useState(defaultState)
 
   // Generic field change
-  const handleFieldChange = name => (value) => {
+  const handleFieldChange = (name) => (value) => {
     console.log(name, value)
     setState({
       ...state,
-      [name]: value
+      [name]: value,
     })
   }
 
   const submitRequest = (data) => {
-    const url = `${API.content[props.type.slug]}${props.content ? '/' + props.content.id + '?field=id' : ''}`
-    
+    const url = `${API.content[props.type.slug]}${
+      props.content ? '/' + props.content.id + '?field=id' : ''
+    }`
+
     return fetch(url, {
-      method:'post',
+      method: 'post',
       body: data,
       /* headers: new Headers({
         'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
@@ -158,7 +202,6 @@ export default function (props) {
   const onSubmit = (ev) => {
     ev.preventDefault()
 
-    
     console.log('THe state, st', state)
 
     const data = new URLSearchParams()
@@ -191,8 +234,6 @@ export default function (props) {
         setError(true)
         console.error(err)
       })
-
-    
   }
 
   // It needs the type definition
@@ -205,7 +246,12 @@ export default function (props) {
       <form name="content-form" onSubmit={onSubmit}>
         {/* {JSON.stringify(props.type)} */}
         {props.type.fields.map((field) => (
-          <Field key={field.name} field={field} value={state[field.name]} onChange={handleFieldChange(field.name)}/>
+          <Field
+            key={field.name}
+            field={field}
+            value={state[field.name]}
+            onChange={handleFieldChange(field.name)}
+          />
         ))}
 
         <div className={styles.actions}>
