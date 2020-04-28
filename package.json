@@ -26,6 +26,7 @@
     "passport-local": "1.0.0",
     "react": "latest",
     "react-dom": "latest",
+    "react-google-maps": "^9.4.5",
     "react-share": "^4.1.0",
     "react-social-login-buttons": "^3.0.0",
     "sass": "^1.26.3",

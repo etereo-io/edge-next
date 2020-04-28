@@ -265,6 +265,7 @@ module.exports = (defaultOptions) => {
 
     // Users configuration
     user: {
+      captureGeolocation: true,
       initialUsers: [
         {
           username: 'admin',

@@ -1,7 +1,7 @@
 import LinkList from '../../../generic/link-list/link-list'
 import config from '../../../../lib/config'
 import { hasPermission } from '../../../../lib/permissions'
-import styles from './list-content-types.module.scss'
+
 import { useUser } from '../../../../lib/hooks'
 
 export default function () {
@@ -19,8 +19,16 @@ export default function () {
     })
 
   return (
-    <div className={styles.listContentTypes}>
+    <>
+    <div className='listContentTypes'>
       <LinkList links={links} />
     </div>
+
+  <style jsx>{`
+  .listContentTypes {
+    margin-bottom: var(--empz-gap-double);
+  }
+  `}</style>
+  </>
   )
 }
