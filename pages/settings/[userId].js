@@ -88,12 +88,12 @@ const UserSettings = (props) => {
                 <input
                   type="text"
                   placeholder="Your username"
-                  value={user ? user.username : ''}
+                  value={user ? user.profile.displayname : ''}
                 />
               </div>
             </div>
             <div className="actions">
-              <Button>Change username</Button>
+              <Button>Change Your Name</Button>
             </div>
           </div>
 

@@ -37,25 +37,25 @@ const getUsers = (filterParams, searchParams, paginationParams) => (
 
 const addUser = (user) => async (req, res) => {
   // TODO : run middleware for permissions
-  
+  let parsedUser = null
   
   try {
-    validateUser(user)
+    parsedUser = validateUser(user)
   } catch(err) {
     return res.status(400).json({
       error: err.message
     })
   }
   
-  const userWithSameEmail = await findOneUser({email: user.email})
+  const userWithSameEmail = await findOneUser({email: parsedUser.email})
 
   if (userWithSameEmail) {
     return res.status(400).json({
-      error: 'email already taken'
+      error: 'Email already taken'
     })
   }
 
-  const userWithUserName = await findOneUser({username: user.username})
+  const userWithUserName = await findOneUser({username: parsedUser.username})
   if (userWithUserName) {
     return res.status(400).json({
       error: 'Username already taken'
@@ -63,9 +63,10 @@ const addUser = (user) => async (req, res) => {
   }
 
   try {
-    const added = await createUser(user)
+    const added = await createUser(parsedUser)
+
     onUserAdded(added)
-    // TODO: Log in the user
+    // TODO: Log in the user or send email validation flow
 
     res.status(200).send({
       created: true
