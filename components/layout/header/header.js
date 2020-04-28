@@ -44,7 +44,7 @@ function LoggedInUserHeader(props) {
       <ul className={styles.navigation}>
         {config.content.types
           .filter((type) => {
-            return hasPermission(user, `content.${type.slug}.write`)
+            return hasPermission(user, `content.${type.slug}.create`)
           })
           .map((type) => {
             return (

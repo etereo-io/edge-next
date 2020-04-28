@@ -1,4 +1,8 @@
-import Table, { TableCellBody, TableCellHeader, TableRowBody } from '../../../generic/table/table'
+import Table, {
+  TableCellBody,
+  TableCellHeader,
+  TableRowBody,
+} from '../../../generic/table/table'
 import useSWR, { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'

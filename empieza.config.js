@@ -92,7 +92,8 @@ module.exports = (defaultOptions) => {
 
     permissions: {
       read: ['public'],
-      write: [defaultOptions.roles.admin, defaultOptions.roles.user],
+      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
+      update: [defaultOptions.roles.admin, defaultOptions.roles.user],
       delete: [defaultOptions.roles.admin],
       admin: [defaultOptions.roles.admin],
       approval: [defaultOptions.roles.admin],
@@ -108,7 +109,8 @@ module.exports = (defaultOptions) => {
       enabled: true,
       permissions: {
         read: ['public'],
-        write: [defaultOptions.roles.user, defaultOptions.roles.admin],
+        create: [defaultOptions.roles.user, defaultOptions.roles.admin],
+        update: [defaultOptions.roles.user, defaultOptions.roles.admin],
         delete: [defaultOptions.roles.admin],
         admin: [defaultOptions.roles.admin],
       },
@@ -161,7 +163,8 @@ module.exports = (defaultOptions) => {
 
     permissions: {
       read: ['public'],
-      write: [defaultOptions.roles.admin, defaultOptions.roles.user],
+      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
+      update: [defaultOptions.roles.admin, defaultOptions.roles.user],
       delete: [defaultOptions.roles.admin],
       admin: [defaultOptions.roles.admin],
       approval: [defaultOptions.roles.admin],
@@ -177,7 +180,8 @@ module.exports = (defaultOptions) => {
       enabled: false,
       permissions: {
         read: ['public'],
-        write: [defaultOptions.roles.user, defaultOptions.roles.admin],
+        create: [defaultOptions.roles.user, defaultOptions.roles.admin],
+        update: [defaultOptions.roles.admin, defaultOptions.roles.user],
         delete: [defaultOptions.roles.admin],
         admin: [defaultOptions.roles.admin],
       },

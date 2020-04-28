@@ -1,16 +1,15 @@
+import { apiResolver } from 'next/dist/next-server/server/api-utils'
+import fetch from 'isomorphic-unfetch'
+import getPermissions from '../../../../lib/permissions/get-permissions'
+import { getSession } from '../../../../lib/api/auth/iron'
+import handler from '../../../../pages/api/comments/[contentType]/[contentId]'
 // See discussion https://github.com/zeit/next.js/discussions/11784
 // See example
 import http from 'http'
-import fetch from 'isomorphic-unfetch'
 import listen from 'test-listen'
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
 
 jest.mock('../../../../lib/api/auth/iron')
 jest.mock('../../../../lib/permissions/get-permissions')
-import getPermissions from '../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../lib/api/auth/iron'
-
-import handler from '../../../../pages/api/comments/[contentType]/[contentId]'
 
 describe('Integrations tests for comment creation endpoint', () => {
   let server
@@ -67,7 +66,7 @@ describe('Integrations tests for comment creation endpoint', () => {
     )
 
     getPermissions.mockReturnValueOnce({
-      'content.post.comments.write': ['USER'],
+      'content.post.comments.create': ['USER'],
       'content.post.comments.admin': ['ADMIN'],
     })
 

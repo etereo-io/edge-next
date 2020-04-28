@@ -39,9 +39,15 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
 
       <h2>Or {isLogin ? 'log in' : 'register'} with e-mail</h2>
       <form onSubmit={onSubmit}>
+        {!isLogin && (
+          <label>
+            <span>Username</span>
+            <input type="text" name="username" required />
+          </label>
+        )}
         <label>
-          <span>Username</span>
-          <input type="text" name="username" required />
+          <span>e-mail</span>
+          <input type="text" name="email" required />
         </label>
         <label>
           <span>Password</span>

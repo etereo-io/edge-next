@@ -9,7 +9,7 @@ export default function (props) {
     `content.${props.type.slug}.comments.read`
   )
   const canWriteComments = usePermission(
-    `content.${props.type.slug}.comments.write`
+    `content.${props.type.slug}.comments.create`
   )
 
   return (

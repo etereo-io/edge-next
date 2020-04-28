@@ -1,7 +1,12 @@
+import {
+  createUser,
+  findOneUser,
+  findUsers,
+  validateUser,
+} from '../../lib/api/users/user'
 import methods, { getAction } from '../../lib/api/api-helpers/methods'
 
 import { connect } from '../../lib/api/db'
-import { findUsers } from '../../lib/api/users/user'
 import { getSession } from '../../lib/api/auth/iron'
 import { hasPermission } from '../../lib/permissions'
 import { onUserAdded } from '../../lib/api/hooks/user.hooks'
@@ -35,15 +40,47 @@ const getUsers = (filterParams, searchParams, paginationParams) => (
     })
 }
 
-const addUser = (user) => (req, res) => {
-  // run middleware for permissions
-  // Validate data
-  // if fails, throw error
-  onUserAdded(user)
+const addUser = (user) => async (req, res) => {
+  // TODO : run middleware for permissions
+  let parsedUser = null
 
-  res.status(200).send({
-    deleted: true,
-  })
+  try {
+    parsedUser = validateUser(user)
+  } catch (err) {
+    return res.status(400).json({
+      error: err.message,
+    })
+  }
+
+  const userWithSameEmail = await findOneUser({ email: parsedUser.email })
+
+  if (userWithSameEmail) {
+    return res.status(400).json({
+      error: 'Email already taken',
+    })
+  }
+
+  const userWithUserName = await findOneUser({ username: parsedUser.username })
+  if (userWithUserName) {
+    return res.status(400).json({
+      error: 'Username already taken',
+    })
+  }
+
+  try {
+    const added = await createUser(parsedUser)
+
+    onUserAdded(added)
+    // TODO: Log in the user or send email validation flow
+
+    res.status(200).send({
+      created: true,
+    })
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    })
+  }
 }
 
 export default async (req, res) => {
