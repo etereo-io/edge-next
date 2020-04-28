@@ -1,4 +1,4 @@
-import Table, { TableCell, TableRow } from '../../../generic/table/table'
+import Table, { TableCellBody, TableCellHeader, TableRowBody } from '../../../generic/table/table'
 import useSWR, { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
@@ -44,7 +44,7 @@ const ListItem = (props) => {
   }
 
   return (
-    <TableRow>
+    <TableRowBody>
       {props.type.fields.map((field, index) => {
         const value = props.item[field.name] ? props.item[field.name] : '-'
         const content =
@@ -58,11 +58,11 @@ const ListItem = (props) => {
             JSON.stringify(value)
           )
 
-        return <TableCell>{content}</TableCell>
+        return <TableCellBody>{content}</TableCellBody>
       })}
-      <TableCell>0 Comments</TableCell>
-      <TableCell>0 times</TableCell>
-      <TableCell>
+      <TableCellBody>0 Comments</TableCellBody>
+      <TableCellBody>0 times</TableCellBody>
+      <TableCellBody>
         {!success && (
           <Button href={`/edit/${props.type.slug}/${props.item.slug}`}>
             Edit
@@ -75,8 +75,8 @@ const ListItem = (props) => {
         )}
         {error && <div className="error">Error deleting item</div>}
         {success && <div className="success">Item deleted</div>}
-      </TableCell>
-    </TableRow>
+      </TableCellBody>
+    </TableRowBody>
   )
 }
 
@@ -129,12 +129,12 @@ export default function (props) {
   )
 
   const headerCells = props.type.fields.map((field) => {
-    return <TableCell>{field.name}</TableCell>
+    return <TableCellHeader>{field.name}</TableCellHeader>
   })
 
-  headerCells.push(<TableCell>Comments</TableCell>)
-  headerCells.push(<TableCell>Reported</TableCell>)
-  headerCells.push(<TableCell>Actions</TableCell>)
+  headerCells.push(<TableCellHeader>Comments</TableCellHeader>)
+  headerCells.push(<TableCellHeader>Reported</TableCellHeader>)
+  headerCells.push(<TableCellHeader>Actions</TableCellHeader>)
 
   return (
     <div className="content-list">
