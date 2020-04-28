@@ -71,7 +71,7 @@ export default function (props) {
       <div className="theme-selector">
         <Select onChange={onChange} prefixes={prefixes} value={selectedTheme}>
           {availableThemes.map((t) => (
-            <option key={t.id} selected={selectedTheme === t.id} value={t.id}>
+            <option key={t.id}  value={t.id}>
               {t.title}
             </option>
           ))}
