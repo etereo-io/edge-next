@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 const CreateContent = () => {
   const router = useRouter()
   const { type } = router.query
-  const available = usePermission(`content.${type}.write`, '/', 'type')
+  const available = usePermission(`content.${type}.create`, '/', 'type')
 
   const contentType = getContentTypeDefinition(type)
 

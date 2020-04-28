@@ -127,7 +127,15 @@ describe('Integrations tests for login', () => {
       })
     })
 
-  
+    /* 
+      TODO: 
+      - test that a user can not edit another user
+      - test that an ADMIN can edit other user
+      - test that editing the username only works if that username is not available
+      - test that editing an email triggers a e-mail verification hook
+      - test that profile image uploading works
+      - test that editing an email checks that that email does not exist
+    */ 
 
   })
 
