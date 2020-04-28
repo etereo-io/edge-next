@@ -16,7 +16,6 @@
   scroll-behavior: smooth;
 }
 
-
 // Global variables
 :root {
   --empz-gap: 16pt;
@@ -42,11 +41,14 @@
   --empz-purple: #f81ce5;
   --empz-violet: #7928ca;
   --empz-alert: #ff0080;
-  --font-sans: "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif;
-  --font-mono: Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  --font-mono: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace;
   --header-height: 64px;
-  --header-border-bottom: inset 0 -1px 0 0 rgba(0,0,0,0.1);
-  --header-background: hsla(0,0%,100%,0.8);
+  --header-border-bottom: inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  --header-background: hsla(0, 0%, 100%, 0.8);
   --empz-form-large-font: 1rem;
   --empz-form-large-height: 3rem;
   --empz-form-large-line-height: 1.5rem;
@@ -86,18 +88,18 @@
   --empz-secondary-light: var(--accents-3);
   --empz-secondary: var(--accents-5);
   --empz-secondary-dark: var(--accents-7);
-  --dropdown-box-shadow: 0 4px 4px 0 rgba(0,0,0,0.02);
+  --dropdown-box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.02);
   --dropdown-triangle-stroke: #fff;
   --scroller-start: #fff;
-  --scroller-end: hsla(0,0%,100%,0);
-  --shadow-smallest: 0px 4px 8px rgba(0,0,0,0.12);
-  --shadow-small: 0 5px 10px rgba(0,0,0,0.12);
-  --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
-  --shadow-large: 0 30px 60px rgba(0,0,0,0.12);
-  --shadow-hover: 0 30px 60px rgba(0,0,0,0.12);
-  --shadow-sticky: 0 12px 10px -10px rgba(0,0,0,0.12);
+  --scroller-end: hsla(0, 0%, 100%, 0);
+  --shadow-smallest: 0px 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-small: 0 5px 10px rgba(0, 0, 0, 0.12);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-large: 0 30px 60px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 30px 60px rgba(0, 0, 0, 0.12);
+  --shadow-sticky: 0 12px 10px -10px rgba(0, 0, 0, 0.12);
   --portal-opacity: 0.25;
-  --light-border-color: rgba(0,0,0, 0.2);
+  --light-border-color: rgba(0, 0, 0, 0.2);
   --light-border: 1px solid var(--light-border-color);
 }
 
@@ -132,20 +134,19 @@
   --dropdown-triangle-stroke: #333;
   --scroller-start: #000;
   --scroller-end: transparent;
-  --header-background: rgba(0,0,0,0.5);
-  --header-border-bottom: inset 0 -1px 0 0 hsla(0,0%,100%,0.1);
+  --header-background: rgba(0, 0, 0, 0.5);
+  --header-border-bottom: inset 0 -1px 0 0 hsla(0, 0%, 100%, 0.1);
   --shadow-small: 0 0 0 1px var(--accents-2);
   --shadow-medium: 0 0 0 1px var(--accents-2);
   --shadow-large: 0 0 0 1px var(--accents-2);
   --shadow-sticky: 0 0 0 1px var(--accents-2);
   --shadow-hover: 0 0 0 1px var(--empz-foreground);
   --portal-opacity: 0.75;
-  --light-border-color: rgba(255,255,255, 0.3);
+  --light-border-color: rgba(255, 255, 255, 0.3);
   --light-border: 1px solid var(--light-border-color);
 }
 
 .robot-theme {
-  
   --empz-foreground: #33cf33;
   --empz-background: #000;
   --empz-selection: var(--empz-purple);
@@ -176,8 +177,8 @@
   --dropdown-triangle-stroke: #333;
   --scroller-start: #000;
   --scroller-end: transparent;
-  --header-background: rgba(0,0,0,0.5);
-  --header-border-bottom: inset 0 -1px 0 0 hsla(0,0%,100%,0.1);
+  --header-background: rgba(0, 0, 0, 0.5);
+  --header-border-bottom: inset 0 -1px 0 0 hsla(0, 0%, 100%, 0.1);
   --shadow-small: 0 0 0 1px var(--accents-2);
   --shadow-medium: 0 0 0 1px var(--accents-2);
   --shadow-large: 0 0 0 1px var(--accents-2);
@@ -187,7 +188,6 @@
   --light-border-color: rgba(0, 255, 55, 0.3);
   --light-border: 1px solid var(--light-border-color);
 }
-
 
 .kawaii-theme {
   --empz-gap: 20pt;
@@ -206,7 +206,6 @@
   --empz-breakpoint-tablet: 960px;
   --empz-radius: 24px;
 
-  
   --empz-foreground: white;
   --empz-background: pink;
   --empz-selection: var(--empz-purple);
@@ -237,8 +236,8 @@
   --dropdown-triangle-stroke: #333;
   --scroller-start: #000;
   --scroller-end: transparent;
-  --header-background: rgba(0,0,0,0.5);
-  --header-border-bottom: inset 0 -1px 0 0 hsla(0,0%,100%,0.1);
+  --header-background: rgba(0, 0, 0, 0.5);
+  --header-border-bottom: inset 0 -1px 0 0 hsla(0, 0%, 100%, 0.1);
   --shadow-small: 0 0 0 1px var(--accents-2);
   --shadow-medium: 0 0 0 1px var(--accents-2);
   --shadow-large: 0 0 0 1px var(--accents-2);
@@ -249,7 +248,6 @@
   --light-border: 1px solid var(--light-border-color);
 }
 
-
 #app-container {
   margin: 0;
   background-color: var(--empz-background);
@@ -257,17 +255,136 @@
 }
 
 // Generic fields styles
-input[type=text] {
-  padding: var(--empz-gap-half);
-  border: var(--light-border);
+
+.input-group {
+  margin-bottom: 32px;
+  position: relative;
+  width: 100%;
+
+  label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 8px;
+  }
+
+  &.required {
+    label {
+      &:after {
+        color: var(--empz-alert);
+        content: '*';
+        display: inline-block;
+      }
+    }
+  }
+
+  &.error{
+    input{
+      border-color: var(--empz-error);
+    }
+  }
 }
 
-input[type=password] {
-  padding: var(--empz-gap-half);
+input,
+textarea,
+select {
+  background: var(--empz-background);
   border: var(--light-border);
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 18px;
+  transition: 0.25s ease;
+  width: 100%;
+
+  &:focus, &:hover {
+    border-color: var(--empz-foreground);
+    outline: none;
+  }
 }
 
 textarea {
-  padding: var(--empz-gap-half);
-  border: var(--light-border);
+  resize: vertical;
+  min-height: 58px;
+}
+
+.input-select {
+  position: relative;
+
+  &:after {
+    background: transparent;
+    border-bottom: 2px solid var(--accents-5);
+    border-right: 2px solid var(--accents-5);
+    content: '';
+    cursor: pointer;
+    height: 8px;
+    position: absolute;
+    pointer-events: none;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    transition: 0.25s ease;
+    width: 8px;
+  }
+}
+
+.input-radio-group{
+  display: flex;
+}
+
+.input-radio {
+  display: inline-block;
+  margin-right: 24px;
+  position: relative;
+  width: 100%;
+
+  &:last-of-type{
+    margin-right: 0;
+  }
+
+  label {
+    background: var(--empz-background);
+    border: var(--light-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 18px;
+    text-align: center;
+    transition: 0.25s ease;
+  }
+
+  input{
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+
+    &:hover{
+      ~ label{
+        border-color: var(--empz-foreground);
+      }
+    }
+
+    &:checked{
+      ~ label{
+        background: var(--empz-foreground);
+        color: var(--empz-background);
+      }
+    }
+  }
+}
+
+select {
+  appearance: none;
+  padding-right: 36px;
+  -webkit-appearance: none;
+}
+
+.error-message{
+  bottom: 0;
+  color: var(--empz-error);
+  font-size: 14px;
+  left: 8px;
+  line-height: 1.7;
+  position: absolute;
+  transform: translateY(100%);
 }

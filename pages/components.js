@@ -81,7 +81,7 @@ const Components = () => {
               <a href="#contentsummaryview">Content Summary View</a>
             </li>
             <li className="submenu">
-              <a href="#generic">Form elements</a>
+              <a href="#form-elements">Form elements</a>
               <ul>
                 <li>
                   <a>Input text</a>
@@ -225,7 +225,11 @@ const links = [{
             <h3>Button</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Button>Button</Button>
+                <Button>Button example</Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button big={true}>Button example</Button>
               </div>
 
               <div className="item-wrapper">
@@ -233,7 +237,13 @@ const links = [{
               </div>
 
               <div className="item-wrapper">
-                <Button alt={true}>Button</Button>
+                <Button alt={true}>Button example</Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button alt={true} big={true}>
+                  Button example
+                </Button>
               </div>
 
               <div className="item-wrapper">
@@ -354,20 +364,85 @@ const links = [{
             `}</pre>
           </div>
 
-          <div id="generic" className="component">
+          <div id="form-elements" className="component">
             <h3>Form Elements</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <select>
-                  <option>Example</option>
-                </select>
-              </div>
-              <div className="item-wrapper">
-                <input type="text" placeholder="Example input"></input>
+                <div className="input-group">
+                  <label for="demo-select">Select example</label>
+                  <div className="input-select">
+                    <select id="demo-select">
+                      <option>Select example</option>
+                      <option>Select example 2</option>
+                      <option>Select example 3</option>
+                      <option>Select example 4</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
               <div className="item-wrapper">
-                <textarea placeholder="Example textarea"></textarea>
+                <div className="input-group">
+                  <label for="demo-radio">Radio example</label>
+                  <div className="input-radio-group">
+                    <div className="input-radio">
+                      <input
+                        type="radio"
+                        id="demo-radio1"
+                        name="demo-radio-group"
+                      ></input>
+                      <label for="demo-radio1">Always</label>
+                    </div>
+                    <div className="input-radio">
+                      <input
+                        type="radio"
+                        id="demo-radio2"
+                        name="demo-radio-group"
+                      ></input>
+                      <label for="demo-radio2">Sometimes</label>
+                    </div>
+                    <div className="input-radio">
+                      <input
+                        type="radio"
+                        id="demo-radio3"
+                        name="demo-radio-group"
+                      ></input>
+                      <label for="demo-radio3">Never</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="item-wrapper">
+                <div className="input-group required">
+                  <label for="demo-input-text">Input text example</label>
+                  <input
+                    type="text"
+                    id="demo-input-text"
+                    placeholder="Input text example"
+                  ></input>
+                </div>
+              </div>
+              <div className="item-wrapper">
+                <div className="input-group">
+                  <label for="demo-textarea">Textarea example</label>
+                  <textarea
+                    id="demo-textarea"
+                    placeholder="Textarea example"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div className="item-wrapper">
+                <div className="input-group error">
+                  <label for="demo-input-text-error">Input text example</label>
+                  <input
+                    type="text"
+                    id="demo-input-text-error"
+                    placeholder="Input text example"
+                  ></input>
+                  <span className="error-message">This is an error message</span>
+                </div>
               </div>
             </div>
             <pre>{`
@@ -681,6 +756,15 @@ const links = [{
         .component {
           padding: calc(var(--empz-gap-double) * 1.6) var(--empz-gap-double)
             var(--empz-gap-double);
+        }
+        
+        #form-elements .component-demo{
+          margin: 40px 0;
+          max-width: 520px;
+        }
+
+        #form-elements .item-wrapper{
+          margin: 0;
         }
 
         .component h3  {
