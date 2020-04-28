@@ -11,7 +11,6 @@ import listen from 'test-listen'
 jest.mock('../../../../lib/api/auth/iron')
 jest.mock('../../../../lib/permissions/get-permissions')
 
-
 describe('Integrations tests for comment creation endpoint', () => {
   let server
   let url

@@ -42,7 +42,7 @@ app.use(async (req, res, next) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const user = await authenticate('local', req, res)
-    
+
     if (!user) {
       throw new Error('User not found or invalid credentials')
     }
@@ -56,7 +56,7 @@ app.post('/api/auth/login', async (req, res) => {
     res.status(200).json({ done: true })
   } catch (error) {
     console.error(error)
-    res.status(401).json({error: error.message})
+    res.status(401).json({ error: error.message })
   }
 })
 

@@ -5,14 +5,14 @@ export function TableCellHeader({ children, ...props }) {
         <span className="table-header">{children}</span>
       </th>
       <style jsx>{`
-      th{
-        background: var(--accents-2);
-        border-bottom: 1px solid rgba(0,0,0,0.1);
-        padding: var(--empz-gap-half);
-        position: sticky;
-        text-align: left;
-        top: 0;
-      }
+        th {
+          background: var(--accents-2);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          padding: var(--empz-gap-half);
+          position: sticky;
+          text-align: left;
+          top: 0;
+        }
       `}</style>
     </>
   )

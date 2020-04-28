@@ -22,21 +22,21 @@ export default function (props) {
           width: 100%;
         }
 
-      .empty-avatar {
-        width: 100%;
-        height: ${width}px;
-        border: var(--light-border);
-        display: block;
-        border-radius: 100%;
-      }
-      
-      .avatar {
-        display: inline-block;
-        margin: ${margin}px;
-        vertical-align: middle;
-        width: ${width}px;
-      }
-      `
-    }</style>
-  </>)
+        .empty-avatar {
+          width: 100%;
+          height: ${width}px;
+          border: var(--light-border);
+          display: block;
+          border-radius: 100%;
+        }
+
+        .avatar {
+          display: inline-block;
+          margin: ${margin}px;
+          vertical-align: middle;
+          width: ${width}px;
+        }
+      `}</style>
+    </>
+  )
 }

@@ -51,44 +51,48 @@ const updateDisplayName = (id, displayname) => {
   return updateOneUser(id, { displayname })
 }
 
-const updateUser = slug => (req, res) => {
+const updateUser = (slug) => (req, res) => {
   const updateData = slug[1]
   let promiseChange = null
 
-  switch(updateData) {
-    case 'profile': 
+  switch (updateData) {
+    case 'profile':
       /* Update only profile data */
       promiseChange = updateOneUser(req.user.id, { profile: req.body.profile })
-    break;
-    case 'username': 
+      break
+    case 'username':
       /* Update only username */
-      promiseChange = findOneUser({ username : req.body.username })
-        .then(maybeUser => {
+      promiseChange = findOneUser({ username: req.body.username }).then(
+        (maybeUser) => {
           if (!maybeUser) {
             return updateOneUser(req.user.id, { username: req.body.username })
           } else {
             throw new Error('Username already exists')
           }
-        })
-      break;
-    case 'email': 
+        }
+      )
+      break
+    case 'email':
       /* Update only email */
-      promiseChange = findOneUser({ email : req.body.email })
-        .then(maybeUser => {
+      promiseChange = findOneUser({ email: req.body.email }).then(
+        (maybeUser) => {
           if (!maybeUser) {
-          return updateOneUser(req.user.id, { email: req.body.email })
+            return updateOneUser(req.user.id, { email: req.body.email })
           } else {
             throw new Error('email already exists')
           }
-        })
-      break;
+        }
+      )
+      break
 
-    case 'password': 
+    case 'password':
       /* Update only password */
       // TODO: Check that the current password req.body.password matches the old one
-      promiseChange = updateOneUser(req.user.id, { password: req.body.newpassword })
-      break;
-    default: 
+      promiseChange = updateOneUser(req.user.id, {
+        password: req.body.newpassword,
+      })
+      break
+    default:
       promiseChange = Promise.reject('Update ' + updateData + ' not allowed')
   }
 

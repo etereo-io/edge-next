@@ -13,7 +13,6 @@ describe('Integrations tests for login', () => {
   let urlLogin
 
   beforeAll(async (done) => {
-
     serverAuth = http.createServer((req, res) =>
       apiResolver(req, res, undefined, handlerAuth)
     )
@@ -30,17 +29,16 @@ describe('Integrations tests for login', () => {
     const newUser = {
       username: 'emilio',
       email: 'email@email.com',
-      password: 'test123123'
+      password: 'test123123',
     }
 
     afterEach(() => {
       findUser.mockClear()
     })
 
-
-    test('should not allow to login if user does not exist', async() => {
+    test('should not allow to login if user does not exist', async () => {
       findUser.mockReturnValueOnce(Promise.resolve(null))
-      
+
       const response = await fetch(urlLogin, {
         method: 'POST',
         headers: {
@@ -48,16 +46,15 @@ describe('Integrations tests for login', () => {
         },
         body: JSON.stringify({
           email: 'test@test.com',
-          password: 'testtest'
+          password: 'testtest',
         }),
       })
 
-
       expect(response.status).toBe(401)
       const jsonResult = await response.json()
-  
+
       expect(jsonResult).toMatchObject({
-        error: 'User not found or invalid credentials'
+        error: 'User not found or invalid credentials',
       })
     })
 
@@ -71,18 +68,16 @@ describe('Integrations tests for login', () => {
         },
         body: JSON.stringify({
           email: newUser.email,
-          password: newUser.password
+          password: newUser.password,
         }),
       })
 
       expect(response.status).toBe(200)
       const jsonResult = await response.json()
-  
+
       expect(jsonResult).toMatchObject({
-        done: true
+        done: true,
       })
     })
-
   })
-
 })

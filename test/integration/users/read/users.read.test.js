@@ -20,22 +20,20 @@ const demoUser = {
   password: 'xxhshsk--213123-123-1-23',
   profile: {
     displayname: 'A test user',
-    img: ''
-  }
+    img: '',
+  },
 }
 
 describe('Integrations tests for login', () => {
   let server
   let url
-  
 
   beforeAll(async (done) => {
-
     server = http.createServer((req, res) =>
       apiResolver(req, res, undefined, handlerUser)
     )
     url = await listen(server)
-  
+
     done()
   })
 
@@ -44,7 +42,6 @@ describe('Integrations tests for login', () => {
   })
 
   describe('User reading', () => {
-    
     afterEach(() => {
       findOneUser.mockClear()
       updateOneUser.mockClear()
@@ -52,7 +49,7 @@ describe('Integrations tests for login', () => {
       getSession.mockClear()
     })
 
-    test('a public user should be able to read a profile', async() => {
+    test('a public user should be able to read a profile', async () => {
       const urlToBeUsed = new URL(url)
       urlToBeUsed.searchParams.append('slug', '1')
 
@@ -71,7 +68,7 @@ describe('Integrations tests for login', () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
       })
 
       const jsonResult = await response.json()
@@ -79,14 +76,10 @@ describe('Integrations tests for login', () => {
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
         username: demoUser.username,
-        profile: demoUser.profile
+        profile: demoUser.profile,
       })
     })
-
-
- 
   })
-
 })
 
 /* TODO: 

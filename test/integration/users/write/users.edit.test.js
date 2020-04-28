@@ -15,15 +15,13 @@ jest.mock('../../../../lib/api/users/user')
 describe('Integrations tests for login', () => {
   let server
   let url
-  
 
   beforeAll(async (done) => {
-
     server = http.createServer((req, res) =>
       apiResolver(req, res, undefined, handlerUser)
     )
     url = await listen(server)
-  
+
     done()
   })
 
@@ -32,7 +30,6 @@ describe('Integrations tests for login', () => {
   })
 
   describe('User edition', () => {
-    
     afterEach(() => {
       findOneUser.mockClear()
       updateOneUser.mockClear()
@@ -40,9 +37,9 @@ describe('Integrations tests for login', () => {
       getSession.mockClear()
     })
 
-    test('a public user should not be able to edit a profile', async() => {
+    test('a public user should not be able to edit a profile', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { slug: ['1']}
+      const params = { slug: ['1'] }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
@@ -51,7 +48,7 @@ describe('Integrations tests for login', () => {
       // Mock permissions
       getPermissions.mockReturnValueOnce({
         'user.update': ['ADMIN'],
-        'user.admin': ['ADMIN']
+        'user.admin': ['ADMIN'],
       })
 
       // Current user is public
@@ -74,38 +71,40 @@ describe('Integrations tests for login', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message: "User not authorized to user.update,user.admin"
+        message: 'User not authorized to user.update,user.admin',
       })
     })
 
-    test('an authorized user should be able to edit its own profile', async() => {
+    test('an authorized user should be able to edit its own profile', async () => {
       const urlToBeUsed = new URL(url)
-      
+
       urlToBeUsed.searchParams.append('slug', '1')
       urlToBeUsed.searchParams.append('slug', 'profile')
-      
+
       // Mock permissions
       getPermissions.mockReturnValueOnce({
         'user.update': ['ADMIN'],
-        'user.admin': ['ADMIN']
+        'user.admin': ['ADMIN'],
       })
 
       // Current user is logged
       getSession.mockReturnValueOnce({
         roles: ['USER'],
-        id: '1'
+        id: '1',
       })
 
       // Find one user returns the data
-      findOneUser.mockReturnValueOnce(Promise.resolve({
-        email: 'test@t.com',
-        password: '12345678',
-        username: 'test',
-        profile: null
-      }))
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve({
+          email: 'test@t.com',
+          password: '12345678',
+          username: 'test',
+          profile: null,
+        })
+      )
 
-      updateOneUser.mockReturnValueOnce(Promise.resolve({id : 1}))
-      
+      updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
       const newUserData = {
         email: 'test@test.com',
         description: 'Wea body test',
@@ -120,10 +119,10 @@ describe('Integrations tests for login', () => {
       })
 
       const jsonResult = await response.json()
-      
+
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
-        updated: true
+        updated: true,
       })
     })
 
@@ -135,8 +134,6 @@ describe('Integrations tests for login', () => {
       - test that editing an email triggers a e-mail verification hook
       - test that profile image uploading works
       - test that editing an email checks that that email does not exist
-    */ 
-
+    */
   })
-
 })
