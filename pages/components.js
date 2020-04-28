@@ -303,14 +303,15 @@ const links = [{
   <option value="something">Something</option>
 </Select>
 
-
 <Select value={'ipsum'} prefixes={[{
   value: 'lorem',
-  prefix: <img style={{'max-width': '100%' }} src="https://i.picsum.photos/id/519/50/50.jpg" />
-}, {
+  prefix: <img style={{'max-width': '100%' }}
+  src="https://i.picsum.photos/id/519/50/50.jpg" />
+  }, {
   value: 'ipsum',
-  prefix: <img style={{'max-width': '100%' }}  src="https://i.picsum.photos/id/212/50/50.jpg" />
-}]}>
+  prefix: <img style={{'max-width': '100%' }}
+  src="https://i.picsum.photos/id/212/50/50.jpg" />
+  }]}>
   <option value='lorem'>Lorem</option>
   <option value='ipsum'>Ipsum</option>
 </Select>
@@ -550,6 +551,18 @@ const links = [{
           z-index: 3;
         }
 
+        .list-menu::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        .list-menu::-webkit-scrollbar-thumb {
+          background: var(--accents-3);
+        }
+
+        .list-menu::-webkit-scrollbar-track {
+          background: var(--accents-1);
+        }
+
         .list-menu .submenu a::after {
           background: transparent;
           border-bottom: 2px solid var(--accents-6);
@@ -640,7 +653,6 @@ const links = [{
           position: relative;
           white-space: pre-wrap;
           word-wrap: break-word;
-          text-align: justify;
         }
 
         .components pre::before {
