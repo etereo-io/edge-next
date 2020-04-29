@@ -13,6 +13,7 @@ function InputText(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      required={!!props.field.required}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
   )
@@ -26,6 +27,7 @@ function InputNumber(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      required={!!props.field.required}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
   )
@@ -37,6 +39,7 @@ function InputImage(props) {
       type="file"
       accept="image/png, image/jpeg"
       name={props.field.name}
+      required={!!props.field.required}
       placeholder={props.field.placeholder}
       onChange={(ev) => props.onChange(ev.target.value)}
       // defaultValue={props.value}
@@ -51,6 +54,7 @@ function InputFile(props) {
       accept="image/png, image/jpeg"
       name={props.field.name}
       placeholder={props.field.placeholder}
+      required={!!props.field.required}
       onChange={(ev) => props.onChange(ev.target.value)}
       //       defaultValue={props.value}
     />
@@ -74,6 +78,7 @@ function TextArea(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      required={!!props.field.required}
       onChange={(ev) => props.onChange(ev.target.value)}
     ></textarea>
   )
@@ -126,6 +131,20 @@ function Field(props) {
             onChange={props.onChange}
           />
         )
+
+      case 'select':
+          return (
+            <select name={field.name} onChange={props.onChange} value={props.value}>
+              {field.options.map(o => <option value={o.value}>{o.label}</option>)}
+            </select>
+          )
+      
+      case 'json':
+        return (
+          <textarea name={field.name} onChange={props.onChange} value={JSON.stringify(props.value)}>
+            
+          </textarea>
+          )
 
       default:
         return (

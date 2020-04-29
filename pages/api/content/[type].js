@@ -47,7 +47,7 @@ export function fillContentWithDefaultData(contentType, content, user) {
 
     const slug = slugify(
       contentType.slugGeneration.reduce(
-        (prev, next) => prev + ' ' + newContent[next],
+        (prev, next) => prev + ' ' + (next !== 'userId' ? newContent[next] : user.id),
         ''
       )
     )

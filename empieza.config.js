@@ -151,6 +151,192 @@ module.exports = (defaultOptions) => {
     ],
   }
 
+  const ProfilePictureContent = {
+    title: {
+      en: 'Picture',
+      es: 'Foto'
+    },
+
+    slug: 'picture',
+
+    slugGeneration: ['userId', 'createdAt'],
+
+    permissions: {
+      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
+      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
+      update: [defaultOptions.roles.admin],
+      delete: [defaultOptions.roles.admin],
+      admin: [defaultOptions.roles.admin],
+      report: [defaultOptions.roles.user],
+    },
+
+    comments: {
+      enabled: false,
+      permissions: {}
+    },
+
+    fields: [
+      {
+        name: 'image',
+        type: 'img',
+        label: 'Image',
+        required: true,
+        placeholder: 'Image',
+      },
+    ]
+  }
+
+  const LikeContent = {
+    title: {
+      en: 'Like',
+      es: 'Like'
+    },
+
+    slug: 'like',
+
+    slugGeneration: ['userId', 'createdAt'],
+
+    permissions: {
+      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
+      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
+      update: [defaultOptions.roles.admin],
+      delete: [defaultOptions.roles.admin],
+      admin: [defaultOptions.roles.admin],
+      report: [defaultOptions.roles.user],
+    },
+
+    comments: {
+      enabled: false,
+      permissions: {}
+    },
+
+    fields: [
+      {
+        name: 'userFrom',
+        type: 'text',
+        label: 'User from',
+        required: true,
+        placeholder: 'user from',
+      },
+      {
+        name: 'userTo',
+        type: 'text',
+        label: 'User to',
+        required: true,
+        placeholder: 'user to',
+      },
+      {
+        name: 'status',
+        type: 'select',
+        options: [{
+          label: 'Like',
+          value: 'like'
+        }, {
+          label: 'Dislike',
+          value: 'dislike'
+        }],
+        label: 'status',
+        required: true,
+        placeholder: 'status',
+      },
+    ]
+  }
+
+  const MatchContent = {
+    title: {
+      en: 'Match',
+      es: 'Match'
+    },
+
+    slug: 'match',
+
+    slugGeneration: ['participants' , 'createdAt'],
+
+    permissions: {
+      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
+      create: [defaultOptions.roles.admin],
+      update: [defaultOptions.roles.admin],
+      delete: [defaultOptions.roles.admin],
+      admin: [defaultOptions.roles.admin],
+    },
+
+    comments: {
+      enabled: false,
+      permissions: {}
+    },
+
+    fields: [
+      {
+        name: 'participants',
+        type: 'json',
+        label: 'participants',
+        required: true,
+        placeholder: 'participants',
+      },
+      {
+        name: 'deleted',
+        type: 'boolean',
+        label: 'deleted',
+        placeholder: 'deleted',
+      },
+    ]
+  }
+
+  
+  const MessageContent = {
+    title: {
+      en: 'Message',
+      es: 'Message'
+    },
+
+    slug: 'message',
+
+    slugGeneration: ['userId' , 'createdAt'],
+
+    permissions: {
+      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
+      create: [defaultOptions.roles.admin],
+      update: [defaultOptions.roles.admin],
+      delete: [defaultOptions.roles.admin],
+      admin: [defaultOptions.roles.admin],
+    },
+
+    comments: {
+      enabled: false,
+      permissions: {}
+    },
+
+    fields: [
+      {
+        name: 'userFrom',
+        type: 'text',
+        label: 'user from',
+        required: true,
+        placeholder: 'user from (UID)',
+      },
+      {
+        name: 'message',
+        type: 'text',
+        label: 'message',
+        required: true,
+        placeholder: 'message',
+      },
+      {
+        name: 'matchId',
+        type: 'text',
+        label: 'matchId',
+        required: true,
+        placeholder: 'matchId',
+      },
+      {
+        name: 'deleted',
+        type: 'boolean',
+        label: 'deleted',
+        placeholder: 'deleted',
+      }
+    ]
+  }
+
   const productContentType = {
     title: {
       en: 'Product',
@@ -296,12 +482,27 @@ module.exports = (defaultOptions) => {
             lastLogin: null
           }
         },
+        {
+          username: 'blocked',
+          email: 'blocked@demo.com',
+          createdAt: Date.now(),
+          roles: [defaultOptions.roles.user],
+          id: '3',
+          password: 'user',
+          profile: {
+            img: '',
+          },
+          blocked: true,
+          metadata: {
+            lastLogin: null
+          }
+        },
       ],
     },
 
     // Content configuration
     content: {
-      types: [postContentType, productContentType],
+      types: [postContentType, productContentType, ProfilePictureContent, LikeContent, MatchContent, MessageContent],
       initialContent: initialContent,
     },
   }

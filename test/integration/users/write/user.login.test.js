@@ -79,5 +79,30 @@ describe('Integrations tests for login', () => {
         done: true,
       })
     })
+
+    test('Should not work for a blocked user', async () => {
+      findUser.mockReturnValueOnce(Promise.resolve({
+        ...newUser,
+        blocked: true
+      }))
+
+      const response = await fetch(urlLogin, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: newUser.email,
+          password: newUser.password,
+        }),
+      })
+
+      expect(response.status).toBe(401)
+      const jsonResult = await response.json()
+
+      expect(jsonResult).toMatchObject({
+        error: 'User blocked',
+      })
+    })
   })
 })

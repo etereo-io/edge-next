@@ -5,6 +5,7 @@ import ThemeSelector from '../../generic/theme-selector/theme-selector'
 import config from '../../../lib/config'
 import { hasPermission } from '../../../lib/permissions'
 import styles from './header.module.scss'
+import { useEffect } from 'react'
 import { useUser } from '../../../lib/hooks'
 
 function PublicUserHeader() {
@@ -39,6 +40,12 @@ function PublicUserHeader() {
 
 function LoggedInUserHeader(props) {
   const user = props.user
+
+  useEffect(() => {
+    if (config.user.captureGeolocation) {
+      // TODO: Ask for geolocation
+    }
+  }, [])
   return (
     <nav>
       <ul className={styles.navigation}>

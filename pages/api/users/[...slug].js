@@ -80,6 +80,13 @@ const updateUser = (slug) => (req, res) => {
       )
       break
 
+    case 'block':
+        /* Update only blocked status */
+        promiseChange = updateOneUser(req.user.id, {
+          blocked: req.body.blocked,
+        })
+        break
+
     case 'password':
       /* Update only password */
       // TODO: Check that the current password req.body.password matches the old one

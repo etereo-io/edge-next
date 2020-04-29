@@ -16,15 +16,50 @@ const ListItem = (props) => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
+  // const [item, setItem] = useState(props.item)
+
+  const blockRequest = (blockedStatus) => {
+    const url = `${API.users}/${props.item.id}/block?field=id`
+    
+    return fetch(url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        blocked: blockedStatus
+      }),
+    })
+  }
+
+  const onClickBlockUser = (ev) => {
+    const result = window.confirm('Are you sure you want to block this user?')
+
+    if (result) {
+      setLoading(true)
+      setError(false)
+
+      blockRequest(!props.item.blocked)
+        .then((result) => {
+          console.log(result)
+          setLoading(false)
+          setError(false)
+        })
+        .catch((err) => {
+          setLoading(false)
+          alert('User could not be blocked')
+          console.error(err)
+        })
+    }
+  }
+
   const deleteRequest = () => {
-    const url = `${API.content.users}/${props.item.id}?field=id`
+    const url = `${API.users}/${props.item.id}?field=id`
     return fetch(url, {
       method: 'delete',
     })
   }
 
   const onClickDelete = (ev) => {
-    const result = window.confirm('Are you sure you want to delete this item?')
+    const result = window.confirm('Are you sure you want to delete this user?')
 
     if (result) {
       setLoading(true)
@@ -55,8 +90,9 @@ const ListItem = (props) => {
         </Link>
       </TableCellBody>
       <TableCellBody>{props.item.email}</TableCellBody>
-      <TableCellBody>{props.item.displayname || '-'}</TableCellBody>
+      <TableCellBody>{props.item.metadata.reported}</TableCellBody>
       <TableCellBody>{props.item.metadata.lastLogin}</TableCellBody>
+      <TableCellBody>{props.item.blocked ? 'Blocked' : '-'}</TableCellBody>
       <TableCellBody>
         {!success && <Button href={`/settings/${props.item.id}`}>Edit</Button>}
         {!success && (
@@ -64,6 +100,11 @@ const ListItem = (props) => {
             Delete
           </Button>
         )}
+        
+        <Button loading={loading} alt={true} onClick={onClickBlockUser}>
+          Block user
+        </Button>
+        
         {error && <div className="error">Error deleting item</div>}
         {success && <div className="success">Item deleted</div>}
       </TableCellBody>
@@ -120,8 +161,9 @@ export default function (props) {
   const headerCells = [
     <TableCellHeader>Username</TableCellHeader>,
     <TableCellHeader>Email</TableCellHeader>,
-    <TableCellHeader>Name</TableCellHeader>,
+    <TableCellHeader>Reported</TableCellHeader>,
     <TableCellHeader>Last Login</TableCellHeader>,
+    <TableCellHeader>Blocked</TableCellHeader>,
     <TableCellHeader>Actions</TableCellHeader>,
   ]
 
