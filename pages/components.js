@@ -12,6 +12,7 @@ import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
+import Map from '../components/generic/map/map'
 import Select from '../components/generic/select/select'
 import SocialShare from '../components/generic/social-share/social-share'
 import TagsInput from '../components/generic/tags-input/tags-input'
@@ -81,6 +82,7 @@ const Components = () => {
             <li>
               <a href="#themeselector">Theme selector</a>
             </li>
+            
             <li>
               <a href="#contentsummaryview">Content Summary View</a>
             </li>
@@ -106,6 +108,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#table">Table</a>
+            </li>
+            <li>
+              <a href="#map">Map</a>
             </li>
           </ul>
         </div>
@@ -618,7 +623,24 @@ const links = [{
 </Table>
   `}</pre>
           </div>
+        
+          <div id="map" className="component">
+            <h3>Map</h3>
+            <div className="component-demo">
+              <div className="item-wrapper" style={{ height: '400px'}}>
+                <Map />
+              </div>
+
+              
+            </div>
+            <pre>{`
+<Map />
+  `}</pre>
+          </div>
+        
+        
         </div>
+
       </div>
       <style jsx>{`
         h1 {

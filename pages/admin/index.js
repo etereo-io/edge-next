@@ -25,6 +25,13 @@ const AdminPage = () => {
     })
   }
 
+  if (config.user.captureGeolocation) {
+    links.push({
+      title: 'Real Time geolocation',
+      link: '/admin/geolocation'
+    })
+  }
+
   const contentLinks = config.content.types
     .filter((type) => {
       return hasPermission(user, `content.${type.slug}.admin`)

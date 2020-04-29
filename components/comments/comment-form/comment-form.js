@@ -6,11 +6,24 @@ export default function (props) {
     // TODO
   }
   return (
-    <div className={styles.commentForm}>
-      <form onSubmit={onSubmit} className={styles.form}>
-        <textarea className={styles.textarea} placeholder="Your comment" />
-        <Button type="submit">Send</Button>
-      </form>
-    </div>
+    <>
+      <div className=''>
+        <form onSubmit={onSubmit} className='form'>
+          <textarea  placeholder="Your comment" />
+          <Button type="submit">Send</Button>
+        </form>
+      </div>
+      <style jsx>{
+        `
+        
+          form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+          }
+        
+        `
+      }</style>
+    </>
   )
 }

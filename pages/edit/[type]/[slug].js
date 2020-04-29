@@ -5,7 +5,7 @@ import ContentForm from '../../../components/content/write-content/content-form/
 import Layout from '../../../components/layout/normal/layout'
 import fetch from '../../../lib/fetcher'
 import { getContentTypeDefinition } from '../../../lib/config'
-import styles from './[slug].module.scss'
+
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
@@ -35,14 +35,30 @@ const EditContent = () => {
   }
 
   return (
-    isOwnerPermission && (
-      <Layout title="Edit content" className={styles['edit-page']}>
+    <>
+      
+    <Layout title="Edit content">
+      <div className="edit-page">
         <h1 className={styles.h1}>Edit: {data.title}</h1>
 
-        <ContentForm type={contentType} onSaved={onSaved} content={data} />
-      </Layout>
-    )
+        {isOwnerPermission && <ContentForm type={contentType} onSaved={onSaved} content={data} />}
+      </div>
+    </Layout>
+      
+    <style jsx>{
+      `
+      .edit-page {
+        margin-bottom: var(--empz-gap-double);
+      }
+      h1 {
+        margin-bottom: var(--empz-gap);
+      }
+    
+      `
+    }</style>
+  </>
   )
+  
 }
 
 export default EditContent
