@@ -24,6 +24,8 @@
   --empz-gap-half-negative: -8pt;
   --empz-gap-quarter: 4pt;
   --empz-gap-quarter-negative: -4pt;
+  --empz-gap-medium: 24pt;
+  --empz-gap-medium-negative: -24pt;
   --empz-gap-double: 32pt;
   --empz-gap-double-negative: -32pt;
   --empz-page-margin: 16pt;
@@ -257,15 +259,15 @@
 // Generic fields styles
 
 .input-group {
-  margin-bottom: 32px;
+  margin-bottom: var(--empz-gap-medium);
   position: relative;
   width: 100%;
 
   label {
     display: block;
-    font-size: 16px;
+    font-size: var(--empz-form-large-font);
     font-weight: 500;
-    padding-bottom: 8px;
+    padding-bottom: var(--empz-gap-half);
   }
 
   &.required {
@@ -290,9 +292,10 @@ textarea,
 select {
   background: var(--empz-background);
   border: var(--light-border);
-  border-radius: 4px;
-  font-size: 16px;
-  padding: 18px;
+  border-radius: var(--empz-radius);
+  color: var(--empz-foreground);
+  font-size: var(--empz-form-large-font);
+  padding: var(--empz-gap);
   transition: 0.25s ease;
   width: 100%;
 
@@ -304,7 +307,7 @@ select {
 
 textarea {
   resize: vertical;
-  min-height: 58px;
+  min-height: 80px;
 }
 
 .input-select {
@@ -316,14 +319,14 @@ textarea {
     border-right: 2px solid var(--accents-5);
     content: '';
     cursor: pointer;
-    height: 8px;
+    height: var(--empz-gap-half);
     position: absolute;
     pointer-events: none;
-    right: 16px;
+    right: var(--empz-gap);
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
     transition: 0.25s ease;
-    width: 8px;
+    width: var(--empz-gap-half);
   }
 }
 
@@ -333,7 +336,7 @@ textarea {
 
 .input-radio {
   display: inline-block;
-  margin-right: 24px;
+  margin-right: var(--empz-gap);
   position: relative;
   width: 100%;
 
@@ -346,8 +349,8 @@ textarea {
     border: var(--light-border);
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    padding: 18px;
+    font-size: var(--empz-form-large-font);
+    padding: var(--empz-gap);
     text-align: center;
     transition: 0.25s ease;
   }
@@ -375,16 +378,16 @@ textarea {
 
 select {
   appearance: none;
-  padding-right: 36px;
+  padding-right: var(--empz-gap-double);
   -webkit-appearance: none;
 }
 
 .error-message{
   bottom: 0;
   color: var(--empz-error);
-  font-size: 14px;
-  left: 8px;
-  line-height: 1.7;
+  font-size: var(--empz-form-small-font);
+  left: var(--empz-gap-half);
+  line-height: 2;
   position: absolute;
   transform: translateY(100%);
 }

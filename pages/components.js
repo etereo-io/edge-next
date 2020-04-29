@@ -5,6 +5,7 @@ import Table, {
 } from '../components/generic/table/table'
 
 import Avatar from '../components/user/avatar/avatar'
+import Badge from '../components/generic/badge/badge'
 import Button from '../components/generic/button/button'
 import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
 import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
@@ -70,6 +71,9 @@ const Components = () => {
               <a href="#avatar">Avatar</a>
             </li>
             <li>
+              <a href="#badge">Badge</a>
+            </li>
+            <li>
               <a href="#button">Button</a>
             </li>
             <li>
@@ -86,16 +90,16 @@ const Components = () => {
               <a href="#form-elements">Form elements</a>
               <ul>
                 <li>
-                  <a>Input text</a>
+                  <a href="#select">Select</a>
                 </li>
                 <li>
-                  <a>Input checkbox</a>
+                  <a href="#input-radio">Input Radio</a>
                 </li>
                 <li>
-                  <a>Textarea</a>
+                  <a href="#input-text">Input Text</a>
                 </li>
                 <li>
-                  <a>Select</a>
+                  <a href="#textarea">Textarea</a>
                 </li>
               </ul>
             </li>
@@ -226,6 +230,24 @@ const links = [{
             `}</pre>
           </div>
 
+          <div id="badge" className="component">
+            <h3>Badge</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Badge>47</Badge>
+              </div>   
+              <div className="item-wrapper">
+                <Badge>2 reactions</Badge>
+              </div>    
+              <div className="item-wrapper">
+                <Badge featured={true}>New</Badge>
+              </div>    
+              <div className="item-wrapper">
+                <Badge featured={true}></Badge>
+              </div>   
+            </div>
+          </div>
+
           <div id="button" className="component">
             <h3>Button</h3>
             <div className="component-demo">
@@ -273,7 +295,7 @@ const links = [{
             `}</pre>
           </div>
 
-          <div id="select" className="component">
+          {/*<div id="select" className="component">
             <h3>Select</h3>
             <div className="component-demo">
               <div className="item-wrapper">
@@ -330,7 +352,7 @@ const links = [{
   <option value='ipsum'>Ipsum</option>
 </Select>
             `}</pre>
-          </div>
+          </div> */}
 
           <div id="themeselector" className="component">
             <h3>Theme Selector</h3>
@@ -372,7 +394,7 @@ const links = [{
           <div id="form-elements" className="component">
             <h3>Form Elements</h3>
             <div className="component-demo">
-              <div className="item-wrapper">
+              <div className="item-wrapper" id="select">
                 <div className="input-group">
                   <label for="demo-select">Select example</label>
                   <div className="input-select">
@@ -386,7 +408,7 @@ const links = [{
                 </div>
               </div>
 
-              <div className="item-wrapper">
+              <div className="item-wrapper" id="input-radio">
                 <div className="input-group">
                   <label for="demo-radio">Radio example</label>
                   <div className="input-radio-group">
@@ -418,7 +440,7 @@ const links = [{
                 </div>
               </div>
 
-              <div className="item-wrapper">
+              <div className="item-wrapper" id="input-text">
                 <div className="input-group required">
                   <label for="demo-input-text">Input text example</label>
                   <input
@@ -428,7 +450,8 @@ const links = [{
                   ></input>
                 </div>
               </div>
-              <div className="item-wrapper">
+
+              <div className="item-wrapper" id="textarea">
                 <div className="input-group">
                   <label for="demo-textarea">Textarea example</label>
                   <textarea
@@ -628,6 +651,10 @@ const links = [{
           align-items: flex-start;
           display: flex;
           flex-wrap: wrap;
+        }
+
+        .components-layout h3{
+          font-size: 24px;
         }
 
         @media (max-width: 780px) {
