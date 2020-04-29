@@ -57,9 +57,7 @@ app.post('/api/auth/login', async (req, res) => {
     onUserLogged(session)
 
     // Add last login information
-    await updateOneUser({
-      email: user.email
-    }, {
+    await updateOneUser(user.id, {
       metadata: {
         lastLogin: Date.now()
       }
