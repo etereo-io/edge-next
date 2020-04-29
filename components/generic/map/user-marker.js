@@ -13,10 +13,10 @@ class UserMarker extends Component {
       }
 
       componentDidMount() {
-        this.channel && this.channel.bind('transit', ({ person = {} }) => {
+        /*this.channel && this.channel.bind('transit', ({ person = {} }) => {
           const { id, position } = person;
           (id === this.id) && this.setState({ position });
-        });
+        });*/
       }
 
       render() {
