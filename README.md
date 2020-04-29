@@ -1,5 +1,12 @@
-# Empieza - Next Admin Kit
+# Empieza - Next Admin Kit & Dynamic API System
 
+<img src="./public/static/logos/logo.svg" width="200px" />
+
+------
+
+## What is Empieza? 
+
+If you want to read about all the features you can check the [documentation](./static-pages/p/documentation.md) or check the [Website Demo](https://empieza-next.now.sh/) (login: admin@demo.com | password: admin)
 
 ## i18n
 
