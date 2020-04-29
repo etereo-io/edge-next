@@ -28,11 +28,11 @@ If you want to read about all the features you can check the [documentation](./s
 This tool is *not provided* as a package or framework you can add into your existing solutions. It is a solution by itself and it can fit you for a determined set of use-cases. 
 
 To use this tool:
-1- Download or clone the repository
-2- Do `yarn` or `npm install` 
-3 - Do `yarn dev` to launch your site (as any NextJS application)
-4 - Edit `empieza.config.js` to add your own texts and content types or permissions
-5 - Deploy! We recommend services like [Vercel](https://vercel.com)
+- 1 Download or clone the repository
+- 2 Do `yarn` or `npm install` 
+- 3 Do `yarn dev` to launch your site (as any NextJS application)
+- 4 Edit `empieza.config.js` to add your own texts and content types or permissions
+- 5 Deploy! We recommend services like [Vercel](https://vercel.com)
 
 ## Contributing
 
@@ -86,6 +86,6 @@ Check our roadmap if you want to add more coool things into Empieza:
 
 - Startup script
   - Preseed database 
-  
+
 - Dockerfile
   - See how to complete a good example
