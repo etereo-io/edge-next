@@ -269,6 +269,7 @@ module.exports = (defaultOptions) => {
       initialUsers: [
         {
           username: 'admin',
+          displayname: 'The admin',
           email: 'admin@demo.com',
           createdAt: Date.now(),
           roles: [defaultOptions.roles.admin, defaultOptions.roles.user],
@@ -277,6 +278,9 @@ module.exports = (defaultOptions) => {
           profile: {
             img: '/static/demo-images/default-avatar.jpg',
           },
+          metadata: {
+            lastLogin: null
+          }
         },
         {
           username: 'user',
@@ -288,6 +292,9 @@ module.exports = (defaultOptions) => {
           profile: {
             img: '',
           },
+          metadata: {
+            lastLogin: null
+          }
         },
       ],
     },

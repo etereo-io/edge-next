@@ -1,11 +1,10 @@
 import { findOneUser, updateOneUser } from '../../../lib/api/users/user'
-import methods, { getAction } from '../../../lib/api/api-helpers/methods'
 import { onUserDeleted, onUserUpdated } from '../../../lib/api/hooks/user.hooks'
 
 import { connect } from '../../../lib/api/db'
 import { getSession } from '../../../lib/api/auth/iron'
-import { hasPermission } from '../../../lib/permissions'
 import { hasPermissionsForUser } from '../../../lib/api/middlewares'
+import methods from '../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 
 const userExist = (userId) => async (req, res, cb) => {
@@ -45,10 +44,6 @@ const delUser = (req, res) => {
   res.status(200).send({
     deleted: true,
   })
-}
-
-const updateDisplayName = (id, displayname) => {
-  return updateOneUser(id, { displayname })
 }
 
 const updateUser = (slug) => (req, res) => {

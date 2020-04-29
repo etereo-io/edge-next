@@ -55,8 +55,8 @@ const ListItem = (props) => {
         </Link>
       </TableCellBody>
       <TableCellBody>{props.item.email}</TableCellBody>
-      <TableCellBody>{props.item.name || '-'}</TableCellBody>
-      <TableCellBody>{'-'}</TableCellBody>
+      <TableCellBody>{props.item.displayname || '-'}</TableCellBody>
+      <TableCellBody>{props.item.metadata.lastLogin}</TableCellBody>
       <TableCellBody>
         {!success && <Button href={`/settings/${props.item.id}`}>Edit</Button>}
         {!success && (

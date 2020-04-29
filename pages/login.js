@@ -9,6 +9,7 @@ const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
 
   const [errorMsg, setErrorMsg] = useState('')
+  const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e) {
     event.preventDefault()
@@ -20,6 +21,7 @@ const Login = () => {
       password: e.currentTarget.password.value,
     }
 
+    setLoading(true)
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
@@ -30,6 +32,7 @@ const Login = () => {
           Router.push('/')
         })
         .catch((err) => {
+          setLoading(false)
           throw new Error(err)
         })
     } catch (error) {
@@ -41,7 +44,7 @@ const Login = () => {
   return (
     <Layout title="login">
       <div className="login">
-        <Form isLogin errorMessage={errorMsg} onSubmit={handleSubmit} />
+        <Form isLogin errorMessage={errorMsg} loading={loading} onSubmit={handleSubmit} />
       </div>
       <style jsx>{`
         .login {

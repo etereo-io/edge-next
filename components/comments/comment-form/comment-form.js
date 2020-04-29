@@ -1,5 +1,4 @@
 import Button from '../../generic/button/button'
-import styles from './comment-form.module.scss'
 
 export default function (props) {
   const onSubmit = () => {

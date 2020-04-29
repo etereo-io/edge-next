@@ -8,7 +8,7 @@ import {
 } from 'react-social-login-buttons'
 import Button from '../generic/button/button'
 
-const Form = ({ isLogin, errorMessage, onSubmit }) => {
+const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
   return (
     <div className="auth-form">
       <h1>{isLogin ? 'Log in' : 'Register'}</h1>
@@ -66,14 +66,14 @@ const Form = ({ isLogin, errorMessage, onSubmit }) => {
               <Link href="/signup">
                 <a>I don't have an account</a>
               </Link>
-              <Button type="submit">Login</Button>
+              <Button  loading={loading} type="submit">Login</Button>
             </>
           ) : (
             <>
               <Link href="/login">
                 <a>I already have an account</a>
               </Link>
-              <Button type="submit">Signup</Button>
+              <Button loading={loading} type="submit">Signup</Button>
             </>
           )}
         </div>
