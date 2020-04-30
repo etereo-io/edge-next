@@ -49,19 +49,7 @@ function LoggedInUserHeader(props) {
   return (
     <nav>
       <ul className={styles.navigation}>
-        {config.content.types
-          .filter((type) => {
-            return hasPermission(user, `content.${type.slug}.create`)
-          })
-          .map((type) => {
-            return (
-              <li key={type.slug}>
-                <Link href={`/create/${type.slug}`}>
-                  <a>Create {type.title.en}</a>
-                </Link>
-              </li>
-            )
-          })}
+       
         {hasPermission(user, 'admin.access') && (
           <li>
             <Link href="/admin">
@@ -70,7 +58,7 @@ function LoggedInUserHeader(props) {
           </li>
         )}
 
-        <DropdownMenu align="right">
+        <DropdownMenu align="right" width={'155px'}>
           <ul>
             <li>
               <ThemeSelector />
@@ -80,6 +68,27 @@ function LoggedInUserHeader(props) {
                 <a>Profile</a>
               </Link>
             </li>
+          </ul>
+          <span className="spacer"></span>
+          <h4>Content</h4>
+          <ul>
+            {config.content.types
+            .filter((type) => {
+              return hasPermission(user, `content.${type.slug}.create`)
+            })
+            .map((type) => {
+              return (
+                <li key={type.slug}>
+                  <Link href={`/create/${type.slug}`}>
+                    <a>Create {type.title.en}</a>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+
+          <span className="spacer"></span>
+          <ul>
             <li>
               <a href="/api/auth/logout">Logout</a>
             </li>

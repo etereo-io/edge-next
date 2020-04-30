@@ -133,6 +133,7 @@ const Landing = (props) => {
       .hero-head-line {
         max-width: 1024px;
         margin: 0 auto;
+        padding var(--empz-gap);
       }
 
       .slogan {
@@ -151,6 +152,7 @@ const Landing = (props) => {
       .features, .use-cases {
         max-width: 1024px;
         margin: 0 auto;
+        padding var(--empz-gap);
       }
 
       .feature, .use-case {

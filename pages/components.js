@@ -106,6 +106,21 @@ const Components = () => {
       }, {
         value: 'option3',
         label: 'the last option'
+      },  {
+        value: 'option4',
+        label: 'the last option?'
+      },  {
+        value: 'option5',
+        label: 'maybe not'
+      },  {
+        value: 'option6',
+        label: 'not the last option'
+      },  {
+        value: 'option7',
+        label: 'almost the last option'
+      }, {
+        value: 'option8',
+        label: 'yes! the last option'
       }]
     },
     {

@@ -15,7 +15,7 @@ export default function (props) {
           aria-label={`${open ? 'close menu' : 'open menu'}`}
         ></div>
         {open && (
-          <div className={`dropdown-menu-wrapper ${align}`}>
+          <div className={`dropdown-menu-wrapper ${align}`} style={{width: props.width || '155px'}}>
             <nav className="dropdown-menu-nav">{props.children}</nav>
           </div>
         )}
