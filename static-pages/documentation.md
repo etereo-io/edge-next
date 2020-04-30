@@ -3,8 +3,30 @@ title: Documentation
 description: "Empieza Documentation"
 ---
 
+- [Documentation](#documentation)
+  - [Features](#features)
+  - [Static Pages](#static-pages)
+  - [Content Types](#content-types)
+  - [API](#api)
+    - [Users](#users)
+    - [Content](#content)
+    - [Comments](#comments)
+    - [Activity](#activity)
+  - [Databases](#databases)
+    - [Database API](#database-api)
+      - [Adding items](#adding-items)
+      - [Finding items](#finding-items)
+      - [Updating an item](#updating-an-item)
+      - [Deleting an item](#deleting-an-item)
+    - [In memory DB (only local)](#in-memory-db-only-local)
+    - [Firebase](#firebase)
+  - [Authentication](#authentication)
+  - [Emails](#emails)
+  - [Deploy your own](#deploy-your-own)
+    - [Deploying on Vercel](#deploying-on-vercel)
 
 # Documentation
+
 
 ## Features
 
@@ -156,42 +178,63 @@ database: {
 }
 ````
 
-If you want your deployment in Zeit to recognize the `.env` values, you will need to add the secrets:
+## Authentication 
 
-```
-$ now secrets add firebase-api-key ■■■■■■■■-■■■■■■■■
-
-$ now secrets add firebase-auth-domain ■■■■■■■■.firebaseapp.com
-
-$ now secrets add firebase-database-url https://■■■■■■■■.firebaseio.com
-
-$ now secrets add firebase-project-id ■■■■■■■■
-
-$ now secrets add firebase-storage-bucket ■■■■■■■■.appspot.com
-
-$ now secrets add firebase-messaging-sender-id ■■■■■■■■
-
-$ now secrets add firebase-app-id 1:■■■■■■■■:web:■■■■■■■■
-
-$ now secrets add firebase-measurement-id G-■■■■■■■■
-
-$ now secrets add firebase-client-email firebase-adminsdk-■■■■@■■■■■■■■.iam.gserviceaccount.com
-
-$ now secrets add -- firebase-private-key "-----BEGIN PRIVATE KEY-----\n■■■■■■■■\n-----END PRIVATE KEY-----\n"
-```
-
-See [this post](https://dev.to/benzguo/getting-started-with-next-js-now-firebase-4ejg) for more information
-
-## Passport
-
-This example show how to use [Passport.js](http://www.passportjs.org) with Next.js. The example features cookie based authentication with username and password.
-
-The example shows how to do a login, signup and logout; and to get the user info using a hook with [SWR](https://swr.now.sh).
-
-A DB is not included. You can use any db you want and add it [here](/lib/user.js).
+Empieza uses [Passport.js](http://www.passportjs.org) cookie based authentication with email and password.
 
 The login cookie is httpOnly, meaning it can only be accessed by the API, and it's encrypted using [@hapi/iron](https://hapi.dev/family/iron) for more security.
 
+## Emails
+
+Empieza uses [Sendgrid](https://sendgrid.com/) to send emails. Although this is easily editable, just edit `/lib/email/sender.js` to change the sending implementations.
+
+There are some email templates included and working:
+
+- Call to Action template: A simple template with a button. Used to verify user emails.
+
+
+
 ## Deploy your own
 
-Deploy the example using [ZEIT Now](https://zeit.co/now):
+First of all you need to configure the different environment variables.
+
+All the environment variables are defined inside the `.env.build` example file
+
+```
+FIREBASE_PROJECT_ID=XX
+FIREBASE_CLIENT_EMAIL=XX
+FIREBASE_DATABASE_URL=XX
+FIREBASE_PRIVATE_KEY=XX
+MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
+MONGODB_DATABASE=<database>
+NEXT_PUBLIC_GMAPS_API_KEY=XXXX
+SENDGRID_KEY=XXX
+```
+
+### Deploying on Vercel
+
+Deploy Empieza using [Vercel](https://vercel.com):
+
+
+If you want your deployment in Vercel to recognize the `ENVIRONMENT` values, you will need to add the secrets to your deployment. 
+
+Take the following lines as an example: 
+
+```
+$ now secrets add firebase-private-key ■■■■■■■■-■■■■■■■■
+
+$ now secrets add firebase-client-email ■■■■■■■■
+
+$ now secrets add firebase-project-id ■■■■■■■■
+
+$ now secrets add firebase-database-url https://■■■■■■■■.firebaseio.com
+
+$ now secrets add firebase-storage-bucket ■■■■■■■■.appspot.com
+
+$ now secrets add -- firebase-private-key "-----BEGIN PRIVATE KEY-----\n■■■■■■■■\n-----END PRIVATE KEY-----\n"
+
+
+```
+
+
+See [this post](https://dev.to/benzguo/getting-started-with-next-js-now-firebase-4ejg) for more information on how to configure Firebase with Vercel

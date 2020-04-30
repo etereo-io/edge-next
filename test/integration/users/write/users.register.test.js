@@ -44,14 +44,14 @@ describe('Integrations tests for users creation endpoint', () => {
     server.close(done)
   })
 
-  describe('Public users can register', () => {
+  describe('PUBLIC users can register', () => {
     beforeEach(() => {
       getPermissions.mockReturnValueOnce({
-        'user.create': ['public'],
+        'user.create': ['PUBLIC'],
       })
 
       getSession.mockReturnValueOnce({
-        roles: ['public'],
+        roles: ['PUBLIC'],
       })
     })
     test('Should return 400 if required fields are missing (username, email, password)', async () => {
@@ -190,7 +190,7 @@ describe('Integrations tests for users creation endpoint', () => {
 
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
-        created: true,
+        email_verified: false
       })
     })
 

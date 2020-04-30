@@ -37,7 +37,7 @@ describe('Integrations tests for login', () => {
       getSession.mockClear()
     })
 
-    test('a public user should not be able to edit a profile', async () => {
+    test('a PUBLIC user should not be able to edit a profile', async () => {
       const urlToBeUsed = new URL(url)
       const params = { slug: ['1'] }
 
@@ -51,7 +51,7 @@ describe('Integrations tests for login', () => {
         'user.admin': ['ADMIN'],
       })
 
-      // Current user is public
+      // Current user is PUBLIC
       getSession.mockReturnValueOnce()
 
       const newUserData = {

@@ -49,16 +49,16 @@ describe('Integrations tests for login', () => {
       getSession.mockClear()
     })
 
-    test('a public user should be able to read a profile', async () => {
+    test('a PUBLIC user should be able to read a profile', async () => {
       const urlToBeUsed = new URL(url)
       urlToBeUsed.searchParams.append('slug', '1')
 
       // Mock permissions
       getPermissions.mockReturnValueOnce({
-        'user.read': ['public'],
+        'user.read': ['PUBLIC'],
       })
 
-      // Current user is public
+      // Current user is PUBLIC
       getSession.mockReturnValueOnce()
 
       // The user it finds

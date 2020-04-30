@@ -102,9 +102,9 @@ const updateUser = (slug) => (req, res) => {
   }
 
   promiseChange
-    .then(() => {
+    .then((newUser) => {
       // Invoke the hook
-      onUserUpdated(req.user)
+      onUserUpdated(newUser, updateData)
 
       res.status(200).send({
         updated: true,

@@ -1,3 +1,5 @@
+import { findOneUser, updateOneUser } from '../../../lib/api/users/user'
+import { onEmailVerified, onUserLogged } from '../../../lib/api/hooks/user.hooks'
 import {
   removeTokenCookie,
   setTokenCookie,
@@ -7,9 +9,7 @@ import { connect } from '../../../lib/api/db'
 import { encryptSession } from '../../../lib/api/auth/iron'
 import express from 'express'
 import { localStrategy } from '../../../lib/api/auth/password-local'
-import { onUserLogged } from '../../../lib/api/hooks/user.hooks'
 import passport from 'passport'
-import { updateOneUser } from '../../../lib/api/users/user'
 
 const app = express()
 const authenticate = (method, req, res) =>
@@ -68,6 +68,35 @@ app.post('/api/auth/login', async (req, res) => {
   } catch (error) {
     console.error(error)
     res.status(401).json({ error: error.message })
+  }
+})
+
+// Verify a user email
+app.get('/api/auth/verify', async (req, res) => {
+  const email = req.query.email
+  if (!email) {
+    res.writeHead(302, { Location: '/404' })
+    res.end()
+  } else {
+    const user = await findOneUser({
+      email
+    })
+
+    if (!user) {
+      res.writeHead(302, { Location: '/404' })
+      res.end()
+      return
+    }
+
+    await updateOneUser(user.id, {
+      email_verified: true
+    })
+
+    await onEmailVerified(user)
+
+    // TODO: Show a confirmation on the client side
+    res.writeHead(302, { Location: '/login?verified=true' })
+    res.end()
   }
 })
 

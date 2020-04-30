@@ -91,7 +91,7 @@ module.exports = (defaultOptions) => {
     slugGeneration: ['title', 'createdAt'],
 
     permissions: {
-      read: ['public'],
+      read: ['PUBLIC'],
       create: [defaultOptions.roles.admin, defaultOptions.roles.user],
       update: [defaultOptions.roles.admin, defaultOptions.roles.user],
       delete: [defaultOptions.roles.admin],
@@ -108,7 +108,7 @@ module.exports = (defaultOptions) => {
     comments: {
       enabled: true,
       permissions: {
-        read: ['public'],
+        read: ['PUBLIC'],
         create: [defaultOptions.roles.user, defaultOptions.roles.admin],
         update: [defaultOptions.roles.user, defaultOptions.roles.admin],
         delete: [defaultOptions.roles.admin],
@@ -367,7 +367,7 @@ module.exports = (defaultOptions) => {
     slugGeneration: ['title', 'createdAt'],
 
     permissions: {
-      read: ['public'],
+      read: ['PUBLIC'],
       create: [defaultOptions.roles.admin, defaultOptions.roles.user],
       update: [defaultOptions.roles.admin, defaultOptions.roles.user],
       delete: [defaultOptions.roles.admin],
@@ -384,7 +384,7 @@ module.exports = (defaultOptions) => {
     comments: {
       enabled: false,
       permissions: {
-        read: ['public'],
+        read: ['PUBLIC'],
         create: [defaultOptions.roles.user, defaultOptions.roles.admin],
         update: [defaultOptions.roles.admin, defaultOptions.roles.user],
         delete: [defaultOptions.roles.admin],
@@ -435,28 +435,45 @@ module.exports = (defaultOptions) => {
   }
 
   return {
+    // Title for the site
     title: 'The Demo Site',
+
+    // Meta description
     description: 'A super NextJS demo site starter pro pack super sexy',
+
+    // Home slogan
     slogan: 'A site that is dynamic',
-    domain: 'demosite.com',
+
     storage: {
       type: 'firestore',
     },
+
+    // Choose from MONGO, FIREBASE, IN_MEMORY
     database: {
       type: 'IN_MEMORY',
     },
 
+    // Used for e-mails and links
+    url: 'www.demosite.com',
+    
+    emails: {
+      from: 'no-reply@empieza.io',
+      contact: 'contact@empieza.io'
+    },
+
     // Users activity logging & API
     activity: {
-      enabled: true, // Enables Activity API and stores content, comment and user activities,
+
+      // Enables Activity API and stores content, comment and user activities,
+      enabled: true, 
       permissions: {
         content: {
-          created: ['public'],
+          created: ['PUBLIC'],
           deleted: [defaultOptions.roles.admin],
           edited: [defaultOptions.roles.admin],
         },
         comments: {
-          created: ['public'],
+          created: ['PUBLIC'],
           deleted: [defaultOptions.roles.admin],
           edited: [defaultOptions.roles.admin],
         },
@@ -471,7 +488,10 @@ module.exports = (defaultOptions) => {
 
     // Users configuration
     user: {
+      // Capture user geolocation and enable geolocation display on the admin dashboard
       captureGeolocation: true,
+
+      // Fields for the users profiles
       profile: {
         fields: [{
           name: 'description',
@@ -482,6 +502,8 @@ module.exports = (defaultOptions) => {
           max: 300,
         }]
       },
+
+      // Initial users data for testing purposes
       initialUsers: [
         {
           username: 'admin',
@@ -532,7 +554,15 @@ module.exports = (defaultOptions) => {
 
     // Content configuration
     content: {
-      types: [postContentType, productContentType, ProfilePictureContent, LikeContent, MatchContent, MessageContent],
+      // Different content types defined
+      types: [
+        postContentType, 
+        productContentType, 
+        ProfilePictureContent, 
+        LikeContent, 
+        MatchContent, 
+        MessageContent
+      ],
       initialContent: initialContent,
     },
   }

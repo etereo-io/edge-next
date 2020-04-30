@@ -85,7 +85,7 @@ describe('Integrations tests for content creation endpoint', () => {
     })
   })
 
-  test('Should return 401 for a role that is public', async () => {
+  test('Should return 401 for a role that is PUBLIC', async () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
@@ -95,7 +95,7 @@ describe('Integrations tests for content creation endpoint', () => {
     })
 
     getSession.mockReturnValueOnce({
-      roles: ['public'],
+      roles: ['PUBLIC'],
     })
 
     Object.keys(params).forEach((key) =>
@@ -160,11 +160,11 @@ describe('Integrations tests for content creation endpoint', () => {
       )
 
       getPermissions.mockReturnValueOnce({
-        'content.post.create': ['public'],
+        'content.post.create': ['PUBLIC'],
       })
 
       getSession.mockReturnValueOnce({
-        roles: ['public'],
+        roles: ['PUBLIC'],
         id: 'a-user-id',
       })
 

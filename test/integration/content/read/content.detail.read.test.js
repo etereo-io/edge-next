@@ -1,16 +1,16 @@
+import { apiResolver } from 'next/dist/next-server/server/api-utils'
+import fetch from 'isomorphic-unfetch'
+import getPermissions from '../../../../lib/permissions/get-permissions'
+import { getSession } from '../../../../lib/api/auth/iron'
+import handler from '../../../../pages/api/content/[type]/[slug]'
 // See discussion https://github.com/zeit/next.js/discussions/11784
 // See example
 import http from 'http'
-import fetch from 'isomorphic-unfetch'
 import listen from 'test-listen'
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
 
 jest.mock('../../../../lib/api/auth/iron')
 jest.mock('../../../../lib/permissions/get-permissions')
-import getPermissions from '../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../lib/api/auth/iron'
 
-import handler from '../../../../pages/api/content/[type]/[slug]'
 
 describe('Integrations tests for content detail endpoint', () => {
   let server
@@ -61,7 +61,7 @@ describe('Integrations tests for content detail endpoint', () => {
     )
 
     getPermissions.mockReturnValueOnce({
-      'content.post.read': ['public'],
+      'content.post.read': ['PUBLIC'],
       'content.post.admin': ['ADMIN'],
     })
 
@@ -85,7 +85,7 @@ describe('Integrations tests for content detail endpoint', () => {
     const params = { type: 'post', slug: 'example-post-0' }
 
     getPermissions.mockReturnValueOnce({
-      'content.post.read': ['public'],
+      'content.post.read': ['PUBLIC'],
       'content.post.admin': ['ADMIN'],
     })
 

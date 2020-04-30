@@ -71,11 +71,8 @@ const addUser = (user) => async (req, res) => {
     const added = await createUser(parsedUser)
 
     onUserAdded(added)
-    // TODO: Log in the user or send email validation flow
 
-    res.status(200).send({
-      created: true,
-    })
+    res.status(200).send(added)
   } catch (err) {
     res.status(500).json({
       error: err.message,
