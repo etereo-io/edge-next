@@ -1,4 +1,5 @@
-import API from '../../lib/api/api-endpoints'
+import { usePermission, useUser } from '../../lib/hooks'
+
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
 import ContentListView from '../../components/content/read-content/content-list-view/content-list-view'
@@ -6,27 +7,18 @@ import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../../components/layout/normal/layout'
 import UserActivity from '../../components/user/activity/activity'
 import config from '../../lib/config'
-import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 const Profile = (props) => {
-  console.log(props)
-
   const router = useRouter()
   const { userId } = router.query
-  // const available = usePermission(`user.read`, '/', 'slug')
+  
+  const permissions = usePermission(userId ? ['user.read', 'user.admin'] : null, '/', (u) => u.id === userId)
 
-  const { data, error } = useSWR(
-    userId ? `${API.users}/${userId}` : null,
-    fetch,
-    { initialData: null }
-  )
-  const finished = Boolean(data) || Boolean(error)
-  // TODO : add permissions to access
-  console.log(data, finished)
+  const { user, finished } = useUser({ userId, redirectTo: '/404' })
+
   // Loading
-  if (!data && !finished) {
+  if (!finished || !permissions.finished ) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -34,8 +26,6 @@ const Profile = (props) => {
       </Layout>
     )
   }
-
-  const user = data
 
   return (
     <Layout title="Profile">

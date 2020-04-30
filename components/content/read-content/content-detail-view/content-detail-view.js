@@ -6,10 +6,10 @@ import { usePermission } from '../../../../lib/hooks'
 
 export default function (props) {
   const canReadComments = usePermission(
-    `content.${props.type.slug}.comments.read`
+    [`content.${props.type.slug}.comments.read`]
   )
   const canWriteComments = usePermission(
-    `content.${props.type.slug}.comments.create`
+    [`content.${props.type.slug}.comments.create`]
   )
 
   return (
@@ -31,11 +31,11 @@ export default function (props) {
           />
         </div>
 
-        {props.type.comments.enabled && canWriteComments && (
+        {props.type.comments.enabled && canWriteComments.available && (
           <CommentForm type={props.type} contentId={props.content.id} />
         )}
 
-        {props.type.comments.enabled && canReadComments && (
+        {props.type.comments.enabled && canReadComments.available && (
           <CommentsFeed type={props.type} contentId={props.content.id} />
         )}
       </div>

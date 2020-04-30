@@ -1,4 +1,4 @@
-import { useContentOwner, usePermission } from '../../../lib/hooks'
+import { usePermission } from '../../../lib/hooks'
 
 import API from '../../../lib/api/api-endpoints'
 import ContentForm from '../../../components/content/write-content/content-form/content-form'
@@ -28,7 +28,9 @@ const EditContent = () => {
   // Load data
   const { data } = useSWR(API.content[type] + '/' + slug, fetch)
   console.log('THE DATA?', data)
-  const isOwnerPermission = useContentOwner(data, '/404')
+  
+  const {available} = usePermission([`content.${type}.update`, `content.${type}.admin`], '/404', (user) => data.author === user.id)
+  
 
   const onSaved = (newItem) => {
     // Router.go to /content/slug/id
@@ -39,9 +41,9 @@ const EditContent = () => {
       
     <Layout title="Edit content">
       <div className="edit-page">
-        <h1 className={styles.h1}>Edit: {data.title}</h1>
+        <h1 >Edit: {data ? data.title: null}</h1>
 
-        {isOwnerPermission && <ContentForm type={contentType} onSaved={onSaved} content={data} />}
+        {available && <ContentForm type={contentType} onSaved={onSaved} content={data} />}
       </div>
     </Layout>
       

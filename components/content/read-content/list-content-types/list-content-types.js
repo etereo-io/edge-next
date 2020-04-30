@@ -5,7 +5,9 @@ import { hasPermission } from '../../../../lib/permissions'
 import { useUser } from '../../../../lib/hooks'
 
 export default function () {
-  const { user } = useUser()
+  const { user } = useUser({
+    userId: 'me'
+  })
 
   const links = config.content.types
     .filter((type) => {

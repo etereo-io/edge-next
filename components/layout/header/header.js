@@ -100,7 +100,9 @@ function LoggedInUserHeader(props) {
 }
 
 const Header = () => {
-  const { user } = useUser()
+  const { user } = useUser({
+    userId: 'me'
+  })
 
   return (
     <header className={styles.header}>

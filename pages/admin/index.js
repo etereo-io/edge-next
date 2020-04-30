@@ -6,8 +6,9 @@ import config from '../../lib/config'
 import { hasPermission } from '../../lib/permissions'
 
 const AdminPage = () => {
-  const { user } = useUser()
-  const available = usePermission('admin.access', '/')
+  const { user } = useUser({ redirectTo : '/', userId: 'me'})
+
+  const {available} = usePermission(['admin.access'], '/')
 
   const links = []
 

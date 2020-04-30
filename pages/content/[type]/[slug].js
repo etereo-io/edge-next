@@ -52,7 +52,7 @@ function LoadingView() {
 const ContentPage = (props) => {
   const contentType = getContentTypeDefinition(props.type)
 
-  usePermission(`content.${props.type}.read`, '/')
+  usePermission([`content.${props.type}.read`, `content.${props.type}.admin`], '/')
 
   // Load data
   const { data } = useSWR(API.content[props.type] + '/' + props.slug, fetch, {

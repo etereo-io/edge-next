@@ -3,7 +3,7 @@ import UserTable from '../../components/user/admin-user/user-table/user-table'
 import { usePermission } from '../../lib/hooks'
 
 const AdminPage = () => {
-  const available = usePermission(`user.admin`, '/')
+  const {available} = usePermission([`user.admin`], '/')
 
   return (
     available && (

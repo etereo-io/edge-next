@@ -1,3 +1,5 @@
+import { usePermission, useUser } from '../../lib/hooks'
+
 import API from '../../lib/api/api-endpoints'
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
@@ -6,11 +8,10 @@ import Layout from '../../components/layout/normal/layout'
 import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 import { useState } from 'react'
 
 const UserSettings = (props) => {
-  
+  const router = useRouter()
 
   const [error, setError] = useState({})
   const [loading, setLoading] = useState({})
@@ -19,32 +20,21 @@ const UserSettings = (props) => {
   const [profileState, setProfileState] = useState({})
 
 
-  const router = useRouter()
   const { userId } = router.query
   
-  // const available = usePermission(`user.read`, '/', 'slug')
-  // TODO : add permissions to access
+  const permissions = usePermission(userId ? ['user.update', 'user.admin'] : null, '/', (u) => u.id === userId)
 
-  /* Fetch initial data */
-  const response = useSWR(
-    userId ? `${API.users}/${userId}` : null,
-    fetch,
-    { initialData: null }
-  )
+  const { user, finished } = useUser({ userId, redirectTo: '/' })
 
-  const finished = Boolean(response.data) || Boolean(response.error)
-  
-  // Loading or 404 
-  if (!finished || !response.data) {
+  // Loading
+  if ( !finished || !permissions.finished ) {
     return (
-      <Layout title="UserSettings">
-        <h1>User Settings</h1>
+      <Layout title="Profile">
+        <h1>Profile</h1>
         <div>Loading...</div>
       </Layout>
     )
   }
-
-  const user = response.data
 
 
   // Generic field change
@@ -230,7 +220,7 @@ const UserSettings = (props) => {
 
 
   return (
-    <Layout title="User Settings">
+    permissions.available && <Layout title="User Settings">
       <div className="user-settings-page">
         
 

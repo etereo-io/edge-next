@@ -1,8 +1,9 @@
-import { usePermission } from '../../lib/hooks'
 import Layout from '../../components/layout/admin/layout-admin'
+import { usePermission } from '../../lib/hooks'
 
 const AdminPage = () => {
-  const available = usePermission(`admin.stats`, '/')
+  
+  const {available} = usePermission([`admin.stats`], '/')
 
   return (
     available && (
