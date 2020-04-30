@@ -53,7 +53,10 @@ const updateUser = (slug) => (req, res) => {
   switch (updateData) {
     case 'profile':
       /* Update only profile data */
-      promiseChange = updateOneUser(req.user.id, { profile: req.body.profile })
+      promiseChange = updateOneUser(req.user.id, { profile: {
+        ...req.user.profile,
+        ...req.body.profile
+      } })
       break
     case 'username':
       /* Update only username */

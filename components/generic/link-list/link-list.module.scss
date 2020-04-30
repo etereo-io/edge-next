@@ -2,9 +2,11 @@
   ul {
     list-style: none;
     display: flex;
+    flex-wrap: wrap;
 
     li {
       margin-right: var(--empz-gap);
+      margin-bottom: var(--empz-gap);
       
       a {
         border: var(--light-border);

@@ -148,6 +148,18 @@ module.exports = (defaultOptions) => {
         label: 'Tags',
         placeholder: 'Tags',
       },
+      {
+        name: 'draft',
+        type: 'radio',
+        label: 'Draft',
+        options: [{
+          label: 'true',
+          value: true
+        }, {
+          label: 'false',
+          value: false
+        }],
+      }
     ],
   }
 
@@ -275,7 +287,14 @@ module.exports = (defaultOptions) => {
       },
       {
         name: 'deleted',
-        type: 'boolean',
+        type: 'radio',
+        options: [{
+          label: 'true',
+          value: true
+        }, {
+          label: 'false',
+          value: false
+        }],
         label: 'deleted',
         placeholder: 'deleted',
       },
@@ -453,6 +472,16 @@ module.exports = (defaultOptions) => {
     // Users configuration
     user: {
       captureGeolocation: true,
+      profile: {
+        fields: [{
+          name: 'description',
+          type: 'textarea',
+          label: 'Description',
+          required: false,
+          min: 60,
+          max: 300,
+        }]
+      },
       initialUsers: [
         {
           username: 'admin',

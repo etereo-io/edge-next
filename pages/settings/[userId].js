@@ -1,7 +1,7 @@
 import API from '../../lib/api/api-endpoints'
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
-import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
+import DynamicField from '../../components/generic/dynamic-field/dynamic-field'
 import Layout from '../../components/layout/normal/layout'
 import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
@@ -10,11 +10,13 @@ import useSWR from 'swr'
 import { useState } from 'react'
 
 const UserSettings = (props) => {
-  console.log(props)
+  
 
   const [error, setError] = useState({})
   const [loading, setLoading] = useState({})
   const [success, setSuccess] = useState({})
+
+  const [profileState, setProfileState] = useState({})
 
 
   const router = useRouter()
@@ -42,126 +44,195 @@ const UserSettings = (props) => {
     )
   }
 
-  /* On submit username */
-  const onSubmitUsername = (ev) => {
-    ev.preventDefault()
-    const data = ev.currentTarget.username.value
-
-    if (!data) {
-      setError({
-        ...error,
-        username: 'Please fill in a username'
-      })
-    } else {
-      setLoading({
-        username: true
-      })
-      setSuccess({
-        username: false
-      })
-      setError({
-        username: false
-      })
+  const user = response.data
 
 
-      const url = `${API.users}/${user.id}/username`
-      fetch(url, {
-        method: 'put',
-        body: JSON.stringify({
-          username: data
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(result => {
-        setLoading({
-          username: false
-        })
-        setSuccess({
-          username: true
-        })
-      })
-      .catch((err) => {
-        setLoading({
-          username: false
-        })
-        setError({
-          username: 'Invalid username. Username already exists. '
-        })
-      })
-
-    }
+  // Generic field change
+  const handleFieldProfileChange = (name) => (value) => {
+    console.log(name, value)
+    setProfileState({
+      ...profileState,
+      [name]: value,
+    })
   }
 
-  /* On submit email */
-  const onSubmitEmail = (ev) => {
+  // On submit method for using in each case
+  const onSubmit = (getDataCb, validateData, key, url, apiErrorMessage = 'Error updating data' ) => ev => {
     ev.preventDefault()
-    const data = ev.currentTarget.email.value
+    const data = getDataCb(ev)
 
-    if (!data) {
+    if (!validateData(data)) {
       setError({
-        ...error,
-        email: 'Please fill in a email'
+        [key]: 'Please complete the required fields'
       })
     } else {
+      setError({
+        [key]: false
+      })
+    }
+
+    setLoading({
+      [key] : true
+    })
+
+    fetch(url, {
+      method: 'put',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(result => {
       setLoading({
-        email: true
+        [key]: false
       })
       setSuccess({
-        email: false
+        [key]: true
+      })
+    })
+    .catch((err) => {
+      setLoading({
+        [key]: false
       })
       setError({
-        email: false
+        [key]: apiErrorMessage
       })
-
-
-      const url = `${API.users}/${user.id}/email`
-      fetch(url, {
-        method: 'put',
-        body: JSON.stringify({
-          email: data
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(result => {
-        setLoading({
-          email: false
-        })
-        setSuccess({
-          email: true
-        })
-      })
-      .catch((err) => {
-        setLoading({
-          email: false
-        })
-        setError({
-          email: 'Invalid email. email already exists. '
-        })
-      })
-
-    }
+    })
   }
 
   const onSubmitDelete = () => {}
-  const onSubmitDisplayName = () => {}
-  const onSubmitPassword = () => {}
 
-  const user = response.data
+  /* On submit username */
+  const onSubmitUsername = onSubmit(
+    (ev) => {
+      const username = ev.currentTarget.username.value
+      return {
+        username
+      }
+    },
+    (d) => {
+      if (!d.username ) {
+        return false
+      } 
+
+      if (d.username.length < 3 ) {
+        return false
+      }
+
+      return true
+    },
+    'username',
+    `${API.users}/${user.id}/username`,
+    'Error updating your username'
+  )
+
+  /* On submit email */
+  const onSubmitEmail = onSubmit(
+    (ev) => {
+      const email = ev.currentTarget.email.value
+      return {
+        email
+      }
+    },
+    (d) => {
+      if (!d.email ) {
+        return false
+      } 
+
+      if (d.email.length < 3 ) {
+        return false
+      }
+
+      return true
+    },
+    'email',
+    `${API.users}/${user.id}/email`,
+    'Error updating your email'
+  )
+
+  const onSubmitDisplayName = onSubmit(
+    (ev) => {
+      const displayname = ev.currentTarget.displayname.value
+      return {
+        displayname
+      }
+    },
+    (d) => {
+      if (!d.displayname ) {
+        return false
+      } 
+
+      if (d.displayname.length < 3 ) {
+        return false
+      }
+
+      return true
+    },
+    'displayname',
+    `${API.users}/${user.id}/profile`,
+    'Error updating your displayname'
+  )
+
+  const onSubmitPassword = onSubmit(
+    (ev) => {
+      const password = ev.currentTarget.password.value
+      const newpassword = ev.currentTarget.newpassword.value
+      const rnewpassword = ev.currentTarget.rnewpassword.value
+      return {
+        password,
+        newpassword,
+        rnewpassword
+      }
+    },
+    (d) => {
+      if (d.newpassword !== d.newpassword) {
+        return false
+      } 
+
+      if (d.newpassword.length < 8 ) {
+        return false
+      }
+
+      if (!d.password) {
+        return false
+      }
+
+      return true
+    },
+    'password',
+    `${API.users}/${user.id}/password`,
+    'Error updating your password'
+  )
+
+  const onSubmitProfile = onSubmit(
+    () => profileState,
+    (d) => {
+      const valid = true
+      config.user.profile.fields.forEach(f => {
+        if (f.required && !d[f.name]) {
+          valid = false
+        }
+
+        if(f.min && d[f.name].length < f.min ) {
+          valid = false
+        }
+
+        if(f.max && d[f.name].length > f.max ) {
+          valid = false
+        }
+      })
+      return valid
+    },
+    'profile',
+    `${API.users}/${user.id}/profile`,
+    'Error updating profile data'
+  )
+
 
   return (
     <Layout title="User Settings">
       <div className="user-settings-page">
-        <div className="menu">
-          <ul>
-            <li>Settings</li>
-            <li>Oauth</li>
-            <li>Privacy</li>
-          </ul>
-        </div>
+        
 
         <div className="settings">
           <div className="configuration-block">
@@ -227,6 +298,31 @@ const UserSettings = (props) => {
                   {success.displayname && <div className="success-message">Name updated correctly</div>}
                 </div>
                 <Button loading={loading.displayname}>Change Your Name</Button>
+              </div>
+            </form>
+          </div>
+
+          <div className="configuration-block">
+            <h2>Profile Information</h2>
+            <form onSubmit={onSubmitProfile}>
+              <div className="block-settings">
+                {config.user.profile.fields.map((field) => (
+                  <DynamicField
+                    key={field.name}
+                    field={field}
+                    value={profileState[field.name]}
+                    onChange={handleFieldProfileChange(field.name)}
+                  />
+                ))}
+              </div>
+              <div className="actions">
+                <div className="info">
+                  {error.profile && <div className="error-message">{error.profile}</div>}
+                  {loading.profile && <div className="loading-message">Loading...</div>}
+                  {success.profile && <div className="success-message">profile updated correctly</div>}
+                </div>
+
+                <Button loading={loading.profile}>Edit information</Button>
               </div>
             </form>
           </div>

@@ -9,6 +9,7 @@ import Badge from '../components/generic/badge/badge'
 import Button from '../components/generic/button/button'
 import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
 import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
+import DynamicField from '../components/generic/dynamic-field/dynamic-field'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
@@ -56,6 +57,65 @@ const Components = () => {
     ],
   }
 
+  const dynamicFields = [
+    {
+      type: 'img',
+      name: 'img',
+      label: 'Image field',
+    },
+    {
+      type: 'text',
+      required: true,
+      min : 10,
+      max: 100,
+      name: 'text',
+      label: 'Text field',
+      placeholder: 'A placeholder'
+    },
+    {
+      type: 'textarea',
+      name: 'textarea',
+      label: 'Textarea',
+      placeholder: 'A placeholder'
+    },
+    {
+      type: 'select',
+      name: 'select-dynamic',
+      label: 'A select',
+      options: [{
+        value: 'option',
+        label: 'an option'
+      }, {
+        value: 'option2',
+        label: 'another option'
+      }, {
+        value: 'option3',
+        label: 'the last option'
+      }]
+    },
+    {
+      type: 'radio',
+      name: 'radio-dynamic',
+      label: 'A radio',
+      options: [{
+        value: 'option',
+        label: 'an option'
+      }, {
+        value: 'option2',
+        label: 'another option'
+      }, {
+        value: 'option3',
+        label: 'the last option'
+      }]
+    },
+    {
+      type: 'json',
+      name: 'json',
+      label: 'Json field',
+      placeholder: 'A placeholder'
+    },
+  ]
+
   return (
     <Layout title="Components showcase" fullWidth={true}>
       <div className="components-layout">
@@ -102,6 +162,9 @@ const Components = () => {
                   <a href="#textarea">Textarea</a>
                 </li>
               </ul>
+            </li>
+            <li>
+              <a href="#form-elements-dynamic">Form Elements Dynamic</a>
             </li>
             <li>
               <a href="#tagsinput">Tags Input</a>
@@ -392,7 +455,7 @@ const links = [{
           </div>
 
           <div id="form-elements" className="component">
-            <h3>Form Elements</h3>
+            <h3>Form Elements (CSS)</h3>
             <div className="component-demo">
               <div className="item-wrapper" id="select">
                 <div className="input-group">
@@ -483,6 +546,29 @@ const links = [{
             `}</pre>
           </div>
 
+          <div id="form-elements-dynamic" className="component">
+            <h3>Form Elements Dynamic</h3>
+            <p>See the documentation for more information about dynamic fields</p>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <div >
+                  {dynamicFields.map(f => {
+                    return (
+                      <DynamicField field={f} value={null} onChange={() => {}} />
+                    )
+                  })}
+
+                </div>
+              </div>
+
+            </div>
+            <pre>{`
+{dynamicFields.map(f => {
+  return <DynamicField field={f} value={null} onChange={() => {}} />
+})}
+            `}</pre>
+          </div>
+          
           <div id="tagsinput" className="component">
             <h3>Tags Input</h3>
             <div className="component-demo">
@@ -759,7 +845,7 @@ const links = [{
         .item-wrapper {
           margin-top: var(--empz-gap);
           margin-bottom: var(--empz-gap);
-          display: flex;
+          display-flex;
           align-items: center;
           justify-content: flex-start;
         }
