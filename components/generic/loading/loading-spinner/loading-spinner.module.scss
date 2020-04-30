@@ -6,13 +6,13 @@
     height: 1.5em;
     border-radius: 50%;
     border: 0.15em solid var(--empz-foreground);
-    border-color: var(--empz-foreground) transparent var(--empz-foreground) transparent;
+    border-color: var(--empz-foreground) var(--light-border-color) var(--light-border-color);
     animation: lds-dual-ring 1.2s linear infinite;
 
   }
   &.alt .ring:after {
     border: 0.15em solid var(--empz-background);
-    border-color: var(--empz-background) transparent var(--empz-background) transparent;
+    border-color: var(--empz-background) var(--dark-border-color) var(--dark-border-color);
   }
   @keyframes lds-dual-ring {
     0% {

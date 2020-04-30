@@ -309,6 +309,9 @@ const links = [{
                 <Badge featured={true}></Badge>
               </div>   
             </div>
+            <pre>{`
+<Badge>47</Badge>
+            `}</pre>
           </div>
 
           <div id="button" className="component">
