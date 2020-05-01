@@ -494,7 +494,12 @@ export const getConfig = (defaultOptions) => {
       // Require email verification
       emailVerification: true,
 
-      // Fields for the users profiles
+      providers: {
+        instagram: true,
+        google: true
+      },
+
+      // Fields for the users profiles (in addition to picture and displayName)
       profile: {
         fields: [{
           name: 'description',
@@ -518,7 +523,7 @@ export const getConfig = (defaultOptions) => {
           id: '1',
           password: 'admin',
           profile: {
-            img: '/static/demo-images/default-avatar.jpg',
+            picture: '/static/demo-images/default-avatar.jpg',
           },
           metadata: {
             lastLogin: null
@@ -533,7 +538,7 @@ export const getConfig = (defaultOptions) => {
           id: '2',
           password: 'user',
           profile: {
-            img: '',
+            picture: '',
           },
           metadata: {
             lastLogin: null
@@ -548,7 +553,7 @@ export const getConfig = (defaultOptions) => {
           id: '3',
           password: 'user',
           profile: {
-            img: '',
+            picture: '',
           },
           blocked: true,
           metadata: {
@@ -565,7 +570,7 @@ export const getConfig = (defaultOptions) => {
           id: '3',
           password: 'user',
           profile: {
-            img: '',
+            picture: '',
           },
           blocked: true,
           metadata: {

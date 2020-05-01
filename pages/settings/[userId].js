@@ -142,25 +142,25 @@ const UserSettings = (props) => {
 
   const onSubmitDisplayName = onSubmit(
     (ev) => {
-      const displayname = ev.currentTarget.displayname.value
+      const displayName = ev.currentTarget.displayName.value
       return {
-        displayname
+        displayName
       }
     },
     (d) => {
-      if (!d.displayname ) {
+      if (!d.displayName ) {
         return false
       } 
 
-      if (d.displayname.length < 3 ) {
+      if (d.displayName.length < 3 ) {
         return false
       }
 
       return true
     },
-    'displayname',
+    'displayName',
     `${API.users}/${user.id}/profile`,
-    'Error updating your displayname'
+    'Error updating your name'
   )
 
   const onSubmitPassword = onSubmit(
@@ -230,7 +230,7 @@ const UserSettings = (props) => {
             <div className="block-settings">
               <p>Click on the avatar image to change it</p>
               <div className="field">
-                <Avatar src={user ? user.profile.img : null} />
+                <Avatar src={user ? user.profile.picture : null} />
               </div>
             </div>
           </div>
@@ -275,19 +275,19 @@ const UserSettings = (props) => {
                 <div className="field">
                   <input
                     type="text"
-                    name="displayname"
+                    name="displayName"
                     placeholder="Your username"
-                    defaultValue={user ? user.profile.displayname : ''}
+                    defaultValue={user ? user.profile.displayName : ''}
                   />
                 </div>
               </div>
               <div className="actions">
                 <div className="info">
-                  {error.displayname && <div className="error-message">{error.displayname}</div>}
-                  {loading.displayname && <div className="loading-message">Loading...</div>}
-                  {success.displayname && <div className="success-message">Name updated correctly</div>}
+                  {error.displayName && <div className="error-message">{error.displayName}</div>}
+                  {loading.displayName && <div className="loading-message">Loading...</div>}
+                  {success.displayName && <div className="success-message">Name updated correctly</div>}
                 </div>
-                <Button loading={loading.displayname}>Change Your Name</Button>
+                <Button loading={loading.displayName}>Change Your Name</Button>
               </div>
             </form>
           </div>

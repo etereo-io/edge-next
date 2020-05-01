@@ -21,6 +21,7 @@ description: "Empieza Documentation"
     - [In memory DB (only local)](#in-memory-db-only-local)
     - [Firebase](#firebase)
   - [Authentication](#authentication)
+    - [Providers](#providers)
   - [Emails](#emails)
   - [Deploy your own](#deploy-your-own)
     - [Deploying on Vercel](#deploying-on-vercel)
@@ -183,6 +184,29 @@ database: {
 Empieza uses [Passport.js](http://www.passportjs.org) cookie based authentication with email and password.
 
 The login cookie is httpOnly, meaning it can only be accessed by the API, and it's encrypted using [@hapi/iron](https://hapi.dev/family/iron) for more security.
+
+### Providers
+
+In the configuration different providers can be enabled or disabled
+
+```javascript
+const config = {
+  user: {
+    providers: {
+      facebook: true,
+      google: true,
+      instragram: false,
+      github: false,
+      linkedin: false
+    }
+  }
+}
+
+```
+
+By changing this configuration, both the login and the register will change to show or hide the corresponding buttons.
+
+To configure the different API keys for each provider you must edit the environment files.
 
 ## Emails
 

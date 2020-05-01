@@ -31,7 +31,7 @@ const Profile = (props) => {
     <Layout title="Profile">
       <div className="profile-user-info">
         <div className="avatar">
-          <Avatar src={user ? user.profile.img : null} />
+          <Avatar src={user ? user.profile.picture : null} />
         </div>
         <div className="name">
           <div className="title">

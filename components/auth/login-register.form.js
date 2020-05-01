@@ -8,6 +8,8 @@ import {
 } from 'react-social-login-buttons'
 import Button from '../generic/button/button'
 
+import config from '../../lib/config'
+
 const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
   return (
     <div className="auth-form">
@@ -19,21 +21,21 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
             : 'Register with a social network'}
         </h2>
         <div className="social-buttons">
-          <div className="social-button">
+          {config.user.providers.facebook && <div className="social-button">
             <FacebookLoginButton />
-          </div>
-          <div className="social-button">
+          </div>}
+          {config.user.providers.google && <div className="social-button">
             <GoogleLoginButton />
-          </div>
-          <div className="social-button">
+          </div>}
+          {config.user.providers.github && <div className="social-button">
             <GithubLoginButton />
-          </div>
-          <div className="social-button">
+          </div>}
+          {config.user.providers.twitter && <div className="social-button">
             <TwitterLoginButton />
-          </div>
-          <div className="social-button">
+          </div>}
+          {config.user.providers.instagram && <div className="social-button">
             <InstagramLoginButton />
-          </div>
+          </div>}
         </div>
       </div>
 

@@ -19,8 +19,8 @@ const demoUser = {
   roles: ['USER'],
   password: 'xxhshsk--213123-123-1-23',
   profile: {
-    displayname: 'A test user',
-    img: '',
+    displayName: 'A test user',
+    picture: '',
   },
 }
 

@@ -51,7 +51,7 @@ export default function (props) {
                 <div className="avatar">
                   <Avatar
                     width={60}
-                    src={props.user ? props.user.profile.img : null}
+                    src={props.user ? props.user.profile.picture : null}
                   />
                 </div>
                 <div className="message">
