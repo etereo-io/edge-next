@@ -30,6 +30,7 @@ describe('Integrations tests for login', () => {
       username: 'emilio',
       email: 'email@email.com',
       password: 'test123123',
+      emailVerified: true
     }
 
     afterEach(() => {

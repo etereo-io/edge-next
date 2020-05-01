@@ -42,6 +42,12 @@ Check our roadmap if you want to add more coool things into Empieza:
 
 ## Roadmap
 
+- Make the site a PWA
+
+- Get 100% on everything on lighthouse
+
+- Add an example google analytics script
+
 - Create an example site running an online shop
   - Create the concept of "shopping cart"
   - Integrate with a payment provider

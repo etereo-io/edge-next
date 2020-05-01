@@ -79,7 +79,7 @@ for (var i = 0; i < 100; i++) {
 
 const initialContent = [...posts, ...products, ...comments]
 
-module.exports = (defaultOptions) => {
+export const getConfig = (defaultOptions) => {
   const postContentType = {
     title: {
       en: 'Post',
@@ -490,6 +490,9 @@ module.exports = (defaultOptions) => {
     user: {
       // Capture user geolocation and enable geolocation display on the admin dashboard
       captureGeolocation: true,
+
+      // Require email verification
+      emailVerification: true,
 
       // Fields for the users profiles
       profile: {

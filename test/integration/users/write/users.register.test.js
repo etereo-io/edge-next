@@ -190,7 +190,8 @@ describe('Integrations tests for users creation endpoint', () => {
 
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
-        email_verified: false
+        emailVerified: false,
+        emailVerificationToken: expect.any(String)
       })
     })
 

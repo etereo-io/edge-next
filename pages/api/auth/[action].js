@@ -5,6 +5,7 @@ import {
   setTokenCookie,
 } from '../../../lib/api/auth/auth-cookies'
 
+import config from '../../../lib/config'
 import { connect } from '../../../lib/api/db'
 import { encryptSession } from '../../../lib/api/auth/iron'
 import express from 'express'
@@ -48,6 +49,14 @@ app.post('/api/auth/login', async (req, res) => {
       throw new Error('User not found or invalid credentials')
     }
 
+    // Block login if configured to require email verifiation
+    if (user && !user.emailVerified && config.user.emailVerification) {
+      res.status(401).json({
+        error: 'Email not verified'
+      })
+      return
+    }
+
     // session is the payload to save in the token, it may contain basic info about the user
     const session = { ...user }
     // The token is a string with the encrypted session
@@ -74,7 +83,8 @@ app.post('/api/auth/login', async (req, res) => {
 // Verify a user email
 app.get('/api/auth/verify', async (req, res) => {
   const email = req.query.email
-  if (!email) {
+  const token = req.query.token
+  if (!email || !token) {
     res.writeHead(302, { Location: '/404' })
     res.end()
   } else {
@@ -82,14 +92,21 @@ app.get('/api/auth/verify', async (req, res) => {
       email
     })
 
-    if (!user) {
+    if (!user ) {
+      res.writeHead(302, { Location: '/404' })
+      res.end()
+      return
+    }
+
+    if (user.emailVerificationToken !== token) {
       res.writeHead(302, { Location: '/404' })
       res.end()
       return
     }
 
     await updateOneUser(user.id, {
-      email_verified: true
+      emailVerified: true,
+      emailVerificationToken: null
     })
 
     await onEmailVerified(user)

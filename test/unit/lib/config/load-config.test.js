@@ -1,15 +1,15 @@
-import config from '../../../../empieza.config'
+import { getConfig } from '../../../../empieza.config'
 import loadConfig from '../../../../lib/config/load-config'
 
-jest.mock('../../../../empieza.config.js')
+jest.mock('../../../../empieza.config')
 
 describe('Load configuration file', () => {
   afterEach(() => {
-    config.mockClear()
+    getConfig.mockClear()
   })
 
   test('Should complain about missing required fields', async () => {
-    config.mockReturnValueOnce({
+    getConfig.mockReturnValueOnce({
       title: '',
       description: '',
     })
@@ -20,7 +20,7 @@ describe('Load configuration file', () => {
   })
 
   test('Should not throw when the config file is valid', async () => {
-    config.mockReturnValueOnce({
+    getConfig.mockReturnValueOnce({
       title: 'A valid config',
       description: 'This is the description',
     })
