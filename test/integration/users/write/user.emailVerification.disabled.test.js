@@ -1,10 +1,14 @@
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
 import { findUser } from '../../../../lib/api/users/user'
+import { getConfig } from '../../../../empieza.config'
 import handlerAuth from '../../../../pages/api/auth/[action]'
 import http from 'http'
 import listen from 'test-listen'
+import { onUserAdded } from '../../../../lib/api/hooks/user.hooks'
+import { sendVerifyEmail } from '../../../../lib/email'
 
+jest.mock('../../../../lib/email')
 jest.mock('../../../../lib/api/users/user')
 jest.mock('../../../../empieza.config', () => ({
   __esModule: true,
@@ -12,7 +16,7 @@ jest.mock('../../../../empieza.config', () => ({
       title: 'A test',
       description: 'A test',
       user: {
-        emailVerification: true
+        emailVerification: false
       }
   })
 }))
@@ -23,7 +27,7 @@ const newUser = {
   password: 'test123123',
 }
 
-describe('Integration tests for email verification with emailVerification enabled', () => {
+describe('Integration tests for email verification with emailVerification disabled', () => {
    
   let serverAuth
   let urlAuth
@@ -48,13 +52,13 @@ describe('Integration tests for email verification with emailVerification enable
     findUser.mockClear()
   })
 
-  test('Should return 401 for a user with unverified email if configuration for verification is enabled', async () => {
+  test('Login Should return 200 for a non verified user when email verification is disabled', async () => {
+    
     findUser.mockReturnValueOnce(Promise.resolve({
       ...newUser,
       emailVerified: false
     }))
 
-  
     const response = await fetch(urlLogin, {
       method: 'POST',
       headers: {
@@ -66,12 +70,17 @@ describe('Integration tests for email verification with emailVerification enable
       }),
     })
 
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(200)
     const jsonResult = await response.json()
 
     expect(jsonResult).toMatchObject({
-      error: 'Email not verified',
+      done: true,
     })
+  })
+
+  test('send email for verification should NOT be called after a user registered', () => {
+    onUserAdded(newUser)
+    expect(sendVerifyEmail).not.toHaveBeenCalled()
   })
 
 })

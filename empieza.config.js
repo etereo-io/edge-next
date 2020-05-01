@@ -512,6 +512,7 @@ export const getConfig = (defaultOptions) => {
           username: 'admin',
           displayname: 'The admin',
           email: 'admin@demo.com',
+          emailVerified: true,
           createdAt: Date.now(),
           roles: [defaultOptions.roles.admin, defaultOptions.roles.user],
           id: '1',
@@ -526,6 +527,7 @@ export const getConfig = (defaultOptions) => {
         {
           username: 'user',
           email: 'user@demo.com',
+          emailVerified: true,
           createdAt: Date.now(),
           roles: [defaultOptions.roles.user],
           id: '2',
@@ -540,6 +542,24 @@ export const getConfig = (defaultOptions) => {
         {
           username: 'blocked',
           email: 'blocked@demo.com',
+          emailVerified: true,
+          createdAt: Date.now(),
+          roles: [defaultOptions.roles.user],
+          id: '3',
+          password: 'user',
+          profile: {
+            img: '',
+          },
+          blocked: true,
+          metadata: {
+            lastLogin: null
+          }
+        },
+        {
+          username: 'notverified',
+          email: 'notverified@demo.com',
+          emailVerified: false,
+          emailVerificationToken: '1234',
           createdAt: Date.now(),
           roles: [defaultOptions.roles.user],
           id: '3',

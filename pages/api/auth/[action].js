@@ -84,36 +84,47 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/auth/verify', async (req, res) => {
   const email = req.query.email
   const token = req.query.token
+  
   if (!email || !token) {
-    res.writeHead(302, { Location: '/404' })
-    res.end()
+    res.status(400).json({
+      error: 'Invalid request'
+    })
   } else {
     const user = await findOneUser({
       email
     })
 
     if (!user ) {
-      res.writeHead(302, { Location: '/404' })
-      res.end()
+      res.status(404).json({
+        error: 'User not found'
+      })
       return
     }
-
+    
     if (user.emailVerificationToken !== token) {
-      res.writeHead(302, { Location: '/404' })
-      res.end()
+      res.status(400).json({
+        error: 'Invalid token'
+      })
       return
     }
 
-    await updateOneUser(user.id, {
-      emailVerified: true,
-      emailVerificationToken: null
-    })
-
-    await onEmailVerified(user)
-
-    // TODO: Show a confirmation on the client side
-    res.writeHead(302, { Location: '/login?verified=true' })
-    res.end()
+    try {
+      await updateOneUser(user.id, {
+        emailVerified: true,
+        emailVerificationToken: null
+      })
+  
+      await onEmailVerified(user)
+  
+      // TODO: Show a confirmation on the client side
+      res.status(200).send({
+        verified: true
+      })
+    } catch (err) {
+      res.status(500).json({
+        error: err.message
+      })
+    }
   }
 })
 
