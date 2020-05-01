@@ -18,6 +18,7 @@ import Select from '../components/generic/select/select'
 import SocialShare from '../components/generic/social-share/social-share'
 import TagsInput from '../components/generic/tags-input/tags-input'
 import ThemeSelector from '../components/generic/theme-selector/theme-selector'
+import Toggle from '../components/generic/toggle/toggle'
 
 const Components = () => {
   const demoContent = {
@@ -129,6 +130,11 @@ const Components = () => {
       label: 'Json field',
       placeholder: 'A placeholder'
     },
+    {
+      type: 'toggle',
+      name: 'toggle',
+      label: 'Toggle field',
+    },
   ]
 
   return (
@@ -150,6 +156,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#button">Button</a>
+            </li>
+            <li>
+              <a href="#toggle">Toggle</a>
             </li>
             <li>
               <a href="#socialshare">Social Share</a>
@@ -360,6 +369,19 @@ const links = [{
             </div>
             <pre>{`
 <Button />
+            `}</pre>
+          </div>
+
+          <div id="toggle" className="component">
+            <h3>Toggle</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Toggle />
+              </div>
+             
+            </div>
+            <pre>{`
+<Toggle />
             `}</pre>
           </div>
 

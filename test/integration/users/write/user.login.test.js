@@ -1,11 +1,22 @@
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
 import { findUser } from '../../../../lib/api/users/user'
-import handlerAuth from '../../../../pages/api/auth/[action]'
+import handlerAuth from '../../../../pages/api/auth/[...action]'
 import http from 'http'
 import listen from 'test-listen'
 
 jest.mock('../../../../lib/api/users/user')
+
+jest.mock('../../../../empieza.config', () => ({
+  __esModule: true,
+  getConfig: jest.fn().mockReturnValue({
+      title: 'A test',
+      description: 'A test',
+      user: {
+        emailVerification: true
+      }
+  })
+}))
 
 describe('Integrations tests for login', () => {
   let serverAuth

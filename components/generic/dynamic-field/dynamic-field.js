@@ -1,4 +1,5 @@
 import TagsField from '../tags-input/tags-input'
+import Toggle from '../toggle/toggle'
 
 function InputText(props) {
   return (
@@ -101,6 +102,14 @@ function Field(props) {
         return (
           <InputNumber
             field={field}
+            value={props.value}
+            onChange={props.onChange}
+          />
+        )
+
+      case 'toggle':
+        return (
+          <Toggle
             value={props.value}
             onChange={props.onChange}
           />

@@ -2,7 +2,7 @@ import { findOneUser, findUser, updateOneUser } from '../../../../lib/api/users/
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import handlerAuth from '../../../../pages/api/auth/[action]'
+import handlerAuth from '../../../../pages/api/auth/[...action]'
 import http from 'http'
 import listen from 'test-listen'
 import { onUserAdded } from '../../../../lib/api/hooks/user.hooks'

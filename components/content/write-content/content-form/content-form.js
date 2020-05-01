@@ -1,6 +1,8 @@
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import DynamicField from'../../../generic/dynamic-field/dynamic-field'
+import Toggle from '../../../generic/toggle/toggle'
+import config from '../../../../lib/config'
 import fetch from '../../../../lib/fetcher'
 import styles from './content-form.module.scss'
 import { useState } from 'react'
@@ -97,6 +99,11 @@ export default function (props) {
   return (
     <div className={styles.contentForm}>
       <form name="content-form" onSubmit={onSubmit}>
+        {props.type.publishing.draftMode && <div className="draft input-group">
+          <label>Draft</label>
+          <Toggle value={state['draft']} onChange={handleFieldChange('draft')} />
+          { state.draft && <div>Your content will not be visible</div>}
+        </div>}
         {/* {JSON.stringify(props.type)} */}
         {props.type.fields.map((field) => (
           <DynamicField

@@ -80,6 +80,11 @@ for (var i = 0; i < 100; i++) {
 const initialContent = [...posts, ...products, ...comments]
 
 export const getConfig = (defaultOptions) => {
+  const userRole = defaultOptions.roles.user.value
+  const adminRole = defaultOptions.roles.admin.value
+  const shopOwnerRole = 'SHOP_OWNER'
+  const publicRole = defaultOptions.roles.public.value
+
   const postContentType = {
     title: {
       en: 'Post',
@@ -91,28 +96,28 @@ export const getConfig = (defaultOptions) => {
     slugGeneration: ['title', 'createdAt'],
 
     permissions: {
-      read: ['PUBLIC'],
-      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
-      update: [defaultOptions.roles.admin, defaultOptions.roles.user],
-      delete: [defaultOptions.roles.admin],
-      admin: [defaultOptions.roles.admin],
-      approval: [defaultOptions.roles.admin],
-      report: [defaultOptions.roles.user],
+      read: [publicRole],
+      create: [adminRole, userRole],
+      update: [adminRole, userRole],
+      delete: [adminRole],
+      admin: [adminRole],
+      approval: [adminRole],
+      report: [userRole],
     },
 
     publishing: {
       needsApproval: true,
-      allowsDraft: true,
+      draftMode: true,
     },
 
     comments: {
       enabled: true,
       permissions: {
-        read: ['PUBLIC'],
-        create: [defaultOptions.roles.user, defaultOptions.roles.admin],
-        update: [defaultOptions.roles.user, defaultOptions.roles.admin],
-        delete: [defaultOptions.roles.admin],
-        admin: [defaultOptions.roles.admin],
+        read: [publicRole],
+        create: [userRole, adminRole],
+        update: [userRole, adminRole],
+        delete: [adminRole],
+        admin: [adminRole],
       },
     },
 
@@ -174,12 +179,12 @@ export const getConfig = (defaultOptions) => {
     slugGeneration: ['userId', 'createdAt'],
 
     permissions: {
-      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
-      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
-      update: [defaultOptions.roles.admin],
-      delete: [defaultOptions.roles.admin],
-      admin: [defaultOptions.roles.admin],
-      report: [defaultOptions.roles.user],
+      read: [userRole, adminRole],
+      create: [adminRole, userRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
+      report: [userRole],
     },
 
     comments: {
@@ -209,12 +214,12 @@ export const getConfig = (defaultOptions) => {
     slugGeneration: ['userId', 'createdAt'],
 
     permissions: {
-      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
-      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
-      update: [defaultOptions.roles.admin],
-      delete: [defaultOptions.roles.admin],
-      admin: [defaultOptions.roles.admin],
-      report: [defaultOptions.roles.user],
+      read: [userRole, adminRole],
+      create: [adminRole, userRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
+      report: [userRole],
     },
 
     comments: {
@@ -265,11 +270,11 @@ export const getConfig = (defaultOptions) => {
     slugGeneration: ['participants' , 'createdAt'],
 
     permissions: {
-      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
-      create: [defaultOptions.roles.admin],
-      update: [defaultOptions.roles.admin],
-      delete: [defaultOptions.roles.admin],
-      admin: [defaultOptions.roles.admin],
+      read: [userRole, adminRole],
+      create: [adminRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
     },
 
     comments: {
@@ -313,11 +318,11 @@ export const getConfig = (defaultOptions) => {
     slugGeneration: ['userId' , 'createdAt'],
 
     permissions: {
-      read: [defaultOptions.roles.user, defaultOptions.roles.admin],
-      create: [defaultOptions.roles.admin],
-      update: [defaultOptions.roles.admin],
-      delete: [defaultOptions.roles.admin],
-      admin: [defaultOptions.roles.admin],
+      read: [userRole, adminRole],
+      create: [adminRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
     },
 
     comments: {
@@ -367,28 +372,26 @@ export const getConfig = (defaultOptions) => {
     slugGeneration: ['title', 'createdAt'],
 
     permissions: {
-      read: ['PUBLIC'],
-      create: [defaultOptions.roles.admin, defaultOptions.roles.user],
-      update: [defaultOptions.roles.admin, defaultOptions.roles.user],
-      delete: [defaultOptions.roles.admin],
-      admin: [defaultOptions.roles.admin],
-      approval: [defaultOptions.roles.admin],
-      report: [defaultOptions.roles.user],
+      read: [publicRole],
+      create: [adminRole, shopOwnerRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
     },
 
     publishing: {
-      needsApproval: true,
-      allowsDraft: true,
+      needsApproval: false,
+      draftMode: true,
     },
 
     comments: {
       enabled: false,
       permissions: {
-        read: ['PUBLIC'],
-        create: [defaultOptions.roles.user, defaultOptions.roles.admin],
-        update: [defaultOptions.roles.admin, defaultOptions.roles.user],
-        delete: [defaultOptions.roles.admin],
-        admin: [defaultOptions.roles.admin],
+        read: [publicRole],
+        create: [userRole, adminRole],
+        update: [adminRole, userRole],
+        delete: [adminRole],
+        admin: [adminRole],
       },
     },
 
@@ -461,6 +464,15 @@ export const getConfig = (defaultOptions) => {
       contact: 'contact@empieza.io'
     },
 
+    // Add one more role
+    roles: {
+      ...defaultOptions.roles,
+      shopOwner: {
+        label: 'Shop Owner',
+        value: shopOwnerRole
+      }
+    },
+
     // Users activity logging & API
     activity: {
 
@@ -468,19 +480,19 @@ export const getConfig = (defaultOptions) => {
       enabled: true, 
       permissions: {
         content: {
-          created: ['PUBLIC'],
-          deleted: [defaultOptions.roles.admin],
-          edited: [defaultOptions.roles.admin],
+          created: [publicRole],
+          deleted: [adminRole],
+          edited: [adminRole],
         },
         comments: {
-          created: ['PUBLIC'],
-          deleted: [defaultOptions.roles.admin],
-          edited: [defaultOptions.roles.admin],
+          created: [publicRole],
+          deleted: [adminRole],
+          edited: [adminRole],
         },
         users: {
-          created: [defaultOptions.roles.admin],
-          deleted: [defaultOptions.roles.admin],
-          edited: [defaultOptions.roles.admin],
+          created: [adminRole],
+          deleted: [adminRole],
+          edited: [adminRole],
         },
       },
       initialActivity: initialActivity,
@@ -496,7 +508,8 @@ export const getConfig = (defaultOptions) => {
 
       providers: {
         instagram: true,
-        google: true
+        google: true,
+        facebook:true
       },
 
       // Fields for the users profiles (in addition to picture and displayName)
@@ -508,6 +521,19 @@ export const getConfig = (defaultOptions) => {
           required: false,
           min: 60,
           max: 300,
+          roles: []
+        }, {
+          name: 'gender',
+          type: 'select',
+          label: 'gender',
+          required: true,
+          options: [{
+            label: 'Male',
+            value: 'male'
+          },{
+            label: 'Female',
+            value: 'female'
+          }]
         }]
       },
 
@@ -519,7 +545,7 @@ export const getConfig = (defaultOptions) => {
           email: 'admin@demo.com',
           emailVerified: true,
           createdAt: Date.now(),
-          roles: [defaultOptions.roles.admin, defaultOptions.roles.user],
+          roles: [adminRole, userRole],
           id: '1',
           password: 'admin',
           profile: {
@@ -534,7 +560,7 @@ export const getConfig = (defaultOptions) => {
           email: 'user@demo.com',
           emailVerified: true,
           createdAt: Date.now(),
-          roles: [defaultOptions.roles.user],
+          roles: [userRole],
           id: '2',
           password: 'user',
           profile: {
@@ -549,7 +575,7 @@ export const getConfig = (defaultOptions) => {
           email: 'blocked@demo.com',
           emailVerified: true,
           createdAt: Date.now(),
-          roles: [defaultOptions.roles.user],
+          roles: [userRole],
           id: '3',
           password: 'user',
           profile: {
@@ -566,7 +592,7 @@ export const getConfig = (defaultOptions) => {
           emailVerified: false,
           emailVerificationToken: '1234',
           createdAt: Date.now(),
-          roles: [defaultOptions.roles.user],
+          roles: [userRole],
           id: '3',
           password: 'user',
           profile: {

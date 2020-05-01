@@ -28,11 +28,11 @@ app.disable('x-powered-by')
 
 app.use(passport.initialize())
 
-passport.use(localStrategy)
+passport.use(localStrategy())
 
 // Configure the different providers
 if (config.user.providers.instagram) {
-  passport.use(instagramStrategy)
+  passport.use(instagramStrategy())
 }
 
 app.use(async (req, res, next) => {
