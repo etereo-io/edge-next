@@ -26,32 +26,34 @@ const Landing = (props) => {
         <div className="feature">
           <h3>Dynamic API</h3>
           <p>
-            Generate a dynamic API for your content and comments based on a configuration file. 
-            Dynamic Forms are updated automaticaly for the users to create any kind of content.
+            A dynamic API for your content and comments based on a configuration file. 
+            Content forms are updated automaticaly based on your settings, allowing the users to create any kind of content.
           </p>
         </div>
         <div className="feature">
-          <h3>Custom Permissions</h3>
+          <h3>Custom Permissions and Roles</h3>
           <p>
-            Add custom permissions based on roles for each API endpoint operation and demo pages.
+            Add custom permissions based on roles for each API endpoint and app pages.
+            Create and configure new roles to extend the default functionality.
           </p>
         </div>
         <div className="feature">
           <h3>Built-in admin dashboard</h3>
           <p>
-            A simple admin dashboard to list all the content and users of the platform.
+            A simple admin dashboard to list and edit all the content, comments and users of the platform.
           </p>
         </div>
         <div className="feature">
           <h3>Built-in CSS Themes</h3>
           <p>
-            Support 4 CSS themes out of the box (Light, Dark, Robot, Kawai).
+            Four CSS themes implemented (Light, Dark, Robot, Kawai), stored in cookies for each user preference.
+            Easily create and add new themes.
           </p>
         </div>
         <div className="feature">
           <h3>SSG (Static Site Generation)</h3>
           <p>
-            Integrated static pages through Markdown rendering, check <Link href="/p/faq"><a>some</a></Link> <Link href="/p/privacy-policy"><a>example</a></Link> <Link href="/p/terms-of-service"><a>pages</a></Link>
+            Built-in static pages through Markdown rendering, check <Link href="/p/faq"><a>some</a></Link> <Link href="/p/privacy-policy"><a>example</a></Link> <Link href="/p/terms-of-service"><a>pages</a></Link>
           </p>
         </div>
         <div className="feature">
@@ -64,6 +66,20 @@ const Landing = (props) => {
           <h3>Coded Components</h3>
           <p>
             A set of ready to use and fully integrated and themed <Link href="/components"><a>components</a></Link> 
+          </p>
+        </div>
+
+        <div className="feature">
+          <h3>Emails</h3>
+          <p>
+            Email verification, password recovery and notifications through emails already implemented.
+          </p>
+        </div>
+        
+        <div className="feature">
+          <h3>Social Providers</h3>
+          <p>
+            Login and register implemented for different social providers like Instagram, Google, Facebook and much more.
           </p>
         </div>
         

@@ -455,6 +455,37 @@ export const getConfig = (defaultOptions) => {
       contact: 'contact@empieza.io'
     },
 
+    // Themes
+    theme: {
+      default: 'light-theme',
+      themes:  [
+        {
+          label: 'Light',
+          value: 'light-theme',
+          mainColor: 'white',
+          borderColor: 'black'
+        },
+        {
+          label: 'Dark',
+          value: 'dark-theme',
+          mainColor: 'black',
+          borderColor: 'white'
+        },
+        {
+          label: 'Robot',
+          value: 'robot-theme',
+          mainColor: 'black',
+          borderColor: 'green'
+        },
+        {
+          label: 'Kawaii',
+          value: 'kawaii-theme',
+          mainColor: 'pink',
+          borderColor: 'black'
+        },
+      ]
+    },
+
     // Add one more role
     roles: {
       ...defaultOptions.roles,

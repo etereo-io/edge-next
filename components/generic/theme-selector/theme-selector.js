@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import Select from '../select/select'
 
-import { EmpiezaThemeContext, MODE } from '../../../lib/contexts/empieza-theme'
+import { EmpiezaThemeContext, themes, defaultTheme } from '../../../lib/contexts/empieza-theme'
 
 function ColorBubble(props) {
   return (
@@ -23,56 +23,26 @@ function ColorBubble(props) {
 export default function (props) {
   const { mode, switchMode } = useContext(EmpiezaThemeContext)
 
-  const [selectedTheme, setSelectedTheme] = useState(mode || MODE.LIGHT)
-  const availableThemes = [
-    {
-      title: 'Light',
-      id: MODE.LIGHT,
-    },
-    {
-      title: 'Dark',
-      id: MODE.DARK,
-    },
-    {
-      title: 'Robot',
-      id: MODE.ROBOT,
-    },
-    {
-      title: 'Kawaii',
-      id: MODE.KAWAII,
-    },
-  ]
+  const [selectedTheme, setSelectedTheme] = useState(mode || defaultTheme)
 
   const onChange = (ev) => {
     switchMode(ev.target.value)
   }
 
-  const prefixes = [
-    {
-      value: MODE.LIGHT,
-      prefix: <ColorBubble color="white" />,
-    },
-    {
-      value: MODE.DARK,
-      prefix: <ColorBubble color="black" border="white" />,
-    },
-    {
-      value: MODE.ROBOT,
-      prefix: <ColorBubble color="#33cf33" />,
-    },
-    {
-      value: MODE.KAWAII,
-      prefix: <ColorBubble color="pink" />,
-    },
-  ]
+  const prefixes = themes.map(theme => {
+    return {
+      value: theme.value,
+      prefix: <ColorBubble color={theme.mainColor} border={theme.borderColor} />,
+    }
+  })
 
   return (
     <>
       <div className="theme-selector">
         <Select onChange={onChange} prefixes={prefixes} value={selectedTheme}>
-          {availableThemes.map((t) => (
-            <option key={t.id}  value={t.id}>
-              {t.title}
+          {themes.map((t) => (
+            <option key={t.value}  value={t.value}>
+              {t.label}
             </option>
           ))}
         </Select>

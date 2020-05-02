@@ -28,7 +28,7 @@ export default function({ srcs = [], width = 240, height = 240 }) {
 
   return (
     <>
-      <div className={`image-wrapper ${isMultiple ? 'multiple': ''}`} style={{maxWidth: '100%', width: width + 'px', height: `${totalHeight}px`}} >
+      <div className={`image-wrapper ${isMultiple ? 'multiple': ''}`} style={{maxWidth: '100%', width: width + 'px', maxHeight: `${totalHeight}px`}} >
         {isMultiple && <div onClick={onClickLeft} className="arrow arrow-left">left</div>}
         <div className={`image-container`} style={{ left: `-${100 * position}%`, width: `${srcs.length * 100}%`}} >
           {srcs.map(s => {
