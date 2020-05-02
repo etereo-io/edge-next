@@ -13,12 +13,12 @@ function PublicUserHeader() {
     <nav>
       <ul className={styles.navigation}>
         <li>
-          <Link href="/login">
+          <Link href="/auth/login">
             <a>Login</a>
           </Link>
         </li>
         <li>
-          <Button href="/signup">Get Started</Button>
+          <Button href="/auth/signup">Get Started</Button>
         </li>
 
         <DropdownMenu align="right">

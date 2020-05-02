@@ -13,6 +13,14 @@ import useSWR from 'swr'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export async function getServerSideProps({ req, res, query }) {
+  const contentTypeDefinition = getContentTypeDefinition(query.type)
+
+  if (!contentTypeDefinition) {
+    res.writeHead(302, { Location: '/404' })
+    res.end()
+    return
+  }
+  
   await connect()
   const item = await findOneContent(query.type, {
     slug: query.slug,

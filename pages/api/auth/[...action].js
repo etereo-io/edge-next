@@ -145,7 +145,7 @@ app.get('/api/auth/logout', async (req, res) => {
 
 if (config.user.providers.instagram) {
   app.get('/api/auth/instagram', passport.authenticate('instagram', { scope: ['user_profile', 'user_media'] }));
-  app.get('/api/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), (req, res) => {
+  app.get('/api/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/auth/login' }), (req, res) => {
     res.writeHead(302, { Location: '/'})
     res.end()
     // res.redirect(req.session.returnTo || '/');
@@ -154,31 +154,31 @@ if (config.user.providers.instagram) {
 
 
 app.get('/api/auth/snapchat', passport.authenticate('snapchat'));
-app.get('/api/auth/snapchat/callback', passport.authenticate('snapchat', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/snapchat/callback', passport.authenticate('snapchat', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
-app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/api/auth/github', passport.authenticate('github'));
-app.get('/api/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/github/callback', passport.authenticate('github', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile', 'email', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets.readonly'], accessType: 'offline', prompt: 'consent' }));
-app.get('/api/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/google/callback', passport.authenticate('google', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/api/auth/twitter', passport.authenticate('twitter'));
-app.get('/api/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/api/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE' }));
-app.get('/api/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/api/auth/twitch', passport.authenticate('twitch', {}));
-app.get('/api/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/twitch/callback', passport.authenticate('twitch', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
 
@@ -198,11 +198,11 @@ app.get('/api/auth/steam/callback', passport.authorize('openid', { failureRedire
   res.redirect(req.session.returnTo);
 });
 app.get('/api/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public write_public' }));
-app.get('/api/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect('/api/pinterest');
 });
 app.get('/api/auth/quickbooks', passport.authorize('quickbooks', { scope: ['com.intuit.quickbooks.accounting'], state: 'SOME STATE' }));
-app.get('/api/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/login' }), (req, res) => {
+app.get('/api/auth/quickbooks/callback', passport.authorize('quickbooks', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo);
 });
 

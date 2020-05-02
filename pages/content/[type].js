@@ -10,6 +10,14 @@ import { usePermission } from '../../lib/hooks'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export async function getServerSideProps({ req, res, query }) {
+  const contentTypeDefinition = getContentTypeDefinition(query.type)
+
+  if (!contentTypeDefinition) {
+    res.writeHead(302, { Location: '/404' })
+    res.end()
+    return
+  }
+  
   await connect()
   try {
     await runMiddleware(req, res, hasPermissionsForContent(query.type))

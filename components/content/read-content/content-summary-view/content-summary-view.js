@@ -1,8 +1,11 @@
 import DropDown from '../../../generic/dropdown-menu/dropdown-menu'
+import Image from '../../../generic/image/image'
 import Link from 'next/link'
 import SocialShare from '../../../generic/social-share/social-share'
 import TagsField from '../fields/tags-field/tags-field'
+import { hasPermission } from '../../../../lib/permissions'
 import styles from './content-summary-view.module.scss'
+import { useUser } from '../../../../lib/hooks'
 
 function getField(field, value) {
   switch (field.type) {
@@ -10,7 +13,7 @@ function getField(field, value) {
       return <p>{value}</p>
 
     case 'img':
-      return <img className={styles.img} src={value} />
+      return value ? <div style={{display: 'flex', justifyContent: 'center'}} ><Image width={500} height={500} srcs={[value]} /> </div>: null
 
     case 'number':
       return <p>{value}</p>
@@ -34,6 +37,19 @@ export default function (props) {
         }`
       : ''
   const links = !!props.links
+
+
+  const { user } = useUser({
+    userId: 'me'
+  })
+
+  const hasEditPermission = hasPermission(
+    user,
+    [`content.${props.content.type}.admin`, `content.${props.content.type}.update`],
+  )
+  const isContentOwner = user && user.id === props.content.author
+
+
   return (
     <div className={`${styles.contentSummaryView} ${props.className}`}>
       <div className="content-summary-content">
@@ -85,8 +101,9 @@ export default function (props) {
         <SocialShare shareUrl={shareUrl} />
         <DropDown align={'right'}>
           <ul>
-            <li>Report</li>
-            <li>Email</li>
+            {!isContentOwner && <li>Report</li>}
+            <li><a href={`mailto:?${JSON.stringify({subject: 'Check this out', body: shareUrl})}`}>Email</a></li>
+            {(hasEditPermission || isContentOwner) && <li><Link href={`/edit/${props.content.type}/${props.content.slug}`}><a>Edit</a></Link></li>}
           </ul>
         </DropDown>
       </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import Layout from '../components/layout/normal/layout'
-import fetch from '../lib/fetcher'
+import Layout from '../../components/layout/normal/layout'
+import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
 
 const Login = () => {

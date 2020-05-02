@@ -65,14 +65,14 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
         <div className="submit">
           {isLogin ? (
             <>
-              <Link href="/signup">
+              <Link href="/auth/signup">
                 <a>I don't have an account</a>
               </Link>
               <Button  loading={loading} type="submit">Login</Button>
             </>
           ) : (
             <>
-              <Link href="/login">
+              <Link href="/auth/login">
                 <a>I already have an account</a>
               </Link>
               <Button loading={loading} type="submit">Signup</Button>

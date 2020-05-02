@@ -1,9 +1,9 @@
-import Form from '../components/auth/login-register.form'
-import Layout from '../components/layout/normal/layout'
+import Form from '../../components/auth/login-register.form'
+import Layout from '../../components/layout/normal/layout'
 import Router from 'next/router'
-import fetch from '../lib/fetcher'
+import fetch from '../../lib/fetcher'
 import { useState } from 'react'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../../lib/hooks'
 
 const Signup = () => {
   useUser({ redirectTo: '/', redirectIfFound: true, userId: 'me'})
@@ -35,7 +35,7 @@ const Signup = () => {
         body: JSON.stringify(body),
       })
         .then(() => {
-          Router.push('/login')
+          Router.push('/auth/login')
         })
         .catch((err) => {
           setLoading(false)

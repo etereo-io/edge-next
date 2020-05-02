@@ -4,15 +4,13 @@
   border: 1px solid var(--accents-2);;
   padding: var(--empz-gap);
   border-radius: var(--empz-radius);
+  max-width: 800px;
+  margin: 0 auto;
 
   @media (max-width: 600px) {
     padding: var(--empz-gap-half);
   }
 
-  img {
-    max-width: 100%;
-    width: 100%;
-  }
 
   a {
     text-decoration: none;

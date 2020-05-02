@@ -55,6 +55,8 @@ const UserSettings = (props) => {
       setError({
         [key]: 'Please complete the required fields'
       })
+
+      return
     } else {
       setError({
         [key]: false
@@ -64,6 +66,12 @@ const UserSettings = (props) => {
     setLoading({
       [key] : true
     })
+
+    setSuccess({
+      [key]: false
+    })
+
+
 
     fetch(url, {
       method: 'put',

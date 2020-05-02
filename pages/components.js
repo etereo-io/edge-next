@@ -10,6 +10,7 @@ import Button from '../components/generic/button/button'
 import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
 import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
 import DynamicField from '../components/generic/dynamic-field/dynamic-field'
+import Image from '../components/generic/image/image'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
@@ -169,6 +170,9 @@ const Components = () => {
             
             <li>
               <a href="#contentsummaryview">Content Summary View</a>
+            </li>
+            <li>
+              <a href="#image">Image</a>
             </li>
             <li className="submenu">
               <a href="#form-elements">Form elements</a>
@@ -491,6 +495,47 @@ const links = [{
             </div>
             <pre>{`
 <ContentSummaryView type={demoContentType} content={demoContent} />
+            `}</pre>
+          </div>
+
+          <div id="image" className="component">
+            <h3>Image</h3>
+            <div className="component-demo">
+              <p>
+                A "gracefully" loading image. If multiple images are passed it will display a carousel.
+              </p>
+              <div className="item-wrapper">
+                <Image srcs={['https://loremflickr.com/240/240/food?random=1', 'https://loremflickr.com/240/240/food?random=2', 'https://loremflickr.com/240/240/food?random=3']} />
+              </div>
+
+              <div className="item-wrapper">
+                <Image srcs={['https://loremflickr.com/240/240/cars?random=1']} />
+              </div>
+
+              <div className="item-wrapper" style={{ display: 'flex', justifyContent: 'center' }}>
+                <Image srcs={[{
+                  url: 'https://loremflickr.com/240/240/cars?random=2',
+                  quote: 'An amazing picture'
+                }] } width={500} height={500} />
+              </div>
+
+              <div className="item-wrapper">
+                <Image srcs={[{
+                  url: 'https://loremflickr.com/240/240/flower?random=1',
+                  quote: 'An amazing flower'
+                }, {
+                  url: 'https://loremflickr.com/240/240/flower?random=2',
+                  quote: 'Another flower'
+                }]} />
+              </div>
+            </div>
+            <pre>{`
+ <Image srcs={['https://loremflickr.com/240/240/cars?random=1']} />
+
+ <Image srcs={[{
+  url: 'https://loremflickr.com/240/240/cars?random=2',
+  quote: 'An amazing picture'
+  }]} />
             `}</pre>
           </div>
 

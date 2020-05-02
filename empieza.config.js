@@ -29,6 +29,7 @@ for (var i = 0; i < 100; i++) {
   products.push({
     type: 'product',
     id: i,
+    image: 'https://loremflickr.com/240/240/food?random='+i,
     author: userId,
     title: 'Example product',
     slug: 'example-product-' + i,

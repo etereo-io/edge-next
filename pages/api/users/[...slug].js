@@ -6,6 +6,7 @@ import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermissionsForUser } from '../../../lib/api/middlewares'
 import methods from '../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
+import { v4 as uuidv4 } from 'uuid'
 
 const userExist = (userId) => async (req, res, cb) => {
   if (userId === 'me') {
@@ -75,7 +76,10 @@ const updateUser = (slug) => (req, res) => {
       promiseChange = findOneUser({ email: req.body.email }).then(
         (maybeUser) => {
           if (!maybeUser) {
-            return updateOneUser(req.user.id, { email: req.body.email })
+            return updateOneUser(req.user.id, { 
+              email: req.body.email,
+              emailVerificationToken: uuidv4()
+           })
           } else {
             throw new Error('email already exists')
           }

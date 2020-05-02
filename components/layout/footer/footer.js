@@ -18,14 +18,14 @@ export default function () {
           <ul className={styles.ul}>
             <li className={styles.li}>
               <span className={styles.strong}>Already have an account? </span>
-              <Link href="/login">
+              <Link href="/auth/login">
                 <a className={styles.a} title="sign in">
                   Sign-in
                 </a>
               </Link>
             </li>
             <li className={styles.li}>
-              <Link href="/signup">
+              <Link href="/auth/signup">
                 <a className={styles.a} title="get started">
                   Get Started
                 </a>
