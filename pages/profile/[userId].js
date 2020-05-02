@@ -80,10 +80,10 @@ const Profile = (props) => {
           })}
         </div>
 
-        <div className="activity-report">
+        {config.activity.enabled && <div className="activity-report">
           <h3>Recent activity</h3>
           {user && <UserActivity user={user} />}
-        </div>
+        </div>}
       </div>
       <style jsx>
         {`
@@ -144,7 +144,7 @@ const Profile = (props) => {
 
           .content-types,
           .activity-report {
-            flex: 0.5;
+            flex: 1;
             transform: translateY(-75px);
             padding: var(--empz-gap);
           }

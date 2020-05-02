@@ -26,6 +26,7 @@
     "passport": "0.4.1",
     "passport-instagram": "^1.0.0",
     "passport-local": "1.0.0",
+    "random-words": "^1.1.1",
     "react": "latest",
     "react-dom": "latest",
     "react-google-maps": "^9.4.5",

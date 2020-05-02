@@ -58,7 +58,7 @@ export default function (props) {
       
       <div className="content-summary-content">
         {props.type.fields
-          .filter((f) => !!f.title)
+          .filter((f) => f.name === props.type.publishing.title)
           .map((field) => {
             return (
               <div className={styles.field} key={field.name}>
@@ -76,7 +76,7 @@ export default function (props) {
             )
           })}
         {props.type.fields
-          .filter((f) => !f.title && f.type !== 'tags')
+          .filter((f) => f.name !== props.type.publishing.title && f.type !== 'tags')
           .map((field) => {
             return (
               <div className={styles.field} key={field.name}>
@@ -92,7 +92,7 @@ export default function (props) {
             )
           })}
         {props.type.fields
-          .filter((f) => !f.title && f.type === 'tags')
+          .filter((f) => f.name !== props.type.publishing.title && f.type === 'tags')
           .map((field) => {
             return (
               <div className={styles.field} key={field.name}>

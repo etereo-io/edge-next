@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import DynamicField from'../../../generic/dynamic-field/dynamic-field'
@@ -5,7 +7,6 @@ import Toggle from '../../../generic/toggle/toggle'
 import config from '../../../../lib/config'
 import fetch from '../../../../lib/fetcher'
 import styles from './content-form.module.scss'
-import { useState } from 'react'
 
 export default function (props) {
   const [loading, setLoading] = useState(false)
@@ -13,19 +14,26 @@ export default function (props) {
   const [error, setError] = useState(false)
 
   // Store default state with values from the content or default values
-  const defaultState = {}
+  const fillState = () => {
+    const defaultState = {}
+    props.type.fields.forEach((field) => {
+      // Default field value
+      const fieldValue = field.value
+  
+      // Content value
+      defaultState[field.name] = props.content && props.content[field.name]
+        ? props.content[field.name]
+        : fieldValue
+    })
+    
+    setState(defaultState)
+  }
 
-  props.type.fields.forEach((field) => {
-    // Default field value
-    const fieldValue = field.value
+  const [state, setState] = useState({})
 
-    // Content value
-    defaultState[field.name] = props.content
-      ? props.content[field.name]
-      : fieldValue
-  })
-
-  const [state, setState] = useState(defaultState)
+  useEffect(() => {
+    fillState()
+  }, [props.content])
 
   // Generic field change
   const handleFieldChange = (name) => (value) => {

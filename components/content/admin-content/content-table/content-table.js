@@ -165,6 +165,13 @@ export default function (props) {
           </Button>
         )}
       </div>
+      <style jsx>{`
+      
+        .load-more {
+          display: flex;
+          justify-content: center;
+        }
+      `}</style>
     </div>
   )
 }

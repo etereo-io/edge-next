@@ -31,8 +31,10 @@ export async function getServerSideProps({ req, res, query }) {
       },
     }
   }
-
-  const response = await findContent(query.type)
+  
+  const filterOptions = {}
+  contentTypeDefinition.publishing.draftMode = filterOptions.draft = false
+  const response = await findContent(query.type, filterOptions)
 
   return {
     props: {

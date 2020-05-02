@@ -19,21 +19,25 @@ const EditContent = () => {
     query: { slug, type },
   } = router
 
-  if (!slug || !type) {
-    return <LoadingView />
-  }
 
   const contentType = getContentTypeDefinition(type)
 
   // Load data
-  const { data } = useSWR(API.content[type] + '/' + slug, fetch)
+  const { data } = useSWR(type && slug ? API.content[type] + '/' + slug: null, fetch)
   console.log('THE DATA?', data)
   
-  const {available} = usePermission([`content.${type}.update`, `content.${type}.admin`], '/404', (user) => data.author === user.id)
+  const {available} = usePermission([`content.${type}.update`, `content.${type}.admin`], '/404', (user) => {
+    return data && data.author === user.id
+  })
   
 
   const onSaved = (newItem) => {
     // Router.go to /content/slug/id
+  }
+
+  
+  if (!slug || !type) {
+    return <LoadingView />
   }
 
   return (

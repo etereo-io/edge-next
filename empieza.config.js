@@ -1,19 +1,32 @@
+import randomWords from 'random-words'
+
 const posts = []
 const products = []
 const comments = []
 const initialActivity = []
+
+function generateParagraph() {
+  const phrases = []
+  const max = Math.round(Math.random() * 5) + 1
+
+  for(var i = 0; i < max; i++) {
+    phrases.push(randomWords({ min: 5, max: 50 }).join(' '))
+  }
+
+  return phrases.join('\n')
+}
 
 for (var i = 0; i < 100; i++) {
   const userId = Math.round(Math.random() * 10)
 
   posts.push({
     type: 'post',
-    id: i,
-    author: userId,
-    title: 'Example post',
+    id: i+'',
+    author: userId+'',
+    title: randomWords({ min: 3, max: 10 }).join(' '),
     slug: 'example-post-' + i,
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
-    description: 'This is an example description',
+    description: generateParagraph(),
     draft: Math.random() > 0.5 ? true: false,
     tags: [
       {
@@ -32,9 +45,10 @@ for (var i = 0; i < 100; i++) {
     id: i,
     image: 'https://loremflickr.com/240/240/food?random='+i,
     author: userId,
-    title: 'Example product',
+    title: randomWords({ min: 3, max: 10 }).join(' '),
     slug: 'example-product-' + i,
-    description: 'This is an example description',
+    draft: Math.random() > 0.5 ? true: false,
+    description: generateParagraph(),
   })
 
   initialActivity.push({
@@ -62,7 +76,7 @@ for (var i = 0; i < 100; i++) {
       type: 'comment',
       contentType: 'post',
       contentId: i,
-      message: 'A demo comment',
+      message: generateParagraph(),
       author: Math.round(Math.random() * 10),
       slug: 'test-comment-' + j,
     })
@@ -107,6 +121,7 @@ export const getConfig = (defaultOptions) => {
 
     publishing: {
       draftMode: true,
+      title: 'title'
     },
 
     comments: {
@@ -125,7 +140,6 @@ export const getConfig = (defaultOptions) => {
         name: 'title',
         type: 'text',
         label: 'Title',
-        title: true,
         placeholder: 'Title',
       },
       {
@@ -218,6 +232,10 @@ export const getConfig = (defaultOptions) => {
       permissions: {}
     },
 
+    publishing: {
+      draftMode: false
+    },
+
     fields: [
       {
         name: 'userFrom',
@@ -273,6 +291,10 @@ export const getConfig = (defaultOptions) => {
       permissions: {}
     },
 
+    publishing: {
+      draftMode: false
+    },
+
     fields: [
       {
         name: 'participants',
@@ -314,6 +336,10 @@ export const getConfig = (defaultOptions) => {
       update: [adminRole],
       delete: [adminRole],
       admin: [adminRole],
+    },
+
+    publishing: {
+      draftMode: false
     },
 
     comments: {
@@ -371,9 +397,11 @@ export const getConfig = (defaultOptions) => {
     },
 
     publishing: {
-      needsApproval: false,
       draftMode: true,
+      title: 'title'
     },
+
+    display: 'grid',
 
     comments: {
       enabled: false,
@@ -392,7 +420,6 @@ export const getConfig = (defaultOptions) => {
         type: 'text',
         label: 'Title',
         placeholder: 'Title',
-        title: true,
       },
       {
         name: 'description',

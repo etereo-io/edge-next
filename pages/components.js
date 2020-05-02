@@ -39,6 +39,9 @@ const Components = () => {
 
   const demoContentType = {
     slug: 'demo-content-type',
+    publishing: {
+      title: 'title'
+    },
     fields: [
       {
         type: 'text',

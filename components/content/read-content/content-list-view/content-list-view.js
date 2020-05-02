@@ -27,6 +27,7 @@ export default function (props) {
   const infiniteScroll = props.infiniteScroll
   const query = props.query
   const identificator = 'content-list-' + props.type.slug + '-' + query
+  const listView = props.type.display && props.type.display === 'grid' ? 'grid': 'list'
 
   // Fetch content type page by page
   const {
@@ -50,20 +51,25 @@ export default function (props) {
       const { results = [] } = data
       return results.map((item) => {
         return (
-          <div key={item.id}>
-            <div className="item">
+          <>
+          <div key={item.id} className={`item ${listView}`}>
               <ContentSummaryView
                 content={item}
                 type={props.type}
                 links={true}
               />
-            </div>
-            <style jsx>{`
+          </div>
+          <style jsx>{`
               .item {
                 margin-bottom: 30px;
               }
-            `}</style>{' '}
-          </div>
+              .item.grid {
+                width: 32%;
+                margin-bottom: 2%; /* (100-32*3)/2 */
+                position: relative;
+              }
+            `}</style>
+          </>
         )
       })
     },
@@ -86,7 +92,9 @@ export default function (props) {
   return (
     <>
       <div className="contentListView">
-        {!isEmpty ? pages : <EmptyComponent />}
+        <div className={`items ${listView}`}>
+          {!isEmpty ? pages : <EmptyComponent />}
+        </div>
         <div className="load-more">
           {isReachingEnd ? null : (
             <Button
@@ -105,6 +113,17 @@ export default function (props) {
           margin-bottom: var(--empz-gap-double);
           border-bottom: var(--light-border);
           padding-bottom: var(--empz-gap-double);
+        }
+
+        .items.grid {
+          display: flex;
+          flex-wrap: wrap;
+          position: relative;
+          justify-content: space-between;
+        }
+        .load-more {
+          display: flex;
+          justify-content: center;
         }
       `}</style>
     </>
