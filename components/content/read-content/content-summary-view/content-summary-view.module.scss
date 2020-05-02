@@ -30,4 +30,11 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  .status {
+    padding: 5px;
+    font-size: 13px;
+    background: var(--empz-warning);
+    color: var(--empz-background);
+  }
 }

@@ -12,6 +12,122 @@ jest.mock('../../../../lib/api/auth/iron')
 jest.mock('../../../../lib/permissions/get-permissions')
 
 
+jest.mock('../../../../empieza.config', () => {
+  
+  const mockInitialPosts = []
+
+  for (var i = 0; i < 100; i++) {
+    const userId = Math.round(Math.random() * 10)
+
+    mockInitialPosts.push({
+      type: 'post',
+      id: i,
+      author: userId,
+      title: 'Example post',
+      slug: 'example-post-' + i,
+      image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+      description: 'This is an example description',
+      draft: Math.random() > 0.5 ? true: false,
+      tags: [
+        {
+          slug: 'software',
+          label: 'SOFTWARE',
+        },
+        {
+          slug: 'ai',
+          label: 'AI',
+        },
+      ],
+    })
+  }
+
+  const mockPostContentType = {
+    title: {
+      en: 'Post',
+      es: 'Artículo',
+    },
+
+    slug: 'post',
+
+    slugGeneration: ['title', 'createdAt'],
+
+    permissions: {
+      read: ['PUBLIC'],
+      create: ['ADMIN', 'USER'],
+      update: ['ADMIN'],
+      delete: ['ADMIN'],
+      admin: ['ADMIN'],
+    },
+
+    publishing: {
+      draftMode: true,
+    },
+
+    comments: {
+      enabled: true,
+      permissions: {
+        read: ['PUBLIC'],
+        create: ['USER', 'ADMIN'],
+        update: ['ADMIN'],
+        delete: ['ADMIN'],
+        admin: ['ADMIN'],
+      },
+    },
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        title: true,
+        placeholder: 'Title',
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        label: 'Description',
+        placeholder: 'Description',
+      },
+      {
+        name: 'image',
+        type: 'img',
+        label: 'Image',
+        placeholder: 'Image',
+      },
+      {
+        name: 'file',
+        type: 'file',
+        label: 'File',
+        placeholder: 'File',
+      },
+      {
+        name: 'tags',
+        type: 'tags',
+        label: 'Tags',
+        placeholder: 'Tags',
+      }
+    ],
+  }
+
+  return {
+    __esModule: true,
+    getConfig: jest.fn().mockReturnValue({
+        title: 'A test',
+        description: 'A test',
+        // Content configuration
+        content: {
+          // Different content types defined
+          types: [
+            mockPostContentType
+          ],
+          initialContent: mockInitialPosts,
+        },
+    })
+  }
+})
+
+
+
 describe('Integrations tests for content endpoint', () => {
   let server
   let url
@@ -94,6 +210,10 @@ describe('Integrations tests for content endpoint', () => {
       'content.post.admin': ['ADMIN'],
     })
 
+    getSession.mockReturnValueOnce({
+      roles: ['PUBLIC'],
+    })
+
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])
     )
@@ -161,6 +281,11 @@ describe('Integrations tests for content endpoint', () => {
         'content.post.admin': ['ADMIN'],
       })
 
+      getSession.mockReturnValueOnce({
+        roles: ['ADMIN'],
+        id: '1'
+      })
+
       const response = await fetch(urlToBeUsed.href)
       const jsonResult = await response.json()
 
@@ -188,6 +313,11 @@ describe('Integrations tests for content endpoint', () => {
       getPermissions.mockReturnValueOnce({
         'content.post.read': ['PUBLIC'],
         'content.post.admin': ['ADMIN'],
+      })
+
+      getSession.mockReturnValueOnce({
+        roles: ['ADMIN'],
+        id: '1'
       })
 
       const response = await fetch(urlToBeUsed.href)
@@ -221,6 +351,11 @@ describe('Integrations tests for content endpoint', () => {
         'content.post.admin': ['ADMIN'],
       })
 
+      getSession.mockReturnValueOnce({
+        roles: ['ADMIN'],
+        id: '1'
+      })
+
       const response = await fetch(urlToBeUsed.href)
       const jsonResult = await response.json()
 
@@ -228,6 +363,95 @@ describe('Integrations tests for content endpoint', () => {
       for (var i = 0; i < jsonResult.results.length; i++) {
         expect(jsonResult.results[i].author).toEqual(2)
       }
+    })
+  })
+
+  describe('Draft mode', () => {
+    test('Should return only items that are not drafts', async () => {
+      const urlToBeUsed = new URL(url)
+      const params = { type: 'post', from: 15, limit: 15, author: 2 }
+
+      Object.keys(params).forEach((key) =>
+        urlToBeUsed.searchParams.append(key, params[key])
+      )
+
+      getPermissions.mockReturnValueOnce({
+        'content.post.read': ['PUBLIC'],
+        'content.post.admin': ['ADMIN'],
+      })
+
+
+      const response = await fetch(urlToBeUsed.href)
+      const jsonResult = await response.json()
+
+      expect(response.status).toBe(200)
+      for (var i = 0; i < jsonResult.results.length; i++) {
+        expect(jsonResult.results[i].draft).not.toEqual(true)
+      }
+    })
+
+    test('Should all the items for admin', async () => {
+      const urlToBeUsed = new URL(url)
+      const params = { type: 'post', from: 15, limit: 15, author: 2 }
+
+      Object.keys(params).forEach((key) =>
+        urlToBeUsed.searchParams.append(key, params[key])
+      )
+
+      getPermissions.mockReturnValueOnce({
+        'content.post.read': ['PUBLIC'],
+        'content.post.admin': ['ADMIN'],
+      })
+
+      getSession.mockReturnValueOnce({
+        roles: ['ADMIN'],
+        id: '1'
+      })
+
+      const response = await fetch(urlToBeUsed.href)
+      const jsonResult = await response.json()
+
+      expect(response.status).toBe(200)
+      let someIsDraft = false
+      for (var i = 0; i < jsonResult.results.length; i++) {
+        if (jsonResult.results[i].draft) {
+          someIsDraft = true
+        }
+      }
+
+      expect(someIsDraft).toBe(true)
+    })
+
+    test('Should all the items for own user', async () => {
+      const urlToBeUsed = new URL(url)
+      const params = { type: 'post', from: 0, limit: 150, author: '2' }
+
+      Object.keys(params).forEach((key) =>
+        urlToBeUsed.searchParams.append(key, params[key])
+      )
+
+      getPermissions.mockReturnValueOnce({
+        'content.post.read': ['PUBLIC'],
+        'content.post.admin': ['ADMIN'],
+      })
+
+      getSession.mockReturnValueOnce({
+        roles: ['USER'],
+        id: '2'
+      })
+
+      const response = await fetch(urlToBeUsed.href)
+      const jsonResult = await response.json()
+      
+      expect(response.status).toBe(200)
+      let someIsDraft = false
+      for (var i = 0; i < jsonResult.results.length; i++) {
+        if (jsonResult.results[i].draft) {
+          someIsDraft = true
+        }
+      }
+
+      expect(someIsDraft).toBe(true)
     })
   })
 })

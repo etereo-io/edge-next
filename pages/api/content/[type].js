@@ -17,7 +17,20 @@ const getContent = (filterParams, searchParams, paginationParams) => (
 ) => {
   const type = req.contentType
 
-  findContent(type.slug, filterParams, searchParams, paginationParams)
+  const increasedFilters = {
+    ...filterParams,
+  }
+
+  const isAdmin = req.user && req.user.roles.indexOf('ADMIN') !== -1
+  const isOwner = req.user && filterParams.author && req.user.id === filterParams.author
+
+
+  if (type.publishing.draftMode && (!isAdmin && !isOwner) ) {
+    // Filter by draft, except for admins and owners
+    increasedFilters.draft = false
+  }
+
+  findContent(type.slug, increasedFilters, searchParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })

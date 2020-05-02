@@ -52,6 +52,10 @@ export default function (props) {
 
   return (
     <div className={`${styles.contentSummaryView} ${props.className}`}>
+      {props.content.draft && <div className={styles.status}>
+        Draft - Not published
+        </div>}
+      
       <div className="content-summary-content">
         {props.type.fields
           .filter((f) => !!f.title)

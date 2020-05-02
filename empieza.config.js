@@ -14,6 +14,7 @@ for (var i = 0; i < 100; i++) {
     slug: 'example-post-' + i,
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
     description: 'This is an example description',
+    draft: Math.random() > 0.5 ? true: false,
     tags: [
       {
         slug: 'software',
@@ -99,15 +100,12 @@ export const getConfig = (defaultOptions) => {
     permissions: {
       read: [publicRole],
       create: [adminRole, userRole],
-      update: [adminRole, userRole],
+      update: [adminRole],
       delete: [adminRole],
       admin: [adminRole],
-      approval: [adminRole],
-      report: [userRole],
     },
 
     publishing: {
-      needsApproval: true,
       draftMode: true,
     },
 
@@ -116,7 +114,7 @@ export const getConfig = (defaultOptions) => {
       permissions: {
         read: [publicRole],
         create: [userRole, adminRole],
-        update: [userRole, adminRole],
+        update: [adminRole],
         delete: [adminRole],
         admin: [adminRole],
       },
@@ -153,18 +151,6 @@ export const getConfig = (defaultOptions) => {
         type: 'tags',
         label: 'Tags',
         placeholder: 'Tags',
-      },
-      {
-        name: 'draft',
-        type: 'radio',
-        label: 'Draft',
-        options: [{
-          label: 'true',
-          value: true
-        }, {
-          label: 'false',
-          value: false
-        }],
       }
     ],
   }
@@ -178,6 +164,10 @@ export const getConfig = (defaultOptions) => {
     slug: 'picture',
 
     slugGeneration: ['userId', 'createdAt'],
+
+    publishing: {
+      draftMode: false
+    },
 
     permissions: {
       read: [userRole, adminRole],
@@ -440,13 +430,13 @@ export const getConfig = (defaultOptions) => {
 
   return {
     // Title for the site
-    title: 'The Demo Site',
+    title: 'Nucleo - Edge',
 
     // Meta description
-    description: 'A super NextJS demo site starter pro pack super sexy',
+    description: 'A dynamic site that lives on the edge',
 
     // Home slogan
-    slogan: 'A site that is dynamic',
+    slogan: 'Nucleo - Edge / A dynamic site that lives on the edge',
 
     storage: {
       type: 'firestore',

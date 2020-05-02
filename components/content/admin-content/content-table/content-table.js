@@ -64,7 +64,12 @@ const ListItem = (props) => {
 
         return <TableCellBody>{content}</TableCellBody>
       })}
-      <TableCellBody>0 Comments</TableCellBody>
+      {props.type.publishing.draftMode && (
+        <TableCellBody>{props.item.draft ? 'DRAFT': '-'}</TableCellBody>
+      )}
+      {props.type.comments.enabled && (
+        < TableCellBody>0 Comments</TableCellBody>
+      )}
       <TableCellBody>0 times</TableCellBody>
       <TableCellBody>
         {!success && (
@@ -136,7 +141,14 @@ export default function (props) {
     return <TableCellHeader>{field.name}</TableCellHeader>
   })
 
-  headerCells.push(<TableCellHeader>Comments</TableCellHeader>)
+  if (props.type.publishing.draftMode) {
+    headerCells.push(<TableCellHeader>Draft</TableCellHeader>)
+  }
+
+  if (props.type.comments.enabled) {
+    headerCells.push(<TableCellHeader>Comments</TableCellHeader>)
+  }
+
   headerCells.push(<TableCellHeader>Reported</TableCellHeader>)
   headerCells.push(<TableCellHeader>Actions</TableCellHeader>)
 

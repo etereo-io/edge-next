@@ -108,7 +108,7 @@ const Landing = (props) => {
         <div className="use-case">
           <h3>API</h3>
           <p>
-            Need a quick API and admin dashboard for your product? Use **Empieza**
+            Need a quick API and admin dashboard for your product? Use <b>Edge</b>
           </p>
         </div>
       </div>
@@ -120,12 +120,12 @@ const Landing = (props) => {
         padding-top: 100px;
         padding-bottom: 100px;
         background:
-          radial-gradient(black 3px, transparent 4px),
-          radial-gradient(black 3px, transparent 4px),
-          linear-gradient(#fff 4px, transparent 0),
-          linear-gradient(45deg, transparent 74px, transparent 75px, #a4a4a4 75px, #a4a4a4 76px, transparent 77px, transparent 109px),
-          linear-gradient(-45deg, transparent 75px, transparent 76px, #a4a4a4 76px, #a4a4a4 77px, transparent 78px, transparent 109px),
-          #fff;
+          radial-gradient(var(--empz-foreground) 3px, var(--empz-background) 4px),
+          radial-gradient(var(--empz-foreground) 3px, var(--empz-background) 4px),
+          linear-gradient(var(--empz-background) 4px, var(--empz-background) 0),
+          linear-gradient(45deg, var(--empz-background) 74px, var(--empz-background) 75px, var(--empz-foreground) 75px, var(--empz-foreground) 76px, var(--empz-background) 77px, var(--empz-background) 109px),
+          linear-gradient(-45deg, var(--empz-background) 75px, var(--empz-background) 76px, var(--empz-foreground) 76px, var(--empz-foreground) 77px, var(--empz-background) 78px, var(--empz-background) 109px),
+          var(--empz-background);
           background-size: 109px 109px, 109px 109px,100% 6px, 109px 109px, 109px 109px;
           background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
       }
@@ -142,6 +142,7 @@ const Landing = (props) => {
         letter-spacing: -.02em;
         line-height: 130%;
         margin-bottom: 30px;
+        color: var(--empz-foreground);
       }
 
       .separator {
