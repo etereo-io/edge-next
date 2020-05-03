@@ -568,8 +568,8 @@ export const getConfig = (defaultOptions) => {
           type: 'textarea',
           label: 'Description',
           required: false,
-          min: 60,
-          max: 300,
+          minlength: 60,
+          maxlength: 300,
           roles: []
         }, {
           name: 'gender',

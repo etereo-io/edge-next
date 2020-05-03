@@ -3,10 +3,14 @@ title: Documentation
 description: "Empieza Documentation"
 ---
 
+# Documentation
+
 - [Documentation](#documentation)
   - [Features](#features)
   - [Static Pages](#static-pages)
   - [Content Types](#content-types)
+    - [Fields](#fields)
+    - [Options for each field type](#options-for-each-field-type)
   - [API](#api)
     - [Users](#users)
     - [Content](#content)
@@ -26,34 +30,234 @@ description: "Empieza Documentation"
   - [Deploy your own](#deploy-your-own)
     - [Deploying on Vercel](#deploying-on-vercel)
 
-# Documentation
 
 
 ## Features
 
+- Dynamic content types
+  - Easily configurable
+  - Dynamic forms
+  - Permissions limited by roles
 - Dynamic Admin dashboard
   - Administration of users
   - Administration of content
   - Administration of comments
 - Dynamic API
-  - REST API for content, users, comments, users-activity
+  - Automatic API:
+    - content
+    - users
+    - comments
+    - user activity
+- Social Providers
+  - Integration with different social providers for authentication
 - Static Content Generation
   - Write Markdown and get static HTML generated pages for high performance
-- Themes (Dark, Light, Robot)
+- Multiple UI Themes (Dark, Light, Robot, Kawai)
   - Multi Theme support, cookie based
 - Login with [Passport.js](http://www.passportjs.org)
 - ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
-- Integrated with Firebase and MongoAtlas
+- Different Databases:
+  - Integrated with Firebase and MongoDB
+- Emails and email templates
+  - Verify email and notify email implementations
+- Multiple components
+  - Checkout [the components page](/components)
+- Easy to deploy
+  - Deploy on platforms like Vercel in minutes
  
 ## Static Pages
 
-SSG (Static Site Generation) Feature is implemented. In the folder `static-pages` you can find the different static pages the application uses. Pages like **About**, **Privacy Policy**, etc.
+SSG (Static Site Generation) is implemented. 
+In the folder `static-pages` you can find the different markdown pages that are prerendered for fast loading.
+The pages include common use cases like **About**, **Privacy Policy**, **Terms and conditions**.
+
+````markdown
+---
+title: Example page
+description: "Example page description"
+---
+
+# THIS IS A TITLE
+
+Hello, this is a static page, automatically rendered.
+
+````
 
 
 ## Content Types
 Content types may be defined in `empieza.config.js`. You can create as many content types with different definitions and permissions. The API will validate the access to the endpoints based on the permissions you defined.
 
-You can see [the example config file](/empieza.config.js) for more details.
+Content types take the following structure:
+
+```javascript
+const contentType = {
+  // The name for this content type
+  title: 'Blog Posts',
+
+  // The URL for the API and client routes
+  slug: 'blog-posts',
+
+  // How slugs are going to be generated for new content. 
+  // For example "a-new-blog-post-123132132"
+  slugGeneration: ['title', 'createdAt'],
+
+  // Sets of permissions for the API and client sides
+  permissions: {
+    // Who can read the content
+    read: ['PUBLIC'],
+
+    // Who can create content
+    create: ['ADMIN', 'USER'],
+
+    // Who can edit ANY content
+    update: ['ADMIN'],
+
+    // Who can delete ANY content
+    delete: ['ADMIN'],
+
+    // Who can perform all of the above
+    admin: ['ADMIN']
+  },
+
+  // Publishing and SEO settings
+  publishing: {
+
+    // Allow content owners to mark the content as draft and avoid visibility
+    draftMode: true,
+
+    // Which field will be used for SEO and linking
+    title: 'title'
+  },
+
+  // View type display on the users profile and content pages (grid or list)
+  display: 'grid',
+
+  comments: {
+    // Enable or disable comments
+    enabled: true,
+
+    permissions: {
+      // Who can read the comments
+      read: ['PUBLIC'],
+
+      // Who can create comments
+      create: ['ADMIN', 'USER'],
+
+      // Who can edit ANY comments
+      update: ['ADMIN'],
+
+      // Who can delete ANY comments
+      delete: ['ADMIN'],
+
+      // Who can perform all of the above
+      admin: ['ADMIN']
+    },
+  },
+
+
+  // A list of fields, see below for more information
+  fields: [{
+    // Required values
+    name: 'title',
+    type: 'text',
+    label: 'Post title',
+
+    // Optional values
+    placeholder: 'Type your title',
+    minlength: 10,
+    maxlength: 200,
+    required: true,
+    pattern="[A-Za-z]{3}"
+  }]
+}
+```
+
+
+### Fields
+
+For client side different fields are automaticaly generated based on the content type configuration. Note: for API request you can add any field type.
+
+There are different fields that can be configured with some standard attributes and some non-standard.
+
+All fields include shared otions:
+- label (field label)
+- name (field name)
+- type ('text', 'number', 'radio'...)
+- roles
+  - Array, list of roles that can SEE this field when editing the content and when reading it
+- validation:
+  - Optional validarion function in the form of `(value) => { return true or false } `
+
+Example: 
+
+```javascript
+const contentType = {
+  fields: [{
+    label: 'My field',
+    type: 'text',
+    required: true,
+    name: 'myfield'
+  }]
+}
+```
+
+### Options for each field type
+
+- text 
+  - Available options:
+    - minlength
+    - maxlength
+    - required
+    - pattern
+    - defaultValue
+- number
+  - Available options:
+    - min
+    - max
+    - required
+    - defaultValue
+- select
+  - Available options:
+    - required
+    - defaultValue
+    - options
+      - ```[{label: 'a', value: 'a'}] ```
+- boolean (displayed as a toggle)
+  - Available options:
+    - defaultValue
+- textarea
+  - Available options:
+    - required
+    - minlength
+    - maxlength
+    - defaultValue
+- tags
+  - Available options:
+    - required
+    - defaultValue
+    - options *
+- img (image)
+  - Available options:
+    - required
+    - multiple (boolean)
+    - accept (defaults to='jpg,png,jpeg,webp,.gif')
+- file
+  - Available options:
+    - required
+    - multiple (boolean)
+    - accept
+    - capture
+- radio
+  - Available options:
+    - required
+    - options
+      - ```[{label: 'a', value: 'a'}] ```
+    - defaultValue
+
+
+You can see the example configuration file for more details about content types and fields.
+
+In the [components page](/components) you will find more implemented dynamic fields.
 
 ## API
 
