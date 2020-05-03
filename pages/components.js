@@ -20,6 +20,8 @@ import SocialShare from '../components/generic/social-share/social-share'
 import TagsInput from '../components/generic/tags-input/tags-input'
 import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 import Toggle from '../components/generic/toggle/toggle'
+import VideoRecorder from '../components/generic/video-recorder/video-recorder-wrapper'
+import Upload from '../components/generic/upload/upload'
 
 const Components = () => {
   const demoContent = {
@@ -202,6 +204,12 @@ const Components = () => {
             </li>
             <li>
               <a href="#table">Table</a>
+            </li>
+            <li>
+              <a href="#videorecorder">Video Recorder</a>
+            </li>
+            <li>
+              <a href="#upload">Upload</a>
             </li>
             <li>
               <a href="#map">Map</a>
@@ -795,6 +803,34 @@ const links = [{
     </TableCellBody>
   </TableRowBody>
 </Table>
+  `}</pre>
+          </div>
+
+          <div id="videorecorder" className="component">
+            <h3>Video Recorder</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <VideoRecorder />
+              </div>
+
+              
+            </div>
+            <pre>{`
+<VideoRecorder />
+  `}</pre>
+          </div>
+
+          <div id="upload" className="component">
+            <h3>upload</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Upload />
+              </div>
+
+              
+            </div>
+            <pre>{`
+<Upload />
   `}</pre>
           </div>
         
