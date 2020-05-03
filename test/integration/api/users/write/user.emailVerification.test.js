@@ -1,16 +1,16 @@
-import { findOneUser, findUser, updateOneUser } from '../../../../lib/api/users/user'
+import { findOneUser, findUser, updateOneUser } from '../../../../../lib/api/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import handlerAuth from '../../../../pages/api/auth/[...action]'
+import handlerAuth from '../../../../../pages/api/auth/[...action]'
 import http from 'http'
 import listen from 'test-listen'
-import { onUserAdded } from '../../../../lib/api/hooks/user.hooks'
-import { sendVerifyEmail } from '../../../../lib/email'
+import { onUserAdded } from '../../../../../lib/api/hooks/user.hooks'
+import { sendVerifyEmail } from '../../../../../lib/email'
 
-jest.mock('../../../../lib/email')
-jest.mock('../../../../lib/api/users/user')
-jest.mock('../../../../empieza.config', () => ({
+jest.mock('../../../../../lib/email')
+jest.mock('../../../../../lib/api/users/user')
+jest.mock('../../../../../empieza.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
       title: 'A test',

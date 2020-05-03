@@ -1,16 +1,16 @@
-import { findOneUser, updateOneUser } from '../../../../lib/api/users/user'
+import { findOneUser, updateOneUser } from '../../../../../lib/api/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import getPermissions from '../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../lib/api/auth/iron'
-import handlerUser from '../../../../pages/api/users/[...slug]'
+import getPermissions from '../../../../../lib/permissions/get-permissions'
+import { getSession } from '../../../../../lib/api/auth/iron'
+import handlerUser from '../../../../../pages/api/users/[...slug]'
 import http from 'http'
 import listen from 'test-listen'
 
-jest.mock('../../../../lib/api/auth/iron')
-jest.mock('../../../../lib/permissions/get-permissions')
-jest.mock('../../../../lib/api/users/user')
+jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/permissions/get-permissions')
+jest.mock('../../../../../lib/api/users/user')
 
 const demoUser = {
   username: 'demo',

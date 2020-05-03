@@ -1,4 +1,4 @@
-import Index from '../../../components/layout/header/header'
+import Index from '../../../../components/layout/header/header'
 import React from 'react'
 import { render } from '@testing-library/react'
 

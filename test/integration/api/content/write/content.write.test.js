@@ -3,14 +3,14 @@
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import getPermissions from '../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../lib/api/auth/iron'
-import handler from '../../../../pages/api/content/[type]'
+import getPermissions from '../../../../../lib/permissions/get-permissions'
+import { getSession } from '../../../../../lib/api/auth/iron'
+import handler from '../../../../../pages/api/content/[type]'
 import http from 'http'
 import listen from 'test-listen'
 
-jest.mock('../../../../lib/api/auth/iron')
-jest.mock('../../../../lib/permissions/get-permissions')
+jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/permissions/get-permissions')
 
 describe('Integrations tests for content creation endpoint', () => {
   let server
@@ -39,6 +39,45 @@ describe('Integrations tests for content creation endpoint', () => {
     expect(response.status).toBe(405)
   })
 
+  test('Should return 400 if content validation fails', async () => {
+    const urlToBeUsed = new URL(url)
+    const params = { type: 'post' }
+
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
+
+    getPermissions.mockReturnValueOnce({
+      'content.post.create': ['USER'],
+      'content.post.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER'],
+      id: 'test-id',
+    })
+
+    const newPost = {
+      title: 'tes',
+      description: 'test test  test test test test test test test test test test test test test test ',
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    })
+
+    const jsonResult = await response.json()
+
+    expect(response.status).toBe(400)
+    expect(jsonResult).toMatchObject({
+      error: 'Invalid data: title length is less than 10'
+    })
+  })
+
   test('Should return content details given a valid request', async () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
@@ -58,8 +97,8 @@ describe('Integrations tests for content creation endpoint', () => {
     })
 
     const newPost = {
-      title: 'test',
-      description: 'Wea body test',
+      title: 'test test test test test test ',
+      description: 'test test  test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -104,7 +143,7 @@ describe('Integrations tests for content creation endpoint', () => {
 
     const newPost = {
       title: 'test',
-      description: 'Wea body test',
+      description: 'test test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -136,8 +175,8 @@ describe('Integrations tests for content creation endpoint', () => {
     )
 
     const newPost = {
-      title: 'test',
-      description: 'Wea body test',
+      title: 'test test test test test test test test test ',
+      description: 'test test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -169,7 +208,8 @@ describe('Integrations tests for content creation endpoint', () => {
       })
 
       const data = new URLSearchParams()
-      data.append('title', 'the title')
+      data.append('title', 'the title test  test  test  test  test  test ')
+      data.append('description', ' test  test  test  test  test  test  test  test  test  test  test ')
       data.append('tags', 'tag 1')
       data.append('tags', 'tag 2')
       data.append('tags', 'tag 3')
@@ -186,10 +226,10 @@ describe('Integrations tests for content creation endpoint', () => {
       const jsonResult = await response.json()
 
       expect(jsonResult).toMatchObject({
-        title: 'the title',
+        title: expect.any(String),
         type: 'post',
         slug: expect.any(String),
-        description: null,
+        description: expect.any(String),
         tags: ['tag 1', 'tag 2', 'tag 3'],
         image: null,
         author: 'a-user-id',

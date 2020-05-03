@@ -185,6 +185,8 @@ All fields include shared otions:
 - type ('text', 'number', 'radio'...)
 - roles
   - Array, list of roles that can SEE this field when editing the content and when reading it
+- private
+  - Leaves the field only for ADMINS and content owners
 - validation:
   - Optional validarion function in the form of `(value) => { return true or false } `
 
@@ -209,12 +211,14 @@ const contentType = {
     - maxlength
     - required
     - pattern
+    - placeholder
     - defaultValue
 - number
   - Available options:
     - min
     - max
     - required
+    - placeholder
     - defaultValue
 - select
   - Available options:

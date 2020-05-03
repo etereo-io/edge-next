@@ -111,7 +111,7 @@ export default function (props) {
 
   return (
     <>
-      <div className="tags-input">
+      <div className="tags-input" data-testid={props['data-testid']}>
         <span className="categories">
           {tags.map((t, i) => (
             <Tag key={t.slug} tag={t} onClickRemove={() => onRemoveTag(i)} />

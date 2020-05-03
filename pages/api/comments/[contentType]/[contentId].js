@@ -35,7 +35,7 @@ const getComments = (filterParams, searchParams, paginationParams) => (
     })
     .catch((err) => {
       res.status(500).json({
-        err: 'Error while loading content ' + err.message,
+        error: 'Error while loading content ' + err.message,
       })
     })
 }
@@ -97,13 +97,13 @@ const createComment = (req, res) => {
         })
         .catch((err) => {
           res.status(500).json({
-            err: 'Error while saving content ' + err.message,
+            error: 'Error while saving content ' + err.message,
           })
         })
     })
     .catch((err) => {
       res.status(400).json({
-        err: 'Invalid data: ' + err,
+        error: 'Invalid data: ' + err,
       })
     })
 }

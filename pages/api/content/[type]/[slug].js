@@ -84,13 +84,13 @@ const updateContent = (req, res) => {
         })
         .catch((err) => {
           res.status(500).json({
-            err: 'Error while saving content ' + err.message,
+            error: 'Error while saving content ' + err.message,
           })
         })
     })
     .catch((err) => {
       res.status(400).json({
-        err: 'Invalid data: ' + err.message,
+        error: 'Invalid data: ' + err.message,
       })
     })
 }

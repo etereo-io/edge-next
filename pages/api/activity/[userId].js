@@ -43,7 +43,7 @@ const getActivities = (filterParams, searchParams, paginationParams) => (
     })
     .catch((err) => {
       res.status(500).json({
-        err: 'Error while loading activities ' + err.message,
+        error: 'Error while loading activities ' + err.message,
       })
     })
 }

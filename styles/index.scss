@@ -304,6 +304,10 @@ select {
     border-color: var(--empz-foreground);
     outline: none;
   }
+
+  &:invalid {
+    border-color: var(--empz-error);
+  }
 }
 
 textarea {

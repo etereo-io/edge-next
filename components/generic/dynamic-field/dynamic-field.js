@@ -1,3 +1,4 @@
+import { FIELDS } from '../../../lib/config/config-constants'
 import TagsField from '../tags-input/tags-input'
 import Toggle from '../toggle/toggle'
 
@@ -8,7 +9,11 @@ function InputText(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      data-testid={props['data-testid']}
       required={!!props.field.required}
+      minlength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
+      maxlength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
+      pattern={props.field.pattern ? props.field.pattern: null}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
   )
@@ -22,6 +27,9 @@ function InputNumber(props) {
       placeholder={props.field.placeholder}
       defaultValue={props.value}
       required={!!props.field.required}
+      data-testid={props['data-testid']}
+      min={typeof props.field.min !== 'undefined' ? props.field.min: null}
+      max={typeof props.field.max !== 'undefined' ? props.field.max: null}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
   )
@@ -31,12 +39,13 @@ function InputImage(props) {
   return (
     <input
       type="file"
-      accept="image/png, image/jpeg"
+      accept={props.field.accept ? props.field.accept : 'image/png, image/jpeg'}
       name={props.field.name}
       required={!!props.field.required}
       placeholder={props.field.placeholder}
+      multiple={!!props.field.multiple}
+      data-testid={props['data-testid']}
       onChange={(ev) => props.onChange(ev.target.value)}
-      // defaultValue={props.value}
     />
   )
 }
@@ -49,8 +58,10 @@ function InputFile(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       required={!!props.field.required}
+      multiple={!!props.field.multiple}
+      capture={props.field.capture ? props.field.capture: null}
+      data-testid={props['data-testid']}
       onChange={(ev) => props.onChange(ev.target.value)}
-      //       defaultValue={props.value}
     />
   )
 }
@@ -60,6 +71,7 @@ function InputTags(props) {
     <TagsField
       placeholder={props.field.placeholder}
       name={props.field.name}
+      data-testid={props['data-testid']}
       onChange={(val) => props.onChange(val)}
     />
   )
@@ -71,7 +83,10 @@ function TextArea(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      data-testid={props['data-testid']}
       required={!!props.field.required}
+      minlength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
+      maxlength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
       onChange={(ev) => props.onChange(ev.target.value)}
     ></textarea>
   )
@@ -79,72 +94,79 @@ function TextArea(props) {
 
 function Field(props) {
   const getInput = (field) => {
+    const datatestId = `${field.type}-${field.name}`
     switch (field.type) {
-      case 'textarea':
+      case FIELDS.TEXTAREA:
         return (
           <TextArea
             field={field}
             value={props.value}
+            data-testid={datatestId}
             onChange={props.onChange}
           />
         )
 
-      case 'img':
+      case FIELDS.IMAGE:
         return (
           <InputImage
             field={field}
             value={props.value}
+            data-testid={datatestId}
             onChange={props.onChange}
           />
         )
 
-      case 'number':
+      case FIELDS.NUMBER:
         return (
           <InputNumber
             field={field}
             value={props.value}
+            data-testid={datatestId}
             onChange={props.onChange}
           />
         )
 
-      case 'toggle':
+      case FIELDS.BOOLEAN:
         return (
           <Toggle
             value={props.value}
+            data-testid={datatestId}
             onChange={props.onChange}
           />
         )
 
-      case 'file':
+      case FIELDS.FILE:
         return (
           <InputFile
             field={field}
             value={props.value}
+            data-testid={datatestId}
             onChange={props.onChange}
           />
         )
 
-      case 'tags':
+      case FIELDS.TAGS:
         return (
           <InputTags
             field={field}
             value={props.value}
+            data-testid={datatestId}
             onChange={props.onChange}
           />
         )
 
-      case 'select':
+      case FIELDS.SELECT:
           return (
             <div className="input-select">
-              <select name={field.name} onChange={props.onChange} value={props.value}>
+              <select data-testid={datatestId} name={field.name} onChange={props.onChange} value={props.value}>
                 {field.options.map(o => <option value={o.value}>{o.label}</option>)}
               </select>
             </div>
           )
 
-      case 'radio':
+      case FIELDS.RADIO:
         return (
-          <div className="input-radio-group">
+          <div className="input-radio-group" data-testid={datatestId}>
               
               {field.options.map(o => {
                 return (
@@ -162,9 +184,9 @@ function Field(props) {
             </div>
         )
       
-      case 'json':
+      case FIELDS.JSON:
         return (
-          <textarea name={field.name} onChange={props.onChange} value={JSON.stringify(props.value)}>
+          <textarea name={field.name} onChange={props.onChange} value={JSON.stringify(props.value)} data-testid={datatestId}>
             
           </textarea>
           )
@@ -174,6 +196,7 @@ function Field(props) {
           <InputText
             field={field}
             value={props.value}
+            data-testid={datatestId}
             onChange={props.onChange}
           />
         )

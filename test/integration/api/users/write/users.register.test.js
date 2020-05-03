@@ -13,14 +13,14 @@
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import getPermissions from '../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../lib/api/auth/iron'
-import handler from '../../../../pages/api/users'
+import getPermissions from '../../../../../lib/permissions/get-permissions'
+import { getSession } from '../../../../../lib/api/auth/iron'
+import handler from '../../../../../pages/api/users'
 import http from 'http'
 import listen from 'test-listen'
 
-jest.mock('../../../../lib/api/auth/iron')
-jest.mock('../../../../lib/permissions/get-permissions')
+jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/permissions/get-permissions')
 
 describe('Integrations tests for users creation endpoint', () => {
   let server

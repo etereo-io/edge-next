@@ -141,12 +141,16 @@ export const getConfig = (defaultOptions) => {
         type: 'text',
         label: 'Title',
         placeholder: 'Title',
+        minlength: 10,
+        maxlength: 150
       },
       {
         name: 'description',
         type: 'textarea',
         label: 'Description',
         placeholder: 'Description',
+        minlength: 60,
+        maxlength: 2000
       },
       {
         name: 'image',
@@ -420,12 +424,16 @@ export const getConfig = (defaultOptions) => {
         type: 'text',
         label: 'Title',
         placeholder: 'Title',
+        minlength: 10,
+        maxlength: 200
       },
       {
         name: 'description',
         type: 'textarea',
         label: 'Description',
         placeholder: 'Description',
+        minlength: 10,
+        maxlength: 2000
       },
       {
         name: 'image',
@@ -439,18 +447,22 @@ export const getConfig = (defaultOptions) => {
         type: 'text',
         label: 'Stock Number',
         placeholder: 'SKU',
+        maxlength: 200
       },
       {
         name: 'price',
         type: 'number',
         label: 'Price',
         placeholder: 'Price',
+        min: 0,
+        max: 100000
       },
       {
         name: 'stockamount',
         type: 'number',
         label: 'Stock Amount',
         placeholder: 'Stock Amount',
+        private: true
       },
     ],
   }
