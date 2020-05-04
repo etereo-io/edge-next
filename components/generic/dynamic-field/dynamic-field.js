@@ -71,6 +71,7 @@ function InputTags(props) {
     <TagsField
       placeholder={props.field.placeholder}
       name={props.field.name}
+      value={props.value}
       data-testid={props['data-testid']}
       onChange={(val) => props.onChange(val)}
     />

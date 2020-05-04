@@ -89,6 +89,7 @@ const Profile = (props) => {
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 60px;
+            align-items: center;
           }
 
           .name {
@@ -126,15 +127,15 @@ const Profile = (props) => {
           .content-container {
             display: flex;
             flex-wrap: wrap;
-            background: var(--accents-3);
+            background: var(--accents-2);
             border-top: var(--light-border);
             margin-top: var(--empz-gap-double);
             padding: var(--empz-gap);
           }
 
-          @media (max-width: 600px) {
+          @media (max-width: 900px) {
             .content-container {
-              flex-direction: column;
+              display: block;
               padding: 0;
               margin-top: var(--empz-gap);
             }

@@ -63,7 +63,10 @@ export function fillContentWithDefaultData(contentType, content, user) {
         (prev, next) => prev + ' ' + (next !== 'userId' ? newContent[next] : user.id),
         ''
       )
-    )
+    , {
+      lower: true, 
+      strict: true,  
+    })
 
     const extraFields = {
       slug: slug,
@@ -75,9 +78,10 @@ export function fillContentWithDefaultData(contentType, content, user) {
   }
 }
 
-const createContent = (req, res) => {
-  const type = req.contentType
 
+const createContent = async (req, res) => {
+
+  const type = req.contentType
   const content = req.body
 
   contentValidations(type, content)
@@ -156,8 +160,9 @@ export default async (req, res) => {
     })
   }
 
+  
   methods(req, res, {
     get: getContent(filterParams, searchParams, paginationParams),
-    post: createContent,
+    post: createContent
   })
 }

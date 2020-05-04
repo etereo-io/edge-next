@@ -8,6 +8,7 @@ import { getContentTypeDefinition } from '../../../lib/config'
 
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { useEffect, useState } from 'react'
 
 function LoadingView() {
   return <h1>Loading...</h1>
@@ -20,35 +21,37 @@ const EditContent = () => {
   } = router
 
   const contentType = getContentTypeDefinition(type)
-
+  
   // Load data
   const { data, error } = useSWR(type && slug ? API.content[type] + '/' + slug: null, fetch)
 
-  const finishedLoadingData = Boolean(data) || Boolean(error)
-  
   const {available} = usePermission([`content.${type}.update`, `content.${type}.admin`], '/404', null, (user) => {
     return data && data.author === user.id
-  }, data)
+  }, (data || error))
   
+
+  const [content, setContent] = useState(null)
 
   const onSave = (newItem) => {
-    // Router.go to /content/slug/id
+    setContent(newItem)
   }
-
   
-  if (!slug || !type) {
-    return <LoadingView />
-  }
+  useEffect(() => {
+    if (!content) {
+      setContent(data)
+    }
+  }, [data])
 
   return (
     <>
       
     <Layout title="Edit content">
-      <div className="edit-page">
-        <h1 >Edit: {data ? data.title: null}</h1>
+      {slug && type && <div className="edit-page">
+        <h1 >Editing: {data ? data.title: null}</h1>
 
         {available && <ContentForm type={contentType} onSave={onSave} content={data} />}
-      </div>
+      </div>}
+      {(!slug || !type) && <LoadingView /> }
     </Layout>
       
     <style jsx>{

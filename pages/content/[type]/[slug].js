@@ -8,7 +8,6 @@ import { getContentTypeDefinition } from '../../../lib/config'
 import { hasPermissionsForContent } from '../../../lib/api/middlewares'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { usePermission } from '../../../lib/hooks'
-import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 // Get serversideProps is important for SEO, and only available at the pages level
@@ -36,9 +35,13 @@ export async function getServerSideProps({ req, res, query }) {
         type: query.type,
         slug: query.slug,
         canAccess: false,
+        pageTitle: 'Not found'
       },
     }
   }
+
+  const contentTitle = item && contentTypeDefinition.publishing.title ? 
+    item[contentTypeDefinition.publishing.title] : `${contentTypeDefinition.title.en} detail`
 
   return {
     props: {
@@ -46,6 +49,7 @@ export async function getServerSideProps({ req, res, query }) {
       type: query.type,
       slug: query.slug,
       canAccess: true,
+      pageTitle: contentTitle,
       user: req.user || {},
     },
   }
@@ -68,7 +72,7 @@ const ContentPage = (props) => {
   })
 
   return (
-    <Layout title="Content">
+    <Layout title={props.pageTitle}>
       {!props.canAccess && <LoadingView />}
       {props.canAccess && !props.data && (
         <div className="nothing">Not found</div>

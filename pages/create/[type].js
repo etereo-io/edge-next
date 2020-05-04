@@ -3,6 +3,7 @@ import Layout from '../../components/layout/normal/layout'
 import { getContentTypeDefinition } from '../../lib/config'
 import { usePermission } from '../../lib/hooks'
 import { useRouter } from 'next/router'
+import { useState, useEffect } from 'react'
 
 const CreateContent = () => {
   const router = useRouter()
@@ -11,11 +12,29 @@ const CreateContent = () => {
 
   const contentType = getContentTypeDefinition(type)
 
+  const [content, setContent] = useState(null)
+
   const onSave = (newItem) => {
-    
-    router.push(`/edit/${newItem.type}/${newItem.slug}`)
-    // Router.go to /content/type/id
+    setContent(newItem)
+    // router.push(`/edit/${newItem.type}/${newItem.slug}`)
   }
+
+  useEffect(() => {
+    if (contentType && !content) {
+      const defaultState = {
+        draft: false
+      }
+      
+      contentType.fields.forEach((field) => {
+        // Default field value
+        const fieldValue = field.value || field.defaultValue
+        // Content value
+        defaultState[field.name] = fieldValue
+      })
+
+      setContent(defaultState)
+    }
+  }, [contentType])
 
   return (
     <>
@@ -23,7 +42,10 @@ const CreateContent = () => {
       <div className="create-page">
         <h1>Create new {contentType ? contentType.title.en : 'content'}</h1>
 
-        {available && <ContentForm type={contentType} onSave={onSave} />}
+        {available && <ContentForm 
+          content={content}
+          type={contentType} 
+          onSave={onSave} />}
       </div>
     </Layout>
   <style jsx>{`

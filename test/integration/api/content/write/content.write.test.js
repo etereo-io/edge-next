@@ -99,6 +99,13 @@ describe('Integrations tests for content creation endpoint', () => {
     const newPost = {
       title: 'test test test test test test ',
       description: 'test test  test test test test test test test test test test test test test test ',
+      tags: [{
+        label: 'Hello',
+        slug: 'hello'
+      }, {
+        label: 'World',
+        slug: 'world'
+      }]
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -117,7 +124,13 @@ describe('Integrations tests for content creation endpoint', () => {
       type: 'post',
       slug: expect.any(String),
       description: newPost.description,
-      tags: null,
+      tags: [{
+        label: 'Hello',
+        slug: 'hello'
+      }, {
+        label: 'World',
+        slug: 'world'
+      }],
       image: null,
       author: 'test-id',
       id: expect.anything(),
@@ -190,7 +203,7 @@ describe('Integrations tests for content creation endpoint', () => {
     expect(response.status).toBe(200)
   })
 
-  describe('form data', () => {
+  /*describe('form data', () => {
     test('should allow to send data as a form', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post' }
@@ -210,9 +223,7 @@ describe('Integrations tests for content creation endpoint', () => {
       const data = new URLSearchParams()
       data.append('title', 'the title test  test  test  test  test  test ')
       data.append('description', ' test  test  test  test  test  test  test  test  test  test  test ')
-      data.append('tags', 'tag 1')
-      data.append('tags', 'tag 2')
-      data.append('tags', 'tag 3')
+      data.append('tags', JSON.stringify([{ label: 'Hello', slug: 'hello'}, { label: 'World', slug: 'world'}]))
 
       const response = await fetch(urlToBeUsed.href, {
         method: 'POST',
@@ -230,11 +241,17 @@ describe('Integrations tests for content creation endpoint', () => {
         type: 'post',
         slug: expect.any(String),
         description: expect.any(String),
-        tags: ['tag 1', 'tag 2', 'tag 3'],
+        tags:  [{
+          label: 'Hello',
+          slug: 'hello'
+        }, {
+          label: 'World',
+          slug: 'world'
+        }],
         image: null,
         author: 'a-user-id',
         id: expect.anything(),
       })
     })
-  })
+  })*/
 })

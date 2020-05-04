@@ -36,7 +36,6 @@ const UserSettings = (props) => {
     )
   }
 
-
   // Generic field change
   const handleFieldProfileChange = (name) => (value) => {
     

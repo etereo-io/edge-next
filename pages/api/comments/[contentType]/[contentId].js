@@ -59,7 +59,10 @@ export function fillCommentWithDefaultData(
       message: comment.message,
     }
 
-    const slug = slugify(newComment.createdAt + ' ' + newComment.author)
+    const slug = slugify(newComment.createdAt + ' ' + newComment.author, {
+      lower: true, 
+      strict: true,  
+    })
 
     const extraFields = {
       slug: slug,

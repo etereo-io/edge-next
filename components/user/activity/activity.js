@@ -55,7 +55,7 @@ export default function (props) {
                   />
                 </div>
                 <div className="message">
-                  {ac.type} {JSON.stringify(ac.meta)}
+                  {props.user.profile.displayName || props.user.username} {ac.type} {new Date(ac.createdAt).toDateString()}
                 </div>
               </div>
             )
@@ -75,7 +75,7 @@ export default function (props) {
 
         .message {
           width: 60%;
-          word-break: break-all;
+          word-break: break-word;
         }
 
         .loading-message {

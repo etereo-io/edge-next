@@ -66,7 +66,8 @@ const deleteContent = (req, res) => {
   })
 }
 
-const updateContent = (req, res) => {
+const updateContent = async (req, res) => {
+
   const type = req.contentType
 
   const content = req.body

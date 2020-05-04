@@ -4,49 +4,22 @@ import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import DynamicField from'../../../generic/dynamic-field/dynamic-field'
 import Toggle from '../../../generic/toggle/toggle'
-import config from '../../../../lib/config'
-import { defaults } from '@hapi/iron'
 import fetch from '../../../../lib/fetcher'
-import styles from './content-form.module.scss'
+import Link from 'next/link'
 
 export default function (props) {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
-  // Store default state with values from the content or default values
-  const fillState = () => {
-    const defaultState = {}
-    props.type.fields.forEach((field) => {
-      // Default field value
-      const fieldValue = field.value
-  
-      // Content value
-      defaultState[field.name] = props.content && props.content[field.name]
-        ? props.content[field.name]
-        : fieldValue
-    })
-
-    if (props.type.publishing.draftMode) {
-      if (props.content) {
-        defaultState.draft = typeof props.content.draft !== 'undefined' ? props.content.draft: false
-      } else {
-        defaultState.draft = false
-      }
-    }
-    
-    setState(defaultState)
-  }
-
   const [state, setState] = useState({})
-
+  
   useEffect(() => {
-    fillState()
+    setState(props.content)
   }, [props.content, props.type])
 
   // Generic field change
   const handleFieldChange = (name) => (value) => {
-    console.log(name, value)
     setState({
       ...state,
       [name]: value,
@@ -55,18 +28,15 @@ export default function (props) {
 
   const submitRequest = (data) => {
     const url = `${API.content[props.type.slug]}${
-      props.content ? '/' + props.content.id + '?field=id' : ''
+      props.content.id ? '/' + props.content.id + '?field=id' : ''
     }`
 
     return fetch(url, {
       method: 'post',
-      body: data,
-      /* headers: new Headers({
-        'content-type': 'application/x-www-form-urlencoded; charset=utf-8',
-        'Accept': 'application/json, application/xml, text/plain, text/html, *.*'
-      }),*/
+      body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        //'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
     })
   }
@@ -74,24 +44,33 @@ export default function (props) {
   const onSubmit = (ev) => {
     ev.preventDefault()
 
-    console.log('THe state, st', state)
-
-    const data = new URLSearchParams()
+    /*const data = new URLSearchParams()
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
+
+      const fieldDefinition = props.type.fields.find(t => t.name === key)
+
       // TODO: Do client side validations
       if (typeof fieldValue !== 'undefined') {
-        data.append(key, fieldValue)
+        if (fieldDefinition && fieldDefinition.type === 'tags') {
+          data.append(key, JSON.stringify(fieldValue))
+        } else {
+          data.append(key, fieldValue)
+        }
       }
-    })
+    })*/
 
-    console.log(data)
+    const filteredData = {}
+    const allowedKeys = props.type.fields.map(f => f.name).concat('draft')
+    allowedKeys.map(k => {
+      filteredData[k] = state[k]
+    })
 
     setLoading(true)
     setSuccess(false)
     setError(false)
 
-    submitRequest(data)
+    submitRequest(filteredData)
       .then((result) => {
         console.log(result)
         setLoading(false)
@@ -116,33 +95,50 @@ export default function (props) {
   }
 
   return (
-    <div className={styles.contentForm}>
-      <form name="content-form" onSubmit={onSubmit}>
-        {props.type.publishing.draftMode && <div className="draft input-group">
-          <label>Draft</label>
-          <Toggle value={state['draft']} onChange={handleFieldChange('draft')} />
-          { state.draft && <div>Your content will not be visible</div>}
-        </div>}
-        {/* {JSON.stringify(props.type)} */}
-        {props.type.fields.map((field) => (
-          <DynamicField
-            key={field.name}
-            field={field}
-            value={state[field.name]}
-            onChange={handleFieldChange(field.name)}
-          />
-        ))}
+      <>
+      <div className='contentForm'>
+        <form name="content-form" onSubmit={onSubmit}>
 
-        <div className={styles.actions}>
-          <Button alt={true} type="submit">
-            Save
-          </Button>
-        </div>
-      </form>
+          {props.type.publishing.draftMode && <div className="draft input-group">
+            <label>Draft</label>
+            <Toggle value={state['draft']} onChange={handleFieldChange('draft')} />
+            { state.draft && <div>Your content will not be visible</div>}
+          </div>}
+          
+          {props.type.fields.map((field) => (
+            <DynamicField
+              key={field.name}
+              field={field}
+              value={state[field.name]}
+              onChange={handleFieldChange(field.name)}
+            />
+          ))}
 
-      {loading && <div className="loading">Loading...</div>}
-      {success && <div className="success">Saved</div>}
-      {error && <div className="error">Error saving </div>}
-    </div>
+          <div className='actions'>
+            <Button loading={loading} alt={true} type="submit">
+              Save
+            </Button>
+          </div>
+        </form>
+
+        {success && <div className="success-message">Saved: You can see it <Link href={`/content/${props.type.slug}/${props.content.slug}`}><a title="View content">here</a></Link></div>}
+        {error && <div className="error-message">Error saving </div>}
+      </div>
+      <style jsx>
+        {
+          `
+          .contentForm {
+            background: var(--empz-background);
+            padding: var(--empz-gap);
+            border:var(--light-border);
+          }
+
+          .actions {
+            padding-top: var(--empz-gap);
+          }
+          `
+        }
+      </style>
+    </>
   )
 }

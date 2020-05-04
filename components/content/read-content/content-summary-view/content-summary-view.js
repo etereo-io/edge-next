@@ -4,25 +4,22 @@ import Link from 'next/link'
 import SocialShare from '../../../generic/social-share/social-share'
 import TagsField from '../fields/tags-field/tags-field'
 import { hasPermission } from '../../../../lib/permissions'
-import styles from './content-summary-view.module.scss'
 import { useUser } from '../../../../lib/hooks'
+import {FIELDS } from '../../../../lib/config/config-constants'
 
 function getField(field, value) {
   switch (field.type) {
-    case 'textarea':
-      return <p>{value}</p>
+    case FIELDS.TEXTAREA:
+      return <p style={{ wordBreak: 'break-all'}}>{value}</p>
 
-    case 'img':
+    case FIELDS.IMAGE:
       return value ? <div style={{display: 'flex', justifyContent: 'center'}} ><Image width={500} height={500} srcs={[value]} /> </div>: null
 
-    case 'number':
+    case FIELDS.NUMBER:
       return <p>{value}</p>
 
-    case 'file':
+    case FIELDS.FILE:
       return <p>{value}</p>
-
-    case 'tags':
-      return
 
     default:
       return <p>{value}</p>
@@ -51,8 +48,9 @@ export default function (props) {
 
 
   return (
-    <div className={`${styles.contentSummaryView} ${props.className}`}>
-      {props.content.draft && <div className={styles.status}>
+    <>
+    <div className={`contentSummaryView ${props.className}`}>
+      {props.content.draft && <div className='status'>
         Draft - Not published
         </div>}
       
@@ -61,7 +59,7 @@ export default function (props) {
           .filter((f) => f.name === props.type.publishing.title)
           .map((field) => {
             return (
-              <div className={styles.field} key={field.name}>
+              <div className='field' key={field.name}>
                 {links && (
                   <Link
                     href={`/content/${props.type.slug}/${props.content.slug}`}
@@ -76,10 +74,10 @@ export default function (props) {
             )
           })}
         {props.type.fields
-          .filter((f) => f.name !== props.type.publishing.title && f.type !== 'tags')
+          .filter((f) => f.name !== props.type.publishing.title && f.type !== FIELDS.TAGS)
           .map((field) => {
             return (
-              <div className={styles.field} key={field.name}>
+              <div className='field' key={field.name}>
                 {links && (
                   <Link
                     href={`/content/${props.type.slug}/${props.content.slug}`}
@@ -92,16 +90,16 @@ export default function (props) {
             )
           })}
         {props.type.fields
-          .filter((f) => f.name !== props.type.publishing.title && f.type === 'tags')
+          .filter((f) => f.name !== props.type.publishing.title && f.type === FIELDS.TAGS)
           .map((field) => {
             return (
-              <div className={styles.field} key={field.name}>
+              <div className='field' key={field.name}>
                 <TagsField tags={props.content[field.name]} />
               </div>
             )
           })}
       </div>
-      <div className={styles.bottomActions}>
+      <div className='bottomActions'>
         <SocialShare shareUrl={shareUrl} />
         <DropDown align={'right'}>
           <ul>
@@ -112,5 +110,58 @@ export default function (props) {
         </DropDown>
       </div>
     </div>
+      <style jsx>{
+       `
+      .contentSummaryView {
+        color: var(--empz-foreground);
+        background: var(--empz-background);
+        border: 1px solid var(--accents-2);;
+        padding: var(--empz-gap);
+        border-radius: var(--empz-radius);
+        max-width: 800px;
+        margin: 0 auto;  
+      }
+
+      @media (max-width: 600px) {
+        .contentSummaryView {
+          padding: var(--empz-gap-half);
+        }
+      }
+       
+      a {
+        text-decoration: none;
+        color: var(--empz-link-color);
+      }
+
+      .field {
+        margin: var(--empz-gap);
+      }
+
+      @media (max-width: 600px) {
+        .field {
+          margin: var(--empz-gap-half);
+        }
+      }
+
+      .bottomActions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .status {
+        padding: 5px;
+        font-size: 13px;
+        background: var(--empz-warning);
+        color: var(--empz-background);
+      }
+
+      h1, p {
+        word-break: break-all;
+      }
+       ` 
+      }</style>
+    </>
   )
 }

@@ -141,7 +141,7 @@ export const getConfig = (defaultOptions) => {
         type: 'text',
         label: 'Title',
         placeholder: 'Title',
-        minlength: 10,
+        minlength: 8,
         maxlength: 150
       },
       {
@@ -149,7 +149,7 @@ export const getConfig = (defaultOptions) => {
         type: 'textarea',
         label: 'Description',
         placeholder: 'Description',
-        minlength: 60,
+        minlength: 20,
         maxlength: 2000
       },
       {

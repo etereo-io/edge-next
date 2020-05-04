@@ -388,8 +388,13 @@ select {
 }
 
 .error-message{
-  bottom: 0;
   color: var(--empz-error);
+  font-size: var(--empz-form-small-font);
+  line-height: 2;
+}
+
+.success-message {
+  color: var(--empz-success);
   font-size: var(--empz-form-small-font);
   line-height: 2;
 }

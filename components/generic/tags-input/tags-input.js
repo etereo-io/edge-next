@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import slugify from 'slugify'
 
 const makeNewTag = (val) => {
   return {
     label: val,
-    slug: slugify(val),
+    slug: slugify(val,  {
+      lower: true, 
+      strict: true,  
+    }),
   }
 }
 
@@ -62,7 +65,7 @@ function Tag(props) {
 }
 
 export default function (props) {
-  const defaultTags = props.defaultTags || []
+  const defaultTags = props.defaultValue || []
 
   const [tags, setTags] = useState(defaultTags)
   const [inputValue, setInputValue] = useState('')
@@ -108,6 +111,10 @@ export default function (props) {
       props.onChange(newTags)
     }
   }
+
+  useEffect(() => {
+    setTags(props.value || [])
+  }, [props.value])
 
   return (
     <>
