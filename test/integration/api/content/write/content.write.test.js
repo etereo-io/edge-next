@@ -74,7 +74,7 @@ describe('Integrations tests for content creation endpoint', () => {
 
     expect(response.status).toBe(400)
     expect(jsonResult).toMatchObject({
-      error: 'Invalid data: title length is less than 10'
+      error: 'Invalid data: title length is less than 8'
     })
   })
 
