@@ -19,19 +19,19 @@ const EditContent = () => {
     query: { slug, type },
   } = router
 
-
   const contentType = getContentTypeDefinition(type)
 
   // Load data
-  const { data } = useSWR(type && slug ? API.content[type] + '/' + slug: null, fetch)
-  console.log('THE DATA?', data)
+  const { data, error } = useSWR(type && slug ? API.content[type] + '/' + slug: null, fetch)
+
+  const finishedLoadingData = Boolean(data) || Boolean(error)
   
-  const {available} = usePermission([`content.${type}.update`, `content.${type}.admin`], '/404', (user) => {
+  const {available} = usePermission([`content.${type}.update`, `content.${type}.admin`], '/404', null, (user) => {
     return data && data.author === user.id
-  })
+  }, data)
   
 
-  const onSaved = (newItem) => {
+  const onSave = (newItem) => {
     // Router.go to /content/slug/id
   }
 
@@ -47,7 +47,7 @@ const EditContent = () => {
       <div className="edit-page">
         <h1 >Edit: {data ? data.title: null}</h1>
 
-        {available && <ContentForm type={contentType} onSaved={onSaved} content={data} />}
+        {available && <ContentForm type={contentType} onSave={onSave} content={data} />}
       </div>
     </Layout>
       

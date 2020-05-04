@@ -22,7 +22,7 @@ const UserSettings = (props) => {
 
   const { userId } = router.query
   
-  const permissions = usePermission(userId ? ['user.update', 'user.admin'] : null, '/', (u) => u.id === userId)
+  const permissions = usePermission(userId ? ['user.update', 'user.admin'] : null, '/', null, (u) => u.id === userId, userId)
 
   const { user, finished } = useUser({ userId, redirectTo: '/' })
 
@@ -39,7 +39,7 @@ const UserSettings = (props) => {
 
   // Generic field change
   const handleFieldProfileChange = (name) => (value) => {
-    console.log(name, value)
+    
     setProfileState({
       ...profileState,
       [name]: value,

@@ -51,7 +51,7 @@ const ContentPage = (props) => {
 
   // Will redirect the user out if permission is not granted.
   // For public sites this should be removed
-  usePermission([`content.${props.type}.read`, `content.${props.type}.admin`], '/', null , props.user)
+  usePermission([`content.${props.type}.read`, `content.${props.type}.admin`], '/' , props.user)
 
   return (
     <Layout title="Content">

@@ -569,8 +569,8 @@ export const getConfig = (defaultOptions) => {
 
       providers: {
         instagram: false,
-        google: true,
-        facebook:true
+        google: false,
+        facebook: true
       },
 
       // Fields for the users profiles (in addition to picture and displayName)

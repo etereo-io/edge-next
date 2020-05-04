@@ -1,5 +1,5 @@
+import { facebookStrategy, instagramStrategy, localStrategy } from '../../../lib/api/auth/passport-strategies'
 import { findOneUser, updateOneUser } from '../../../lib/api/users/user'
-import { instagramStrategy, localStrategy } from '../../../lib/api/auth/passport-strategies'
 import { onEmailVerified, onUserLogged } from '../../../lib/api/hooks/user.hooks'
 import {
   removeTokenCookie,
@@ -35,6 +35,31 @@ if (config.user.providers.instagram) {
   passport.use(instagramStrategy())
 }
 
+if (config.user.providers.facebook) {
+  passport.use(facebookStrategy())
+}
+
+
+const logUserIn = async (res, user) => {
+  // session is the payload to save in the token, it may contain basic info about the user
+  const session = { ...user }
+  // The token is a string with the encrypted session
+  const token = await encryptSession(session)
+
+  // Store the activity
+  onUserLogged(session)
+
+  // Add last login information
+  await updateOneUser(user.id, {
+    metadata: {
+      lastLogin: Date.now()
+    }
+  })
+
+  setTokenCookie(res, token)
+}
+
+
 app.use(async (req, res, next) => {
   try {
     // Connect to database
@@ -62,22 +87,15 @@ app.post('/api/auth/login', async (req, res) => {
       return
     }
 
-    // session is the payload to save in the token, it may contain basic info about the user
-    const session = { ...user }
-    // The token is a string with the encrypted session
-    const token = await encryptSession(session)
+    if (user && user.blocked) {
+      res.status(401).json({
+        error: 'User blocked'
+      })
+      return
+    }
 
-    // Store the activity
-    onUserLogged(session)
+    await logUserIn(res, user)
 
-    // Add last login information
-    await updateOneUser(user.id, {
-      metadata: {
-        lastLogin: Date.now()
-      }
-    })
-
-    setTokenCookie(res, token)
     res.status(200).json({ done: true })
   } catch (error) {
     console.error(error)
@@ -143,6 +161,33 @@ app.get('/api/auth/logout', async (req, res) => {
  * OAuth authentication routes. (Sign in)
  */
 
+if (config.user.providers.facebook) {
+  app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
+  app.get('/api/auth/facebook/callback', async (req,res) => {
+    try {
+      const user = await authenticate('facebook', req, res)
+
+      // Block login 
+      if (user && user.blocked) {
+        res.status(401).json({
+          error: 'User blocked'
+        })
+        return
+      }
+  
+      await logUserIn(res, user)
+  
+      res.writeHead(302, { Location: '/'})
+      res.end()
+    } catch (error) {
+      console.error('ERRORRR', error)
+      res.writeHead(302, { Location: '/auth/login'})
+      res.end()
+    }
+
+  });
+}
+
 if (config.user.providers.instagram) {
   app.get('/api/auth/instagram', passport.authenticate('instagram', { scope: ['user_profile', 'user_media'] }));
   app.get('/api/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/auth/login' }), (req, res) => {
@@ -157,10 +202,8 @@ app.get('/api/auth/snapchat', passport.authenticate('snapchat'));
 app.get('/api/auth/snapchat/callback', passport.authenticate('snapchat', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');
 });
-app.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile'] }));
-app.get('/api/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/login' }), (req, res) => {
-  res.redirect(req.session.returnTo || '/');
-});
+
+
 app.get('/api/auth/github', passport.authenticate('github'));
 app.get('/api/auth/github/callback', passport.authenticate('github', { failureRedirect: '/auth/login' }), (req, res) => {
   res.redirect(req.session.returnTo || '/');

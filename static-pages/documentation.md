@@ -405,7 +405,10 @@ const config = {
       google: true,
       instragram: false,
       github: false,
-      linkedin: false
+      linkedin: false,
+      snapchat: false,
+      twitter: false
+      twitch: false
     }
   }
 }

@@ -5,6 +5,7 @@ import Button from '../../../generic/button/button'
 import DynamicField from'../../../generic/dynamic-field/dynamic-field'
 import Toggle from '../../../generic/toggle/toggle'
 import config from '../../../../lib/config'
+import { defaults } from '@hapi/iron'
 import fetch from '../../../../lib/fetcher'
 import styles from './content-form.module.scss'
 
@@ -25,6 +26,14 @@ export default function (props) {
         ? props.content[field.name]
         : fieldValue
     })
+
+    if (props.type.publishing.draftMode) {
+      if (props.content) {
+        defaultState.draft = typeof props.content.draft !== 'undefined' ? props.content.draft: false
+      } else {
+        defaultState.draft = false
+      }
+    }
     
     setState(defaultState)
   }
@@ -33,7 +42,7 @@ export default function (props) {
 
   useEffect(() => {
     fillState()
-  }, [props.content])
+  }, [props.content, props.type])
 
   // Generic field change
   const handleFieldChange = (name) => (value) => {
@@ -71,7 +80,9 @@ export default function (props) {
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
       // TODO: Do client side validations
-      data.append(key, fieldValue)
+      if (typeof fieldValue !== 'undefined') {
+        data.append(key, fieldValue)
+      }
     })
 
     console.log(data)

@@ -22,7 +22,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
         </h2>
         <div className="social-buttons">
           {config.user.providers.facebook && <div className="social-button">
-            <FacebookLoginButton />
+            <Link href="/api/auth/facebook"><a title="Access with Facebook"><FacebookLoginButton /></a></Link>
           </div>}
           {config.user.providers.google && <div className="social-button">
             <GoogleLoginButton />
@@ -34,7 +34,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
             <TwitterLoginButton />
           </div>}
           {config.user.providers.instagram && <div className="social-button">
-            <InstagramLoginButton />
+            <Link href="/api/auth/instagram"><a title="Access with Instagram"><InstagramLoginButton /></a></Link>
           </div>}
         </div>
       </div>

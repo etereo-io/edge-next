@@ -20,11 +20,12 @@ function Tag(props) {
   )
 }
 
-export default function (props) {
+export default function ({tags = []}) {
+  
   return (
     <>
       <div className="tags-field">
-        {props.tags.map((tag) => {
+        {(tags || []).map((tag) => {
           return <Tag tag={tag} key={tag.slug} />
         })}
       </div>

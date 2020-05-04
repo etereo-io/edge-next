@@ -11,7 +11,9 @@ const CreateContent = () => {
 
   const contentType = getContentTypeDefinition(type)
 
-  const onSaved = (newItem) => {
+  const onSave = (newItem) => {
+    
+    router.push(`/edit/${newItem.type}/${newItem.slug}`)
     // Router.go to /content/type/id
   }
 
@@ -21,7 +23,7 @@ const CreateContent = () => {
       <div className="create-page">
         <h1>Create new {contentType ? contentType.title.en : 'content'}</h1>
 
-        {available && <ContentForm type={contentType} onSaved={onSaved} />}
+        {available && <ContentForm type={contentType} onSave={onSave} />}
       </div>
     </Layout>
   <style jsx>{`

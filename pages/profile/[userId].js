@@ -13,7 +13,7 @@ const Profile = (props) => {
   const router = useRouter()
   const { userId } = router.query
   
-  const permissions = usePermission(userId ? ['user.read', 'user.admin'] : null, '/', (u) => u.id === userId)
+  const permissions = usePermission(userId ? ['user.read', 'user.admin'] : null, '/', null, (u) => u.id === userId, userId)
 
   const { user, finished } = useUser({ userId, redirectTo: '/404' })
 
@@ -36,12 +36,10 @@ const Profile = (props) => {
         <div className="name">
           <div className="title">
             <div className="title-left">
-              <h2>{user ? user.username : 'User Profile'}</h2>
+              <h2>{user ? user.profile.displayName || user.username : 'User Profile'}</h2>
             </div>
             <div className="title-right">
-              <div className="item">
-                <Button alt={true}>Follow</Button>
-              </div>
+              
 
               <div className="item">
                 <Button href={`/settings/${user ? user.id : ''}`}>
@@ -59,7 +57,7 @@ const Profile = (props) => {
             </div>
           </div>
           <div className="dashboar-bar">
-            <h4>Followers</h4>
+            
           </div>
         </div>
       </div>

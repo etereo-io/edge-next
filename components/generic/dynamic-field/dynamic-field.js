@@ -11,8 +11,8 @@ function InputText(props) {
       defaultValue={props.value}
       data-testid={props['data-testid']}
       required={!!props.field.required}
-      minlength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
-      maxlength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
+      minLength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
+      maxLength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
       pattern={props.field.pattern ? props.field.pattern: null}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
@@ -85,8 +85,8 @@ function TextArea(props) {
       defaultValue={props.value}
       data-testid={props['data-testid']}
       required={!!props.field.required}
-      minlength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
-      maxlength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
+      minLength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
+      maxLength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
       onChange={(ev) => props.onChange(ev.target.value)}
     ></textarea>
   )

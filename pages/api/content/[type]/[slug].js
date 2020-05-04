@@ -48,7 +48,7 @@ const loadContentItemMiddleware = async (req, res, cb) => {
 
 const getContent = async (req, res) => {
   const user = await findOneUser({ id: req.item.author })
-  console.log(user, req.item.author)
+  
   res.status(200).json({
     ...req.item,
     user: user,
