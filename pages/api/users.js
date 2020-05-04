@@ -41,7 +41,7 @@ const getUsers = (filterParams, searchParams, paginationParams) => (
 }
 
 const addUser = (user) => async (req, res) => {
-  // TODO : run middleware for permissions
+  
   let parsedUser = null
 
   try {

@@ -475,7 +475,7 @@ export const getConfig = (defaultOptions) => {
     description: 'A dynamic site that lives on the edge',
 
     // Home slogan
-    slogan: 'Nucleo - Edge / A dynamic site that lives on the edge',
+    slogan: 'Nucleo / A dynamic site that lives on the edge',
 
     storage: {
       type: 'firestore',

@@ -13,8 +13,13 @@ const Landing = (props) => {
       <div className="hero">
         <div className="hero-head-line">
           <h1 className="slogan">{config.slogan}</h1>
-          <div>
-            <Button alt href="/components">See all components</Button>
+          <div className="call-to-action">
+            <div className="call-to-action-item">
+              <Button alt href="/components">See all components</Button>
+            </div>
+            <div className="call-to-action-item">
+              <Button href="/content/post">Blazing fast dynamic content</Button>
+            </div>
           </div>
         </div>
       </div>
@@ -135,15 +140,30 @@ const Landing = (props) => {
         
         padding-top: 100px;
         padding-bottom: 100px;
-        background:
-          radial-gradient(var(--empz-foreground) 3px, var(--empz-background) 4px),
-          radial-gradient(var(--empz-foreground) 3px, var(--empz-background) 4px),
-          linear-gradient(var(--empz-background) 4px, var(--empz-background) 0),
-          linear-gradient(45deg, var(--empz-background) 74px, var(--empz-background) 75px, var(--empz-foreground) 75px, var(--empz-foreground) 76px, var(--empz-background) 77px, var(--empz-background) 109px),
-          linear-gradient(-45deg, var(--empz-background) 75px, var(--empz-background) 76px, var(--empz-foreground) 76px, var(--empz-foreground) 77px, var(--empz-background) 78px, var(--empz-background) 109px),
-          var(--empz-background);
-          background-size: 109px 109px, 109px 109px,100% 6px, 109px 109px, 109px 109px;
-          background-position: 54px 55px, 0px 0px, 0px 0px, 0px 0px, 0px 0px;
+        background: linear-gradient(-45deg, var(--empz-foreground), var(--empz-background), var(--empz-background), var(--empz-foreground));
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+      }
+
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      .call-to-action {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      .call-to-action .call-to-action-item {
+        margin-right: 15px;
       }
       
       .hero-head-line {
