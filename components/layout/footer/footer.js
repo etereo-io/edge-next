@@ -1,3 +1,4 @@
+import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import config from '../../../lib/config'
 import styles from './footer.module.scss'
@@ -7,11 +8,7 @@ export default function () {
     <footer className={styles.footer}>
       <div className={styles['footer-content']}>
         <div className={styles['site-logo']}>
-          <img
-            className={styles['site-logoImg']}
-            src="/static/logos/logo_dark.svg"
-            alt="Site logo"
-          />
+          <EdgeLogo  alt={true}/>
         </div>
 
         <div className={styles.links}>

@@ -1,7 +1,7 @@
-export default () => {
+export default (props) => {
   return (
     <>
-      <div className="edge-icon">
+      <div className={`edge-icon ${props.alt ? 'alt' : ''}`}>
 
       </div>
       <style jsx>{
@@ -11,6 +11,10 @@ export default () => {
         height: 24px;
         border-radius: 100%;
         border: 1px solid var(--empz-foreground);
+      }
+
+      .edge-icon.alt {
+        border: 1px solid var(--empz-background);
       }
       `
       }</style>

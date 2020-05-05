@@ -32,15 +32,21 @@ const Landing = (props) => {
       </div>
       <div className="powered-by">
         <span>powered by</span>
-        <NextJSLogo />
+        <a href="https://nextjs.org/" title="NextJS website"><NextJSLogo /></a>
       </div>
 
       <div className="source-code">
-        <span>source code on </span> <GithubLogo/>
+        <span>source code on </span> <a href="https://github.com/nucleo-org/edge-next" target="_blank" title="Source code"><GithubLogo/></a>
       </div>
 
       <h2>Features</h2>
       <div className="features">
+        <div className="feature">
+          <h3>Ready to Rock</h3>
+          <p>
+            A ready to Rock and complete solution to launch an MVP in a fraction of time. Configure, adapt and deploy to thousands of users.
+          </p>
+        </div>
         <div className="feature">
           <h3>Dynamic API</h3>
           <p>
@@ -126,6 +132,12 @@ const Landing = (props) => {
             A set of integration tests cover different paths and can be easily extended
           </p>
         </div>
+        <div className="feature">
+          <h3>OpenSource</h3>
+          <p>
+            All the code open and available at <a href="https://github.com/nucleo-org/edge-next" title="Github repo">https://github.com/nucleo-org/edge-next</a>
+          </p>
+        </div>
       </div>
 
 
@@ -136,6 +148,13 @@ const Landing = (props) => {
           <h3>Social Page</h3>
           <p>
             Allow users to register and post content of any kind
+          </p>
+        </div>
+
+        <div className="use-case">
+          <h3>MVP</h3>
+          <p>
+            Launch an MVP really fast. 
           </p>
         </div>
 
@@ -225,6 +244,10 @@ const Landing = (props) => {
         flex-direction: column;
         align-items: center;
         margin: var(--empz-gap-double);
+      }
+
+      .source-code a, .powered-by a {
+        color: var(--empz-foreground);
       }
 
       .separator {
