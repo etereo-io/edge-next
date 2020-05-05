@@ -59,7 +59,8 @@ function LoggedInUserHeader(props) {
           </li>
         )}
 
-        <DropdownMenu align="right" width={'155px'}>
+        <li>
+          <DropdownMenu align="right" width={'155px'}>
           <ul>
             <li>
               <ThemeSelector />
@@ -95,6 +96,7 @@ function LoggedInUserHeader(props) {
             </li>
           </ul>
         </DropdownMenu>
+        </li>
       </ul>
     </nav>
   )

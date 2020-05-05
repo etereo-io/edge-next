@@ -21,6 +21,7 @@
     "marked": "^0.8.2",
     "mongodb": "^3.5.6",
     "next": "latest",
+    "next-pwa": "^2.3.3",
     "node-sass": "^4.13.1",
     "nookies": "^2.2.2",
     "passport": "0.4.1",

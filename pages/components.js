@@ -240,10 +240,9 @@ const Components = () => {
                         <a title="Components">Components</a>
                       </Link>
                     </li>
-                  </ul>
-                  <span className="spacer"></span>
-                  <h4>Content</h4>
-                  <ul>
+                    <li><span className="spacer"></span></li>
+                    <li><h4>Content</h4></li>
+                  
                     <li>
                       <Link href="/create/post">
                         <a title="New Post">New Post</a>
@@ -261,15 +260,34 @@ const Components = () => {
             <pre>{`
 <DropdownMenu>
   <ul>
-    <li><Link href="/" ><a title="Home">Home</a></Link></li>
-    <li><Link href="/profile" ><a title="Home">Profile</a></Link></li>
-    <li><Link href="/components" ><a title="Components">Components</a></Link></li>
-  </ul>
-  <span className="spacer"></span>
-  <h4>Content</h4>
-  <ul>
-    <li><Link href="/create/post" ><a title="New Post">New Post</a></Link></li>
-    <li><Link href="/content/post" ><a title="Read posts">Read posts</a></Link></li>
+    <li>
+      <Link href="/">
+        <a title="Home">Home</a>
+      </Link>
+    </li>
+    <li>
+      <Link href="/profile">
+        <a title="Home">Profile</a>
+      </Link>
+    </li>
+    <li>
+      <Link href="/components">
+        <a title="Components">Components</a>
+      </Link>
+    </li>
+    <li><span className="spacer"></span></li>
+    <li><h4>Content</h4></li>
+
+    <li>
+      <Link href="/create/post">
+        <a title="New Post">New Post</a>
+      </Link>
+    </li>
+    <li>
+      <Link href="/content/post">
+        <a title="Read posts">Read posts</a>
+      </Link>
+    </li>
   </ul>
 </DropdownMenu>
             `}</pre>
@@ -357,29 +375,29 @@ const links = [{
             <h3>Button</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Button>Button example</Button>
+                <Button aria-label='Normal button'>Button example</Button>
               </div>
 
               <div className="item-wrapper">
-                <Button big={true}>Button example</Button>
+                <Button big={true} aria-label='Big button'>Button example</Button>
               </div>
 
               <div className="item-wrapper">
-                <Button loading={true}></Button>
+                <Button loading={true} aria-label='Loading button'></Button>
               </div>
 
               <div className="item-wrapper">
-                <Button alt={true}>Button example</Button>
+                <Button alt={true} aria-label='Alt button'>Button example</Button>
               </div>
 
               <div className="item-wrapper">
-                <Button alt={true} big={true}>
+                <Button alt={true} big={true} aria-label='Alt big button'>
                   Button example
                 </Button>
               </div>
 
               <div className="item-wrapper">
-                <Button alt={true} loading={true}></Button>
+                <Button alt={true} loading={true} aria-label='Alt loading button'></Button>
               </div>
             </div>
             <pre>{`
@@ -526,17 +544,20 @@ const links = [{
               <div className="item-wrapper" style={{ display: 'flex', justifyContent: 'center' }}>
                 <Image srcs={[{
                   url: 'https://loremflickr.com/240/240/cars?random=2',
-                  quote: 'An amazing picture'
+                  quote: 'An amazing picture',
+                  alt: 'An amazing picture'
                 }] } width={500} height={500} />
               </div>
 
               <div className="item-wrapper">
                 <Image srcs={[{
                   url: 'https://loremflickr.com/240/240/flower?random=1',
-                  quote: 'An amazing flower'
+                  quote: 'An amazing flower',
+                  alt: 'An amazing flower'
                 }, {
                   url: 'https://loremflickr.com/240/240/flower?random=2',
-                  quote: 'Another flower'
+                  quote: 'Another flower',
+                  alt: 'An amazing flower'
                 }]} />
               </div>
             </div>

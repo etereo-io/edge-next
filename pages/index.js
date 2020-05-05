@@ -28,15 +28,15 @@ const Landing = (props) => {
       </div>
 
       <div className="separator">
-        <div><span>created by </span> <a href="https://nucleo.dev">the Nucleo Team</a></div>
+        <div><span>created by </span> <a href="https://nucleo.dev" rel="noopener" target="_blank">the Nucleo Team</a></div>
       </div>
       <div className="powered-by">
         <span>powered by</span>
-        <a href="https://nextjs.org/" title="NextJS website"><NextJSLogo /></a>
+        <a href="https://nextjs.org/" title="NextJS website" rel="noopener" target="_blank"><NextJSLogo /></a>
       </div>
 
       <div className="source-code">
-        <span>source code on </span> <a href="https://github.com/nucleo-org/edge-next" target="_blank" title="Source code"><GithubLogo/></a>
+        <span>source code on </span> <a href="https://github.com/nucleo-org/edge-next" rel="noopener" target="_blank" title="Source code"><GithubLogo/></a>
       </div>
 
       <h2>Features</h2>

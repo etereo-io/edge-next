@@ -13,6 +13,7 @@ export default function (props) {
     onClick,
     restProps,
     reference,
+    title = ''
   } = props
   const buttonItem = (
     <button
@@ -42,7 +43,7 @@ export default function (props) {
 
   return href ? (
     <Link href={href}>
-      <a>{buttonItem}</a>
+      <a title={title}>{buttonItem}</a>
     </Link>
   ) : (
     buttonItem

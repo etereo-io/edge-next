@@ -32,11 +32,11 @@ export default function({ srcs = [], width = 240, height = 240 }) {
         {isMultiple && <div onClick={onClickLeft} className="arrow arrow-left">left</div>}
         <div className={`image-container`} style={{ left: `-${100 * position}%`, width: `${srcs.length * 100}%`}} >
           {srcs.map(s => {
-            const itemHasQuote = typeof s !== 'string'
+            const onlySrc = typeof s !== 'string'
             return (
-              <div className={`image-item ${itemHasQuote ? 'with-quote': ''}`} style={{ width: `${itemWidth}%`}}>
-                <ProgressiveImage alt={itemHasQuote ?  s.quote: s} src={itemHasQuote ? s.url: s} key={itemHasQuote ? s.url: s} height={imageHeight} /> 
-                {itemHasQuote && <div className="quote">{s.quote}</div>}
+              <div className={`image-item ${!onlySrc && s.quote ? 'with-quote': ''}`} style={{ width: `${itemWidth}%`}}>
+                <ProgressiveImage alt={!onlySrc ?  s.alt || s.quote : s} src={!onlySrc ? s.url: s} key={!onlySrc ? s.url: s} height={imageHeight} /> 
+                {!onlySrc && s.quote && <div className="quote">{s.quote}</div>}
               </div>)
           })}
         </div>
