@@ -15,16 +15,59 @@
     line-height: 1;
     vertical-align: middle;
   }
+
+  &:before {
+    background: var(--empz-foreground);
+  }
 }
 
-.badge.featured {
+.badge.success {
   span {
-    background: var(--empz-alert);
+    background: var(--empz-success);
+    color: var(--empz-background);
   }
 
   &:before {
-    animation: badgeFeatured 1.4s ease forwards infinite;
+    background: var(--empz-success);
+  }
+}
+
+.badge.secondary {
+  span {
+    background: var(--empz-secondary);
+    color: var(--empz-background);
+  }
+
+  &:before {
+    background: var(--empz-secondary);
+  }
+}
+
+.badge.warning {
+  span {
+    background: var(--empz-warning);
+    color: var(--empz-background);
+  }
+
+  &:before {
+    background: var(--empz-warning);
+  }
+}
+
+.badge.alert {
+  span {
     background: var(--empz-alert);
+    color: var(--empz-background);
+  }
+
+  &:before {
+    background: var(--empz-alert);
+  }
+}
+
+.badge.featured {
+  &:before {
+    animation: badgeFeatured 1.4s ease forwards infinite;
     border-radius: 24px;
     content: '';
     height: 100%;

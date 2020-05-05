@@ -2,6 +2,7 @@ import Layout from '../components/layout/normal/layout'
 import Button from '../components/generic/button/button'
 import GithubLogo from '../components/generic/icons/github-icon/github-icon'
 import NextJSLogo from '../components/generic/icons/nextjs-icon/nextjs-icon'
+import Badge from '../components/generic/badge/badge'
 import Link from 'next/link'
 import config from '../lib/config'
 
@@ -22,6 +23,10 @@ const Landing = (props) => {
             <div className="call-to-action-item">
               <Button href="/content/post">Blazing fast dynamic content</Button>
             </div>
+          </div>
+
+          <div className="badges">
+            <Badge success>SEO 100</Badge> <Badge success>Accessibility 100</Badge>  <Badge success>PWA</Badge>
           </div>
           
         </div>
@@ -115,6 +120,13 @@ const Landing = (props) => {
         </div>
 
         <div className="feature">
+          <h3>PWA</h3>
+          <p>
+            Progressive Web App. Allow to install on Android devices as an application, gives better loading times than a normal website.
+          </p>
+        </div>
+
+        <div className="feature">
           <h3>Documented</h3>
           <p>
             Important information on how to deploy and configure your site in the <Link href="/p/documentation"><a>documentation</a></Link> 
@@ -170,7 +182,7 @@ const Landing = (props) => {
       `
       .hero {
         padding-top: 100px;
-        padding-bottom: 100px;
+        padding-bottom: 30px;
         background: linear-gradient(-45deg, var(--empz-foreground), var(--empz-background), var(--empz-background), var(--empz-foreground));
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
@@ -179,7 +191,6 @@ const Landing = (props) => {
       @media (max-width: 600px) {
         .hero {
           padding-top: 50px;
-          padding-bottom: 50px;
         }
       }
 
@@ -236,6 +247,16 @@ const Landing = (props) => {
         .slogan {
           font-size: 1.5rem;
         }
+      }
+
+      .badges {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        max-width: 300px;
+        margin: 0 auto;
+        margin-top: 90px;
+
       }
 
       .powered-by, .source-code {

@@ -354,20 +354,33 @@ const links = [{
             <h3>Badge</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Badge>47</Badge>
+                <Badge>42</Badge> 
+                <Badge secondary >42</Badge> 
+                <Badge success >42</Badge> 
+                <Badge warning >42</Badge> 
+                <Badge alert >42</Badge>
               </div>   
+              
               <div className="item-wrapper">
-                <Badge>2 reactions</Badge>
+              <Badge featured>Featured</Badge> <Badge secondary featured>Featured</Badge> <Badge success featured>Featured</Badge> <Badge warning featured>Featured</Badge> <Badge alert featured>Featured</Badge>
               </div>    
               <div className="item-wrapper">
-                <Badge featured={true}>New</Badge>
-              </div>    
-              <div className="item-wrapper">
-                <Badge featured={true}></Badge>
+                <Badge featured ></Badge>
+                <Badge featured secondary></Badge>
+                <Badge featured success></Badge>
+                <Badge featured warning></Badge>
+                <Badge featured alert></Badge>
               </div>   
             </div>
             <pre>{`
-<Badge>47</Badge>
+<Badge>42</Badge> 
+<Badge secondary >42</Badge> 
+<Badge success >42</Badge> 
+<Badge warning >42</Badge> 
+<Badge alert >42</Badge>
+
+<Badge alert featured>42</Badge>
+
             `}</pre>
           </div>
 
