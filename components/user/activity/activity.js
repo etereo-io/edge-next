@@ -10,8 +10,6 @@ export default function (props) {
     fetch
   )
 
-  console.log(data)
-
   return (
     <>
       <div className="activity-stream">

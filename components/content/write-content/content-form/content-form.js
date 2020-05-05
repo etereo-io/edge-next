@@ -72,7 +72,6 @@ export default function (props) {
 
     submitRequest(filteredData)
       .then((result) => {
-        console.log(result)
         setLoading(false)
         setSuccess(true)
         setError(false)
@@ -85,7 +84,6 @@ export default function (props) {
         setLoading(false)
         setSuccess(false)
         setError(true)
-        console.error(err)
       })
   }
 

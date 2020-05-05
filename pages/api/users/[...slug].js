@@ -132,7 +132,7 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     return res.status(500).json({
       message: e.message,
     })
@@ -149,7 +149,7 @@ export default async (req, res) => {
   try {
     await runMiddleware(req, res, userExist(userId))
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     return res.status(404).json({
       message: e.message,
     })

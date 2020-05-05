@@ -22,18 +22,20 @@ function PublicUserHeader() {
           <Button href="/auth/signup">Get Started</Button>
         </li>
 
-        <DropdownMenu align="right">
-          <ul>
-            <li>
-              <ThemeSelector />
-            </li>
-            <li>
-              <Link href="/components">
-                <a>Components</a>
-              </Link>
-            </li>
-          </ul>
-        </DropdownMenu>
+        <li>
+          <DropdownMenu align="right">
+            <ul>
+              <li>
+                <ThemeSelector />
+              </li>
+              <li>
+                <Link href="/components">
+                  <a>Components</a>
+                </Link>
+              </li>
+            </ul>
+          </DropdownMenu>
+        </li>
       </ul>
     </nav>
   )
