@@ -20,8 +20,8 @@ import SocialShare from '../components/generic/social-share/social-share'
 import TagsInput from '../components/generic/tags-input/tags-input'
 import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 import Toggle from '../components/generic/toggle/toggle'
-import VideoRecorder from '../components/generic/video-recorder/video-recorder-wrapper'
 import Upload from '../components/generic/upload/upload'
+import VideoRecorder from '../components/generic/video-recorder/video-recorder-wrapper'
 
 const Components = () => {
   const demoContent = {
@@ -881,6 +881,7 @@ const links = [{
           padding: var(--empz-gap-double);
           box-sizing: border-box;
           height: 100vh;
+          flex: 1;
           z-index: 3;
         }
 

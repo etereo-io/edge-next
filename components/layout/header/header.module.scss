@@ -18,6 +18,10 @@ $breakpoint-tablet: 960px;
     align-items: center;
     padding: 0 var(--empz-gap-double);
     width: 100%;
+
+    @media (max-width: 600px) {
+      padding: 0 var(--empz-gap);
+    }
   }
 
   .logo {

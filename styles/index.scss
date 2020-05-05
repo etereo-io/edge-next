@@ -210,16 +210,16 @@
   --empz-radius: 24px;
 
   --empz-foreground: white;
-  --empz-background: pink;
+  --empz-background: #e7bfff;
   --empz-selection: var(--empz-purple);
-  --accents-8: #fafafa;
-  --accents-7: #eaeaea;
-  --accents-6: #999;
-  --accents-5: #888;
-  --accents-4: #666;
-  --accents-3: #444;
-  --accents-2: #333;
-  --accents-1: #111;
+  --accents-8: #370e6d;
+  --accents-7: #4b2480;
+  --accents-6: #603797;
+  --accents-5: #8559c0;
+  --accents-4: #e7bfff;
+  --accents-3: #ffc6ff;
+  --accents-2: #ffceff;
+  --accents-1: #ffd9ff;
   --empz-success-light: #3291ff;
   --empz-success: #0070f3;
   --empz-success-dark: #0366d6;
@@ -337,13 +337,15 @@ textarea {
 
 .input-radio-group{
   display: flex;
+  flex-wrap: wrap;
 }
 
 .input-radio {
   display: inline-block;
-  margin-right: var(--empz-gap);
+  margin: var(--empz-gap);
   position: relative;
   width: 100%;
+  flex: 1;
 
   &:last-of-type{
     margin-right: 0;

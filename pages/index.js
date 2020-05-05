@@ -1,5 +1,7 @@
 import Layout from '../components/layout/normal/layout'
 import Button from '../components/generic/button/button'
+import GithubLogo from '../components/generic/icons/github-icon/github-icon'
+import NextJSLogo from '../components/generic/icons/nextjs-icon/nextjs-icon'
 import Link from 'next/link'
 import config from '../lib/config'
 
@@ -21,13 +23,24 @@ const Landing = (props) => {
               <Button href="/content/post">Blazing fast dynamic content</Button>
             </div>
           </div>
+          
         </div>
       </div>
 
-      <div className="separator"></div>
+      <div className="separator">
+        <div><span>created by </span> <a href="https://nucleo.dev">the Nucleo Team</a></div>
+      </div>
+      <div className="powered-by">
+        <span>powered by</span>
+        <NextJSLogo />
+      </div>
 
+      <div className="source-code">
+        <span>source code on </span> <GithubLogo/>
+      </div>
+
+      <h2>Features</h2>
       <div className="features">
-        <h2>Features</h2>
         <div className="feature">
           <h3>Dynamic API</h3>
           <p>
@@ -116,8 +129,8 @@ const Landing = (props) => {
       </div>
 
 
+      <h2>Use cases</h2>
       <div className="use-cases">
-        <h2>Use cases</h2>
 
         <div className="use-case">
           <h3>Social Page</h3>
@@ -137,12 +150,18 @@ const Landing = (props) => {
     <style jsx>{
       `
       .hero {
-        
         padding-top: 100px;
         padding-bottom: 100px;
         background: linear-gradient(-45deg, var(--empz-foreground), var(--empz-background), var(--empz-background), var(--empz-foreground));
         background-size: 400% 400%;
         animation: gradient 15s ease infinite;
+      }
+
+      @media (max-width: 600px) {
+        .hero {
+          padding-top: 50px;
+          padding-bottom: 50px;
+        }
       }
 
       @keyframes gradient {
@@ -163,7 +182,20 @@ const Landing = (props) => {
       }
 
       .call-to-action .call-to-action-item {
-        margin-right: 15px;
+        margin-right: var(--empz-gap);
+      }
+
+      @media (max-width: 600px) {
+        .call-to-action {
+          flex-direction: column;
+        }
+
+        .call-to-action-item {
+          width: 100%;
+          dispay: flex;
+          align-items: center;
+          margin-bottom: var(--empz-gap);
+        }
       }
       
       .hero-head-line {
@@ -181,19 +213,63 @@ const Landing = (props) => {
         color: var(--empz-foreground);
       }
 
+      @media (max-width: 600px) {
+        .slogan {
+          font-size: 1.5rem;
+        }
+      }
+
+      .powered-by, .source-code {
+        color: var(--empz-foreground);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: var(--empz-gap-double);
+      }
+
       .separator {
         height: 100px;
-        margin-bottom: 30px;
+        margin-bottom: var(--empz-gap-double);
         background: var(--empz-foreground);
+        color: var(--empz-background);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: var(--empz-gap);
       }
+
+      .separator a {
+        color: var(--empz-background);
+      }
+
+      h2 {
+        text-align: center;
+      }
+
       .features, .use-cases {
         max-width: 1024px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
         margin: 0 auto;
         padding var(--empz-gap);
       }
 
       .feature, .use-case {
+        width: 30%;
+        padding: 15px;
         margin: 30px 0px;
+        background: var(--accents-2);
+      }
+
+      @media (max-width: 600px) {
+        .features, .use-cases {
+          flex-direction: column;
+        }
+
+        .feature, .use-case {
+          width: 100%;
+        }
       }
       `
     }</style>

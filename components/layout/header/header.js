@@ -1,5 +1,6 @@
 import Button from '../../generic/button/button'
 import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
+import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import ThemeSelector from '../../generic/theme-selector/theme-selector'
 import config from '../../../lib/config'
@@ -110,7 +111,8 @@ const Header = () => {
         <div className={styles['left-header']}>
           <Link href="/">
             <a title="Home page">
-              <img className={styles['logo']} src="/static/logos/logo.svg" />
+              {/*<img className={styles['logo']} src="/static/logos/logo.svg" /> */}
+              <EdgeLogo />
             </a>
           </Link>
         </div>
