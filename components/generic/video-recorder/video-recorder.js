@@ -324,7 +324,7 @@ export default class VideoRecorder extends React.Component {
         .turn-camera-on {
           cursor: pointer;
           padding: 15px;
-          background: grey;
+          background: var(--empz-foreground);
           text-align: center;
           color: white;
       

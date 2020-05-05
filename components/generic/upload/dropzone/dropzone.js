@@ -75,9 +75,9 @@ export default function (props) {
     <style jsx>{
         `
         .dropzone {
-          padding: 15px;
-          border: 2px dashed grey;
-          color: grey;
+          padding: var(--empz-gap);
+          border: 2px dashed var(--empz-foreground);
+          color: var(--empz-foreground);
           cursor: pointer;
           text-align: center;
         

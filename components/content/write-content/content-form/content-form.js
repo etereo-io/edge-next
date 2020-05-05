@@ -32,7 +32,7 @@ export default function (props) {
     }`
 
     return fetch(url, {
-      method: 'post',
+      method: props.content.id ? 'PUT': 'POST',
       body: JSON.stringify(data),
       headers: {
         //'Content-Type': 'application/x-www-form-urlencoded',

@@ -68,8 +68,8 @@ export default function (props) {
       </div>
       <style jsx>{`
       .files {
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin-top: var(--empz-gap);
+        margin-bottom: var(--empz-gap);
       }
 
       .file-row {
@@ -82,7 +82,7 @@ export default function (props) {
         max-width: 200px;
         text-overflow: ellipsis;
         font-size: 13px;
-        color: grey;
+        color: var(--empz-foreground);
       }
 
       .delete-file {
