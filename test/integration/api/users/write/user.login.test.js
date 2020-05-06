@@ -7,7 +7,7 @@ import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/users/user')
 
-jest.mock('../../../../../empieza.config', () => ({
+jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
       title: 'A test',

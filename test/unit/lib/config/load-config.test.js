@@ -1,7 +1,7 @@
-import { getConfig } from '../../../../empieza.config'
+import { getConfig } from '../../../../edge.config'
 import loadConfig from '../../../../lib/config/load-config'
 
-jest.mock('../../../../empieza.config')
+jest.mock('../../../../edge.config')
 
 describe('Load configuration file', () => {
   afterEach(() => {

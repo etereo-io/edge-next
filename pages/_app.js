@@ -1,13 +1,13 @@
 import '../styles/index.scss'
 
-import withEmpiezaTheme, {
-  EmpiezaThemeContext,
-} from '../lib/contexts/empieza-theme'
+import withEdgeTheme, {
+  EdgeThemeContext,
+} from '../lib/contexts/edge-theme'
 
 import { useContext } from 'react'
 
 function MyApp({ Component, pageProps }) {
-  const { mode } = useContext(EmpiezaThemeContext)
+  const { mode } = useContext(EdgeThemeContext)
 
   return (
     <div id="app-container" className={mode}>
@@ -16,4 +16,4 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-export default withEmpiezaTheme(MyApp)
+export default withEdgeTheme(MyApp)

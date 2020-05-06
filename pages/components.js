@@ -367,13 +367,13 @@ const links = [{
             <h3>Avatar</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Avatar src="/static/demo-images/empieza-avatar.jpg" />
+                <Avatar src="/static/demo-images/edge-avatar.jpg" />
                 <Avatar
-                  src="/static/demo-images/empieza-avatar.jpg"
+                  src="/static/demo-images/edge-avatar.jpg"
                   width={60}
                 />
                 <Avatar
-                  src="/static/demo-images/empieza-avatar.jpg"
+                  src="/static/demo-images/edge-avatar.jpg"
                   width={30}
                 />
               </div>
@@ -875,7 +875,7 @@ const links = [{
                     <TableCellBody>
                       {' '}
                       <Avatar
-                        src="/static/demo-images/empieza-avatar.jpg"
+                        src="/static/demo-images/edge-avatar.jpg"
                         width={30}
                       />
                       Rafael Ventura
@@ -890,7 +890,7 @@ const links = [{
                     <TableCellBody>
                       {' '}
                       <Avatar
-                        src="/static/demo-images/empieza-avatar.jpg"
+                        src="/static/demo-images/edge-avatar.jpg"
                         width={30}
                       />
                       Hayder Al-Deen
@@ -905,7 +905,7 @@ const links = [{
                     <TableCellBody>
                       {' '}
                       <Avatar
-                        src="/static/demo-images/empieza-avatar.jpg"
+                        src="/static/demo-images/edge-avatar.jpg"
                         width={30}
                       />
                       Rafael Ventura
@@ -920,7 +920,7 @@ const links = [{
                     <TableCellBody>
                       {' '}
                       <Avatar
-                        src="/static/demo-images/empieza-avatar.jpg"
+                        src="/static/demo-images/edge-avatar.jpg"
                         width={30}
                       />
                       Hayder Al-Deen
@@ -935,7 +935,7 @@ const links = [{
                     <TableCellBody>
                       {' '}
                       <Avatar
-                        src="/static/demo-images/empieza-avatar.jpg"
+                        src="/static/demo-images/edge-avatar.jpg"
                         width={30}
                       />
                       Rafael Ventura

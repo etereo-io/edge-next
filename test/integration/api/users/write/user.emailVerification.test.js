@@ -10,7 +10,7 @@ import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
 jest.mock('../../../../../lib/api/users/user')
-jest.mock('../../../../../empieza.config', () => ({
+jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
       title: 'A test',

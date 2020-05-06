@@ -12,7 +12,7 @@ jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
 
-jest.mock('../../../../../empieza.config', () => {
+jest.mock('../../../../../edge.config', () => {
   
   const mockInitialPosts = []
 

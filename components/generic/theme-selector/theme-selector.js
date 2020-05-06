@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react'
 import Select from '../select/select'
 
-import { EmpiezaThemeContext, themes, defaultTheme } from '../../../lib/contexts/empieza-theme'
+import { EdgeThemeContext, themes, defaultTheme } from '../../../lib/contexts/edge-theme'
 
 function ColorBubble(props) {
   return (
@@ -21,7 +21,7 @@ function ColorBubble(props) {
 }
 
 export default function (props) {
-  const { mode, switchMode } = useContext(EmpiezaThemeContext)
+  const { mode, switchMode } = useContext(EdgeThemeContext)
 
   const [selectedTheme, setSelectedTheme] = useState(mode || defaultTheme)
 

@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react'
 
-import DynamicField from '../../../../components/generic/dynamic-field/dynamic-field'
+import DynamicField from '../../../../components/generic/dynamic-field/dynamic-field-edit'
 import React from 'react'
 
 describe('dynamic field test suite', () => {
