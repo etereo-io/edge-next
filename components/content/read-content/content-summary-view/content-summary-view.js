@@ -1,30 +1,11 @@
 import DropDown from '../../../generic/dropdown-menu/dropdown-menu'
-import Image from '../../../generic/image/image'
 import Link from 'next/link'
 import SocialShare from '../../../generic/social-share/social-share'
-import TagsField from '../fields/tags-field/tags-field'
 import { hasPermission } from '../../../../lib/permissions'
 import { useUser } from '../../../../lib/hooks'
 import {FIELDS } from '../../../../lib/config/config-constants'
+import DynamicFieldView from '../../../generic/dynamic-field/dynamic-field-view'
 
-function getField(field, value) {
-  switch (field.type) {
-    case FIELDS.TEXTAREA:
-      return <p style={{ wordBreak: 'break-all'}}>{value}</p>
-
-    case FIELDS.IMAGE:
-      return value ? <div style={{display: 'flex', justifyContent: 'center'}} ><Image width={500} height={500} srcs={[value]} /> </div>: null
-
-    case FIELDS.NUMBER:
-      return <p>{value}</p>
-
-    case FIELDS.FILE:
-      return <p>{value}</p>
-
-    default:
-      return <p>{value}</p>
-  }
-}
 
 export default function (props) {
   const shareUrl =
@@ -81,10 +62,10 @@ export default function (props) {
                   <Link
                     href={`/content/${props.type.slug}/${props.content.slug}`}
                   >
-                    <a>{getField(field, props.content[field.name])}</a>
+                    <a><DynamicFieldView field={field} value={props.content[field.name]} /></a>
                   </Link>
                 )}
-                {!links && getField(field, props.content[field.name])}
+                {!links && <DynamicFieldView field={field} value={props.content[field.name]} />}
               </div>
             )
           })}
@@ -93,7 +74,7 @@ export default function (props) {
           .map((field) => {
             return (
               <div className='field' key={field.name}>
-                <TagsField tags={props.content[field.name]} />
+                <DynamicFieldView field={field} value={props.content[field.name]} />
               </div>
             )
           })}

@@ -165,6 +165,11 @@ export const getConfig = (defaultOptions) => {
         placeholder: 'File',
       },
       {
+        name: 'video',
+        type: 'video_url',
+        label: 'Video',
+      },
+      {
         name: 'tags',
         type: 'tags',
         label: 'Tags',

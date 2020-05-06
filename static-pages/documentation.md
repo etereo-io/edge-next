@@ -235,6 +235,12 @@ const contentType = {
     - minlength
     - maxlength
     - defaultValue
+- video_url
+  - Available options:
+    - required
+    - minlength
+    - maxlength
+    - defaultValue
 - tags
   - Available options:
     - required

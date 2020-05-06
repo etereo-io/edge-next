@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
-import DynamicField from'../../../generic/dynamic-field/dynamic-field'
+import DynamicField from'../../../generic/dynamic-field/dynamic-field-edit'
 import Toggle from '../../../generic/toggle/toggle'
 import fetch from '../../../../lib/fetcher'
 import Link from 'next/link'

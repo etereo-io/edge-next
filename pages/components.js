@@ -9,7 +9,8 @@ import Badge from '../components/generic/badge/badge'
 import Button from '../components/generic/button/button'
 import ContentSummaryView from '../components/content/read-content/content-summary-view/content-summary-view'
 import DropdownMenu from '../components/generic/dropdown-menu/dropdown-menu'
-import DynamicField from '../components/generic/dynamic-field/dynamic-field'
+import DynamicField from '../components/generic/dynamic-field/dynamic-field-edit'
+import DynamicFieldView from '../components/generic/dynamic-field/dynamic-field-view'
 import Image from '../components/generic/image/image'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
@@ -19,6 +20,7 @@ import LoadingPlaceholder from '../components/generic/loading/loading-placeholde
 import Map from '../components/generic/map/map'
 import Select from '../components/generic/select/select'
 import SocialShare from '../components/generic/social-share/social-share'
+import TagsField from '../components/generic/tags-field/tags-field'
 import TagsInput from '../components/generic/tags-input/tags-input'
 import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 import Toggle from '../components/generic/toggle/toggle'
@@ -143,7 +145,35 @@ const Components = () => {
       name: 'toggle',
       label: 'Toggle field',
     },
+    {
+      type: 'video_url',
+      name: 'video',
+      label: 'Video URL field',
+    },
   ]
+
+  const dynamicValues = [{
+    field: {
+      type:'text',
+      name: 'text',
+      label: 'A field'
+    },
+    value: 'This is an example of data'
+  }, {
+    field: {
+      type:'textarea',
+      name: 'textarea',
+      label: 'A textarea'
+    },
+    value: 'This is an example of data'
+  }, {
+    field: {
+      type:'video_url',
+      name: 'video_url',
+      label: 'video'
+    },
+    value: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+  }]
 
   return (
     <Layout title="Components showcase" fullWidth={true}>
@@ -208,7 +238,13 @@ const Components = () => {
               <a href="#form-elements-dynamic">Form Elements Dynamic</a>
             </li>
             <li>
+              <a href="#dynamic-field-view">Dynamic field view</a>
+            </li>
+            <li>
               <a href="#tagsinput">Tags Input</a>
+            </li>
+            <li>
+              <a href="#tagsfield">Tags Field</a>
             </li>
             <li>
               <a href="#table">Table</a>
@@ -762,6 +798,31 @@ const links = [{
 })}
             `}</pre>
           </div>
+
+          <div id="dynamic-field-view" className="component">
+            <h3>Dynamic field view</h3>
+            <p>A field for wrapping the representation of dynamic data</p>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <div >
+                  {dynamicValues.map(item => {
+                    return (
+                      <DynamicFieldView field={item.field} value={item.value} />
+                    )
+                  })}
+
+                </div>
+              </div>
+
+            </div>
+            <pre>{`
+{dynamicValues.map(item => {
+  return (
+    <DynamicFieldView field={item.field} value={item.value} />
+  )
+})}
+            `}</pre>
+          </div>
           
           <div id="tagsinput" className="component">
             <h3>Tags Input</h3>
@@ -772,7 +833,7 @@ const links = [{
 
               <div className="item-wrapper">
                 <TagsInput
-                  defaultTags={[
+                  value={[
                     { label: 'Software', slug: 'software' },
                     { label: 'Web dev', slug: 'web-dev' },
                   ]}
@@ -781,7 +842,20 @@ const links = [{
               </div>
             </div>
             <pre>{`
-<TagsInput onChange={} placeholder="Your tags" defaultTags={[{label: 'Something', slug: 'another'}]}/>
+<TagsInput onChange={} placeholder="Your tags" value={[{label: 'Something', slug: 'another'}]}/>
+  `}</pre>
+          </div>
+
+          
+          <div id="tagsfield" className="component">
+            <h3>Tags Field</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <TagsField tags={[{label: 'test', slug: 'test'}, {label: 'demo', slug: 'demo'}]} />
+              </div>
+            </div>
+            <pre>{`
+<TagsField tags={[{label: 'test', slug: 'test'}, {label: 'demo', slug: 'demo'}]} />
   `}</pre>
           </div>
 

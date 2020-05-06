@@ -13,7 +13,7 @@ function InputText(props) {
       required={!!props.field.required}
       minLength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
       maxLength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
-      pattern={props.field.pattern ? props.field.pattern: null}
+      pattern={props.pattern || null}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
   )
@@ -184,6 +184,15 @@ function Field(props) {
               })}
             </div>
         )
+
+      case FIELDS.VIDEO_URL:
+        return <InputText
+            field={field}
+            value={props.value}
+            data-testid={datatestId}
+            onChange={props.onChange}
+            pattern={'https?://.+'}
+          />
       
       case FIELDS.JSON:
         return (
@@ -199,6 +208,7 @@ function Field(props) {
             value={props.value}
             data-testid={datatestId}
             onChange={props.onChange}
+            pattern={field.pattern ? field.pattern: null}
           />
         )
     }
