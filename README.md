@@ -2,6 +2,9 @@
 
 # Edge - A dynamic site that lives on the edge
 
+- [Website](https://edge-next.now.sh/)
+- [Documentation](./static-pages/documentation.md)
+  
 
 ## Sponsors 
 
