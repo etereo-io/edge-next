@@ -1,5 +1,9 @@
 import randomWords from 'random-words'
 
+function ObjectID(rnd = r16 => Math.floor(r16).toString(16)) {
+  return  rnd(Date.now()/1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random()*16));
+}
+
 const posts = []
 const products = []
 const comments = []
@@ -16,15 +20,18 @@ function generateParagraph() {
   return phrases.join('\n')
 }
 
+const userId = ObjectID()
+
 for (var i = 0; i < 30; i++) {
-  const userId = Math.round(Math.random() * 10)
+  const postId = ObjectID()
+  const productId = ObjectID()
 
   posts.push({
     type: 'post',
-    id: i+'',
-    author: userId+'',
+    id: postId,
+    author: userId,
     title: randomWords({ min: 3, max: 10 }).join(' '),
-    slug: 'example-post-' + i,
+    slug: 'example-post-' + postId,
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
     description: generateParagraph(),
     draft: Math.random() > 0.5 ? true: false,
@@ -42,11 +49,11 @@ for (var i = 0; i < 30; i++) {
 
   products.push({
     type: 'product',
-    id: i,
+    id: productId,
     image: 'https://loremflickr.com/240/240/food?random='+i,
     author: userId,
     title: randomWords({ min: 3, max: 10 }).join(' '),
-    slug: 'example-product-' + i,
+    slug: 'example-product-' + productId,
     draft: Math.random() > 0.5 ? true: false,
     description: generateParagraph(),
   })
@@ -57,7 +64,7 @@ for (var i = 0; i < 30; i++) {
     meta: {
       contentTitle: 'Example post', // This will not work with dynamic fields
       contentType: 'post',
-      contentId: i,
+      contentId: postId,
     },
   })
 
@@ -67,7 +74,7 @@ for (var i = 0; i < 30; i++) {
     meta: {
       contentTitle: 'Example product', // This will not work with dynamic fields
       contentType: 'product',
-      contentId: i,
+      contentId: productId,
     },
   })
 
@@ -75,9 +82,9 @@ for (var i = 0; i < 30; i++) {
     comments.push({
       type: 'comment',
       contentType: 'post',
-      contentId: i,
+      contentId: postId,
       message: generateParagraph(),
-      author: Math.round(Math.random() * 10),
+      author: userId,
       slug: 'test-comment-' + j,
     })
 
@@ -612,7 +619,7 @@ export const getConfig = (defaultOptions) => {
           emailVerified: true,
           createdAt: Date.now(),
           roles: [adminRole, userRole],
-          id: '1',
+          id: ObjectID(),
           password: 'admin',
           profile: {
             picture: '/static/demo-images/default-avatar.jpg',
@@ -627,7 +634,7 @@ export const getConfig = (defaultOptions) => {
           emailVerified: true,
           createdAt: Date.now(),
           roles: [userRole],
-          id: '2',
+          id: userId,
           password: 'user',
           profile: {
             picture: '',
@@ -642,7 +649,7 @@ export const getConfig = (defaultOptions) => {
           emailVerified: true,
           createdAt: Date.now(),
           roles: [userRole],
-          id: '3',
+          id: ObjectID(),
           password: 'user',
           profile: {
             picture: '',
@@ -659,7 +666,7 @@ export const getConfig = (defaultOptions) => {
           emailVerificationToken: '1234',
           createdAt: Date.now(),
           roles: [userRole],
-          id: '3',
+          id: ObjectID(),
           password: 'user',
           profile: {
             picture: '',

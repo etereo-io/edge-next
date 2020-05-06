@@ -43,7 +43,7 @@ function LoadingItems() {
 }
 
 function EmptyComponent() {
-  return <div className="empty">Sorry, no items found.</div>
+  return <div className="empty">Be the first to comment.</div>
 }
 
 export default function (props) {
@@ -72,16 +72,16 @@ export default function (props) {
       const { results = [] } = data
       return results.map((item) => {
         return (
-          <>
-          <div key={item.id} className={`item`}>
-              <CommentItem comment={item} type={props.type} contentId={props.contentId} />
+          <div key={item.id}>
+            <div  className={`item`}>
+                <CommentItem comment={item} type={props.type} contentId={props.contentId} />
+            </div>
+            <style jsx>{`
+                .item {
+                  margin-bottom: var(--empz-gap);
+                }
+              `}</style>
           </div>
-          <style jsx>{`
-              .item {
-                margin-bottom: var(--empz-gap);
-              }
-            `}</style>
-          </>
         )
       })
     },
