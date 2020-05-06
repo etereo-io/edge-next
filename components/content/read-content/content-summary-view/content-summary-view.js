@@ -35,7 +35,6 @@ export default function (props) {
       : ''
   const links = !!props.links
 
-
   const { user } = useUser({
     userId: 'me'
   })

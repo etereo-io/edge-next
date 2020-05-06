@@ -3,14 +3,23 @@ import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import ContentActions from '../../content-actions/content-actions'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { usePermission } from '../../../../lib/hooks'
+import { useState } from 'react'
 
 export default function (props) {
+  
   const canReadComments = usePermission(
     [`content.${props.type.slug}.comments.read`]
   )
   const canWriteComments = usePermission(
     [`content.${props.type.slug}.comments.create`]
   )
+
+  // Display new comments on top of feed
+  const [newComments, setNewComments] = useState([])
+  const onCommentAdded = (c) => {
+    setNewComments([c, ...newComments])
+  }
+
 
   return (
     <>
@@ -32,11 +41,11 @@ export default function (props) {
         </div>
 
         {props.type.comments.enabled && canWriteComments.available && (
-          <CommentForm type={props.type} contentId={props.content.id} />
+          <div className="comment-form-wrapper"><CommentForm onSave={onCommentAdded} type={props.type} contentId={props.content.id} /></div>
         )}
 
         {props.type.comments.enabled && canReadComments.available && (
-          <CommentsFeed type={props.type} contentId={props.content.id} />
+          <CommentsFeed type={props.type} contentId={props.content.id} newComments={newComments}/>
         )}
       </div>
       <style jsx>{`
@@ -60,6 +69,10 @@ export default function (props) {
         }
 
         .field {
+          margin-bottom: var(--empz-gap);
+        }
+
+        .comment-form-wrapper {
           margin-bottom: var(--empz-gap);
         }
       `}</style>
