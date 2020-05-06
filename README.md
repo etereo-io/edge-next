@@ -29,7 +29,7 @@ The main features of Edge are:
 - SSG (Static Site Generation) for static pages with markdown
 - Easy to deploy
 
-If you want to read about all the features you can check the [documentation](./static-pages/p/documentation.md) or check the [Website Demo](https://edge-next.now.sh/).
+If you want to read about all the features you can check the [documentation](./static-pages/documentation.md) or check the [Website Demo](https://edge-next.now.sh/).
 
 You can login with the following credentials:
 - Admin: admin@demo.com | password: admin
