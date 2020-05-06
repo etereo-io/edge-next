@@ -21,23 +21,25 @@ export async function getServerSideProps({ req, res, query }) {
   }
   
   await connect()
+
   const item = await findOneContent(query.type, {
     slug: query.slug,
-  })
+  }) 
+
+  if (!item) {
+    res.writeHead(302, { Location: '/404'})
+    res.end()
+    return
+  }
 
   try {
     await runMiddleware(req, res, hasPermissionsForContent(query.type, item))
   } catch (e) {
     // User can not access
-    return {
-      props: {
-        data: null,
-        type: query.type,
-        slug: query.slug,
-        canAccess: false,
-        pageTitle: 'Not found'
-      },
-    }
+    res.writeHead(302, { Location: '/404'})
+    res.end()
+    return
+    
   }
 
   const contentTitle = item && contentTypeDefinition.publishing.title ? 
@@ -45,7 +47,7 @@ export async function getServerSideProps({ req, res, query }) {
 
   return {
     props: {
-      data: item,
+      data: item || null,
       type: query.type,
       slug: query.slug,
       canAccess: true,
@@ -55,11 +57,6 @@ export async function getServerSideProps({ req, res, query }) {
   }
 }
 
-function LoadingView() {
-  return <h1>Loading...</h1>
-}
-
-// TODO: redirect to 404 if not found
 
 const ContentPage = (props) => {
   const contentType = getContentTypeDefinition(props.type)
@@ -73,10 +70,6 @@ const ContentPage = (props) => {
 
   return (
     <Layout title={props.pageTitle}>
-      {!props.canAccess && <LoadingView />}
-      {props.canAccess && !props.data && (
-        <div className="nothing">Not found</div>
-      )}
       {props.canAccess && props.data && (
         <ContentDetailView type={contentType} content={data} />
       )}

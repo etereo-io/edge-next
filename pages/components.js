@@ -14,6 +14,8 @@ import Image from '../components/generic/image/image'
 import Layout from '../components/layout/normal/layout'
 import Link from 'next/link'
 import LinkList from '../components/generic/link-list/link-list'
+import Loading from '../components/generic/loading/loading-spinner/loading-spinner'
+import LoadingPlaceholder from '../components/generic/loading/loading-placeholder/loading-placeholder'
 import Map from '../components/generic/map/map'
 import Select from '../components/generic/select/select'
 import SocialShare from '../components/generic/social-share/social-share'
@@ -162,6 +164,12 @@ const Components = () => {
             </li>
             <li>
               <a href="#button">Button</a>
+            </li>
+            <li>
+              <a href="#loading">Loading</a>
+            </li>
+            <li>
+              <a href="#loading-placeholder">Loading Placeholder</a>
             </li>
             <li>
               <a href="#toggle">Toggle</a>
@@ -392,29 +400,85 @@ const links = [{
               </div>
 
               <div className="item-wrapper">
-                <Button big={true} aria-label='Big button'>Button example</Button>
+                <Button aria-label='Normal button' success>Button example</Button>
               </div>
 
               <div className="item-wrapper">
-                <Button loading={true} aria-label='Loading button'></Button>
+                <Button aria-label='Normal button' warning>Button example</Button>
               </div>
 
               <div className="item-wrapper">
-                <Button alt={true} aria-label='Alt button'>Button example</Button>
+                <Button aria-label='Normal button' alert>Button example</Button>
               </div>
 
               <div className="item-wrapper">
-                <Button alt={true} big={true} aria-label='Alt big button'>
+                <Button aria-label='Normal button' secondary>Button example</Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button big aria-label='Big button'>Button example</Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button loading aria-label='Loading button'></Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button loading secondary aria-label='Loading button'></Button>
+                <Button loading success aria-label='Loading button'></Button>
+                <Button loading warning aria-label='Loading button'></Button>
+                <Button loading alert aria-label='Loading button'></Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button alt aria-label='Alt button'>Button example</Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button alt big aria-label='Alt big button'>
                   Button example
                 </Button>
               </div>
 
               <div className="item-wrapper">
-                <Button alt={true} loading={true} aria-label='Alt loading button'></Button>
+                <Button alt loading aria-label='Alt loading button'></Button>
               </div>
             </div>
             <pre>{`
 <Button />
+            `}</pre>
+          </div>
+
+          <div id="loading" className="component">
+            <h3>Loading</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Loading />
+              </div>
+             
+            </div>
+            <pre>{`
+<Loading />
+            `}</pre>
+          </div>
+
+          <div id="loading-placeholder" className="component">
+            <h3>Loading Placeholder</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <LoadingPlaceholder />
+              </div>
+              <div className="item-wrapper">
+                <LoadingPlaceholder />
+              </div>
+              <div className="item-wrapper">
+                <LoadingPlaceholder width={'100px'} height={'100px'} borderRadius={'100%'} />
+              </div>
+             
+            </div>
+            <pre>{`
+<LoadingPlaceholder />
+<LoadingPlaceholder width={'100px'} height={'100px'} borderRadius={'100%'} />
             `}</pre>
           </div>
 

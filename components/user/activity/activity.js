@@ -2,6 +2,7 @@ import Avatar from '../avatar/avatar'
 
 import fetch from '../../../lib/fetcher'
 import API from '../../../lib/api/api-endpoints'
+import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import useSWR from 'swr'
 
 export default function (props) {
@@ -19,25 +20,25 @@ export default function (props) {
               <div className="avatar">
                 <Avatar width={60} loading={true} />
               </div>
-              <div className="loading-message"></div>
+              <LoadingPlaceholder height={'10px'} width={'60%'} />
             </div>
             <div className="activity-item">
               <div className="avatar">
                 <Avatar width={60} loading={true} />
               </div>
-              <div className="loading-message"></div>
+              <LoadingPlaceholder height={'10px'} width={'60%'} />
             </div>
             <div className="activity-item">
               <div className="avatar">
                 <Avatar width={60} loading={true} />
               </div>
-              <div className="loading-message"></div>
+              <LoadingPlaceholder height={'10px'} width={'60%'} />
             </div>
             <div className="activity-item">
               <div className="avatar">
                 <Avatar width={60} loading={true} />
               </div>
-              <div className="loading-message"></div>
+              <LoadingPlaceholder height={'10px'} width={'60%'} />
             </div>
           </>
         )}
@@ -76,11 +77,7 @@ export default function (props) {
           word-break: break-word;
         }
 
-        .loading-message {
-          height: 10px;
-          background: var(--light-border-color);
-          width: 60%;
-        }
+        
 
         .error {
           padding: var(--empz-gap);

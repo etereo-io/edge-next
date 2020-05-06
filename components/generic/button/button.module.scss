@@ -26,6 +26,28 @@
     }
   }
 
+  
+
+  &.success {
+    background: var(--empz-success);
+    color: var(--empz-background);
+  }
+
+  &.secondary {
+    background: var(--empz-secondary);
+    color: var(--empz-background);
+  }
+
+  &.warning {
+    background: var(--empz-warning);
+    color: var(--empz-background);
+  }
+
+  &.alert {
+    background: var(--empz-alert);
+    color: var(--empz-background);
+  }
+ 
   &.big {
     font-size: 16px;
     padding: 24px;

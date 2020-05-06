@@ -23,13 +23,9 @@ export async function getServerSideProps({ req, res, query }) {
     await runMiddleware(req, res, hasPermissionsForContent(query.type))
   } catch (e) {
     // User can not access
-    return {
-      props: {
-        data: null,
-        type: query.type,
-        canAccess: false,
-      },
-    }
+    res.writeHead(302, { Location: '/404'})
+    res.end()
+    return
   }
   
   const filterOptions = {}

@@ -6,16 +6,51 @@ import Button from '../../../generic/button/button'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import fetch from '../../../../lib/fetcher'
 import { useOnScreen } from '../../../../lib/hooks'
+import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 
-function Placeholder() {
+function LoadingItems() {
   return (
-    <div className="placeholders">
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-    </div>
+    <>
+      <div className="placeholders">
+        <div className="p">
+          <div className="r">
+            <Placeholder width={'100%'} />
+          </div>
+          <div className="r">
+            <Placeholder width={'100%'} />
+          </div>
+          <div className="r">
+            <Placeholder width={'100%'} />
+          </div>
+        </div>
+        <div className="p">
+          <div className="r">
+            <Placeholder width={'100%'} />
+          </div>
+          <div className="r">
+            <Placeholder width={'100%'} />
+          </div>
+          <div className="r">
+            <Placeholder width={'100%'} />
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{
+        `
+        .p {
+          background: var(--empz-background);
+          padding: var(--empz-gap);
+          margin-bottom: var(--empz-gap);
+          border: var(--empz-light-border);
+          border-radius: var(--empz-radius);
+        }
+        .r {
+          margin-bottom: var(--empz-gap);
+        }
+        `
+      }</style>
+    </>
   )
 }
 
@@ -46,7 +81,7 @@ export default function (props) {
         useSWR(apiUrl, fetch, { initialData: props.initialData })
       )
 
-      if (!data) return <Placeholder />
+      if (!data) return <LoadingItems />
 
       const { results = [] } = data
       return results.map((item) => {
@@ -94,6 +129,7 @@ export default function (props) {
       <div className="contentListView">
         <div className={`items ${listView}`}>
           {!isEmpty ? pages : <EmptyComponent />}
+          {isLoadingMore && <LoadingItems />}
         </div>
         <div className="load-more">
           {isReachingEnd ? null : (

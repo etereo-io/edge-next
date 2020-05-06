@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import LoadingSpinner from '../loading/loading-spinner/loading-spinner'
+import load from '../../../lib/config/load-config'
 import styles from './button.module.scss'
 
 export default function (props) {
@@ -13,13 +14,20 @@ export default function (props) {
     onClick,
     restProps,
     reference,
-    title = ''
+    title = '',
+    secondary,
+    warning,
+    alert,
+    success
   } = props
+
+  const classNames = `${styles.button} ${loading ? styles.loading : ''} ${alt ? styles.alt : ''} ${
+    big ? styles.big : ''
+  } ${success ? styles.success : ''} ${warning ? styles.warning : ''} ${secondary ? styles.secondary : ''} ${alert ? styles.alert : ''} ${className}`
+
   const buttonItem = (
     <button
-      className={`${styles.button} ${alt ? styles.alt : ''} ${
-        big ? styles.big : ''
-      }  ${className}`}
+      className={classNames}
       {...restProps}
       ref={reference}
       onClick={onClick}
@@ -32,11 +40,9 @@ export default function (props) {
     return (
       <button
         ref={reference}
-        className={`${styles.button} ${alt ? styles.alt : ''} ${
-          big ? styles.big : ''
-        } ${className} ${styles.loading}`}
+        className={classNames}
       >
-        <LoadingSpinner alt={alt} />
+        <LoadingSpinner alt={alt || secondary || warning || success || alert} />
       </button>
     )
   }
