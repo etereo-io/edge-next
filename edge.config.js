@@ -16,7 +16,7 @@ function generateParagraph() {
   return phrases.join('\n')
 }
 
-for (var i = 0; i < 100; i++) {
+for (var i = 0; i < 30; i++) {
   const userId = Math.round(Math.random() * 10)
 
   posts.push({
@@ -71,7 +71,7 @@ for (var i = 0; i < 100; i++) {
     },
   })
 
-  for (var j = 0; j < 50; j++) {
+  for (var j = 0; j < 20; j++) {
     comments.push({
       type: 'comment',
       contentType: 'post',
@@ -488,15 +488,15 @@ export const getConfig = (defaultOptions) => {
 
     // Choose from MONGO, FIREBASE, IN_MEMORY
     database: {
-      type: 'IN_MEMORY',
+      type: 'MONGO',
     },
 
     // Used for e-mails and links
-    url: 'www.demosite.com',
+    url: 'https://edge-next.now.sh/',
     
     emails: {
-      from: 'no-reply@empieza.io',
-      contact: 'contact@empieza.io'
+      from: 'no-reply@edge-next.io',
+      contact: 'contact@edge-next.io'
     },
 
     // Themes

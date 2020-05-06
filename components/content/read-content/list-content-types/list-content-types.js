@@ -16,7 +16,7 @@ export default function () {
     .map((type) => {
       return {
         link: `/content/${type.slug}`,
-        title: `Read all ${type.title.en}s`,
+        title: `See all ${type.title.en}s`,
       }
     })
 

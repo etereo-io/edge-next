@@ -42,7 +42,7 @@ const Signup = () => {
           throw new Error(err)
         })
     } catch (error) {
-      console.error('An unexpected error happened occurred:', error)
+      console.error('An unexpected error happened occurred:', error.message)
       setErrorMsg(error.message)
     }
   }

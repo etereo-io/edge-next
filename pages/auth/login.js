@@ -23,21 +23,18 @@ const Login = () => {
 
     setLoading(true)
     try {
-      const res = await fetch('/api/auth/login', {
+      await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-        .then(() => {
-          Router.push('/')
-        })
-        .catch((err) => {
-          setLoading(false)
-          throw new Error(err)
-        })
+      
+      Router.push('/')
+
     } catch (error) {
+      setLoading(false)
       console.error('An unexpected error happened occurred:', error)
-      setErrorMsg(error.message)
+      setErrorMsg('Error while logging in, check if the email and password are correct')
     }
   }
 
