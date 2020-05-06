@@ -127,6 +127,11 @@ export default function (props) {
       </div>
       <style jsx>{`
 
+        .comment-feed-view {
+          max-width: 500px;
+          margin: 0 auto;
+        }
+
         .load-more {
           display: flex;
           justify-content: center;

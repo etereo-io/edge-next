@@ -12,6 +12,97 @@ import listen from 'test-listen'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
+
+jest.mock('../../../../../edge.config', () => {
+  
+  const mockInitialPosts = []
+
+  const mockPostContentType = {
+    title: {
+      en: 'Post',
+      es: 'Artículo',
+    },
+
+    slug: 'post',
+
+    slugGeneration: ['title', 'createdAt'],
+
+    permissions: {
+      read: ['PUBLIC'],
+      create: ['ADMIN', 'USER'],
+      update: ['ADMIN'],
+      delete: ['ADMIN'],
+      admin: ['ADMIN'],
+    },
+
+    publishing: {
+      draftMode: true,
+    },
+
+    comments: {
+      enabled: true,
+      permissions: {
+        read: ['PUBLIC'],
+        create: ['USER', 'ADMIN'],
+        update: ['ADMIN'],
+        delete: ['ADMIN'],
+        admin: ['ADMIN'],
+      },
+    },
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        minlength: 8,
+        placeholder: 'Title',
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        label: 'Description',
+        minlength: 8,
+        placeholder: 'Description',
+      },
+      {
+        name: 'image',
+        type: 'img',
+        label: 'Image',
+        placeholder: 'Image',
+      },
+      {
+        name: 'file',
+        type: 'file',
+        label: 'File',
+        placeholder: 'File',
+      },
+      {
+        name: 'tags',
+        type: 'tags',
+        label: 'Tags',
+        placeholder: 'Tags',
+      }
+    ],
+  }
+
+  return {
+    __esModule: true,
+    getConfig: jest.fn().mockReturnValue({
+        title: 'A test',
+        description: 'A test',
+        // Content configuration
+        content: {
+          // Different content types defined
+          types: [
+            mockPostContentType
+          ],
+          initialContent: mockInitialPosts,
+        },
+    })
+  }
+})
+
 describe('Integrations tests for content creation endpoint', () => {
   let server
   let url

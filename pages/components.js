@@ -141,9 +141,13 @@ const Components = () => {
       placeholder: 'A placeholder'
     },
     {
-      type: 'toggle',
+      type: 'boolean',
       name: 'toggle',
       label: 'Toggle field',
+    },{
+      type: 'tags',
+      name: 'tags',
+      label: 'Tags field',
     },
     {
       type: 'video_url',

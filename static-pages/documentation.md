@@ -27,6 +27,7 @@ description: "Empieza Documentation"
   - [Authentication](#authentication)
     - [Providers](#providers)
   - [Emails](#emails)
+  - [Payments](#payments)
   - [Deploy your own](#deploy-your-own)
     - [Deploying on Vercel](#deploying-on-vercel)
 
@@ -433,15 +434,41 @@ There are some email templates included and working:
 
 - Call to Action template: A simple template with a button. Used to verify user emails.
 
+## Payments
 
+We have configured a HOC (higher order component) to integrate [stripe js](https://stripe.com/docs/stripe-js/react).
+
+But Edge has NO built-in payment process, because there are multiple use cases that should be covered. 
+
+If you want to use Stripe, first you need to create an [Stripe account](https://dashboard.stripe.com/login?redirect=%2Faccount%2Fapikeys) and configure the public API key in the environment variables
+
+````bash
+# env.local file
+NEXT_PUBLIC_STRIPE_PUBLIC_KEY=XXXXXXXXXXXXXX
+````
+
+After that you will need to code your own payment process. 
+
+There are differente integrations:
+
+- Client side only payments
+- Client + Server side payments
+
+Depending on what you want to seel (if you want the users to be able to sell, or only the site owners) you will need to create different flows.
+
+*We strongly recommend you to code payment systems with caution*
+
+[Stripe DOCS](https://stripe.com/docs/)
+[Getting Charges](https://stripe.com/docs/connect/charges)
 
 ## Deploy your own
 
-First of all you need to configure the different environment variables.
+To deploy your site with all the functionalities you need to configure the different environment variables.
 
 All the environment variables are defined inside the `.env.build` example file
 
 ```
+BASE_URL=http://localhost:3000
 FIREBASE_PROJECT_ID=XX
 FIREBASE_CLIENT_EMAIL=XX
 FIREBASE_DATABASE_URL=XX
@@ -450,6 +477,8 @@ MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
 MONGODB_DATABASE=<database>
 NEXT_PUBLIC_GMAPS_API_KEY=XXXX
 SENDGRID_KEY=XXX
+INSTAGRAM_ID=XXX
+INSTAGRAM_SECRET=XXX
 ```
 
 ### Deploying on Vercel

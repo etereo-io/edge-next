@@ -22,6 +22,122 @@ import listen from 'test-listen'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
+
+jest.mock('../../../../../edge.config', () => ({
+  __esModule: true,
+  getConfig: jest.fn().mockReturnValue({
+      title: 'A test',
+      description: 'A test',
+      // Users configuration
+    user: {
+      // Capture user geolocation and enable geolocation display on the admin dashboard
+      captureGeolocation: true,
+
+      // Require email verification
+      emailVerification: true,
+
+      providers: {
+        instagram: false,
+        google: false,
+        facebook: true
+      },
+
+      // Fields for the users profiles (in addition to picture and displayName)
+      profile: {
+        fields: [{
+          name: 'description',
+          type: 'textarea',
+          label: 'Description',
+          required: false,
+          minlength: 60,
+          maxlength: 300,
+          roles: []
+        }, {
+          name: 'gender',
+          type: 'select',
+          label: 'gender',
+          required: true,
+          options: [{
+            label: 'Male',
+            value: 'male'
+          },{
+            label: 'Female',
+            value: 'female'
+          }]
+        }]
+      },
+
+      // Initial users data for testing purposes
+      initialUsers: [
+        {
+          username: 'admin',
+          displayname: 'The admin',
+          email: 'admin@demo.com',
+          emailVerified: true,
+          createdAt: Date.now(),
+          roles: ['ADMIN', 'USER'],
+          id: '1',
+          password: 'admin',
+          profile: {
+            picture: '/static/demo-images/default-avatar.jpg',
+          },
+          metadata: {
+            lastLogin: null
+          }
+        },
+        {
+          username: 'user',
+          email: 'user@demo.com',
+          emailVerified: true,
+          createdAt: Date.now(),
+          roles: ['USER'],
+          id: '2',
+          password: 'user',
+          profile: {
+            picture: '',
+          },
+          metadata: {
+            lastLogin: null
+          }
+        },
+        {
+          username: 'blocked',
+          email: 'blocked@demo.com',
+          emailVerified: true,
+          createdAt: Date.now(),
+          roles: ['USER'],
+          id: '3',
+          password: 'user',
+          profile: {
+            picture: '',
+          },
+          blocked: true,
+          metadata: {
+            lastLogin: null
+          }
+        },
+        {
+          username: 'notverified',
+          email: 'notverified@demo.com',
+          emailVerified: false,
+          emailVerificationToken: '1234',
+          createdAt: Date.now(),
+          roles: ['USER'],
+          id: '3',
+          password: 'user',
+          profile: {
+            picture: '',
+          },
+          blocked: true,
+          metadata: {
+            lastLogin: null
+          }
+        },
+      ],
+    }
+  })
+}))
+
 describe('Integrations tests for users creation endpoint', () => {
   let server
   let url
