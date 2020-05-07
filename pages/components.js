@@ -48,6 +48,10 @@ const Components = () => {
     publishing: {
       title: 'title',
     },
+    comments: {
+      enabled: true,
+      permissions: []
+    },
     fields: [
       {
         type: 'text',
