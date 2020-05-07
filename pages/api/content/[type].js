@@ -113,13 +113,18 @@ const createContent = async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, from, limit, author },
+    query: { type, search, sortBy, sortOrder, from, limit, author, tags },
   } = req
 
   const filterParams = {}
 
   if (author) {
     filterParams.author = author
+  }
+
+  if (tags) {
+    // TODO: Make tags filter generic
+    filterParams['tags.slug'] = tags
   }
 
   const searchParams = {

@@ -885,7 +885,7 @@ const links = [{
                 <div>
                   {dynamicValues.map((item) => {
                     return (
-                      <DynamicFieldView field={item.field} value={item.value} />
+                      <DynamicFieldView field={item.field} value={item.value} contentType={{slug: 'test'}} />
                     )
                   })}
                 </div>
@@ -894,7 +894,7 @@ const links = [{
             <pre>{`
 {dynamicValues.map(item => {
   return (
-    <DynamicFieldView field={item.field} value={item.value} />
+    <DynamicFieldView field={item.field} value={item.value} contentType={{slug: 'test'}} />
   )
 })}
             `}</pre>
@@ -931,11 +931,12 @@ const links = [{
                     { label: 'test', slug: 'test' },
                     { label: 'demo', slug: 'demo' },
                   ]}
+                  contentType={{slug : 'post'}} 
                 />
               </div>
             </div>
             <pre>{`
-<TagsField tags={[{label: 'test', slug: 'test'}, {label: 'demo', slug: 'demo'}]} />
+<TagsField tags={[{label: 'test', slug: 'test'}, {label: 'demo', slug: 'demo'}]} contentType={{slug : 'post'}} />
   `}</pre>
           </div>
 

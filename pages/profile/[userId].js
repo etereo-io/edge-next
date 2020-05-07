@@ -7,6 +7,7 @@ import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../../components/layout/normal/layout'
 import UserActivity from '../../components/user/activity/activity'
 import config from '../../lib/config'
+import {hasPermission} from '../../lib/permissions'
 import { useRouter } from 'next/router'
 
 const Profile = (props) => {
@@ -22,6 +23,8 @@ const Profile = (props) => {
   )
 
   const { user, finished } = useUser({ userId, redirectTo: '/404' })
+  
+  const { currentUser } = useUser({ userId: 'me' })
 
   // Loading
   if (!finished || !permissions.finished) {
@@ -32,6 +35,10 @@ const Profile = (props) => {
       </Layout>
     )
   }
+
+  const visibleContentTypes = config.content.types.filter(cType => {
+    return hasPermission(currentUser, [`content.${cType.slug}.read`])
+  })
 
   return (
     <Layout title="Profile">
@@ -70,7 +77,7 @@ const Profile = (props) => {
 
       <div className="content-container">
         <div className="content-types">
-          {config.content.types.map((cData) => {
+          {visibleContentTypes.map((cData) => {
             return (
               <div className="content-block">
                 <h3>User's {cData.title.en}s</h3>
@@ -162,6 +169,10 @@ const Profile = (props) => {
               transform: none;
               flex: 1;
             }
+          }
+
+          .content-block {
+            margin-bottom: var(--empz-gap-double);
           }
 
           .content-summary-content {

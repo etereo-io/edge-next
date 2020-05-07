@@ -3,7 +3,7 @@ import Image from '../image/image'
 import ReactPlayer from 'react-player'
 import TagsField from '../tags-field/tags-field'
 
-function Field({ field, value, showLabel = false }) {
+function Field({ field, value, showLabel = false, contentType}) {
   const getField = (field, value) => {
     const datatestId = `${field.type}-${field.name}`
 
@@ -34,7 +34,7 @@ function Field({ field, value, showLabel = false }) {
       case FIELDS.TAGS:
         return (
           <div data-testid={datatestId}>
-            <TagsField tags={value} />
+            <TagsField tags={value} type={contentType} />
           </div>
         )
 

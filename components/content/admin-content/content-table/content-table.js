@@ -58,7 +58,7 @@ const ListItem = (props) => {
         const content =
           index === 0 ? (
             <Link href={`/content/${props.type.slug}/${props.item.slug}`}>
-              {typeof value === 'string' ? value : JSON.stringify(value)}
+              <a>{typeof value === 'string' ? value : JSON.stringify(value)}</a>
             </Link>
           ) : typeof value === 'string' ? (
             value
@@ -82,7 +82,7 @@ const ListItem = (props) => {
       {props.type.publishing.draftMode && (
         <TableCellBody>{props.item.draft ? 'DRAFT' : '-'}</TableCellBody>
       )}
-      {props.type.comments.enabled && <TableCellBody>0 Comments</TableCellBody>}
+      {props.type.comments.enabled && <TableCellBody>{props.item.comments || 0}</TableCellBody>}
       <TableCellBody>0 times</TableCellBody>
       <TableCellBody>
         {!success && (
@@ -174,7 +174,7 @@ export default function (props) {
   )
 
   const headerCells = props.type.fields.map((field) => {
-    return <TableCellHeader>{field.name}</TableCellHeader>
+    return <TableCellHeader key={field.name}>{field.name}</TableCellHeader>
   })
 
   headerCells.push(<TableCellHeader>Created at</TableCellHeader>)

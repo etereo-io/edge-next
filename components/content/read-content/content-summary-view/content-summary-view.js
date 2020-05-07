@@ -74,6 +74,7 @@ export default function (props) {
                         <DynamicFieldView
                           field={field}
                           value={props.content[field.name]}
+                          contentType={props.type}
                         />
                       </a>
                     </Link>
@@ -82,6 +83,7 @@ export default function (props) {
                     <DynamicFieldView
                       field={field}
                       value={props.content[field.name]}
+                      contentType={props.type}
                     />
                   )}
                 </div>
@@ -101,6 +103,7 @@ export default function (props) {
                   <DynamicFieldView
                     field={field}
                     value={props.content[field.name]}
+                    contentType={props.type}
                   />
                 </div>
               )

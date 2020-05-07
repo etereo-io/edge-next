@@ -30,6 +30,11 @@ export async function getServerSideProps({ req, res, query }) {
 
   const filterOptions = {}
   contentTypeDefinition.publishing.draftMode = filterOptions.draft = false
+
+  if (query.tags) {
+    filterOptions['tags.slug'] = query.tags
+  }
+  
   const response = await findContent(query.type, filterOptions)
 
   return {
@@ -38,6 +43,7 @@ export async function getServerSideProps({ req, res, query }) {
       type: query.type,
       canAccess: true,
       user: req.user || {},
+      query: `${query.tags ? `tags=${query.tags}` : ''}`
     },
   }
 }
@@ -62,6 +68,7 @@ const ContentPage = (props) => {
           initialData={props.data}
           type={contentTypeDefinition}
           infiniteScroll={true}
+          query={props.query}
         />
       </div>
     </Layout>

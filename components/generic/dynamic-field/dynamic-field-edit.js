@@ -1,5 +1,5 @@
 import { FIELDS } from '../../../lib/config/config-constants'
-import TagsField from '../tags-input/tags-input'
+import TagsInput from '../tags-input/tags-input'
 import Toggle from '../toggle/toggle'
 
 function InputText(props) {
@@ -76,7 +76,7 @@ function InputFile(props) {
 
 function InputTags(props) {
   return (
-    <TagsField
+    <TagsInput
       placeholder={props.field.placeholder}
       name={props.field.name}
       value={props.value}

@@ -21,48 +21,56 @@ const EditContent = () => {
   } = router
 
   const contentType = getContentTypeDefinition(type)
+  const [content, setContent] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   // Load data
-  const { data, error } = useSWR(
-    type && slug ? API.content[type] + '/' + slug : null,
-    fetch
-  )
+  function loadData() {
+    fetch(API.content[type] + '/' + slug)
+      .then(data => {
+        setContent(data)
+        setLoading(false)
+      })
+      .catch(err => {
+        setError(true)
+        setLoading(false)
+      })
+  }
+
+  useEffect(() => {
+    if (slug && type && (!content && !error)) {
+      loadData()
+    }
+  }, [slug, type, content, error])
 
   const { available } = usePermission(
     [`content.${type}.update`, `content.${type}.admin`],
     '/404',
     null,
     (user) => {
-      return data && data.author === user.id
+      return content && content.author === user.id
     },
-    data || error
+    content || error
   )
-
-  const [content, setContent] = useState(null)
 
   const onSave = (newItem) => {
     setContent(newItem)
   }
 
-  useEffect(() => {
-    if (!content) {
-      setContent(data)
-    }
-  }, [data])
-
   return (
     <>
       <Layout title="Edit content">
-        {slug && type && (
+        {!loading && !error && (
           <div className="edit-page">
-            <h1>Editing: {data ? data.title : null}</h1>
+            <h1>Editing: {content ? content.title : null}</h1>
 
             {available && (
-              <ContentForm type={contentType} onSave={onSave} content={data} />
+              <ContentForm type={contentType} onSave={onSave} content={content} />
             )}
           </div>
         )}
-        {(!slug || !type) && <LoadingView />}
+        {(loading || error) && <LoadingView />}
       </Layout>
 
       <style jsx>{`

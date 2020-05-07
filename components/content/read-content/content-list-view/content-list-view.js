@@ -53,7 +53,7 @@ function LoadingItems() {
 }
 
 function EmptyComponent() {
-  return <div className="empty">Sorry, no items found.</div>
+  return <div className="empty">Nothing found</div>
 }
 
 export default function (props) {

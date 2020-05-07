@@ -3,7 +3,7 @@ import Link from 'next/link'
 function Tag(props) {
   return (
     <>
-      <Link href={`/tag/${props.tag.slug}`}>
+      <Link href={`/content/${props.type.slug}?tags=${props.tag.slug}`}>
         <a className="tag">{props.tag.label}</a>
       </Link>
       <style jsx>{`
@@ -21,12 +21,12 @@ function Tag(props) {
   )
 }
 
-export default function ({ tags = [] }) {
+export default function ({ tags = [], type = {} }) {
   return (
     <>
       <div className="tags-field">
         {(tags || []).map((tag) => {
-          return <Tag tag={tag} key={tag.slug} />
+          return <Tag tag={tag} key={tag.slug} type={type} />
         })}
       </div>
       <style jsx>{`
