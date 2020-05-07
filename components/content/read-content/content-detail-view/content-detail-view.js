@@ -45,7 +45,7 @@ export default function (props) {
         )}
   
         {props.type.comments.enabled && canReadComments.available && (
-          <CommentsFeed type={props.type} contentId={props.content.id} newComments={newComments} />
+          <CommentsFeed type={props.type} contentId={props.content.id} newComments={newComments} initialData={props.comments} />
         )}
       </div>
       <style jsx>{`

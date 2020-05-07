@@ -45,7 +45,7 @@ export default function (props) {
           }
 
           .social-icon {
-            margin: 5px;
+            margin-right: 5px;
           }
         `}
       </style>

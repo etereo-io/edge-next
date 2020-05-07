@@ -12,7 +12,8 @@ function Tag(props) {
           background: var(--empz-foreground);
           border-radius: 5px;
           color: var(--empz-background);
-          margin: 5px;
+          margin-right: 5px;
+          margin-bottom: 5px;
           cursor: pointer;
         }
       `}</style>

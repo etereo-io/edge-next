@@ -3,6 +3,7 @@ import ContentDetailView from '../../../components/content/read-content/content-
 import Layout from '../../../components/layout/normal/layout'
 import { connect } from '../../../lib/api/db'
 import fetch from '../../../lib/fetcher'
+import { findComments } from '../../../lib/api/comments/comments'
 import { findOneContent } from '../../../lib/api/content/content'
 import { getContentTypeDefinition } from '../../../lib/config'
 import { hasPermissionsForContent } from '../../../lib/api/middlewares'
@@ -39,11 +40,15 @@ export async function getServerSideProps({ req, res, query }) {
     res.writeHead(302, { Location: '/404'})
     res.end()
     return
-    
   }
 
   const contentTitle = item && contentTypeDefinition.publishing.title ? 
     item[contentTypeDefinition.publishing.title] : `${contentTypeDefinition.title.en} detail`
+
+  const comments = await findComments({
+    contentId: item.id,
+    contentType: query.type
+  })
 
   return {
     props: {
@@ -53,25 +58,27 @@ export async function getServerSideProps({ req, res, query }) {
       canAccess: true,
       pageTitle: contentTitle,
       user: req.user || {},
+      contentType: contentTypeDefinition,
+      comments
     },
   }
 }
 
 
 const ContentPage = (props) => {
-  const contentType = getContentTypeDefinition(props.type)
+  // const contentType = getContentTypeDefinition(props.type)
 
   usePermission([`content.${props.type}.read`, `content.${props.type}.admin`], '/')
 
   // Load data
-  const { data } = useSWR(API.content[props.type] + '/' + props.slug, fetch, {
+  /*const { data } = useSWR(API.content[props.type] + '/' + props.slug, fetch, {
     initialData: props.data,
-  })
+  })*/
 
   return (
     <Layout title={props.pageTitle}>
       {props.canAccess && props.data && (
-        <ContentDetailView type={contentType} content={data} />
+        <ContentDetailView type={props.contentType} content={props.data} comments={props.comments}/>
       )}
     </Layout>
   )

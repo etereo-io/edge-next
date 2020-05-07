@@ -33,9 +33,7 @@ export default function (props) {
       {props.content.draft && <div className='status'>
         Draft - Not published
         </div>}
-      <div className="meta">
-        <span className="created-at">{format(props.content.createdAt)}</span>
-      </div>
+      
       <div className="content-summary-content">
         {props.type.fields
           .filter((f) => f.name === props.type.publishing.title)
@@ -91,6 +89,10 @@ export default function (props) {
           </ul>
         </DropDown>
       </div>
+      <div className="meta">
+        <span className="created-at">{format(props.content.createdAt)}</span>
+        {props.content.comments && <span className="comment-count">{props.content.comments} comments</span>}
+      </div>
     </div>
       <style jsx>{
        `
@@ -116,7 +118,7 @@ export default function (props) {
       }
 
       .field {
-        margin: var(--empz-gap);
+        margin: var(--empz-gap) 0;
       }
 
       @media (max-width: 600px) {
@@ -141,6 +143,16 @@ export default function (props) {
 
       h1, p {
         word-break: break-all;
+      }
+
+      .meta {
+        color: var(--accents-5);
+        font-size: 13px;
+        margin-top: var(--empz-gap-half);
+      }
+
+      .meta .comment-count {
+        padding-left: var(--empz-gap-half);
       }
        ` 
       }</style>
