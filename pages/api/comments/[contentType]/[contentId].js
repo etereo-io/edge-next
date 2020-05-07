@@ -57,12 +57,12 @@ export function fillCommentWithDefaultData(
       contentType: contentType.slug,
       contentId: contentId,
       message: comment.message,
-      conversationId: comment.conversationId || null
+      conversationId: comment.conversationId || null,
     }
 
     const slug = slugify(newComment.createdAt + ' ' + newComment.author, {
-      lower: true, 
-      strict: true,  
+      lower: true,
+      strict: true,
     })
 
     const extraFields = {
@@ -94,10 +94,13 @@ const createComment = (req, res) => {
       addComment(newComment)
         .then((data) => {
           // Trigger hook
-          onCommentAdded(comment, req.user)
+          onCommentAdded(data, req.user)
 
           // Respond
-          res.status(200).json(data)
+          res.status(200).json({
+            ...data,
+            user: req.user,
+          })
         })
         .catch((err) => {
           res.status(500).json({
@@ -123,7 +126,7 @@ export default async (req, res) => {
       from,
       limit,
       author,
-      conversationId
+      conversationId,
     },
   } = req
 

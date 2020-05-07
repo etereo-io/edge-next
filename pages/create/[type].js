@@ -8,7 +8,10 @@ import { useState, useEffect } from 'react'
 const CreateContent = () => {
   const router = useRouter()
   const { type } = router.query
-  const {available} = usePermission(type ? [`content.${type}.create`, `content.${type}.admin`]: null, '/')
+  const { available } = usePermission(
+    type ? [`content.${type}.create`, `content.${type}.admin`] : null,
+    '/'
+  )
 
   const contentType = getContentTypeDefinition(type)
 
@@ -22,9 +25,9 @@ const CreateContent = () => {
   useEffect(() => {
     if (contentType && !content) {
       const defaultState = {
-        draft: false
+        draft: false,
       }
-      
+
       contentType.fields.forEach((field) => {
         // Default field value
         const fieldValue = field.value || field.defaultValue
@@ -38,25 +41,23 @@ const CreateContent = () => {
 
   return (
     <>
-    <Layout title="New content">
-      <div className="create-page">
-        <h1>Create new {contentType ? contentType.title.en : 'content'}</h1>
+      <Layout title="New content">
+        <div className="create-page">
+          <h1>Create new {contentType ? contentType.title.en : 'content'}</h1>
 
-        {available && <ContentForm 
-          content={content}
-          type={contentType} 
-          onSave={onSave} />}
-      </div>
-    </Layout>
-  <style jsx>{`
-    .create-page {
-      margin-bottom: var(--empz-gap-double);
-    }
-    h1 {
-      margin-bottom: var(--empz-gap);
-    }
-    
-  `}</style>
+          {available && (
+            <ContentForm content={content} type={contentType} onSave={onSave} />
+          )}
+        </div>
+      </Layout>
+      <style jsx>{`
+        .create-page {
+          margin-bottom: var(--empz-gap-double);
+        }
+        h1 {
+          margin-bottom: var(--empz-gap);
+        }
+      `}</style>
     </>
   )
 }

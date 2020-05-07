@@ -11,9 +11,7 @@ import listen from 'test-listen'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
-
 jest.mock('../../../../../edge.config', () => {
-  
   const mockInitialPosts = []
 
   for (var i = 0; i < 100; i++) {
@@ -27,7 +25,7 @@ jest.mock('../../../../../edge.config', () => {
       slug: 'example-post-' + i,
       image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
       description: 'This is an example description',
-      draft: Math.random() > 0.5 ? true: false,
+      draft: Math.random() > 0.5 ? true : false,
       tags: [
         {
           slug: 'software',
@@ -105,28 +103,24 @@ jest.mock('../../../../../edge.config', () => {
         type: 'tags',
         label: 'Tags',
         placeholder: 'Tags',
-      }
+      },
     ],
   }
 
   return {
     __esModule: true,
     getConfig: jest.fn().mockReturnValue({
-        title: 'A test',
-        description: 'A test',
-        // Content configuration
-        content: {
-          // Different content types defined
-          types: [
-            mockPostContentType
-          ],
-          initialContent: mockInitialPosts,
-        },
-    })
+      title: 'A test',
+      description: 'A test',
+      // Content configuration
+      content: {
+        // Different content types defined
+        types: [mockPostContentType],
+        initialContent: mockInitialPosts,
+      },
+    }),
   }
 })
-
-
 
 describe('Integrations tests for content endpoint', () => {
   let server
@@ -283,7 +277,7 @@ describe('Integrations tests for content endpoint', () => {
 
       getSession.mockReturnValueOnce({
         roles: ['ADMIN'],
-        id: '1'
+        id: '1',
       })
 
       const response = await fetch(urlToBeUsed.href)
@@ -317,7 +311,7 @@ describe('Integrations tests for content endpoint', () => {
 
       getSession.mockReturnValueOnce({
         roles: ['ADMIN'],
-        id: '1'
+        id: '1',
       })
 
       const response = await fetch(urlToBeUsed.href)
@@ -353,7 +347,7 @@ describe('Integrations tests for content endpoint', () => {
 
       getSession.mockReturnValueOnce({
         roles: ['ADMIN'],
-        id: '1'
+        id: '1',
       })
 
       const response = await fetch(urlToBeUsed.href)
@@ -380,7 +374,6 @@ describe('Integrations tests for content endpoint', () => {
         'content.post.admin': ['ADMIN'],
       })
 
-
       const response = await fetch(urlToBeUsed.href)
       const jsonResult = await response.json()
 
@@ -390,9 +383,9 @@ describe('Integrations tests for content endpoint', () => {
       }
     })
 
-    test('Should all the items for admin', async () => {
+    test('Should return all the items for admin', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', from: 15, limit: 15, author: 2 }
+      const params = { type: 'post', from: 0, limit: 50, author: 2 }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
@@ -405,7 +398,7 @@ describe('Integrations tests for content endpoint', () => {
 
       getSession.mockReturnValueOnce({
         roles: ['ADMIN'],
-        id: '1'
+        id: '1',
       })
 
       const response = await fetch(urlToBeUsed.href)
@@ -437,12 +430,12 @@ describe('Integrations tests for content endpoint', () => {
 
       getSession.mockReturnValueOnce({
         roles: ['USER'],
-        id: '2'
+        id: '2',
       })
 
       const response = await fetch(urlToBeUsed.href)
       const jsonResult = await response.json()
-      
+
       expect(response.status).toBe(200)
       let someIsDraft = false
       for (var i = 0; i < jsonResult.results.length; i++) {

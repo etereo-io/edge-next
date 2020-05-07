@@ -10,12 +10,12 @@ jest.mock('../../../../../lib/api/users/user')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
-      title: 'A test',
-      description: 'A test',
-      user: {
-        emailVerification: true
-      }
-  })
+    title: 'A test',
+    description: 'A test',
+    user: {
+      emailVerification: true,
+    },
+  }),
 }))
 
 describe('Integrations tests for login', () => {
@@ -41,7 +41,7 @@ describe('Integrations tests for login', () => {
       username: 'emilio',
       email: 'email@email.com',
       password: 'test123123',
-      emailVerified: true
+      emailVerified: true,
     }
 
     afterEach(() => {
@@ -93,10 +93,12 @@ describe('Integrations tests for login', () => {
     })
 
     test('Should not work for a blocked user', async () => {
-      findUser.mockReturnValueOnce(Promise.resolve({
-        ...newUser,
-        blocked: true
-      }))
+      findUser.mockReturnValueOnce(
+        Promise.resolve({
+          ...newUser,
+          blocked: true,
+        })
+      )
 
       const response = await fetch(urlLogin, {
         method: 'POST',

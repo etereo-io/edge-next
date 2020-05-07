@@ -7,7 +7,10 @@ import { useRouter } from 'next/router'
 const AdminPage = () => {
   const router = useRouter()
   const { slug } = router.query
-  const {available} = usePermission(slug ? [`content.${slug}.admin`]: null, '/')
+  const { available } = usePermission(
+    slug ? [`content.${slug}.admin`] : null,
+    '/'
+  )
 
   // Load data
   const contentTypeDefinition = getContentTypeDefinition(slug)

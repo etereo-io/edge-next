@@ -1,8 +1,6 @@
 import '../styles/index.scss'
 
-import withEdgeTheme, {
-  EdgeThemeContext,
-} from '../lib/contexts/edge-theme'
+import withEdgeTheme, { EdgeThemeContext } from '../lib/contexts/edge-theme'
 
 import { useContext } from 'react'
 

@@ -11,48 +11,49 @@ import listen from 'test-listen'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
-
 jest.mock('../../../../../edge.config', () => {
-  
-  const mockInitialPosts = [{
-    type: 'post',
-    id: 0,
-    author: '1',
-    title: 'Example post',
-    slug: 'example-post-0' ,
-    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
-    description: 'This is an example description',
-    draft: false,
-    tags: [
-      {
-        slug: 'software',
-        label: 'SOFTWARE',
-      },
-      {
-        slug: 'ai',
-        label: 'AI',
-      },
-    ],
-  }, {
-    type: 'post',
-    id: 1,
-    author: '2',
-    title: 'Example post',
-    slug: 'example-post-1' ,
-    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
-    description: 'This is an example description',
-    draft: true,
-    tags: [
-      {
-        slug: 'software',
-        label: 'SOFTWARE',
-      },
-      {
-        slug: 'ai',
-        label: 'AI',
-      },
-    ],
-  }]
+  const mockInitialPosts = [
+    {
+      type: 'post',
+      id: 0,
+      author: '1',
+      title: 'Example post',
+      slug: 'example-post-0',
+      image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+      description: 'This is an example description',
+      draft: false,
+      tags: [
+        {
+          slug: 'software',
+          label: 'SOFTWARE',
+        },
+        {
+          slug: 'ai',
+          label: 'AI',
+        },
+      ],
+    },
+    {
+      type: 'post',
+      id: 1,
+      author: '2',
+      title: 'Example post',
+      slug: 'example-post-1',
+      image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+      description: 'This is an example description',
+      draft: true,
+      tags: [
+        {
+          slug: 'software',
+          label: 'SOFTWARE',
+        },
+        {
+          slug: 'ai',
+          label: 'AI',
+        },
+      ],
+    },
+  ]
 
   const mockPostContentType = {
     title: {
@@ -118,27 +119,24 @@ jest.mock('../../../../../edge.config', () => {
         type: 'tags',
         label: 'Tags',
         placeholder: 'Tags',
-      }
+      },
     ],
   }
 
   return {
     __esModule: true,
     getConfig: jest.fn().mockReturnValue({
-        title: 'A test',
-        description: 'A test',
-        // Content configuration
-        content: {
-          // Different content types defined
-          types: [
-            mockPostContentType
-          ],
-          initialContent: mockInitialPosts,
-        },
-    })
+      title: 'A test',
+      description: 'A test',
+      // Content configuration
+      content: {
+        // Different content types defined
+        types: [mockPostContentType],
+        initialContent: mockInitialPosts,
+      },
+    }),
   }
 })
-
 
 describe('Integrations tests for comment creation endpoint', () => {
   let server
@@ -206,6 +204,7 @@ describe('Integrations tests for comment creation endpoint', () => {
 
     const newComment = {
       message: 'test @anotheruser test',
+      conversationId: null
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -226,6 +225,7 @@ describe('Integrations tests for comment creation endpoint', () => {
       message: newComment.message,
       author: 'test-id',
       id: expect.anything(),
+      user: expect.anything()
     })
   })
 })

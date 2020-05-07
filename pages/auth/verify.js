@@ -12,10 +12,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
 
-
-  // Email verification 
+  // Email verification
   useEffect(() => {
-    if (token && email ) {
+    if (token && email) {
       setLoading(true)
       fetch(`/api/auth/verify?email=${email}&token=${token}`)
         .then(() => {
@@ -23,7 +22,7 @@ const Login = () => {
           setLoading(false)
           setError(false)
         })
-        .catch(err => {
+        .catch((err) => {
           setSuccess(false)
           setLoading(false)
           setError(true)
@@ -37,7 +36,9 @@ const Login = () => {
         <h1>Verifying your email</h1>
         {loading && <div className="loading">Loading...</div>}
         {error && <div className="error">Error veryfing</div>}
-        {success && <div className="Success">Success! Your email is verified.</div>}
+        {success && (
+          <div className="Success">Success! Your email is verified.</div>
+        )}
       </div>
       <style jsx>{`
         .verify {

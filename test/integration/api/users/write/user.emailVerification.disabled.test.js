@@ -12,12 +12,12 @@ jest.mock('../../../../../lib/api/users/user')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
-      title: 'A test',
-      description: 'A test',
-      user: {
-        emailVerification: false
-      }
-  })
+    title: 'A test',
+    description: 'A test',
+    user: {
+      emailVerification: false,
+    },
+  }),
 }))
 
 const newUser = {
@@ -27,13 +27,11 @@ const newUser = {
 }
 
 describe('Integration tests for email verification with emailVerification disabled', () => {
-   
   let serverAuth
   let urlAuth
   let urlLogin
 
   beforeAll(async (done) => {
-    
     serverAuth = http.createServer((req, res) =>
       apiResolver(req, res, undefined, handlerAuth)
     )
@@ -52,11 +50,12 @@ describe('Integration tests for email verification with emailVerification disabl
   })
 
   test('Login Should return 200 for a non verified user when email verification is disabled', async () => {
-    
-    findUser.mockReturnValueOnce(Promise.resolve({
-      ...newUser,
-      emailVerified: false
-    }))
+    findUser.mockReturnValueOnce(
+      Promise.resolve({
+        ...newUser,
+        emailVerified: false,
+      })
+    )
 
     const response = await fetch(urlLogin, {
       method: 'POST',
@@ -81,5 +80,4 @@ describe('Integration tests for email verification with emailVerification disabl
     onUserAdded(newUser)
     expect(sendVerifyEmail).not.toHaveBeenCalled()
   })
-
 })

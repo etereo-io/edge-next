@@ -36,8 +36,7 @@ function LoadingItems() {
         </div>
       </div>
 
-      <style jsx>{
-        `
+      <style jsx>{`
         .p {
           background: var(--empz-background);
           padding: var(--empz-gap);
@@ -48,8 +47,7 @@ function LoadingItems() {
         .r {
           margin-bottom: var(--empz-gap);
         }
-        `
-      }</style>
+      `}</style>
     </>
   )
 }
@@ -62,7 +60,8 @@ export default function (props) {
   const infiniteScroll = props.infiniteScroll
   const query = props.query
   const identificator = 'content-list-' + props.type.slug + '-' + query
-  const listView = props.type.display && props.type.display === 'grid' ? 'grid': 'list'
+  const listView =
+    props.type.display && props.type.display === 'grid' ? 'grid' : 'list'
 
   // Fetch content type page by page
   const {
@@ -87,14 +86,14 @@ export default function (props) {
       return results.map((item) => {
         return (
           <>
-          <div key={item.id} className={`item ${listView}`}>
+            <div key={item.id} className={`item ${listView}`}>
               <ContentSummaryView
                 content={item}
                 type={props.type}
                 links={true}
               />
-          </div>
-          <style jsx>{`
+            </div>
+            <style jsx>{`
               .item {
                 margin-bottom: 30px;
               }

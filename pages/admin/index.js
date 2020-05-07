@@ -6,9 +6,9 @@ import config from '../../lib/config'
 import { hasPermission } from '../../lib/permissions'
 
 const AdminPage = () => {
-  const { user } = useUser({ redirectTo : '/', userId: 'me'})
+  const { user } = useUser({ redirectTo: '/', userId: 'me' })
 
-  const {available} = usePermission(['admin.access'], '/')
+  const { available } = usePermission(['admin.access'], '/')
 
   const links = []
 
@@ -29,7 +29,7 @@ const AdminPage = () => {
   if (config.user.captureGeolocation) {
     links.push({
       title: 'Real Time geolocation',
-      link: '/admin/geolocation'
+      link: '/admin/geolocation',
     })
   }
 

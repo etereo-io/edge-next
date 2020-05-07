@@ -23,12 +23,12 @@ const ListItem = (props) => {
 
   const blockRequest = (blockedStatus) => {
     const url = `${API.users}/${props.item.id}/block?field=id`
-    
+
     return fetch(url, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        blocked: blockedStatus
+        blocked: blockedStatus,
       }),
     })
   }
@@ -92,9 +92,13 @@ const ListItem = (props) => {
           <a>{props.item.username}</a>
         </Link>
       </TableCellBody>
-      <TableCellBody >{props.item.email}</TableCellBody>
+      <TableCellBody>{props.item.email}</TableCellBody>
       <TableCellBody>{props.item.metadata.reported}</TableCellBody>
-      <TableCellBody>{props.item.metadata.lastLogin ? format(props.item.metadata.lastLogin): 'Never'}</TableCellBody>
+      <TableCellBody>
+        {props.item.metadata.lastLogin
+          ? format(props.item.metadata.lastLogin)
+          : 'Never'}
+      </TableCellBody>
       <TableCellBody>{format(props.item.createdAt)}</TableCellBody>
       <TableCellBody>{props.item.blocked ? 'Blocked' : '-'}</TableCellBody>
       <TableCellBody>
@@ -104,18 +108,22 @@ const ListItem = (props) => {
             Delete
           </Button>
         )}
-        
-        <Button loading={loading} warning={!props.item.blocked} secondary={props.item.blocked} onClick={onClickBlockUser}>
+
+        <Button
+          loading={loading}
+          warning={!props.item.blocked}
+          secondary={props.item.blocked}
+          onClick={onClickBlockUser}
+        >
           {props.item.blocked ? 'Unblock' : 'Block'}
         </Button>
-        
+
         {error && <div className="error">Error deleting item</div>}
         {success && <div className="success">Item deleted</div>}
       </TableCellBody>
     </TableRowBody>
   )
 }
-
 
 function Placeholder() {
   return (
@@ -148,9 +156,7 @@ function Placeholder() {
           <LoadingPlaceholder />
         </TableCellBody>
       </TableRowBody>
-
     </>
-    
   )
 }
 
@@ -200,7 +206,6 @@ export default function (props) {
 
   return (
     <div className="content-list">
-
       <div className="table-wrapper">
         <Table headerCells={headerCells}>
           {!isEmpty ? pages : <EmptyComponent />}
@@ -217,7 +222,7 @@ export default function (props) {
         .table-wrapper {
           overflow-x: scroll;
         }
-        
+
         .load-more {
           display: flex;
           justify-content: center;

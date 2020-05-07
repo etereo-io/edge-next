@@ -3,21 +3,29 @@ import { useState, useEffect } from 'react'
 import API from '../../../lib/api/api-endpoints'
 import fetch from '../../../lib/fetcher'
 
-export default function ({ contentId='',
-  comment={}, 
-  onChange = () => {}, 
-  onSave = () => {}, 
+export default function ({
+  contentId = '',
+  comment = {},
+  onChange = () => {},
+  onSave = () => {},
+  onCancel = () => {},
   type = {},
-  conversationId= ''
+  conversationId = '',
 }) {
-  const [loading, setLoading ] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
 
-  const onChangeMessage = ev => {
+  const onChangeMessage = (ev) => {
     const newMessage = ev.target.value
     setMessage(newMessage)
     onChange(newMessage)
+  }
+
+  const onClickCancel = (ev) => {
+    ev.preventDefault()
+    setMessage('')
+    onCancel()
   }
 
   const submitRequest = (data) => {
@@ -26,7 +34,7 @@ export default function ({ contentId='',
     }`
 
     return fetch(url, {
-      method: comment.id ? 'PUT': 'POST',
+      method: comment.id ? 'PUT' : 'POST',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +48,7 @@ export default function ({ contentId='',
     // TODO: add a blocking mechanism to not allow the user post too fast
     // TODO: include recaptcha
     if (!message || loading) {
-      return 
+      return
     }
 
     setLoading(true)
@@ -48,7 +56,7 @@ export default function ({ contentId='',
 
     submitRequest({
       message,
-      conversationId: conversationId ? conversationId: null
+      conversationId: conversationId ? conversationId : null,
     })
       .then((result) => {
         setLoading(false)
@@ -63,7 +71,6 @@ export default function ({ contentId='',
         setLoading(false)
         setError(true)
       })
-    
   }
 
   useEffect(() => {
@@ -74,39 +81,49 @@ export default function ({ contentId='',
 
   return (
     <>
-      <div className=''>
-        <form onSubmit={onSubmit} className='form'>
-          <textarea value={message} placeholder="Your comment" onChange={onChangeMessage}/>
-          
+      <div className="">
+        <form onSubmit={onSubmit} className="form">
+          <textarea
+            value={message}
+            placeholder="Your comment"
+            onChange={onChangeMessage}
+          />
+
           <div className="actions">
             <div className="action">
-              <Button alt onClick={(ev) => { ev.preventDefault(); setMessage('')}}>Cancel</Button> 
+              <Button alt onClick={onClickCancel}>
+                Cancel
+              </Button>
             </div>
             <div className="action">
-              <Button success loading={loading} title="Send comment" type="submit">Send</Button>
+              <Button
+                success
+                loading={loading}
+                title="Send comment"
+                type="submit"
+              >
+                Send
+              </Button>
             </div>
           </div>
           {error && <div className="error-message">Error posting comment </div>}
         </form>
       </div>
-      <style jsx>{
-        `
-          form {
-            max-width: 500px;
-            margin: 0 auto;
-          }
+      <style jsx>{`
+        form {
+          max-width: 500px;
+          margin: 0 auto;
+        }
 
-          .actions {
-            display: flex;
-            justify-content: flex-end;
-          }
+        .actions {
+          display: flex;
+          justify-content: flex-end;
+        }
 
-          .action {
-            margin-left: var(--empz-gap);
-          }
-        
-        `
-      }</style>
+        .action {
+          margin-left: var(--empz-gap);
+        }
+      `}</style>
     </>
   )
 }

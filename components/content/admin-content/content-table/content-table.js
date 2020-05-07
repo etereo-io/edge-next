@@ -66,15 +66,23 @@ const ListItem = (props) => {
             JSON.stringify(value)
           )
 
-        return <TableCellBody style={{maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis'}}>{content}</TableCellBody>
+        return (
+          <TableCellBody
+            style={{
+              maxWidth: '200px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {content}
+          </TableCellBody>
+        )
       })}
       <TableCellBody>{format(props.item.createdAt)}</TableCellBody>
       {props.type.publishing.draftMode && (
-        <TableCellBody>{props.item.draft ? 'DRAFT': '-'}</TableCellBody>
+        <TableCellBody>{props.item.draft ? 'DRAFT' : '-'}</TableCellBody>
       )}
-      {props.type.comments.enabled && (
-        < TableCellBody>0 Comments</TableCellBody>
-      )}
+      {props.type.comments.enabled && <TableCellBody>0 Comments</TableCellBody>}
       <TableCellBody>0 times</TableCellBody>
       <TableCellBody>
         {!success && (
@@ -125,9 +133,7 @@ function Placeholder() {
           <LoadingPlaceholder />
         </TableCellBody>
       </TableRowBody>
-
     </>
-    
   )
 }
 
@@ -203,7 +209,7 @@ export default function (props) {
         .table-wrapper {
           overflow-x: scroll;
         }
-        
+
         .load-more {
           display: flex;
           margin: var(--empz-gap);

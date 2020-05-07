@@ -16,12 +16,14 @@ export default function (props) {
     secondary,
     warning,
     alert,
-    success
+    success,
   } = props
 
   const classNames = `button ${loading ? 'loading' : ''} ${alt ? 'alt' : ''} ${
     big ? 'big' : ''
-  } ${success ? 'success' : ''} ${warning ? 'warning' : ''} ${secondary ? 'secondary' : ''} ${alert ? 'alert' : ''} ${className}`
+  } ${success ? 'success' : ''} ${warning ? 'warning' : ''} ${
+    secondary ? 'secondary' : ''
+  } ${alert ? 'alert' : ''} ${className}`
 
   const buttonItem = (
     <>
@@ -29,13 +31,18 @@ export default function (props) {
         className={classNames}
         {...restProps}
         ref={reference}
-        onClick={!loading ? onClick: null}
+        onClick={!loading ? onClick : null}
       >
-        {!loading ? children: <LoadingSpinner alt={alt || secondary || warning || success || alert} />}
+        {!loading ? (
+          children
+        ) : (
+          <LoadingSpinner
+            alt={alt || secondary || warning || success || alert}
+          />
+        )}
       </button>
       <style jsx>
-        {
-          `
+        {`
           .button {
             border-radius: var(--empz-radius);
             border: var(--light-border);
@@ -54,7 +61,7 @@ export default function (props) {
             background: var(--empz-secondary);
             color: var(--empz-background);
           }
-          
+
           .button.alt {
             background: var(--empz-foreground);
             color: var(--empz-background);
@@ -64,40 +71,37 @@ export default function (props) {
           .button.alt:hover {
             background: var(--empz-secondary);
           }
-           
-          
+
           .button.success {
             background: var(--empz-success);
             color: var(--empz-background);
           }
-          
+
           .button.secondary {
             background: var(--empz-secondary);
             color: var(--empz-background);
           }
-        
+
           .button.warning {
             background: var(--empz-warning);
             color: var(--empz-background);
           }
-        
+
           .button.alert {
             background: var(--empz-alert);
             color: var(--empz-background);
           }
-          
+
           .button.big {
             font-size: 16px;
             padding: 24px;
             width: fit-content;
           }
-        
+
           .button.loading {
             padding: 5px 12px;
           }
-          
-          `
-        }
+        `}
       </style>
     </>
   )

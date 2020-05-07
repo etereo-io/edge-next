@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 
-
-export default function toggle({value = false, onChange = () => {}, ...props}) {
+export default function toggle({
+  value = false,
+  onChange = () => {},
+  ...props
+}) {
   const [enabled, setEnabled] = useState(!!value)
 
   useEffect(() => {
@@ -12,10 +15,14 @@ export default function toggle({value = false, onChange = () => {}, ...props}) {
     setEnabled(!enabled)
     onChange(!enabled)
   }
-  
+
   return (
     <>
-      <div onClick={onToggle} className={`toggle ${enabled ? 'enabled': null }`} data-testid={props['data-testid']}>
+      <div
+        onClick={onToggle}
+        className={`toggle ${enabled ? 'enabled' : null}`}
+        data-testid={props['data-testid']}
+      >
         <div className="toggle-ball"></div>
       </div>
       <style jsx>{`
@@ -28,7 +35,7 @@ export default function toggle({value = false, onChange = () => {}, ...props}) {
           width: 70px;
           height: 24px;
           padding: 2px;
-          transition: background 300ms linear;          
+          transition: background 300ms linear;
         }
 
         .toggle-ball {
@@ -49,7 +56,6 @@ export default function toggle({value = false, onChange = () => {}, ...props}) {
         .toggle.enabled .toggle-ball {
           left: 50px;
         }
-
       `}</style>
     </>
   )

@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 const MIME_TYPES = [
   'video/webm;codecs=vp8',
   'video/webm;codecs=h264',
@@ -314,74 +313,72 @@ export default class VideoRecorder extends React.Component {
             </div>
           </div>
         </div>
-      <style jsx>{
-        `
-        .video-wrapper {
-          position: relative;
-          background: black;
-        }
-      
-        .turn-camera-on {
-          cursor: pointer;
-          padding: 15px;
-          background: var(--empz-foreground);
-          text-align: center;
-          color: white;
-      
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      
-        .start-recording {
-          width: 25px;
-          height: 25px;
-          background: red;
-          border-radius: 100%;
-          border: 4px solid white;
-          cursor: pointer;
-        } 
-      
-        .stop-recording {
-          width: 25px;
-          height: 25px;
-          background: red;
-          border: 4px solid white;
-          cursor: pointer;
-        }
-      
-        .counter {
-          color: white;
-          padding-left: 10px;
-        }
-      
-        .timeout {
-          background: black;
-          color: white;
-          padding: 15px;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-      
-        .actions {
-          top: 10px;
-          left: 60px;
-          position: absolute;
-          display: flex;
-          align-items: center;
-        }
-      
-        video {
-          width: 300px;
-          height: 200px;
-          margin: 0 auto;
-          display: block;
-        }
-        `
-      }</style>
+        <style jsx>{`
+          .video-wrapper {
+            position: relative;
+            background: black;
+          }
+
+          .turn-camera-on {
+            cursor: pointer;
+            padding: 15px;
+            background: var(--empz-foreground);
+            text-align: center;
+            color: white;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+
+          .start-recording {
+            width: 25px;
+            height: 25px;
+            background: red;
+            border-radius: 100%;
+            border: 4px solid white;
+            cursor: pointer;
+          }
+
+          .stop-recording {
+            width: 25px;
+            height: 25px;
+            background: red;
+            border: 4px solid white;
+            cursor: pointer;
+          }
+
+          .counter {
+            color: white;
+            padding-left: 10px;
+          }
+
+          .timeout {
+            background: black;
+            color: white;
+            padding: 15px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+          }
+
+          .actions {
+            top: 10px;
+            left: 60px;
+            position: absolute;
+            display: flex;
+            align-items: center;
+          }
+
+          video {
+            width: 300px;
+            height: 200px;
+            margin: 0 auto;
+            display: block;
+          }
+        `}</style>
       </>
     )
   }

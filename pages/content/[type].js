@@ -17,17 +17,17 @@ export async function getServerSideProps({ req, res, query }) {
     res.end()
     return
   }
-  
+
   await connect()
   try {
     await runMiddleware(req, res, hasPermissionsForContent(query.type))
   } catch (e) {
     // User can not access
-    res.writeHead(302, { Location: '/404'})
+    res.writeHead(302, { Location: '/404' })
     res.end()
     return
   }
-  
+
   const filterOptions = {}
   contentTypeDefinition.publishing.draftMode = filterOptions.draft = false
   const response = await findContent(query.type, filterOptions)
@@ -47,7 +47,11 @@ const ContentPage = (props) => {
 
   // Will redirect the user out if permission is not granted.
   // For public sites this should be removed
-  usePermission([`content.${props.type}.read`, `content.${props.type}.admin`], '/' , props.user)
+  usePermission(
+    [`content.${props.type}.read`, `content.${props.type}.admin`],
+    '/',
+    props.user
+  )
 
   return (
     <Layout title="Content">

@@ -54,10 +54,12 @@ const updateUser = (slug) => (req, res) => {
   switch (updateData) {
     case 'profile':
       /* Update only profile data */
-      promiseChange = updateOneUser(req.user.id, { profile: {
-        ...req.user.profile,
-        ...req.body.profile
-      } })
+      promiseChange = updateOneUser(req.user.id, {
+        profile: {
+          ...req.user.profile,
+          ...req.body.profile,
+        },
+      })
       break
     case 'username':
       /* Update only username */
@@ -76,10 +78,10 @@ const updateUser = (slug) => (req, res) => {
       promiseChange = findOneUser({ email: req.body.email }).then(
         (maybeUser) => {
           if (!maybeUser) {
-            return updateOneUser(req.user.id, { 
+            return updateOneUser(req.user.id, {
               email: req.body.email,
-              emailVerificationToken: uuidv4()
-           })
+              emailVerificationToken: uuidv4(),
+            })
           } else {
             throw new Error('email already exists')
           }
@@ -88,11 +90,11 @@ const updateUser = (slug) => (req, res) => {
       break
 
     case 'block':
-        /* Update only blocked status */
-        promiseChange = updateOneUser(req.user.id, {
-          blocked: req.body.blocked,
-        })
-        break
+      /* Update only blocked status */
+      promiseChange = updateOneUser(req.user.id, {
+        blocked: req.body.blocked,
+      })
+      break
 
     case 'password':
       /* Update only password */

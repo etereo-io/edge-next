@@ -54,7 +54,8 @@ export default function (props) {
                   />
                 </div>
                 <div className="message">
-                  {props.user.profile.displayName || props.user.username} {ac.type} {new Date(ac.createdAt).toDateString()}
+                  {props.user.profile.displayName || props.user.username}{' '}
+                  {ac.type} {new Date(ac.createdAt).toDateString()}
                 </div>
               </div>
             )
@@ -76,8 +77,6 @@ export default function (props) {
           width: 60%;
           word-break: break-word;
         }
-
-        
 
         .error {
           padding: var(--empz-gap);

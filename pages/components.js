@@ -46,7 +46,7 @@ const Components = () => {
   const demoContentType = {
     slug: 'demo-content-type',
     publishing: {
-      title: 'title'
+      title: 'title',
     },
     fields: [
       {
@@ -77,74 +77,88 @@ const Components = () => {
     {
       type: 'text',
       required: true,
-      min : 10,
+      min: 10,
       max: 100,
       name: 'text',
       label: 'Text field',
-      placeholder: 'A placeholder'
+      placeholder: 'A placeholder',
     },
     {
       type: 'textarea',
       name: 'textarea',
       label: 'Textarea',
-      placeholder: 'A placeholder'
+      placeholder: 'A placeholder',
     },
     {
       type: 'select',
       name: 'select-dynamic',
       label: 'A select',
-      options: [{
-        value: 'option',
-        label: 'an option'
-      }, {
-        value: 'option2',
-        label: 'another option'
-      }, {
-        value: 'option3',
-        label: 'the last option'
-      }]
+      options: [
+        {
+          value: 'option',
+          label: 'an option',
+        },
+        {
+          value: 'option2',
+          label: 'another option',
+        },
+        {
+          value: 'option3',
+          label: 'the last option',
+        },
+      ],
     },
     {
       type: 'radio',
       name: 'radio-dynamic',
       label: 'A radio',
-      options: [{
-        value: 'option',
-        label: 'an option'
-      }, {
-        value: 'option2',
-        label: 'another option'
-      }, {
-        value: 'option3',
-        label: 'the last option'
-      },  {
-        value: 'option4',
-        label: 'the last option?'
-      },  {
-        value: 'option5',
-        label: 'maybe not'
-      },  {
-        value: 'option6',
-        label: 'not the last option'
-      },  {
-        value: 'option7',
-        label: 'almost the last option'
-      }, {
-        value: 'option8',
-        label: 'yes! the last option'
-      }]
+      options: [
+        {
+          value: 'option',
+          label: 'an option',
+        },
+        {
+          value: 'option2',
+          label: 'another option',
+        },
+        {
+          value: 'option3',
+          label: 'the last option',
+        },
+        {
+          value: 'option4',
+          label: 'the last option?',
+        },
+        {
+          value: 'option5',
+          label: 'maybe not',
+        },
+        {
+          value: 'option6',
+          label: 'not the last option',
+        },
+        {
+          value: 'option7',
+          label: 'almost the last option',
+        },
+        {
+          value: 'option8',
+          label: 'yes! the last option',
+        },
+      ],
     },
     {
       type: 'json',
       name: 'json',
       label: 'Json field',
-      placeholder: 'A placeholder'
+      placeholder: 'A placeholder',
     },
     {
       type: 'boolean',
       name: 'toggle',
       label: 'Toggle field',
-    },{
+    },
+    {
       type: 'tags',
       name: 'tags',
       label: 'Tags field',
@@ -156,28 +170,32 @@ const Components = () => {
     },
   ]
 
-  const dynamicValues = [{
-    field: {
-      type:'text',
-      name: 'text',
-      label: 'A field'
+  const dynamicValues = [
+    {
+      field: {
+        type: 'text',
+        name: 'text',
+        label: 'A field',
+      },
+      value: 'This is an example of data',
     },
-    value: 'This is an example of data'
-  }, {
-    field: {
-      type:'textarea',
-      name: 'textarea',
-      label: 'A textarea'
+    {
+      field: {
+        type: 'textarea',
+        name: 'textarea',
+        label: 'A textarea',
+      },
+      value: 'This is an example of data',
     },
-    value: 'This is an example of data'
-  }, {
-    field: {
-      type:'video_url',
-      name: 'video_url',
-      label: 'video'
+    {
+      field: {
+        type: 'video_url',
+        name: 'video_url',
+        label: 'video',
+      },
+      value: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     },
-    value: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-  }]
+  ]
 
   return (
     <Layout title="Components showcase" fullWidth={true}>
@@ -214,7 +232,7 @@ const Components = () => {
             <li>
               <a href="#themeselector">Theme selector</a>
             </li>
-            
+
             <li>
               <a href="#contentsummaryview">Content Summary View</a>
             </li>
@@ -288,9 +306,13 @@ const Components = () => {
                         <a title="Components">Components</a>
                       </Link>
                     </li>
-                    <li><span className="spacer"></span></li>
-                    <li><h4>Content</h4></li>
-                  
+                    <li>
+                      <span className="spacer"></span>
+                    </li>
+                    <li>
+                      <h4>Content</h4>
+                    </li>
+
                     <li>
                       <Link href="/create/post">
                         <a title="New Post">New Post</a>
@@ -372,14 +394,8 @@ const links = [{
             <div className="component-demo">
               <div className="item-wrapper">
                 <Avatar src="/static/demo-images/edge-avatar.jpg" />
-                <Avatar
-                  src="/static/demo-images/edge-avatar.jpg"
-                  width={60}
-                />
-                <Avatar
-                  src="/static/demo-images/edge-avatar.jpg"
-                  width={30}
-                />
+                <Avatar src="/static/demo-images/edge-avatar.jpg" width={60} />
+                <Avatar src="/static/demo-images/edge-avatar.jpg" width={30} />
               </div>
               <div className="item-wrapper">
                 <Avatar />
@@ -402,23 +418,35 @@ const links = [{
             <h3>Badge</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Badge>42</Badge> 
-                <Badge secondary >42</Badge> 
-                <Badge success >42</Badge> 
-                <Badge warning >42</Badge> 
-                <Badge alert >42</Badge>
-              </div>   
-              
+                <Badge>42</Badge>
+                <Badge secondary>42</Badge>
+                <Badge success>42</Badge>
+                <Badge warning>42</Badge>
+                <Badge alert>42</Badge>
+              </div>
+
               <div className="item-wrapper">
-              <Badge featured>Featured</Badge> <Badge secondary featured>Featured</Badge> <Badge success featured>Featured</Badge> <Badge warning featured>Featured</Badge> <Badge alert featured>Featured</Badge>
-              </div>    
+                <Badge featured>Featured</Badge>{' '}
+                <Badge secondary featured>
+                  Featured
+                </Badge>{' '}
+                <Badge success featured>
+                  Featured
+                </Badge>{' '}
+                <Badge warning featured>
+                  Featured
+                </Badge>{' '}
+                <Badge alert featured>
+                  Featured
+                </Badge>
+              </div>
               <div className="item-wrapper">
-                <Badge featured ></Badge>
+                <Badge featured></Badge>
                 <Badge featured secondary></Badge>
                 <Badge featured success></Badge>
                 <Badge featured warning></Badge>
                 <Badge featured alert></Badge>
-              </div>   
+              </div>
             </div>
             <pre>{`
 <Badge>42</Badge> 
@@ -436,52 +464,64 @@ const links = [{
             <h3>Button</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Button aria-label='Normal button'>Button example</Button>
+                <Button aria-label="Normal button">Button example</Button>
               </div>
 
               <div className="item-wrapper">
-                <Button aria-label='Normal button' success>Button example</Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button aria-label='Normal button' warning>Button example</Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button aria-label='Normal button' alert>Button example</Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button aria-label='Normal button' secondary>Button example</Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button big aria-label='Big button'>Button example</Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button loading aria-label='Loading button'></Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button loading secondary aria-label='Loading button'></Button>
-                <Button loading success aria-label='Loading button'></Button>
-                <Button loading warning aria-label='Loading button'></Button>
-                <Button loading alert aria-label='Loading button'></Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button alt aria-label='Alt button'>Button example</Button>
-              </div>
-
-              <div className="item-wrapper">
-                <Button alt big aria-label='Alt big button'>
+                <Button aria-label="Normal button" success>
                   Button example
                 </Button>
               </div>
 
               <div className="item-wrapper">
-                <Button alt loading aria-label='Alt loading button'></Button>
+                <Button aria-label="Normal button" warning>
+                  Button example
+                </Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button aria-label="Normal button" alert>
+                  Button example
+                </Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button aria-label="Normal button" secondary>
+                  Button example
+                </Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button big aria-label="Big button">
+                  Button example
+                </Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button loading aria-label="Loading button"></Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button loading secondary aria-label="Loading button"></Button>
+                <Button loading success aria-label="Loading button"></Button>
+                <Button loading warning aria-label="Loading button"></Button>
+                <Button loading alert aria-label="Loading button"></Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button alt aria-label="Alt button">
+                  Button example
+                </Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button alt big aria-label="Alt big button">
+                  Button example
+                </Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button alt loading aria-label="Alt loading button"></Button>
               </div>
             </div>
             <pre>{`
@@ -495,7 +535,6 @@ const links = [{
               <div className="item-wrapper">
                 <Loading />
               </div>
-             
             </div>
             <pre>{`
 <Loading />
@@ -512,9 +551,12 @@ const links = [{
                 <LoadingPlaceholder />
               </div>
               <div className="item-wrapper">
-                <LoadingPlaceholder width={'100px'} height={'100px'} borderRadius={'100%'} />
+                <LoadingPlaceholder
+                  width={'100px'}
+                  height={'100px'}
+                  borderRadius={'100%'}
+                />
               </div>
-             
             </div>
             <pre>{`
 <LoadingPlaceholder />
@@ -528,7 +570,6 @@ const links = [{
               <div className="item-wrapper">
                 <Toggle />
               </div>
-             
             </div>
             <pre>{`
 <Toggle />
@@ -648,34 +689,57 @@ const links = [{
             <h3>Image</h3>
             <div className="component-demo">
               <p>
-                A "gracefully" loading image. If multiple images are passed it will display a carousel.
+                A "gracefully" loading image. If multiple images are passed it
+                will display a carousel.
               </p>
               <div className="item-wrapper">
-                <Image srcs={['https://loremflickr.com/240/240/food?random=1', 'https://loremflickr.com/240/240/food?random=2', 'https://loremflickr.com/240/240/food?random=3']} />
+                <Image
+                  srcs={[
+                    'https://loremflickr.com/240/240/food?random=1',
+                    'https://loremflickr.com/240/240/food?random=2',
+                    'https://loremflickr.com/240/240/food?random=3',
+                  ]}
+                />
               </div>
 
               <div className="item-wrapper">
-                <Image srcs={['https://loremflickr.com/240/240/cars?random=1']} />
+                <Image
+                  srcs={['https://loremflickr.com/240/240/cars?random=1']}
+                />
               </div>
 
-              <div className="item-wrapper" style={{ display: 'flex', justifyContent: 'center' }}>
-                <Image srcs={[{
-                  url: 'https://loremflickr.com/240/240/cars?random=2',
-                  quote: 'An amazing picture',
-                  alt: 'An amazing picture'
-                }] } width={500} height={500} />
+              <div
+                className="item-wrapper"
+                style={{ display: 'flex', justifyContent: 'center' }}
+              >
+                <Image
+                  srcs={[
+                    {
+                      url: 'https://loremflickr.com/240/240/cars?random=2',
+                      quote: 'An amazing picture',
+                      alt: 'An amazing picture',
+                    },
+                  ]}
+                  width={500}
+                  height={500}
+                />
               </div>
 
               <div className="item-wrapper">
-                <Image srcs={[{
-                  url: 'https://loremflickr.com/240/240/flower?random=1',
-                  quote: 'An amazing flower',
-                  alt: 'An amazing flower'
-                }, {
-                  url: 'https://loremflickr.com/240/240/flower?random=2',
-                  quote: 'Another flower',
-                  alt: 'An amazing flower'
-                }]} />
+                <Image
+                  srcs={[
+                    {
+                      url: 'https://loremflickr.com/240/240/flower?random=1',
+                      quote: 'An amazing flower',
+                      alt: 'An amazing flower',
+                    },
+                    {
+                      url: 'https://loremflickr.com/240/240/flower?random=2',
+                      quote: 'Another flower',
+                      alt: 'An amazing flower',
+                    },
+                  ]}
+                />
               </div>
             </div>
             <pre>{`
@@ -766,7 +830,9 @@ const links = [{
                     id="demo-input-text-error"
                     placeholder="Input text example"
                   ></input>
-                  <span className="error-message">This is an error message</span>
+                  <span className="error-message">
+                    This is an error message
+                  </span>
                 </div>
               </div>
             </div>
@@ -782,19 +848,23 @@ const links = [{
 
           <div id="form-elements-dynamic" className="component">
             <h3>Form Elements Dynamic</h3>
-            <p>See the documentation for more information about dynamic fields</p>
+            <p>
+              See the documentation for more information about dynamic fields
+            </p>
             <div className="component-demo">
               <div className="item-wrapper">
-                <div >
-                  {dynamicFields.map(f => {
+                <div>
+                  {dynamicFields.map((f) => {
                     return (
-                      <DynamicField field={f} value={null} onChange={() => {}} />
+                      <DynamicField
+                        field={f}
+                        value={null}
+                        onChange={() => {}}
+                      />
                     )
                   })}
-
                 </div>
               </div>
-
             </div>
             <pre>{`
 {dynamicFields.map(f => {
@@ -808,16 +878,14 @@ const links = [{
             <p>A field for wrapping the representation of dynamic data</p>
             <div className="component-demo">
               <div className="item-wrapper">
-                <div >
-                  {dynamicValues.map(item => {
+                <div>
+                  {dynamicValues.map((item) => {
                     return (
                       <DynamicFieldView field={item.field} value={item.value} />
                     )
                   })}
-
                 </div>
               </div>
-
             </div>
             <pre>{`
 {dynamicValues.map(item => {
@@ -827,7 +895,7 @@ const links = [{
 })}
             `}</pre>
           </div>
-          
+
           <div id="tagsinput" className="component">
             <h3>Tags Input</h3>
             <div className="component-demo">
@@ -850,12 +918,16 @@ const links = [{
   `}</pre>
           </div>
 
-          
           <div id="tagsfield" className="component">
             <h3>Tags Field</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <TagsField tags={[{label: 'test', slug: 'test'}, {label: 'demo', slug: 'demo'}]} />
+                <TagsField
+                  tags={[
+                    { label: 'test', slug: 'test' },
+                    { label: 'demo', slug: 'demo' },
+                  ]}
+                />
               </div>
             </div>
             <pre>{`
@@ -988,8 +1060,6 @@ const links = [{
               <div className="item-wrapper">
                 <VideoRecorder />
               </div>
-
-              
             </div>
             <pre>{`
 <VideoRecorder />
@@ -1002,31 +1072,24 @@ const links = [{
               <div className="item-wrapper">
                 <Upload />
               </div>
-
-              
             </div>
             <pre>{`
 <Upload />
   `}</pre>
           </div>
-        
+
           <div id="map" className="component">
             <h3>Map</h3>
             <div className="component-demo">
-              <div className="item-wrapper" style={{ height: '400px'}}>
+              <div className="item-wrapper" style={{ height: '400px' }}>
                 <Map />
               </div>
-
-              
             </div>
             <pre>{`
 <Map />
   `}</pre>
           </div>
-        
-        
         </div>
-
       </div>
       <style jsx>{`
         h1 {

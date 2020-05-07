@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 
 import Dropzone from './dropzone/dropzone'
 
-
 export default function (props) {
   const [files, setFiles] = useState([])
 
@@ -10,14 +9,14 @@ export default function (props) {
     const newFiles = [...files, ...f]
 
     setFiles(newFiles)
-    props.onChange ? props.onChange(newFiles): null
+    props.onChange ? props.onChange(newFiles) : null
   }
 
   const deleteFile = (index) => {
     const newFiles = files.filter((f, i) => i !== index)
-    
+
     setFiles(newFiles)
-    props.onChange ? props.onChange(newFiles): null
+    props.onChange ? props.onChange(newFiles) : null
   }
 
   // const renderProgress = file => {
@@ -67,27 +66,27 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-      .files {
-        margin-top: var(--empz-gap);
-        margin-bottom: var(--empz-gap);
-      }
+        .files {
+          margin-top: var(--empz-gap);
+          margin-bottom: var(--empz-gap);
+        }
 
-      .file-row {
-        display: flex;
-        margin-bottom: 5px;
-        justify-content: space-between;
-      }
+        .file-row {
+          display: flex;
+          margin-bottom: 5px;
+          justify-content: space-between;
+        }
 
-      .file-name {
-        max-width: 200px;
-        text-overflow: ellipsis;
-        font-size: 13px;
-        color: var(--empz-foreground);
-      }
+        .file-name {
+          max-width: 200px;
+          text-overflow: ellipsis;
+          font-size: 13px;
+          color: var(--empz-foreground);
+        }
 
-      .delete-file {
-        cursor: pointer;
-      }
+        .delete-file {
+          cursor: pointer;
+        }
       `}</style>
     </>
   )

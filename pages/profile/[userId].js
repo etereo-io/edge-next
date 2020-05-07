@@ -12,13 +12,19 @@ import { useRouter } from 'next/router'
 const Profile = (props) => {
   const router = useRouter()
   const { userId } = router.query
-  
-  const permissions = usePermission(userId ? ['user.read', 'user.admin'] : null, '/', null, (u) => u.id === userId, userId)
+
+  const permissions = usePermission(
+    userId ? ['user.read', 'user.admin'] : null,
+    '/',
+    null,
+    (u) => u.id === userId,
+    userId
+  )
 
   const { user, finished } = useUser({ userId, redirectTo: '/404' })
 
   // Loading
-  if (!finished || !permissions.finished ) {
+  if (!finished || !permissions.finished) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -36,11 +42,13 @@ const Profile = (props) => {
         <div className="name">
           <div className="title">
             <div className="title-left">
-              <h2>{user ? user.profile.displayName || user.username : 'User Profile'}</h2>
+              <h2>
+                {user
+                  ? user.profile.displayName || user.username
+                  : 'User Profile'}
+              </h2>
             </div>
             <div className="title-right">
-              
-
               <div className="item">
                 <Button href={`/settings/${user ? user.id : ''}`}>
                   Edit Profile
@@ -56,9 +64,7 @@ const Profile = (props) => {
               </div>
             </div>
           </div>
-          <div className="dashboar-bar">
-            
-          </div>
+          <div className="dashboar-bar"></div>
         </div>
       </div>
 
@@ -78,10 +84,12 @@ const Profile = (props) => {
           })}
         </div>
 
-        {config.activity.enabled && <div className="activity-report">
-          <h3>Recent activity</h3>
-          {user && <UserActivity user={user} />}
-        </div>}
+        {config.activity.enabled && (
+          <div className="activity-report">
+            <h3>Recent activity</h3>
+            {user && <UserActivity user={user} />}
+          </div>
+        )}
       </div>
       <style jsx>
         {`

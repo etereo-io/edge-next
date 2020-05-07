@@ -4,9 +4,7 @@ export default function (props) {
       <div className="progress-bar">
         <div className="progress" style={{ width: props.progress + '%' }} />
       </div>
-      <style jsx>{
-        `
-        
+      <style jsx>{`
         .progress-bar {
           width: 100%;
           height: 8px;
@@ -20,8 +18,7 @@ export default function (props) {
           margin: 0;
           border-radius: 5px;
         }
-        `
-      }</style>
+      `}</style>
     </>
   )
 }

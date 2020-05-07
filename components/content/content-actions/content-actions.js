@@ -4,13 +4,13 @@ import { useUser } from '../../../lib/hooks'
 
 export default function (props) {
   const { user } = useUser({
-    userId: 'me'
+    userId: 'me',
   })
 
-  const hasEditPermission = hasPermission(
-    user,
-    [`content.${props.content.type}.admin`, `content.${props.content.type}.update`],
-  )
+  const hasEditPermission = hasPermission(user, [
+    `content.${props.content.type}.admin`,
+    `content.${props.content.type}.update`,
+  ])
   const isContentOwner = user && user.id === props.content.author
 
   return (

@@ -21,21 +21,39 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
             : 'Register with a social network'}
         </h2>
         <div className="social-buttons">
-          {config.user.providers.facebook && <div className="social-button">
-            <Link href="/api/auth/facebook"><a title="Access with Facebook"><FacebookLoginButton /></a></Link>
-          </div>}
-          {config.user.providers.google && <div className="social-button">
-            <GoogleLoginButton />
-          </div>}
-          {config.user.providers.github && <div className="social-button">
-            <GithubLoginButton />
-          </div>}
-          {config.user.providers.twitter && <div className="social-button">
-            <TwitterLoginButton />
-          </div>}
-          {config.user.providers.instagram && <div className="social-button">
-            <Link href="/api/auth/instagram"><a title="Access with Instagram"><InstagramLoginButton /></a></Link>
-          </div>}
+          {config.user.providers.facebook && (
+            <div className="social-button">
+              <Link href="/api/auth/facebook">
+                <a title="Access with Facebook">
+                  <FacebookLoginButton />
+                </a>
+              </Link>
+            </div>
+          )}
+          {config.user.providers.google && (
+            <div className="social-button">
+              <GoogleLoginButton />
+            </div>
+          )}
+          {config.user.providers.github && (
+            <div className="social-button">
+              <GithubLoginButton />
+            </div>
+          )}
+          {config.user.providers.twitter && (
+            <div className="social-button">
+              <TwitterLoginButton />
+            </div>
+          )}
+          {config.user.providers.instagram && (
+            <div className="social-button">
+              <Link href="/api/auth/instagram">
+                <a title="Access with Instagram">
+                  <InstagramLoginButton />
+                </a>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
@@ -68,14 +86,18 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
               <Link href="/auth/signup">
                 <a>I don't have an account</a>
               </Link>
-              <Button  loading={loading} type="submit">Login</Button>
+              <Button loading={loading} type="submit">
+                Login
+              </Button>
             </>
           ) : (
             <>
               <Link href="/auth/login">
                 <a>I already have an account</a>
               </Link>
-              <Button loading={loading} type="submit">Signup</Button>
+              <Button loading={loading} type="submit">
+                Signup
+              </Button>
             </>
           )}
         </div>

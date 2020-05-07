@@ -7,179 +7,228 @@ import Link from 'next/link'
 import config from '../lib/config'
 
 const Landing = (props) => {
-
-
   return (
     <>
-    <Layout title="Landing page" fullWidth>
-      
-      <div className="hero">
-        <div className="hero-head-line">
-          <h1 className="slogan">{config.slogan}</h1>
-          <div className="call-to-action">
-            <div className="call-to-action-item">
-              <Button alt href="/components">See all components</Button>
+      <Layout title="Landing page" fullWidth>
+        <div className="hero">
+          <div className="hero-head-line">
+            <h1 className="slogan">{config.slogan}</h1>
+            <div className="call-to-action">
+              <div className="call-to-action-item">
+                <Button alt href="/components">
+                  See all components
+                </Button>
+              </div>
+              <div className="call-to-action-item">
+                <Button href="/content/post">
+                  Blazing fast dynamic content
+                </Button>
+              </div>
             </div>
-            <div className="call-to-action-item">
-              <Button href="/content/post">Blazing fast dynamic content</Button>
+
+            <div className="badges">
+              <Badge success>SEO 100</Badge>{' '}
+              <Badge success>Accessibility 100</Badge>{' '}
+              <Badge success>PWA</Badge>
             </div>
           </div>
+        </div>
 
-          <div className="badges">
-            <Badge success>SEO 100</Badge> <Badge success>Accessibility 100</Badge>  <Badge success>PWA</Badge>
+        <div className="separator">
+          <div>
+            <span>created by </span>{' '}
+            <a href="https://nucleo.dev" rel="noopener" target="_blank">
+              the Nucleo Team
+            </a>
           </div>
-          
         </div>
-      </div>
-
-      <div className="separator">
-        <div><span>created by </span> <a href="https://nucleo.dev" rel="noopener" target="_blank">the Nucleo Team</a></div>
-      </div>
-      <div className="powered-by">
-        <span>powered by</span>
-        <a href="https://nextjs.org/" title="NextJS website" rel="noopener" target="_blank"><NextJSLogo /></a>
-      </div>
-
-      <div className="source-code">
-        <span>source code on </span> <a href="https://github.com/nucleo-org/edge-next" rel="noopener" target="_blank" title="Source code"><GithubLogo/></a>
-      </div>
-
-      <h2>Features</h2>
-      <div className="features">
-        <div className="feature">
-          <h3>Ready to Rock</h3>
-          <p>
-            A ready to Rock and complete solution to launch an MVP in a fraction of time. Configure, adapt and deploy to thousands of users.
-          </p>
-        </div>
-        <div className="feature">
-          <h3>Dynamic API</h3>
-          <p>
-            A dynamic API for your content and comments based on a configuration file. 
-            Content forms are updated automaticaly based on your settings, allowing the users to create any kind of content.
-          </p>
-        </div>
-        <div className="feature">
-          <h3>Custom Permissions and Roles</h3>
-          <p>
-            Add custom permissions based on roles for each API endpoint and app pages.
-            Create and configure new roles to extend the default functionality.
-          </p>
-        </div>
-        <div className="feature">
-          <h3>Built-in admin dashboard</h3>
-          <p>
-            A simple admin dashboard to list and edit all the content, comments and users of the platform.
-          </p>
-        </div>
-        <div className="feature">
-          <h3>Built-in CSS Themes</h3>
-          <p>
-            Four CSS themes implemented (Light, Dark, Robot, Kawai), stored in cookies for each user preference.
-            Easily create and add new themes.
-          </p>
-        </div>
-        <div className="feature">
-          <h3>SSG (Static Site Generation)</h3>
-          <p>
-            Built-in static pages through Markdown rendering, check <Link href="/p/faq"><a>some</a></Link> <Link href="/p/privacy-policy"><a>example</a></Link> <Link href="/p/terms-of-service"><a>pages</a></Link>
-          </p>
-        </div>
-        <div className="feature">
-          <h3>User Activity</h3>
-          <p>
-            Record and display user activity through api hooks. 
-          </p>
-        </div>
-        <div className="feature">
-          <h3>Coded Components</h3>
-          <p>
-            A set of ready to use and fully integrated and themed <Link href="/components"><a>components</a></Link> 
-          </p>
+        <div className="powered-by">
+          <span>powered by</span>
+          <a
+            href="https://nextjs.org/"
+            title="NextJS website"
+            rel="noopener"
+            target="_blank"
+          >
+            <NextJSLogo />
+          </a>
         </div>
 
-        <div className="feature">
-          <h3>Emails</h3>
-          <p>
-            Email verification, password recovery and notifications through emails already implemented.
-          </p>
-        </div>
-        
-        <div className="feature">
-          <h3>Social Providers</h3>
-          <p>
-            Login and register implemented for different social providers like Instagram, Google, Facebook, Twitch and many more.
-          </p>
-        </div>
-        
-        <div className="feature">
-          <h3>Next + React + Serverless</h3>
-          <p>
-            A modern setup easily deployable on platforms like <a href="https://vercel.com">Vercel.com</a>
-          </p>
+        <div className="source-code">
+          <span>source code on </span>{' '}
+          <a
+            href="https://github.com/nucleo-org/edge-next"
+            rel="noopener"
+            target="_blank"
+            title="Source code"
+          >
+            <GithubLogo />
+          </a>
         </div>
 
-        <div className="feature">
-          <h3>PWA</h3>
-          <p>
-            Progressive Web App. Allow to install on Android devices as an application, gives better loading times than a normal website.
-          </p>
+        <h2>Features</h2>
+        <div className="features">
+          <div className="feature">
+            <h3>Ready to Rock</h3>
+            <p>
+              A ready to Rock and complete solution to launch an MVP in a
+              fraction of time. Configure, adapt and deploy to thousands of
+              users.
+            </p>
+          </div>
+          <div className="feature">
+            <h3>Dynamic API</h3>
+            <p>
+              A dynamic API for your content and comments based on a
+              configuration file. Content forms are updated automaticaly based
+              on your settings, allowing the users to create any kind of
+              content.
+            </p>
+          </div>
+          <div className="feature">
+            <h3>Custom Permissions and Roles</h3>
+            <p>
+              Add custom permissions based on roles for each API endpoint and
+              app pages. Create and configure new roles to extend the default
+              functionality.
+            </p>
+          </div>
+          <div className="feature">
+            <h3>Built-in admin dashboard</h3>
+            <p>
+              A simple admin dashboard to list and edit all the content,
+              comments and users of the platform.
+            </p>
+          </div>
+          <div className="feature">
+            <h3>Built-in CSS Themes</h3>
+            <p>
+              Four CSS themes implemented (Light, Dark, Robot, Kawai), stored in
+              cookies for each user preference. Easily create and add new
+              themes.
+            </p>
+          </div>
+          <div className="feature">
+            <h3>SSG (Static Site Generation)</h3>
+            <p>
+              Built-in static pages through Markdown rendering, check{' '}
+              <Link href="/p/faq">
+                <a>some</a>
+              </Link>{' '}
+              <Link href="/p/privacy-policy">
+                <a>example</a>
+              </Link>{' '}
+              <Link href="/p/terms-of-service">
+                <a>pages</a>
+              </Link>
+            </p>
+          </div>
+          <div className="feature">
+            <h3>User Activity</h3>
+            <p>Record and display user activity through api hooks.</p>
+          </div>
+          <div className="feature">
+            <h3>Coded Components</h3>
+            <p>
+              A set of ready to use and fully integrated and themed{' '}
+              <Link href="/components">
+                <a>components</a>
+              </Link>
+            </p>
+          </div>
+
+          <div className="feature">
+            <h3>Emails</h3>
+            <p>
+              Email verification, password recovery and notifications through
+              emails already implemented.
+            </p>
+          </div>
+
+          <div className="feature">
+            <h3>Social Providers</h3>
+            <p>
+              Login and register implemented for different social providers like
+              Instagram, Google, Facebook, Twitch and many more.
+            </p>
+          </div>
+
+          <div className="feature">
+            <h3>Next + React + Serverless</h3>
+            <p>
+              A modern setup easily deployable on platforms like{' '}
+              <a href="https://vercel.com">Vercel.com</a>
+            </p>
+          </div>
+
+          <div className="feature">
+            <h3>PWA</h3>
+            <p>
+              Progressive Web App. Allow to install on Android devices as an
+              application, gives better loading times than a normal website.
+            </p>
+          </div>
+
+          <div className="feature">
+            <h3>Documented</h3>
+            <p>
+              Important information on how to deploy and configure your site in
+              the{' '}
+              <Link href="/p/documentation">
+                <a>documentation</a>
+              </Link>
+            </p>
+          </div>
+          <div className="feature">
+            <h3>Any MongoDB or Firebase database</h3>
+            <p>
+              A database layer abstracts the usage of any MongoDB database or
+              Firebase.
+            </p>
+          </div>
+          <div className="feature">
+            <h3>Integration test</h3>
+            <p>
+              A set of integration tests cover different paths and can be easily
+              extended
+            </p>
+          </div>
+          <div className="feature">
+            <h3>OpenSource</h3>
+            <p>
+              All the code open and available at{' '}
+              <a
+                href="https://github.com/nucleo-org/edge-next"
+                title="Github repo"
+              >
+                https://github.com/nucleo-org/edge-next
+              </a>
+            </p>
+          </div>
         </div>
 
-        <div className="feature">
-          <h3>Documented</h3>
-          <p>
-            Important information on how to deploy and configure your site in the <Link href="/p/documentation"><a>documentation</a></Link> 
-          </p>
-        </div>
-        <div className="feature">
-          <h3>Any MongoDB or Firebase database</h3>
-          <p>
-            A database layer abstracts the usage of any MongoDB database or Firebase. 
-          </p>
-        </div>
-        <div className="feature">
-          <h3>Integration test</h3>
-          <p>
-            A set of integration tests cover different paths and can be easily extended
-          </p>
-        </div>
-        <div className="feature">
-          <h3>OpenSource</h3>
-          <p>
-            All the code open and available at <a href="https://github.com/nucleo-org/edge-next" title="Github repo">https://github.com/nucleo-org/edge-next</a>
-          </p>
-        </div>
-      </div>
+        <h2>Use cases</h2>
+        <div className="use-cases">
+          <div className="use-case">
+            <h3>Social Page</h3>
+            <p>Allow users to register and post content of any kind</p>
+          </div>
 
+          <div className="use-case">
+            <h3>MVP</h3>
+            <p>Launch an MVP really fast.</p>
+          </div>
 
-      <h2>Use cases</h2>
-      <div className="use-cases">
-
-        <div className="use-case">
-          <h3>Social Page</h3>
-          <p>
-            Allow users to register and post content of any kind
-          </p>
+          <div className="use-case">
+            <h3>API</h3>
+            <p>
+              Need a quick API and admin dashboard for your product? Use{' '}
+              <b>Edge</b>
+            </p>
+          </div>
         </div>
-
-        <div className="use-case">
-          <h3>MVP</h3>
-          <p>
-            Launch an MVP really fast. 
-          </p>
-        </div>
-
-        <div className="use-case">
-          <h3>API</h3>
-          <p>
-            Need a quick API and admin dashboard for your product? Use <b>Edge</b>
-          </p>
-        </div>
-      </div>
-    </Layout>
-    <style jsx>{
-      `
+      </Layout>
+      <style jsx>{`
       .hero {
         padding-top: 100px;
         padding-bottom: 30px;
@@ -315,8 +364,7 @@ const Landing = (props) => {
           width: 100%;
         }
       }
-      `
-    }</style>
+      `}</style>
     </>
   )
 }

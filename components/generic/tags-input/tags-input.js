@@ -4,9 +4,9 @@ import slugify from 'slugify'
 const makeNewTag = (val) => {
   return {
     label: val,
-    slug: slugify(val,  {
-      lower: true, 
-      strict: true,  
+    slug: slugify(val, {
+      lower: true,
+      strict: true,
     }),
   }
 }

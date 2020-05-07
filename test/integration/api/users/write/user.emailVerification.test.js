@@ -1,4 +1,8 @@
-import { findOneUser, findUser, updateOneUser } from '../../../../../lib/api/users/user'
+import {
+  findOneUser,
+  findUser,
+  updateOneUser,
+} from '../../../../../lib/api/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
@@ -13,12 +17,12 @@ jest.mock('../../../../../lib/api/users/user')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
-      title: 'A test',
-      description: 'A test',
-      user: {
-        emailVerification: true
-      }
-  })
+    title: 'A test',
+    description: 'A test',
+    user: {
+      emailVerification: true,
+    },
+  }),
 }))
 
 const newUser = {
@@ -28,14 +32,12 @@ const newUser = {
 }
 
 describe('Integration tests for email verification with emailVerification enabled', () => {
-   
   let serverAuth
   let urlAuth
   let urlLogin
   let urlVerify
 
   beforeAll(async (done) => {
-    
     serverAuth = http.createServer((req, res) =>
       apiResolver(req, res, undefined, handlerAuth)
     )
@@ -57,10 +59,12 @@ describe('Integration tests for email verification with emailVerification enable
   })
 
   test('Should return 401 for login a user with unverified email if configuration for verification is enabled', async () => {
-    findUser.mockReturnValueOnce(Promise.resolve({
-      ...newUser,
-      emailVerified: false
-    }))
+    findUser.mockReturnValueOnce(
+      Promise.resolve({
+        ...newUser,
+        emailVerified: false,
+      })
+    )
 
     const response = await fetch(urlLogin, {
       method: 'POST',
@@ -82,10 +86,12 @@ describe('Integration tests for email verification with emailVerification enable
   })
 
   test('Should return 200 for login a user with verified email if configuration for verification is enabled', async () => {
-    findUser.mockReturnValueOnce(Promise.resolve({
-      ...newUser,
-      emailVerified: true
-    }))
+    findUser.mockReturnValueOnce(
+      Promise.resolve({
+        ...newUser,
+        emailVerified: true,
+      })
+    )
 
     const response = await fetch(urlLogin, {
       method: 'POST',
@@ -102,24 +108,29 @@ describe('Integration tests for email verification with emailVerification enable
   })
 
   test('Calling to email verification should change the status to verified', async () => {
-    findOneUser.mockReturnValue(Promise.resolve({
-      ...newUser,
-      id: 'theid',
-      emailVerificationToken: '1234'
-    }))
+    findOneUser.mockReturnValue(
+      Promise.resolve({
+        ...newUser,
+        id: 'theid',
+        emailVerificationToken: '1234',
+      })
+    )
 
-    const response = await fetch(urlVerify + '?email=test@test.com&token=1234', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    const response = await fetch(
+      urlVerify + '?email=test@test.com&token=1234',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
 
     expect(response.status).toBe(200)
 
     expect(updateOneUser).toHaveBeenCalledWith('theid', {
       emailVerified: true,
-      emailVerificationToken: null
+      emailVerificationToken: null,
     })
   })
 
@@ -127,5 +138,4 @@ describe('Integration tests for email verification with emailVerification enable
     onUserAdded(newUser)
     expect(sendVerifyEmail).toHaveBeenCalled()
   })
-
 })

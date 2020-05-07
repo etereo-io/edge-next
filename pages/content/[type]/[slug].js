@@ -1,15 +1,11 @@
-import API from '../../../lib/api/api-endpoints'
 import ContentDetailView from '../../../components/content/read-content/content-detail-view/content-detail-view'
 import Layout from '../../../components/layout/normal/layout'
 import { connect } from '../../../lib/api/db'
-import fetch from '../../../lib/fetcher'
-import { findComments } from '../../../lib/api/comments/comments'
 import { findOneContent } from '../../../lib/api/content/content'
 import { getContentTypeDefinition } from '../../../lib/config'
 import { hasPermissionsForContent } from '../../../lib/api/middlewares'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { usePermission } from '../../../lib/hooks'
-import useSWR from 'swr'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export async function getServerSideProps({ req, res, query }) {
@@ -20,15 +16,15 @@ export async function getServerSideProps({ req, res, query }) {
     res.end()
     return
   }
-  
+
   await connect()
 
   const item = await findOneContent(query.type, {
     slug: query.slug,
-  }) 
+  })
 
   if (!item) {
-    res.writeHead(302, { Location: '/404'})
+    res.writeHead(302, { Location: '/404' })
     res.end()
     return
   }
@@ -37,18 +33,15 @@ export async function getServerSideProps({ req, res, query }) {
     await runMiddleware(req, res, hasPermissionsForContent(query.type, item))
   } catch (e) {
     // User can not access
-    res.writeHead(302, { Location: '/404'})
+    res.writeHead(302, { Location: '/404' })
     res.end()
     return
   }
 
-  const contentTitle = item && contentTypeDefinition.publishing.title ? 
-    item[contentTypeDefinition.publishing.title] : `${contentTypeDefinition.title.en} detail`
-
-  const comments = await findComments({
-    contentId: item.id,
-    contentType: query.type
-  })
+  const contentTitle =
+    item && contentTypeDefinition.publishing.title
+      ? item[contentTypeDefinition.publishing.title]
+      : `${contentTypeDefinition.title.en} detail`
 
   return {
     props: {
@@ -59,16 +52,17 @@ export async function getServerSideProps({ req, res, query }) {
       pageTitle: contentTitle,
       user: req.user || {},
       contentType: contentTypeDefinition,
-      comments
     },
   }
 }
 
-
 const ContentPage = (props) => {
   // const contentType = getContentTypeDefinition(props.type)
 
-  usePermission([`content.${props.type}.read`, `content.${props.type}.admin`], '/')
+  usePermission(
+    [`content.${props.type}.read`, `content.${props.type}.admin`],
+    '/'
+  )
 
   // Load data
   /*const { data } = useSWR(API.content[props.type] + '/' + props.slug, fetch, {
@@ -78,7 +72,7 @@ const ContentPage = (props) => {
   return (
     <Layout title={props.pageTitle}>
       {props.canAccess && props.data && (
-        <ContentDetailView type={props.contentType} content={props.data} comments={props.comments}/>
+        <ContentDetailView type={props.contentType} content={props.data} />
       )}
     </Layout>
   )

@@ -11,8 +11,16 @@ function InputText(props) {
       defaultValue={props.value}
       data-testid={props['data-testid']}
       required={!!props.field.required}
-      minLength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
-      maxLength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
+      minLength={
+        typeof props.field.minlength !== 'undefined'
+          ? props.field.minlength
+          : null
+      }
+      maxLength={
+        typeof props.field.maxlength !== 'undefined'
+          ? props.field.maxlength
+          : null
+      }
       pattern={props.pattern || null}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
@@ -28,8 +36,8 @@ function InputNumber(props) {
       defaultValue={props.value}
       required={!!props.field.required}
       data-testid={props['data-testid']}
-      min={typeof props.field.min !== 'undefined' ? props.field.min: null}
-      max={typeof props.field.max !== 'undefined' ? props.field.max: null}
+      min={typeof props.field.min !== 'undefined' ? props.field.min : null}
+      max={typeof props.field.max !== 'undefined' ? props.field.max : null}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
   )
@@ -59,7 +67,7 @@ function InputFile(props) {
       placeholder={props.field.placeholder}
       required={!!props.field.required}
       multiple={!!props.field.multiple}
-      capture={props.field.capture ? props.field.capture: null}
+      capture={props.field.capture ? props.field.capture : null}
       data-testid={props['data-testid']}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
@@ -86,8 +94,16 @@ function TextArea(props) {
       defaultValue={props.value}
       data-testid={props['data-testid']}
       required={!!props.field.required}
-      minLength={typeof props.field.minlength !== 'undefined' ? props.field.minlength: null}
-      maxLength={typeof props.field.maxlength !== 'undefined' ? props.field.maxlength: null}
+      minLength={
+        typeof props.field.minlength !== 'undefined'
+          ? props.field.minlength
+          : null
+      }
+      maxLength={
+        typeof props.field.maxlength !== 'undefined'
+          ? props.field.maxlength
+          : null
+      }
       onChange={(ev) => props.onChange(ev.target.value)}
     ></textarea>
   )
@@ -157,49 +173,60 @@ function Field(props) {
         )
 
       case FIELDS.SELECT:
-          return (
-            <div className="input-select">
-              <select data-testid={datatestId} name={field.name} onChange={props.onChange} value={props.value}>
-                {field.options.map(o => <option value={o.value}>{o.label}</option>)}
-              </select>
-            </div>
-          )
+        return (
+          <div className="input-select">
+            <select
+              data-testid={datatestId}
+              name={field.name}
+              onChange={props.onChange}
+              value={props.value}
+            >
+              {field.options.map((o) => (
+                <option value={o.value}>{o.label}</option>
+              ))}
+            </select>
+          </div>
+        )
 
       case FIELDS.RADIO:
         return (
           <div className="input-radio-group" data-testid={datatestId}>
-              
-              {field.options.map(o => {
-                return (
-                  <div className="input-radio" key={o.label}>
-                    <input
-                      type="radio"
-                      id={o.label}
-                      value={o.value}
-                      name={field.name}
-                    ></input>
-                    <label for={o.label}>{o.label}</label>
-                  </div>
-                )
-              })}
-            </div>
+            {field.options.map((o) => {
+              return (
+                <div className="input-radio" key={o.label}>
+                  <input
+                    type="radio"
+                    id={o.label}
+                    value={o.value}
+                    name={field.name}
+                  ></input>
+                  <label for={o.label}>{o.label}</label>
+                </div>
+              )
+            })}
+          </div>
         )
 
       case FIELDS.VIDEO_URL:
-        return <InputText
+        return (
+          <InputText
             field={field}
             value={props.value}
             data-testid={datatestId}
             onChange={props.onChange}
             pattern={'https?://.+'}
           />
-      
+        )
+
       case FIELDS.JSON:
         return (
-          <textarea name={field.name} onChange={props.onChange} value={JSON.stringify(props.value)} data-testid={datatestId}>
-            
-          </textarea>
-          )
+          <textarea
+            name={field.name}
+            onChange={props.onChange}
+            value={JSON.stringify(props.value)}
+            data-testid={datatestId}
+          ></textarea>
+        )
 
       default:
         return (
@@ -208,19 +235,18 @@ function Field(props) {
             value={props.value}
             data-testid={datatestId}
             onChange={props.onChange}
-            pattern={field.pattern ? field.pattern: null}
+            pattern={field.pattern ? field.pattern : null}
           />
         )
     }
   }
 
   return (
-    <div className={`input-group ${props.field.required ? 'required': ''}`}>
-      
+    <div className={`input-group ${props.field.required ? 'required' : ''}`}>
       {props.field.label && (
         <label forName={props.field.name}>{props.field.label}</label>
       )}
-      
+
       {getInput(props.field)}
     </div>
   )

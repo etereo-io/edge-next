@@ -19,29 +19,27 @@ const Layout = (props) => (
 
     <main>
       <div
-        className={`container ${
-          props.fullWidth ? 'fullWidth' : ''
-        } ${props.className ? props.className : ''}`}
+        className={`container ${props.fullWidth ? 'fullWidth' : ''} ${
+          props.className ? props.className : ''
+        }`}
       >
         {props.children}
       </div>
     </main>
 
     <Footer />
-    <style jsx>{
-    `
-    .container {
-      max-width: var(--empz-page-max-width);
-      margin: 0 auto;
-      padding: 2rem 1.25rem;
-    }
-    
-    .fullWidth{
-      max-width: none;
-      padding: 0;
-    }
-    `
-    }</style>
+    <style jsx>{`
+      .container {
+        max-width: var(--empz-page-max-width);
+        margin: 0 auto;
+        padding: 2rem 1.25rem;
+      }
+
+      .fullWidth {
+        max-width: none;
+        padding: 0;
+      }
+    `}</style>
   </>
 )
 

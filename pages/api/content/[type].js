@@ -22,10 +22,10 @@ const getContent = (filterParams, searchParams, paginationParams) => (
   }
 
   const isAdmin = req.user && req.user.roles.indexOf('ADMIN') !== -1
-  const isOwner = req.user && filterParams.author && req.user.id === filterParams.author
+  const isOwner =
+    req.user && filterParams.author && req.user.id === filterParams.author
 
-
-  if (type.publishing.draftMode && (!isAdmin && !isOwner) ) {
+  if (type.publishing.draftMode && !isAdmin && !isOwner) {
     // Filter by draft, except for admins and owners
     increasedFilters.draft = false
   }
@@ -60,13 +60,15 @@ export function fillContentWithDefaultData(contentType, content, user) {
 
     const slug = slugify(
       contentType.slugGeneration.reduce(
-        (prev, next) => prev + ' ' + (next !== 'userId' ? newContent[next] : user.id),
+        (prev, next) =>
+          prev + ' ' + (next !== 'userId' ? newContent[next] : user.id),
         ''
-      )
-    , {
-      lower: true, 
-      strict: true,  
-    })
+      ),
+      {
+        lower: true,
+        strict: true,
+      }
+    )
 
     const extraFields = {
       slug: slug,
@@ -78,9 +80,7 @@ export function fillContentWithDefaultData(contentType, content, user) {
   }
 }
 
-
 const createContent = async (req, res) => {
-
   const type = req.contentType
   const content = req.body
 
@@ -160,9 +160,8 @@ export default async (req, res) => {
     })
   }
 
-  
   methods(req, res, {
     get: getContent(filterParams, searchParams, paginationParams),
-    post: createContent
+    post: createContent,
   })
 }

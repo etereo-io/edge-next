@@ -1,7 +1,10 @@
 import randomWords from 'random-words'
 
-function ObjectID(rnd = r16 => Math.floor(r16).toString(16)) {
-  return  rnd(Date.now()/1000) + ' '.repeat(16).replace(/./g, () => rnd(Math.random()*16));
+function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
+  return (
+    rnd(Date.now() / 1000) +
+    ' '.repeat(16).replace(/./g, () => rnd(Math.random() * 16))
+  )
 }
 
 const posts = []
@@ -13,7 +16,7 @@ function generateParagraph() {
   const phrases = []
   const max = Math.round(Math.random() * 5) + 1
 
-  for(var i = 0; i < max; i++) {
+  for (var i = 0; i < max; i++) {
     phrases.push(randomWords({ min: 5, max: 50 }).join(' '))
   }
 
@@ -34,7 +37,7 @@ for (var i = 0; i < 30; i++) {
     slug: 'example-post-' + postId,
     image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
     description: generateParagraph(),
-    draft: Math.random() > 0.5 ? true: false,
+    draft: Math.random() > 0.5 ? true : false,
     tags: [
       {
         slug: 'software',
@@ -50,11 +53,11 @@ for (var i = 0; i < 30; i++) {
   products.push({
     type: 'product',
     id: productId,
-    image: 'https://loremflickr.com/240/240/food?random='+i,
+    image: 'https://loremflickr.com/240/240/food?random=' + i,
     author: userId,
     title: randomWords({ min: 3, max: 10 }).join(' '),
     slug: 'example-product-' + productId,
-    draft: Math.random() > 0.5 ? true: false,
+    draft: Math.random() > 0.5 ? true : false,
     description: generateParagraph(),
   })
 
@@ -128,7 +131,7 @@ export const getConfig = (defaultOptions) => {
 
     publishing: {
       draftMode: true,
-      title: 'title'
+      title: 'title',
     },
 
     comments: {
@@ -149,7 +152,7 @@ export const getConfig = (defaultOptions) => {
         label: 'Title',
         placeholder: 'Title',
         minlength: 8,
-        maxlength: 150
+        maxlength: 150,
       },
       {
         name: 'description',
@@ -157,7 +160,7 @@ export const getConfig = (defaultOptions) => {
         label: 'Description',
         placeholder: 'Description',
         minlength: 20,
-        maxlength: 2000
+        maxlength: 2000,
       },
       {
         name: 'image',
@@ -181,14 +184,78 @@ export const getConfig = (defaultOptions) => {
         type: 'tags',
         label: 'Tags',
         placeholder: 'Tags',
-      }
+      },
+    ],
+  }
+
+  const movieContentType = {
+    title: {
+      en: 'Movie',
+      es: 'pelicula',
+    },
+
+    slug: 'movie',
+
+    slugGeneration: ['title', 'createdAt'],
+
+    permissions: {
+      read: [publicRole],
+      create: [adminRole, userRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
+    },
+
+    publishing: {
+      draftMode: false,
+      title: 'title',
+    },
+
+    comments: {
+      enabled: false,
+      permissions: {
+        read: [publicRole],
+        create: [userRole, adminRole],
+        update: [adminRole],
+        delete: [adminRole],
+        admin: [adminRole],
+      },
+    },
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        placeholder: 'Title',
+        minlength: 8,
+        maxlength: 150,
+      },
+
+      {
+        name: 'file',
+        type: 'file',
+        label: 'File',
+        placeholder: 'File',
+      },
+      {
+        name: 'video',
+        type: 'video_url',
+        label: 'Video',
+      },
+      {
+        name: 'tags',
+        type: 'tags',
+        label: 'Tags',
+        placeholder: 'Tags',
+      },
     ],
   }
 
   const ProfilePictureContent = {
     title: {
       en: 'Picture',
-      es: 'Foto'
+      es: 'Foto',
     },
 
     slug: 'picture',
@@ -196,7 +263,7 @@ export const getConfig = (defaultOptions) => {
     slugGeneration: ['userId', 'createdAt'],
 
     publishing: {
-      draftMode: false
+      draftMode: false,
     },
 
     permissions: {
@@ -210,7 +277,7 @@ export const getConfig = (defaultOptions) => {
 
     comments: {
       enabled: false,
-      permissions: {}
+      permissions: {},
     },
 
     fields: [
@@ -221,13 +288,13 @@ export const getConfig = (defaultOptions) => {
         required: true,
         placeholder: 'Image',
       },
-    ]
+    ],
   }
 
   const LikeContent = {
     title: {
       en: 'Like',
-      es: 'Like'
+      es: 'Like',
     },
 
     slug: 'like',
@@ -245,11 +312,11 @@ export const getConfig = (defaultOptions) => {
 
     comments: {
       enabled: false,
-      permissions: {}
+      permissions: {},
     },
 
     publishing: {
-      draftMode: false
+      draftMode: false,
     },
 
     fields: [
@@ -270,29 +337,32 @@ export const getConfig = (defaultOptions) => {
       {
         name: 'status',
         type: 'select',
-        options: [{
-          label: 'Like',
-          value: 'like'
-        }, {
-          label: 'Dislike',
-          value: 'dislike'
-        }],
+        options: [
+          {
+            label: 'Like',
+            value: 'like',
+          },
+          {
+            label: 'Dislike',
+            value: 'dislike',
+          },
+        ],
         label: 'status',
         required: true,
         placeholder: 'status',
       },
-    ]
+    ],
   }
 
   const MatchContent = {
     title: {
       en: 'Match',
-      es: 'Match'
+      es: 'Match',
     },
 
     slug: 'match',
 
-    slugGeneration: ['participants' , 'createdAt'],
+    slugGeneration: ['participants', 'createdAt'],
 
     permissions: {
       read: [userRole, adminRole],
@@ -304,11 +374,11 @@ export const getConfig = (defaultOptions) => {
 
     comments: {
       enabled: false,
-      permissions: {}
+      permissions: {},
     },
 
     publishing: {
-      draftMode: false
+      draftMode: false,
     },
 
     fields: [
@@ -322,29 +392,31 @@ export const getConfig = (defaultOptions) => {
       {
         name: 'deleted',
         type: 'radio',
-        options: [{
-          label: 'true',
-          value: true
-        }, {
-          label: 'false',
-          value: false
-        }],
+        options: [
+          {
+            label: 'true',
+            value: true,
+          },
+          {
+            label: 'false',
+            value: false,
+          },
+        ],
         label: 'deleted',
         placeholder: 'deleted',
       },
-    ]
+    ],
   }
 
-  
   const MessageContent = {
     title: {
       en: 'Message',
-      es: 'Message'
+      es: 'Message',
     },
 
     slug: 'message',
 
-    slugGeneration: ['userId' , 'createdAt'],
+    slugGeneration: ['userId', 'createdAt'],
 
     permissions: {
       read: [userRole, adminRole],
@@ -355,12 +427,12 @@ export const getConfig = (defaultOptions) => {
     },
 
     publishing: {
-      draftMode: false
+      draftMode: false,
     },
 
     comments: {
       enabled: false,
-      permissions: {}
+      permissions: {},
     },
 
     fields: [
@@ -390,8 +462,8 @@ export const getConfig = (defaultOptions) => {
         type: 'boolean',
         label: 'deleted',
         placeholder: 'deleted',
-      }
-    ]
+      },
+    ],
   }
 
   const productContentType = {
@@ -414,7 +486,7 @@ export const getConfig = (defaultOptions) => {
 
     publishing: {
       draftMode: true,
-      title: 'title'
+      title: 'title',
     },
 
     display: 'grid',
@@ -437,7 +509,7 @@ export const getConfig = (defaultOptions) => {
         label: 'Title',
         placeholder: 'Title',
         minlength: 10,
-        maxlength: 200
+        maxlength: 200,
       },
       {
         name: 'description',
@@ -445,7 +517,7 @@ export const getConfig = (defaultOptions) => {
         label: 'Description',
         placeholder: 'Description',
         minlength: 10,
-        maxlength: 2000
+        maxlength: 2000,
       },
       {
         name: 'image',
@@ -459,7 +531,7 @@ export const getConfig = (defaultOptions) => {
         type: 'text',
         label: 'Stock Number',
         placeholder: 'SKU',
-        maxlength: 200
+        maxlength: 200,
       },
       {
         name: 'price',
@@ -467,14 +539,14 @@ export const getConfig = (defaultOptions) => {
         label: 'Price',
         placeholder: 'Price',
         min: 0,
-        max: 100000
+        max: 100000,
       },
       {
         name: 'stockamount',
         type: 'number',
         label: 'Stock Amount',
         placeholder: 'Stock Amount',
-        private: true
+        private: true,
       },
     ],
   }
@@ -500,41 +572,41 @@ export const getConfig = (defaultOptions) => {
 
     // Used for e-mails and links
     url: 'https://edge-next.now.sh/',
-    
+
     emails: {
       from: 'no-reply@edge-next.io',
-      contact: 'contact@edge-next.io'
+      contact: 'contact@edge-next.io',
     },
 
     // Themes
     theme: {
       default: 'light-theme',
-      themes:  [
+      themes: [
         {
           label: 'Light',
           value: 'light-theme',
           mainColor: 'white',
-          borderColor: 'black'
+          borderColor: 'black',
         },
         {
           label: 'Dark',
           value: 'dark-theme',
           mainColor: 'black',
-          borderColor: 'white'
+          borderColor: 'white',
         },
         {
           label: 'Robot',
           value: 'robot-theme',
           mainColor: 'black',
-          borderColor: 'green'
+          borderColor: 'green',
         },
         {
           label: 'Kawaii',
           value: 'kawaii-theme',
           mainColor: 'pink',
-          borderColor: 'black'
+          borderColor: 'black',
         },
-      ]
+      ],
     },
 
     // Add one more role
@@ -542,15 +614,14 @@ export const getConfig = (defaultOptions) => {
       ...defaultOptions.roles,
       shopOwner: {
         label: 'Shop Owner',
-        value: shopOwnerRole
-      }
+        value: shopOwnerRole,
+      },
     },
 
     // Users activity logging & API
     activity: {
-
       // Enables Activity API and stores content, comment and user activities,
-      enabled: true, 
+      enabled: true,
       permissions: {
         content: {
           created: [publicRole],
@@ -582,32 +653,38 @@ export const getConfig = (defaultOptions) => {
       providers: {
         instagram: false,
         google: false,
-        facebook: true
+        facebook: true,
       },
 
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {
-        fields: [{
-          name: 'description',
-          type: 'textarea',
-          label: 'Description',
-          required: false,
-          minlength: 60,
-          maxlength: 300,
-          roles: []
-        }, {
-          name: 'gender',
-          type: 'select',
-          label: 'gender',
-          required: true,
-          options: [{
-            label: 'Male',
-            value: 'male'
-          },{
-            label: 'Female',
-            value: 'female'
-          }]
-        }]
+        fields: [
+          {
+            name: 'description',
+            type: 'textarea',
+            label: 'Description',
+            required: false,
+            minlength: 60,
+            maxlength: 300,
+            roles: [],
+          },
+          {
+            name: 'gender',
+            type: 'select',
+            label: 'gender',
+            required: true,
+            options: [
+              {
+                label: 'Male',
+                value: 'male',
+              },
+              {
+                label: 'Female',
+                value: 'female',
+              },
+            ],
+          },
+        ],
       },
 
       // Initial users data for testing purposes
@@ -625,8 +702,8 @@ export const getConfig = (defaultOptions) => {
             picture: '/static/demo-images/default-avatar.jpg',
           },
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
         {
           username: 'user',
@@ -640,8 +717,8 @@ export const getConfig = (defaultOptions) => {
             picture: '',
           },
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
         {
           username: 'blocked',
@@ -656,8 +733,8 @@ export const getConfig = (defaultOptions) => {
           },
           blocked: true,
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
         {
           username: 'notverified',
@@ -673,8 +750,8 @@ export const getConfig = (defaultOptions) => {
           },
           blocked: true,
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
       ],
     },
@@ -683,12 +760,13 @@ export const getConfig = (defaultOptions) => {
     content: {
       // Different content types defined
       types: [
-        postContentType, 
-        productContentType, 
-        ProfilePictureContent, 
-        LikeContent, 
-        MatchContent, 
-        MessageContent
+        postContentType,
+        productContentType,
+        ProfilePictureContent,
+        LikeContent,
+        MatchContent,
+        MessageContent,
+        movieContentType,
       ],
       initialContent: initialContent,
     },

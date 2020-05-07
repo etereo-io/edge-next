@@ -6,7 +6,7 @@ import { useUser } from '../../../../lib/hooks'
 
 export default function () {
   const { user } = useUser({
-    userId: 'me'
+    userId: 'me',
   })
 
   const links = config.content.types
@@ -22,15 +22,15 @@ export default function () {
 
   return (
     <>
-    <div className='listContentTypes'>
-      <LinkList links={links} />
-    </div>
+      <div className="listContentTypes">
+        <LinkList links={links} />
+      </div>
 
-  <style jsx>{`
-  .listContentTypes {
-    margin-bottom: var(--empz-gap-double);
-  }
-  `}</style>
-  </>
+      <style jsx>{`
+        .listContentTypes {
+          margin-bottom: var(--empz-gap-double);
+        }
+      `}</style>
+    </>
   )
 }

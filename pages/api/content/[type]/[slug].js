@@ -48,7 +48,7 @@ const loadContentItemMiddleware = async (req, res, cb) => {
 
 const getContent = async (req, res) => {
   const user = await findOneUser({ id: req.item.author })
-  
+
   res.status(200).json({
     ...req.item,
     user: user,
@@ -67,7 +67,6 @@ const deleteContent = (req, res) => {
 }
 
 const updateContent = async (req, res) => {
-
   const type = req.contentType
 
   const content = req.body

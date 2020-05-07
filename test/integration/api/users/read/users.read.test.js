@@ -15,9 +15,9 @@ jest.mock('../../../../../lib/api/users/user')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
-      title: 'A test',
-      description: 'A test',
-      // Users configuration
+    title: 'A test',
+    description: 'A test',
+    // Users configuration
     user: {
       // Capture user geolocation and enable geolocation display on the admin dashboard
       captureGeolocation: true,
@@ -28,32 +28,38 @@ jest.mock('../../../../../edge.config', () => ({
       providers: {
         instagram: false,
         google: false,
-        facebook: true
+        facebook: true,
       },
 
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {
-        fields: [{
-          name: 'description',
-          type: 'textarea',
-          label: 'Description',
-          required: false,
-          minlength: 60,
-          maxlength: 300,
-          roles: []
-        }, {
-          name: 'gender',
-          type: 'select',
-          label: 'gender',
-          required: true,
-          options: [{
-            label: 'Male',
-            value: 'male'
-          },{
-            label: 'Female',
-            value: 'female'
-          }]
-        }]
+        fields: [
+          {
+            name: 'description',
+            type: 'textarea',
+            label: 'Description',
+            required: false,
+            minlength: 60,
+            maxlength: 300,
+            roles: [],
+          },
+          {
+            name: 'gender',
+            type: 'select',
+            label: 'gender',
+            required: true,
+            options: [
+              {
+                label: 'Male',
+                value: 'male',
+              },
+              {
+                label: 'Female',
+                value: 'female',
+              },
+            ],
+          },
+        ],
       },
 
       // Initial users data for testing purposes
@@ -71,8 +77,8 @@ jest.mock('../../../../../edge.config', () => ({
             picture: '/static/demo-images/default-avatar.jpg',
           },
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
         {
           username: 'user',
@@ -86,8 +92,8 @@ jest.mock('../../../../../edge.config', () => ({
             picture: '',
           },
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
         {
           username: 'blocked',
@@ -102,8 +108,8 @@ jest.mock('../../../../../edge.config', () => ({
           },
           blocked: true,
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
         {
           username: 'notverified',
@@ -119,12 +125,12 @@ jest.mock('../../../../../edge.config', () => ({
           },
           blocked: true,
           metadata: {
-            lastLogin: null
-          }
+            lastLogin: null,
+          },
         },
       ],
-    }
-  })
+    },
+  }),
 }))
 
 const demoUser = {

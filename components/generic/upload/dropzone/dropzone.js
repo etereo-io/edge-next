@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-
 export default function (props) {
   const fileInputRef = React.createRef()
   const [highlighted, setHighlighted] = useState(false)
@@ -55,42 +54,39 @@ export default function (props) {
 
   return (
     <>
-    <div
-      className={`dropzone ${highlighted && 'highlight'}`}
-      style={{ cursor: props.disabled ? 'default' : 'pointer' }}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      onDrop={onDrop}
-      onClick={openFileDialog}
-    >
-      <p>Drag & Drop files here to upload</p>
-      <input
-        ref={fileInputRef}
-        className="fileinput"
-        type="file"
-        multiple
-        onChange={onFilesAdded}
-      />
-    </div>
-    <style jsx>{
-        `
+      <div
+        className={`dropzone ${highlighted && 'highlight'}`}
+        style={{ cursor: props.disabled ? 'default' : 'pointer' }}
+        onDragOver={onDragOver}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
+        onClick={openFileDialog}
+      >
+        <p>Drag & Drop files here to upload</p>
+        <input
+          ref={fileInputRef}
+          className="fileinput"
+          type="file"
+          multiple
+          onChange={onFilesAdded}
+        />
+      </div>
+      <style jsx>{`
         .dropzone {
           padding: var(--empz-gap);
           border: 2px dashed var(--empz-foreground);
           color: var(--empz-foreground);
           cursor: pointer;
           text-align: center;
-        
         }
         .fileinput {
           display: none;
         }
-      
+
         .dropzone.highlight {
           background-color: rgb(188, 185, 236);
         }
-        `
-      }</style>
+      `}</style>
     </>
   )
 }

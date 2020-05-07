@@ -15,14 +15,14 @@ const RecordedVideo = (props) => {
 }
 
 export default function (props) {
-  
   const [videos, setVideos] = useState([])
 
-
   const handleVideoRecordingComplete = (blob) => {
-    setVideos([...videos,  { name: 'video-' + Date.now() + '-webcam.mp4', blob: blob }])
+    setVideos([
+      ...videos,
+      { name: 'video-' + Date.now() + '-webcam.mp4', blob: blob },
+    ])
   }
-
 
   const removeWebcamVideo = (index) => {
     setVideos(videos.filter((item, i) => i !== index))
@@ -30,10 +30,9 @@ export default function (props) {
 
   return (
     <div className="sentence-form-wrapper">
-       
       <div className="record-area-wrapper">
         <div className="recorded-videos">
-          {(videos).map((v, index) => (
+          {videos.map((v, index) => (
             <RecordedVideo
               video={v}
               onDelete={() => removeWebcamVideo(index)}
@@ -46,7 +45,6 @@ export default function (props) {
           }}
         />
       </div>
-        
     </div>
   )
 }

@@ -13,46 +13,48 @@ jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
 jest.mock('../../../../../edge.config', () => {
-  
-  const mockInitialPosts = [{
-    type: 'post',
-    id: 0,
-    author: '1',
-    title: 'Example post',
-    slug: 'example-post-0' ,
-    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
-    description: 'This is an example description',
-    draft: false,
-    tags: [
-      {
-        slug: 'software',
-        label: 'SOFTWARE',
-      },
-      {
-        slug: 'ai',
-        label: 'AI',
-      },
-    ],
-  }, {
-    type: 'post',
-    id: 1,
-    author: '2',
-    title: 'Example post',
-    slug: 'example-post-1' ,
-    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
-    description: 'This is an example description',
-    draft: true,
-    tags: [
-      {
-        slug: 'software',
-        label: 'SOFTWARE',
-      },
-      {
-        slug: 'ai',
-        label: 'AI',
-      },
-    ],
-  }]
+  const mockInitialPosts = [
+    {
+      type: 'post',
+      id: 0,
+      author: '1',
+      title: 'Example post',
+      slug: 'example-post-0',
+      image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+      description: 'This is an example description',
+      draft: false,
+      tags: [
+        {
+          slug: 'software',
+          label: 'SOFTWARE',
+        },
+        {
+          slug: 'ai',
+          label: 'AI',
+        },
+      ],
+    },
+    {
+      type: 'post',
+      id: 1,
+      author: '2',
+      title: 'Example post',
+      slug: 'example-post-1',
+      image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+      description: 'This is an example description',
+      draft: true,
+      tags: [
+        {
+          slug: 'software',
+          label: 'SOFTWARE',
+        },
+        {
+          slug: 'ai',
+          label: 'AI',
+        },
+      ],
+    },
+  ]
 
   const mockPostContentType = {
     title: {
@@ -93,7 +95,7 @@ jest.mock('../../../../../edge.config', () => {
         type: 'text',
         label: 'Title',
         placeholder: 'Title',
-        minlength: 8
+        minlength: 8,
       },
       {
         name: 'description',
@@ -118,27 +120,24 @@ jest.mock('../../../../../edge.config', () => {
         type: 'tags',
         label: 'Tags',
         placeholder: 'Tags',
-      }
+      },
     ],
   }
 
   return {
     __esModule: true,
     getConfig: jest.fn().mockReturnValue({
-        title: 'A test',
-        description: 'A test',
-        // Content configuration
-        content: {
-          // Different content types defined
-          types: [
-            mockPostContentType
-          ],
-          initialContent: mockInitialPosts,
-        },
-    })
+      title: 'A test',
+      description: 'A test',
+      // Content configuration
+      content: {
+        // Different content types defined
+        types: [mockPostContentType],
+        initialContent: mockInitialPosts,
+      },
+    }),
   }
 })
-
 
 describe('Integrations tests for content creation endpoint', () => {
   let server
@@ -171,26 +170,27 @@ describe('Integrations tests for content creation endpoint', () => {
     test('Should return 400 if content validation fails', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', slug: 'example-post-0' }
-  
+
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
-  
+
       getPermissions.mockReturnValueOnce({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
-  
+
       getSession.mockReturnValueOnce({
         roles: ['USER'],
         id: '1',
       })
-  
+
       const newPost = {
         title: 'tes',
-        description: 'test test  test test test test test test test test test test test test test test ',
+        description:
+          'test test  test test test test test test test test test test test test test test ',
       }
-  
+
       const response = await fetch(urlToBeUsed.href, {
         method: 'PUT',
         headers: {
@@ -198,38 +198,39 @@ describe('Integrations tests for content creation endpoint', () => {
         },
         body: JSON.stringify(newPost),
       })
-  
+
       const jsonResult = await response.json()
-  
+
       expect(response.status).toBe(400)
       expect(jsonResult).toMatchObject({
-        error: 'Invalid data: title length is less than 8'
+        error: 'Invalid data: title length is less than 8',
       })
     })
 
     test('Should return new content details given a valid request', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', slug: 'example-post-0' }
-  
+
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
-  
+
       getPermissions.mockReturnValueOnce({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
-  
+
       getSession.mockReturnValueOnce({
         roles: ['USER'],
         id: '1',
       })
-  
+
       const newPost = {
         title: 'test test test test test test ',
-        description: 'test test  test test test test test test test test test test test test test test ',
+        description:
+          'test test  test test test test test test test test test test test test test test ',
       }
-  
+
       const response = await fetch(urlToBeUsed.href, {
         method: 'PUT',
         headers: {
@@ -237,9 +238,9 @@ describe('Integrations tests for content creation endpoint', () => {
         },
         body: JSON.stringify(newPost),
       })
-  
+
       const jsonResult = await response.json()
-  
+
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
         title: newPost.title,
@@ -256,7 +257,7 @@ describe('Integrations tests for content creation endpoint', () => {
             label: 'AI',
           },
         ],
-        image: "https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg",
+        image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
         author: '1',
         id: expect.anything(),
       })
@@ -264,29 +265,30 @@ describe('Integrations tests for content creation endpoint', () => {
   })
 
   describe('Other people content', () => {
-    test('Should return 401 when updating other person content without the content.post.update permission', async() => {
+    test('Should return 401 when updating other person content without the content.post.update permission', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', slug: 'example-post-0' }
-  
+
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
-  
+
       getPermissions.mockReturnValueOnce({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
-  
+
       getSession.mockReturnValueOnce({
         roles: ['USER'],
         id: 'i am another user',
       })
-  
+
       const newPost = {
         title: 'test test test test test test ',
-        description: 'test test  test test test test test test test test test test test test test test ',
+        description:
+          'test test  test test test test test test test test test test test test test test ',
       }
-  
+
       const response = await fetch(urlToBeUsed.href, {
         method: 'PUT',
         headers: {
@@ -294,38 +296,40 @@ describe('Integrations tests for content creation endpoint', () => {
         },
         body: JSON.stringify(newPost),
       })
-  
+
       const jsonResult = await response.json()
-  
+
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message: "User not authorized to content.post.update,content.post.admin"
+        message:
+          'User not authorized to content.post.update,content.post.admin',
       })
     })
 
-    test('Should return 200 when updating other person content with the content.post.update permission', async() => {
+    test('Should return 200 when updating other person content with the content.post.update permission', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', slug: 'example-post-0' }
-  
+
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
-  
+
       getPermissions.mockReturnValueOnce({
         'content.post.update': ['USER'],
         'content.post.admin': ['ADMIN'],
       })
-  
+
       getSession.mockReturnValueOnce({
         roles: ['USER'],
         id: 'i am another user',
       })
-  
+
       const newPost = {
         title: 'test test test test test test ',
-        description: 'test test  test test test test test test test test test test test test test test ',
+        description:
+          'test test  test test test test test test test test test test test test test test ',
       }
-  
+
       const response = await fetch(urlToBeUsed.href, {
         method: 'PUT',
         headers: {
@@ -333,9 +337,9 @@ describe('Integrations tests for content creation endpoint', () => {
         },
         body: JSON.stringify(newPost),
       })
-  
+
       const jsonResult = await response.json()
-  
+
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
         title: newPost.title,
@@ -356,32 +360,32 @@ describe('Integrations tests for content creation endpoint', () => {
         author: '1',
         id: expect.anything(),
       })
-    
     })
 
-    test('Should return 200 when updating other person content with the content.post.admin permission', async() => {
+    test('Should return 200 when updating other person content with the content.post.admin permission', async () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', slug: 'example-post-0' }
-  
+
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
-  
+
       getPermissions.mockReturnValueOnce({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['USER'],
       })
-  
+
       getSession.mockReturnValueOnce({
         roles: ['USER'],
         id: 'definetely not me',
       })
-  
+
       const newPost = {
         title: 'test test test test test test ',
-        description: 'test test  test test test test test test test test test test test test test test ',
+        description:
+          'test test  test test test test test test test test test test test test test test ',
       }
-  
+
       const response = await fetch(urlToBeUsed.href, {
         method: 'PUT',
         headers: {
@@ -389,9 +393,9 @@ describe('Integrations tests for content creation endpoint', () => {
         },
         body: JSON.stringify(newPost),
       })
-  
+
       const jsonResult = await response.json()
-  
+
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
         title: newPost.title,
@@ -414,8 +418,6 @@ describe('Integrations tests for content creation endpoint', () => {
       })
     })
   })
-
-
 
   test('Should return 401 for a role that is PUBLIC', async () => {
     const urlToBeUsed = new URL(url)
@@ -436,7 +438,8 @@ describe('Integrations tests for content creation endpoint', () => {
 
     const newPost = {
       title: 'test',
-      description: 'test test test test test test test test test test test test test test test ',
+      description:
+        'test test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -469,7 +472,8 @@ describe('Integrations tests for content creation endpoint', () => {
 
     const newPost = {
       title: 'test test test test test test test test test ',
-      description: 'test test test test test test test test test test test test test test test ',
+      description:
+        'test test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -482,5 +486,4 @@ describe('Integrations tests for content creation endpoint', () => {
 
     expect(response.status).toBe(200)
   })
-
 })

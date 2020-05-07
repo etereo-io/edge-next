@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useUser } from '../../lib/hooks'
 
 const Signup = () => {
-  useUser({ redirectTo: '/', redirectIfFound: true, userId: 'me'})
+  useUser({ redirectTo: '/', redirectIfFound: true, userId: 'me' })
 
   const [errorMsg, setErrorMsg] = useState('')
   const [loading, setLoading] = useState(false)
@@ -50,7 +50,12 @@ const Signup = () => {
   return (
     <Layout title="Signup">
       <div className="login">
-        <Form isLogin={false} loading={loading} errorMessage={errorMsg} onSubmit={handleSubmit} />
+        <Form
+          isLogin={false}
+          loading={loading}
+          errorMessage={errorMsg}
+          onSubmit={handleSubmit}
+        />
       </div>
       <style jsx>{`
         .login {

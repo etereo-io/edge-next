@@ -21,8 +21,7 @@ function Tag(props) {
   )
 }
 
-export default function ({tags = []}) {
-  
+export default function ({ tags = [] }) {
   return (
     <>
       <div className="tags-field">

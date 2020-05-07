@@ -12,9 +12,7 @@ import listen from 'test-listen'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
-
 jest.mock('../../../../../edge.config', () => {
-  
   const mockInitialPosts = []
 
   const mockPostContentType = {
@@ -82,24 +80,22 @@ jest.mock('../../../../../edge.config', () => {
         type: 'tags',
         label: 'Tags',
         placeholder: 'Tags',
-      }
+      },
     ],
   }
 
   return {
     __esModule: true,
     getConfig: jest.fn().mockReturnValue({
-        title: 'A test',
-        description: 'A test',
-        // Content configuration
-        content: {
-          // Different content types defined
-          types: [
-            mockPostContentType
-          ],
-          initialContent: mockInitialPosts,
-        },
-    })
+      title: 'A test',
+      description: 'A test',
+      // Content configuration
+      content: {
+        // Different content types defined
+        types: [mockPostContentType],
+        initialContent: mockInitialPosts,
+      },
+    }),
   }
 })
 
@@ -150,7 +146,8 @@ describe('Integrations tests for content creation endpoint', () => {
 
     const newPost = {
       title: 'tes',
-      description: 'test test  test test test test test test test test test test test test test test ',
+      description:
+        'test test  test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -165,7 +162,7 @@ describe('Integrations tests for content creation endpoint', () => {
 
     expect(response.status).toBe(400)
     expect(jsonResult).toMatchObject({
-      error: 'Invalid data: title length is less than 8'
+      error: 'Invalid data: title length is less than 8',
     })
   })
 
@@ -189,14 +186,18 @@ describe('Integrations tests for content creation endpoint', () => {
 
     const newPost = {
       title: 'test test test test test test ',
-      description: 'test test  test test test test test test test test test test test test test test ',
-      tags: [{
-        label: 'Hello',
-        slug: 'hello'
-      }, {
-        label: 'World',
-        slug: 'world'
-      }]
+      description:
+        'test test  test test test test test test test test test test test test test test ',
+      tags: [
+        {
+          label: 'Hello',
+          slug: 'hello',
+        },
+        {
+          label: 'World',
+          slug: 'world',
+        },
+      ],
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -215,13 +216,16 @@ describe('Integrations tests for content creation endpoint', () => {
       type: 'post',
       slug: expect.any(String),
       description: newPost.description,
-      tags: [{
-        label: 'Hello',
-        slug: 'hello'
-      }, {
-        label: 'World',
-        slug: 'world'
-      }],
+      tags: [
+        {
+          label: 'Hello',
+          slug: 'hello',
+        },
+        {
+          label: 'World',
+          slug: 'world',
+        },
+      ],
       image: null,
       author: 'test-id',
       id: expect.anything(),
@@ -247,7 +251,8 @@ describe('Integrations tests for content creation endpoint', () => {
 
     const newPost = {
       title: 'test',
-      description: 'test test test test test test test test test test test test test test test ',
+      description:
+        'test test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -280,7 +285,8 @@ describe('Integrations tests for content creation endpoint', () => {
 
     const newPost = {
       title: 'test test test test test test test test test ',
-      description: 'test test test test test test test test test test test test test test test ',
+      description:
+        'test test test test test test test test test test test test test test test ',
     }
 
     const response = await fetch(urlToBeUsed.href, {

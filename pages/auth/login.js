@@ -28,20 +28,26 @@ const Login = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
-      
-      Router.push('/')
 
+      Router.push('/')
     } catch (error) {
       setLoading(false)
       console.error('An unexpected error happened occurred:', error)
-      setErrorMsg('Error while logging in, check if the email and password are correct')
+      setErrorMsg(
+        'Error while logging in, check if the email and password are correct'
+      )
     }
   }
 
   return (
     <Layout title="login">
       <div className="login">
-        <Form isLogin errorMessage={errorMsg} loading={loading} onSubmit={handleSubmit} />
+        <Form
+          isLogin
+          errorMessage={errorMsg}
+          loading={loading}
+          onSubmit={handleSubmit}
+        />
       </div>
       <style jsx>{`
         .login {

@@ -1,7 +1,11 @@
 import { useState, useContext } from 'react'
 import Select from '../select/select'
 
-import { EdgeThemeContext, themes, defaultTheme } from '../../../lib/contexts/edge-theme'
+import {
+  EdgeThemeContext,
+  themes,
+  defaultTheme,
+} from '../../../lib/contexts/edge-theme'
 
 function ColorBubble(props) {
   return (
@@ -29,20 +33,21 @@ export default function (props) {
     switchMode(ev.target.value)
   }
 
-  const prefixes = themes.map(theme => {
+  const prefixes = themes.map((theme) => {
     return {
       value: theme.value,
-      prefix: <ColorBubble color={theme.mainColor} border={theme.borderColor} />,
+      prefix: (
+        <ColorBubble color={theme.mainColor} border={theme.borderColor} />
+      ),
     }
   })
-
 
   return (
     <>
       <div className="theme-selector">
         <Select onChange={onChange} prefixes={prefixes} value={selectedTheme}>
           {themes.map((t) => (
-            <option key={t.value}  value={t.value}>
+            <option key={t.value} value={t.value}>
               {t.label}
             </option>
           ))}
