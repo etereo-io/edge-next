@@ -110,6 +110,8 @@ export default function CommentEntry({
       <style jsx>{`
         .comment-entry {
           display: flex;
+          padding: var(--empz-gap);
+          background: var(--accents-2);
         }
 
         .comment-body {
@@ -136,11 +138,11 @@ export default function CommentEntry({
 
         .meta {
           font-size: 13px;
-          color: var(--accents-3);
+          color: var(--accents-7);
         }
 
         .actions {
-          color: var(--accents-4);
+          color: var(--accents-7);
           font-weight: bold;
           font-size: 13px;
         }

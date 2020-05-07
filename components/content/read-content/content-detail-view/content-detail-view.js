@@ -2,13 +2,14 @@ import CommentForm from '../../../comments/comment-form/comment-form'
 import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import ContentActions from '../../content-actions/content-actions'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
-import { usePermission, useUser } from '../../../../lib/hooks'
+import { usePermission } from '../../../../lib/hooks'
 import { useState } from 'react'
 
 export default function (props) {
   const canReadComments = usePermission([
     `content.${props.type.slug}.comments.read`,
   ])
+
   const canWriteComments = usePermission([
     `content.${props.type.slug}.comments.create`,
   ])
@@ -29,7 +30,7 @@ export default function (props) {
               links={false}
               type={props.type}
             />
-            {/*<UserBlock title="Author" user={author} />*/}
+            
           </div>
 
           <ContentActions

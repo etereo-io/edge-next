@@ -135,7 +135,7 @@ export default function (props) {
         </div>
         <div className="meta">
           <span className="created-at">{format(props.content.createdAt)}</span>
-          {props.type.comments.enabled ? (
+          {props.type.comments.enabled && typeof props.content.comments !== 'undefined' ? (
             <span className="comment-count">
               {props.content.comments} comments
             </span>

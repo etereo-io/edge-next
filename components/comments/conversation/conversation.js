@@ -173,6 +173,17 @@ export default function ({ contentId = '', type = {}, comment = {} }) {
             font-weight: 13px;
             padding-left: var(--empz-gap-double);
           }
+
+          .load-more {
+            display: flex;
+            justify-content: center;
+          }
+
+          .reply {
+            border-top: 1px solid var(--light-border-color);
+            margin-top: var(--empz-gap);
+            padding-top: var(--empz-gap);
+          }
         `}
       </style>
     </>
