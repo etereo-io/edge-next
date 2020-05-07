@@ -3,7 +3,13 @@ import { useState, useEffect } from 'react'
 import API from '../../../lib/api/api-endpoints'
 import fetch from '../../../lib/fetcher'
 
-export default function ({ contentId='', comment={}, onChange = () => {}, onSave = () => {}, type = {}}) {
+export default function ({ contentId='',
+  comment={}, 
+  onChange = () => {}, 
+  onSave = () => {}, 
+  type = {},
+  conversationId= ''
+}) {
   const [loading, setLoading ] = useState(false)
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')
@@ -41,7 +47,8 @@ export default function ({ contentId='', comment={}, onChange = () => {}, onSave
     setError(false)
 
     submitRequest({
-      message
+      message,
+      conversationId: conversationId ? conversationId: null
     })
       .then((result) => {
         setLoading(false)

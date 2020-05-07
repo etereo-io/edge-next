@@ -43,9 +43,9 @@ export default function (props) {
         {props.type.comments.enabled && canWriteComments.available && (
           <div className="comment-form-wrapper"><CommentForm onSave={onCommentAdded} type={props.type} contentId={props.content.id} /></div>
         )}
-
+  
         {props.type.comments.enabled && canReadComments.available && (
-          <CommentsFeed type={props.type} contentId={props.content.id} newComments={newComments}/>
+          <CommentsFeed type={props.type} contentId={props.content.id} newComments={newComments} />
         )}
       </div>
       <style jsx>{`

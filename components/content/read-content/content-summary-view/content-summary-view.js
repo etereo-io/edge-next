@@ -5,7 +5,7 @@ import { hasPermission } from '../../../../lib/permissions'
 import { useUser } from '../../../../lib/hooks'
 import {FIELDS } from '../../../../lib/config/config-constants'
 import DynamicFieldView from '../../../generic/dynamic-field/dynamic-field-view'
-
+import { format } from 'timeago.js'
 
 export default function (props) {
   const shareUrl =
@@ -33,7 +33,9 @@ export default function (props) {
       {props.content.draft && <div className='status'>
         Draft - Not published
         </div>}
-      
+      <div className="meta">
+        <span className="created-at">{format(props.content.createdAt)}</span>
+      </div>
       <div className="content-summary-content">
         {props.type.fields
           .filter((f) => f.name === props.type.publishing.title)

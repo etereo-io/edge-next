@@ -3,6 +3,8 @@ import Table, {
   TableCellHeader,
   TableRowBody,
 } from '../../../generic/table/table'
+
+import LoadingPlaceholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 import useSWR, { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
@@ -10,6 +12,7 @@ import Button from '../../../generic/button/button'
 import Link from 'next/link'
 import fetch from '../../../../lib/fetcher'
 import { useState } from 'react'
+import { format } from 'timeago.js'
 
 const ListItem = (props) => {
   const [loading, setLoading] = useState(false)
@@ -89,9 +92,10 @@ const ListItem = (props) => {
           <a>{props.item.username}</a>
         </Link>
       </TableCellBody>
-      <TableCellBody>{props.item.email}</TableCellBody>
+      <TableCellBody >{props.item.email}</TableCellBody>
       <TableCellBody>{props.item.metadata.reported}</TableCellBody>
-      <TableCellBody>{props.item.metadata.lastLogin}</TableCellBody>
+      <TableCellBody>{props.item.metadata.lastLogin ? format(props.item.metadata.lastLogin): 'Never'}</TableCellBody>
+      <TableCellBody>{format(props.item.createdAt)}</TableCellBody>
       <TableCellBody>{props.item.blocked ? 'Blocked' : '-'}</TableCellBody>
       <TableCellBody>
         {!success && <Button href={`/settings/${props.item.id}`}>Edit</Button>}
@@ -101,8 +105,8 @@ const ListItem = (props) => {
           </Button>
         )}
         
-        <Button loading={loading} alt={true} onClick={onClickBlockUser}>
-          Block user
+        <Button loading={loading} warning={!props.item.blocked} secondary={props.item.blocked} onClick={onClickBlockUser}>
+          {props.item.blocked ? 'Unblock' : 'Block'}
         </Button>
         
         {error && <div className="error">Error deleting item</div>}
@@ -112,15 +116,41 @@ const ListItem = (props) => {
   )
 }
 
+
 function Placeholder() {
   return (
-    <div className="placeholders">
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-    </div>
+    <>
+      <TableRowBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+      </TableRowBody>
+      <TableRowBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+      </TableRowBody>
+
+    </>
+    
   )
 }
 
@@ -163,16 +193,19 @@ export default function (props) {
     <TableCellHeader>Email</TableCellHeader>,
     <TableCellHeader>Reported</TableCellHeader>,
     <TableCellHeader>Last Login</TableCellHeader>,
+    <TableCellHeader>Created at</TableCellHeader>,
     <TableCellHeader>Blocked</TableCellHeader>,
     <TableCellHeader>Actions</TableCellHeader>,
   ]
 
   return (
     <div className="content-list">
-      <Table headerCells={headerCells}>
-        {!isEmpty ? pages : <EmptyComponent />}
-      </Table>
 
+      <div className="table-wrapper">
+        <Table headerCells={headerCells}>
+          {!isEmpty ? pages : <EmptyComponent />}
+        </Table>
+      </div>
       <div id="load-more">
         {isReachingEnd ? null : (
           <Button loading={isLoadingMore} big={true} onClick={loadMore}>
@@ -181,6 +214,10 @@ export default function (props) {
         )}
       </div>
       <style jsx>{`
+        .table-wrapper {
+          overflow-x: scroll;
+        }
+        
         .load-more {
           display: flex;
           justify-content: center;

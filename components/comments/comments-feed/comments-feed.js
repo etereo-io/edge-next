@@ -68,9 +68,15 @@ function EmptyComponent() {
   return <div className="empty">Be the first to comment.</div>
 }
 
-export default function (props) {
+export default function ({
+  initialData = [],
+  contentId = null,
+  conversationId = null,
+  type = {},
+  newComments = [],
+}) {
 
-  const identificator = 'comment-list-' + props.type.slug
+  const identificator = 'comment-list-' + type.slug + '-contentId-' + conversationId
 
   // Fetch comments page by page
   const {
@@ -82,11 +88,12 @@ export default function (props) {
   } = useSWRPages(
     identificator,
     ({ offset, withSWR }) => {
-      const apiUrl = `${API.comments[props.type.slug]}/${props.contentId}?limit=10${
+      const apiUrl = `${API.comments[type.slug]}/${contentId}?limit=10${
         offset ? '&from=' + offset : ''
-      }`
+      }${conversationId ? `&conversationId=${conversationId}`: ''}`
+
       const { data } = withSWR(
-        useSWR(apiUrl, fetch, { initialData: props.initialData })
+        useSWR(apiUrl, fetch, { initialData: initialData })
       )
 
       if (!data) return <LoadingItems />
@@ -96,7 +103,7 @@ export default function (props) {
         return (
           <div key={item.id}>
             <div  className={`item`}>
-                <CommentItem comment={item} type={props.type} contentId={props.contentId} />
+              <CommentItem comment={item} type={type} contentId={contentId} conversationId={conversationId ? conversationId: item.id} />
             </div>
             <style jsx>{`
                 .item {
@@ -116,6 +123,7 @@ export default function (props) {
     []
   )
 
+  // Load more automatically when the button loadMoreButton is onScreen
   const $loadMoreButton = useRef(null)
   const isOnScreen = useOnScreen($loadMoreButton, '200px')
 
@@ -127,12 +135,12 @@ export default function (props) {
     <>
       <div className="comment-feed-view">
         <div className={`items`}>
-          {props.newComments.map(item => {
-            return  <div key={item.id} className={`item`}>
-                <CommentItem comment={item} type={props.type} contentId={props.contentId} />
+          {newComments.map(item => {
+            return <div key={item.id} className={`item`}>
+              <CommentItem comment={item} type={type} contentId={contentId} conversationId={conversationId ? conversationId: item.id} />
             </div>
           })}
-          {!isEmpty ? pages : <EmptyComponent />}
+          {isEmpty && newComments.length === 0 && !isLoadingMore ? <EmptyComponent /> : pages }
           {isLoadingMore  && <LoadingItems />}
         </div>
         <div className="load-more">

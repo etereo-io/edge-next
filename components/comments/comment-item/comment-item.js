@@ -1,23 +1,37 @@
 import DropDown from '../../generic/dropdown-menu/dropdown-menu'
 import { hasPermission } from '../../../lib/permissions'
-import { useUser } from '../../../lib/hooks'
+import { useUser, usePermission } from '../../../lib/hooks'
 import Avatar from '../../user/avatar/avatar'
 import { format } from 'timeago.js';
+import { useState } from 'react'
+import CommentForm from '../comment-form/comment-form'
+import CommentsFeed from '../comments-feed/comments-feed'
 import Link from 'next/link'
 
-export default function (props) {
+export default function ({
+  contentId = '',
+  conversationId = '',
+  type = {},
+  comment = {}
+}) {
+  const [showReplyForm, setShowReplyForm ] = useState(false)
+
   const { user } = useUser({
     userId: 'me'
   })
 
+  const canWriteComments = usePermission(
+    [`content.${type.slug}.comments.create`]
+  )
+
   const hasEditPermission = hasPermission(
     user,
-    [`content.${props.type.slug}.comments.admin`, `content.${props.type.slug}.comments.update`],
+    [`content.${type.slug}.comments.admin`, `content.${type.slug}.comments.update`],
   )
-  const isCommentOwner = user && user.id === props.comment.author
+  const isCommentOwner = user && user.id === comment.author
   
   // In case the user was deleted, default to an empty object
-  const commentUser = props.comment.user || {
+  const commentUser = comment.user || {
     username: 'not found',
     id: 'not-found',
     profile: {
@@ -25,11 +39,21 @@ export default function (props) {
     }
   }
 
+  // Display new comments on top of feed
+  const [newComments, setNewComments] = useState([])
+  const onCommentAdded = (c) => {
+    setNewComments([c, ...newComments])
+  }
+  
   return (
     <>
+    
     <div className='comment-item'>
       <div className='comment-entry'>
-        <Avatar width={40} height={40} src={commentUser.profile.picture} title={`${commentUser.username} avatar`} />
+        <Link href={`/profile/${commentUser.id}`}>
+          <a title={`${commentUser.username} profile`}><Avatar width={40} height={40} src={commentUser.profile.picture} title={`${commentUser.username} avatar`} /></a>
+        </Link>
+
         
         <div className="comment-body">
           <div className="info">
@@ -39,16 +63,23 @@ export default function (props) {
               </Link>
             </span>
             <span className="meta">
-              <span className="time">{format(props.comment.createdAt)}</span>
+              <span className="time">{format(comment.createdAt)}</span>
             </span>
             
           </div>
           <div className="content">
-              {props.comment.message}
+              {comment.message}
           </div>
           <div className="actions">
-            <span>Reply</span>
+            
+            {canWriteComments.available && <span onClick={() => { setShowReplyForm(true)}}>Reply</span> }
           </div>
+          { showReplyForm && (
+            <div className="reply-wrapper">
+              <CommentForm onSave={onCommentAdded} type={type} contentId={contentId} conversationId={conversationId} />
+            </div>
+          )}
+          
         </div>
         
         <div className='side-actions'>
@@ -61,16 +92,16 @@ export default function (props) {
         </div>
       </div>
       <div className='collapsed-comment'>
-        <a >View 6 replies</a>
+        { comment.replies ?<a >View {comment.replies} replies</a> : null}
       </div>
+      
     </div>
     <style jsx>
       {
         `
         .comment-item {
           padding: var(--empz-gap-half);
-          border: var(--light-border);
-          border-radius: var(--empz-radius);
+
         }
 
         .comment-entry {

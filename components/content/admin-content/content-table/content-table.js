@@ -3,12 +3,16 @@ import Table, {
   TableCellHeader,
   TableRowBody,
 } from '../../../generic/table/table'
+
+import LoadingPlaceholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
+
 import useSWR, { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import Link from 'next/link'
 import fetch from '../../../../lib/fetcher'
+import { format } from 'timeago.js'
 import { useState } from 'react'
 
 const ListItem = (props) => {
@@ -62,8 +66,9 @@ const ListItem = (props) => {
             JSON.stringify(value)
           )
 
-        return <TableCellBody>{content}</TableCellBody>
+        return <TableCellBody style={{maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis'}}>{content}</TableCellBody>
       })}
+      <TableCellBody>{format(props.item.createdAt)}</TableCellBody>
       {props.type.publishing.draftMode && (
         <TableCellBody>{props.item.draft ? 'DRAFT': '-'}</TableCellBody>
       )}
@@ -91,13 +96,38 @@ const ListItem = (props) => {
 
 function Placeholder() {
   return (
-    <div className="placeholders">
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-      <div className="p"></div>
-    </div>
+    <>
+      <TableRowBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+      </TableRowBody>
+      <TableRowBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+        <TableCellBody>
+          <LoadingPlaceholder />
+        </TableCellBody>
+      </TableRowBody>
+
+    </>
+    
   )
 }
 
@@ -141,6 +171,8 @@ export default function (props) {
     return <TableCellHeader>{field.name}</TableCellHeader>
   })
 
+  headerCells.push(<TableCellHeader>Created at</TableCellHeader>)
+
   if (props.type.publishing.draftMode) {
     headerCells.push(<TableCellHeader>Draft</TableCellHeader>)
   }
@@ -154,11 +186,13 @@ export default function (props) {
 
   return (
     <div className="content-list">
-      <Table headerCells={headerCells}>
-        {!isEmpty ? pages : <EmptyComponent />}
-      </Table>
+      <div className="table-wrapper">
+        <Table headerCells={headerCells}>
+          {!isEmpty ? pages : <EmptyComponent />}
+        </Table>
+      </div>
 
-      <div id="load-more">
+      <div className="load-more">
         {isReachingEnd ? null : (
           <Button loading={isLoadingMore} big={true} onClick={loadMore}>
             Load More
@@ -166,9 +200,13 @@ export default function (props) {
         )}
       </div>
       <style jsx>{`
-      
+        .table-wrapper {
+          overflow-x: scroll;
+        }
+        
         .load-more {
           display: flex;
+          margin: var(--empz-gap);
           justify-content: center;
         }
       `}</style>

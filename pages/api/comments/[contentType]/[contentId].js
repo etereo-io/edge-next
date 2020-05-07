@@ -57,6 +57,7 @@ export function fillCommentWithDefaultData(
       contentType: contentType.slug,
       contentId: contentId,
       message: comment.message,
+      conversationId: comment.conversationId || null
     }
 
     const slug = slugify(newComment.createdAt + ' ' + newComment.author, {
@@ -122,12 +123,19 @@ export default async (req, res) => {
       from,
       limit,
       author,
+      conversationId
     },
   } = req
 
   const filterParams = {
     contentId,
     contentType,
+  }
+
+  if (conversationId) {
+    filterParams.conversationId = conversationId
+  } else {
+    filterParams.conversationId = null
   }
 
   if (author) {
