@@ -9,7 +9,7 @@ export default function ({ width, height, borderRadius }) {
           width: ${width || '200px'};
           height: ${height || '20px'};
           border-radius: ${typeof borderRadius !== 'undefined' ? borderRadius : 'var(--empz-radius)'};
-          background: linear-gradient(-45deg, var(--accents-2), var(--accents-5), var(--accents-4), var(--accents-2));
+          background: linear-gradient(-45deg, var(--accents-1), var(--accents-2), var(--accents-3), var(--accents-2));
           background-size: 400% 400%;
           animation: gradient 10s ease infinite;
         }

@@ -95,7 +95,7 @@ export default function (props) {
       .contentSummaryView {
         color: var(--empz-foreground);
         background: var(--empz-background);
-        border: 1px solid var(--accents-2);;
+        border: var(--light-border);
         padding: var(--empz-gap);
         border-radius: var(--empz-radius);
         max-width: 800px;

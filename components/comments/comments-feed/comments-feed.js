@@ -13,13 +13,29 @@ function LoadingItems() {
     <>
       <div className="placeholders">
         <div className="p">
-          <div className="r">
-            <Placeholder width={'100%'} />
+          <div className="a">
+          <Placeholder width={'40px'} height={'40px'} borderRadius={'100%'}/>
+          </div>
+          <div className="d">
+            <div className="r">
+              <Placeholder width={'100%'} height={'10px'} />
+            </div>
+            <div className="r">
+              <Placeholder width={'100%'} height={'40px'} />
+            </div>
           </div>
         </div>
         <div className="p">
-          <div className="r">
-            <Placeholder width={'100%'} />
+          <div className="a">
+          <Placeholder width={'40px'} height={'40px'} borderRadius={'100%'}/>
+          </div>
+          <div className="d">
+            <div className="r">
+              <Placeholder width={'100%'} height={'10px'} />
+            </div>
+            <div className="r">
+              <Placeholder width={'100%'} height={'40px'}  />
+            </div>
           </div>
         </div>
       </div>
@@ -28,13 +44,19 @@ function LoadingItems() {
         `
         .p {
           background: var(--empz-background);
-          padding: var(--empz-gap);
-          margin-bottom: var(--empz-gap);
-          border: var(--empz-light-border);
+          padding: var(--empz-gap-half);
+          margin-bottom: var(--empz-gap-half);
+          border: var(--light-border);
           border-radius: var(--empz-radius);
+          display: flex;
+        }
+
+        .d {
+          flex: 1;
+          padding-left: var(--empz-gap-half);
         }
         .r {
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--empz-gap-half);
         }
         `
       }</style>
@@ -111,7 +133,7 @@ export default function (props) {
             </div>
           })}
           {!isEmpty ? pages : <EmptyComponent />}
-          {isLoadingMore && <LoadingItems />}
+          {isLoadingMore  && <LoadingItems />}
         </div>
         <div className="load-more">
           {isReachingEnd ? null : (

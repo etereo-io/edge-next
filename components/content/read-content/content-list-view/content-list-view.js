@@ -42,7 +42,7 @@ function LoadingItems() {
           background: var(--empz-background);
           padding: var(--empz-gap);
           margin-bottom: var(--empz-gap);
-          border: var(--empz-light-border);
+          border: var(--light-border);
           border-radius: var(--empz-radius);
         }
         .r {

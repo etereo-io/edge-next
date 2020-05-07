@@ -3,8 +3,6 @@ import Header from '../header/header'
 import Footer from '../footer/footer'
 import config from '../../../lib/config'
 
-import styles from './layout.module.scss'
-
 const Layout = (props) => (
   <>
     <Head>
@@ -21,8 +19,8 @@ const Layout = (props) => (
 
     <main>
       <div
-        className={`${styles.normalContainer} ${
-          props.fullWidth ? styles.fullWidth : ''
+        className={`container ${
+          props.fullWidth ? 'fullWidth' : ''
         } ${props.className ? props.className : ''}`}
       >
         {props.children}
@@ -30,6 +28,20 @@ const Layout = (props) => (
     </main>
 
     <Footer />
+    <style jsx>{
+    `
+    .container {
+      max-width: var(--empz-page-max-width);
+      margin: 0 auto;
+      padding: 2rem 1.25rem;
+    }
+    
+    .fullWidth{
+      max-width: none;
+      padding: 0;
+    }
+    `
+    }</style>
   </>
 )
 

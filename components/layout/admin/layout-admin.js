@@ -2,8 +2,6 @@ import Head from 'next/head'
 import Header from '../header/header'
 import config from '../../../lib/config'
 
-import styles from './layout-admin.module.scss'
-
 const Layout = (props) => (
   <>
     <Head>
@@ -15,8 +13,17 @@ const Layout = (props) => (
     <Header />
 
     <main>
-      <div className={styles.adminContainer}>{props.children}</div>
+      <div className='admin-container'>{props.children}</div>
     </main>
+  <style jsx>{`
+  .admin-container {
+    max-width: 95vw;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+  }
+
+  `}</style>
   </>
 )
 

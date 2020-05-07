@@ -21,7 +21,7 @@ export default function toggle({value = false, onChange = () => {}, ...props}) {
       <style jsx>{`
         .toggle {
           cursor: pointer;
-          border: var(--empz-light-border);
+          border: var(--light-border);
           border-radius: var(--empz-radius);
           background: var(--empz-foreground);
           position: relative;
