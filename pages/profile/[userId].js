@@ -1,4 +1,4 @@
-import { usePermission, useUser } from '../../lib/hooks'
+import { useContentTypes, usePermission } from '../../lib/hooks'
 
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
@@ -8,27 +8,23 @@ import Layout from '../../components/layout/normal/layout'
 import UserActivity from '../../components/user/activity/activity'
 import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
-import {hasPermission} from '../../lib/permissions'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 
 const Profile = (props) => {
   const router = useRouter()
   const { userId } = router.query
-
+  
+  const visibleContentTypes = useContentTypes(['read', 'admin'])
   const permissions = usePermission(
     userId ? ['user.read', 'user.admin'] : null,
     '/',
-    null,
     (u) => u.id === userId,
     userId
   )
-  
 
   const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
-  
-  const { currentUser } = useUser({ userId: 'me' })
 
   // Loading
   if (!finished || !permissions.finished) {
@@ -40,13 +36,10 @@ const Profile = (props) => {
     )
   }
 
-  if (data) {
+  if (!data) {
+    // Redirect to 404 if the user is not found
     router.push('/404')
   }
-
-  const visibleContentTypes = config.content.types.filter(cType => {
-    return hasPermission(currentUser, [`content.${cType.slug}.read`])
-  })
 
   return (
     <Layout title="Profile">

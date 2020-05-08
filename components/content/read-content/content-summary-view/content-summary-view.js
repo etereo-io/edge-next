@@ -16,9 +16,7 @@ export default function (props) {
       : ''
   const links = !!props.links
 
-  const { user } = useUser({
-    userId: 'me',
-  })
+  const { user } = useUser()
 
   const hasEditPermission = hasPermission(user, [
     `content.${props.content.type}.admin`,

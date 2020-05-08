@@ -5,7 +5,6 @@ import { findOneContent } from '../../../lib/api/content/content'
 import { getContentTypeDefinition } from '../../../lib/config'
 import { hasPermissionsForContent } from '../../../lib/api/middlewares'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
-import { usePermission } from '../../../lib/hooks'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export async function getServerSideProps({ req, res, query }) {
@@ -57,18 +56,7 @@ export async function getServerSideProps({ req, res, query }) {
 }
 
 const ContentPage = (props) => {
-  // const contentType = getContentTypeDefinition(props.type)
-
-  usePermission(
-    [`content.${props.type}.read`, `content.${props.type}.admin`],
-    '/'
-  )
-
-  // Load data
-  /*const { data } = useSWR(API.content[props.type] + '/' + props.slug, fetch, {
-    initialData: props.data,
-  })*/
-
+  
   return (
     <Layout title={props.pageTitle}>
       {props.canAccess && props.data && (

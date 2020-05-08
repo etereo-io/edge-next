@@ -6,12 +6,11 @@ import { findContent } from '../../lib/api/content/content'
 import { getContentTypeDefinition } from '../../lib/config'
 import { hasPermissionsForContent } from '../../lib/api/middlewares'
 import runMiddleware from '../../lib/api/api-helpers/run-middleware'
-import { usePermission } from '../../lib/hooks'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export async function getServerSideProps({ req, res, query }) {
   const contentTypeDefinition = getContentTypeDefinition(query.type)
-
+  
   if (!contentTypeDefinition) {
     res.writeHead(302, { Location: '/404' })
     res.end()
@@ -43,21 +42,13 @@ export async function getServerSideProps({ req, res, query }) {
       type: query.type,
       canAccess: true,
       user: req.user || {},
-      query: `${query.tags ? `tags=${query.tags}` : ''}`
+      query: `${query.tags ? `tags=${query.tags}` : ''}`,
+      contentType: contentTypeDefinition
     },
   }
 }
 
 const ContentPage = (props) => {
-  const contentTypeDefinition = getContentTypeDefinition(props.type)
-
-  // Will redirect the user out if permission is not granted.
-  // For public sites this should be removed
-  usePermission(
-    [`content.${props.type}.read`, `content.${props.type}.admin`],
-    '/',
-    props.user
-  )
 
   return (
     <Layout title="Content">
@@ -66,7 +57,7 @@ const ContentPage = (props) => {
 
         <ContentListView
           initialData={props.data}
-          type={contentTypeDefinition}
+          type={props.contentType}
           infiniteScroll={true}
           query={props.query}
         />

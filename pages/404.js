@@ -1,12 +1,7 @@
-import { useDispatchCount, useUserState } from '../lib/contexts/edge-user'
-
 import Layout from '../components/layout/normal/layout'
 import LinkList from '../components/generic/link-list/link-list'
 
 export default function Custom404() {
-  const state = useUserState()
-
-  console.log(state)
   const links = [
     {
       title: 'Home page',

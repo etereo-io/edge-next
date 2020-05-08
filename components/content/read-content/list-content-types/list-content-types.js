@@ -1,18 +1,10 @@
 import LinkList from '../../../generic/link-list/link-list'
-import config from '../../../../lib/config'
-import { hasPermission } from '../../../../lib/permissions'
-
-import { useUser } from '../../../../lib/hooks'
+import { useContentTypes } from '../../../../lib/hooks'
 
 export default function () {
-  const { user } = useUser({
-    userId: 'me',
-  })
+  const contentTypes = useContentTypes(['read', 'admin'])
 
-  const links = config.content.types
-    .filter((type) => {
-      return hasPermission(user, `content.${type.slug}.read`)
-    })
+  const links = contentTypes
     .map((type) => {
       return {
         link: `/content/${type.slug}`,

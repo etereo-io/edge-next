@@ -1,19 +1,19 @@
 import ContentForm from '../../components/content/write-content/content-form/content-form'
 import Layout from '../../components/layout/normal/layout'
-import { getContentTypeDefinition } from '../../lib/config'
-import { usePermission } from '../../lib/hooks'
+import { usePermission, useContentType } from '../../lib/hooks'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 const CreateContent = () => {
   const router = useRouter()
   const { type } = router.query
+  
   const { available } = usePermission(
     type ? [`content.${type}.create`, `content.${type}.admin`] : null,
     '/'
   )
 
-  const contentType = getContentTypeDefinition(type)
+  const { contentType } = useContentType(type)
 
   const [content, setContent] = useState(null)
 
