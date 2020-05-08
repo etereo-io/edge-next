@@ -133,6 +133,8 @@ const Header = () => {
     userId: 'me',
   })
 
+  console.log('HEADER USER', user)
+
   return (
     <>
       <header className="header">

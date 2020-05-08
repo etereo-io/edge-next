@@ -7,8 +7,10 @@ import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../../components/layout/normal/layout'
 import UserActivity from '../../components/user/activity/activity'
 import config from '../../lib/config'
+import fetch from '../../lib/fetcher'
 import {hasPermission} from '../../lib/permissions'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 const Profile = (props) => {
   const router = useRouter()
@@ -21,8 +23,10 @@ const Profile = (props) => {
     (u) => u.id === userId,
     userId
   )
+  
 
-  const { user, finished } = useUser({ userId, redirectTo: '/404' })
+  const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
+  const finished = Boolean(data) || Boolean(error)
   
   const { currentUser } = useUser({ userId: 'me' })
 
@@ -36,6 +40,10 @@ const Profile = (props) => {
     )
   }
 
+  if (data) {
+    router.push('/404')
+  }
+
   const visibleContentTypes = config.content.types.filter(cType => {
     return hasPermission(currentUser, [`content.${cType.slug}.read`])
   })
@@ -44,20 +52,20 @@ const Profile = (props) => {
     <Layout title="Profile">
       <div className="profile-user-info">
         <div className="avatar">
-          <Avatar src={user ? user.profile.picture : null} />
+          <Avatar src={data ? data.profile.picture : null} />
         </div>
         <div className="name">
           <div className="title">
             <div className="title-left">
               <h2>
-                {user
-                  ? user.profile.displayName || user.username
+                {data
+                  ? data.profile.displayName || data.username
                   : 'User Profile'}
               </h2>
             </div>
             <div className="title-right">
               <div className="item">
-                <Button href={`/settings/${user ? user.id : ''}`}>
+                <Button href={`/settings/${data ? data.id : ''}`}>
                   Edit Profile
                 </Button>
               </div>
@@ -84,7 +92,7 @@ const Profile = (props) => {
                 <ContentListView
                   infiniteScroll={false}
                   type={cData}
-                  query={`author=${user ? user.id : null}`}
+                  query={`author=${data ? data.id : null}`}
                 />
               </div>
             )
@@ -94,7 +102,7 @@ const Profile = (props) => {
         {config.activity.enabled && (
           <div className="activity-report">
             <h3>Recent activity</h3>
-            {user && <UserActivity user={user} />}
+            {data && <UserActivity user={data} />}
           </div>
         )}
       </div>

@@ -2,6 +2,7 @@ import '../styles/index.scss'
 
 import withEdgeTheme, { EdgeThemeContext } from '../lib/contexts/edge-theme'
 
+import { EdgeUserProvider } from '../lib/contexts/edge-user'
 import { useContext } from 'react'
 
 function MyApp({ Component, pageProps }) {
@@ -9,7 +10,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <div id="app-container" className={mode}>
-      <Component {...pageProps} />
+      <EdgeUserProvider>
+        <Component {...pageProps} />
+      </EdgeUserProvider>
     </div>
   )
 }

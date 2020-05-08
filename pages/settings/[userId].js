@@ -9,6 +9,7 @@ import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import useSWR from 'swr'
 
 const UserSettings = (props) => {
   const router = useRouter()
@@ -29,8 +30,11 @@ const UserSettings = (props) => {
     userId
   )
 
-  const { user, finished } = useUser({ userId, redirectTo: '/' })
-
+  
+  const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
+  const finished = Boolean(data) || Boolean(error)
+  
+  
   // Loading
   if (!finished || !permissions.finished) {
     return (
@@ -40,6 +44,12 @@ const UserSettings = (props) => {
       </Layout>
     )
   }
+
+  if (data) {
+    router.push('/404')
+  }
+
+  const user = data
 
   // Generic field change
   const handleFieldProfileChange = (name) => (value) => {
