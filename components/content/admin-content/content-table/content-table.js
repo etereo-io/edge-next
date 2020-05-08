@@ -37,7 +37,6 @@ const ListItem = (props) => {
 
       deleteRequest()
         .then((result) => {
-          console.log(result)
           setLoading(false)
           setSuccess(true)
           setError(false)
@@ -46,7 +45,6 @@ const ListItem = (props) => {
           setLoading(false)
           setSuccess(false)
           setError(true)
-          console.error(err)
         })
     }
   }

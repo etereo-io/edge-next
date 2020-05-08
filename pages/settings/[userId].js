@@ -1,3 +1,5 @@
+import { useEffect, useReducer } from 'react'
+
 import API from '../../lib/api/api-endpoints'
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
@@ -8,17 +10,122 @@ import fetch from '../../lib/fetcher'
 import { usePermission } from '../../lib/hooks'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { useState } from 'react'
+
+const reducer = (state, action) => {
+  
+  switch (action.type) {
+    case 'SET_INITIAL_DATA':
+      const { picture, displayName, ...profile } = action.payload.profile
+      const { username, email } = action.payload
+
+      return {
+        ...state,
+        seeded: true,
+        username: {
+          value: username
+        },
+        email: {
+          value: email
+        },
+
+        displayName: {
+          value: displayName
+        },
+        
+        picture: {
+          value: picture
+        },
+
+        profile: {
+          value: profile
+        }
+
+      }
+
+    case 'UPDATE_FIELD': 
+      return {
+        ...state,
+        [action.field]: {
+            ...state[action.field],
+            value: action.payload,
+          }
+        }
+      
+      
+    case 'UPDATE_PROFILE_FIELD': 
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          value: {
+            ...state.profile.value || {},
+            [action.field]: action.payload,
+          }
+        },
+      }
+    
+    case 'SET_VALIDATION_ERROR': 
+      return {
+        ...state,
+        [action.field]: {
+          ...state[action.field],
+          error: action.payload
+        }
+      }
+
+    case 'SAVE_FIELD':
+      return {
+        ...state, 
+        [action.field]: {
+          ...state[action.field],
+          loading: true,
+          error: false,
+          success: false
+        }
+      }
+    case 'SAVE_FIELD_SUCCESS':
+        return {
+          ...state, 
+          [action.field]: {
+            ...state[action.field],
+            loading: false,
+            error: false,
+            success: true
+          }
+        }
+    case 'SAVE_FIELD_ERROR':
+        return {
+          ...state, 
+          [action.field]: {
+            ...state[action.field],
+            loading: false,
+            error: action.payload || true,
+            success: false
+          }
+        }
+    
+   
+    default:
+      throw new Error(`Unknown action: ${action.type}`)
+  }
+}
+
 
 const UserSettings = () => {
+  
+  const [state, dispatch] = useReducer(reducer, {
+    username: {},
+    email: {},
+    profile: {
+      value: {}
+    },
+    displayName: {},
+    password: {},
+    deleteAccount: {}
+  })
+
+  // Check if the logged in user can access to this resource
   const router = useRouter()
-
-  const [error, setError] = useState({})
-  const [loading, setLoading] = useState({})
-  const [success, setSuccess] = useState({})
-
-  const [profileState, setProfileState] = useState({})
-
   const { userId } = router.query
 
   const permissions = usePermission(
@@ -30,6 +137,17 @@ const UserSettings = () => {
   
   const userResponse = useSWR( userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(userResponse.data) || Boolean(userResponse.error)
+  const user = userResponse.data
+
+  useEffect(() => {
+    if (user && !state.seeded) {
+      dispatch({
+        type: 'SET_INITIAL_DATA',
+        payload: user,
+      })
+    }
+  }, [user])
+
   
   // Loading
   if (!finished || !permissions.finished) {
@@ -46,13 +164,22 @@ const UserSettings = () => {
     router.push('/404')
   }
 
-  const user = userResponse.data
+
 
   // Generic field change
   const handleFieldProfileChange = (name) => (value) => {
-    setProfileState({
-      ...profileState,
-      [name]: value,
+    dispatch({
+      type: 'UPDATE_PROFILE_FIELD',
+      field: name,
+      payload: value
+    })
+  }
+
+  const handleFieldChange = (name) => (value) => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      field: name,
+      payload: value
     })
   }
 
@@ -68,23 +195,24 @@ const UserSettings = () => {
     const data = getDataCb(ev)
 
     if (!validateData(data)) {
-      setError({
-        [key]: 'Please complete the required fields',
+      dispatch({
+        type: 'SET_VALIDATION_ERROR',
+        field: key,
+        payload: 'Please complete the required fields'
       })
 
       return
     } else {
-      setError({
-        [key]: false,
+      dispatch({
+        type: 'SET_VALIDATION_ERROR',
+        field: key,
+        payload: false
       })
     }
 
-    setLoading({
-      [key]: true,
-    })
-
-    setSuccess({
-      [key]: false,
+    dispatch({
+      type: 'SAVE_FIELD',
+      field: key
     })
 
     fetch(url, {
@@ -95,19 +223,18 @@ const UserSettings = () => {
       },
     })
       .then((result) => {
-        setLoading({
-          [key]: false,
+        dispatch({
+          type: 'SAVE_FIELD_SUCCESS',
+          field: key,
+          payload: result
         })
-        setSuccess({
-          [key]: true,
-        })
+    
       })
       .catch((err) => {
-        setLoading({
-          [key]: false,
-        })
-        setError({
-          [key]: apiErrorMessage,
+        dispatch({
+          type: 'SAVE_FIELD_ERROR',
+          field: key,
+          payload: apiErrorMessage
         })
       })
   }
@@ -217,9 +344,9 @@ const UserSettings = () => {
   )
 
   const onSubmitProfile = onSubmit(
-    () => profileState,
+    () => state.profile.value,
     (d) => {
-      const valid = true
+      let valid = true
       config.user.profile.fields.forEach((f) => {
         if (f.required && !d[f.name]) {
           valid = false
@@ -268,26 +395,27 @@ const UserSettings = () => {
                       type="text"
                       placeholder="Your username"
                       name="username"
-                      defaultValue={user ? user.username : ''}
+                      onChange={(ev) => handleFieldChange('username')(ev.target.value)}
+                      value={state.username.value}
                     />
                   </div>
                 </div>
                 <div className="actions">
                   <div className="info">
-                    {error.username && (
-                      <div className="error-message">{error.username}</div>
+                    {state.username.error && (
+                      <div className="error-message">{state.username.error}</div>
                     )}
-                    {loading.username && (
+                    {state.username.loading && (
                       <div className="loading-message">Loading...</div>
                     )}
-                    {success.username && (
+                    {state.username.success && (
                       <div className="success-message">
                         Username updated correctly
                       </div>
                     )}
                   </div>
 
-                  <Button loading={loading.username}>Change username</Button>
+                  <Button loading={state.username.loading}>Change username</Button>
                 </div>
               </form>
             </div>
@@ -305,25 +433,26 @@ const UserSettings = () => {
                       type="text"
                       name="displayName"
                       placeholder="Your username"
-                      defaultValue={user ? user.profile.displayName : ''}
+                      onChange={(ev) => handleFieldChange('displayName')(ev.target.value)}
+                      value={state.displayName.value}
                     />
                   </div>
                 </div>
                 <div className="actions">
                   <div className="info">
-                    {error.displayName && (
-                      <div className="error-message">{error.displayName}</div>
+                    {state.displayName.error && (
+                      <div className="error-message">{state.displayName.error}</div>
                     )}
-                    {loading.displayName && (
+                    {state.displayName.loading && (
                       <div className="loading-message">Loading...</div>
                     )}
-                    {success.displayName && (
+                    {state.displayName.success && (
                       <div className="success-message">
                         Name updated correctly
                       </div>
                     )}
                   </div>
-                  <Button loading={loading.displayName}>
+                  <Button loading={state.displayName.loading}>
                     Change Your Name
                   </Button>
                 </div>
@@ -338,27 +467,27 @@ const UserSettings = () => {
                     <DynamicField
                       key={field.name}
                       field={field}
-                      value={profileState[field.name]}
+                      value={state.profile.value[field.name]}
                       onChange={handleFieldProfileChange(field.name)}
                     />
                   ))}
                 </div>
                 <div className="actions">
                   <div className="info">
-                    {error.profile && (
-                      <div className="error-message">{error.profile}</div>
+                    {state.profile.error && (
+                      <div className="error-message">{state.profile.error}</div>
                     )}
-                    {loading.profile && (
+                    {state.profile.loading && (
                       <div className="loading-message">Loading...</div>
                     )}
-                    {success.profile && (
+                    {state.profile.success && (
                       <div className="success-message">
                         profile updated correctly
                       </div>
                     )}
                   </div>
 
-                  <Button loading={loading.profile}>Edit information</Button>
+                  <Button loading={state.profile.loading}>Edit information</Button>
                 </div>
               </form>
             </div>
@@ -374,26 +503,27 @@ const UserSettings = () => {
                       placeholder="Email"
                       name="email"
                       required
-                      defaultValue={user ? user.email : ''}
+                      onChange={(ev) => handleFieldChange('email')(ev.target.value)}
+                      value={state.email.value}
                     />
                   </div>
                 </div>
                 <div className="actions">
                   <div className="info">
-                    {error.email && (
-                      <div className="error-message">{error.email}</div>
+                    {state.email.error && (
+                      <div className="error-message">{state.email.error}</div>
                     )}
-                    {loading.email && (
+                    {state.email.loading && (
                       <div className="loading-message">Loading...</div>
                     )}
-                    {success.email && (
+                    {state.email.success && (
                       <div className="success-message">
                         Email updated correctly. Please check your email inbox
                         to verify your new address.
                       </div>
                     )}
                   </div>
-                  <Button loading={loading.email}>Change email</Button>
+                  <Button loading={state.email.loading}>Change email</Button>
                 </div>
               </form>
             </div>
@@ -430,19 +560,19 @@ const UserSettings = () => {
 
                 <div className="actions">
                   <div className="info">
-                    {error.password && (
-                      <div className="error-message">{error.password}</div>
+                    {state.password.error && (
+                      <div className="error-message">{state.password.error}</div>
                     )}
-                    {loading.password && (
+                    {state.password.loading && (
                       <div className="loading-message">Loading...</div>
                     )}
-                    {success.password && (
+                    {state.password.success && (
                       <div className="success-message">
                         password updated correctly
                       </div>
                     )}
                   </div>
-                  <Button loading={loading.password}>Update</Button>
+                  <Button loading={state.password.loading}>Update</Button>
                 </div>
               </form>
             </div>
@@ -465,19 +595,19 @@ const UserSettings = () => {
 
                 <div className="actions">
                   <div className="info">
-                    {error.delete && (
-                      <div className="error-message">{error.delete}</div>
+                    {state.deleteAccount.error && (
+                      <div className="error-message">{state.deleteAccount.error}</div>
                     )}
-                    {loading.delete && (
+                    {state.deleteAccount.loading && (
                       <div className="loading-message">Loading...</div>
                     )}
-                    {success.delete && (
+                    {state.deleteAccount.success && (
                       <div className="success-message">
                         Your account was deleted. You will be redirected shortly
                       </div>
                     )}
                   </div>
-                  <Button loading={loading.delete}>Delete</Button>
+                  <Button loading={state.deleteAccount.loading}>Delete</Button>
                 </div>
               </form>
             </div>

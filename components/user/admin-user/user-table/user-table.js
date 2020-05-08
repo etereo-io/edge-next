@@ -42,14 +42,12 @@ const ListItem = (props) => {
 
       blockRequest(!props.item.blocked)
         .then((result) => {
-          console.log(result)
           setLoading(false)
           setError(false)
         })
         .catch((err) => {
           setLoading(false)
           alert('User could not be blocked')
-          console.error(err)
         })
     }
   }

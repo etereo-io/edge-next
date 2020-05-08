@@ -23,6 +23,7 @@ description: "Empieza Documentation"
       - [Updating an item](#updating-an-item)
       - [Deleting an item](#deleting-an-item)
     - [In memory DB (only local)](#in-memory-db-only-local)
+    - [MongoDB](#mongodb)
     - [Firebase](#firebase)
   - [Authentication](#authentication)
     - [Providers](#providers)
@@ -57,8 +58,6 @@ description: "Empieza Documentation"
   - Multi Theme support, cookie based
 - Login with [Passport.js](http://www.passportjs.org)
 - ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
-- Different Databases:
-  - Integrated with Firebase and MongoDB
 - Emails and email templates
   - Verify email and notify email implementations
 - Multiple components
@@ -321,6 +320,8 @@ The Content API is defined on your set of rules in the configuration file, the o
 ## Databases
 Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"
 
+**Note: The only production ready database is MongoDB**, Firebase integration is not complete.
+
 ### Database API
 
 All the Databases use the same API abstraction
@@ -373,7 +374,26 @@ database: {
 }
 ```
 
+### MongoDB
+
+To configure mongodb you will need to set the configuration:
+
+```javascript
+database: {
+  type: 'MONGO'
+}
+```
+
+Then you will need to configure the following environment variables:
+
+```
+MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
+MONGODB_DATABASE=<database>
+```
+
 ### Firebase 
+
+**Note: Firebase is not totally implemented**
 
 If you want to use Firebase you must set the following environment variables in the `.env` file:
 

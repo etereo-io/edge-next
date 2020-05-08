@@ -9,28 +9,26 @@ import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { v4 as uuidv4 } from 'uuid'
 
 const userExist = (userId) => async (req, res, cb) => {
+  let findUserId = userId
+
   if (userId === 'me') {
-    try {
-      const session = await getSession(req)
+    const session = await getSession(req)
 
-      if (!session) {
-        cb(new Error('User not found'))
-      } else {
-        req.user = session
-        cb()
-      }
-    } catch (e) {
-      cb(new Error('Error while getting current user'))
-    }
-  } else {
-    const user = await findOneUser({ id: userId })
-
-    if (!user) {
+    if (!session) {
       cb(new Error('User not found'))
-    } else {
-      req.user = user
-      cb()
+      return
     }
+
+    findUserId = session.id
+  }
+
+  const user = await findOneUser({ id: findUserId })
+
+  if (!user) {
+    cb(new Error('User not found'))
+  } else {
+    req.user = user
+    cb()
   }
 }
 
@@ -57,7 +55,7 @@ const updateUser = (slug) => (req, res) => {
       promiseChange = updateOneUser(req.user.id, {
         profile: {
           ...req.user.profile,
-          ...req.body.profile,
+          ...req.body,
         },
       })
       break

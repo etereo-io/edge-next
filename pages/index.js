@@ -180,13 +180,6 @@ const Landing = (props) => {
             </p>
           </div>
           <div className="feature">
-            <h3>Any MongoDB or Firebase database</h3>
-            <p>
-              A database layer abstracts the usage of any MongoDB database or
-              Firebase.
-            </p>
-          </div>
-          <div className="feature">
             <h3>Integration test</h3>
             <p>
               A set of integration tests cover different paths and can be easily

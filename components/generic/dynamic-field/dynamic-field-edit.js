@@ -178,7 +178,7 @@ function Field(props) {
             <select
               data-testid={datatestId}
               name={field.name}
-              onChange={props.onChange}
+              onChange={(ev) => props.onChange(ev.target.value)}
               value={props.value}
             >
               {field.options.map((o) => (
