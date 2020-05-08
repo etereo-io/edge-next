@@ -3,19 +3,13 @@ import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
 import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import ThemeSelector from '../../generic/theme-selector/theme-selector'
-import config from '../../../lib/config'
 import { hasPermission } from '../../../lib/permissions'
-import { useEffect } from 'react'
-import { useUser } from '../../../lib/hooks'
+import { useUser, useContentTypes } from '../../../lib/hooks'
 
 function UserHeader(props) {
   const user = props.user
-
-  useEffect(() => {
-    if (config.user.captureGeolocation) {
-      // TODO: Ask for geolocation
-    }
-  }, [])
+  const contentTypes = useContentTypes(['create', 'admin'])
+  
   return (
     <nav>
       {user && (
@@ -43,10 +37,7 @@ function UserHeader(props) {
               <span className="spacer"></span>
               <h4>Content</h4>
               <ul>
-                {config.content.types
-                  .filter((type) => {
-                    return hasPermission(user, `content.${type.slug}.create`)
-                  })
+                {contentTypes
                   .map((type) => {
                     return (
                       <li key={type.slug}>
@@ -129,10 +120,7 @@ function UserHeader(props) {
 }
 
 const Header = () => {
-  const { user } = useUser({
-    userId: 'me',
-  })
-
+  const { user } = useUser()
   return (
     <>
       <header className="header">
@@ -147,7 +135,7 @@ const Header = () => {
           </div>
 
           <div className="right-header">
-            <UserHeader user={user} />
+            <UserHeader user={user}/>
           </div>
         </div>
       </header>

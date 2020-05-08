@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useUser } from '../../lib/hooks'
 
 const Signup = () => {
-  useUser({ redirectTo: '/', redirectIfFound: true, userId: 'me' })
+  useUser({ redirectTo: '/', redirectIfFound: true })
 
   const [errorMsg, setErrorMsg] = useState('')
   const [loading, setLoading] = useState(false)

@@ -1,4 +1,4 @@
-import { usePermission, useUser } from '../../lib/hooks'
+import { useContentTypes, usePermission } from '../../lib/hooks'
 
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
@@ -7,24 +7,24 @@ import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../../components/layout/normal/layout'
 import UserActivity from '../../components/user/activity/activity'
 import config from '../../lib/config'
-import {hasPermission} from '../../lib/permissions'
+import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 
 const Profile = (props) => {
   const router = useRouter()
   const { userId } = router.query
-
+  
+  const visibleContentTypes = useContentTypes(['read', 'admin'])
   const permissions = usePermission(
     userId ? ['user.read', 'user.admin'] : null,
     '/',
-    null,
     (u) => u.id === userId,
     userId
   )
 
-  const { user, finished } = useUser({ userId, redirectTo: '/404' })
-  
-  const { currentUser } = useUser({ userId: 'me' })
+  const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
+  const finished = Boolean(data) || Boolean(error)
 
   // Loading
   if (!finished || !permissions.finished) {
@@ -36,28 +36,29 @@ const Profile = (props) => {
     )
   }
 
-  const visibleContentTypes = config.content.types.filter(cType => {
-    return hasPermission(currentUser, [`content.${cType.slug}.read`])
-  })
+  if (!data) {
+    // Redirect to 404 if the user is not found
+    router.push('/404')
+  }
 
   return (
     <Layout title="Profile">
       <div className="profile-user-info">
         <div className="avatar">
-          <Avatar src={user ? user.profile.picture : null} />
+          <Avatar src={data ? data.profile.picture : null} />
         </div>
         <div className="name">
           <div className="title">
             <div className="title-left">
               <h2>
-                {user
-                  ? user.profile.displayName || user.username
+                {data
+                  ? data.profile.displayName || data.username
                   : 'User Profile'}
               </h2>
             </div>
             <div className="title-right">
               <div className="item">
-                <Button href={`/settings/${user ? user.id : ''}`}>
+                <Button href={`/settings/${data ? data.id : ''}`}>
                   Edit Profile
                 </Button>
               </div>
@@ -84,7 +85,7 @@ const Profile = (props) => {
                 <ContentListView
                   infiniteScroll={false}
                   type={cData}
-                  query={`author=${user ? user.id : null}`}
+                  query={`author=${data ? data.id : null}`}
                 />
               </div>
             )
@@ -94,7 +95,7 @@ const Profile = (props) => {
         {config.activity.enabled && (
           <div className="activity-report">
             <h3>Recent activity</h3>
-            {user && <UserActivity user={user} />}
+            {data && <UserActivity user={data} />}
           </div>
         )}
       </div>

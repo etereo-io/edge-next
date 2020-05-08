@@ -1,10 +1,9 @@
-import { usePermission } from '../../../lib/hooks'
+import { usePermission, useContentType } from '../../../lib/hooks'
 
 import API from '../../../lib/api/api-endpoints'
 import ContentForm from '../../../components/content/write-content/content-form/content-form'
 import Layout from '../../../components/layout/normal/layout'
 import fetch from '../../../lib/fetcher'
-import { getContentTypeDefinition } from '../../../lib/config'
 
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -20,7 +19,7 @@ const EditContent = () => {
     query: { slug, type },
   } = router
 
-  const contentType = getContentTypeDefinition(type)
+  const {contentType} = useContentType(type)
   const [content, setContent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -47,9 +46,8 @@ const EditContent = () => {
   const { available } = usePermission(
     [`content.${type}.update`, `content.${type}.admin`],
     '/404',
-    null,
     (user) => {
-      return content && content.author === user.id
+      return content && user && content.author === user.id
     },
     content || error
   )

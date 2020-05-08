@@ -1,4 +1,4 @@
-import { usePermission, useUser } from '../../lib/hooks'
+import { useContentTypes, usePermission, useUser } from '../../lib/hooks'
 
 import Layout from '../../components/layout/admin/layout-admin'
 import LinkList from '../../components/generic/link-list/link-list'
@@ -6,9 +6,11 @@ import config from '../../lib/config'
 import { hasPermission } from '../../lib/permissions'
 
 const AdminPage = () => {
-  const { user } = useUser({ redirectTo: '/', userId: 'me' })
+  const { user } = useUser({ redirectTo: '/' })
 
   const { available } = usePermission(['admin.access'], '/')
+
+  const contentTypes = useContentTypes(['admin'])
 
   const links = []
 
@@ -33,10 +35,7 @@ const AdminPage = () => {
     })
   }
 
-  const contentLinks = config.content.types
-    .filter((type) => {
-      return hasPermission(user, `content.${type.slug}.admin`)
-    })
+  const contentLinks = contentTypes
     .map((type) => {
       return {
         link: `/admin/content/${type.slug}`,

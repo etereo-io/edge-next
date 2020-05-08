@@ -1,5 +1,3 @@
-import { usePermission, useUser } from '../../lib/hooks'
-
 import API from '../../lib/api/api-endpoints'
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
@@ -7,10 +5,12 @@ import DynamicField from '../../components/generic/dynamic-field/dynamic-field-e
 import Layout from '../../components/layout/normal/layout'
 import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
+import { usePermission } from '../../lib/hooks'
 import { useRouter } from 'next/router'
+import useSWR from 'swr'
 import { useState } from 'react'
 
-const UserSettings = (props) => {
+const UserSettings = () => {
   const router = useRouter()
 
   const [error, setError] = useState({})
@@ -24,13 +24,13 @@ const UserSettings = (props) => {
   const permissions = usePermission(
     userId ? ['user.update', 'user.admin'] : null,
     '/',
-    null,
-    (u) => u.id === userId,
+    (u) => u && u.id === userId,
     userId
   )
-
-  const { user, finished } = useUser({ userId, redirectTo: '/' })
-
+  
+  const userResponse = useSWR( userId ? `/api/users/` + userId : null, fetch)
+  const finished = Boolean(userResponse.data) || Boolean(userResponse.error)
+  
   // Loading
   if (!finished || !permissions.finished) {
     return (
@@ -40,6 +40,13 @@ const UserSettings = (props) => {
       </Layout>
     )
   }
+
+  if (!userResponse.data) {
+    // Redirect to 404 if the user is not found
+    router.push('/404')
+  }
+
+  const user = userResponse.data
 
   // Generic field change
   const handleFieldProfileChange = (name) => (value) => {
