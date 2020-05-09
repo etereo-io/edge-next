@@ -14,6 +14,7 @@ const Signup = () => {
   async function handleSubmit(e) {
     event.preventDefault()
 
+    
     if (errorMsg) setErrorMsg('')
 
     const body = {
@@ -22,7 +23,7 @@ const Signup = () => {
       password: e.currentTarget.password.value,
     }
 
-    if (body.password !== e.currentTarget.rpassword.value) {
+    if (body.password !== e.currentTarget.passwordrepeat.value) {
       setErrorMsg(`The passwords don't match`)
       return
     }

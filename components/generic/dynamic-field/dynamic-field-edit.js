@@ -182,7 +182,7 @@ function Field(props) {
               value={props.value}
             >
               {field.options.map((o) => (
-                <option value={o.value}>{o.label}</option>
+                <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
           </div>
@@ -244,7 +244,7 @@ function Field(props) {
   return (
     <div className={`input-group ${props.field.required ? 'required' : ''}`}>
       {props.field.label && (
-        <label forName={props.field.name}>{props.field.label}</label>
+        <label forname={props.field.name}>{props.field.label}</label>
       )}
 
       {getInput(props.field)}

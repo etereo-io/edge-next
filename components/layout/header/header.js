@@ -160,9 +160,9 @@ const Header = () => {
       </header>
         <Progress
           color="#29D"
-          startPosition="0.3"
-          stopDelayMs="200"
-          height="3"
+          startPosition={0.3}
+          stopDelayMs={200}
+          height={3}
         />
       <style jsx>{`
         .header {

@@ -18,6 +18,7 @@ import LinkList from '../components/generic/link-list/link-list'
 import Loading from '../components/generic/loading/loading-spinner/loading-spinner'
 import LoadingPlaceholder from '../components/generic/loading/loading-placeholder/loading-placeholder'
 import Map from '../components/generic/map/map'
+import PasswordStrength from '../components/generic/password-strength/password-strength'
 import Select from '../components/generic/select/select'
 import SocialShare from '../components/generic/social-share/social-share'
 import TagsField from '../components/generic/tags-field/tags-field'
@@ -271,6 +272,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#tagsfield">Tags Field</a>
+            </li>
+            <li>
+              <a href="#passwordstrength">Password strength</a>
             </li>
             <li>
               <a href="#table">Table</a>
@@ -817,7 +821,7 @@ const links = [{
               </div>
 
               <div className="item-wrapper">
-                <div className="input-group no-label required">
+                <div className="input-group required">
                   <input
                     type="text"
                     id="demo-input-text"
@@ -951,6 +955,30 @@ const links = [{
             </div>
             <pre>{`
 <TagsField tags={[{label: 'test', slug: 'test'}, {label: 'demo', slug: 'demo'}]} contentType={{slug : 'post'}} />
+  `}</pre>
+          </div>
+
+          <div id="passwordstrength" className="component">
+            <h3>Password Strength</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <PasswordStrength password='he'  />
+              </div>
+              <div className="item-wrapper">
+                <PasswordStrength password='hesS'  />
+              </div>
+              <div className="item-wrapper">
+                <PasswordStrength password='hesS1'  />
+              </div>
+              <div className="item-wrapper">
+                <PasswordStrength password='h!SS1'  />
+              </div>
+              <div className="item-wrapper">
+                <PasswordStrength password='he!sS.S1asd'  />
+              </div>
+            </div>
+            <pre>{`
+<PasswordStrength password='he!sS.S1asd'  />
   `}</pre>
           </div>
 

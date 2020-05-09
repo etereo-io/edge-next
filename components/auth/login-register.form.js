@@ -56,24 +56,26 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           <form onSubmit={onSubmit}>
             <hr className="sign-up-form-separator"></hr>
             {!isLogin && (
-              <div className="input-group no-label required">
+              <div className="input-group required">
                 <input
                   type="text"
                   placeholder="Choose username"
+                  name="username"
                   required
                 ></input>
               </div>
             )}
             <div className="input-group required">
-              <input type="email" placeholder="E-mail" required></input>
+              <input type="email" name="email" placeholder="E-mail" required></input>
             </div>
-            <div className="input-group no-label required">
-              <input type="password" placeholder="Password" required></input>
+            <div className="input-group required">
+              <input type="password" name="password" placeholder="Password" required></input>
             </div>
             {!isLogin && (
-              <div className="input-group no-label required">
+              <div className="input-group required">
                 <input
                   type="password"
+                  name="passwordrepeat"
                   placeholder="Repeat password"
                   required
                 ></input>
