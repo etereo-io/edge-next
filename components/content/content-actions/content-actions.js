@@ -1,21 +1,15 @@
 import Button from '../../generic/button/button'
-import { hasPermission } from '../../../lib/permissions'
+import { contentPermission } from '../../../lib/permissions'
 import { useUser } from '../../../lib/hooks'
 
 export default function (props) {
-  const { user } = useUser({
-    userId: 'me',
-  })
-
-  const hasEditPermission = hasPermission(user, [
-    `content.${props.content.type}.admin`,
-    `content.${props.content.type}.update`,
-  ])
-  const isContentOwner = user && user.id === props.content.author
+  // Check permissions to edit
+  const currentUser = useUser()
+  const canEdit = contentPermission(currentUser.user, props.content.type, 'update', props.content)
 
   return (
     <div className={`content-actions ${props.className}`}>
-      {(hasEditPermission || isContentOwner) && (
+      {canEdit && (
         <Button href={`/edit/${props.content.type}/${props.content.slug}`}>
           Edit
         </Button>

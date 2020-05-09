@@ -302,7 +302,7 @@ describe('Integrations tests for content creation endpoint', () => {
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
         message:
-          'User not authorized to content.post.update,content.post.admin',
+          'User not authorized to perform operation on content post',
       })
     })
 

@@ -1,4 +1,4 @@
-import { useContentTypes, usePermission } from '../../lib/hooks'
+import { useContentTypes, useUser } from '../../lib/hooks'
 
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
@@ -10,24 +10,25 @@ import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { userPermission } from '../../lib/permissions'
 
 const Profile = (props) => {
   const router = useRouter()
   const { userId } = router.query
   
   const visibleContentTypes = useContentTypes(['read', 'admin'])
-  const permissions = usePermission(
-    userId ? ['user.read', 'user.admin'] : null,
-    '/',
-    (u) => u.id === userId,
-    userId
-  )
+  
+  // Check permissions to read
+  const currentUser = useUser()
+  const canAccess = userPermission(currentUser.user, 'read', userId)
+  const canEdit = userPermission(currentUser.user, 'update', userId)
 
+  // Load profile data
   const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
   // Loading
-  if (!finished || !permissions.finished) {
+  if (!finished || !currentUser.finished) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -36,7 +37,7 @@ const Profile = (props) => {
     )
   }
 
-  if (!data) {
+  if (!data || !canAccess) {
     // Redirect to 404 if the user is not found
     router.push('/404')
   }
@@ -57,11 +58,11 @@ const Profile = (props) => {
               </h2>
             </div>
             <div className="title-right">
-              <div className="item">
+              { canEdit && <div className="item">
                 <Button href={`/settings/${data ? data.id : ''}`}>
                   Edit Profile
                 </Button>
-              </div>
+              </div>}
 
               <div className="item">
                 <DropdownMenu align={'right'}>

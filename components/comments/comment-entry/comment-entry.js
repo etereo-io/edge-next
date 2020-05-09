@@ -1,6 +1,6 @@
 import DropDown from '../../generic/dropdown-menu/dropdown-menu'
-import { hasPermission } from '../../../lib/permissions'
-import { useUser, usePermission } from '../../../lib/hooks'
+import { commentPermission } from '../../../lib/permissions'
+import { useUser } from '../../../lib/hooks'
 import Avatar from '../../user/avatar/avatar'
 import { format } from 'timeago.js'
 import { useState } from 'react'
@@ -17,19 +17,10 @@ export default function CommentEntry({
   // Reply form
   const [showReplyForm, setShowReplyForm] = useState(false)
 
-  const { user } = useUser({
-    userId: 'me',
-  })
-
-  const canWriteComments = usePermission([
-    `content.${type.slug}.comments.create`,
-  ])
-
-  const hasEditPermission = hasPermission(user, [
-    `content.${type.slug}.comments.admin`,
-    `content.${type.slug}.comments.update`,
-  ])
-  const isCommentOwner = user && user.id === comment.author
+  // Check permissions to edit
+  const currentUser = useUser()
+  const hasEditPermission = commentPermission(currentUser.user, type.slug, 'update', comment)
+  const hasWritePermission = commentPermission(currentUser.user, type.slug, 'create', comment)
 
   // In case the user was deleted, default to an empty object
   const commentUser = comment.user || {
@@ -74,7 +65,7 @@ export default function CommentEntry({
           </div>
           <div className="content">{comment.message}</div>
           <div className="actions">
-            {canWriteComments.available && (
+            {hasWritePermission && (
               <span
                 onClick={() => {
                   setShowReplyForm(true)
@@ -101,8 +92,8 @@ export default function CommentEntry({
         <div className="side-actions">
           <DropDown align={'right'}>
             <ul>
-              {!isCommentOwner && <li>Report</li>}
-              {(hasEditPermission || isCommentOwner) && <li>Delete</li>}
+              <li>Report</li>
+              {hasEditPermission && <li>Delete</li>}
             </ul>
           </DropDown>
         </div>

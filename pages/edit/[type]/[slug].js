@@ -1,4 +1,5 @@
-import { usePermission, useContentType } from '../../../lib/hooks'
+import { useUser, useContentType } from '../../../lib/hooks'
+import { contentPermission } from '../../../lib/permissions'
 
 import API from '../../../lib/api/api-endpoints'
 import ContentForm from '../../../components/content/write-content/content-form/content-form'
@@ -6,7 +7,6 @@ import Layout from '../../../components/layout/normal/layout'
 import fetch from '../../../lib/fetcher'
 
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
 import { useEffect, useState } from 'react'
 
 function LoadingView() {
@@ -43,32 +43,34 @@ const EditContent = () => {
     }
   }, [slug, type, content, error])
 
-  const { available } = usePermission(
-    [`content.${type}.update`, `content.${type}.admin`],
-    '/404',
-    (user) => {
-      return content && user && content.author === user.id
-    },
-    content || error
-  )
+  // Check permissions to edit
+  const currentUser = useUser()
+  const canAccess = contentPermission(currentUser.user, type, 'update', content)
 
   const onSave = (newItem) => {
     setContent(newItem)
   }
 
+  if (!currentUser.finished || loading || error) {
+    return  <Layout title="Edit content">
+      <LoadingView />
+    </Layout>
+  }
+
+  // Redirect if user can not access
+  if ( !canAccess) {
+    router.push('/404')
+  }
+
   return (
     <>
       <Layout title="Edit content">
-        {!loading && !error && (
+        {!loading && !error && canAccess && (
           <div className="edit-page">
-            <h1>Editing: {content ? content.title : null}</h1>
-
-            {available && (
-              <ContentForm type={contentType} onSave={onSave} content={content} />
-            )}
+            <h1>Editing: {content ? content.title : null}</h1>            
+            <ContentForm type={contentType} onSave={onSave} content={content} />
           </div>
         )}
-        {(loading || error) && <LoadingView />}
       </Layout>
 
       <style jsx>{`

@@ -7,9 +7,10 @@ import DynamicField from '../../components/generic/dynamic-field/dynamic-field-e
 import Layout from '../../components/layout/normal/layout'
 import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
-import { usePermission } from '../../lib/hooks'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import { useUser } from '../../lib/hooks'
+import { userPermission } from '../../lib/permissions'
 
 const reducer = (state, action) => {
   
@@ -128,18 +129,17 @@ const UserSettings = () => {
   const router = useRouter()
   const { userId } = router.query
 
-  const permissions = usePermission(
-    userId ? ['user.update', 'user.admin'] : null,
-    '/',
-    (u) => u && u.id === userId,
-    userId
-  )
+  // Check permissions to read
+  const currentUser = useUser()
+  const canAccess = userPermission(currentUser.user, 'update', userId)
   
+  // Load profile data
   const userResponse = useSWR( userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(userResponse.data) || Boolean(userResponse.error)
   const user = userResponse.data
 
   useEffect(() => {
+    // Set initial state
     if (user && !state.seeded) {
       dispatch({
         type: 'SET_INITIAL_DATA',
@@ -150,7 +150,7 @@ const UserSettings = () => {
 
   
   // Loading
-  if (!finished || !permissions.finished) {
+  if (!finished || !currentUser.finished) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -159,8 +159,8 @@ const UserSettings = () => {
     )
   }
 
-  if (!userResponse.data) {
-    // Redirect to 404 if the user is not found
+  if (!userResponse.data || !canAccess) {
+    // Redirect to 404 if the user is not found or doesnt have permissions
     router.push('/404')
   }
 
@@ -368,7 +368,7 @@ const UserSettings = () => {
   )
 
   return (
-    permissions.available && (
+    canAccess && (
       <Layout title="User Settings">
         <div className="user-settings-page">
           <div className="settings">

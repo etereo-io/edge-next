@@ -195,7 +195,7 @@ describe('Integrations tests for login', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message: 'User not authorized to user.update,user.admin',
+        message: 'User not authorized to perform operation on user 1',
       })
     })
 

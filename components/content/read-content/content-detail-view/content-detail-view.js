@@ -8,10 +8,12 @@ import { useState } from 'react'
 export default function (props) {
   const canReadComments = usePermission([
     `content.${props.type.slug}.comments.read`,
+    `content.${props.type.slug}.comments.admin`,
   ])
 
   const canWriteComments = usePermission([
     `content.${props.type.slug}.comments.create`,
+    `content.${props.type.slug}.comments.admin`,
   ])
 
   // Display new comments on top of feed

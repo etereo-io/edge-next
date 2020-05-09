@@ -4,28 +4,12 @@ import {
   findUsers,
   validateUser,
 } from '../../lib/api/users/user'
-import methods, { getAction } from '../../lib/api/api-helpers/methods'
 
 import { connect } from '../../lib/api/db'
-import { getSession } from '../../lib/api/auth/iron'
-import { hasPermission } from '../../lib/permissions'
+import { hasPermissionsForUser } from '../../lib/api/middlewares'
+import methods from '../../lib/api/api-helpers/methods'
 import { onUserAdded } from '../../lib/api/hooks/user.hooks'
 import runMiddleware from '../../lib/api/api-helpers/run-middleware'
-
-const hasPermissionsForUsers = async (req, res, cb) => {
-  const session = await getSession(req)
-  const action = getAction(req.method)
-
-  const permission = [`user.${action}`, `user.admin`]
-
-  const canAccess = hasPermission(session, permission)
-
-  if (!canAccess) {
-    cb(new Error('User not authorized to ' + permission))
-  } else {
-    cb()
-  }
-}
 
 const getUsers = (filterParams, searchParams, paginationParams) => (
   req,
@@ -110,7 +94,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForUsers)
+    await runMiddleware(req, res, hasPermissionsForUser(null))
   } catch (e) {
     return res.status(401).json({
       message: e.message,
