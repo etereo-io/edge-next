@@ -48,7 +48,7 @@ const Signup = () => {
   }
 
   return (
-    <Layout title="Signup">
+    <Layout title="Signup" fullWidth={true}>
       <div className="login">
         <Form
           isLogin={false}
@@ -58,13 +58,10 @@ const Signup = () => {
         />
       </div>
       <style jsx>{`
-        .login {
-          max-width: 21rem;
+        .form-title{
+          display: block;
           margin: 0 auto;
-          padding: 1rem;
-          border: var(--light-border);
-          border-radius: var(--empz-radius);
-          background: var(--empz-background);
+          max-width: 480px;
         }
       `}</style>
     </Layout>

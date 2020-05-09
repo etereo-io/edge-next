@@ -50,7 +50,7 @@ const Components = () => {
     },
     comments: {
       enabled: true,
-      permissions: []
+      permissions: [],
     },
     fields: [
       {
@@ -816,6 +816,16 @@ const links = [{
                 </div>
               </div>
 
+              <div className="item-wrapper">
+                <div className="input-group no-label required">
+                  <input
+                    type="text"
+                    id="demo-input-text"
+                    placeholder="Input text (no label) example"
+                  ></input>
+                </div>
+              </div>
+
               <div className="item-wrapper" id="textarea">
                 <div className="input-group">
                   <label for="demo-textarea">Textarea example</label>
@@ -885,7 +895,11 @@ const links = [{
                 <div>
                   {dynamicValues.map((item) => {
                     return (
-                      <DynamicFieldView field={item.field} value={item.value} contentType={{slug: 'test'}} />
+                      <DynamicFieldView
+                        field={item.field}
+                        value={item.value}
+                        contentType={{ slug: 'test' }}
+                      />
                     )
                   })}
                 </div>
@@ -931,7 +945,7 @@ const links = [{
                     { label: 'test', slug: 'test' },
                     { label: 'demo', slug: 'demo' },
                   ]}
-                  contentType={{slug : 'post'}} 
+                  contentType={{ slug: 'post' }}
                 />
               </div>
             </div>
@@ -1125,7 +1139,8 @@ const links = [{
           padding: var(--empz-gap-double);
           box-sizing: border-box;
           height: 100vh;
-          flex: 1;
+          max-width: 420px;
+          width: 30%;
           z-index: 3;
         }
 
