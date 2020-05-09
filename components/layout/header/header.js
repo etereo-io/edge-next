@@ -5,10 +5,29 @@ import Link from 'next/link'
 import ThemeSelector from '../../generic/theme-selector/theme-selector'
 import { hasPermission } from '../../../lib/permissions'
 import { useUser, useContentTypes } from '../../../lib/hooks'
+import { useState } from 'react'
+import Progress from './progress';
+
 
 function UserHeader(props) {
   const user = props.user
   const contentTypes = useContentTypes(['create', 'admin'])
+  const [loading, setLoading] = useState(false)
+
+  const onClickLogout = async () => {
+    setLoading(true)
+
+    // Invalidate caches for service worker
+    await caches.keys().then(function(keyList) {
+      return Promise.all(keyList.map(function(key) {
+        return caches.delete(key);
+      }));
+    })
+
+    window.location.href = "/api/auth/logout"
+  }
+
+  
   
   return (
     <nav>
@@ -52,7 +71,7 @@ function UserHeader(props) {
               <span className="spacer"></span>
               <ul>
                 <li>
-                  <a href="/api/auth/logout">Logout</a>
+                  <a onClick={onClickLogout}>{loading ? '...': 'Logout'}</a>
                 </li>
               </ul>
             </DropdownMenu>
@@ -139,6 +158,12 @@ const Header = () => {
           </div>
         </div>
       </header>
+        <Progress
+          color="#29D"
+          startPosition="0.3"
+          stopDelayMs="200"
+          height="3"
+        />
       <style jsx>{`
         .header {
           color: var(--empz-foreground);
