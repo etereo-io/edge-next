@@ -40,7 +40,7 @@ const Login = () => {
   }
 
   return (
-    <Layout title="login">
+    <Layout title="login" fullWidth={true}>
       <div className="login">
         <Form
           isLogin
@@ -50,14 +50,11 @@ const Login = () => {
         />
       </div>
       <style jsx>{`
-        .login {
-          max-width: 21rem;
-          margin: 0 auto;
-          padding: 1rem;
-          border: var(--light-border);
-          border-radius: var(--empz-radius);
-          background: var(--empz-background);
-        }
+      .form-title{
+        display: block;
+        margin: 0 auto;
+        max-width: 480px;
+      }
       `}</style>
     </Layout>
   )

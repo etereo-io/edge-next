@@ -15,11 +15,12 @@ export default function (props) {
     title = '',
     secondary,
     warning,
+    fullWidth,
     alert,
     success,
   } = props
 
-  const classNames = `button ${loading ? 'loading' : ''} ${alt ? 'alt' : ''} ${
+  const classNames = `button ${loading ? 'loading' : ''} ${alt ? 'alt' : ''} ${fullWidth ? 'full-width' : ''} ${
     big ? 'big' : ''
   } ${success ? 'success' : ''} ${warning ? 'warning' : ''} ${
     secondary ? 'secondary' : ''
@@ -96,6 +97,10 @@ export default function (props) {
             font-size: 16px;
             padding: 24px;
             width: fit-content;
+          }
+
+          .button.full-width {
+            width: 100%;
           }
 
           .button.loading {
