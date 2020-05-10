@@ -683,9 +683,9 @@ const UserSettings = () => {
                       value={state.rnewpassword.value}
                       placeholder="Repeat new Password"
                     />
-
-                    <PasswordStrength password={state.newpassword.value} />
                   </div>
+                  
+                  <PasswordStrength password={state.newpassword.value} />
                 </div>
 
                 <div className="actions">

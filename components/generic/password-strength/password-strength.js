@@ -1,23 +1,28 @@
 export default function({password = ''}) {
-  const calculateLevel = () => {
-    const matchedCase = new Array();
-    matchedCase.push("[$@$!%*#?&]"); // Special Charector
-    matchedCase.push("[A-Z]");      // Uppercase Alpabates
-    matchedCase.push("[0-9]");      // Numbers
-    matchedCase.push("[a-z]");     // Lowercase Alphabates
+  
+  const special = new RegExp("[$@$!%*#?&]").test(password)
+  const uppercase = new RegExp("[A-Z]").test(password)
+  const numbers = new RegExp("[0-9]").test(password)
+  const lowercase = new RegExp("[a-z]").test(password)
+  
+  let ctr = 0
 
-    // Check the conditions
-    let ctr = 0;
-    for (let i = 0; i < matchedCase.length; i++) {
-        if (new RegExp(matchedCase[i]).test(password)) {
-            ctr++;
-        }
-    }
+  if (special) ctr++
 
-    if (password.length < 6) {
-      ctr--
-    }
+  if (uppercase) ctr++
 
+  if (numbers) ctr++
+
+  if (lowercase) ctr++
+
+  if (password.length < 6 ) ctr--
+
+  if (password.length > 9) ctr++
+
+  if (ctr > 4) ctr = 4
+
+
+  const calculateLevel = ctr => {
     switch(ctr) {
       case 0:
         return 'none'
@@ -34,7 +39,7 @@ export default function({password = ''}) {
     }
   }
 
-  const level = calculateLevel()
+  const level = calculateLevel(ctr)
 
   return (
     <>
@@ -45,9 +50,9 @@ export default function({password = ''}) {
         </div>
         {/*<span className="hint">Hint: Introduce capital letters, numbers and special characters to make your password strong</span>*/}
         <ul className="strenght-levels">
-          <li><span className="strenght-mark"></span>Capital Letter</li>
-          <li><span className="strenght-mark"></span>Number</li>
-          <li><span className="strenght-mark"></span>Special Character</li>
+          <li className={`strenght-mark ${uppercase ? 'active': ''}`}><span className={`strenght-mark `}></span>Capital Letter</li>
+          <li className={`strenght-mark ${numbers ? 'active': ''}`}><span className={`strenght-mark `}></span>Number</li>
+          <li className={`strenght-mark ${special ? 'active': ''}`}><span className={`strenght-mark `}></span>Special Character</li>
         </ul>
       </div>
       <style jsx>{
@@ -102,11 +107,11 @@ export default function({password = ''}) {
           width: 15px;
         }
 
-        .strenght-levels li.correct{
+        .strenght-levels li.active{
           color: var(--empz-foreground);
         }
 
-        .strenght-levels li.correct span{
+        .strenght-levels li.active span{
           background: var(--empz-success);
           border-color: var(--empz-success);
         }
