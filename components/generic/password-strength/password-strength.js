@@ -43,7 +43,12 @@ export default function({password = ''}) {
         <div className="password-strength">
           <div className={`bar ${level || 'none'}`}></div>
         </div>
-        <span className="hint">Hint: Introduce capital letters, numbers and special characters to make your password strong</span>
+        {/*<span className="hint">Hint: Introduce capital letters, numbers and special characters to make your password strong</span>*/}
+        <ul className="strenght-levels">
+          <li><span className="strenght-mark"></span>Capital Letter</li>
+          <li><span className="strenght-mark"></span>Number</li>
+          <li><span className="strenght-mark"></span>Special Character</li>
+        </ul>
       </div>
       <style jsx>{
         `
@@ -52,15 +57,50 @@ export default function({password = ''}) {
         }
 
         .password-strength {
-          width: 100%;
-          height: 15px;
-          position: relative;
           border: var(--light-border);
+          border-radius: 15px;
+          height: 15px;
+          margin-top: 4px;
+          position: relative;
+          overflow: hidden;
+          width: 100%;
         }
 
         span {
           font-size: 13px;
           color: var(--accents-5);
+        }
+
+        .strenght-levels{
+          display: flex;
+          justify-content: space-between;
+          margin-top: var(--empz-gap-half);
+          width: 100%;
+        }
+
+        .strenght-levels li{
+          color: var(--accents-5);
+          font-size: 12px;
+          list-style: none;
+        }
+
+        .strenght-levels li span{
+          border: 1px solid var(--accents-4);
+          border-radius: 50%;
+          display: inline-block;
+          height: 15px;
+          vertical-align: middle;
+          margin-right: var(--empz-gap-half);
+          width: 15px;
+        }
+
+        .strenght-levels li.correct{
+          color: var(--empz-success);
+        }
+
+        .strenght-levels li.correct span{
+          background: var(--empz-success);
+          border-color: var(--empz-success);
         }
 
         .bar {
