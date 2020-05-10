@@ -16,6 +16,7 @@
     "deepmerge": "^4.2.2",
     "express": "4.17.1",
     "firebase-admin": "^8.10.0",
+    "formidable": "^1.2.2",
     "gray-matter": "^4.0.2",
     "isomorphic-unfetch": "^3.0.0",
     "marked": "^0.8.2",

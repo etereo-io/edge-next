@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react'
+import { createRef, useEffect, useReducer } from 'react'
 
 import API from '../../lib/api/api-endpoints'
 import Avatar from '../../components/user/avatar/avatar'
@@ -34,7 +34,7 @@ const reducer = (state, action) => {
           value: displayName
         },
         
-        picture: {
+        avatar: {
           value: picture
         },
 
@@ -126,6 +126,7 @@ const UserSettings = () => {
   
   const [state, dispatch] = useReducer(reducer, {
     username: {},
+    avatar: {},
     email: {},
     profile: {
       value: {}
@@ -234,7 +235,7 @@ const UserSettings = () => {
     })
 
     fetch(url, {
-      method: 'put',
+      method: 'PUT',
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
@@ -398,6 +399,62 @@ const UserSettings = () => {
     'Error updating your profile information. Please try again later.'
   )
 
+  // Avatar file upload
+  const fileInputRef = createRef()
+
+  const openFileDialog = () => {
+    fileInputRef.current.click()
+  }
+
+  const onFilesAdded = (ev) => {
+
+    const files = ev.target.files
+
+    var formData = new FormData();
+    
+    if (files) {
+      for (var i = 0; i < files.length; i++) {
+        formData.append(`profilePicture`, files[i])
+      }
+    } else {
+      return
+    }
+
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      dispatch({
+        type: 'UPDATE_FIELD',
+        field: 'avatar',
+        payload: e.target.result
+      })
+    };
+
+    reader.readAsDataURL(files[0]);
+
+    dispatch({
+      type: 'SAVE_FIELD',
+      field: 'avatar'
+    })
+
+    fetch(`${API.users}/${user.id}/picture`, {
+      method: 'PUT',
+      body: formData,
+    })
+    .then(() => {
+      dispatch({
+        type: 'SAVE_FIELD_SUCCESS',
+        field: 'avatar'
+      })
+    })
+    .catch(err => {
+      dispatch({
+        type: 'SAVE_FIELD_ERROR',
+        field: 'avatar'
+      })
+    })
+  }
+
   return (
     canAccess && (
       <Layout title="User Settings">
@@ -407,9 +464,30 @@ const UserSettings = () => {
               <h2>Avatar</h2>
               <div className="block-settings">
                 <p>Click on the avatar image to change it</p>
-                <div className="field">
-                  <Avatar src={user ? user.profile.picture : null} />
+                <div className="field" onClick={openFileDialog}>
+                  <Avatar src={state.avatar.value} />
                 </div>
+
+                <input
+                  ref={fileInputRef}
+                  className="fileinput-avatar"
+                  type="file"
+                  onChange={onFilesAdded}
+                />
+
+                <div className="info">
+                    {state.avatar.error && (
+                      <div className="error-message">Error while updating your profile picture.</div>
+                    )}
+                    {state.avatar.loading && (
+                      <div className="loading-message">Loading...</div>
+                    )}
+                    {state.avatar.success && (
+                      <div className="success-message">
+                        Avatar successfuly updated
+                      </div>
+                    )}
+                  </div>
               </div>
             </div>
 
@@ -716,6 +794,11 @@ const UserSettings = () => {
             .configuration-block .info {
               padding: var(--empz-gap);
             }
+
+            .fileinput-avatar {
+              display: none;
+            }
+    
           `}
         </style>
       </Layout>

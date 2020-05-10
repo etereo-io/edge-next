@@ -1,12 +1,36 @@
+import { deleteFile, uploadFile } from '../../../lib/api/storage'
 import { findOneUser, generateSaltAndHash, updateOneUser, userPasswordsMatch } from '../../../lib/api/users/user'
 import { onUserDeleted, onUserUpdated } from '../../../lib/api/hooks/user.hooks'
 
 import { connect } from '../../../lib/api/db'
+import formidable from 'formidable';
 import { getSession } from '../../../lib/api/auth/iron'
 import { hasPermissionsForUser } from '../../../lib/api/middlewares'
 import methods from '../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { v4 as uuidv4 } from 'uuid'
+
+// disable the default body parser to be able to use file upload
+export const config = {
+  api: {
+    bodyParser: false,
+  }
+}
+
+const useFormidable = (cb) => (req, res) => {
+  const form = formidable({ multiples: true });
+ 
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      res.status(500).json({error: err.message})
+    }
+    req.body = fields
+    req.files = files
+    cb(req, res)
+  });
+
+}
+
 
 const userExist = (userId) => async (req, res, cb) => {
   let findUserId = userId
@@ -46,8 +70,10 @@ const delUser = (req, res) => {
 }
 
 const updateUser = (slug) => (req, res) => {
+  
   const updateData = slug[1]
   let promiseChange = null
+
 
   switch (updateData) {
     case 'profile':
@@ -96,7 +122,7 @@ const updateUser = (slug) => (req, res) => {
 
     case 'password':
       /* Update only password */
-      // Check that the current password req.body.password matches the old one
+      // Check that the current password req.req.body.password matches the old one
       const passwordsMatch = req.user.hash ? userPasswordsMatch(req.user, req.body.password) : true
       if (passwordsMatch ) {
         const { salt, hash } = generateSaltAndHash(req.body.newpassword) 
@@ -107,6 +133,38 @@ const updateUser = (slug) => (req, res) => {
       } else {
         promiseChange = Promise.reject('Incorrect password')
       }
+      break
+    
+    case 'picture': 
+      
+      promiseChange = new Promise( async (resolve, reject) => {
+        
+          if (req.user.profile.picture) {
+            try {
+              await deleteFile(req.user.profile.picture)
+            } catch (err) {
+              console.log('Error deleting previous picture')
+            }
+          }
+
+          let path = ''
+          try {
+            path = await uploadFile(req.files.profilePicture, 'profilePicture')
+          } catch (err) {
+            reject(new Error('Error uploading file'))
+            return
+          }
+          
+          updateOneUser(req.user.id, {
+            profile: {
+              ...req.user.profile,
+              picture: path
+            },
+          })
+          .then(resolve)
+          .catch(reject)
+      })
+
       break
     default:
       promiseChange = Promise.reject('Update ' + updateData + ' not allowed')
@@ -122,6 +180,7 @@ const updateUser = (slug) => (req, res) => {
       })
     })
     .catch((err) => {
+      console.log(err)
       res.status(400).send({
         error: err.message,
       })
@@ -165,6 +224,6 @@ export default async (req, res) => {
   methods(req, res, {
     get: getUser,
     del: delUser,
-    put: updateUser(slug),
+    put: useFormidable(updateUser(slug)),
   })
 }

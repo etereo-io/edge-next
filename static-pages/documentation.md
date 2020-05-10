@@ -16,6 +16,8 @@ description: "Empieza Documentation"
     - [Content](#content)
     - [Comments](#comments)
     - [Activity](#activity)
+  - [Storage](#storage)
+    - [Google](#google)
   - [Databases](#databases)
     - [Database API](#database-api)
       - [Adding items](#adding-items)
@@ -314,6 +316,19 @@ The Content API is defined on your set of rules in the configuration file, the o
 
 - `GET /api/activity/[USER_ID]`
   - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin`
+
+
+## Storage
+
+To upload images and other files you will need to configure a storage. 
+
+Different options are: AWS, GOOGLE or FIREBASE.
+
+### Google
+
+To configure Google storage you will need to follow the steps defined in this [package](https://www.npmjs.com/package/@google-cloud/storage)
+
+The environment variable you need to configure is GOOGLE_APPLICATION_CREDENTIALS
 
 
 

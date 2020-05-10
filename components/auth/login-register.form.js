@@ -181,7 +181,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           position: relative;
           top: var(--empz-gap-half-negative);
           padding: 0 var(--empz-gap);
-          background: #fff;
+          background: var(--empz-background);
         }
 
         .auth-form {

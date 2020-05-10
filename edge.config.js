@@ -561,11 +561,12 @@ export const getConfig = (defaultOptions) => {
     // Home slogan
     slogan: 'EDGE - A dynamic site that lives on the edge',
 
+    // Storages: GOOGLE, AWS, FIREBASE
     storage: {
-      type: 'firestore',
+      type: 'GOOGLE',
     },
 
-    // Choose from MONGO, FIREBASE, IN_MEMORY
+    // Choose from MONGO, IN_MEMORY
     database: {
       type: 'MONGO',
     },
