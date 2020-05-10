@@ -260,7 +260,7 @@
 // Generic fields styles
 
 .input-group {
-  margin-bottom: var(--empz-gap-medium);
+  margin-bottom: var(--empz-gap);
   position: relative;
   width: 100%;
 
@@ -284,6 +284,41 @@
   &.error{
     input{
       border-color: var(--empz-error);
+    }
+  }
+
+  &.password{
+    position: relative;
+    input{
+      padding-right: 58px;
+    }
+    svg{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: var(--empz-gap);
+      width: 22px;
+
+      path{
+        fill: var(--empz-foreground);
+      }
+    }
+
+    svg.hide-password{
+      display: none;
+      margin-top: 1px;
+    }
+
+    .toggle-password{
+      cursor: pointer;
+      &:hover{
+        svg.show-password{
+          display: none;
+        }
+        svg.hide-password{
+          display: block;
+        }
+      }
     }
   }
 }

@@ -115,6 +115,8 @@ export default function (props) {
             background-size: 22px;
             background-repeat: no-repeat;
             background-position: var(--empz-gap) 50%;
+            border: none;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
             text-align: left;
             padding-left: 56px;
           }

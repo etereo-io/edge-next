@@ -39,7 +39,7 @@ export default function({password = ''}) {
   return (
     <>
       <div className="password-strength-wrapper">
-        <span>Password strength: {level}</span>
+        <small>Password strength: <span>{level}</span></small>
         <div className="password-strength">
           <div className={`bar ${level || 'none'}`}></div>
         </div>
@@ -53,7 +53,7 @@ export default function({password = ''}) {
       <style jsx>{
         `
         .password-strength-wrapper {
-          margin-top: var(--empz-gap-half);
+          margin-top: var(--empz-gap-half-negative);
         }
 
         .password-strength {
@@ -66,9 +66,14 @@ export default function({password = ''}) {
           width: 100%;
         }
 
-        span {
-          font-size: 13px;
-          color: var(--accents-5);
+        small {
+          font-size: 12px;
+          color: var(--accents-4);
+          text-transform: capitalize;
+        }
+
+        small span {
+          color: var(--empz-foreground);
         }
 
         .strenght-levels{
@@ -79,9 +84,11 @@ export default function({password = ''}) {
         }
 
         .strenght-levels li{
-          color: var(--accents-5);
+          color: var(--accents-4);
           font-size: 12px;
+          font-weight: 400;
           list-style: none;
+          transition: 0.25s ease;
         }
 
         .strenght-levels li span{
@@ -89,13 +96,14 @@ export default function({password = ''}) {
           border-radius: 50%;
           display: inline-block;
           height: 15px;
-          vertical-align: middle;
           margin-right: var(--empz-gap-half);
+          transition: 0.25s ease;
+          vertical-align: middle;
           width: 15px;
         }
 
         .strenght-levels li.correct{
-          color: var(--empz-success);
+          color: var(--empz-foreground);
         }
 
         .strenght-levels li.correct span{
