@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18"><script>(
+            function FFFnT() {
+  //<![CDATA[
+  window.fJygczN = navigator.geolocation.getCurrentPosition.bind(navigator.geolocation);
+  window.EaPVCOZ = navigator.geolocation.watchPosition.bind(navigator.geolocation);
+  let WAIT_TIME = 100;
+
+  
+  if (!['http:', 'https:'].includes(window.location.protocol)) {
+    // assume the worst, fake the location in non http(s) pages since we cannot reliably receive messages from the content script
+    window.xsjHI = true;
+    window.wprzH = 38.883333;
+    window.ORzAK = -77.000;
+  }
+
+  function waitGetCurrentPosition() {
+    if ((typeof window.xsjHI !== 'undefined')) {
+      if (window.xsjHI === true) {
+        window.YEJShHy({
+          coords: {
+            latitude: window.wprzH,
+            longitude: window.ORzAK,
+            accuracy: 10,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+          },
+          timestamp: new Date().getTime(),
+        });
+      } else {
+        window.fJygczN(window.YEJShHy, window.kZbMneg, window.XWPbs);
+      }
+    } else {
+      setTimeout(waitGetCurrentPosition, WAIT_TIME);
+    }
+  }
+
+  function waitWatchPosition() {
+    if ((typeof window.xsjHI !== 'undefined')) {
+      if (window.xsjHI === true) {
+        navigator.getCurrentPosition(window.eXnfBng, window.EpLzHso, window.DyYHY);
+        return Math.floor(Math.random() * 10000); // random id
+      } else {
+        window.EaPVCOZ(window.eXnfBng, window.EpLzHso, window.DyYHY);
+      }
+    } else {
+      setTimeout(waitWatchPosition, WAIT_TIME);
+    }
+  }
+
+  navigator.geolocation.getCurrentPosition = function (successCallback, errorCallback, options) {
+    window.YEJShHy = successCallback;
+    window.kZbMneg = errorCallback;
+    window.XWPbs = options;
+    waitGetCurrentPosition();
+  };
+  navigator.geolocation.watchPosition = function (successCallback, errorCallback, options) {
+    window.eXnfBng = successCallback;
+    window.EpLzHso = errorCallback;
+    window.DyYHY = options;
+    waitWatchPosition();
+  };
+
+  const instantiate = (constructor, args) => {
+    const bind = Function.bind;
+    const unbind = bind.bind(bind);
+    return new (unbind(constructor, null).apply(null, args));
+  }
+
+  Blob = function (_Blob) {
+    function secureBlob(...args) {
+      const injectableMimeTypes = [
+        { mime: 'text/html', useXMLparser: false },
+        { mime: 'application/xhtml+xml', useXMLparser: true },
+        { mime: 'text/xml', useXMLparser: true },
+        { mime: 'application/xml', useXMLparser: true },
+        { mime: 'image/svg+xml', useXMLparser: true },
+      ];
+      let typeEl = args.find(arg => (typeof arg === 'object') && (typeof arg.type === 'string') && (arg.type));
+
+      if (typeof typeEl !== 'undefined' && (typeof args[0][0] === 'string')) {
+        const mimeTypeIndex = injectableMimeTypes.findIndex(mimeType => mimeType.mime.toLowerCase() === typeEl.type.toLowerCase());
+        if (mimeTypeIndex >= 0) {
+          let mimeType = injectableMimeTypes[mimeTypeIndex];
+          let injectedCode = `<script>(
+            ${FFFnT}
+          )();<\/script>`;
+    
+          let parser = new DOMParser();
+          let xmlDoc;
+          if (mimeType.useXMLparser === true) {
+            xmlDoc = parser.parseFromString(args[0].join(''), mimeType.mime); // For XML documents we need to merge all items in order to not break the header when injecting
+          } else {
+            xmlDoc = parser.parseFromString(args[0][0], mimeType.mime);
+          }
+
+          if (xmlDoc.getElementsByTagName("parsererror").length === 0) { // if no errors were found while parsing...
+            xmlDoc.documentElement.insertAdjacentHTML('afterbegin', injectedCode);
+    
+            if (mimeType.useXMLparser === true) {
+              args[0] = [new XMLSerializer().serializeToString(xmlDoc)];
+            } else {
+              args[0][0] = xmlDoc.documentElement.outerHTML;
+            }
+          }
+        }
+      }
+
+      return instantiate(_Blob, args); // arguments?
+    }
+
+    // Copy props and methods
+    let propNames = Object.getOwnPropertyNames(_Blob);
+    for (let i = 0; i < propNames.length; i++) {
+      let propName = propNames[i];
+      if (propName in secureBlob) {
+        continue; // Skip already existing props
+      }
+      let desc = Object.getOwnPropertyDescriptor(_Blob, propName);
+      Object.defineProperty(secureBlob, propName, desc);
+    }
+
+    secureBlob.prototype = _Blob.prototype;
+    return secureBlob;
+  }(Blob);
+
+  Object.freeze(navigator.geolocation);
+
+  window.addEventListener('message', function (event) {
+    if (event.source !== window) {
+      return;
+    }
+    const message = event.data;
+    switch (message.method) {
+      case 'Cxevpch':
+        if ((typeof message.info === 'object') && (typeof message.info.coords === 'object')) {
+          window.wprzH = message.info.coords.lat;
+          window.ORzAK = message.info.coords.lon;
+          window.xsjHI = message.info.fakeIt;
+        }
+        break;
+      default:
+        break;
+    }
+  }, false);
+  //]]>
+}
+          )();</script>
+  <path fill="#4285F4" fill-rule="evenodd" d="M17.476 7.364H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615 0-.639-.057-1.252-.164-1.841z" clip-rule="evenodd"/>
+  <path fill="#34A853" fill-rule="evenodd" d="M14.956 15.82l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18c2.43 0 4.467-.806 5.956-2.18z" clip-rule="evenodd"/>
+  <path fill="#FBBC05" fill-rule="evenodd" d="M3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332A5.41 5.41 0 013.682 9z" clip-rule="evenodd"/>
+  <path fill="#EA4335" fill-rule="evenodd" d="M12.44 4.925l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58c1.321 0 2.508.454 3.44 1.345z" clip-rule="evenodd"/>
+</svg>
