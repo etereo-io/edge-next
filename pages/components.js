@@ -962,19 +962,19 @@ const links = [{
             <h3>Password Strength</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <PasswordStrength password='he'  />
+                <PasswordStrength password="he" />
               </div>
               <div className="item-wrapper">
-                <PasswordStrength password='hesS'  />
+                <PasswordStrength password="hesS" />
               </div>
               <div className="item-wrapper">
-                <PasswordStrength password='hesS1'  />
+                <PasswordStrength password="hesS1" />
               </div>
               <div className="item-wrapper">
-                <PasswordStrength password='h!SS1'  />
+                <PasswordStrength password="h!SS1" />
               </div>
               <div className="item-wrapper">
-                <PasswordStrength password='he!sS.S1asd'  />
+                <PasswordStrength password="he!sS.S1asd" />
               </div>
             </div>
             <pre>{`

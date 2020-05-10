@@ -36,7 +36,6 @@
     "react-google-maps": "^9.4.5",
     "react-player": "^2.0.1",
     "react-share": "^4.1.0",
-    "react-social-login-buttons": "^3.0.0",
     "sass": "^1.26.3",
     "slugify": "^1.4.0",
     "swr": "0.1.16",

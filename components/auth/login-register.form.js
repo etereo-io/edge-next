@@ -1,9 +1,4 @@
 import Link from 'next/link'
-import {
-  FacebookLoginButton,
-  GoogleLoginButton,
-  GithubLoginButton,
-} from 'react-social-login-buttons'
 import { useState } from 'react'
 
 import Button from '../generic/button/button'
@@ -17,7 +12,10 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
     setPassword(ev.target.value)
   }
 
-  const hasSocialProviders = config.user.providers.facebook || config.user.providers.google || config.user.providers.github
+  const hasSocialProviders =
+    config.user.providers.facebook ||
+    config.user.providers.google ||
+    config.user.providers.github
 
   return (
     <div className="auth-form-wr">
@@ -25,28 +23,29 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
       <div className="auth-form">
         <div className="social">
           <div className="social-buttons">
-            {config.user.providers.facebook && (
+            {config.user.providers.google && (
               <div className="social-button">
                 <Link href="/api/auth/facebook">
                   <a title="Sign up with Facebook">
-                    <FacebookLoginButton preventActiveStyles={true} iconColor="#000000" iconSize="22px" size="100%" style={{ margin: 0, color: 'var(--empz-foreground)', background: 'var(--empz-background)', padding: 'var(--empz-gap)', boxShadow: 'var(--shadow-medium)', width: '100%' }}>
-                      <span style={{ fontSize: '1rem' }}>Login with facebook</span>
-                    </FacebookLoginButton>
+                    <Button
+                      socialButton={true}
+                      google={true}
+                      fullWidth={true}
+                    />
                   </a>
                 </Link>
               </div>
             )}
-            {config.user.providers.google && (
+            {config.user.providers.facebook && (
               <div className="social-button">
-                <GoogleLoginButton />
+                <Button socialButton={true} facebook={true} fullWidth={true} />
               </div>
             )}
             {config.user.providers.github && (
               <div className="social-button">
-                <GithubLoginButton />
+                <Button socialButton={true} github={true} fullWidth={true} />
               </div>
             )}
-           
           </div>
         </div>
 
@@ -79,33 +78,32 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
               placeholder="Password"
               required
             ></input>
-
           </div>
-
-         
 
           {!isLogin && (
             <div className="input-group required">
-              <input
-                type="password"
-                name="passwordrepeat"
-                placeholder="Repeat password"
-                required
-              ></input>
-              
               <PasswordStrength password={password} />
-            
             </div>
           )}
-
 
           {!isLogin && (
             <div className="terms">
-              By registering you agree to our <Link href="/p/terms-of-service"><a title="Terms">Terms</a></Link>. Learn more about our <Link href="/p/privacy-policy"><a title="Privacy policy">Privacy policy</a></Link> and our <Link href="/p/copyright-policy"><a title="Copyright policy">Copyright policy</a></Link>.
+              By registering you agree to our{' '}
+              <Link href="/p/terms-of-service">
+                <a title="Terms">Terms</a>
+              </Link>
+              . Learn more about our{' '}
+              <Link href="/p/privacy-policy">
+                <a title="Privacy policy">Privacy policy</a>
+              </Link>{' '}
+              and our{' '}
+              <Link href="/p/copyright-policy">
+                <a title="Copyright policy">Copyright policy</a>
+              </Link>
+              .
             </div>
           )}
 
-         
           <div className="submit">
             {isLogin ? (
               <>
@@ -151,7 +149,6 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           width: 100%;
         }
 
-      
         .auth-form-wr::before {
           background: var(--accents-1);
           border-bottom: 1px solid var(--accents-2);
@@ -211,6 +208,10 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
         .terms {
           margin-bottom: var(--empz-gap-medium);
           font-size: 13px;
+        }
+
+        .social-button {
+          margin-bottom: var(--empz-gap-half);
         }
       `}</style>
     </div>

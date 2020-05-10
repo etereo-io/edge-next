@@ -18,9 +18,13 @@ export default function (props) {
     fullWidth,
     alert,
     success,
+    socialButton,
+    google,
+    facebook,
+    github
   } = props
 
-  const classNames = `button ${loading ? 'loading' : ''} ${alt ? 'alt' : ''} ${fullWidth ? 'full-width' : ''} ${
+  const classNames = `button ${loading ? 'loading' : ''} ${socialButton ? 'social-button' : ''} ${google ? 'google' : ''} ${facebook ? 'facebook' : ''} ${github ? 'github' : ''} ${alt ? 'alt' : ''} ${fullWidth ? 'full-width' : ''} ${
     big ? 'big' : ''
   } ${success ? 'success' : ''} ${warning ? 'warning' : ''} ${
     secondary ? 'secondary' : ''
@@ -59,37 +63,37 @@ export default function (props) {
           }
 
           .button:hover {
-            background: var(--empz-secondary);
+            background-color: var(--empz-secondary);
             color: var(--empz-background);
           }
 
           .button.alt {
-            background: var(--empz-foreground);
+            background-color: var(--empz-foreground);
             color: var(--empz-background);
             border: var(--light-border);
           }
 
           .button.alt:hover {
-            background: var(--empz-secondary);
+            background-color: var(--empz-secondary);
           }
 
           .button.success {
-            background: var(--empz-success);
+            background-color: var(--empz-success);
             color: var(--empz-background);
           }
 
           .button.secondary {
-            background: var(--empz-secondary);
+            background-color: var(--empz-secondary);
             color: var(--empz-background);
           }
 
           .button.warning {
-            background: var(--empz-warning);
+            background-color: var(--empz-warning);
             color: var(--empz-background);
           }
 
           .button.alert {
-            background: var(--empz-alert);
+            background-color: var(--empz-alert);
             color: var(--empz-background);
           }
 
@@ -105,6 +109,49 @@ export default function (props) {
 
           .button.loading {
             padding: 5px 12px;
+          }
+
+          .button.social-button{
+            background-size: 22px;
+            background-repeat: no-repeat;
+            background-position: var(--empz-gap) 50%;
+            text-align: left;
+            padding-left: 56px;
+          }
+
+          .button.social-button:hover{
+            background-color: inherit;
+            box-shadow: var(--shadow-medium);
+            color: inherit;
+            transform: scale(1.025);
+          }
+
+          .button.social-button::before{
+            content: 'Continue with ';
+          }
+
+          .button.social-button.google{
+            background-image: url(/icons/google.svg);
+          }
+
+          .button.social-button.google::after{
+            content: 'Google';
+          }
+
+          .button.social-button.facebook{
+            background-image: url(/icons/facebook.svg);
+          }
+
+          .button.social-button.facebook::after{
+            content: 'Facebook';
+          }
+
+          .button.social-button.github{
+            background-image: url(/icons/github.svg);
+          }
+
+          .button.social-button.github::after{
+            content: 'Github';
           }
         `}
       </style>
