@@ -86,7 +86,7 @@ function UserHeader(props) {
             </Link>
           </li>
           <li>
-            <Button href="/auth/signup">Get Started</Button>
+            <Button href="/auth/signup">Sign up</Button>
           </li>
 
           <li>

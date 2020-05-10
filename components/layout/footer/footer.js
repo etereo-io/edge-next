@@ -21,7 +21,7 @@ export default function () {
               </li>
               <li>
                 <Link href="/auth/signup">
-                  <a title="get started">Get Started</a>
+                  <a title="Sign up">Sign up</a>
                 </Link>
               </li>
             </ul>
