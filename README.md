@@ -72,6 +72,12 @@ Check our roadmap if you want to add more cool things into Edge.
 
 ## Roadmap
 
+- Remember password: https://github.com/hoangvvo/nextjs-mongodb-app/blob/master/pages/forget-password/%5Btoken%5D.jsx
+
+- Add error class to input group on dynamic fields
+
+- Ensure files can be uploaded while deployed on vercel
+
 - Get 100% on everything on lighthouse
 
 - Add an example google analytics script

@@ -11,6 +11,18 @@ import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
+jest.mock('formidable', () => ({
+  __esModule: true, // this property makes it work
+  default: () => {
+    return {
+      parse: (req, cb) => {
+        
+        cb(null, req.body, null)
+      }
+    }
+  }
+}))
+
 
 jest.mock('../../../../../edge.config', () => {
   const mockInitialPosts = [

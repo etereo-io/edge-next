@@ -1,3 +1,4 @@
+import { deleteFile, uploadFile } from '../../../../lib/api/storage'
 import {
   findOneContent,
   updateOneContent,
@@ -15,8 +16,30 @@ import {
 import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
 import { findOneUser } from '../../../../lib/api/users/user'
+import formidable from 'formidable';
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
+
+// disable the default body parser to be able to use file upload
+export const config = {
+  api: {
+    bodyParser: false,
+  }
+}
+
+const useFormidable = (cb) => (req, res) => {
+  const form = formidable({ multiples: true });
+ 
+  form.parse(req, (err, fields, files) => {
+    if (err) {
+      res.status(500).json({error: err.message})
+    }
+    req.body = fields
+    req.files = files
+    cb(req, res)
+  });
+
+}
 
 const loadContentItemMiddleware = async (req, res, cb) => {
   const type = req.contentType
@@ -74,6 +97,14 @@ const updateContent = async (req, res) => {
   contentValidations(type, content)
     .then(() => {
       // Content is valid
+      if (req.files) {
+        req.files.forEach((file) => {
+          // TODO: upload
+        })      
+      }
+
+      // TODO: Delete files from storage if deletd from content
+
       updateOneContent(type.slug, req.item.id, req.body)
         .then((data) => {
           // Trigger on updated hook
@@ -145,7 +176,7 @@ export default async (req, res) => {
   methods(req, res, {
     get: getContent,
     del: deleteContent,
-    put: updateContent,
-    post: updateContent,
+    put: useFormidable(updateContent),
+    post: useFormidable(updateContent),
   })
 }

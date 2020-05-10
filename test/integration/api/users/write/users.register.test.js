@@ -195,7 +195,7 @@ describe('Integrations tests for users creation endpoint', () => {
       expect(response.status).toBe(400)
       expect(jsonResult).toMatchObject({
         error:
-          'Invalid user: Username is required, Username minimum length is 3, Email is required, password is required, password minimum length is 3',
+          'Invalid user: Username is required, Username minimum length is 3, Email is required, password is required, password minimum length is 6',
       })
     })
 
@@ -219,7 +219,7 @@ describe('Integrations tests for users creation endpoint', () => {
       expect(response.status).toBe(400)
       expect(jsonResult).toMatchObject({
         error:
-          'Invalid user: Email is required, password is required, password minimum length is 3',
+          'Invalid user: Email is required, password is required, password minimum length is 6',
       })
     })
 
@@ -242,7 +242,7 @@ describe('Integrations tests for users creation endpoint', () => {
 
       expect(response.status).toBe(400)
       expect(jsonResult).toMatchObject({
-        error: 'Invalid user: password minimum length is 3',
+        error: 'Invalid user: password minimum length is 6',
       })
     })
 

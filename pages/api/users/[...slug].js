@@ -18,8 +18,9 @@ export const config = {
 }
 
 const useFormidable = (cb) => (req, res) => {
+  
   const form = formidable({ multiples: true });
- 
+  
   form.parse(req, (err, fields, files) => {
     if (err) {
       res.status(500).json({error: err.message})
@@ -30,7 +31,6 @@ const useFormidable = (cb) => (req, res) => {
   });
 
 }
-
 
 const userExist = (userId) => async (req, res, cb) => {
   let findUserId = userId
@@ -69,101 +69,132 @@ const delUser = (req, res) => {
   })
 }
 
+function updateProfile(userId, profile ) {
+  return updateOneUser(userId, {
+    profile,
+  })
+}
+
+function updateUsername(userId, username) {
+  return findOneUser({ username }).then(
+    (maybeUser) => {
+      if (!maybeUser) {
+        return updateOneUser(userId, { username })
+      } else {
+        throw new Error('Username already exists')
+      }
+    }
+  )
+}
+
+function updateEmail(userId, email) {
+  return findOneUser({ email: email }).then(
+    (maybeUser) => {
+      if (!maybeUser) {
+        return updateOneUser(userId, {
+          email: email,
+          emailVerificationToken: uuidv4(),
+        })
+      } else {
+        throw new Error('email already exists')
+      }
+    }
+  )
+}
+
+function updateBlockedStatus(userId, blocked) {
+  return updateOneUser(userId, {
+    blocked,
+  })
+}
+
+function updatePassword(user, password, newpassword) {
+  const passwordsMatch = user.hash ? userPasswordsMatch(user, password) : true
+  if (passwordsMatch ) {
+    const { salt, hash } = generateSaltAndHash(newpassword) 
+    return updateOneUser(user.id, {
+      salt,
+      hash
+    })
+  } else {
+    return Promise.reject('Incorrect password')
+  }
+}
+
+
+function updateProfilePicture(user, profilePicture) {
+  return new Promise( async (resolve, reject) => {
+          
+      let path = ''
+
+      // upload the new file
+      try {
+        path = await uploadFile(profilePicture, 'profilePicture')
+      } catch (err) {
+        reject(new Error('Error uploading file'))
+        return
+      }
+
+      // Delete previous file
+      if (user.profile.picture) {
+        try {
+          await deleteFile(user.profile.picture)
+        } catch (err) {
+          console.log('Error deleting previous picture')
+        }
+      }
+
+      // Asign the new path
+      updateOneUser(user.id, {
+        profile: {
+          ...user.profile,
+          picture: path
+        },
+      })
+      .then(resolve)
+      .catch(reject)
+  })
+}
+
 const updateUser = (slug) => (req, res) => {
   
   const updateData = slug[1]
+
   let promiseChange = null
 
+  console.log('updating', updateData)
 
   switch (updateData) {
     case 'profile':
       /* Update only profile data */
-      promiseChange = updateOneUser(req.user.id, {
-        profile: {
-          ...req.user.profile,
-          ...req.body,
-        },
+      promiseChange = updateProfile(req.user.id, {
+        ...req.user.profile,
+        ...req.body,
       })
       break
     case 'username':
       /* Update only username */
-      promiseChange = findOneUser({ username: req.body.username }).then(
-        (maybeUser) => {
-          if (!maybeUser) {
-            return updateOneUser(req.user.id, { username: req.body.username })
-          } else {
-            throw new Error('Username already exists')
-          }
-        }
-      )
+      promiseChange = updateUsername(req.user.id, req.body.username)
       break
     case 'email':
       /* Update only email */
-      promiseChange = findOneUser({ email: req.body.email }).then(
-        (maybeUser) => {
-          if (!maybeUser) {
-            return updateOneUser(req.user.id, {
-              email: req.body.email,
-              emailVerificationToken: uuidv4(),
-            })
-          } else {
-            throw new Error('email already exists')
-          }
-        }
-      )
+      promiseChange = updateEmail(req.user.id, req.body.email)
       break
 
     case 'block':
       /* Update only blocked status */
-      promiseChange = updateOneUser(req.user.id, {
-        blocked: req.body.blocked,
-      })
+      promiseChange = updateBlockedStatus(req.user.id, req.body.blocked)
       break
 
     case 'password':
       /* Update only password */
       // Check that the current password req.req.body.password matches the old one
-      const passwordsMatch = req.user.hash ? userPasswordsMatch(req.user, req.body.password) : true
-      if (passwordsMatch ) {
-        const { salt, hash } = generateSaltAndHash(req.body.newpassword) 
-        promiseChange =  updateOneUser(req.user.id, {
-          salt,
-          hash
-        })
-      } else {
-        promiseChange = Promise.reject('Incorrect password')
-      }
+      promiseChange = updatePassword(req.user, req.body.password, req.body.newpassword)
       break
     
     case 'picture': 
       
-      promiseChange = new Promise( async (resolve, reject) => {
-        
-          if (req.user.profile.picture) {
-            try {
-              await deleteFile(req.user.profile.picture)
-            } catch (err) {
-              console.log('Error deleting previous picture')
-            }
-          }
-
-          let path = ''
-          try {
-            path = await uploadFile(req.files.profilePicture, 'profilePicture')
-          } catch (err) {
-            reject(new Error('Error uploading file'))
-            return
-          }
-          
-          updateOneUser(req.user.id, {
-            profile: {
-              ...req.user.profile,
-              picture: path
-            },
-          })
-          .then(resolve)
-          .catch(reject)
-      })
+      promiseChange = updateProfilePicture(req.user, req.files.profilePicture)
 
       break
     default:
@@ -180,9 +211,8 @@ const updateUser = (slug) => (req, res) => {
       })
     })
     .catch((err) => {
-      console.log(err)
       res.status(400).send({
-        error: err.message,
+        error: err.message ? err.message : err,
       })
     })
 }
