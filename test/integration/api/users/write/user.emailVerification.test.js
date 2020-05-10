@@ -1,6 +1,6 @@
 import {
   findOneUser,
-  findUser,
+  findUserWithPassword,
   updateOneUser,
 } from '../../../../../lib/api/users/user'
 
@@ -54,12 +54,12 @@ describe('Integration tests for email verification with emailVerification enable
 
   afterEach(() => {
     findOneUser.mockClear()
-    findUser.mockClear()
+    findUserWithPassword.mockClear()
     updateOneUser.mockClear()
   })
 
   test('Should return 401 for login a user with unverified email if configuration for verification is enabled', async () => {
-    findUser.mockReturnValueOnce(
+    findUserWithPassword.mockReturnValueOnce(
       Promise.resolve({
         ...newUser,
         emailVerified: false,
@@ -86,7 +86,7 @@ describe('Integration tests for email verification with emailVerification enable
   })
 
   test('Should return 200 for login a user with verified email if configuration for verification is enabled', async () => {
-    findUser.mockReturnValueOnce(
+    findUserWithPassword.mockReturnValueOnce(
       Promise.resolve({
         ...newUser,
         emailVerified: true,

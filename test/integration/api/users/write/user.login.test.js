@@ -1,6 +1,6 @@
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import { findUser } from '../../../../../lib/api/users/user'
+import { findUserWithPassword } from '../../../../../lib/api/users/user'
 import handlerAuth from '../../../../../pages/api/auth/[...action]'
 import http from 'http'
 import listen from 'test-listen'
@@ -45,11 +45,11 @@ describe('Integrations tests for login', () => {
     }
 
     afterEach(() => {
-      findUser.mockClear()
+      findUserWithPassword.mockClear()
     })
 
     test('should not allow to login if user does not exist', async () => {
-      findUser.mockReturnValueOnce(Promise.resolve(null))
+      findUserWithPassword.mockReturnValueOnce(Promise.resolve(null))
 
       const response = await fetch(urlLogin, {
         method: 'POST',
@@ -71,7 +71,7 @@ describe('Integrations tests for login', () => {
     })
 
     test('Should return 200 for a valid user', async () => {
-      findUser.mockReturnValueOnce(Promise.resolve(newUser))
+      findUserWithPassword.mockReturnValueOnce(Promise.resolve(newUser))
 
       const response = await fetch(urlLogin, {
         method: 'POST',
@@ -93,7 +93,7 @@ describe('Integrations tests for login', () => {
     })
 
     test('Should not work for a blocked user', async () => {
-      findUser.mockReturnValueOnce(
+      findUserWithPassword.mockReturnValueOnce(
         Promise.resolve({
           ...newUser,
           blocked: true,

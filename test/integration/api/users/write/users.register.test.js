@@ -36,7 +36,7 @@ jest.mock('../../../../../edge.config', () => ({
       emailVerification: true,
 
       providers: {
-        instagram: false,
+        github: false,
         google: false,
         facebook: true,
       },

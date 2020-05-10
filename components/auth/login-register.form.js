@@ -2,9 +2,7 @@ import Link from 'next/link'
 import {
   FacebookLoginButton,
   GoogleLoginButton,
-  InstagramLoginButton,
   GithubLoginButton,
-  TwitterLoginButton,
 } from 'react-social-login-buttons'
 import { useState } from 'react'
 
@@ -18,6 +16,8 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
   const onChangePassword = (ev) => {
     setPassword(ev.target.value)
   }
+
+  const hasSocialProviders = config.user.providers.facebook || config.user.providers.google || config.user.providers.github
 
   return (
     <div className="auth-form-wr">
@@ -46,25 +46,12 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                 <GithubLoginButton />
               </div>
             )}
-            {config.user.providers.twitter && (
-              <div className="social-button">
-                <TwitterLoginButton />
-              </div>
-            )}
-            {config.user.providers.instagram && (
-              <div className="social-button">
-                <Link href="/api/auth/instagram">
-                  <a title="Sign up with Instagram">
-                    <InstagramLoginButton />
-                  </a>
-                </Link>
-              </div>
-            )}
+           
           </div>
         </div>
 
         <form onSubmit={onSubmit}>
-          <hr className="sign-up-form-separator"></hr>
+          {hasSocialProviders && <hr className="sign-up-form-separator"></hr>}
           {!isLogin && (
             <div className="input-group required">
               <input
@@ -153,7 +140,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
             )}
           </div>
 
-          {errorMessage && <p className="error">{errorMessage}</p>}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
       </div>
 

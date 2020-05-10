@@ -149,7 +149,7 @@ const Landing = (props) => {
             <h3>Social Providers</h3>
             <p>
               Login and register implemented for different social providers like
-              Instagram, Google, Facebook, Twitch and many more.
+              Google, Facebook and Github. Easily extendable to many more.
             </p>
           </div>
 

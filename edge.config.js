@@ -651,8 +651,8 @@ export const getConfig = (defaultOptions) => {
       emailVerification: true,
 
       providers: {
-        instagram: false,
-        google: false,
+        github: true,
+        google: true,
         facebook: true,
       },
 

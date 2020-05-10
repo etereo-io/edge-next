@@ -1,4 +1,4 @@
-import { findOneUser, updateOneUser } from '../../../lib/api/users/user'
+import { findOneUser, generateSaltAndHash, updateOneUser, userPasswordsMatch } from '../../../lib/api/users/user'
 import { onUserDeleted, onUserUpdated } from '../../../lib/api/hooks/user.hooks'
 
 import { connect } from '../../../lib/api/db'
@@ -96,10 +96,17 @@ const updateUser = (slug) => (req, res) => {
 
     case 'password':
       /* Update only password */
-      // TODO: Check that the current password req.body.password matches the old one
-      promiseChange = updateOneUser(req.user.id, {
-        password: req.body.newpassword,
-      })
+      // Check that the current password req.body.password matches the old one
+      const passwordsMatch = req.user.hash ? userPasswordsMatch(req.user, req.body.password) : true
+      if (passwordsMatch ) {
+        const { salt, hash } = generateSaltAndHash(req.body.newpassword) 
+        promiseChange =  updateOneUser(req.user.id, {
+          salt,
+          hash
+        })
+      } else {
+        promiseChange = Promise.reject('Incorrect password')
+      }
       break
     default:
       promiseChange = Promise.reject('Update ' + updateData + ' not allowed')

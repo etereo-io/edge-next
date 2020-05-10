@@ -5,6 +5,7 @@ import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
 import DynamicField from '../../components/generic/dynamic-field/dynamic-field-edit'
 import Layout from '../../components/layout/normal/layout'
+import PasswordStrength from '../../components/generic/password-strength/password-strength'
 import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
@@ -104,6 +105,15 @@ const reducer = (state, action) => {
             success: false
           }
         }
+
+    case 'CLEAR_FIELD_ERROR': 
+      return {
+        ...state,
+        [action.field]: {
+          ...state[action.field],
+          error: false
+        }
+      }
     
    
     default:
@@ -122,6 +132,8 @@ const UserSettings = () => {
     },
     displayName: {},
     password: {},
+    newpassword: {},
+    rnewpassword: {},
     deleteAccount: {}
   })
 
@@ -165,7 +177,6 @@ const UserSettings = () => {
   }
 
 
-
   // Generic field change
   const handleFieldProfileChange = (name) => (value) => {
     dispatch({
@@ -181,6 +192,12 @@ const UserSettings = () => {
       field: name,
       payload: value
     })
+
+    // Field changes clear the error
+    dispatch({
+      type: 'CLEAR_FIELD_ERROR',
+      field: name
+    })
   }
 
   // On submit method for using in each case
@@ -189,7 +206,8 @@ const UserSettings = () => {
     validateData,
     key,
     url,
-    apiErrorMessage = 'Error updating data'
+    apiErrorMessage = 'Error updating data',
+    successCallback = () => {}
   ) => (ev) => {
     ev.preventDefault()
     const data = getDataCb(ev)
@@ -228,7 +246,7 @@ const UserSettings = () => {
           field: key,
           payload: result
         })
-    
+        successCallback()
       })
       .catch((err) => {
         dispatch({
@@ -262,7 +280,7 @@ const UserSettings = () => {
     },
     'username',
     `${API.users}/${user.id}/username`,
-    'Error updating your username'
+    'Error updating your username. This username is already taken.'
   )
 
   /* On submit email */
@@ -286,7 +304,7 @@ const UserSettings = () => {
     },
     'email',
     `${API.users}/${user.id}/email`,
-    'Error updating your email'
+    'Error updating your email, this email is already taken.'
   )
 
   const onSubmitDisplayName = onSubmit(
@@ -309,7 +327,7 @@ const UserSettings = () => {
     },
     'displayName',
     `${API.users}/${user.id}/profile`,
-    'Error updating your name'
+    'Error updating your name, please try again later.'
   )
 
   const onSubmitPassword = onSubmit(
@@ -328,11 +346,7 @@ const UserSettings = () => {
         return false
       }
 
-      if (d.newpassword.length < 8) {
-        return false
-      }
-
-      if (!d.password) {
+      if (d.newpassword.length < 6) {
         return false
       }
 
@@ -340,7 +354,24 @@ const UserSettings = () => {
     },
     'password',
     `${API.users}/${user.id}/password`,
-    'Error updating your password'
+    'Error updating your password. Make sure you entered correctly your current password.',
+    () => {
+      dispatch({
+        type: 'UPDATE_FIELD',
+        field: 'password',
+        payload: ''
+      })
+      dispatch({
+        type: 'UPDATE_FIELD',
+        field: 'newpassword',
+        payload: ''
+      })
+      dispatch({
+        type: 'UPDATE_FIELD',
+        field: 'rnewpassword',
+        payload: ''
+      })
+    }
   )
 
   const onSubmitProfile = onSubmit(
@@ -364,7 +395,7 @@ const UserSettings = () => {
     },
     'profile',
     `${API.users}/${user.id}/profile`,
-    'Error updating profile data'
+    'Error updating your profile information. Please try again later.'
   )
 
   return (
@@ -390,7 +421,7 @@ const UserSettings = () => {
                     The username is unique and it's used for mentions or to
                     access your profile. Please use 48 characters at maximum.
                   </p>
-                  <div className="field">
+                  <div className={`input-group required ${state.username.error ? 'error': ''}`}>
                     <input
                       type="text"
                       placeholder="Your username"
@@ -428,7 +459,7 @@ const UserSettings = () => {
                     Please enter your full name, or a display name you are
                     comfortable with. Please use 32 characters at maximum.
                   </p>
-                  <div className="field">
+                  <div className={`input-group required ${state.displayName.error ? 'error': ''}`}>
                     <input
                       type="text"
                       name="displayName"
@@ -497,7 +528,7 @@ const UserSettings = () => {
               <form onSubmit={onSubmitEmail}>
                 <div className="block-settings">
                   <p>A new email will require e-mail validation</p>
-                  <div className="field">
+                  <div className={`input-group required ${state.email.error ? 'error': ''}`}>
                     <input
                       type="text"
                       placeholder="Email"
@@ -532,34 +563,61 @@ const UserSettings = () => {
               <h2>Change Password</h2>
               <form onSubmit={onSubmitPassword}>
                 <div className="block-settings">
-                  <div className="field">
+                  <div className="input-group required">
                     <input
                       type="password"
                       name="password"
-                      required
+                      onChange={(ev) => handleFieldChange('password')(ev.target.value)}
+                      value={state.password.value}
                       placeholder="Current Password"
                     />
                   </div>
-                  <div className="field">
+                  <div className="input-group required">
                     <input
                       type="password"
                       name="newpassword"
                       required
+                      onChange={(ev) => {
+                        handleFieldChange('newpassword')(ev.target.value)
+                        // Field changes clear the error
+                        dispatch({
+                          type: 'CLEAR_FIELD_ERROR',
+                          field: 'password'
+                        })
+                      }}
+                      value={state.newpassword.value}
                       placeholder="New Password"
                     />
                   </div>
-                  <div className="field">
+                  <div className="input-group required">
                     <input
                       type="password"
                       name="rnewpassword"
                       required
+                      onChange={(ev) => {
+                        handleFieldChange('rnewpassword')(ev.target.value)
+                        // Field changes clear the error
+                        dispatch({
+                          type: 'CLEAR_FIELD_ERROR',
+                          field: 'password'
+                        })
+                      }}
+                      value={state.rnewpassword.value}
                       placeholder="Repeat new Password"
                     />
+
+                    <PasswordStrength password={state.newpassword.value} />
                   </div>
                 </div>
 
                 <div className="actions">
                   <div className="info">
+                    {state.newpassword.value !== state.rnewpassword.value && (
+                      <div className="error-message">Passwords do not match</div>
+                    )}
+                    {state.newpassword.value && state.newpassword.value.length < 6 && state.password.error && (
+                      <div className="error-message">Password should be at least 6 characters long.</div>
+                    )}
                     {state.password.error && (
                       <div className="error-message">{state.password.error}</div>
                     )}

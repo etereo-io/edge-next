@@ -497,8 +497,6 @@ MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
 MONGODB_DATABASE=<database>
 NEXT_PUBLIC_GMAPS_API_KEY=XXXX
 SENDGRID_KEY=XXX
-INSTAGRAM_ID=XXX
-INSTAGRAM_SECRET=XXX
 ```
 
 ### Deploying on Vercel

@@ -1,6 +1,5 @@
 import {
   facebookStrategy,
-  instagramStrategy,
   localStrategy,
 } from '../../../lib/api/auth/passport-strategies'
 import { findOneUser, updateOneUser } from '../../../lib/api/users/user'
@@ -38,10 +37,6 @@ app.use(passport.initialize())
 passport.use(localStrategy())
 
 // Configure the different providers
-if (config.user.providers.instagram) {
-  passport.use(instagramStrategy())
-}
-
 if (config.user.providers.facebook) {
   passport.use(facebookStrategy())
 }

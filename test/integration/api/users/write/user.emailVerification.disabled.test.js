@@ -1,6 +1,6 @@
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import { findUser } from '../../../../../lib/api/users/user'
+import { findUserWithPassword } from '../../../../../lib/api/users/user'
 import handlerAuth from '../../../../../pages/api/auth/[...action]'
 import http from 'http'
 import listen from 'test-listen'
@@ -46,11 +46,11 @@ describe('Integration tests for email verification with emailVerification disabl
   })
 
   afterEach(() => {
-    findUser.mockClear()
+    findUserWithPassword.mockClear()
   })
 
   test('Login Should return 200 for a non verified user when email verification is disabled', async () => {
-    findUser.mockReturnValueOnce(
+    findUserWithPassword.mockReturnValueOnce(
       Promise.resolve({
         ...newUser,
         emailVerified: false,
