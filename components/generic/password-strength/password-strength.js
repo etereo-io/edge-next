@@ -39,28 +39,76 @@ export default function({password = ''}) {
   return (
     <>
       <div className="password-strength-wrapper">
-        <span>Password strength: {level}</span>
+        <small>Password strength: <span>{level}</span></small>
         <div className="password-strength">
           <div className={`bar ${level || 'none'}`}></div>
         </div>
-        <span className="hint">Hint: Introduce capital letters, numbers and special characters to make your password strong</span>
+        {/*<span className="hint">Hint: Introduce capital letters, numbers and special characters to make your password strong</span>*/}
+        <ul className="strenght-levels">
+          <li><span className="strenght-mark"></span>Capital Letter</li>
+          <li><span className="strenght-mark"></span>Number</li>
+          <li><span className="strenght-mark"></span>Special Character</li>
+        </ul>
       </div>
       <style jsx>{
         `
         .password-strength-wrapper {
-          margin-top: var(--empz-gap-half);
+          margin-top: var(--empz-gap-half-negative);
         }
 
         .password-strength {
-          width: 100%;
-          height: 15px;
-          position: relative;
           border: var(--light-border);
+          border-radius: 15px;
+          height: 15px;
+          margin-top: 4px;
+          position: relative;
+          overflow: hidden;
+          width: 100%;
         }
 
-        span {
-          font-size: 13px;
-          color: var(--accents-5);
+        small {
+          font-size: 12px;
+          color: var(--accents-4);
+          text-transform: capitalize;
+        }
+
+        small span {
+          color: var(--empz-foreground);
+        }
+
+        .strenght-levels{
+          display: flex;
+          justify-content: space-between;
+          margin-top: var(--empz-gap-half);
+          width: 100%;
+        }
+
+        .strenght-levels li{
+          color: var(--accents-4);
+          font-size: 12px;
+          font-weight: 400;
+          list-style: none;
+          transition: 0.25s ease;
+        }
+
+        .strenght-levels li span{
+          border: 1px solid var(--accents-4);
+          border-radius: 50%;
+          display: inline-block;
+          height: 15px;
+          margin-right: var(--empz-gap-half);
+          transition: 0.25s ease;
+          vertical-align: middle;
+          width: 15px;
+        }
+
+        .strenght-levels li.correct{
+          color: var(--empz-foreground);
+        }
+
+        .strenght-levels li.correct span{
+          background: var(--empz-success);
+          border-color: var(--empz-success);
         }
 
         .bar {
