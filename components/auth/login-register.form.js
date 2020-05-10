@@ -6,12 +6,19 @@ import {
   GithubLoginButton,
   TwitterLoginButton,
 } from 'react-social-login-buttons'
+import { useState } from 'react'
 
 import Button from '../generic/button/button'
+import PasswordStrength from '../generic/password-strength/password-strength'
 
 import config from '../../lib/config'
 
 const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
+  const [password, setPassword] = useState('')
+  const onChangePassword = (ev) => {
+    setPassword(ev.target.value)
+  }
+
   return (
     <div className="auth-form-wr">
       <strong className="form-title">{isLogin ? 'Login' : 'Sign up'}</strong>
@@ -80,10 +87,16 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
             <input
               type="password"
               name="password"
+              onChange={onChangePassword}
+              value={password}
               placeholder="Password"
               required
             ></input>
+
           </div>
+
+         
+
           {!isLogin && (
             <div className="input-group required">
               <input
@@ -92,9 +105,20 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                 placeholder="Repeat password"
                 required
               ></input>
+              
+              <PasswordStrength password={password} />
+            
             </div>
           )}
 
+
+          {!isLogin && (
+            <div className="terms">
+              By registering you agree to our <Link href="/p/terms-of-service"><a title="Terms">Terms</a></Link>. Learn more about our <Link href="/p/privacy-policy"><a title="Privacy policy">Privacy policy</a></Link> and our <Link href="/p/copyright-policy"><a title="Copyright policy">Copyright policy</a></Link>.
+            </div>
+          )}
+
+         
           <div className="submit">
             {isLogin ? (
               <>
@@ -140,6 +164,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           width: 100%;
         }
 
+      
         .auth-form-wr::before {
           background: var(--accents-1);
           border-bottom: 1px solid var(--accents-2);
@@ -151,9 +176,11 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           top: 0;
           width: 100%;
         }
+
         .social-button a {
           text-decoration: none;
         }
+
         .sign-up-form-separator {
           overflow: visible;
           padding: 0;
@@ -172,6 +199,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           padding: 0 var(--empz-gap);
           background: #fff;
         }
+
         .auth-form {
           background: var(--empz-background);
           border-radius: 4px;
@@ -191,6 +219,11 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           max-width: 480px;
           position: relative;
           text-align: center;
+        }
+
+        .terms {
+          margin-bottom: var(--empz-gap-medium);
+          font-size: 13px;
         }
       `}</style>
     </div>

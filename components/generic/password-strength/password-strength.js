@@ -29,6 +29,8 @@ export default function({password = ''}) {
         return 'medium-high'
       case 4:
         return 'strong'
+      default: 
+        return 'none'
     }
   }
 
@@ -36,16 +38,29 @@ export default function({password = ''}) {
 
   return (
     <>
-      <div className="password-strength">
-        <div className={`bar ${level}`}></div>
+      <div className="password-strength-wrapper">
+        <span>Password strength: {level}</span>
+        <div className="password-strength">
+          <div className={`bar ${level || 'none'}`}></div>
+        </div>
+        <span className="hint">Hint: Introduce capital letters, numbers and special characters to make your password strong</span>
       </div>
       <style jsx>{
         `
+        .password-strength-wrapper {
+          margin-top: var(--empz-gap-half);
+        }
+
         .password-strength {
           width: 100%;
           height: 15px;
           position: relative;
           border: var(--light-border);
+        }
+
+        span {
+          font-size: 13px;
+          color: var(--accents-5);
         }
 
         .bar {
