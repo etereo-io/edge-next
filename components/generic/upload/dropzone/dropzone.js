@@ -67,7 +67,10 @@ export default function (props) {
           ref={fileInputRef}
           className="fileinput"
           type="file"
-          multiple
+          multiple={props.multiple}
+          accept={props.accept}
+          required={props.required}
+          name={props.name}
           onChange={onFilesAdded}
         />
       </div>

@@ -162,8 +162,6 @@ const updateUser = (slug) => (req, res) => {
 
   let promiseChange = null
 
-  console.log('updating', updateData)
-
   switch (updateData) {
     case 'profile':
       /* Update only profile data */

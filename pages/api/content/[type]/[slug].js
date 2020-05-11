@@ -1,9 +1,11 @@
 import { deleteFile, uploadFile } from '../../../../lib/api/storage'
 import {
+  deleteOneContent,
   findOneContent,
   updateOneContent,
 } from '../../../../lib/api/content/content'
 import {
+  dynamicFieldsFormidable,
   hasPermissionsForContent,
   hasQueryParameters,
   isValidContentType,
@@ -16,7 +18,6 @@ import {
 import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
 import { findOneUser } from '../../../../lib/api/users/user'
-import formidable from 'formidable';
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
 
@@ -27,19 +28,6 @@ export const config = {
   }
 }
 
-const useFormidable = (cb) => (req, res) => {
-  const form = formidable({ multiples: true });
- 
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      res.status(500).json({error: err.message})
-    }
-    req.body = fields
-    req.files = files
-    cb(req, res)
-  });
-
-}
 
 const loadContentItemMiddleware = async (req, res, cb) => {
   const type = req.contentType
@@ -81,31 +69,55 @@ const getContent = async (req, res) => {
 const deleteContent = (req, res) => {
   const item = req.item
 
-  // Trigger on content deleted hook
-  onContentDeleted(item, req.user)
+  deleteOneContent(item.type, { id: item.id })
+    .then(async () => {
 
-  res.status(200).json({
-    item,
-  })
+      // Trigger on content deleted hook
+      await onContentDeleted(item, req.user)
+    
+      res.status(200).json({
+        deleted: true
+      })
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err.message
+      })
+    })
+
 }
 
 const updateContent = async (req, res) => {
   const type = req.contentType
 
-  const content = req.body
+  const content = {
+    ...req.body
+  }
 
   contentValidations(type, content)
-    .then(() => {
+    .then(async () => {
       // Content is valid
-      if (req.files) {
-        req.files.forEach((file) => {
-          // TODO: upload
-        })      
-      }
+      // Upload all the files
 
       // TODO: Delete files from storage if deletd from content
+      // 
 
-      updateOneContent(type.slug, req.item.id, req.body)
+      for (const field of type.fields) {
+        if (req.files[field.name]) {
+          console.log(req.files[field.name])
+          const path = await uploadFile(req.files[field.name], field.name)
+          console.log('the new path ', path)
+          if (content[field.name]) {
+            // TODO: Handle multiple files
+            await deleteFile(content[field.name])
+          }
+
+          content[field.name] = path
+        }
+      }
+        
+
+      updateOneContent(type.slug, req.item.id, content)
         .then((data) => {
           // Trigger on updated hook
           onContentUpdated(content, req.user)
@@ -176,7 +188,7 @@ export default async (req, res) => {
   methods(req, res, {
     get: getContent,
     del: deleteContent,
-    put: useFormidable(updateContent),
-    post: useFormidable(updateContent),
+    put: dynamicFieldsFormidable(req.contentType.fields, updateContent),
+    post: dynamicFieldsFormidable(req.contentType.fields, updateContent),
   })
 }

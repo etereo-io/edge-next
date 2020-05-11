@@ -282,7 +282,7 @@
   }
 
   &.error{
-    input{
+    input, textarea, select {
       border-color: var(--empz-error);
     }
   }

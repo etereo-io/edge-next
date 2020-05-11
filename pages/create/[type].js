@@ -43,7 +43,7 @@ const CreateContent = () => {
     <>
       <Layout title="New content">
         <div className="create-page">
-          <h1>Create new {contentType ? contentType.title.en : 'content'}</h1>
+          <h1>Create new {contentType ? contentType.title : 'content'}</h1>
 
           {available && (
             <ContentForm content={content} type={contentType} onSave={onSave} />

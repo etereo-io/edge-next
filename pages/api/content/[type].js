@@ -1,15 +1,25 @@
 import { addContent, findContent } from '../../../lib/api/content/content'
+import { deleteFile, uploadFile } from '../../../lib/api/storage'
 import {
+  dynamicFieldsFormidable,
   hasPermissionsForContent,
   isValidContentType,
 } from '../../../lib/api/middlewares'
 
 import { connect } from '../../../lib/api/db'
 import { contentValidations } from '../../../lib/validations/content'
+import formidable from 'formidable'
 import methods from '../../../lib/api/api-helpers/methods'
 import { onContentAdded } from '../../../lib/api/hooks/content.hooks'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
+
+// disable the default body parser to be able to use file upload
+export const config = {
+  api: {
+    bodyParser: false,
+  }
+}
 
 const getContent = (filterParams, searchParams, paginationParams) => (
   req,
@@ -85,10 +95,33 @@ const createContent = async (req, res) => {
   const content = req.body
 
   contentValidations(type, content)
-    .then(() => {
+    .then(async () => {
       // Content is valid
       // Add default value to missing fields
       const newContent = fillContentWithDefaultData(type, content, req.user)
+
+      // Upload all the files
+      for (const field of type.fields) {
+        if (req.files[field.name]) {
+          console.log(req.files[field.name])
+          const filesAdded = []
+          for(const file in req.files[field.name]) {
+            const path = await uploadFile(file, field.name)
+            console.log('THE NEW PATH', path)
+            filesAdded.push({
+              path,
+              filename: filename.filename
+            })
+          }
+         
+          newContent[field.name] = filesAdded
+        }
+      }
+    
+
+      console.log(newContent)
+      res.status(200).json(newContent)
+      
 
       addContent(type.slug, newContent)
         .then((data) => {
@@ -167,6 +200,6 @@ export default async (req, res) => {
 
   methods(req, res, {
     get: getContent(filterParams, searchParams, paginationParams),
-    post: createContent,
+    post: dynamicFieldsFormidable(req.contentType.fields, createContent),
   })
 }

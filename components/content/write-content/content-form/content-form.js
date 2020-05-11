@@ -5,21 +5,33 @@ import Button from '../../../generic/button/button'
 import DynamicField from '../../../generic/dynamic-field/dynamic-field-edit'
 import Toggle from '../../../generic/toggle/toggle'
 import fetch from '../../../../lib/fetcher'
+import { FIELDS } from '../../../../lib/config/config-constants'
 import Link from 'next/link'
 
 export default function (props) {
+
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
+  // used to store values
   const [state, setState] = useState({})
 
   useEffect(() => {
-    setState(props.content)
+    // Preload the form values
+    if (props.type && props.content) {
+      const filteredData = {}
+      const allowedKeys = props.type.fields.map((f) => f.name).concat('draft')
+      allowedKeys.map((k) => {
+        filteredData[k] = props.content[k]
+      })
+      setState(filteredData)
+    }
   }, [props.content, props.type])
 
-  // Generic field change
+  // Store the fields
   const handleFieldChange = (name) => (value) => {
+    console.log('change', name, value)
     setState({
       ...state,
       [name]: value,
@@ -33,44 +45,43 @@ export default function (props) {
 
     return fetch(url, {
       method: props.content.id ? 'PUT' : 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        //'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Type': 'application/json',
-      },
+      body:data,
+      
     })
   }
 
   const onSubmit = (ev) => {
     ev.preventDefault()
 
-    /*const data = new URLSearchParams()
+    var formData = new FormData();
+
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
-
       const fieldDefinition = props.type.fields.find(t => t.name === key)
+      
 
-      // TODO: Do client side validations
       if (typeof fieldValue !== 'undefined') {
-        if (fieldDefinition && fieldDefinition.type === 'tags') {
-          data.append(key, JSON.stringify(fieldValue))
-        } else {
-          data.append(key, fieldValue)
+        if (fieldDefinition && fieldDefinition.type === FIELDS.TAGS) {
+          // JSON Objects
+          formData.set(key, JSON.stringify(fieldValue))
+        } else if(fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
+          const files = ev.currentTarget[key].files
+          if (files) {
+            for (var i = 0; i < files.length; i++) {
+              formData.append(key, files[i])
+            }
+          }
+        }else {
+          formData.set(key, fieldValue)
         }
       }
-    })*/
-
-    const filteredData = {}
-    const allowedKeys = props.type.fields.map((f) => f.name).concat('draft')
-    allowedKeys.map((k) => {
-      filteredData[k] = state[k]
     })
 
     setLoading(true)
     setSuccess(false)
     setError(false)
 
-    submitRequest(filteredData)
+    submitRequest(formData)
       .then((result) => {
         setLoading(false)
         setSuccess(true)
@@ -95,7 +106,7 @@ export default function (props) {
   return (
     <>
       <div className="contentForm">
-        <form name="content-form" onSubmit={onSubmit}>
+        <form name="content-form"  onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
             <div className="draft input-group">
               <label>Draft</label>

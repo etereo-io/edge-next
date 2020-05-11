@@ -112,10 +112,7 @@ export const getConfig = (defaultOptions) => {
   const publicRole = defaultOptions.roles.public.value
 
   const postContentType = {
-    title: {
-      en: 'Post',
-      es: 'Artículo',
-    },
+    title: 'Post',
 
     slug: 'post',
 
@@ -153,6 +150,7 @@ export const getConfig = (defaultOptions) => {
         placeholder: 'Title',
         minlength: 8,
         maxlength: 150,
+        errorMessage: 'Title must be between 8 and 150 characters'
       },
       {
         name: 'description',
@@ -161,316 +159,47 @@ export const getConfig = (defaultOptions) => {
         placeholder: 'Description',
         minlength: 20,
         maxlength: 2000,
+        errorMessage: 'Description must be between 20 and 2000 characters'
       },
       {
         name: 'image',
         type: 'img',
         label: 'Image',
         placeholder: 'Image',
+        errorMessage: 'Only images supported'
       },
       {
-        name: 'file',
-        type: 'file',
-        label: 'File',
-        placeholder: 'File',
-      },
-      {
-        name: 'video',
-        type: 'video_url',
-        label: 'Video',
-      },
-      {
-        name: 'tags',
-        type: 'tags',
-        label: 'Tags',
-        placeholder: 'Tags',
-      },
-    ],
-  }
-
-  const movieContentType = {
-    title: {
-      en: 'Movie',
-      es: 'pelicula',
-    },
-
-    slug: 'movie',
-
-    slugGeneration: ['title', 'createdAt'],
-
-    permissions: {
-      read: [publicRole],
-      create: [adminRole, userRole],
-      update: [adminRole],
-      delete: [adminRole],
-      admin: [adminRole],
-    },
-
-    publishing: {
-      draftMode: false,
-      title: 'title',
-    },
-
-    comments: {
-      enabled: false,
-      permissions: {
-        read: [publicRole],
-        create: [userRole, adminRole],
-        update: [adminRole],
-        delete: [adminRole],
-        admin: [adminRole],
-      },
-    },
-
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-        placeholder: 'Title',
-        minlength: 8,
-        maxlength: 150,
-      },
-
-      {
-        name: 'file',
-        type: 'file',
-        label: 'File',
-        placeholder: 'File',
-      },
-      {
-        name: 'video',
-        type: 'video_url',
-        label: 'Video',
-      },
-      {
-        name: 'tags',
-        type: 'tags',
-        label: 'Tags',
-        placeholder: 'Tags',
-      },
-    ],
-  }
-
-  const ProfilePictureContent = {
-    title: {
-      en: 'Picture',
-      es: 'Foto',
-    },
-
-    slug: 'picture',
-
-    slugGeneration: ['userId', 'createdAt'],
-
-    publishing: {
-      draftMode: false,
-    },
-
-    permissions: {
-      read: [userRole, adminRole],
-      create: [adminRole, userRole],
-      update: [adminRole],
-      delete: [adminRole],
-      admin: [adminRole],
-      report: [userRole],
-    },
-
-    comments: {
-      enabled: false,
-      permissions: {},
-    },
-
-    fields: [
-      {
-        name: 'image',
+        name: 'images',
         type: 'img',
-        label: 'Image',
-        required: true,
-        placeholder: 'Image',
-      },
-    ],
-  }
-
-  const LikeContent = {
-    title: {
-      en: 'Like',
-      es: 'Like',
-    },
-
-    slug: 'like',
-
-    slugGeneration: ['userId', 'createdAt'],
-
-    permissions: {
-      read: [userRole, adminRole],
-      create: [adminRole, userRole],
-      update: [adminRole],
-      delete: [adminRole],
-      admin: [adminRole],
-      report: [userRole],
-    },
-
-    comments: {
-      enabled: false,
-      permissions: {},
-    },
-
-    publishing: {
-      draftMode: false,
-    },
-
-    fields: [
-      {
-        name: 'userFrom',
-        type: 'text',
-        label: 'User from',
-        required: true,
-        placeholder: 'user from',
+        label: 'Images',
+        placeholder: 'Images',
+        multiple: true,
+        errorMessage: 'Only images supported'
       },
       {
-        name: 'userTo',
-        type: 'text',
-        label: 'User to',
-        required: true,
-        placeholder: 'user to',
+        name: 'video',
+        type: 'video_url',
+        label: 'Video (URL)',
+        errorMessage: 'Only urls (https://) are supported'
       },
       {
-        name: 'status',
-        type: 'select',
-        options: [
-          {
-            label: 'Like',
-            value: 'like',
-          },
-          {
-            label: 'Dislike',
-            value: 'dislike',
-          },
-        ],
-        label: 'status',
-        required: true,
-        placeholder: 'status',
-      },
-    ],
-  }
-
-  const MatchContent = {
-    title: {
-      en: 'Match',
-      es: 'Match',
-    },
-
-    slug: 'match',
-
-    slugGeneration: ['participants', 'createdAt'],
-
-    permissions: {
-      read: [userRole, adminRole],
-      create: [adminRole],
-      update: [adminRole],
-      delete: [adminRole],
-      admin: [adminRole],
-    },
-
-    comments: {
-      enabled: false,
-      permissions: {},
-    },
-
-    publishing: {
-      draftMode: false,
-    },
-
-    fields: [
-      {
-        name: 'participants',
-        type: 'json',
-        label: 'participants',
-        required: true,
-        placeholder: 'participants',
+        name: 'file',
+        type: 'file',
+        label: 'File',
+        placeholder: 'File',
+        errorMessage: 'File size must be less than 3MB'
       },
       {
-        name: 'deleted',
-        type: 'radio',
-        options: [
-          {
-            label: 'true',
-            value: true,
-          },
-          {
-            label: 'false',
-            value: false,
-          },
-        ],
-        label: 'deleted',
-        placeholder: 'deleted',
-      },
-    ],
-  }
-
-  const MessageContent = {
-    title: {
-      en: 'Message',
-      es: 'Message',
-    },
-
-    slug: 'message',
-
-    slugGeneration: ['userId', 'createdAt'],
-
-    permissions: {
-      read: [userRole, adminRole],
-      create: [adminRole],
-      update: [adminRole],
-      delete: [adminRole],
-      admin: [adminRole],
-    },
-
-    publishing: {
-      draftMode: false,
-    },
-
-    comments: {
-      enabled: false,
-      permissions: {},
-    },
-
-    fields: [
-      {
-        name: 'userFrom',
-        type: 'text',
-        label: 'user from',
-        required: true,
-        placeholder: 'user from (UID)',
-      },
-      {
-        name: 'message',
-        type: 'text',
-        label: 'message',
-        required: true,
-        placeholder: 'message',
-      },
-      {
-        name: 'matchId',
-        type: 'text',
-        label: 'matchId',
-        required: true,
-        placeholder: 'matchId',
-      },
-      {
-        name: 'deleted',
-        type: 'boolean',
-        label: 'deleted',
-        placeholder: 'deleted',
+        name: 'tags',
+        type: 'tags',
+        label: 'Tags',
+        placeholder: 'Tags',
       },
     ],
   }
 
   const productContentType = {
-    title: {
-      en: 'Product',
-      es: 'Producto',
-    },
+    title: 'Product',
 
     slug: 'product',
 
@@ -510,6 +239,7 @@ export const getConfig = (defaultOptions) => {
         placeholder: 'Title',
         minlength: 10,
         maxlength: 200,
+        errorMessage: 'Title must be between 10 and 200 characters'
       },
       {
         name: 'description',
@@ -518,6 +248,7 @@ export const getConfig = (defaultOptions) => {
         placeholder: 'Description',
         minlength: 10,
         maxlength: 2000,
+        errorMessage: ''
       },
       {
         name: 'image',
@@ -667,7 +398,6 @@ export const getConfig = (defaultOptions) => {
             required: false,
             minlength: 60,
             maxlength: 300,
-            roles: [],
           },
           {
             name: 'gender',
@@ -763,11 +493,8 @@ export const getConfig = (defaultOptions) => {
       types: [
         postContentType,
         productContentType,
-        ProfilePictureContent,
-        LikeContent,
-        MatchContent,
-        MessageContent,
-        movieContentType,
+        // recipeContentType,
+        // videoTutorialContentType,
       ],
       initialContent: initialContent,
     },
