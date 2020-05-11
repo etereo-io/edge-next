@@ -1,4 +1,3 @@
-import { deleteFile, uploadFile } from '../../../../lib/api/storage'
 import {
   deleteOneContent,
   findOneContent,
@@ -15,11 +14,15 @@ import {
   onContentUpdated,
 } from '../../../../lib/api/hooks/content.hooks'
 
+import { FIELDS } from '../../../../lib/config/config-constants'
 import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
+import { deleteFile } from '../../../../lib/api/storage'
 import { findOneUser } from '../../../../lib/api/users/user'
+import merge from 'deepmerge'
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
+import { uploadFiles } from '../../../../lib/api/api-helpers/dynamic-file-upload'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -94,33 +97,54 @@ const updateContent = async (req, res) => {
     ...req.body
   }
 
+  console.log('UPDATING', content)
+
   contentValidations(type, content)
     .then(async () => {
       // Content is valid
       // Upload all the files
-
-      // TODO: Delete files from storage if deletd from content
-      // 
-
+      const newData = await uploadFiles(type.fields, req.files)
+      const newContent = merge(content, newData)
+      
+      // Check if there are any missing file fields and delete them from storage
+      const itemsToDelete = []
       for (const field of type.fields) {
-        if (req.files[field.name]) {
-          console.log(req.files[field.name])
-          const path = await uploadFile(req.files[field.name], field.name)
-          console.log('the new path ', path)
-          if (content[field.name]) {
-            // TODO: Handle multiple files
-            await deleteFile(content[field.name])
-          }
 
-          content[field.name] = path
+        if (field.type === FIELDS.IMAGE || field.type === FIELDS.FILE) {
+          // Go through all the items and see if in the new content there is any difference
+          const previousValue = req.item[field.name] || []
+          previousValue.forEach(f => {
+            if (newContent[field.name]) {
+              // Only delete if the field is set
+              if (!newContent[field.name].find(item => item.path === f.path)) {
+                itemsToDelete.push(f)
+              }
+            }
+          })
         }
       }
-        
+      console.log('We delete', itemsToDelete)
 
-      updateOneContent(type.slug, req.item.id, content)
+      // Delete old items from storage
+      for (let i = 0; i < itemsToDelete.length; i++) {
+        try {
+          await deleteFile(itemsToDelete[i].path)
+        } catch(err) {
+          // Error deleting file, ignore ite
+        }
+      }
+
+      if (Object.keys(newContent).length === 0) {
+        // It is an empty request, no file was uploaded, no file was deleted)
+        res.status(200).json(req.item)
+        return
+      }
+      
+      console.log('Its going to be updated', type.slug, req.item.id, newContent)
+      updateOneContent(type.slug, req.item.id, newContent)
         .then((data) => {
           // Trigger on updated hook
-          onContentUpdated(content, req.user)
+          onContentUpdated(data, req.user)
 
           // Respond
           res.status(200).json(data)
@@ -188,7 +212,7 @@ export default async (req, res) => {
   methods(req, res, {
     get: getContent,
     del: deleteContent,
-    put: dynamicFieldsFormidable(req.contentType.fields, updateContent),
-    post: dynamicFieldsFormidable(req.contentType.fields, updateContent),
+    put: dynamicFieldsFormidable(updateContent),
+    post: dynamicFieldsFormidable(updateContent),
   })
 }

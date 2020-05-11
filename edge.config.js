@@ -292,6 +292,13 @@ export const getConfig = (defaultOptions) => {
     // Home slogan
     slogan: 'EDGE - A dynamic site that lives on the edge',
 
+    // Api
+    api : {
+      bodyParser: {
+        sizeLimit: '1mb'
+      }
+    },
+
     // Storages: GOOGLE, AWS, FIREBASE
     storage: {
       type: 'GOOGLE',

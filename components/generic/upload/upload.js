@@ -44,7 +44,6 @@ export default function ({accept, name, required, multiple, ...props}) {
 
   useEffect(() => {
     if (props.value) {
-      console.log(props.value)
       Array.isArray(props.value) ? setFiles(props.value): setFiles([props.value])
     }
   }, [props.value])
@@ -58,8 +57,8 @@ export default function ({accept, name, required, multiple, ...props}) {
           </div>
           <div className="files">
             {files.map((file, index) => (
-              <div className="file-row" key={file.name ? file.name: file}>
-                <span className="file-name">{file.name ? file.name: file}</span>
+              <div className="file-row" key={file.isFile ? file.file.name: file.name}>
+                <span className="file-name">{file.isFile ? file.file.name: file.name}</span>
                 <div className="delete-file" onClick={() => deleteFile(index)}>
                   Delete
                 </div>

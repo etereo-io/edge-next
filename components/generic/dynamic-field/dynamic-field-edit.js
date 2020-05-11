@@ -115,10 +115,11 @@ function Radio(props) {
 function InputImage(props) {
   const [touched, setTouched] = useState(false)
   
-  const onChange = (items) => {
+  const onChange = (files) => {
     setTouched(true)
-    props.onChange(items)
+    props.onChange(files)
   }
+  
   return (
     <>
       <Upload 
@@ -137,9 +138,9 @@ function InputImage(props) {
 
 function InputFile(props) {
   const [touched, setTouched] = useState(false)
-  const onChange = (ev) => {
+  const onChange = (files) => {
     setTouched(true)
-    props.onChange(ev.target.value, ev)
+    props.onChange(files)
   }
 
   return (

@@ -38,14 +38,25 @@ export default function (props) {
     })
   }
 
-  const submitRequest = (data) => {
+  const submitRequest = (data, jsonData) => {
     const url = `${API.content[props.type.slug]}${
       props.content.id ? '/' + props.content.id + '?field=id' : ''
     }`
-
+    
     return fetch(url, {
       method: props.content.id ? 'PUT' : 'POST',
-      body:data,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(jsonData),
+    })
+    .then((result) => {
+      console.log(result)
+      // Files are always updated as a PUT
+      return fetch( `${API.content[props.type.slug]}${'/' + result.id + '?field=id'}`, {
+        method: 'PUT',
+        body: data,
+      })
       
     })
   }
@@ -53,35 +64,39 @@ export default function (props) {
   const onSubmit = (ev) => {
     ev.preventDefault()
 
-    var formData = new FormData();
+    const formData = new FormData();
+    const jsonData = {}
 
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
       const fieldDefinition = props.type.fields.find(t => t.name === key)
       
-
-      if (typeof fieldValue !== 'undefined') {
-        if (fieldDefinition && fieldDefinition.type === FIELDS.TAGS) {
-          // JSON Objects
-          formData.set(key, JSON.stringify(fieldValue))
-        } else if(fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
-          const files = ev.currentTarget[key].files
-          if (files) {
-            for (var i = 0; i < files.length; i++) {
-              formData.append(key, files[i])
+      console.log(fieldValue, key)
+      
+      if (fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
+        if (fieldValue && fieldValue.length > 0) {
+          fieldValue.forEach(item => {
+            
+            if (item.isFile) {
+              formData.append(key, item.file)
+            } else {
+              jsonData[key] = jsonData[key] ? [...jsonData[key], item] : [item]
             }
-          }
-        }else {
-          formData.set(key, fieldValue)
+          })
+        } else {
+          jsonData[key] = []
         }
+      } else {
+        jsonData[key] = fieldValue
       }
+      
     })
 
     setLoading(true)
     setSuccess(false)
     setError(false)
 
-    submitRequest(formData)
+    submitRequest(formData, jsonData)
       .then((result) => {
         setLoading(false)
         setSuccess(true)

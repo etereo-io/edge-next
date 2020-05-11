@@ -86,6 +86,7 @@ const Components = () => {
       max: 100,
       name: 'text',
       label: 'Text field',
+      errorMessage: 'Minimum length 10, maximum 100',
       placeholder: 'A placeholder',
     },
     {

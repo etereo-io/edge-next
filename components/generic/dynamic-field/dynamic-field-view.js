@@ -21,7 +21,7 @@ function Field({ field, value, showLabel = false, contentType}) {
             data-testid={datatestId}
             style={{ display: 'flex', justifyContent: 'center' }}
           >
-            <Image width={500} height={500} srcs={[value]} />{' '}
+            <Image width={500} height={500} srcs={value.map(i => i.path)} />{' '}
           </div>
         ) : null
 
