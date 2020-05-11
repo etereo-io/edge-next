@@ -1,11 +1,10 @@
+import { bodyParser, hasPermissionsForUser } from '../../../lib/api/middlewares'
 import { deleteFile, uploadFile } from '../../../lib/api/storage'
 import { findOneUser, generateSaltAndHash, updateOneUser, userPasswordsMatch } from '../../../lib/api/users/user'
 import { onUserDeleted, onUserUpdated } from '../../../lib/api/hooks/user.hooks'
 
 import { connect } from '../../../lib/api/db'
-import formidable from 'formidable';
 import { getSession } from '../../../lib/api/auth/iron'
-import { hasPermissionsForUser } from '../../../lib/api/middlewares'
 import methods from '../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { v4 as uuidv4 } from 'uuid'
@@ -15,21 +14,6 @@ export const config = {
   api: {
     bodyParser: false,
   }
-}
-
-const useFormidable = (cb) => (req, res) => {
-  
-  const form = formidable({ multiples: true });
-  
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      res.status(500).json({error: err.message})
-    }
-    req.body = fields
-    req.files = files
-    cb(req, res)
-  });
-
 }
 
 const userExist = (userId) => async (req, res, cb) => {
@@ -156,8 +140,16 @@ function updateProfilePicture(user, profilePicture) {
   })
 }
 
-const updateUser = (slug) => (req, res) => {
-  
+const updateUser = (slug) => async (req, res) => {
+
+  try {
+    await runMiddleware(req, res, bodyParser)
+  } catch (e) {
+    return res.status(400).json({
+      message: e.message,
+    })
+  }
+
   const updateData = slug[1]
 
   let promiseChange = null
@@ -252,6 +244,6 @@ export default async (req, res) => {
   methods(req, res, {
     get: getUser,
     del: delUser,
-    put: useFormidable(updateUser(slug)),
+    put: updateUser(slug),
   })
 }

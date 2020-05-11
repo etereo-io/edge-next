@@ -1,14 +1,14 @@
 import {
-  deleteOneContent,
-  findOneContent,
-  updateOneContent,
-} from '../../../../lib/api/content/content'
-import {
-  dynamicFieldsFormidable,
+  bodyParser,
   hasPermissionsForContent,
   hasQueryParameters,
   isValidContentType,
 } from '../../../../lib/api/middlewares'
+import {
+  deleteOneContent,
+  findOneContent,
+  updateOneContent,
+} from '../../../../lib/api/content/content'
 import {
   onContentDeleted,
   onContentUpdated,
@@ -30,7 +30,6 @@ export const config = {
     bodyParser: false,
   }
 }
-
 
 const loadContentItemMiddleware = async (req, res, cb) => {
   const type = req.contentType
@@ -91,6 +90,15 @@ const deleteContent = (req, res) => {
 }
 
 const updateContent = async (req, res) => {
+
+  try {
+    await runMiddleware(req, res, bodyParser)
+  } catch (e) {
+    return res.status(400).json({
+      message: e.message,
+    })
+  }
+  
   const type = req.contentType
 
   const content = {
@@ -212,7 +220,7 @@ export default async (req, res) => {
   methods(req, res, {
     get: getContent,
     del: deleteContent,
-    put: dynamicFieldsFormidable(updateContent),
-    post: dynamicFieldsFormidable(updateContent),
+    put: updateContent,
+    post: updateContent,
   })
 }

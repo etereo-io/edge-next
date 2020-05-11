@@ -1,7 +1,8 @@
+import * as handlerAuth from '../../../../../pages/api/auth/[...action]'
+
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
 import { findUserWithPassword } from '../../../../../lib/api/users/user'
-import handlerAuth from '../../../../../pages/api/auth/[...action]'
 import http from 'http'
 import listen from 'test-listen'
 import { onUserAdded } from '../../../../../lib/api/hooks/user.hooks'

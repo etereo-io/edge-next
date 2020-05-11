@@ -11,11 +11,12 @@
 // See discussion https://github.com/zeit/next.js/discussions/11784
 // See example
 
+import * as handler from '../../../../../pages/api/users'
+
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import handler from '../../../../../pages/api/users'
 import http from 'http'
 import listen from 'test-listen'
 
