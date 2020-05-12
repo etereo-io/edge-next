@@ -6,10 +6,13 @@ import DynamicField from '../../../generic/dynamic-field/dynamic-field-edit'
 import Toggle from '../../../generic/toggle/toggle'
 import fetch from '../../../../lib/fetcher'
 import { FIELDS } from '../../../../lib/config/config-constants'
+import ContentSummaryView from '../../read-content/content-summary-view/content-summary-view'
 import Link from 'next/link'
 
 export default function (props) {
+  const [preview, setPreview] = useState(false)
 
+  // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
@@ -60,6 +63,8 @@ export default function (props) {
       
     })
   }
+
+  
 
   const onSubmit = (ev) => {
     ev.preventDefault()
@@ -158,6 +163,10 @@ export default function (props) {
           </div>
         )}
         {error && <div className="error-message">Error saving </div>}
+
+        <div className="preview">
+            <ContentSummaryView content={state} type={props.type} />
+        </div>
       </div>
       <style jsx>
         {`

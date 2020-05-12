@@ -131,6 +131,10 @@ export const getConfig = (defaultOptions) => {
       title: 'title',
     },
 
+    monetization: {
+      web: true
+    },
+
     comments: {
       enabled: true,
       permissions: {
@@ -154,7 +158,7 @@ export const getConfig = (defaultOptions) => {
       },
       {
         name: 'description',
-        type: 'textarea',
+        type: 'markdown',
         label: 'Description',
         placeholder: 'Description',
         minlength: 20,
@@ -243,7 +247,7 @@ export const getConfig = (defaultOptions) => {
       },
       {
         name: 'description',
-        type: 'textarea',
+        type: 'markdown',
         label: 'Description',
         placeholder: 'Description',
         minlength: 10,
@@ -349,6 +353,7 @@ export const getConfig = (defaultOptions) => {
     },
 
     // Add one more role
+    // TODO: see how to use them
     roles: {
       ...defaultOptions.roles,
       shopOwner: {

@@ -2,7 +2,7 @@ import {
   createUser,
   findOneUser,
   findUsers,
-  validateUser,
+  validateNewUser,
 } from '../../lib/api/users/user'
 
 import { connect } from '../../lib/api/db'
@@ -30,7 +30,7 @@ const addUser = (user) => async (req, res) => {
   let parsedUser = null
 
   try {
-    parsedUser = validateUser(user)
+    parsedUser = validateNewUser(user)
   } catch (err) {
     return res.status(400).json({
       error: err.message,

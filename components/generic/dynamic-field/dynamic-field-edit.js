@@ -226,6 +226,16 @@ function Field(props) {
           />
         )
 
+      case FIELDS.MARKDOWN:
+        return (
+          <TextArea
+            field={field}
+            value={props.value}
+            data-testid={datatestId}
+            onChange={onChange}
+          />
+        )
+
       case FIELDS.IMAGE:
         return (
           <InputImage

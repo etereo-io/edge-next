@@ -6,7 +6,9 @@ export default function ({accept, name, required, multiple, ...props}) {
 
   const inputProps = {accept, name, required, multiple}
   const [files, setFiles] = useState([])
+  const [loading, setLoading] = useState(false)
 
+  
   const onFilesAdded = (f) => {
     const newFiles = multiple ? [...files, ...f] : [...f]
 
@@ -53,9 +55,10 @@ export default function ({accept, name, required, multiple, ...props}) {
       <div className="file-upload" data-testid={props['data-testid']}>
         <div className="content">
           <div>
-            <Dropzone onFilesAdded={onFilesAdded} {...inputProps}/>
+            <Dropzone onFilesAdded={onFilesAdded} {...inputProps} onLoading={setLoading}/>
           </div>
           <div className="files">
+            {loading && <div className="loading">Loading...</div>}
             {files.map((file, index) => (
               <div className="file-row" key={file.isFile ? file.file.name: file.name}>
                 <span className="file-name">{file.isFile ? file.file.name: file.name}</span>

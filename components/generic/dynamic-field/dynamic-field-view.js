@@ -1,7 +1,9 @@
 import { FIELDS } from '../../../lib/config/config-constants'
 import Image from '../image/image'
+import MarkdownRead from '../markdown-read/markdown-read'
 import ReactPlayer from 'react-player'
 import TagsField from '../tags-field/tags-field'
+import marked from 'marked'
 
 function Field({ field, value, showLabel = false, contentType}) {
   const getField = (field, value) => {
@@ -14,16 +16,29 @@ function Field({ field, value, showLabel = false, contentType}) {
             {value}
           </p>
         )
-
+      case FIELDS.MARKDOWN:
+        const  htmlString = marked(value || '')
+        return (
+          <div data-testid={datatestId} style={{ wordBreak: 'break-all' }}>
+            <MarkdownRead htmlString={htmlString} />
+          </div>
+        )
       case FIELDS.IMAGE:
-        return value ? (
+        if (value && Array.isArray(value) ) {
+          const transformedValues = value.map(i => i.isFile ? i.src : i.path)
+
+            
+          return (
           <div
             data-testid={datatestId}
             style={{ display: 'flex', justifyContent: 'center' }}
           >
-            <Image width={500} height={500} srcs={value.map(i => i.path)} />{' '}
+            <Image width={500} height={500} srcs={transformedValues} />
           </div>
-        ) : null
+        )
+        } else {
+          return null
+        }
 
       case FIELDS.NUMBER:
         return <p data-testid={datatestId}>{value}</p>
