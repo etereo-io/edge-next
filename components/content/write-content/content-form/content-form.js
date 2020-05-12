@@ -80,8 +80,9 @@ export default function (props) {
       
       if (fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
         if (fieldValue && fieldValue.length > 0) {
+          jsonData[key] = []
+
           fieldValue.forEach(item => {
-            
             if (item.isFile) {
               formData.append(key, item.file)
             } else {

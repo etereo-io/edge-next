@@ -98,7 +98,7 @@ const updateContent = async (req, res) => {
       message: e.message,
     })
   }
-  
+
   const type = req.contentType
 
   const content = {
@@ -111,7 +111,7 @@ const updateContent = async (req, res) => {
     .then(async () => {
       // Content is valid
       // Upload all the files
-      const newData = await uploadFiles(type.fields, req.files)
+      const newData = await uploadFiles(type.fields, req.files, req.item)
       const newContent = merge(content, newData)
       
       // Check if there are any missing file fields and delete them from storage
@@ -122,9 +122,9 @@ const updateContent = async (req, res) => {
           // Go through all the items and see if in the new content there is any difference
           const previousValue = req.item[field.name] || []
           previousValue.forEach(f => {
-            if (newContent[field.name]) {
+            if (content[field.name]) {
               // Only delete if the field is set
-              if (!newContent[field.name].find(item => item.path === f.path)) {
+              if (!content[field.name].find(item => item.path === f.path)) {
                 itemsToDelete.push(f)
               }
             }
@@ -151,6 +151,7 @@ const updateContent = async (req, res) => {
       console.log('Its going to be updated', type.slug, req.item.id, newContent)
       updateOneContent(type.slug, req.item.id, newContent)
         .then((data) => {
+          console.log('IT DID', data)
           // Trigger on updated hook
           onContentUpdated(data, req.user)
 
