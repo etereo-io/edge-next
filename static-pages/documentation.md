@@ -177,20 +177,19 @@ const contentType = {
 
 ### Fields
 
-For client side different fields are automaticaly generated based on the content type configuration. Note: for API request you can add any field type.
+Form fields are automaticaly generated based on the content type, or user profile configuration. 
 
 There are different fields that can be configured with some standard attributes and some non-standard.
 
-All fields include shared otions:
+**All fields include shared otions**:
 - label (field label)
 - name (field name)
 - type ('text', 'number', 'radio'...)
-- roles
-  - Array, list of roles that can SEE this field when editing the content and when reading it
-- private
-  - Leaves the field only for ADMINS and content owners
-- validation:
+- errorMessage: String, error message displayed when validation fails
+- validation (NOT IMPLEMENTED)
   - Optional validarion function in the form of `(value) => { return true or false } `
+- permissions (NOT IMPLEMENTED)
+  - Array, list of roles that can SEE this field when editing the content and when reading it
 
 Example: 
 

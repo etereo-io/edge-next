@@ -1,44 +1,34 @@
-import { deleteFile, uploadFile } from '../../../../lib/api/storage'
 import {
-  findOneContent,
-  updateOneContent,
-} from '../../../../lib/api/content/content'
-import {
+  bodyParser,
   hasPermissionsForContent,
   hasQueryParameters,
   isValidContentType,
 } from '../../../../lib/api/middlewares'
 import {
+  deleteOneContent,
+  findOneContent,
+  updateOneContent,
+} from '../../../../lib/api/content/content'
+import {
   onContentDeleted,
   onContentUpdated,
 } from '../../../../lib/api/hooks/content.hooks'
 
+import { FIELDS } from '../../../../lib/config/config-constants'
 import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
+import { deleteFile } from '../../../../lib/api/storage'
 import { findOneUser } from '../../../../lib/api/users/user'
-import formidable from 'formidable';
+import merge from 'deepmerge'
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
+import { uploadFiles } from '../../../../lib/api/api-helpers/dynamic-file-upload'
 
 // disable the default body parser to be able to use file upload
 export const config = {
   api: {
     bodyParser: false,
   }
-}
-
-const useFormidable = (cb) => (req, res) => {
-  const form = formidable({ multiples: true });
- 
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      res.status(500).json({error: err.message})
-    }
-    req.body = fields
-    req.files = files
-    cb(req, res)
-  });
-
 }
 
 const loadContentItemMiddleware = async (req, res, cb) => {
@@ -81,34 +71,89 @@ const getContent = async (req, res) => {
 const deleteContent = (req, res) => {
   const item = req.item
 
-  // Trigger on content deleted hook
-  onContentDeleted(item, req.user)
+  deleteOneContent(item.type, { id: item.id })
+    .then(async () => {
 
-  res.status(200).json({
-    item,
-  })
+      // Trigger on content deleted hook
+      await onContentDeleted(item, req.user)
+    
+      res.status(200).json({
+        deleted: true
+      })
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err.message
+      })
+    })
+
 }
 
 const updateContent = async (req, res) => {
+
+  try {
+    await runMiddleware(req, res, bodyParser)
+  } catch (e) {
+    return res.status(400).json({
+      message: e.message,
+    })
+  }
+
   const type = req.contentType
 
-  const content = req.body
+  const content = {
+    ...req.body
+  }
+
+  console.log('UPDATING', content)
 
   contentValidations(type, content)
-    .then(() => {
+    .then(async () => {
       // Content is valid
-      if (req.files) {
-        req.files.forEach((file) => {
-          // TODO: upload
-        })      
+      // Upload all the files
+      const newData = await uploadFiles(type.fields, req.files, req.item)
+      const newContent = merge(content, newData)
+      
+      // Check if there are any missing file fields and delete them from storage
+      const itemsToDelete = []
+      for (const field of type.fields) {
+
+        if (field.type === FIELDS.IMAGE || field.type === FIELDS.FILE) {
+          // Go through all the items and see if in the new content there is any difference
+          const previousValue = req.item[field.name] || []
+          previousValue.forEach(f => {
+            if (content[field.name]) {
+              // Only delete if the field is set
+              if (!content[field.name].find(item => item.path === f.path)) {
+                itemsToDelete.push(f)
+              }
+            }
+          })
+        }
+      }
+      console.log('We delete', itemsToDelete)
+
+      // Delete old items from storage
+      for (let i = 0; i < itemsToDelete.length; i++) {
+        try {
+          await deleteFile(itemsToDelete[i].path)
+        } catch(err) {
+          // Error deleting file, ignore ite
+        }
       }
 
-      // TODO: Delete files from storage if deletd from content
-
-      updateOneContent(type.slug, req.item.id, req.body)
+      if (Object.keys(newContent).length === 0) {
+        // It is an empty request, no file was uploaded, no file was deleted)
+        res.status(200).json(req.item)
+        return
+      }
+      
+      console.log('Its going to be updated', type.slug, req.item.id, newContent)
+      updateOneContent(type.slug, req.item.id, newContent)
         .then((data) => {
+          console.log('IT DID', data)
           // Trigger on updated hook
-          onContentUpdated(content, req.user)
+          onContentUpdated(data, req.user)
 
           // Respond
           res.status(200).json(data)
@@ -176,7 +221,7 @@ export default async (req, res) => {
   methods(req, res, {
     get: getContent,
     del: deleteContent,
-    put: useFormidable(updateContent),
-    post: useFormidable(updateContent),
+    put: updateContent,
+    post: updateContent,
   })
 }

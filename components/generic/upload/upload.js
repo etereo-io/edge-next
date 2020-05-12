@@ -2,11 +2,15 @@ import { useState, useEffect } from 'react'
 
 import Dropzone from './dropzone/dropzone'
 
-export default function (props) {
-  const [files, setFiles] = useState([])
+export default function ({accept, name, required, multiple, ...props}) {
 
+  const inputProps = {accept, name, required, multiple}
+  const [files, setFiles] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  
   const onFilesAdded = (f) => {
-    const newFiles = [...files, ...f]
+    const newFiles = multiple ? [...files, ...f] : [...f]
 
     setFiles(newFiles)
     props.onChange ? props.onChange(newFiles) : null
@@ -41,22 +45,23 @@ export default function (props) {
   // }
 
   useEffect(() => {
-    if (props.files) {
-      setFiles(props.files)
+    if (props.value) {
+      Array.isArray(props.value) ? setFiles(props.value): setFiles([props.value])
     }
-  }, [props.files])
+  }, [props.value])
 
   return (
     <>
-      <div className="file-upload">
+      <div className="file-upload" data-testid={props['data-testid']}>
         <div className="content">
           <div>
-            <Dropzone onFilesAdded={onFilesAdded} />
+            <Dropzone onFilesAdded={onFilesAdded} {...inputProps} onLoading={setLoading}/>
           </div>
           <div className="files">
+            {loading && <div className="loading">Loading...</div>}
             {files.map((file, index) => (
-              <div className="file-row" key={file.name}>
-                <span className="file-name">{file.name}</span>
+              <div className="file-row" key={file.isFile ? file.file.name: file.name}>
+                <span className="file-name">{file.isFile ? file.file.name: file.name}</span>
                 <div className="delete-file" onClick={() => deleteFile(index)}>
                   Delete
                 </div>

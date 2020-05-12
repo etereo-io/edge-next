@@ -39,7 +39,7 @@ const AdminPage = () => {
     .map((type) => {
       return {
         link: `/admin/content/${type.slug}`,
-        title: `Administer ${type.title.en}s`,
+        title: `Administer ${type.title}s`,
       }
     })
 

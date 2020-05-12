@@ -40,7 +40,7 @@ export async function getServerSideProps({ req, res, query }) {
   const contentTitle =
     item && contentTypeDefinition.publishing.title
       ? item[contentTypeDefinition.publishing.title]
-      : `${contentTypeDefinition.title.en} detail`
+      : `${contentTypeDefinition.title} detail`
 
   return {
     props: {

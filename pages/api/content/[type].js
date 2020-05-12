@@ -85,7 +85,7 @@ const createContent = async (req, res) => {
   const content = req.body
 
   contentValidations(type, content)
-    .then(() => {
+    .then(async () => {
       // Content is valid
       // Add default value to missing fields
       const newContent = fillContentWithDefaultData(type, content, req.user)

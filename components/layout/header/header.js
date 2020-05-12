@@ -61,7 +61,7 @@ function UserHeader(props) {
                     return (
                       <li key={type.slug}>
                         <Link href={`/create/${type.slug}`}>
-                          <a>Create {type.title.en}</a>
+                          <a>Create {type.title}</a>
                         </Link>
                       </li>
                     )

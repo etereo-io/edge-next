@@ -4,6 +4,7 @@ import fetch from '../../../lib/fetcher'
 import API from '../../../lib/api/api-endpoints'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import useSWR from 'swr'
+import {format} from 'timeago.js'
 
 export default function (props) {
   const { data, error } = useSWR(
@@ -55,7 +56,7 @@ export default function (props) {
                 </div>
                 <div className="message">
                   {props.user.profile.displayName || props.user.username}{' '}
-                  {ac.type} {new Date(ac.createdAt).toDateString()}
+                  {ac.type} {format(ac.createdAt)}
                 </div>
               </div>
             )

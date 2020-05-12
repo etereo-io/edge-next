@@ -8,7 +8,7 @@ export default function () {
     .map((type) => {
       return {
         link: `/content/${type.slug}`,
-        title: `See all ${type.title.en}s`,
+        title: `See all ${type.title}s`,
       }
     })
 

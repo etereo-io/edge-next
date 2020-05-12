@@ -5,72 +5,104 @@ import Button from '../../../generic/button/button'
 import DynamicField from '../../../generic/dynamic-field/dynamic-field-edit'
 import Toggle from '../../../generic/toggle/toggle'
 import fetch from '../../../../lib/fetcher'
+import { FIELDS } from '../../../../lib/config/config-constants'
+import ContentSummaryView from '../../read-content/content-summary-view/content-summary-view'
 import Link from 'next/link'
 
 export default function (props) {
+  const [preview, setPreview] = useState(false)
+
+  // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
+  // used to store values
   const [state, setState] = useState({})
 
   useEffect(() => {
-    setState(props.content)
+    // Preload the form values
+    if (props.type && props.content) {
+      const filteredData = {}
+      const allowedKeys = props.type.fields.map((f) => f.name).concat('draft')
+      allowedKeys.map((k) => {
+        filteredData[k] = props.content[k]
+      })
+      setState(filteredData)
+    }
   }, [props.content, props.type])
 
-  // Generic field change
+  // Store the fields
   const handleFieldChange = (name) => (value) => {
+    console.log('change', name, value)
     setState({
       ...state,
       [name]: value,
     })
   }
 
-  const submitRequest = (data) => {
+  const submitRequest = (data, jsonData) => {
     const url = `${API.content[props.type.slug]}${
       props.content.id ? '/' + props.content.id + '?field=id' : ''
     }`
-
+    
     return fetch(url, {
       method: props.content.id ? 'PUT' : 'POST',
-      body: JSON.stringify(data),
       headers: {
-        //'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
+      body: JSON.stringify(jsonData),
+    })
+    .then((result) => {
+      console.log(result)
+      // Files are always updated as a PUT
+      return fetch( `${API.content[props.type.slug]}${'/' + result.id + '?field=id'}`, {
+        method: 'PUT',
+        body: data,
+      })
+      
     })
   }
+
+  
 
   const onSubmit = (ev) => {
     ev.preventDefault()
 
-    /*const data = new URLSearchParams()
+    const formData = new FormData();
+    const jsonData = {}
+
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
-
       const fieldDefinition = props.type.fields.find(t => t.name === key)
+      
+      console.log(fieldValue, key)
+      
+      if (fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
+        if (fieldValue && fieldValue.length > 0) {
+          jsonData[key] = []
 
-      // TODO: Do client side validations
-      if (typeof fieldValue !== 'undefined') {
-        if (fieldDefinition && fieldDefinition.type === 'tags') {
-          data.append(key, JSON.stringify(fieldValue))
+          fieldValue.forEach(item => {
+            if (item.isFile) {
+              formData.append(key, item.file)
+            } else {
+              jsonData[key] = jsonData[key] ? [...jsonData[key], item] : [item]
+            }
+          })
         } else {
-          data.append(key, fieldValue)
+          jsonData[key] = []
         }
+      } else {
+        jsonData[key] = fieldValue
       }
-    })*/
-
-    const filteredData = {}
-    const allowedKeys = props.type.fields.map((f) => f.name).concat('draft')
-    allowedKeys.map((k) => {
-      filteredData[k] = state[k]
+      
     })
 
     setLoading(true)
     setSuccess(false)
     setError(false)
 
-    submitRequest(filteredData)
+    submitRequest(formData, jsonData)
       .then((result) => {
         setLoading(false)
         setSuccess(true)
@@ -95,7 +127,7 @@ export default function (props) {
   return (
     <>
       <div className="contentForm">
-        <form name="content-form" onSubmit={onSubmit}>
+        <form name="content-form"  onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
             <div className="draft input-group">
               <label>Draft</label>
@@ -132,6 +164,10 @@ export default function (props) {
           </div>
         )}
         {error && <div className="error-message">Error saving </div>}
+
+        <div className="preview">
+            <ContentSummaryView content={state} type={props.type} />
+        </div>
       </div>
       <style jsx>
         {`

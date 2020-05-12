@@ -1,28 +1,20 @@
 // See discussion https://github.com/zeit/next.js/discussions/11784
 // See example
 
+import * as handler from '../../../../../pages/api/content/[type]/[slug]'
+
+import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
+
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import handler from '../../../../../pages/api/content/[type]/[slug]'
 import http from 'http'
 import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('formidable', () => ({
-  __esModule: true, // this property makes it work
-  default: () => {
-    return {
-      parse: (req, cb) => {
-        
-        cb(null, req.body, null)
-      }
-    }
-  }
-}))
-
+jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => {
   const mockInitialPosts = [
@@ -32,7 +24,7 @@ jest.mock('../../../../../edge.config', () => {
       author: '1',
       title: 'Example post',
       slug: 'example-post-0',
-      image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+      image: [],
       description: 'This is an example description',
       draft: false,
       tags: [
@@ -52,7 +44,9 @@ jest.mock('../../../../../edge.config', () => {
       author: '2',
       title: 'Example post',
       slug: 'example-post-1',
-      image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+      image: [{
+        path: 'https://image.com'
+      }],
       description: 'This is an example description',
       draft: true,
       tags: [
@@ -69,10 +63,7 @@ jest.mock('../../../../../edge.config', () => {
   ]
 
   const mockPostContentType = {
-    title: {
-      en: 'Post',
-      es: 'Artículo',
-    },
+    title: 'Post',
 
     slug: 'post',
 
@@ -151,7 +142,7 @@ jest.mock('../../../../../edge.config', () => {
   }
 })
 
-describe('Integrations tests for content creation endpoint', () => {
+describe('Integrations tests for content edition endpoint', () => {
   let server
   let url
 
@@ -253,6 +244,8 @@ describe('Integrations tests for content creation endpoint', () => {
 
       const jsonResult = await response.json()
 
+      console.log(jsonResult)
+
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
         title: newPost.title,
@@ -269,7 +262,7 @@ describe('Integrations tests for content creation endpoint', () => {
             label: 'AI',
           },
         ],
-        image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+        image: [],
         author: '1',
         id: expect.anything(),
       })
@@ -368,7 +361,7 @@ describe('Integrations tests for content creation endpoint', () => {
             label: 'AI',
           },
         ],
-        image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+        image: [],
         author: '1',
         id: expect.anything(),
       })
@@ -424,7 +417,7 @@ describe('Integrations tests for content creation endpoint', () => {
             label: 'AI',
           },
         ],
-        image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
+        image: [],
         author: '1',
         id: expect.anything(),
       })
@@ -497,5 +490,66 @@ describe('Integrations tests for content creation endpoint', () => {
     })
 
     expect(response.status).toBe(200)
+  })
+
+  describe('Files', () => {
+    it('should call the delete file for an update removing a file', async () => {
+      const urlToBeUsed = new URL(url)
+      const params = { type: 'post', slug: 'example-post-1' }
+
+      getPermissions.mockReturnValueOnce({
+        'content.post.update': ['ADMIN'],
+        'content.post.admin': ['ADMIN'],
+      })
+
+      getSession.mockReturnValueOnce({
+        roles: ['ADMIN'],
+      })
+
+      Object.keys(params).forEach((key) =>
+        urlToBeUsed.searchParams.append(key, params[key])
+      )
+
+      const newPost = {
+        title: 'test test test test test test test test test ',
+        description:
+          'test test test test test test test test test test test test test test test ',
+        image: []
+      }
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPost),
+      })
+
+      const jsonResult = await response.json()
+      console.log(jsonResult)
+
+      expect(response.status).toBe(200)
+      expect(jsonResult).toMatchObject({
+        title: newPost.title,
+        type: 'post',
+        slug: expect.any(String),
+        description: newPost.description,
+        tags: [
+          {
+            slug: 'software',
+            label: 'SOFTWARE',
+          },
+          {
+            slug: 'ai',
+            label: 'AI',
+          },
+        ],
+        image: [],
+        author: '2',
+        id: expect.anything(),
+      })
+
+      expect(deleteFile).toHaveBeenCalled()
+    })
   })
 })

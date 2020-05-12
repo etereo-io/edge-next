@@ -12,18 +12,61 @@ export default function (props) {
   const fileListToArray = (list) => {
     const array = []
     for (var i = 0; i < list.length; i++) {
-      array.push(list.item(i))
+      array.push({
+        isFile: true,
+        src: null,
+        file: list.item(i)
+      })
     }
     return array
   }
 
-  const onFilesAdded = (ev) => {
-    if (props.disabled) return
-    const files = ev.target.files
+  const addFiles = (files) => {
     if (props.onFilesAdded) {
       const array = fileListToArray(files)
-      props.onFilesAdded(array)
+      const promises = array.map(fileObject => {
+
+        // Preload all the srcs for display
+        return new Promise((resolve, reject) => {
+          var reader = new FileReader();
+  
+          reader.onload = function (e) {
+            resolve({
+              ...fileObject,
+              src: e.target.result
+            })
+          };
+  
+          reader.readAsDataURL(fileObject.file);
+
+        })
+      }) 
+
+      props.onLoading(true)
+
+      Promise.all(promises)
+        .then(results => {
+          props.onFilesAdded(results)
+          props.onLoading(false)
+        })
     }
+  }
+
+  const onFilesSelected = (ev) => {
+    if (props.disabled) return
+    const files = ev.target.files
+    addFiles(files)
+  }
+
+  const onDrop = (evt) => {
+    evt.preventDefault()
+
+    if (props.disabled) return
+
+    const files = evt.dataTransfer.files
+    addFiles(files)
+
+    setHighlighted(false)
   }
 
   const onDragLeave = (evt) => {
@@ -38,19 +81,7 @@ export default function (props) {
     setHighlighted(true)
   }
 
-  const onDrop = (evt) => {
-    evt.preventDefault()
-
-    if (props.disabled) return
-
-    const files = evt.dataTransfer.files
-    if (props.onFilesAdded) {
-      const array = fileListToArray(files)
-      props.onFilesAdded(array)
-    }
-
-    setHighlighted(false)
-  }
+ 
 
   return (
     <>
@@ -67,8 +98,11 @@ export default function (props) {
           ref={fileInputRef}
           className="fileinput"
           type="file"
-          multiple
-          onChange={onFilesAdded}
+          multiple={props.multiple}
+          accept={props.accept}
+          required={props.required}
+          name={props.name}
+          onChange={onFilesSelected}
         />
       </div>
       <style jsx>{`

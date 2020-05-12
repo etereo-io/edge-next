@@ -80,6 +80,8 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - Get 100% on everything on lighthouse
 
+- integrate giphy API on comments
+
 - Add an example google analytics script
 
 - Create an example site running an online shop

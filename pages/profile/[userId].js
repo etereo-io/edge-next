@@ -82,7 +82,7 @@ const Profile = (props) => {
           {visibleContentTypes.map((cData) => {
             return (
               <div className="content-block">
-                <h3>User's {cData.title.en}s</h3>
+                <h3>User's {cData.title}s</h3>
                 <ContentListView
                   infiniteScroll={false}
                   type={cData}
