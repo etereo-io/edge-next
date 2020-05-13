@@ -558,3 +558,4 @@ And in the environment variables add the following value:
 ````
 GOOGLE_APPLICATION_CREDENTIALS = ./edge-credentials/google-credentials.json
 ````
+
