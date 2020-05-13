@@ -541,23 +541,20 @@ Deploy Empieza using [Vercel](https://vercel.com):
 
 If you want your deployment in Vercel to recognize the `ENVIRONMENT` values, you will need to add the secrets to your deployment. 
 
-Take the following lines as an example: 
+You can add them through the command line or through the administration dashboard in Vercel.com
 
-```
-$ now secrets add firebase-private-key ■■■■■■■■-■■■■■■■■
+To add the `GOOGLE_APPLICATION_CREDENTIALS` file you can do something like this:
 
-$ now secrets add firebase-client-email ■■■■■■■■
+- store the file in some private repository
+- override the [Build](https://vercel.com/docs/v2/build-step#build-command) step in Vercel to download the file and include it on the [output directory](https://vercel.com/docs/v2/build-step#output-directory)
 
-$ now secrets add firebase-project-id ■■■■■■■■
-
-$ now secrets add firebase-database-url https://■■■■■■■■.firebaseio.com
-
-$ now secrets add firebase-storage-bucket ■■■■■■■■.appspot.com
-
-$ now secrets add -- firebase-private-key "-----BEGIN PRIVATE KEY-----\n■■■■■■■■\n-----END PRIVATE KEY-----\n"
-
-
+In the build command you could do something like:
+````
+git clone https://username:password@github.com/username/edge-credentials.git && npm run build
 ```
 
+And in the environment variables add the following value:
 
-See [this post](https://dev.to/benzguo/getting-started-with-next-js-now-firebase-4ejg) for more information on how to configure Firebase with Vercel
+````
+GOOGLE_APPLICATION_CREDENTIALS = ./edge-credentials/google-credentials.json
+````
