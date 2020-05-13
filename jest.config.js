@@ -11,13 +11,14 @@ module.exports = {
   collectCoverage: true,
   coveragePathIgnorePatterns: [
     '/node_modules/',
+    '/public/',
     'enzyme.js',
     '/jest.config.js',
     '/.next/',
   ],
   testMatch: ['<rootDir>/test/**/*.test.js'],
   setupFilesAfterEnv: ['<rootDir>/test/setupTests.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/.next/'],
+  testPathIgnorePatterns: ['/node_modules/', '/.next/', '/public/',],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': '<rootDir>/node_modules/babel-jest',
     '.+\\.(css|styl|less|sass|scss)$': 'jest-css-modules-transform',
@@ -25,6 +26,7 @@ module.exports = {
   },
   transformIgnorePatterns: [
     '/node_modules/',
+    '/public/',
     '^.+\\.module\\.(css|sass|scss)$',
   ],
   moduleNameMapper: {

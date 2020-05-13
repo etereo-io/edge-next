@@ -111,7 +111,7 @@ const updateContent = async (req, res) => {
     .then(async () => {
       // Content is valid
       // Upload all the files
-      const newData = await uploadFiles(type.fields, req.files, req.item)
+      const newData = await uploadFiles(type.fields, req.files, type.slug, req.item)
       const newContent = merge(content, newData)
       
       // Check if there are any missing file fields and delete them from storage

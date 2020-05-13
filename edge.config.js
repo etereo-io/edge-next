@@ -202,6 +202,82 @@ export const getConfig = (defaultOptions) => {
     ],
   }
 
+  
+  const dishContentType = {
+    title: 'dish',
+
+    slug: 'dish',
+
+    slugGeneration: ['title', 'createdAt'],
+
+    permissions: {
+      read: [publicRole],
+      create: [adminRole, userRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
+    },
+
+    publishing: {
+      draftMode: true,
+      title: 'title',
+    },
+
+    comments: {
+      enabled: false,
+    },
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        placeholder: 'Title',
+        minlength: 8,
+        maxlength: 150,
+        errorMessage: 'Title must be between 8 and 150 characters'
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        label: 'Description',
+        placeholder: 'Description',
+        minlength: 20,
+        maxlength: 2000,
+        errorMessage: 'Description must be between 20 and 2000 characters'
+      },
+      {
+        name: 'ingredients',
+        type: 'textarea',
+        label: 'Ingredients',
+        placeholder: 'Ingredients',
+        minlength: 20,
+        maxlength: 2000,
+        errorMessage: 'Ingredients must be between 20 and 2000 characters'
+      },
+      {
+        name: 'images',
+        type: 'img',
+        label: 'Images',
+        placeholder: 'Images',
+        multiple: true,
+        errorMessage: 'Only images supported'
+      },
+      {
+        name: 'price',
+        type: 'number',
+        label: 'Price',
+        placeholder: 'Price',
+      },
+      {
+        name: 'tags',
+        type: 'tags',
+        label: 'Tags',
+        placeholder: 'Tags',
+      },
+    ],
+  }
+
   const productContentType = {
     title: 'Product',
 
@@ -294,7 +370,7 @@ export const getConfig = (defaultOptions) => {
     description: 'A dynamic site that lives on the edge',
 
     // Home slogan
-    slogan: 'EDGE - A dynamic site that lives on the edge',
+    slogan: 'EDGE - OpenSource software for quickstarting your ideas',
 
     // Api
     api : {
@@ -505,6 +581,7 @@ export const getConfig = (defaultOptions) => {
       types: [
         postContentType,
         productContentType,
+        dishContentType,
         // recipeContentType,
         // videoTutorialContentType,
       ],

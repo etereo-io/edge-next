@@ -7,9 +7,9 @@ description: "Empieza Documentation"
 
 - [Documentation](#documentation)
   - [Features](#features)
-  - [Static Pages](#static-pages)
+  - [edge.config.js](#edgeconfigjs)
   - [Content Types](#content-types)
-    - [Fields](#fields)
+  - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
   - [API](#api)
     - [Users](#users)
@@ -30,6 +30,7 @@ description: "Empieza Documentation"
   - [Authentication](#authentication)
     - [Providers](#providers)
   - [Emails](#emails)
+  - [Static Pages](#static-pages)
   - [Payments](#payments)
   - [Deploy your own](#deploy-your-own)
     - [Deploying on Vercel](#deploying-on-vercel)
@@ -52,6 +53,7 @@ description: "Empieza Documentation"
     - users
     - comments
     - user activity
+- Web monetization
 - Social Providers
   - Integration with different social providers for authentication
 - Static Content Generation
@@ -59,32 +61,22 @@ description: "Empieza Documentation"
 - Multiple UI Themes (Dark, Light, Robot, Kawai)
   - Multi Theme support, cookie based
 - Login with [Passport.js](http://www.passportjs.org)
-- ~Multilingual support with [next-i18next](https://github.com/isaachinman/next-i18next) or [next-translate](https://github.com/vinissimus/next-translate)~ See [this issue](https://github.com/isaachinman/next-i18next/issues/274)
 - Emails and email templates
   - Verify email and notify email implementations
 - Multiple components
   - Checkout [the components page](/components)
 - Easy to deploy
   - Deploy on platforms like Vercel in minutes
+- ~Multilingual support~
  
-## Static Pages
 
-SSG (Static Site Generation) is implemented. 
-In the folder `static-pages` you can find the different markdown pages that are prerendered for fast loading.
-The pages include common use cases like **About**, **Privacy Policy**, **Terms and conditions**.
+## edge.config.js
 
-````markdown
----
-title: Example page
-description: "Example page description"
----
+All the configuration of Edge is done in this file on the root of the folder. 
 
-# THIS IS A TITLE
+Here users can define content types, permissions and much more. 
 
-Hello, this is a static page, automatically rendered.
-
-````
-
+Example config file [here](/p/configuration-file)
 
 ## Content Types
 Content types may be defined in `empieza.config.js`. You can create as many content types with different definitions and permissions. The API will validate the access to the endpoints based on the permissions you defined.
@@ -131,6 +123,10 @@ const contentType = {
     title: 'title'
   },
 
+  monetization: {
+    web: true // Enable web monetization for a content type
+  },
+
   // View type display on the users profile and content pages (grid or list)
   display: 'grid',
 
@@ -175,7 +171,7 @@ const contentType = {
 ```
 
 
-### Fields
+## Fields
 
 Form fields are automaticaly generated based on the content type, or user profile configuration. 
 
@@ -231,6 +227,12 @@ const contentType = {
   - Available options:
     - defaultValue
 - textarea
+  - Available options:
+    - required
+    - minlength
+    - maxlength
+    - defaultValue
+- markdown
   - Available options:
     - required
     - minlength
@@ -467,6 +469,25 @@ Empieza uses [Sendgrid](https://sendgrid.com/) to send emails. Although this is 
 There are some email templates included and working:
 
 - Call to Action template: A simple template with a button. Used to verify user emails.
+
+
+## Static Pages
+
+SSG (Static Site Generation) is implemented. 
+In the folder `static-pages` you can find the different markdown pages that are prerendered for fast loading.
+The pages include common use cases like **About**, **Privacy Policy**, **Terms and conditions**.
+
+````markdown
+---
+title: Example page
+description: "Example page description"
+---
+
+# THIS IS A TITLE
+
+Hello, this is a static page, automatically rendered.
+
+````
 
 ## Payments
 

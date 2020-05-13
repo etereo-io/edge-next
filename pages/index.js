@@ -24,6 +24,12 @@ const Landing = (props) => {
                   Blazing fast dynamic content
                 </Button>
               </div>
+              <div className="call-to-action-item">
+                <Button success href="https://webmonetization.org/" padding={'none'}>
+                  <span style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5px 10px'}}>Web monetization enabled <img alt="web monetization" width={'30px'} src="/static/logos/wm-icon-animated.svg" /></span>
+                </Button>
+              </div>
+              
             </div>
 
             <div className="badges">
@@ -106,6 +112,12 @@ const Landing = (props) => {
               Four CSS themes implemented (Light, Dark, Robot, Kawai), stored in
               cookies for each user preference. Easily create and add new
               themes.
+            </p>
+          </div>
+          <div className="feature">
+            <h3>Web Monetization</h3>
+            <p>
+              Easily configurable <a href="https://webmonetization.org/" title="Web monetization" rel="noopener" target="_blank">web monetization</a>. Allowing the users of the site to configure their payment pointers to create paid content.
             </p>
           </div>
           <div className="feature">
