@@ -28,22 +28,23 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                 <Link href="/api/auth/facebook">
                   <a title="Sign up with Facebook">
                     <Button
-                      socialButton={true}
-                      google={true}
-                      fullWidth={true}
-                    />
+                      fullWidth
+                      hoverable
+                    ><span className="social-link"><img src="/icons/google.svg" alt="Google icon" /> Continue with google</span></Button>
                   </a>
                 </Link>
               </div>
             )}
             {config.user.providers.facebook && (
               <div className="social-button">
-                <Button socialButton={true} facebook={true} fullWidth={true} />
+                <Button fullWidth
+                      hoverable ><span className="social-link"><img src="/icons/facebook.svg" alt="facebook icon" /> Continue with facebook</span></Button>
               </div>
             )}
             {config.user.providers.github && (
               <div className="social-button">
-                <Button socialButton={true} github={true} fullWidth={true} />
+                <Button fullWidth
+                      hoverable><span className="social-link"><img src="/icons/github.svg" alt="github icon" /> Continue with github</span></Button>
               </div>
             )}
           </div>
@@ -116,7 +117,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
               <Link href="/p/terms-of-service">
                 <a title="Terms">Terms of Service</a>
               </Link>
-              {/*
+              
               . Learn more about our{' '}
               <Link href="/p/privacy-policy">
                 <a title="Privacy policy">Privacy policy</a>
@@ -124,7 +125,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
               and our{' '}
               <Link href="/p/copyright-policy">
                 <a title="Copyright policy">Copyright policy</a>
-              </Link>*/}
+              </Link>
               .
             </div>
           )}
@@ -132,9 +133,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           <div className="submit">
             {isLogin ? (
               <>
-                {/*<Link href="/auth/signup">
-                    <a>I don't have an account</a>
-              </Link>*/}
+               
                 <Button
                   loading={loading}
                   big={true}
@@ -144,12 +143,18 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                 >
                   Login
                 </Button>
+
+                <div className="alt-actions">
+                  <Link href="/auth/signup">
+                    <a title="Go to signup">I don't have an account</a>
+                  </Link>
+                  <Link href="/auth/remember">
+                    <a title="Go to password remember">I don't remember my password</a>
+                  </Link>
+                </div>
               </>
             ) : (
               <>
-                {/*<Link href="/auth/login">
-                    <a>I already have an account</a>
-              </Link>*/}
                 <Button
                   loading={loading}
                   big={true}
@@ -159,6 +164,12 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                 >
                   Sign up
                 </Button>
+
+                <div className="alt-actions">
+                  <Link href="/auth/login">
+                    <a title="Go to login">I already have an account</a>
+                  </Link>
+                </div>
               </>
             )}
           </div>
@@ -188,6 +199,18 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
         .social-button a {
           text-decoration: none;
+        }
+
+        .social-link {
+          display: flex; 
+          justify-content: flex-start;
+          padding-left: 15px;
+          align-items: center;
+        }
+
+        .social-link img {
+          width: 20px;
+          margin-right: 10px;
         }
 
         .sign-up-form-separator {
@@ -241,6 +264,20 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
         .social-button {
           margin-bottom: var(--empz-gap-half);
+        }
+
+        .alt-actions {
+          font-size: 13px;
+          margin-top: var(--empz-gap);
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
+
+        .alt-actions a {
+          display: block;
+          color: var(--empz-foreground);
+          text-decoration: none;
         }
       `}</style>
     </div>

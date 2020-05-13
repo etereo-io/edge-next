@@ -19,17 +19,14 @@ export default function (props) {
     alert,
     success,
     padding,
-    socialButton,
-    google,
-    facebook,
-    github
+    hoverable
   } = props
 
-  const classNames = `button ${loading ? 'loading' : ''} ${socialButton ? 'social-button' : ''} ${google ? 'google' : ''} ${facebook ? 'facebook' : ''} ${github ? 'github' : ''} ${alt ? 'alt' : ''} ${fullWidth ? 'full-width' : ''} ${
+  const classNames = `button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${fullWidth ? 'full-width' : ''} ${
     big ? 'big' : ''
   } ${success ? 'success' : ''} ${warning ? 'warning' : ''} ${
     secondary ? 'secondary' : ''
-  } ${alert ? 'alert' : ''} ${className}`
+  } ${alert ? 'alert' : ''} ${hoverable ? 'hoverable' : ''} ${className}`
 
   const buttonItem = (
     <>
@@ -112,50 +109,14 @@ export default function (props) {
             padding: 5px 12px;
           }
 
-          .button.social-button{
-            background-size: 22px;
-            background-repeat: no-repeat;
-            background-position: var(--empz-gap) 50%;
-            border: none;
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.2);
-            text-align: left;
-            padding-left: 56px;
-          }
-
-          .button.social-button:hover{
+          .button.hoverable:hover{
             background-color: inherit;
             box-shadow: var(--shadow-medium);
             color: inherit;
             transform: scale(1.025);
-          }
+          }          
 
-          .button.social-button::before{
-            content: 'Continue with ';
-          }
-
-          .button.social-button.google{
-            background-image: url(/icons/google.svg);
-          }
-
-          .button.social-button.google::after{
-            content: 'Google';
-          }
-
-          .button.social-button.facebook{
-            background-image: url(/icons/facebook.svg);
-          }
-
-          .button.social-button.facebook::after{
-            content: 'Facebook';
-          }
-
-          .button.social-button.github{
-            background-image: url(/icons/github.svg);
-          }
-
-          .button.social-button.github::after{
-            content: 'Github';
-          }
+          
         `}
       </style>
     </>
