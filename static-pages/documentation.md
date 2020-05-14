@@ -327,11 +327,16 @@ Different options are: AWS, GOOGLE or FIREBASE.
 
 ### Google
 
-To configure Google storage you will need to follow the steps defined in this [package](https://www.npmjs.com/package/@google-cloud/storage)
+To configure Google storage you will need to follow the steps defined in this [package](https://www.npmjs.com/package/@google-cloud/storage). You will need to create a service account and a bucket with public visibility.
 
-The environment variable you need to configure is GOOGLE_APPLICATION_CREDENTIALS
+The environment variables you need to configure are :
 
-
+````
+GOOGLE_CLIENT_EMAIL=XX
+GOOGLE_PRIVATE_KEY=XX
+GOOGLE_PROJECTID=XX
+GOOGLE_BUCKET_NAME=XX
+````
 
 ## Databases
 Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"
@@ -400,7 +405,7 @@ database: {
 }
 ```
 
-Then you will need to configure the following environment variables:
+The environment variables you need to configure are documented in the Deployments section of the documentation.
 
 ```
 MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
@@ -543,19 +548,4 @@ If you want your deployment in Vercel to recognize the `ENVIRONMENT` values, you
 
 You can add them through the command line or through the administration dashboard in Vercel.com
 
-To add the `GOOGLE_APPLICATION_CREDENTIALS` file you can do something like this:
-
-- store the file in some private repository
-- override the [Build](https://vercel.com/docs/v2/build-step#build-command) step in Vercel to download the file and include it on the [output directory](https://vercel.com/docs/v2/build-step#output-directory)
-
-In the build command you could do something like:
-````
-git clone https://username:password@github.com/username/edge-credentials.git && npm run build
-```
-
-And in the environment variables add the following value:
-
-````
-GOOGLE_APPLICATION_CREDENTIALS = ./edge-credentials/google-credentials.json
-````
-
+![](/static/docs/env-variables-vercel-2.png)
