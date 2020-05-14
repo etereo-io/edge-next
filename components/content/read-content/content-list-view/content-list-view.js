@@ -76,6 +76,7 @@ export default function (props) {
       const apiUrl = `${API.content[props.type.slug]}?limit=10${
         offset ? '&from=' + offset : ''
       }${query ? `&${query}` : ''}`
+
       const { data } = withSWR(
         useSWR(apiUrl, fetch, { initialData: props.initialData })
       )
@@ -85,8 +86,8 @@ export default function (props) {
       const { results = [] } = data
       return results.map((item) => {
         return (
-          <>
-            <div key={item.id} className={`item ${listView}`}>
+          <div key={item.id + item.createdAt} >
+            <div className={`item ${listView}`}>
               <ContentSummaryView
                 content={item}
                 type={props.type}
@@ -103,15 +104,20 @@ export default function (props) {
                 position: relative;
               }
             `}</style>
-          </>
+          </div>
         )
       })
     },
     (SWR) => {
       // Calculates the next page offset
-      return SWR.data && SWR.data.results && SWR.data.results.length >= 10
-        ? SWR.data.from * 1 + SWR.data.limit * 1
+      console.log(SWR)
+      
+      const nextOffset = SWR.data && SWR.data.results && SWR.data.results.length >= 10
+        ? (SWR.data.from * 1) + (SWR.data.limit * 1)
         : null
+
+      console.log(nextOffset)
+      return nextOffset
     },
     []
   )
@@ -120,15 +126,16 @@ export default function (props) {
   const isOnScreen = useOnScreen($loadMoreButton, '200px')
 
   useEffect(() => {
-    if (isOnScreen && infiniteScroll) loadMore()
+    if (isOnScreen && infiniteScroll && !isLoadingMore) loadMore()
   }, [isOnScreen])
 
   return (
     <>
       <div className="contentListView">
         <div className={`items ${listView}`}>
-          {!isEmpty ? pages : <EmptyComponent />}
+          { pages }
           {isLoadingMore && <LoadingItems />}
+          {isEmpty && <EmptyComponent />}
         </div>
         <div className="load-more">
           {isReachingEnd ? null : (

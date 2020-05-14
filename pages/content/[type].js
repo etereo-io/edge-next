@@ -34,7 +34,7 @@ export async function getServerSideProps({ req, res, query }) {
     filterOptions['tags.slug'] = query.tags
   }
   
-  const response = await findContent(query.type, filterOptions)
+  const response = await findContent(query.type, filterOptions, {  sortBy: 'createdAt', sortOrder: 'DESC'}, { limit: 10})
 
   return {
     props: {
@@ -42,7 +42,7 @@ export async function getServerSideProps({ req, res, query }) {
       type: query.type,
       canAccess: true,
       user: req.user || {},
-      query: `${query.tags ? `tags=${query.tags}` : ''}`,
+      query: `&sortBy=createdAt&sortOrder=DESC${query.tags ? `&tags=${query.tags}` : ''}` ,
       contentType: contentTypeDefinition
     },
   }
@@ -58,7 +58,7 @@ const ContentPage = (props) => {
         <ContentListView
           initialData={props.data}
           type={props.contentType}
-          infiniteScroll={true}
+          infiniteScroll={false}
           query={props.query}
         />
       </div>

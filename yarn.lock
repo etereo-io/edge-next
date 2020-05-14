@@ -9360,9 +9360,10 @@ supports-hyperlinks@^2.0.0:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
 
-swr@0.1.16:
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-0.1.16.tgz#e1667f2260ac091fb4c2cc6255ca1b8ff83b0acd"
+swr@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-0.2.0.tgz#2088271bc0a8044089cf2badde013648f98783ee"
+  integrity sha512-8IZCdM0deUPhDiqOmyaj0BsnNjav1fu83nD0d07PEAzOHOn+lxcJOxwXeDBShwF6qCeZ8u8ab+a2yXkjD8yT3A==
   dependencies:
     fast-deep-equal "2.0.1"
 
