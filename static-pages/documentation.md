@@ -12,6 +12,7 @@ description: "Empieza Documentation"
   - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
   - [API](#api)
+    - [Auth](#auth)
     - [Users](#users)
     - [Content](#content)
     - [Comments](#comments)
@@ -276,6 +277,20 @@ In the [components page](/components) you will find more implemented dynamic fie
 
 The Content API is defined on your set of rules in the configuration file, the other APIs are standard.
 
+### Auth
+- `POST /api/auth/login`
+  - `{ email: xxx@xxx.com, password: password}`
+  - Logs in a user
+- `GET /api/auth/logout`
+  - Logout a user
+- `GET /api/auth/reset-password?email=xxx@xxx.com`
+  - Marks the user for reset password, sends an email with a token
+- `POST /api/auth/reset-password`
+  - `{email: xxx@xxx.com, password: NewPassword, token: token }`
+  - Enables de new password for a user
+- `GET /api/auth/verify?email=xxx@xxx.com&token=TOKEN`
+  - Verifies a user email
+
 ### Users
 - `GET /api/users`
   - Access limited to users with permission `user.list` or `user.admin`
@@ -285,6 +300,25 @@ The Content API is defined on your set of rules in the configuration file, the o
   - Access limited to `user.admin`
 - `PUT /api/users/ID`
   - Access limited to own user or users with permission `user.admin` and `user.write`
+  - To update a user the different endpoint sufixes have to be added
+  - `PUT /api/users/ID/profile`
+    - Edit the fields of the profile such as displayName or dynamic fields
+    - `{ displayName: 'Jonh Doe'}`
+  - `PUT /api/users/ID/email`
+    - Change email
+    - `{ email: 'johndoe@gmail.com'}`
+  - `PUT /api/users/ID/username`
+    - Change username
+    - `{ username: 'mrdoe'}`
+  - `PUT /api/users/ID/picture`
+    - Change profile picture
+    - request profilePicture should be a binary file
+  - `PUT /api/users/ID/password`
+    - Updates user password
+    - `{ password: currentPassword, newPassword: newPassword }`
+  - `PUT /api/users/ID/block`
+    - Blocks / Unblocks an user
+    - `{ blocked: true }`
 - `DELETE /api/users/ID`
   - Access limited to own user or users with permission `user.admin` and `user.delete`
 

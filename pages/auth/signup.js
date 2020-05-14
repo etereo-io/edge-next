@@ -1,5 +1,5 @@
 import Form from '../../components/auth/login-register.form'
-import Layout from '../../components/layout/normal/layout'
+import Layout from '../../components/layout/auth/auth-layout'
 import Router from 'next/router'
 import fetch from '../../lib/fetcher'
 import { useState } from 'react'

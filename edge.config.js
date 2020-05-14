@@ -390,7 +390,7 @@ export const getConfig = (defaultOptions) => {
     },
 
     // Used for e-mails and links
-    url: 'https://edge-next.now.sh/',
+    url: 'https://edge-next.now.sh',
 
     emails: {
       from: 'no-reply@edge-next.io',

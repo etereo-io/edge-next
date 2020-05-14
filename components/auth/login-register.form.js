@@ -18,37 +18,35 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
     config.user.providers.github
 
   return (
-    <div className="auth-form-wr">
-      <strong className="form-title">{isLogin ? 'Login' : 'Sign up'}</strong>
-      <div className="auth-form">
-        <div className="social">
-          <div className="social-buttons">
-            {config.user.providers.google && (
-              <div className="social-button">
-                <Link href="/api/auth/facebook">
-                  <a title="Sign up with Facebook">
-                    <Button
-                      fullWidth
-                      hoverable
-                    ><span className="social-link"><img src="/icons/google.svg" alt="Google icon" /> Continue with google</span></Button>
-                  </a>
-                </Link>
-              </div>
-            )}
-            {config.user.providers.facebook && (
-              <div className="social-button">
-                <Button fullWidth
-                      hoverable ><span className="social-link"><img src="/icons/facebook.svg" alt="facebook icon" /> Continue with facebook</span></Button>
-              </div>
-            )}
-            {config.user.providers.github && (
-              <div className="social-button">
-                <Button fullWidth
-                      hoverable><span className="social-link"><img src="/icons/github.svg" alt="github icon" /> Continue with github</span></Button>
-              </div>
-            )}
-          </div>
+    <>
+      <div className="social">
+        <div className="social-buttons">
+          {config.user.providers.google && (
+            <div className="social-button">
+              <Link href="/api/auth/facebook">
+                <a title="Sign up with Facebook">
+                  <Button
+                    fullWidth
+                    hoverable
+                  ><span className="social-link"><img src="/icons/google.svg" alt="Google icon" /> Continue with google</span></Button>
+                </a>
+              </Link>
+            </div>
+          )}
+          {config.user.providers.facebook && (
+            <div className="social-button">
+              <Button fullWidth
+                    hoverable ><span className="social-link"><img src="/icons/facebook.svg" alt="facebook icon" /> Continue with facebook</span></Button>
+            </div>
+          )}
+          {config.user.providers.github && (
+            <div className="social-button">
+              <Button fullWidth
+                    hoverable><span className="social-link"><img src="/icons/github.svg" alt="github icon" /> Continue with github</span></Button>
+            </div>
+          )}
         </div>
+      </div>
 
         <form onSubmit={onSubmit}>
           {hasSocialProviders && <hr className="sign-up-form-separator"></hr>}
@@ -148,8 +146,8 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                   <Link href="/auth/signup">
                     <a title="Go to signup">I don't have an account</a>
                   </Link>
-                  <Link href="/auth/remember">
-                    <a title="Go to password remember">I don't remember my password</a>
+                  <Link href="/auth/reset-password">
+                    <a title="Go to password reset">I don't remember my password</a>
                   </Link>
                 </div>
               </>
@@ -176,27 +174,10 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
           {errorMessage && <p className="error-message">{errorMessage}</p>}
         </form>
-      </div>
+      
 
       <style jsx>{`
-        .auth-form-wr {
-          padding: var(--empz-gap-double) 0;
-          position: relative;
-          width: 100%;
-        }
-
-        .auth-form-wr::before {
-          background: var(--accents-1);
-          border-bottom: 1px solid var(--accents-2);
-          content: '';
-          height: 50%;
-          max-height: 280px;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: 100%;
-        }
-
+        
         .social-button a {
           text-decoration: none;
         }
@@ -232,27 +213,6 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           background: var(--empz-background);
         }
 
-        .auth-form {
-          background: var(--empz-background);
-          border-radius: 4px;
-          box-shadow: var(--shadow-large);
-          padding: var(--empz-gap-medium);
-          position: relative;
-          margin: 0 auto;
-          max-width: 480px;
-        }
-
-        .form-title {
-          color: var(--empz-foreground);
-          display: block;
-          font-size: 32px;
-          font-weight: 500;
-          margin: 0 auto var(--empz-gap-medium) auto;
-          max-width: 480px;
-          position: relative;
-          text-align: center;
-        }
-
         .terms {
           margin-bottom: var(--empz-gap);
           font-size: 13px;
@@ -280,7 +240,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           text-decoration: none;
         }
       `}</style>
-    </div>
+    </>
   )
 }
 

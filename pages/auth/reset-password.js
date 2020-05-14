@@ -1,7 +1,6 @@
 import Button from '../../components/generic/button/button'
-import Layout from '../../components/layout/normal/layout'
+import Layout from '../../components/layout/auth/auth-layout'
 import Link from 'next/link'
-import Router from 'next/router'
 import fetch from '../../lib/fetcher'
 import { useState } from 'react'
 import { useUser } from '../../lib/hooks'
@@ -10,41 +9,50 @@ const RememberPassword = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
 
   const [errorMsg, setErrorMsg] = useState('')
+  const [email, setEmail] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [loading, setLoading] = useState(false)
 
   async function onSubmit(e) {
-    event.preventDefault()
+    e.preventDefault()
 
     if (errorMsg) setErrorMsg('')
-
-    const body = {
-      email: e.currentTarget.email.value,
+    
+    if (!email) {
+      setErrorMsg('Please introduce a valid email')
+      return
     }
 
     setLoading(true)
-    try {
-      await fetch('/api/auth/remember', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
+    setShowConfirmation(false)
 
+    
+    fetch('/api/auth/reset-password?email=' + email)
+    .then(() => {
+
+      setLoading(false)
       setShowConfirmation(true)
-    } catch (error) {
+      setErrorMsg('')
+      setEmail('')
+    })
+    .catch(error => {
       setLoading(false)
 
       setErrorMsg(
-        'There was an error while trying to remember your password'
+        'There was an error while trying to reset your password'
       )
-    }
+    })
+
+  }
+
+  const onChangeEmail = ev => {
+    setEmail(ev.target.value)
+    setErrorMsg('')
   }
 
   return (
     <Layout title="Get a new password" fullWidth={true}>
-      <div className="auth-form-wr">
-      <strong className="form-title">Get a new password</strong>
-      <div className="auth-form">
+      
         <div className="remember-password">
           <form onSubmit={onSubmit} >
             <div className="input-group required">
@@ -52,6 +60,8 @@ const RememberPassword = () => {
                 type="email"
                 name="email"
                 placeholder="E-mail"
+                value={email}
+                onChange={onChangeEmail}
                 required
               ></input>
             </div>
@@ -64,6 +74,7 @@ const RememberPassword = () => {
 
             <Button
                 loading={loading}
+                onClick={onSubmit}
                 big={true}
                 alt={true}
                 fullWidth={true}
@@ -85,50 +96,11 @@ const RememberPassword = () => {
           </form>
 
           {errorMsg && <p className="error-message">{errorMsg}</p>}
+          {showConfirmation && <p className="success-message">Please, check your email inbox, you have received instructions on how to reset your password.</p>}
           
-        </div>
-      </div>
       </div>
       <style jsx>{`
-      .auth-form-wr {
-        padding: var(--empz-gap-double) 0;
-        position: relative;
-        width: 100%;
-      }
-
-      .auth-form-wr::before {
-        background: var(--accents-1);
-        border-bottom: 1px solid var(--accents-2);
-        content: '';
-        height: 50%;
-        max-height: 280px;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-      }
-
-      .auth-form {
-        background: var(--empz-background);
-        border-radius: 4px;
-        box-shadow: var(--shadow-large);
-        padding: var(--empz-gap-medium);
-        position: relative;
-        margin: 0 auto;
-        max-width: 480px;
-      }
-
-      .form-title {
-        color: var(--empz-foreground);
-        display: block;
-        font-size: 32px;
-        font-weight: 500;
-        margin: 0 auto var(--empz-gap-medium) auto;
-        max-width: 480px;
-        position: relative;
-        text-align: center;
-      }
-
+    
       .info {
         font-size: 13px;
         text-align: center;

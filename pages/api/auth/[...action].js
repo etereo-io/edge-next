@@ -2,7 +2,7 @@ import {
   facebookStrategy,
   localStrategy,
 } from '../../../lib/api/auth/passport-strategies'
-import { findOneUser, updateOneUser } from '../../../lib/api/users/user'
+import { findOneUser, generateSaltAndHash, updateOneUser } from '../../../lib/api/users/user'
 import {
   onEmailVerified,
   onUserLogged,
@@ -17,6 +17,8 @@ import { connect } from '../../../lib/api/db'
 import { encryptSession } from '../../../lib/api/auth/iron'
 import express from 'express'
 import passport from 'passport'
+import { sendResetPassworEmail } from '../../../lib/email'
+import { v4 as uuidv4 } from 'uuid'
 
 const app = express()
 const authenticate = (method, req, res) =>
@@ -139,7 +141,6 @@ app.get('/api/auth/verify', async (req, res) => {
 
       await onEmailVerified(user)
 
-      // TODO: Show a confirmation on the client side
       res.status(200).send({
         verified: true,
       })
@@ -155,6 +156,100 @@ app.get('/api/auth/logout', async (req, res) => {
   removeTokenCookie(res)
   res.writeHead(302, { Location: '/' })
   res.end()
+})
+
+
+// Verify a user email
+app.get('/api/auth/reset-password', async (req, res) => {
+  const email = req.query.email
+  
+  if (!email) {
+    res.status(400).json({
+      error: 'Invalid request',
+    })
+  } else {
+    const user = await findOneUser({
+      email,
+    })
+
+    if (!user) {
+      res.status(404).json({
+        error: 'User not found',
+      })
+      return
+    }
+
+    try {
+      const token = uuidv4()
+
+      await updateOneUser(user.id, {
+        passwordResetRequest: Date.now(),
+        passwordResetToken: token,
+      })
+
+      await sendResetPassworEmail(user.email, token)
+
+      res.status(200).send({
+        reset: true,
+      })
+
+    } catch(e) {
+      res.status(500).json({
+        error: e.message
+      })
+    }
+    
+  }
+})
+
+app.post('/api/auth/reset-password', async (req, res) => {
+  const email = req.body.email
+  const token = req.body.token
+  const password = req.body.password
+  
+  if (!email || !token || !password) {
+    res.status(400).json({
+      error: 'Invalid request ' ,
+    })
+  } else {
+    const user = await findOneUser({
+      email,
+    })
+
+    if (!user) {
+      res.status(404).json({
+        error: 'User not found',
+      })
+      return
+    }
+
+    if (user.passwordResetToken !== token) {
+      res.status(400).json({
+        error: 'Invalid token',
+      })
+      return
+    }
+
+    try {
+      const { salt, hash } = generateSaltAndHash(password)
+
+      await updateOneUser(user.id, {
+        passwordResetRequest: null,
+        passwordResetToken: null,
+        salt,
+        hash
+      })
+
+      res.status(200).send({
+        updated: true,
+      })
+    } catch (err) {
+      res.status(500).json({
+        error: err.message,
+      })
+    }
+    
+  }
 })
 
 /**
