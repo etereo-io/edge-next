@@ -20,6 +20,7 @@ const ListItem = (props) => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
+
   const deleteRequest = () => {
     const url = `${API.content[props.type.slug]}/${props.item.id}?field=id`
     return fetch(url, {
@@ -140,6 +141,10 @@ function EmptyComponent() {
 }
 
 export default function (props) {
+  
+  const [sortBy, setSortBy] = useState('createdAt')
+  const [sortOrder, setSortOrder] = useState('DESC')
+
   // Fetch content type page by page
   const {
     pages,
@@ -152,7 +157,7 @@ export default function (props) {
     ({ offset, withSWR }) => {
       const apiUrl = `${API.content[props.type.slug]}?limit=10${
         offset ? '&from=' + offset : ''
-      }`
+      }&sortBy=${sortBy}&sortOrder=${sortOrder}`
       const { data } = withSWR(useSWR(apiUrl, fetch))
 
       if (!data) return <Placeholder />
@@ -168,17 +173,26 @@ export default function (props) {
         ? SWR.data.from * 1 + SWR.data.limit * 1
         : null
     },
-    []
+    [sortOrder]
   )
 
   const headerCells = props.type.fields.map((field) => {
-    return <TableCellHeader key={field.name}>{field.name}</TableCellHeader>
+    return <TableCellHeader key={field.name} onClick={() => {
+      setSortBy(field.name)
+      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+    }}>{field.name}</TableCellHeader>
   })
 
-  headerCells.push(<TableCellHeader>Created at</TableCellHeader>)
+  headerCells.push(<TableCellHeader onClick={() => {
+    setSortBy('createdAt')
+    setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+  }}>Created at</TableCellHeader>)
 
   if (props.type.publishing.draftMode) {
-    headerCells.push(<TableCellHeader>Draft</TableCellHeader>)
+    headerCells.push(<TableCellHeader onClick={() => {
+      setSortBy('draft')
+      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+    }}>Draft</TableCellHeader>)
   }
 
   if (props.type.comments.enabled) {
@@ -192,7 +206,8 @@ export default function (props) {
     <div className="content-list">
       <div className="table-wrapper">
         <Table headerCells={headerCells}>
-          {!isEmpty ? pages : <EmptyComponent />}
+          {pages}
+          {isEmpty && <EmptyComponent />}
         </Table>
       </div>
 

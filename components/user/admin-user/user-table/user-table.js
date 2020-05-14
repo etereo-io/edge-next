@@ -163,7 +163,11 @@ function EmptyComponent() {
 }
 
 export default function (props) {
-  // Fetch content type page by page
+  const [sortBy, setSortBy] = useState('createdAt')
+  const [sortOrder, setSortOrder] = useState('DESC')
+
+
+  // Fetch user page by page
   const {
     pages,
     isLoadingMore,
@@ -173,7 +177,7 @@ export default function (props) {
   } = useSWRPages(
     `admin-users-list`,
     ({ offset, withSWR }) => {
-      const apiUrl = `${API.users}?limit=10${offset ? '&from=' + offset : ''}`
+      const apiUrl = `${API.users}?limit=10${offset ? '&from=' + offset : ''}&sortBy=${sortBy}&sortOrder=${sortOrder}`
       const { data } = withSWR(useSWR(apiUrl, fetch))
 
       if (!data) return <Placeholder />
@@ -189,16 +193,31 @@ export default function (props) {
         ? SWR.data.from * 1 + SWR.data.limit * 1
         : null
     },
-    []
+    [sortOrder]
   )
 
   const headerCells = [
-    <TableCellHeader>Username</TableCellHeader>,
-    <TableCellHeader>Email</TableCellHeader>,
+    <TableCellHeader onClick={() => {
+      setSortBy('username')
+      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+    }}>Username</TableCellHeader>,
+    <TableCellHeader onClick={() => {
+      setSortBy('email')
+      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+    }}>Email</TableCellHeader>,
     <TableCellHeader>Reported</TableCellHeader>,
-    <TableCellHeader>Last Login</TableCellHeader>,
-    <TableCellHeader>Created at</TableCellHeader>,
-    <TableCellHeader>Blocked</TableCellHeader>,
+    <TableCellHeader onClick={() => {
+      setSortBy('metadta.lastLogin')
+      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+    }}>Last Login</TableCellHeader>,
+    <TableCellHeader onClick={() => {
+      setSortBy('createdAt')
+      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+    }}>Created at</TableCellHeader>,
+    <TableCellHeader onClick={() => {
+      setSortBy('blocked')
+      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
+    }}>Blocked</TableCellHeader>,
     <TableCellHeader>Actions</TableCellHeader>,
   ]
 
@@ -206,7 +225,8 @@ export default function (props) {
     <div className="content-list">
       <div className="table-wrapper">
         <Table headerCells={headerCells}>
-          {!isEmpty ? pages : <EmptyComponent />}
+          {pages}
+          {isEmpty && <EmptyComponent />}
         </Table>
       </div>
       <div id="load-more">
