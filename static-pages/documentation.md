@@ -485,12 +485,7 @@ const config = {
     providers: {
       facebook: true,
       google: true,
-      instragram: false,
-      github: false,
-      linkedin: false,
-      snapchat: false,
-      twitter: false
-      twitch: false
+      github: false
     }
   }
 }
@@ -500,6 +495,9 @@ const config = {
 By changing this configuration, both the login and the register will change to show or hide the corresponding buttons.
 
 To configure the different API keys for each provider you must edit the environment files.
+
+- [Register your Github application](https://developer.github.com/v3/guides/basics-of-authentication/)
+- [Register your Google application](https://developers.google.com/identity/sign-in/web/sign-in)
 
 ## Emails
 

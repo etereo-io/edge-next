@@ -23,26 +23,32 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
         <div className="social-buttons">
           {config.user.providers.google && (
             <div className="social-button">
-              <Link href="/api/auth/facebook">
-                <a title="Sign up with Facebook">
+              <Link href="/api/auth/google">
+                <a title="Sign up with Google">
                   <Button
                     fullWidth
                     hoverable
-                  ><span className="social-link"><img src="/icons/google.svg" alt="Google icon" /> Continue with google</span></Button>
+                  ><span className="social-link"><img src="/icons/google.svg" alt="Google icon" /> Continue with Google</span></Button>
                 </a>
               </Link>
             </div>
           )}
           {config.user.providers.facebook && (
             <div className="social-button">
-              <Button fullWidth
-                    hoverable ><span className="social-link"><img src="/icons/facebook.svg" alt="facebook icon" /> Continue with facebook</span></Button>
+              <Link href="/api/auth/facebook">
+                <a title="Sign up with Facebook">
+                  <Button fullWidth hoverable ><span className="social-link"><img src="/icons/facebook.svg" alt="facebook icon" /> Continue with Facebook</span></Button>
+                </a>
+              </Link>
             </div>
           )}
           {config.user.providers.github && (
             <div className="social-button">
-              <Button fullWidth
-                    hoverable><span className="social-link"><img src="/icons/github.svg" alt="github icon" /> Continue with github</span></Button>
+              <Link href="/api/auth/github">
+                <a title="Sign up with GitHub">
+                  <Button fullWidth hoverable><span className="social-link"><img src="/icons/github.svg" alt="github icon" /> Continue with GitHub</span></Button>
+                </a>
+              </Link>
             </div>
           )}
         </div>
