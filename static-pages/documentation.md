@@ -498,6 +498,7 @@ To configure the different API keys for each provider you must edit the environm
 
 - [Register your Github application](https://developer.github.com/v3/guides/basics-of-authentication/)
 - [Register your Google application](https://developers.google.com/identity/sign-in/web/sign-in)
+- [Register your Facebook application](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/)
 
 ## Emails
 
