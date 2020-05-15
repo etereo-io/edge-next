@@ -58,7 +58,7 @@ const ContentPage = (props) => {
         <ContentListView
           initialData={props.data}
           type={props.contentType}
-          infiniteScroll={false}
+          infiniteScroll={true}
           query={props.query}
         />
       </div>

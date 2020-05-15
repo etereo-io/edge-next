@@ -78,7 +78,7 @@ export default function (props) {
       }${query ? `&${query}` : ''}`
 
       const { data } = withSWR(
-        useSWR(apiUrl, fetch, { initialData: props.initialData })
+        useSWR(apiUrl, fetch, !offset ? { initialData:  props.initialData} : null)
       )
 
       if (!data) return <LoadingItems />
