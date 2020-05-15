@@ -10,7 +10,7 @@
 
 <a href="https://etereo.io" title="Etéreo" target="_blank"><img src="./public/static/sponsors/etereo.png" width="80px" /></a>
 
-*Your name or company here?* Contact us at INSERT_MAIL
+*Your name or company here?* Contact us at hi@nucleo.is
 
 
 ## What is Edge? 

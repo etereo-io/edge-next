@@ -43,7 +43,7 @@ const Landing = (props) => {
         <div className="separator">
           <div>
             <span>created by </span>{' '}
-            <a href="https://nucleo.dev" rel="noopener" target="_blank">
+            <a href="https://nucleo.is" rel="noopener" target="_blank">
               the Nucleo Team
             </a>
           </div>
