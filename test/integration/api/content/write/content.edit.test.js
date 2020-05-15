@@ -244,8 +244,6 @@ describe('Integrations tests for content edition endpoint', () => {
 
       const jsonResult = await response.json()
 
-      console.log(jsonResult)
-
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
         title: newPost.title,

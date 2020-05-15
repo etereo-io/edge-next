@@ -34,9 +34,10 @@ The main features of Edge are:
 
 If you want to read about all the features you can check the [documentation](./static-pages/documentation.md) or check the [Website Demo](https://edge-next.now.sh/).
 
-You can login with the following credentials:
-- Admin: admin@demo.com | password: admin
-- User: user@demo.com | password: user
+You can login using one of the different social providers, or register a new account.
+
+*The data on the demo site may be deleted at any time*
+
 
 ## How do I use Edge?
 
@@ -70,19 +71,39 @@ Do you think you can improve the performance of the solution? Send us a pull req
 
 Check our roadmap if you want to add more cool things into Edge.
 
-## Roadmap
+## Roadmap for version 1
 
-- Remember password: https://github.com/hoangvvo/nextjs-mongodb-app/blob/master/pages/forget-password/%5Btoken%5D.jsx
-
-- Add error class to input group on dynamic fields
-
-- Ensure files can be uploaded while deployed on vercel
+- Integrate web monetization
 
 - Get 100% on everything on lighthouse
 
-- integrate giphy API on comments
-
 - Add an example google analytics script
+
+- Comments
+  - Integrate mentions on comments
+  - Delete comments from UI
+  - When deleting one comment delete all responses
+  - Add integration tests for comment deletion
+
+- Content CRUD
+  - Improve the test suite on client and server side
+  - Link author
+
+- Hide user private fields.
+
+- Add a cookies component
+  
+- Improve content creation experience
+
+- Connect to an additional database:
+  - Firebase 
+  - ~MongoDB~
+  - ~In Memory DB~
+  - See if there is any ORM that can work for this use case
+
+- Introduce basic site stats
+
+### Additional features
 
 - Create an example site running an online shop
   - Create the concept of "shopping cart"
@@ -95,8 +116,6 @@ Check our roadmap if you want to add more cool things into Edge.
   - Create stats components
 
 - Add i18n
-  - Internationalization can be done using `react-intl` and getInitialProps in the server side, for loading only the correct language. https://github.com/PaulPCIO/nextjs-with-react-intl
-  - We don't want to make all the pages dependant on server-rendered code, avoid if possible.
   - NextJS is preparing a RFC for i18n we will wait on that
 
 - Add a `sitemap.xml` API endpoint. 
@@ -104,27 +123,8 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - Redux
   - Study if we will add redux for the dashboard 
-    - https://github.com/willianantunes/nextjs-playground
-    - https://github.com/kirill-konshin/next-redux-wrapper
-
-- Connect to a database
-  - Firebase
-  - ~MongoDB~
-  - ~In Memory DB~
-
-- Comments
-  - Add integration tests and complete functionality
-  - https://docs.mongodb.com/drivers/use-cases/storing-comments
+    - Examples: https://github.com/willianantunes/nextjs-playground, https://github.com/kirill-konshin/next-redux-wrapper
   
-- Content CRUD
-  - Document and finish permissions on content api
-  - Add validations on client side and server side
-  - Allow to upload files
-  - Link author
-
-- User
-  - Add more social provider integrations
-
 - Startup script
   - Preseed database 
 

@@ -110,13 +110,10 @@ export default function (props) {
     },
     (SWR) => {
       // Calculates the next page offset
-      console.log(SWR)
-      
       const nextOffset = SWR.data && SWR.data.results && SWR.data.results.length >= 10
         ? (SWR.data.from * 1) + (SWR.data.limit * 1)
         : null
 
-      console.log(nextOffset)
       return nextOffset
     },
     []

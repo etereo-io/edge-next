@@ -73,9 +73,9 @@ const deleteContent = (req, res) => {
 
   deleteOneContent(item.type, { id: item.id })
     .then(async () => {
-
+ 
       // Trigger on content deleted hook
-      await onContentDeleted(item, req.user)
+      await onContentDeleted(item, req.user, req.contentType)
     
       res.status(200).json({
         deleted: true
@@ -131,7 +131,7 @@ const updateContent = async (req, res) => {
           })
         }
       }
-      console.log('We delete', itemsToDelete)
+      
 
       // Delete old items from storage
       for (let i = 0; i < itemsToDelete.length; i++) {
@@ -148,10 +148,10 @@ const updateContent = async (req, res) => {
         return
       }
       
-      console.log('Its going to be updated', type.slug, req.item.id, newContent)
+      
       updateOneContent(type.slug, req.item.id, newContent)
         .then((data) => {
-          console.log('IT DID', data)
+          
           // Trigger on updated hook
           onContentUpdated(data, req.user)
 
