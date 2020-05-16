@@ -109,7 +109,6 @@ export default function CommentEntry({
         .comment-entry {
           display: flex;
           padding: var(--empz-gap);
-          background: var(--accents-2);
         }
 
         .comment-body {

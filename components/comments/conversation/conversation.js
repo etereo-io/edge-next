@@ -197,9 +197,7 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
           }
 
           .reply {
-            border-top: 1px solid var(--light-border-color);
-            margin-top: var(--empz-gap);
-            padding-top: var(--empz-gap);
+            border-top: 1px solid var(--accents-2);
           }
         `}
       </style>

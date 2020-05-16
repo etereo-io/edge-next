@@ -37,32 +37,37 @@ export default function (props) {
               canWriteComments={canWriteComments.available}
               onClickComments={() => setShowComments(!showComments)}
             />
-            
+
+            {props.type.comments.enabled &&
+              canWriteComments.available &&
+              showComments && (
+                <div className="comment-form-wrapper">
+                  <CommentForm
+                    onSave={onCommentAdded}
+                    type={props.type}
+                    contentId={props.content.id}
+                  />
+                </div>
+              )}
+
+            {props.type.comments.enabled &&
+              canReadComments.available &&
+              showComments && (
+                <CommentsFeed
+                  type={props.type}
+                  contentId={props.content.id}
+                  newComments={newComments}
+                />
+              )}
           </div>
 
-          {props.showActions && <ContentActions
-            className={'content-actions'}
-            content={props.content}
-          />}
-        </div>
-
-        {props.type.comments.enabled && canWriteComments.available && showComments && (
-          <div className="comment-form-wrapper">
-            <CommentForm
-              onSave={onCommentAdded}
-              type={props.type}
-              contentId={props.content.id}
+          {props.showActions && (
+            <ContentActions
+              className={'content-actions'}
+              content={props.content}
             />
-          </div>
-        )}
-
-        {props.type.comments.enabled && canReadComments.available && showComments && (
-          <CommentsFeed
-            type={props.type}
-            contentId={props.content.id}
-            newComments={newComments}
-          />
-        )}
+          )}
+        </div>
       </div>
       <style jsx>{`
         .content-detail-wrapper {
@@ -76,6 +81,15 @@ export default function (props) {
         .content-detail-content {
           margin-bottom: var(--empz-gap-double);
           flex: 1;
+          
+
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+          color: var(--empz-foreground);
+          background: var(--empz-background);
+          padding: var(--empz-gap);
+          border-radius: var(--empz-radius);
+          margin: 0 auto;
+          width: 100%;
         }
 
         .label {

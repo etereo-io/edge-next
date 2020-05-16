@@ -156,7 +156,7 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-        .contentSummaryView {
+        /*.contentSummaryView {
           box-shadow: 0 2px 4px rgba(0,0,0,0.05);
           color: var(--empz-foreground);
           background: var(--empz-background);
@@ -165,7 +165,7 @@ export default function (props) {
           border-radius: var(--empz-radius);
           margin: 0 auto;
           width: 100%;
-        }
+        }*/
 
         @media (max-width: 600px) {
           .contentSummaryView {
@@ -174,7 +174,7 @@ export default function (props) {
         }
 
         .content-summary-content{
-          padding-right: var(--empz-gap-medium);
+          padding-right: var(--empz-gap-double);
         }
 
         a {
