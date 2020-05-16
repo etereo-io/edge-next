@@ -147,11 +147,11 @@ export default function (props) {
         .contentSummaryView {
           color: var(--empz-foreground);
           background: var(--empz-background);
-          border: var(--light-border);
+          //border: var(--light-border);
           padding: var(--empz-gap);
           border-radius: var(--empz-radius);
-          max-width: 800px;
           margin: 0 auto;
+          width: 100%;
         }
 
         @media (max-width: 600px) {

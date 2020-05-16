@@ -1,8 +1,8 @@
-export default ({ width = '40px' }) => {
+export default (props) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
+      width={props.width}
       viewBox="0 0 17 16"
       fill="none"
     >

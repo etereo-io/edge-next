@@ -115,7 +115,11 @@ function UserHeader(props) {
         }
 
         li {
-          margin-right: 1rem;
+          margin-right: var(--empz-gap);
+        }
+
+        li:last-of-type{
+          margin-right: 0;
         }
 
         @media (max-width: 600px) {
