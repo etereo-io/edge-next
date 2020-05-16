@@ -25,13 +25,13 @@ export default function (props) {
       </div>
       <style jsx>{`
         .dropdown-menu {
-          width: 36px;
-          height: 36px;
+          width: 32px;
+          height: 32px;
           display: flex;
           justify-content: center;
           align-items: center;
           border-radius: var(--empz-radius);
-          background: transparent;
+          background: var(--accents-2);
           cursor: pointer;
           transition: background-color 0.2s ease;
           position: relative;
@@ -57,7 +57,7 @@ export default function (props) {
           content: '';
           display: block;
           height: 2px;
-          width: 24px;
+          width: 21px;
           background-color: var(--empz-foreground);
           transition: transform 0.15s ease;
         }

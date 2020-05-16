@@ -13,7 +13,7 @@ export default function ({ width, height, borderRadius }) {
             -45deg,
             var(--accents-1),
             var(--accents-2),
-            var(--accents-3),
+            var(--accents-1),
             var(--accents-2)
           );
           background-size: 400% 400%;

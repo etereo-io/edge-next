@@ -34,9 +34,38 @@ export default function (props) {
     <>
       
       <div className={`contentSummaryView ${props.className}`}>
-        {props.content.draft && (
-          <div className="status">Draft - Not published</div>
-        )}
+        <div className="main-actions">
+          {props.content.draft && (
+            <div className="status">Draft - Not published</div>
+          )}
+
+          <div className="action-dropdown">
+            <DropDown align={'right'}>
+              <ul>
+                {!isContentOwner && <li>Report</li>}
+                <li>
+                  <a
+                    href={`mailto:?${JSON.stringify({
+                      subject: 'Check this out',
+                      body: shareUrl,
+                    })}`}
+                  >
+                    Email
+                  </a>
+                </li>
+                {(hasEditPermission || isContentOwner) && (
+                  <li>
+                    <Link
+                      href={`/edit/${props.content.type}/${props.content.slug}`}
+                    >
+                      <a>Edit</a>
+                    </Link>
+                  </li>
+                )}
+              </ul>
+            </DropDown>
+          </div>
+        </div>
 
         <div className="content-summary-content">
           {props.type.fields
@@ -114,40 +143,16 @@ export default function (props) {
               )
             })}
         </div>
-        <div className="bottomActions">
-          <SocialShare shareUrl={shareUrl} />
-          <DropDown align={'right'}>
-            <ul>
-              {!isContentOwner && <li>Report</li>}
-              <li>
-                <a
-                  href={`mailto:?${JSON.stringify({
-                    subject: 'Check this out',
-                    body: shareUrl,
-                  })}`}
-                >
-                  Email
-                </a>
-              </li>
-              {(hasEditPermission || isContentOwner) && (
-                <li>
-                  <Link
-                    href={`/edit/${props.content.type}/${props.content.slug}`}
-                  >
-                    <a>Edit</a>
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </DropDown>
-        </div>
         <div className="meta">
-          <span className="created-at">{format(props.content.createdAt)}</span>
-          {props.type.comments.enabled && props.canReadComments && typeof props.content.comments !== 'undefined' ? (
-            <span className="comment-count" onClick={onClickComments}>
-              {props.content.comments === 0 && props.canWriteComments ? 'Add a comment' : `${props.content.comments} comments`}
-            </span>
-          ): null}
+          <div className="post-details">
+            <span className="created-at">{format(props.content.createdAt)}</span>
+            {props.type.comments.enabled && props.canReadComments && typeof props.content.comments !== 'undefined' ? (
+              <span className="comment-count" onClick={onClickComments}>
+                {props.content.comments === 0 && props.canWriteComments ? 'Add a comment' : `${props.content.comments} comments`}
+              </span>
+            ): null}
+          </div>
+          <SocialShare shareUrl={shareUrl} />
         </div>
       </div>
       <style jsx>{`
@@ -166,6 +171,10 @@ export default function (props) {
           .contentSummaryView {
             padding: var(--empz-gap-half);
           }
+        }
+
+        .content-summary-content{
+          padding-right: var(--empz-gap-medium);
         }
 
         a {
@@ -190,19 +199,30 @@ export default function (props) {
           justify-content: space-between;
         }
 
+        .main-actions{
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: var(--empz-gap);
+          width: 100%;
+        }
+
         .status {
-          background: var(--empz-warning);
+          background: var(--accents-2);
           border-radius: 4px;
-          color: var(--empz-background);
+          color: var(--empz-foreground);
           display: block;
           font-size: 10px;
           font-weight: 500;
           letter-spacing: 1px;
-          margin-bottom: var(--empz-gap);
           padding: 4px 8px;
           text-align: center;
           text-transform: uppercase;
           width: fit-content;
+        }
+
+        .action-dropdown{
+          margin-left: auto;
         }
 
         .meta {
@@ -212,6 +232,7 @@ export default function (props) {
         }
 
         .meta .comment-count {
+          cursor: pointer;
           padding-left: var(--empz-gap-half);
         }
 
@@ -220,6 +241,11 @@ export default function (props) {
         }
         h1:first-letter{
           text-transform: uppercase;
+        }
+        .meta{
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
         }
       `}</style>
     </>
