@@ -46,7 +46,7 @@ export default function CommentEntry({
   return (
     <>
       <div className="comment-entry">
-        <Link href={`/profile/${commentUser.username}`}>
+        <Link href={`/profile/@${commentUser.username}`}>
           <a title={`${commentUser.username} profile`}>
             <Avatar
               width={40}
@@ -60,7 +60,7 @@ export default function CommentEntry({
         <div className="comment-body">
           <div className="info">
             <span className="username">
-              <Link href={`/profile/${commentUser.username}`}>
+              <Link href={`/profile/@${commentUser.username}`}>
                 <a title={`${commentUser.username} profile`}>
                   {commentUser.username}
                 </a>
