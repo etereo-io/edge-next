@@ -63,6 +63,14 @@ export default function ({
   const [isReachingEnd, setIsReachingEnd] = useState(false)
   const itemsPerPage = 10
   const [initialLoad, setInitialLoad] = useState(false)
+  
+
+  // Store in memory the deleted items to filter them in real time
+  const [deletedConversationIds, setDeletedConversationIds] = useState([])
+
+  const onConversationDeleted = c => {
+    setDeletedConversationIds([...deletedConversationIds, c.id])
+  }
 
   const loadItems = async () => {
     const apiUrl = `${
@@ -109,7 +117,7 @@ export default function ({
             <EmptyComponent />
           )}
 
-          {newItems.map((item) => {
+          {newItems.filter(item => deletedConversationIds.indexOf(item.id) === -1).map((item) => {
             return (
               <div key={item.id} className={`item`}>
                 <Conversation
@@ -117,12 +125,13 @@ export default function ({
                   type={type}
                   contentId={contentId}
                   conversationId={item.id}
+                  onConversationDeleted={onConversationDeleted}
                 />
               </div>
             )
           })}
 
-          {items.map((item) => {
+          {items.filter(item => deletedConversationIds.indexOf(item.id) === -1).map((item) => {
             return (
               <div key={item.id} className={`item`}>
                 <Conversation
@@ -130,6 +139,7 @@ export default function ({
                   type={type}
                   contentId={contentId}
                   conversationId={item.id}
+                  onConversationDeleted={onConversationDeleted}
                 />
               </div>
             )

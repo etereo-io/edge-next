@@ -3,7 +3,7 @@ import Layout from '../../components/layout/auth/auth-layout'
 import Router from 'next/router'
 import fetch from '../../lib/fetcher'
 import { useState } from 'react'
-import { useUser } from '../../lib/hooks'
+import { useUser } from '../../lib/client/hooks'
 
 const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })

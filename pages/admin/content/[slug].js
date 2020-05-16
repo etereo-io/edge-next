@@ -1,4 +1,4 @@
-import { useContentType, usePermission } from '../../../lib/hooks'
+import { useContentType, usePermission } from '../../../lib/client/hooks'
 
 import ContentTable from '../../../components/content/admin-content/content-table/content-table'
 import Layout from '../../../components/layout/admin/layout-admin'

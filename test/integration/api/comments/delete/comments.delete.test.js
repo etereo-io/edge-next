@@ -1,14 +1,9 @@
-// See discussion https://github.com/zeit/next.js/discussions/11784
-// See example
+import * as handler from '../../../../../pages/api/comments/[contentType]/[contentId]/[id]'
 
-import * as handler from '../../../../../pages/api/content/[type]/[slug]'
-
-import { deleteOneContent, findOneContent } from '../../../../../lib/api/content/content'
+import { deleteComment, deleteOneComment, findOneComment } from '../../../../../lib/api/comments/comments'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import { deleteActivity } from '../../../../../lib/api/activity/activity'
-import { deleteComment } from '../../../../../lib/api/comments/comments'
-import { deleteFile } from '../../../../../lib/api/storage'
 import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
@@ -17,10 +12,8 @@ import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/storage')
 jest.mock('../../../../../lib/api/comments/comments')
 jest.mock('../../../../../lib/api/activity/activity')
-jest.mock('../../../../../lib/api/content/content')
 
 jest.mock('../../../../../edge.config', () => {
 
@@ -109,41 +102,33 @@ describe('Integrations tests for content deletion endpoint', () => {
   let url
 
   beforeEach(() => {
-    deleteOneContent.mockReturnValue(Promise.resolve())
+    deleteOneComment.mockReturnValue(Promise.resolve())
     deleteActivity.mockReturnValue( Promise.resolve())
     deleteComment.mockReturnValue( Promise.resolve())
-    deleteFile.mockReturnValue( Promise.resolve())
-    findOneContent.mockReturnValue( Promise.resolve({
-      type: 'post',
-      id: 'contentid',
-      author: 'userId',
-      title: 'Example post',
-      slug: 'example-post-0',
-      image: [{
-        path: 'abc.test'
-      }],
-      description: 'This is an example description',
-      draft: false,
-      tags: [
-        {
-          slug: 'software',
-          label: 'SOFTWARE',
-        },
-        {
-          slug: 'ai',
-          label: 'AI',
-        },
-      ],
+    findOneComment.mockReturnValue( Promise.resolve({
+      "author": "userId",
+      "createdAt": 1589616086584,
+      "contentType": "post",
+      "contentId": "5ebe9d562779ed4d88c94f2f",
+      "message": "Another test comment",
+      "conversationId": null,
+      "slug": "1589616086584-5eb3240d5dd70535e812f402",
+      "id": "5ebf9dd6e1d3192ac0ae2466",
+      "user": {
+        "username": "rafael",
+        "displayname": "The admin",
+      },
+      "replies": 2
     }))
   })
 
   afterEach(() => {
     getPermissions.mockClear()
     getSession.mockClear()
-    findOneContent.mockClear()
+    findOneComment.mockClear()
     deleteComment.mockClear()
     deleteActivity.mockClear()
-    deleteOneContent.mockClear()
+    deleteOneComment.mockClear()
   })
 
   beforeAll(async (done) => {
@@ -164,18 +149,19 @@ describe('Integrations tests for content deletion endpoint', () => {
     expect(response.status).toBe(405)
   })
 
+
   describe('Correct delete', () => {
-    test('Should delete comments, files and activity if a content is deleted', async () => {
+    test('Should delete child comments if the comment has no conversationId and activity if a comment is deleted', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
+      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
       getPermissions.mockReturnValueOnce({
-        'content.post.delete': ['ADMIN'],
-        'content.post.admin': ['ADMIN'],
+        'content.post.comments.delete': ['ADMIN'],
+        'content.post.comments.admin': ['ADMIN'],
       })
 
       getSession.mockReturnValueOnce({
@@ -189,17 +175,17 @@ describe('Integrations tests for content deletion endpoint', () => {
 
       expect(response.status).toBe(200)
 
-      expect(deleteFile).toHaveBeenCalledWith('abc.test')
       expect(deleteComment).toHaveBeenCalledWith({
-        contentId: 'contentid'
+        conversationId: '5ebf9dd6e1d3192ac0ae2466'
       })
       expect(deleteActivity).toHaveBeenCalledWith({
         meta: {
-          contentId: 'contentid'
+          commentId: '5ebf9dd6e1d3192ac0ae2466'
         }
       })
-      expect(deleteOneContent).toHaveBeenCalledWith('post', {
-        id: 'contentid'
+
+      expect(deleteOneComment).toHaveBeenCalledWith({
+        id: '5ebf9dd6e1d3192ac0ae2466'
       })
       
     })
@@ -208,15 +194,15 @@ describe('Integrations tests for content deletion endpoint', () => {
   describe('Invalid delete', () => {
     test('Should return 401 when deleting other person content without the content.post.delete permission', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
+      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
       getPermissions.mockReturnValueOnce({
-        'content.post.delete': ['ADMIN'],
-        'content.post.admin': ['ADMIN'],
+        'content.post.comments.delete': ['ADMIN'],
+        'content.post.comments.admin': ['ADMIN'],
       })
 
       getSession.mockReturnValueOnce({
@@ -233,21 +219,21 @@ describe('Integrations tests for content deletion endpoint', () => {
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
         message:
-          'User not authorized to perform operation on content post',
+          'User not authorized to perform operation on comment post',
       })
     })
 
-    test('Should return 200 when deleting other person content with the content.post.delete permission', async () => {
+    test('Should return 200 when deleting other person content with the content.post.comments.delete permission', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
+      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
       getPermissions.mockReturnValueOnce({
-        'content.post.delete': ['USER'],
-        'content.post.admin': ['ADMIN'],
+        'content.post.comments.delete': ['USER'],
+        'content.post.comments.admin': ['ADMIN'],
       })
 
       getSession.mockReturnValueOnce({
@@ -265,15 +251,15 @@ describe('Integrations tests for content deletion endpoint', () => {
 
     test('Should return 200 when deleting other person content with the content.post.admin permission', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
+      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
       getPermissions.mockReturnValueOnce({
-        'content.post.delete': ['ADMIN'],
-        'content.post.admin': ['USER'],
+        'content.post.comments.delete': ['ADMIN'],
+        'content.post.comments.admin': ['USER'],
       })
 
       getSession.mockReturnValueOnce({
@@ -292,11 +278,11 @@ describe('Integrations tests for content deletion endpoint', () => {
 
   test('Should return 401 for a role that is PUBLIC', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
+    const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
 
     getPermissions.mockReturnValueOnce({
-      'content.post.delete': ['ADMIN'],
-      'content.post.admin': ['ADMIN'],
+      'content.post.comments.delete': ['ADMIN'],
+      'content.post.comments.admin': ['ADMIN'],
     })
 
     getSession.mockReturnValueOnce({
@@ -307,7 +293,6 @@ describe('Integrations tests for content deletion endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-
     const response = await fetch(urlToBeUsed.href, {
       method: 'DELETE'
     })
@@ -317,11 +302,11 @@ describe('Integrations tests for content deletion endpoint', () => {
 
   test('Should return 200 for ADMIN', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
+    const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
 
     getPermissions.mockReturnValueOnce({
-      'content.post.delete': ['ADMIN'],
-      'content.post.admin': ['ADMIN'],
+      'content.post.comments.delete': ['ADMIN'],
+      'content.post.comments.admin': ['ADMIN'],
     })
 
     getSession.mockReturnValueOnce({

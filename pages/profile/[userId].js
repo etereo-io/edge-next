@@ -1,4 +1,4 @@
-import { useContentTypes, useUser } from '../../lib/hooks'
+import { useContentTypes, useUser } from '../../lib/client/hooks'
 
 import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'

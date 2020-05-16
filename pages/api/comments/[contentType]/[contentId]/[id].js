@@ -1,4 +1,5 @@
 import {
+  deleteOneComment,
   findOneComment,
   updateOneComment,
 } from '../../../../../lib/api/comments/comments'
@@ -17,7 +18,7 @@ import { contentValidations } from '../../../../../lib/validations/content'
 import methods from '../../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../../lib/api/api-helpers/run-middleware'
 
-const loadContentItemMiddleware = async (req, res, cb) => {
+const loadCommentItemMiddleware = async (req, res, cb) => {
   const searchOptions = {
     type: req.query.type,
     contentSlug: req.query.contentSlug,
@@ -44,22 +45,31 @@ const loadContentItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getContent = (req, res) => {
+const getComment = (req, res) => {
   res.status(200).json(req.item)
 }
 
-const deleteContent = (req, res) => {
+const deleteComment = async (req, res) => {
   const item = req.item
+  try {
+    await deleteOneComment({ id: item.id })
 
-  // Trigger hook
-  onCommentDeleted(item, req.user)
+    // Trigger hook
+    await onCommentDeleted(item, req.user)
+    
+    res.status(200).json({
+      deleted: true
+    })
+  } catch (err) {
+    
+    res.status(500).json({
+      error: err.message
+    }) 
+  }
 
-  res.status(200).json({
-    item,
-  })
 }
 
-const updateContent = (req, res) => {
+const updateComment = (req, res) => {
   const type = req.contentType
 
   const content = req.body
@@ -132,7 +142,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, loadContentItemMiddleware)
+    await runMiddleware(req, res, loadCommentItemMiddleware)
   } catch (e) {
     return res.status(404).json({
       message: e.message,
@@ -152,9 +162,9 @@ export default async (req, res) => {
   }
 
   methods(req, res, {
-    get: getContent,
-    del: deleteContent,
-    put: updateContent,
-    post: updateContent,
+    get: getComment,
+    del: deleteComment,
+    put: updateComment,
+    post: updateComment,
   })
 }

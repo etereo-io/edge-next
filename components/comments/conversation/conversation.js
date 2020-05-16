@@ -5,6 +5,7 @@ import Button from '../../generic/button/button'
 import Placeholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import CommentEntry from '../comment-entry/comment-entry'
 
+
 function LoadingItems() {
   return (
     <>
@@ -45,7 +46,7 @@ function LoadingItems() {
   )
 }
 
-export default function ({ contentId = '', type = {}, comment = {} }) {
+export default function ({ contentId = '', type = {}, comment = {}, onConversationDeleted = () => {} }) {
   // Conversation ID
   const conversationId = comment.id
 
@@ -55,6 +56,9 @@ export default function ({ contentId = '', type = {}, comment = {} }) {
   // Display new comments on top of feed
   const [newReplies, setNewReplies] = useState([])
 
+  // Store the list of deleted items to hide them from UI without reloading the data
+  const [deletedCommentsIds, setDeletedCommentsIds] = useState([])
+
   const onCommentAdded = (c) => {
     if (setShowRepliesFeed === false) {
       // First reply added, no need to "fake" the new added comment
@@ -62,6 +66,16 @@ export default function ({ contentId = '', type = {}, comment = {} }) {
     } else {
       setNewReplies([...newReplies, c])
     }
+  }
+
+  // A reply is deleted
+  const onCommentDeleted = (c) => {
+    setDeletedCommentsIds([...deletedCommentsIds, c.id])
+  }
+
+  // The main conversation comment is deleted
+  const onMainCommentDeleted = c => {
+    onConversationDeleted(c)
   }
 
   // Load the conversation items
@@ -110,6 +124,7 @@ export default function ({ contentId = '', type = {}, comment = {} }) {
           conversationId={conversationId}
           type={type}
           onCommentAdded={onCommentAdded}
+          onCommentDeleted={onMainCommentDeleted}
         />
         {comment.replies && !showRepliesFeed ? (
           <div className="collapsed-comment" onClick={onClickShowReplies}>
@@ -118,7 +133,7 @@ export default function ({ contentId = '', type = {}, comment = {} }) {
         ) : null}
 
         <div className={`replies`}>
-          {newReplies.map((item) => {
+          {newReplies.filter(item => deletedCommentsIds.indexOf(item.id) === -1).map((item) => {
             return (
               <div key={item.id} className={`reply`}>
                 <CommentEntry
@@ -127,13 +142,14 @@ export default function ({ contentId = '', type = {}, comment = {} }) {
                   conversationId={conversationId}
                   type={type}
                   onCommentAdded={onCommentAdded}
+                  onCommentDeleted={onCommentDeleted}
                 />
               </div>
             )
           })}
 
           {showRepliesFeed &&
-            replies.map((item) => {
+            replies.filter(item => deletedCommentsIds.indexOf(item.id) === -1).map((item) => {
               return (
                 <div key={item.id} className={`reply`}>
                   <CommentEntry
@@ -142,6 +158,7 @@ export default function ({ contentId = '', type = {}, comment = {} }) {
                     conversationId={conversationId}
                     type={type}
                     onCommentAdded={onCommentAdded}
+                    onCommentDeleted={onCommentDeleted}
                   />
                 </div>
               )

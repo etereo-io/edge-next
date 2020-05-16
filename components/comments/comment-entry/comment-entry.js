@@ -1,6 +1,6 @@
 import DropDown from '../../generic/dropdown-menu/dropdown-menu'
 import { commentPermission } from '../../../lib/permissions'
-import { useUser } from '../../../lib/hooks'
+import { useUser } from '../../../lib/client/hooks'
 import Avatar from '../../user/avatar/avatar'
 import { format } from 'timeago.js'
 import { useState } from 'react'
@@ -13,6 +13,7 @@ export default function CommentEntry({
   type = {},
   comment = {},
   onCommentAdded = () => {},
+  onCommentDeleted= () => {}
 }) {
   // Reply form
   const [showReplyForm, setShowReplyForm] = useState(false)
@@ -34,6 +35,12 @@ export default function CommentEntry({
   const onReply = (c) => {
     setShowReplyForm(false)
     onCommentAdded(c)
+  }
+
+  const onClickDeleteComment = ev => {
+    ev.preventDefault()
+    onCommentDeleted(comment)
+    // TODO: Call the api
   }
 
   return (
@@ -93,7 +100,7 @@ export default function CommentEntry({
           <DropDown align={'right'}>
             <ul>
               <li>Report</li>
-              {hasEditPermission && <li>Delete</li>}
+              {hasEditPermission && <li><a title="Delete comment" onClick={onClickDeleteComment}>Delete</a></li>}
             </ul>
           </DropDown>
         </div>

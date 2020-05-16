@@ -5,7 +5,7 @@ import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import fetch from '../../../../lib/fetcher'
-import { useOnScreen } from '../../../../lib/hooks'
+import { useOnScreen } from '../../../../lib/client/hooks'
 import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 
 function LoadingItems() {

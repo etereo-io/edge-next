@@ -4,7 +4,7 @@ import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import ThemeSelector from '../../generic/theme-selector/theme-selector'
 import { hasPermission } from '../../../lib/permissions'
-import { useUser, useContentTypes } from '../../../lib/hooks'
+import { useUser, useContentTypes } from '../../../lib/client/hooks'
 import { useState } from 'react'
 import Progress from './progress';
 

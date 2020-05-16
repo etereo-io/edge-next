@@ -5,7 +5,7 @@ import PasswordStrength from '../../components/generic/password-strength/passwor
 import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { useUser } from '../../lib/hooks'
+import { useUser } from '../../lib/client/hooks'
 
 const RememberPassword = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })

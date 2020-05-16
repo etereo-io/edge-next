@@ -74,6 +74,8 @@ Check our roadmap if you want to add more cool things into Edge.
 
 ## Roadmap for version 1
 
+- Allow to report content and comments, we can use a flag on the content if anyone has reported it, instead of a list of reports.
+  
 - Integrate web monetization
 
 - Get 100% on everything on lighthouse
@@ -82,9 +84,6 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - Comments
   - Integrate mentions on comments
-  - Delete comments from UI
-  - When deleting one comment delete all responses
-  - Add integration tests for comment deletion
 
 - Content CRUD
   - Improve the test suite on client and server side

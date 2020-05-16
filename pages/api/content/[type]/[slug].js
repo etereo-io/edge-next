@@ -105,8 +105,6 @@ const updateContent = async (req, res) => {
     ...req.body
   }
 
-  console.log('UPDATING', content)
-
   contentValidations(type, content)
     .then(async () => {
       // Content is valid

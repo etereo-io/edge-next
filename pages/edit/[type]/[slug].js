@@ -1,4 +1,4 @@
-import { useUser, useContentType } from '../../../lib/hooks'
+import { useUser, useContentType } from '../../../lib/client/hooks'
 import { contentPermission } from '../../../lib/permissions'
 
 import API from '../../../lib/api/api-endpoints'

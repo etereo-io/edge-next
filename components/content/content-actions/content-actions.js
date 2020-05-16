@@ -1,6 +1,6 @@
 import Button from '../../generic/button/button'
 import { contentPermission } from '../../../lib/permissions'
-import { useUser } from '../../../lib/hooks'
+import { useUser } from '../../../lib/client/hooks'
 
 export default function (props) {
   // Check permissions to edit

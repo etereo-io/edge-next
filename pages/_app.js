@@ -1,9 +1,15 @@
 import '../styles/index.scss'
 
-import withEdgeTheme, { EdgeThemeContext } from '../lib/contexts/edge-theme'
+import * as gtag from '../lib/client/gtag'
 
-import { EdgeUserProvider } from '../lib/contexts/edge-user'
+import withEdgeTheme, { EdgeThemeContext } from '../lib/client/contexts/edge-theme'
+
+import { EdgeUserProvider } from '../lib/client/contexts/edge-user'
+import Router from 'next/router'
 import { useContext } from 'react'
+
+// Store navigation events on Google analytics
+Router.events.on('routeChangeComplete', url => gtag.pageview(url))
 
 function MyApp({ Component, pageProps }) {
   const { mode } = useContext(EdgeThemeContext)

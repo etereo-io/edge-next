@@ -1,5 +1,6 @@
 import Document, { Head, Html, Main, NextScript } from 'next/document'
 
+import { GA_TRACKING_ID } from '../lib/client/gtag'
 import config from '../lib/config'
 
 // A custom document is required in Next.js to set the `lang` attribute on the
@@ -42,6 +43,24 @@ class MyDocument extends Document {
           />
           <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/icons/favicon.ico" />
+
+          {/* Global Site Tag (gtag.js) - Google Analytics */}
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_TRACKING_ID}', {
+                page_path: window.location.pathname,
+              });
+            `,
+              }}
+            />
         </Head>
         <body>
           <Main />

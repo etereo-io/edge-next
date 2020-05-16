@@ -1,4 +1,4 @@
-import { EdgeUserProvider } from '../../../../lib/contexts/edge-user'
+import { EdgeUserProvider } from '../../../../lib/client/contexts/edge-user'
 import Index from '../../../../components/layout/header/header'
 import React from 'react'
 import { render } from '@testing-library/react'

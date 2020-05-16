@@ -10,7 +10,7 @@ import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { useUser } from '../../lib/hooks'
+import { useUser } from '../../lib/client/hooks'
 import { userPermission } from '../../lib/permissions'
 
 const reducer = (state, action) => {

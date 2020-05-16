@@ -2,7 +2,7 @@ import CommentForm from '../../../comments/comment-form/comment-form'
 import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import ContentActions from '../../content-actions/content-actions'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
-import { usePermission } from '../../../../lib/hooks'
+import { usePermission } from '../../../../lib/client/hooks'
 import { useState } from 'react'
 
 export default function (props) {

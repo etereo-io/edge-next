@@ -3,7 +3,7 @@ import Layout from '../../components/layout/auth/auth-layout'
 import Link from 'next/link'
 import fetch from '../../lib/fetcher'
 import { useState } from 'react'
-import { useUser } from '../../lib/hooks'
+import { useUser } from '../../lib/client/hooks'
 
 const RememberPassword = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
