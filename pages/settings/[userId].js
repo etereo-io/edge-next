@@ -144,7 +144,7 @@ const UserSettings = () => {
 
   // Check permissions to read
   const currentUser = useUser()
-  const canAccess = userPermission(currentUser.user, 'update', userId)
+  const hasPermissionsToEdit = userPermission(currentUser.user, 'update') 
   
   // Load profile data
   const userResponse = useSWR( userId ? `/api/users/` + userId : null, fetch)
@@ -171,6 +171,10 @@ const UserSettings = () => {
       </Layout>
     )
   }
+
+  
+  const isOwner = userId === 'me' || user && user.username === userId
+  const canAccess = hasPermissionsToEdit || isOwner
 
   if (!userResponse.data || !canAccess) {
     // Redirect to 404 if the user is not found or doesnt have permissions

@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import randomWords from 'random-words'
 
 function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
@@ -105,11 +106,84 @@ for (var i = 0; i < 30; i++) {
 
 const initialContent = [...posts, ...products, ...comments]
 
+
 export const getConfig = (defaultOptions) => {
   const userRole = defaultOptions.roles.user.value
   const adminRole = defaultOptions.roles.admin.value
   const shopOwnerRole = 'SHOP_OWNER'
   const publicRole = defaultOptions.roles.public.value
+
+  const salt = crypto.randomBytes(16).toString('hex')
+const hash = crypto.pbkdf2Sync('1234', salt, 1000, 64, 'sha512').toString('hex')
+
+const initialUsers = [{
+  username: 'admin',
+  displayname: 'The admin',
+  email: 'admin@demo.com', 
+  emailVerified: true,
+  createdAt: Date.now(),
+  roles: [adminRole, userRole],
+  id: ObjectID(),
+  salt,
+  hash,
+  profile: {
+    picture: '/static/demo-images/default-avatar.jpg',
+  },
+  metadata: {
+    lastLogin: null,
+  },
+},
+{
+  username: 'user',
+  email: 'user@demo.com',
+  emailVerified: true,
+  createdAt: Date.now(),
+  roles: [userRole],
+  id: userId,
+  salt,
+  hash,
+  profile: {
+    picture: '',
+  },
+  metadata: {
+    lastLogin: null,
+  },
+},
+{
+  username: 'blocked',
+  email: 'blocked@demo.com',
+  emailVerified: true,
+  createdAt: Date.now(),
+  roles: [userRole],
+  id: ObjectID(),
+  salt,
+  hash,
+  profile: {
+    picture: '',
+  },
+  blocked: true,
+  metadata: {
+    lastLogin: null,
+  },
+},
+{
+  username: 'notverified',
+  email: 'notverified@demo.com',
+  emailVerified: false,
+  emailVerificationToken: '1234',
+  createdAt: Date.now(),
+  roles: [userRole],
+  id: ObjectID(),
+  salt,
+  hash,
+  profile: {
+    picture: '',
+  },
+  blocked: true,
+  metadata: {
+    lastLogin: null,
+  },
+}]
 
   const postContentType = {
     title: 'Post',
@@ -507,72 +581,7 @@ export const getConfig = (defaultOptions) => {
       },
 
       // Initial users data for testing purposes
-      initialUsers: [
-        {
-          username: 'admin',
-          displayname: 'The admin',
-          email: 'admin@demo.com',
-          emailVerified: true,
-          createdAt: Date.now(),
-          roles: [adminRole, userRole],
-          id: ObjectID(),
-          password: 'admin',
-          profile: {
-            picture: '/static/demo-images/default-avatar.jpg',
-          },
-          metadata: {
-            lastLogin: null,
-          },
-        },
-        {
-          username: 'user',
-          email: 'user@demo.com',
-          emailVerified: true,
-          createdAt: Date.now(),
-          roles: [userRole],
-          id: userId,
-          password: 'user',
-          profile: {
-            picture: '',
-          },
-          metadata: {
-            lastLogin: null,
-          },
-        },
-        {
-          username: 'blocked',
-          email: 'blocked@demo.com',
-          emailVerified: true,
-          createdAt: Date.now(),
-          roles: [userRole],
-          id: ObjectID(),
-          password: 'user',
-          profile: {
-            picture: '',
-          },
-          blocked: true,
-          metadata: {
-            lastLogin: null,
-          },
-        },
-        {
-          username: 'notverified',
-          email: 'notverified@demo.com',
-          emailVerified: false,
-          emailVerificationToken: '1234',
-          createdAt: Date.now(),
-          roles: [userRole],
-          id: ObjectID(),
-          password: 'user',
-          profile: {
-            picture: '',
-          },
-          blocked: true,
-          metadata: {
-            lastLogin: null,
-          },
-        },
-      ],
+      initialUsers: initialUsers,
     },
 
     // Content configuration

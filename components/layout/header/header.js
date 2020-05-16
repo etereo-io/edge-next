@@ -48,7 +48,7 @@ function UserHeader(props) {
                   <ThemeSelector />
                 </li>
                 <li>
-                  <Link href="/profile/me">
+                  <Link href={`/profile/@${user.username}`}>
                     <a>Profile</a>
                   </Link>
                 </li>

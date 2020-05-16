@@ -66,6 +66,8 @@ description: "Empieza Documentation"
   - Verify email and notify email implementations
 - Multiple components
   - Checkout [the components page](/components)
+- PWA
+  - Provided by [next-pwa](https://github.com/shadowwalker/next-pwa)
 - Easy to deploy
   - Deploy on platforms like Vercel in minutes
 - ~Multilingual support~

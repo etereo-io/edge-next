@@ -306,8 +306,8 @@ const Components = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/profile">
-                        <a title="Home">Profile</a>
+                      <Link href="/profile/me">
+                        <a title="Profile">Profile</a>
                       </Link>
                     </li>
                     <li>
@@ -346,7 +346,7 @@ const Components = () => {
     </li>
     <li>
       <Link href="/profile">
-        <a title="Home">Profile</a>
+        <a title="profile">Profile</a>
       </Link>
     </li>
     <li>

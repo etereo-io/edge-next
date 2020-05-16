@@ -16,7 +16,7 @@ export const config = {
   }
 }
 
-const userExist = (userId) => async (req, res, cb) => {
+const userExist = (userId = '') => async (req, res, cb) => {
   let findUserId = userId
 
   if (userId === 'me') {
@@ -30,7 +30,11 @@ const userExist = (userId) => async (req, res, cb) => {
     findUserId = session.id
   }
 
-  const user = await findOneUser({ id: findUserId })
+  const isUsername = userId.indexOf('@') === 0 ? true : false
+  const findOptions = isUsername ? {
+    username: userId.replace('@', '')
+  }: { id: findUserId }
+  const user = await findOneUser(findOptions)
 
   if (!user) {
     cb(new Error('User not found'))

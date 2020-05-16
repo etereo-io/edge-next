@@ -20,8 +20,9 @@ const Profile = (props) => {
   
   // Check permissions to read
   const currentUser = useUser()
-  const canAccess = userPermission(currentUser.user, 'read', userId)
-  const canEdit = userPermission(currentUser.user, 'update', userId)
+
+  const hasPermissionsToRead = userPermission(currentUser.user, 'read')
+  const hasPermissionsToEdit = userPermission(currentUser.user, 'update') 
 
   // Load profile data
   const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
@@ -36,6 +37,10 @@ const Profile = (props) => {
       </Layout>
     )
   }
+
+  const isOwner = userId === 'me' || data && data.username === userId
+  const canAccess = hasPermissionsToRead || isOwner
+  const canEdit = hasPermissionsToEdit || isOwner
 
   if (!data || !canAccess) {
     // Redirect to 404 if the user is not found
@@ -56,6 +61,7 @@ const Profile = (props) => {
                   ? data.profile.displayName || data.username
                   : 'User Profile'}
               </h2>
+              <h3>@{data.username}</h3>
             </div>
             <div className="title-right">
               { canEdit && <div className="item">

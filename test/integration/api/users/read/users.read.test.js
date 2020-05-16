@@ -1,7 +1,6 @@
-import { findOneUser, updateOneUser } from '../../../../../lib/api/users/user'
-
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
+import { findOneUser } from '../../../../../lib/api/users/user'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handlerUser from '../../../../../pages/api/users/[...slug]'
@@ -17,119 +16,7 @@ jest.mock('../../../../../edge.config', () => ({
   getConfig: jest.fn().mockReturnValue({
     title: 'A test',
     description: 'A test',
-    // Users configuration
-    user: {
-      // Capture user geolocation and enable geolocation display on the admin dashboard
-      captureGeolocation: true,
-
-      // Require email verification
-      emailVerification: true,
-
-      providers: {
-        github: false,
-        google: false,
-        facebook: true,
-      },
-
-      // Fields for the users profiles (in addition to picture and displayName)
-      profile: {
-        fields: [
-          {
-            name: 'description',
-            type: 'textarea',
-            label: 'Description',
-            required: false,
-            minlength: 60,
-            maxlength: 300,
-            roles: [],
-          },
-          {
-            name: 'gender',
-            type: 'select',
-            label: 'gender',
-            required: true,
-            options: [
-              {
-                label: 'Male',
-                value: 'male',
-              },
-              {
-                label: 'Female',
-                value: 'female',
-              },
-            ],
-          },
-        ],
-      },
-
-      // Initial users data for testing purposes
-      initialUsers: [
-        {
-          username: 'admin',
-          displayname: 'The admin',
-          email: 'admin@demo.com',
-          emailVerified: true,
-          createdAt: Date.now(),
-          roles: ['ADMIN', 'USER'],
-          id: '1',
-          password: 'admin',
-          profile: {
-            picture: '/static/demo-images/default-avatar.jpg',
-          },
-          metadata: {
-            lastLogin: null,
-          },
-        },
-        {
-          username: 'user',
-          email: 'user@demo.com',
-          emailVerified: true,
-          createdAt: Date.now(),
-          roles: ['USER'],
-          id: '2',
-          password: 'user',
-          profile: {
-            picture: '',
-          },
-          metadata: {
-            lastLogin: null,
-          },
-        },
-        {
-          username: 'blocked',
-          email: 'blocked@demo.com',
-          emailVerified: true,
-          createdAt: Date.now(),
-          roles: ['USER'],
-          id: '3',
-          password: 'user',
-          profile: {
-            picture: '',
-          },
-          blocked: true,
-          metadata: {
-            lastLogin: null,
-          },
-        },
-        {
-          username: 'notverified',
-          email: 'notverified@demo.com',
-          emailVerified: false,
-          emailVerificationToken: '1234',
-          createdAt: Date.now(),
-          roles: ['USER'],
-          id: '3',
-          password: 'user',
-          profile: {
-            picture: '',
-          },
-          blocked: true,
-          metadata: {
-            lastLogin: null,
-          },
-        },
-      ],
-    },
+   
   }),
 }))
 
@@ -145,7 +32,7 @@ const demoUser = {
   },
 }
 
-describe('Integrations tests for login', () => {
+describe('Integrations tests for user read', () => {
   let server
   let url
 
@@ -165,25 +52,25 @@ describe('Integrations tests for login', () => {
   describe('User reading', () => {
     afterEach(() => {
       findOneUser.mockClear()
-      updateOneUser.mockClear()
       getPermissions.mockClear()
       getSession.mockClear()
     })
 
     test('a PUBLIC user should be able to read a profile', async () => {
       const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', '1')
+      urlToBeUsed.searchParams.append('slug', 'userId')
+      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.read': ['PUBLIC'],
       })
 
       // Current user is PUBLIC
-      getSession.mockReturnValueOnce()
+      getSession.mockReturnValue()
 
       // The user it finds
-      findOneUser.mockReturnValueOnce(demoUser)
+      findOneUser.mockReturnValue(demoUser)
 
       const response = await fetch(urlToBeUsed.href, {
         method: 'GET',
@@ -195,9 +82,136 @@ describe('Integrations tests for login', () => {
       const jsonResult = await response.json()
 
       expect(response.status).toBe(200)
+
       expect(jsonResult).toMatchObject({
         username: demoUser.username,
         profile: demoUser.profile,
+      })
+
+      expect(findOneUser).toHaveBeenCalledWith({
+        id: 'userId'
+      })
+    })
+
+
+    test('a PUBLIC user should not be able to read "me"', async () => {
+      const urlToBeUsed = new URL(url)
+      urlToBeUsed.searchParams.append('slug', 'me')
+      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
+
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.read': ['PUBLIC'],
+      })
+
+      // Current user is PUBLIC
+      getSession.mockReturnValue()
+
+      // The user it finds
+      findOneUser.mockReturnValue(demoUser)
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      expect(response.status).toBe(404)
+
+      expect(findOneUser).not.toHaveBeenCalled()
+    })
+
+    test('should return 401 if the access is restricted to logged in users', async () => {
+      const urlToBeUsed = new URL(url)
+      urlToBeUsed.searchParams.append('slug', 'me')
+      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
+
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.read': ['USER'],
+      })
+
+      // Current user is PUBLIC
+      getSession.mockReturnValue()
+
+      // The user it finds
+      findOneUser.mockReturnValue(demoUser)
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      expect(response.status).toBe(401)
+
+      expect(findOneUser).not.toHaveBeenCalled()
+    })
+
+    test('a logged user should be able to read "me"', async () => {
+      const urlToBeUsed = new URL(url)
+      urlToBeUsed.searchParams.append('slug', 'me')
+      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
+
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.read': ['PUBLIC'],
+      })
+
+      // Current user is USER
+      getSession.mockReturnValue({
+        id: 'userId',
+        roles: ['USER']
+      })
+
+      // The user it finds
+      findOneUser.mockReturnValue(demoUser)
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      expect(response.status).toBe(200)
+
+      expect(findOneUser).toHaveBeenCalledWith({
+        id: 'userId'
+      })
+    })
+
+
+    test('it should be possible to search by @username', async () => {
+      const urlToBeUsed = new URL(url)
+      urlToBeUsed.searchParams.append('slug', '@username')
+      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
+
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.read': ['PUBLIC'],
+      })
+
+      // Current user is PUBLIC
+      getSession.mockReturnValue()
+
+      // The user it finds
+      findOneUser.mockReturnValue(demoUser)
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      expect(response.status).toBe(200)
+
+
+      expect(findOneUser).toHaveBeenCalledWith({
+        username: 'username'
       })
     })
   })
