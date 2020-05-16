@@ -6,6 +6,8 @@ import { usePermission } from '../../../../lib/client/hooks'
 import { useState } from 'react'
 
 export default function (props) {
+  const [showComments, setShowComments] = useState(!!props.showComments)
+
   const canReadComments = usePermission([
     `content.${props.type.slug}.comments.read`,
     `content.${props.type.slug}.comments.admin`,
@@ -29,19 +31,22 @@ export default function (props) {
           <div className={'content-detail-content'}>
             <ContentSummaryView
               content={props.content}
-              links={false}
+              links={!!props.links}
               type={props.type}
+              canReadComments={canReadComments.available}
+              canWriteComments={canWriteComments.available}
+              onClickComments={() => setShowComments(!showComments)}
             />
             
           </div>
 
-          <ContentActions
+          {props.showActions && <ContentActions
             className={'content-actions'}
             content={props.content}
-          />
+          />}
         </div>
 
-        {props.type.comments.enabled && canWriteComments.available && (
+        {props.type.comments.enabled && canWriteComments.available && showComments && (
           <div className="comment-form-wrapper">
             <CommentForm
               onSave={onCommentAdded}
@@ -51,7 +56,7 @@ export default function (props) {
           </div>
         )}
 
-        {props.type.comments.enabled && canReadComments.available && (
+        {props.type.comments.enabled && canReadComments.available && showComments && (
           <CommentsFeed
             type={props.type}
             contentId={props.content.id}
@@ -69,8 +74,6 @@ export default function (props) {
         }
 
         .content-detail-content {
-          background: var(--empz-background);
-          padding: var(--empz-gap);
           margin-bottom: var(--empz-gap-double);
           flex: 1;
         }

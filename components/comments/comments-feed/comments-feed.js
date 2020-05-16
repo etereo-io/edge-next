@@ -46,8 +46,7 @@ function LoadingItems() {
 }
 
 function EmptyComponent() {
-  
-  return <div className="empty">There are no comments</div>
+  return <div className="empty"></div>
 }
 
 export default function ({

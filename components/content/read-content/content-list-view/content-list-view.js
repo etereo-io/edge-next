@@ -3,7 +3,7 @@ import useSWR, { useSWRPages } from 'swr'
 
 import API from '../../../../lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
-import ContentSummaryView from '../content-summary-view/content-summary-view'
+import ContentDetailView from '../content-detail-view/content-detail-view'
 import fetch from '../../../../lib/fetcher'
 import { useOnScreen } from '../../../../lib/client/hooks'
 import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
@@ -41,7 +41,6 @@ function LoadingItems() {
           background: var(--empz-background);
           padding: var(--empz-gap);
           margin-bottom: var(--empz-gap);
-          border: var(--light-border);
           border-radius: var(--empz-radius);
         }
         .r {
@@ -88,10 +87,12 @@ export default function (props) {
         return (
           <div key={item.id + item.createdAt} >
             <div className={`item ${listView}`}>
-              <ContentSummaryView
+              <ContentDetailView
                 content={item}
                 type={props.type}
                 links={true}
+                showActions={false}
+                showComments={false}
               />
             </div>
             <style jsx>{`

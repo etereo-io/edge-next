@@ -60,7 +60,7 @@ const ContentPage = (props) => {
   return (
     <Layout title={props.pageTitle}>
       {props.canAccess && props.data && (
-        <ContentDetailView type={props.contentType} content={props.data} />
+        <ContentDetailView type={props.contentType} content={props.data} showComments={true}/>
       )}
     </Layout>
   )

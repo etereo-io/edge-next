@@ -22,10 +22,17 @@ export default function (props) {
     `content.${props.content.type}.admin`,
     `content.${props.content.type}.update`,
   ])
+
   const isContentOwner = user && user.id === props.content.author
 
+  const onClickComments = (ev) => {
+    if ((props.canReadComments && props.content.comments) || props.canWriteComments) {
+      props.onClickComments()
+    }
+  }
   return (
     <>
+      
       <div className={`contentSummaryView ${props.className}`}>
         {props.content.draft && (
           <div className="status">Draft - Not published</div>
@@ -136,9 +143,9 @@ export default function (props) {
         </div>
         <div className="meta">
           <span className="created-at">{format(props.content.createdAt)}</span>
-          {props.type.comments.enabled && typeof props.content.comments !== 'undefined' ? (
-            <span className="comment-count">
-              {props.content.comments} comments
+          {props.type.comments.enabled && props.canReadComments && typeof props.content.comments !== 'undefined' ? (
+            <span className="comment-count" onClick={onClickComments}>
+              {props.content.comments === 0 && props.canWriteComments ? 'Add a comment' : `${props.content.comments} comments`}
             </span>
           ): null}
         </div>
