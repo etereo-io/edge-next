@@ -15,7 +15,6 @@ const Landing = (props) => {
       <Layout
         title={`${config.title} - ${config.slogan}`}
         description={config.slogan}
-        fullWidth
       >
         <div className="columns">
           <div className="center-column">
@@ -204,6 +203,7 @@ const Landing = (props) => {
 
         .call-to-action-item {
           background: var(--empz-background);
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
           border-radius: 4px;
           margin-bottom: var(--empz-gap);
           transition: box-shadow 0.25s ease, transform 0.25s ease;
