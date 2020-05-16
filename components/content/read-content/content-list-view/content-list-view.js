@@ -96,7 +96,7 @@ export default function (props) {
             </div>
             <style jsx>{`
               .item {
-                margin-bottom: 30px;
+                margin-bottom: var(--empz-gap);
               }
               .item.grid {
                 width: 32%;

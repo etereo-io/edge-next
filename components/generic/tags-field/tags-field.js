@@ -8,13 +8,19 @@ function Tag(props) {
       </Link>
       <style jsx>{`
         .tag {
-          padding: 5px;
           background: var(--empz-foreground);
-          border-radius: 5px;
+          border-radius: 4px;
           color: var(--empz-background);
-          margin-right: 5px;
-          margin-bottom: 5px;
-          cursor: pointer;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          margin-bottom: var(--empz-gap);
+          margin-right: var(--empz-gap-half);
+          padding: 4px 8px;
+          text-align: center;
+          text-transform: uppercase;
+          text-decoration: none;
+          width: fit-content;
         }
       `}</style>
     </>

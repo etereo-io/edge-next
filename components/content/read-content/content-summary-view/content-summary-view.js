@@ -145,13 +145,14 @@ export default function (props) {
       </div>
       <style jsx>{`
         .contentSummaryView {
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
           color: var(--empz-foreground);
           background: var(--empz-background);
-          border: var(--light-border);
+          //border: var(--light-border);
           padding: var(--empz-gap);
           border-radius: var(--empz-radius);
-          max-width: 800px;
           margin: 0 auto;
+          width: 100%;
         }
 
         @media (max-width: 600px) {
@@ -183,15 +184,18 @@ export default function (props) {
         }
 
         .status {
-          padding: 5px;
-          font-size: 13px;
           background: var(--empz-warning);
+          border-radius: 4px;
           color: var(--empz-background);
-        }
-
-        h1,
-        p {
-          word-break: break-all;
+          display: block;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          margin-bottom: var(--empz-gap);
+          padding: 4px 8px;
+          text-align: center;
+          text-transform: uppercase;
+          width: fit-content;
         }
 
         .meta {
@@ -202,6 +206,13 @@ export default function (props) {
 
         .meta .comment-count {
           padding-left: var(--empz-gap-half);
+        }
+
+        h1{
+          font-size: 24px;
+        }
+        h1:first-letter{
+          text-transform: uppercase;
         }
       `}</style>
     </>

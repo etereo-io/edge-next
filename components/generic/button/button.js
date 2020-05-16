@@ -104,9 +104,14 @@ export default function (props) {
           .button.full-width {
             width: 100%;
           }
-
-          .button.loading {
-            padding: 5px 12px;
+          
+          .button.loading{
+            display: flex;
+            justify-content: center;
+            text-align: center;
+          }
+          .button.loading div{
+            display: inline-block;
           }
 
           .button.hoverable:hover{
