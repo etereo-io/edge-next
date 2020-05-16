@@ -5,16 +5,27 @@ import NextJSLogo from '../components/generic/icons/nextjs-icon/nextjs-icon'
 import Badge from '../components/generic/badge/badge'
 import Link from 'next/link'
 import config from '../lib/config'
+import { useContentType } from '../lib/client/hooks'
+import ContentListView from '../components/content/read-content/content-list-view/content-list-view'
 
 const Landing = (props) => {
+  const { contentType } = useContentType('post')
   return (
     <>
-      <Layout title="Landing page" fullWidth>
-        <div className="hero">
-          <div className="hero-head-line">
-            <h1 className="slogan">{config.slogan}</h1>
-            <div className="call-to-action">
-              <div className="call-to-action-item">
+      <Layout title={`${config.title} - ${config.slogan}`} description={config.slogan} fullWidth>
+        <div className="columns">
+          <div className="left-column">
+
+          </div>
+          <div className="center-column">
+            { contentType && <ContentListView
+              type={contentType}
+            />
+            }
+          </div>
+
+          <div className="right-column">
+             <div className="call-to-action-item">
                 <Button alt href="/components">
                   See all components
                 </Button>
@@ -29,280 +40,63 @@ const Landing = (props) => {
                   <span style={{display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '5px 10px'}}>Web monetization enabled <img alt="web monetization" width={'30px'} src="/static/logos/wm-icon-animated.svg" /></span>
                 </Button>
               </div>
-              
-            </div>
+              <div className="badges">
+                <Badge success>SEO 100</Badge>{' '}
+                <Badge success>Accessibility 100</Badge>{' '}
+                <Badge success>PWA</Badge>
+              </div>
+              <div className="powered-by">
+                <span>powered by</span>
+                <a
+                  href="https://nextjs.org/"
+                  title="NextJS website"
+                  rel="noopener"
+                  target="_blank"
+                >
+                  <NextJSLogo />
+                </a>
+              </div>
 
-            <div className="badges">
-              <Badge success>SEO 100</Badge>{' '}
-              <Badge success>Accessibility 100</Badge>{' '}
-              <Badge success>PWA</Badge>
-            </div>
+              <div className="source-code">
+                <span>source code on </span>{' '}
+                <a
+                  href="https://github.com/nucleo-org/edge-next"
+                  rel="noopener"
+                  target="_blank"
+                  title="Source code"
+                >
+                  <GithubLogo />
+                </a>
+              </div>
+
           </div>
         </div>
-
-        <div className="separator">
-          <div>
-            <span>created by </span>{' '}
-            <a href="https://nucleo.is" rel="noopener" target="_blank">
-              the Nucleo Team
-            </a>
-          </div>
-        </div>
-        <div className="powered-by">
-          <span>powered by</span>
-          <a
-            href="https://nextjs.org/"
-            title="NextJS website"
-            rel="noopener"
-            target="_blank"
-          >
-            <NextJSLogo />
-          </a>
-        </div>
-
-        <div className="source-code">
-          <span>source code on </span>{' '}
-          <a
-            href="https://github.com/nucleo-org/edge-next"
-            rel="noopener"
-            target="_blank"
-            title="Source code"
-          >
-            <GithubLogo />
-          </a>
-        </div>
-
-        <h2>Features</h2>
-        <div className="features">
-          <div className="feature">
-            <h3>Ready to Rock</h3>
-            <p>
-              A ready to Rock and complete solution to launch an MVP in a
-              fraction of time. Configure, adapt and deploy to thousands of
-              users.
-            </p>
-          </div>
-          <div className="feature">
-            <h3>Dynamic API</h3>
-            <p>
-              A dynamic API for your content and comments based on a
-              configuration file. Content forms are updated automaticaly based
-              on your settings, allowing the users to create any kind of
-              content.
-            </p>
-          </div>
-          <div className="feature">
-            <h3>Custom Permissions and Roles</h3>
-            <p>
-              Add custom permissions based on roles for each API endpoint and
-              app pages. Create and configure new roles to extend the default
-              functionality.
-            </p>
-          </div>
-          <div className="feature">
-            <h3>Built-in admin dashboard</h3>
-            <p>
-              A simple admin dashboard to list and edit all the content,
-              comments and users of the platform.
-            </p>
-          </div>
-          <div className="feature">
-            <h3>Built-in CSS Themes</h3>
-            <p>
-              Four CSS themes implemented (Light, Dark, Robot, Kawai), stored in
-              cookies for each user preference. Easily create and add new
-              themes.
-            </p>
-          </div>
-          <div className="feature">
-            <h3>Web Monetization</h3>
-            <p>
-              Easily configurable <a href="https://webmonetization.org/" title="Web monetization" rel="noopener" target="_blank">web monetization</a>. Allowing the users of the site to configure their payment pointers to create paid content.
-            </p>
-          </div>
-          <div className="feature">
-            <h3>SSG (Static Site Generation)</h3>
-            <p>
-              Built-in static pages through Markdown rendering, check{' '}
-              <Link href="/p/faq">
-                <a>some</a>
-              </Link>{' '}
-              <Link href="/p/privacy-policy">
-                <a>example</a>
-              </Link>{' '}
-              <Link href="/p/terms-of-service">
-                <a>pages</a>
-              </Link>
-            </p>
-          </div>
-          <div className="feature">
-            <h3>User Activity</h3>
-            <p>Record and display user activity through api hooks.</p>
-          </div>
-          <div className="feature">
-            <h3>Coded Components</h3>
-            <p>
-              A set of ready to use and fully integrated and themed{' '}
-              <Link href="/components">
-                <a>components</a>
-              </Link>
-            </p>
-          </div>
-
-          <div className="feature">
-            <h3>Emails</h3>
-            <p>
-              Email verification, password recovery and notifications through
-              emails already implemented.
-            </p>
-          </div>
-
-          <div className="feature">
-            <h3>Social Providers</h3>
-            <p>
-              Login and register implemented for different social providers like
-              Google, Facebook and Github. Easily extendable to many more.
-            </p>
-          </div>
-
-          <div className="feature">
-            <h3>Next + React + Serverless</h3>
-            <p>
-              A modern setup easily deployable on platforms like{' '}
-              <a href="https://vercel.com">Vercel.com</a>
-            </p>
-          </div>
-
-          <div className="feature">
-            <h3>PWA</h3>
-            <p>
-              Progressive Web App. Allow to install on Android devices as an
-              application, gives better loading times than a normal website.
-            </p>
-          </div>
-
-          <div className="feature">
-            <h3>Documented</h3>
-            <p>
-              Important information on how to deploy and configure your site in
-              the{' '}
-              <Link href="/p/documentation">
-                <a>documentation</a>
-              </Link>
-            </p>
-          </div>
-          <div className="feature">
-            <h3>Integration test</h3>
-            <p>
-              A set of integration tests cover different paths and can be easily
-              extended
-            </p>
-          </div>
-          <div className="feature">
-            <h3>OpenSource</h3>
-            <p>
-              All the code open and available at{' '}
-              <a
-                href="https://github.com/nucleo-org/edge-next"
-                title="Github repo"
-              >
-                https://github.com/nucleo-org/edge-next
-              </a>
-            </p>
-          </div>
-        </div>
-
-        <h2>Use cases</h2>
-        <div className="use-cases">
-          <div className="use-case">
-            <h3>Social Page</h3>
-            <p>Allow users to register and post content of any kind</p>
-          </div>
-
-          <div className="use-case">
-            <h3>MVP</h3>
-            <p>Launch an MVP really fast.</p>
-          </div>
-
-          <div className="use-case">
-            <h3>API</h3>
-            <p>
-              Need a quick API and admin dashboard for your product? Use{' '}
-              <b>Edge</b>
-            </p>
-          </div>
-        </div>
+     
+        
       </Layout>
       <style jsx>{`
-      .hero {
-        padding-top: 100px;
-        padding-bottom: 30px;
-        background: linear-gradient(-45deg, var(--empz-foreground), var(--empz-background), var(--empz-background), var(--empz-foreground));
-        background-size: 400% 400%;
-        animation: gradient 15s ease infinite;
+
+      .columns {
+        display: flex;
+        flex-wrap: wrap;
       }
 
-      @media (max-width: 600px) {
-        .hero {
-          padding-top: 50px;
-        }
+      .left-column, .right-column {
+        width: 20%
+        padding: var(--empz-gap);
       }
 
-      @keyframes gradient {
-        0% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 0% 50%;
-        }
+      .center-column {
+        width: 60%;
+        padding: var(--empz-gap);
       }
-
+     
       .call-to-action {
         display: flex;
         flex-wrap: wrap;
       }
 
-      .call-to-action .call-to-action-item {
-        margin-right: var(--empz-gap);
-      }
-
-      @media (max-width: 600px) {
-        .call-to-action {
-          flex-direction: column;
-        }
-
-        .call-to-action-item {
-          width: 100%;
-          dispay: flex;
-          align-items: center;
-          margin-bottom: var(--empz-gap);
-        }
-      }
-      
-      .hero-head-line {
-        max-width: 1024px;
-        margin: 0 auto;
-        padding var(--empz-gap);
-      }
-
-      .slogan {
-        font-size: 3.5rem; 
-        font-weight: 400;
-        letter-spacing: -.02em;
-        line-height: 130%;
-        margin-bottom: 30px;
-        color: var(--empz-foreground);
-      }
-
-      @media (max-width: 600px) {
-        .slogan {
-          font-size: 1.5rem;
-        }
-      }
-
+   
       .badges {
         display: flex;
         align-items: center;
@@ -325,50 +119,12 @@ const Landing = (props) => {
         color: var(--empz-foreground);
       }
 
-      .separator {
-        height: 100px;
-        margin-bottom: var(--empz-gap-double);
-        background: var(--empz-foreground);
-        color: var(--empz-background);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: var(--empz-gap);
-      }
-
-      .separator a {
-        color: var(--empz-background);
-      }
-
+     
       h2 {
         text-align: center;
       }
 
-      .features, .use-cases {
-        max-width: 1024px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 0 auto;
-        padding var(--empz-gap);
-      }
-
-      .feature, .use-case {
-        width: 30%;
-        padding: 15px;
-        margin: 30px 0px;
-        background: var(--accents-2);
-      }
-
-      @media (max-width: 600px) {
-        .features, .use-cases {
-          flex-direction: column;
-        }
-
-        .feature, .use-case {
-          width: 100%;
-        }
-      }
+      
       `}</style>
     </>
   )
