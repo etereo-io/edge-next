@@ -176,10 +176,6 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
       </div>
       <style jsx>
         {`
-          .comment-item {
-            padding: var(--empz-gap-half) 0;
-          }
-
           .replies {
             padding-left: 30px;
           }

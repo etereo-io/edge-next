@@ -159,7 +159,6 @@ export default function ({
         .comment-feed-view {
           border-top: 1px solid var(--accents-2);
           max-width: 100%;
-          padding-top: var(--empz-gap);
           margin-top: var(--empz-gap);
         }
 
