@@ -185,9 +185,8 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
           }
 
           .collapsed-comment {
-            font-weight: bold;
-            margin-top: var(--empz-gap-half);
-            font-weight: 13px;
+            font-weight: 500;
+            margin: var(--empz-gap) 0;
             padding-left: var(--empz-gap-double);
           }
 
