@@ -157,7 +157,6 @@ export default function ({
       </div>
       <style jsx>{`
         .comment-feed-view {
-          border-top: 1px solid var(--accents-2);
           max-width: 100%;
           margin-top: var(--empz-gap);
         }

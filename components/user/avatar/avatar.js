@@ -33,8 +33,15 @@ export default function (props) {
         .avatar {
           display: inline-block;
           margin: ${margin}px;
+          height: ${width}px;
           vertical-align: middle;
           width: ${width}px;
+        }
+
+        .avatar img{
+          height: 100%;
+          object-fit: cover;
+          width: 100%;
         }
       `}</style>
     </>

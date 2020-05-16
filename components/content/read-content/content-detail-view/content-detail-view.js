@@ -39,6 +39,16 @@ export default function (props) {
             />
 
             {props.type.comments.enabled &&
+              canReadComments.available &&
+              showComments && (
+                <CommentsFeed
+                  type={props.type}
+                  contentId={props.content.id}
+                  newComments={newComments}
+                />
+              )}
+
+            {props.type.comments.enabled &&
               canWriteComments.available &&
               showComments && (
                 <div className="comment-form-wrapper">
@@ -48,16 +58,6 @@ export default function (props) {
                     contentId={props.content.id}
                   />
                 </div>
-              )}
-
-            {props.type.comments.enabled &&
-              canReadComments.available &&
-              showComments && (
-                <CommentsFeed
-                  type={props.type}
-                  contentId={props.content.id}
-                  newComments={newComments}
-                />
               )}
           </div>
 
@@ -81,9 +81,8 @@ export default function (props) {
         .content-detail-content {
           margin-bottom: var(--empz-gap-double);
           flex: 1;
-          
 
-          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
           color: var(--empz-foreground);
           background: var(--empz-background);
           padding: var(--empz-gap);
@@ -102,6 +101,7 @@ export default function (props) {
 
         .comment-form-wrapper {
           margin-bottom: var(--empz-gap);
+          padding: 0 var(--empz-gap);
         }
       `}</style>
     </>

@@ -83,11 +83,15 @@ export default function ({
     <>
       <div className="">
         <form onSubmit={onSubmit} className="form">
-          <textarea
-            value={message}
-            placeholder="Your comment"
-            onChange={onChangeMessage}
-          />
+          <div className="input-group">
+            <label for="your-comment">Add a new comment</label>
+            <textarea
+              value={message}
+              placeholder="Your comment"
+              onChange={onChangeMessage}
+              id="your-comment"
+            />
+          </div>
 
           <div className="actions">
             <div className="action">
@@ -111,7 +115,6 @@ export default function ({
       </div>
       <style jsx>{`
         form {
-          max-width: 500px;
           margin: 0 auto;
         }
 

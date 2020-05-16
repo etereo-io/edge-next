@@ -141,6 +141,7 @@ export default function (props) {
               reference={$loadMoreButton}
               loading={isLoadingMore}
               big={true}
+              fullWidth={true}
               onClick={loadMore}
             >
               Load More

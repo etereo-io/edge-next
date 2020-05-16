@@ -118,9 +118,12 @@ export default function CommentEntry({
         }
 
         .info,
-        .content,
-        .actions {
+        .content {
           margin-bottom: var(--empz-gap-half);
+        }
+
+        .actions{
+          cursor: pointer;
         }
 
         .username {
