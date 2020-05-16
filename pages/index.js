@@ -134,7 +134,6 @@ const Landing = (props) => {
           background: var(--accents-1);
           display: flex;
           justify-content: space-between;
-          padding-top: 56px;
         }
 
         @media all and (max-width: 860px){
