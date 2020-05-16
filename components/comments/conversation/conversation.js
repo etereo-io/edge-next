@@ -177,7 +177,11 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
       <style jsx>
         {`
           .replies {
-            padding-left: 30px;
+            padding-left: var(--empz-gap-double);
+          }
+
+          .comment-item{
+            border-top: 1px solid var(--accents-2);
           }
 
           .collapsed-comment {
