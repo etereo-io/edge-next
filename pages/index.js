@@ -133,7 +133,6 @@ const Landing = (props) => {
         .columns {
           background: var(--accents-1);
           display: flex;
-          flex-wrap: wrap;
           justify-content: space-between;
           padding-top: 56px;
         }
@@ -148,10 +147,8 @@ const Landing = (props) => {
           height: 100%;
           justify-content: space-between;
           position: sticky;
-          margin-right: var(--empz-gap-double);
-          min-width: 360px;
           top: 80px;
-          width: 24%;
+          width: 32.5%;
         }
 
         @media all and (max-width: 1080px){
@@ -176,8 +173,8 @@ const Landing = (props) => {
         }
 
         .center-column {
-          margin: 0 auto;
-          width: 62%;
+          margin-right: var(--empz-gap);
+          width: 77%;
         }
 
         @media all and (max-width: 860px){
