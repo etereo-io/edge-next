@@ -16,16 +16,15 @@ jest.mock('../../../../../edge.config', () => ({
   getConfig: jest.fn().mockReturnValue({
     title: 'A test',
     description: 'A test',
-   
   }),
 }))
 
 const demoUser = {
   username: 'demo',
   email: 'demo@demo.com',
-  id: 1,
+  id: '1',
   roles: ['USER'],
-  password: 'xxhshsk--213123-123-1-23',
+  email: 'email@email.com',
   profile: {
     displayName: 'A test user',
     picture: '',
@@ -63,20 +62,18 @@ describe('Integrations tests for user read', () => {
 
       // Mock permissions
       getPermissions.mockReturnValue({
-        'user.read': ['PUBLIC'],
+        'user.read': ['PUBLIC'], 
+        'user.admin': ['ADMIN']
       })
 
       // Current user is PUBLIC
-      getSession.mockReturnValue()
+      getSession.mockReturnValue(null)
 
       // The user it finds
-      findOneUser.mockReturnValue(demoUser)
+      findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'GET'
       })
 
       const jsonResult = await response.json()
@@ -108,13 +105,10 @@ describe('Integrations tests for user read', () => {
       getSession.mockReturnValue()
 
       // The user it finds
-      findOneUser.mockReturnValue(demoUser)
+      findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'GET'
       })
 
       expect(response.status).toBe(404)
@@ -136,13 +130,10 @@ describe('Integrations tests for user read', () => {
       getSession.mockReturnValue()
 
       // The user it finds
-      findOneUser.mockReturnValue(demoUser)
+      findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'GET'
       })
 
       expect(response.status).toBe(401)
@@ -167,15 +158,14 @@ describe('Integrations tests for user read', () => {
       })
 
       // The user it finds
-      findOneUser.mockReturnValue(demoUser)
+      findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'GET'
       })
 
+      const jsonResult = await response.json()
+      console.log(jsonResult)
       expect(response.status).toBe(200)
 
       expect(findOneUser).toHaveBeenCalledWith({
@@ -198,17 +188,14 @@ describe('Integrations tests for user read', () => {
       getSession.mockReturnValue()
 
       // The user it finds
-      findOneUser.mockReturnValue(demoUser)
+      findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'GET'
       })
 
+      
       expect(response.status).toBe(200)
-
 
       expect(findOneUser).toHaveBeenCalledWith({
         username: 'username'

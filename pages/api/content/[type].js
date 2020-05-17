@@ -21,9 +21,9 @@ const getContent = (filterParams, searchParams, paginationParams) => (
     ...filterParams,
   }
 
-  const isAdmin = req.user && req.user.roles.indexOf('ADMIN') !== -1
+  const isAdmin = req.currentUser && req.currentUser.roles.indexOf('ADMIN') !== -1
   const isOwner =
-    req.user && filterParams.author && req.user.id === filterParams.author
+    req.currentUser && filterParams.author && req.currentUser.id === filterParams.author
 
   if (type.publishing.draftMode && !isAdmin && !isOwner) {
     // Filter by draft, except for admins and owners
@@ -88,12 +88,12 @@ const createContent = async (req, res) => {
     .then(async () => {
       // Content is valid
       // Add default value to missing fields
-      const newContent = fillContentWithDefaultData(type, content, req.user)
+      const newContent = fillContentWithDefaultData(type, content, req.currentUser)
 
       addContent(type.slug, newContent)
         .then((data) => {
           // Trigger on content added hook
-          onContentAdded(data, req.user)
+          onContentAdded(data, req.currentUser)
 
           // Respond
           res.status(200).json(data)

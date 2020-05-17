@@ -5,6 +5,8 @@ import { onUserDeleted, onUserUpdated } from '../../../lib/api/hooks/user.hooks'
 
 import { connect } from '../../../lib/api/db'
 import { getSession } from '../../../lib/api/auth/iron'
+import { hasPermission } from '../../../lib/permissions'
+import { hidePrivateUserFields } from '../../../lib/api/users/user.utils'
 import methods from '../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
 import { v4 as uuidv4 } from 'uuid'
@@ -34,24 +36,32 @@ const userExist = (userId = '') => async (req, res, cb) => {
   const findOptions = isUsername ? {
     username: userId.replace('@', '')
   }: { id: findUserId }
-  const user = await findOneUser(findOptions)
-
-  if (!user) {
-    cb(new Error('User not found'))
-  } else {
-    req.user = user
-    cb()
-  }
+  
+  findOneUser(findOptions)
+    .then(user => {
+      if (user) {
+        req.item = user
+        cb()
+      } else {
+        cb(new Error('User not found'))
+      }
+    })
+    .catch(err => {
+      cb(new Error('User not found'))
+    })
 }
 
 const getUser = (req, res) => {
-  // TODO: Hide private fields
-  res.status(200).json(req.user)
+  const permission = [`user.admin`]
+  
+  const showPrivateFields = hasPermission(req.currentUser, permission) || req.currentUser && (req.currentUser.id === req.item.id)
+  
+  res.status(200).json(showPrivateFields ? req.item: hidePrivateUserFields(req.item))
 }
 
 const delUser = (req, res) => {
   // TODO: implement
-  onUserDeleted(req.user)
+  onUserDeleted(req.item)
   res.status(200).send({
     deleted: true,
   })
@@ -161,34 +171,34 @@ const updateUser = (slug) => async (req, res) => {
   switch (updateData) {
     case 'profile':
       /* Update only profile data */
-      promiseChange = updateProfile(req.user.id, {
-        ...req.user.profile,
+      promiseChange = updateProfile(req.item.id, {
+        ...req.item.profile,
         ...req.body,
       })
       break
     case 'username':
       /* Update only username */
-      promiseChange = updateUsername(req.user.id, req.body.username)
+      promiseChange = updateUsername(req.item.id, req.body.username)
       break
     case 'email':
       /* Update only email */
-      promiseChange = updateEmail(req.user.id, req.body.email)
+      promiseChange = updateEmail(req.item.id, req.body.email)
       break
 
     case 'block':
       /* Update only blocked status */
-      promiseChange = updateBlockedStatus(req.user.id, req.body.blocked)
+      promiseChange = updateBlockedStatus(req.item.id, req.body.blocked)
       break
 
     case 'password':
       /* Update only password */
       // Check that the current password req.req.body.password matches the old one
-      promiseChange = updatePassword(req.user, req.body.password, req.body.newpassword)
+      promiseChange = updatePassword(req.item, req.body.password, req.body.newpassword)
       break
     
     case 'picture': 
       
-      promiseChange = updateProfilePicture(req.user, req.files.profilePicture)
+      promiseChange = updateProfilePicture(req.item, req.files.profilePicture)
 
       break
     default:

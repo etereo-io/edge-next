@@ -53,7 +53,6 @@ export async function getServerSideProps({ req, res, query }) {
       slug: query.slug,
       canAccess: true,
       pageTitle: contentTitle,
-      user: req.user || {},
       contentType: contentTypeDefinition,
     },
   }

@@ -18,7 +18,6 @@ import { FIELDS } from '../../../../lib/config/config-constants'
 import { connect } from '../../../../lib/api/db'
 import { contentValidations } from '../../../../lib/validations/content'
 import { deleteFile } from '../../../../lib/api/storage'
-import { findOneUser } from '../../../../lib/api/users/user'
 import merge from 'deepmerge'
 import methods from '../../../../lib/api/api-helpers/methods'
 import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
@@ -60,12 +59,7 @@ const loadContentItemMiddleware = async (req, res, cb) => {
 }
 
 const getContent = async (req, res) => {
-  const user = await findOneUser({ id: req.item.author })
-
-  res.status(200).json({
-    ...req.item,
-    user: user,
-  })
+  res.status(200).json(req.item)
 }
 
 const deleteContent = (req, res) => {
@@ -75,7 +69,7 @@ const deleteContent = (req, res) => {
     .then(async () => {
  
       // Trigger on content deleted hook
-      await onContentDeleted(item, req.user, req.contentType)
+      await onContentDeleted(item, req.currentUser, req.contentType)
     
       res.status(200).json({
         deleted: true
@@ -151,7 +145,7 @@ const updateContent = async (req, res) => {
         .then((data) => {
           
           // Trigger on updated hook
-          onContentUpdated(data, req.user)
+          onContentUpdated(data, req.currentUser)
 
           // Respond
           res.status(200).json(data)

@@ -41,7 +41,6 @@ export async function getServerSideProps({ req, res, query }) {
       data: response,
       type: query.type,
       canAccess: true,
-      user: req.user || {},
       query: `&sortBy=createdAt&sortOrder=DESC${query.tags ? `&tags=${query.tags}` : ''}` ,
       contentType: contentTypeDefinition
     },

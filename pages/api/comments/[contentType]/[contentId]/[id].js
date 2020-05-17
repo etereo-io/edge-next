@@ -55,7 +55,7 @@ const deleteComment = async (req, res) => {
     await deleteOneComment({ id: item.id })
 
     // Trigger hook
-    await onCommentDeleted(item, req.user)
+    await onCommentDeleted(item, req.currentUser)
     
     res.status(200).json({
       deleted: true
@@ -80,7 +80,7 @@ const updateComment = (req, res) => {
       updateOneContent(type.slug, req.item.id, req.body)
         .then((data) => {
           // Trigger hook
-          onCommentUpdated(req.item, req.user)
+          onCommentUpdated(req.item, req.currentUser)
 
           // Respond
           res.status(200).json(data)

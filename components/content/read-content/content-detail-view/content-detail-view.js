@@ -56,6 +56,7 @@ export default function (props) {
                     onSave={onCommentAdded}
                     type={props.type}
                     contentId={props.content.id}
+                    onCancel={() => setShowComments(!showComments)}
                   />
                 </div>
               )}

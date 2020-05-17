@@ -147,17 +147,17 @@ export default function (props) {
               Save
             </Button>
           </div>
+          {success && (
+            <div className="success-message">
+              Saved: You can see it{' '}
+              <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
+                <a title="View content">here</a>
+              </Link>
+            </div>
+          )}
+          {error && <div className="error-message">Error saving </div>}
         </form>
 
-        {success && (
-          <div className="success-message">
-            Saved: You can see it{' '}
-            <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
-              <a title="View content">here</a>
-            </Link>
-          </div>
-        )}
-        {error && <div className="error-message">Error saving </div>}
 
         <div className="preview">
           <ContentSummaryView content={state} type={props.type} />

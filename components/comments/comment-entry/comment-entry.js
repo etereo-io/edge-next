@@ -72,7 +72,7 @@ export default function CommentEntry({
           </div>
           <div className="content">{comment.message}</div>
           <div className="actions">
-            {hasWritePermission && (
+            {hasWritePermission && !showReplyForm &&  (
               <span
                 onClick={() => {
                   setShowReplyForm(true)

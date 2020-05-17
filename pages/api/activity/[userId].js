@@ -28,7 +28,6 @@ const userExist = (userId) => async (req, res, cb) => {
   if (!user) {
     cb(new Error('User not found'))
   } else {
-    req.user = user
     cb()
   }
 }

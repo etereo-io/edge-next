@@ -1,24 +1,14 @@
 import Layout from '../components/layout/normal/layout'
 import Avatar from '../components/user/avatar/avatar'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
-import Button from '../components/generic/button/button'
 import GithubLogo from '../components/generic/icons/github-icon/github-icon'
 import NextJSLogo from '../components/generic/icons/nextjs-icon/nextjs-icon'
-import Badge from '../components/generic/badge/badge'
-import Link from 'next/link'
+
 import config from '../lib/config'
 import { useContentType } from '../lib/client/hooks'
 import ContentListView from '../components/content/read-content/content-list-view/content-list-view'
 
 const Landing = (props) => {
   const { contentType } = useContentType('post')
-
-  // Load profile data
-  const router = useRouter()
-  const { userId } = router.query
-  const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
-  const finished = Boolean(data) || Boolean(error)
 
   return (
     <>
@@ -28,8 +18,9 @@ const Landing = (props) => {
       >
         <div className="columns">
           <div className="left-column">
+            
             <div className="avatar">
-              <Avatar src={data ? data.profile.picture : null} />
+              <Avatar src={null} />
             </div>
             <strong>Hayder Al-Deen</strong>
             <span>@hayder</span>

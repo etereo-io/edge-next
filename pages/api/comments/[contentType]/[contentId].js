@@ -88,18 +88,18 @@ const createComment = (req, res) => {
         type,
         contentId,
         comment,
-        req.user
+        req.currentUser
       )
 
       addComment(newComment)
         .then((data) => {
           // Trigger hook
-          onCommentAdded(data, req.user)
+          onCommentAdded(data, req.currentUser)
 
           // Respond
           res.status(200).json({
             ...data,
-            user: req.user,
+            user: req.currentUser,
           })
         })
         .catch((err) => {
