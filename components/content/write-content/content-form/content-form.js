@@ -130,7 +130,6 @@ export default function (props) {
                 value={state['draft']}
                 onChange={handleFieldChange('draft')}
               />
-              {state.draft && <div>Your content will not be visible</div>}
             </div>
           )}
 

@@ -96,9 +96,9 @@ export default function (props) {
           </g>
         </svg>
         <p className="dropzone-text">Drag and drop files</p>
-        <small className="dropzone-multimage">
-          Upload multiple images to display a carousel
-        </small>
+        {props.description && <small className="dropzone-description">
+          {props.description}
+        </small>}
         <input
           ref={fileInputRef}
           className="fileinput"
@@ -150,7 +150,7 @@ export default function (props) {
           font-weight: 600;
         }
 
-        .dropzone-multimage{
+        .dropzone-description{
           color: var(--accents-3);
           display: block;
           margin-top: 4px;

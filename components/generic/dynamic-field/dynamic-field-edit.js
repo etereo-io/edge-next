@@ -130,6 +130,7 @@ function InputImage(props) {
         data-testid={props['data-testid']}
         className={`${touched ? 'touched': ''}`}
         value={props.value}
+        description={props.field.multiple ? 'Upload multiple images to display a carousel' : 'Upload a single image'}
         onChange={onChange} />
 
     </>
@@ -154,6 +155,7 @@ function InputFile(props) {
       data-testid={props['data-testid']}
       className={`${touched ? 'touched': ''}`}
       value={props.value}
+      description={props.field.multiple ? 'You can upload multiple files' : 'Upload a single file'}
       onChange={onChange} />
   )
 }

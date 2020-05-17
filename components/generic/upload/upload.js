@@ -55,7 +55,7 @@ export default function ({accept, name, required, multiple, ...props}) {
       <div className="file-upload" data-testid={props['data-testid']}>
         <div className="content">
           <div>
-            <Dropzone onFilesAdded={onFilesAdded} {...inputProps} onLoading={setLoading}/>
+            <Dropzone onFilesAdded={onFilesAdded} {...inputProps} onLoading={setLoading} description={props.description}/>
           </div>
           <div className="files">
             {loading && <div className="loading">Loading...</div>}

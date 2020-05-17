@@ -24,7 +24,7 @@ function Field({ field, value, showLabel = false, contentType}) {
           </div>
         )
       case FIELDS.IMAGE:
-        if (value && Array.isArray(value) ) {
+        if (value && Array.isArray(value) && value.length > 0) {
           const transformedValues = value.map(i => i.isFile ? i.src : i.path)
 
             
@@ -44,7 +44,22 @@ function Field({ field, value, showLabel = false, contentType}) {
         return <p data-testid={datatestId}>{value}</p>
 
       case FIELDS.FILE:
-        return <p data-testid={datatestId}>{value}</p>
+        if (value && Array.isArray(value) && value.length > 0 ) {
+          const transformedValues = value.map(i => i.isFile ? i.file.name : i.name)
+
+            
+          return (
+          <div
+            data-testid={datatestId}
+          >
+           <p><strong>{field.label}: </strong></p>
+           {value.map(i => (<div key={i.isFile ? i.file.name: i.path}><a href={i.isFile ? i.file.src: i.path}>{i.isFile ? i.file.name: i.name}</a></div>))}
+          </div>
+        )
+        } else {
+          return null
+        }
+        
 
       case FIELDS.TAGS:
         return (

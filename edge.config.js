@@ -240,13 +240,6 @@ const initialUsers = [{
         errorMessage: 'Description must be between 20 and 2000 characters'
       },
       {
-        name: 'image',
-        type: 'img',
-        label: 'Image',
-        placeholder: 'Image',
-        errorMessage: 'Only images supported'
-      },
-      {
         name: 'images',
         type: 'img',
         label: 'Images',
