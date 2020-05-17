@@ -80,6 +80,7 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
 
       <style jsx>{`
         .image-wrapper {
+          border-radius: 4px;
           overflow: hidden;
           position: relative;
           width: 100%;
@@ -97,7 +98,7 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
           transform: translateY(-50%);
           text-indent: -9999px;
           width: 32px;
-          z-index: 10;
+          z-index: 2;
         }
 
         .arrow:before{
@@ -135,9 +136,14 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
         .image-container {
           position: relative;
           display: flex;
-          transition: left 300ms linear;
+          transition: left 0.4s ease-in-out;
+          will-change: left;
         }
-        .image-item {
+
+        .image-item img{
+          height: 100%;
+          object-fit-cover;
+          user-select: none;
         }
 
         .quote {

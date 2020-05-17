@@ -37,10 +37,11 @@ export default class ProgressiveImage extends Component {
             height: ${this.props.height}px;
           }
 
-          img {
-            max-width: 100%;
+          img{
+            height: 100%;
+            object-fit: cover;
+            user-select: none;
             width: 100%;
-            max-height: 100%;
           }
         `}</style>
       </span>
