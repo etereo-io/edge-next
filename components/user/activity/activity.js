@@ -28,7 +28,7 @@ export default function (props) {
       return <span>added <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="new comment">a comment</a></Link></span>
 
       default: 
-        return <span>{ac.type}</span>
+        return <span>{activity.type}</span>
     }
   }
 
