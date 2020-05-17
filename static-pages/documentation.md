@@ -374,6 +374,14 @@ GOOGLE_PROJECTID=XX
 GOOGLE_BUCKET_NAME=XX
 ````
 
+You can obtain the GOOGLE_CLIENT_EMAIL, GOOGLE_PRIVATE_KEY and GOOGLE_PROJECTID variables from a service account that you must export from the Google cloud dashboard. 
+
+Another useful resources:
+- [Create a Google cloud bucket](https://cloud.google.com/storage/docs/creating-buckets) 
+- [Making files public in google bucket](https://cloud.google.com/storage/docs/access-control/making-data-public)
+- [Another way to import Google Application Credentials](https://dev.to/parondeau/gcp-credentials-next-js-3a0d)
+
+
 ## Databases
 Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"
 
@@ -502,14 +510,34 @@ To configure the different API keys for each provider you must edit the environm
 - [Register your Google application](https://developers.google.com/identity/sign-in/web/sign-in)
 - [Register your Facebook application](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/)
 
+After creating your applications you will need to define the following environment variables in your `.env.local` file.
+
+````
+FACEBOOK_ID=XX
+FACEBOOK_SECRET=XX
+GITHUB_ID=XX
+GITHUB_SECRET=XX
+GOOGLE_ID=XX
+GOOGLE_SECRET=XX
+````
+
 ## Emails
 
-Empieza uses [Sendgrid](https://sendgrid.com/) to send emails. Although this is easily editable, just edit `/lib/email/sender.js` to change the sending implementations.
+Empieza uses [Sendgrid](https://sendgrid.com/) to send emails. Although this is easily editable; just edit `/lib/email/sender.js` to change the sending implementations.
 
 There are some email templates included and working:
 
 - Call to Action template: A simple template with a button. Used to verify user emails.
 
+Some resources:
+
+- [Get a sendgrid API key](https://www.youtube.com/watch?v=ShOQxpX7Dcw)
+
+Once you have your sendgrid API key you will need to include it on the environment file:
+
+````
+SENDGRID_KEY=XX
+````
 
 ## Static Pages
 
