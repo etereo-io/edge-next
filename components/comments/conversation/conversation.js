@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import API from '../../../lib/api/api-endpoints'
-import fetch from '../../../lib/fetcher'
+import API from '@lib/api/api-endpoints'
+import fetch from '@lib/fetcher'
 import Button from '../../generic/button/button'
 import Placeholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import CommentEntry from '../comment-entry/comment-entry'

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Header from '../header/header'
 import Footer from '../footer/footer'
-import config from '../../../lib/config'
+import config from '@lib/config'
 
 const Layout = (props) => (
   <>

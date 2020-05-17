@@ -2,21 +2,21 @@ import {
   deleteOneComment,
   findOneComment,
   updateOneComment,
-} from '../../../../../lib/api/comments/comments'
+} from '@lib/api/comments/comments'
 import {
   hasPermissionsForComment,
   hasQueryParameters,
   isValidContentType,
-} from '../../../../../lib/api/middlewares'
+} from '@lib/api/middlewares'
 import {
   onCommentDeleted,
   onCommentUpdated,
-} from '../../../../../lib/api/hooks/comment.hooks'
+} from '@lib/api/hooks/comment.hooks'
 
-import { connect } from '../../../../../lib/api/db'
-import { contentValidations } from '../../../../../lib/validations/content'
-import methods from '../../../../../lib/api/api-helpers/methods'
-import runMiddleware from '../../../../../lib/api/api-helpers/run-middleware'
+import { connect } from '@lib/api/db'
+import { contentValidations } from '@lib/validations/content'
+import methods from '@lib/api/api-helpers/methods'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 const loadCommentItemMiddleware = async (req, res, cb) => {
   const searchOptions = {

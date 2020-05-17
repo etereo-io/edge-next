@@ -1,12 +1,12 @@
-import Layout from '../components/layout/normal/layout'
+import Layout from '@components/layout/normal/layout'
 
-import UserProfileBox from '../components/user/user-profile-box/user-profile-box'
-import GithubLogo from '../components/generic/icons/github-icon/github-icon'
-import NextJSLogo from '../components/generic/icons/nextjs-icon/nextjs-icon'
+import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
+import GithubLogo from '@components/generic/icons/github-icon/github-icon'
+import NextJSLogo from '@components/generic/icons/nextjs-icon/nextjs-icon'
 
 import config from '../lib/config'
 import { useContentType, useUser } from '../lib/client/hooks'
-import ContentListView from '../components/content/read-content/content-list-view/content-list-view'
+import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 
 const Landing = (props) => {
   const { contentType } = useContentType('post')

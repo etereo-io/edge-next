@@ -1,14 +1,14 @@
-import { addContent, findContent } from '../../../lib/api/content/content'
+import { addContent, findContent } from '@lib/api/content/content'
 import {
   hasPermissionsForContent,
   isValidContentType,
-} from '../../../lib/api/middlewares'
+} from '@lib/api/middlewares'
 
-import { connect } from '../../../lib/api/db'
-import { contentValidations } from '../../../lib/validations/content'
-import methods from '../../../lib/api/api-helpers/methods'
-import { onContentAdded } from '../../../lib/api/hooks/content.hooks'
-import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
+import { connect } from '@lib/api/db'
+import { contentValidations } from '@lib/validations/content'
+import methods from '@lib/api/api-helpers/methods'
+import { onContentAdded } from '@lib/api/hooks/content.hooks'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
 
 const getContent = (filterParams, searchParams, paginationParams) => (

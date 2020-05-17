@@ -1,6 +1,6 @@
 import DropDown from '../../generic/dropdown-menu/dropdown-menu'
-import { commentPermission } from '../../../lib/permissions'
-import { useUser } from '../../../lib/client/hooks'
+import { commentPermission } from '@lib/permissions'
+import { useUser } from '@lib/client/hooks'
 import { format } from 'timeago.js'
 import AuthorBox from '../../user/author-box/author-box'
 import { useState } from 'react'

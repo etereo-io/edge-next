@@ -1,16 +1,16 @@
-import { useContentTypes, useUser } from '../../lib/client/hooks'
+import { useContentTypes, useUser } from '@lib/client/hooks'
 
-import Button from '../../components/generic/button/button'
-import ContentListView from '../../components/content/read-content/content-list-view/content-list-view'
-import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
-import Layout from '../../components/layout/normal/layout'
-import UserActivity from '../../components/user/activity/activity'
-import UserProfileBox from '../../components/user/user-profile-box/user-profile-box'
-import config from '../../lib/config'
-import fetch from '../../lib/fetcher'
+import Button from '@components/generic/button/button'
+import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
+import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
+import Layout from '@components/layout/normal/layout'
+import UserActivity from '@components/user/activity/activity'
+import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
+import config from '@lib/config'
+import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { userPermission } from '../../lib/permissions'
+import { userPermission } from '@lib/permissions'
 
 const Profile = (props) => {
   const router = useRouter()

@@ -1,5 +1,5 @@
-import Layout from '../../components/layout/admin/layout-admin'
-import { usePermission } from '../../lib/client/hooks'
+import Layout from '@components/layout/admin/layout-admin'
+import { usePermission } from '@lib/client/hooks'
 
 const AdminPage = () => {
   const { available } = usePermission([`admin.stats`], '/')

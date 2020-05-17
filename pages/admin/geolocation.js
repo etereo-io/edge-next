@@ -1,6 +1,6 @@
-import Layout from '../../components/layout/admin/layout-admin'
-import Map from '../../components/generic/map/map'
-import { usePermission } from '../../lib/client/hooks'
+import Layout from '@components/layout/admin/layout-admin'
+import Map from '@components/generic/map/map'
+import { usePermission } from '@lib/client/hooks'
 
 const AdminPage = () => {
   const { available } = usePermission([`admin.geolocation`], '/')

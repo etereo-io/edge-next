@@ -8,10 +8,10 @@ import LoadingPlaceholder from '../../../generic/loading/loading-placeholder/loa
 
 import useSWR, { useSWRPages } from 'swr'
 
-import API from '../../../../lib/api/api-endpoints'
+import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import Link from 'next/link'
-import fetch from '../../../../lib/fetcher'
+import fetch from '@lib/fetcher'
 import { format } from 'timeago.js'
 import { useState } from 'react'
 

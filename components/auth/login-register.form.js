@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Button from '../generic/button/button'
 import PasswordStrength from '../generic/password-strength/password-strength'
 
-import config from '../../lib/config'
+import config from '@lib/config'
 
 const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
   const [password, setPassword] = useState('')

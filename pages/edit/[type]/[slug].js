@@ -1,10 +1,10 @@
-import { useUser, useContentType } from '../../../lib/client/hooks'
-import { contentPermission } from '../../../lib/permissions'
+import { useUser, useContentType } from '@lib/client/hooks'
+import { contentPermission } from '@lib/permissions'
 
-import API from '../../../lib/api/api-endpoints'
-import ContentForm from '../../../components/content/write-content/content-form/content-form'
-import Layout from '../../../components/layout/normal/layout'
-import fetch from '../../../lib/fetcher'
+import API from '@lib/api/api-endpoints'
+import ContentForm from '@components/content/write-content/content-form/content-form'
+import Layout from '@components/layout/normal/layout'
+import fetch from '@lib/fetcher'
 
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'

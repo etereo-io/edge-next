@@ -1,6 +1,6 @@
-import ContentForm from '../../components/content/write-content/content-form/content-form'
-import Layout from '../../components/layout/normal/layout'
-import { usePermission, useContentType } from '../../lib/client/hooks'
+import ContentForm from '@components/content/write-content/content-form/content-form'
+import Layout from '@components/layout/normal/layout'
+import { usePermission, useContentType } from '@lib/client/hooks'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 

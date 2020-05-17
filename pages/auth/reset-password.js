@@ -1,9 +1,9 @@
-import Button from '../../components/generic/button/button'
-import Layout from '../../components/layout/auth/auth-layout'
+import Button from '@components/generic/button/button'
+import Layout from '@components/layout/auth/auth-layout'
 import Link from 'next/link'
-import fetch from '../../lib/fetcher'
+import fetch from '@lib/fetcher'
 import { useState } from 'react'
-import { useUser } from '../../lib/client/hooks'
+import { useUser } from '@lib/client/hooks'
 
 const RememberPassword = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })

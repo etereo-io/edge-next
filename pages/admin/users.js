@@ -1,6 +1,6 @@
-import Layout from '../../components/layout/admin/layout-admin'
-import UserTable from '../../components/user/admin-user/user-table/user-table'
-import { usePermission } from '../../lib/client/hooks'
+import Layout from '@components/layout/admin/layout-admin'
+import UserTable from '@components/user/admin-user/user-table/user-table'
+import { usePermission } from '@lib/client/hooks'
 
 const AdminPage = () => {
   const { available } = usePermission([`user.admin`], '/')

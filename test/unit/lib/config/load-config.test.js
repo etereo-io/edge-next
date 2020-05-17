@@ -1,5 +1,5 @@
 import { getConfig } from '../../../../edge.config'
-import loadConfig from '../../../../lib/config/load-config'
+import loadConfig from '@lib/config/load-config'
 
 jest.mock('../../../../edge.config')
 

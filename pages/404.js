@@ -1,5 +1,5 @@
-import Layout from '../components/layout/normal/layout'
-import LinkList from '../components/generic/link-list/link-list'
+import Layout from '@components/layout/normal/layout'
+import LinkList from '@components/generic/link-list/link-list'
 
 export default function Custom404() {
   const links = [

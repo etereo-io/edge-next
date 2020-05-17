@@ -1,4 +1,4 @@
-import { FIELDS } from '../../../lib/config/config-constants'
+import { FIELDS } from '@lib/config/config-constants'
 import TagsInput from '../tags-input/tags-input'
 import Toggle from '../toggle/toggle'
 import Upload from '../upload/upload'

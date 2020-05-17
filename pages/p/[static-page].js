@@ -1,5 +1,5 @@
-import Layout from '../../components/layout/normal/layout'
-import MarkdownRead from '../../components/generic/markdown-read/markdown-read'
+import Layout from '@components/layout/normal/layout'
+import MarkdownRead from '@components/generic/markdown-read/markdown-read'
 import React from 'react'
 import fs from 'fs'
 import marked from 'marked'

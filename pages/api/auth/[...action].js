@@ -3,23 +3,23 @@ import {
   githubStrategy,
   googleStrategy,
   localStrategy,
-} from '../../../lib/api/auth/passport-strategies'
-import { findOneUser, generateSaltAndHash, updateOneUser } from '../../../lib/api/users/user'
+} from '@lib/api/auth/passport-strategies'
+import { findOneUser, generateSaltAndHash, updateOneUser } from '@lib/api/users/user'
 import {
   onEmailVerified,
   onUserLogged,
-} from '../../../lib/api/hooks/user.hooks'
+} from '@lib/api/hooks/user.hooks'
 import {
   removeTokenCookie,
   setTokenCookie,
-} from '../../../lib/api/auth/auth-cookies'
+} from '@lib/api/auth/auth-cookies'
 
-import config from '../../../lib/config'
-import { connect } from '../../../lib/api/db'
-import { encryptSession } from '../../../lib/api/auth/iron'
+import config from '@lib/config'
+import { connect } from '@lib/api/db'
+import { encryptSession } from '@lib/api/auth/iron'
 import express from 'express'
 import passport from 'passport'
-import { sendResetPassworEmail } from '../../../lib/email'
+import { sendResetPassworEmail } from '@lib/email'
 import { v4 as uuidv4 } from 'uuid'
 
 const app = express()

@@ -1,4 +1,4 @@
-import { FIELDS } from '../../../lib/config/config-constants'
+import { FIELDS } from '@lib/config/config-constants'
 import Image from '../image/image'
 import MarkdownRead from '../markdown-read/markdown-read'
 import ReactPlayer from 'react-player'

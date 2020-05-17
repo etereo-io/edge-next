@@ -5,7 +5,7 @@ import {
   EdgeThemeContext,
   themes,
   defaultTheme,
-} from '../../../lib/client/contexts/edge-theme'
+} from '@lib/client/contexts/edge-theme'
 
 function ColorBubble(props) {
   return (

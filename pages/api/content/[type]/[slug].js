@@ -3,25 +3,25 @@ import {
   hasPermissionsForContent,
   hasQueryParameters,
   isValidContentType,
-} from '../../../../lib/api/middlewares'
+} from '@lib/api/middlewares'
 import {
   deleteOneContent,
   findOneContent,
   updateOneContent,
-} from '../../../../lib/api/content/content'
+} from '@lib/api/content/content'
 import {
   onContentDeleted,
   onContentUpdated,
-} from '../../../../lib/api/hooks/content.hooks'
+} from '@lib/api/hooks/content.hooks'
 
-import { FIELDS } from '../../../../lib/config/config-constants'
-import { connect } from '../../../../lib/api/db'
-import { contentValidations } from '../../../../lib/validations/content'
-import { deleteFile } from '../../../../lib/api/storage'
+import { FIELDS } from '@lib/config/config-constants'
+import { connect } from '@lib/api/db'
+import { contentValidations } from '@lib/validations/content'
+import { deleteFile } from '@lib/api/storage'
 import merge from 'deepmerge'
-import methods from '../../../../lib/api/api-helpers/methods'
-import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
-import { uploadFiles } from '../../../../lib/api/api-helpers/dynamic-file-upload'
+import methods from '@lib/api/api-helpers/methods'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 
 // disable the default body parser to be able to use file upload
 export const config = {

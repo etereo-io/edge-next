@@ -1,11 +1,11 @@
 import { useEffect, useRef } from 'react'
 import useSWR, { useSWRPages } from 'swr'
 
-import API from '../../../../lib/api/api-endpoints'
+import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import ContentDetailView from '../content-detail-view/content-detail-view'
-import fetch from '../../../../lib/fetcher'
-import { useOnScreen } from '../../../../lib/client/hooks'
+import fetch from '@lib/fetcher'
+import { useOnScreen } from '@lib/client/hooks'
 import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 
 function LoadingItems() {

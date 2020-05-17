@@ -1,7 +1,7 @@
-import { useContentType, usePermission } from '../../../lib/client/hooks'
+import { useContentType, usePermission } from '@lib/client/hooks'
 
-import ContentTable from '../../../components/content/admin-content/content-table/content-table'
-import Layout from '../../../components/layout/admin/layout-admin'
+import ContentTable from '@components/content/admin-content/content-table/content-table'
+import Layout from '@components/layout/admin/layout-admin'
 import { useRouter } from 'next/router'
 
 const AdminPage = () => {

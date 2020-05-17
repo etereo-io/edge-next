@@ -1,9 +1,9 @@
-import Form from '../../components/auth/login-register.form'
-import Layout from '../../components/layout/auth/auth-layout'
+import Form from '@components/auth/login-register.form'
+import Layout from '@components/layout/auth/auth-layout'
 import Router from 'next/router'
-import fetch from '../../lib/fetcher'
+import fetch from '@lib/fetcher'
 import { useState } from 'react'
-import { useUser } from '../../lib/client/hooks'
+import { useUser } from '@lib/client/hooks'
 
 const Signup = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })

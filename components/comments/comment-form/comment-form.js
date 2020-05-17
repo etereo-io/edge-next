@@ -1,7 +1,7 @@
 import Button from '../../generic/button/button'
 import { useState, useEffect } from 'react'
-import API from '../../../lib/api/api-endpoints'
-import fetch from '../../../lib/fetcher'
+import API from '@lib/api/api-endpoints'
+import fetch from '@lib/fetcher'
 
 export default function ({
   contentId = '',

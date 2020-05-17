@@ -1,9 +1,9 @@
-import { useContentTypes, usePermission, useUser } from '../../lib/client/hooks'
+import { useContentTypes, usePermission, useUser } from '@lib/client/hooks'
 
-import Layout from '../../components/layout/admin/layout-admin'
-import LinkList from '../../components/generic/link-list/link-list'
-import config from '../../lib/config'
-import { hasPermission } from '../../lib/permissions'
+import Layout from '@components/layout/admin/layout-admin'
+import LinkList from '@components/generic/link-list/link-list'
+import config from '@lib/config'
+import { hasPermission } from '@lib/permissions'
 
 const AdminPage = () => {
   const { user } = useUser({ redirectTo: '/' })

@@ -1,7 +1,7 @@
 import Avatar from '../avatar/avatar'
 
-import fetch from '../../../lib/fetcher'
-import API from '../../../lib/api/api-endpoints'
+import fetch from '@lib/fetcher'
+import API from '@lib/api/api-endpoints'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import useSWR from 'swr'
 import {format} from 'timeago.js'

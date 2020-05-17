@@ -1,10 +1,10 @@
-import { connect } from '../../../lib/api/db'
-import { findActivity } from '../../../lib/api/activity/activity'
-import { findOneUser } from '../../../lib/api/users/user'
-import { getSession } from '../../../lib/api/auth/iron'
-import { hasPermission } from '../../../lib/permissions'
-import methods from '../../../lib/api/api-helpers/methods'
-import runMiddleware from '../../../lib/api/api-helpers/run-middleware'
+import { connect } from '@lib/api/db'
+import { findActivity } from '@lib/api/activity/activity'
+import { findOneUser } from '@lib/api/users/user'
+import { getSession } from '@lib/api/auth/iron'
+import { hasPermission } from '@lib/permissions'
+import methods from '@lib/api/api-helpers/methods'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 const hasPermissionForActivity = async (req, res, cb) => {
   const session = await getSession(req)

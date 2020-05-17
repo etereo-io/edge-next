@@ -1,15 +1,15 @@
-import { addComment, findComments } from '../../../../lib/api/comments/comments'
+import { addComment, findComments } from '@lib/api/comments/comments'
 import {
   hasPermissionsForComment,
   hasQueryParameters,
   isValidContentType,
-} from '../../../../lib/api/middlewares'
+} from '@lib/api/middlewares'
 
-import { commentValidations } from '../../../../lib/validations/comment'
-import { connect } from '../../../../lib/api/db'
-import methods from '../../../../lib/api/api-helpers/methods'
-import { onCommentAdded } from '../../../../lib/api/hooks/comment.hooks'
-import runMiddleware from '../../../../lib/api/api-helpers/run-middleware'
+import { commentValidations } from '@lib/validations/comment'
+import { connect } from '@lib/api/db'
+import methods from '@lib/api/api-helpers/methods'
+import { onCommentAdded } from '@lib/api/hooks/comment.hooks'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
 
 // Check that the comments are allowed for this content type

@@ -1,17 +1,17 @@
 import { createRef, useEffect, useReducer } from 'react'
 
-import API from '../../lib/api/api-endpoints'
-import Avatar from '../../components/user/avatar/avatar'
-import Button from '../../components/generic/button/button'
-import DynamicField from '../../components/generic/dynamic-field/dynamic-field-edit'
-import Layout from '../../components/layout/normal/layout'
-import PasswordStrength from '../../components/generic/password-strength/password-strength'
-import config from '../../lib/config'
-import fetch from '../../lib/fetcher'
+import API from '@lib/api/api-endpoints'
+import Avatar from '@components/user/avatar/avatar'
+import Button from '@components/generic/button/button'
+import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
+import Layout from '@components/layout/normal/layout'
+import PasswordStrength from '@components/generic/password-strength/password-strength'
+import config from '@lib/config'
+import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
-import { useUser } from '../../lib/client/hooks'
-import { userPermission } from '../../lib/permissions'
+import { useUser } from '@lib/client/hooks'
+import { userPermission } from '@lib/permissions'
 
 const reducer = (state, action) => {
   

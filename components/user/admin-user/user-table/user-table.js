@@ -7,10 +7,10 @@ import Table, {
 import LoadingPlaceholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 import useSWR, { useSWRPages } from 'swr'
 
-import API from '../../../../lib/api/api-endpoints'
+import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import Link from 'next/link'
-import fetch from '../../../../lib/fetcher'
+import fetch from '@lib/fetcher'
 import { useState } from 'react'
 import { format } from 'timeago.js'
 
