@@ -365,8 +365,6 @@ const initialUsers = [{
       title: 'title',
     },
 
-    display: 'grid',
-
     comments: {
       enabled: false,
       permissions: {
