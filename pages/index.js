@@ -24,14 +24,30 @@ const Landing = (props) => {
 
             <div className="general-tags">
               <ul>
-                <li><a href="#">#Web Development</a></li>
-                <li><a href="#">#Organic</a></li>
-                <li><a href="#">#Pachamama</a></li>
-                <li><a href="#">#Aceitunas gazpacha</a></li>
-                <li><a href="#">#Infusión de Jengibre</a></li>
-                <li><a href="#">#Bacalao</a></li>
-                <li><a href="#">#Naturaleza</a></li>
-                <li><a href="#">#Cerezas y alcaparras</a></li>
+                <li>
+                  <a href="#">#Web Development</a>
+                </li>
+                <li>
+                  <a href="#">#Organic</a>
+                </li>
+                <li>
+                  <a href="#">#Pachamama</a>
+                </li>
+                <li>
+                  <a href="#">#Aceitunas gazpacha</a>
+                </li>
+                <li>
+                  <a href="#">#Infusión de Jengibre</a>
+                </li>
+                <li>
+                  <a href="#">#Bacalao</a>
+                </li>
+                <li>
+                  <a href="#">#Naturaleza</a>
+                </li>
+                <li>
+                  <a href="#">#Cerezas y alcaparras</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -141,10 +157,6 @@ const Landing = (props) => {
           justify-content: space-between;
         }
 
-        @media all and (max-width: 860px) {
-          flex-flow: column;
-        }
-
         .left-column {
           align-items: center;
           background: var(--empz-background);
@@ -159,6 +171,48 @@ const Landing = (props) => {
           width: 20%;
         }
 
+        @media all and (max-width: 960px){
+          .left-column{
+            width: 30%;
+          }
+        }
+
+        @media all and (max-width: 720px){
+          .left-column{
+            bottom: 0;
+            box-shadow: var(--shadow-large);
+            height: calc(100% - 56px);
+            left: 0;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            position: fixed;
+            top: auto;
+            transition: 0.35s ease;
+            max-width: 80px;
+            width: 50%;
+            z-index: 2;
+          }
+          .left-column:hover{
+            max-width: 210px;
+          }
+
+          .left-column:hover:before{
+            opacity: 0;
+            visibility: hidden;
+          }
+
+          .left-column:before{
+            background: var(--empz-background);
+            content: '';
+            height: 100%;
+            left: 0;
+            position: absolute;
+            top: 0;
+            transition: opacity 0.35s ease, visibility 0.35s ease;
+            width: 100%;
+          }
+        }
+
         .right-column {
           display: flex;
           flex-wrap: wrap;
@@ -169,17 +223,16 @@ const Landing = (props) => {
           width: 28.5%;
         }
 
-        @media all and (max-width: 1080px) {
+        @media all and (max-width: 1180px) {
           .right-column {
-            min-width: 210px;
-            width: 20%;
+            min-width: 180px;
+            width: 18%;
           }
         }
 
-        @media all and (max-width: 860px) {
+        @media all and (max-width: 960px) {
           .right-column {
-            padding: var(--empz-gap-double);
-            width: 100%;
+            display: none;
           }
         }
 
@@ -196,19 +249,26 @@ const Landing = (props) => {
           width: 77%;
         }
 
-        @media all and (max-width: 860px) {
-          .center-column {
-            margin: 0;
-            padding: var(--empz-gap-double);
-            width: 100%;
+        @media all and (max-width: 1110px) {
+          .center-column{
+            width: 60%;
           }
         }
 
-        @media all and (max-width: 600px) {
+        @media all and (max-width: 960px) {
+          .center-column{
+            margin-right: 0;
+            max-width: none;
+            width: calc(70% - var(--empz-gap));
+          }
+        }
+
+        @media all and (max-width: 720px) {
           .center-column {
             margin: 0;
-            padding: var(--empz-gap);
-            width: 100%;
+            margin-left: auto;
+            padding: 0;
+            width: calc(100% - 80px);
           }
         }
 
@@ -227,7 +287,7 @@ const Landing = (props) => {
           will-change: box-shadow, transform;
         }
 
-        @media all and (max-width: 1080px) {
+        @media all and (max-width: 1180px) {
           .call-to-action-item {
             width: 100%;
           }
@@ -339,7 +399,6 @@ const Landing = (props) => {
           text-align: center;
         }
 
-
         .general-tags {
           border-top: 1px solid var(--accents-2);
           margin-top: var(--empz-gap);
@@ -363,12 +422,12 @@ const Landing = (props) => {
           width: fit-content;
         }
 
-        .general-tags ul li {
+        .general-tags ul li {
           display: block;
           list-style: none;
         }
 
-        .general-tags ul li a{
+        .general-tags ul li a {
           border-radius: 4px;
           color: var(--empz-foreground);
           display: block;

@@ -217,7 +217,7 @@ export const getConfig = (defaultOptions) => {
             type: 'textarea',
             label: 'Description',
             required: false,
-            minlength: 60,
+            minlength: 20,
             maxlength: 300,
           },
           {

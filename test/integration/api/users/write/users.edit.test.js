@@ -43,7 +43,7 @@ jest.mock('../../../../../edge.config', () => ({
             type: 'textarea',
             label: 'Description',
             required: false,
-            minlength: 60,
+            minlength: 20,
             maxlength: 300,
             roles: [],
           },

@@ -549,7 +549,7 @@ const initialUsers = [{
             type: 'textarea',
             label: 'Bio',
             required: false,
-            minlength: 60,
+            minlength: 20,
             maxlength: 300,
           },
           {
