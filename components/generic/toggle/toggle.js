@@ -35,7 +35,7 @@ export default function toggle({
           width: 56px;
           height: 24px;
           padding: 2px;
-          transition: background 300ms linear;
+          transition: background 0.2s ease;
         }
 
         .toggle-ball {
@@ -44,7 +44,7 @@ export default function toggle({
           background: var(--empz-background);
           position: absolute;
           top: 50%;
-          transition: left 0.25s ease, transform 0.25s ease;
+          transition: left 0.2s ease, transform 0.2s ease;
           transform: translateY(-50%) translateX(4px);
           left: 0;
           height: 16px;
@@ -54,6 +54,7 @@ export default function toggle({
 
         .toggle.enabled {
           background: var(--empz-success);
+          border-color: var(--empz-success);
         }
 
         .toggle.enabled .toggle-ball {
