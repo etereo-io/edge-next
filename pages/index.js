@@ -17,7 +17,7 @@ const Landing = (props) => {
   // Load profile data
   const router = useRouter()
   const { userId } = router.query
-  const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
+  const { data, error } = useSWR(userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
   return (
@@ -28,11 +28,43 @@ const Landing = (props) => {
       >
         <div className="columns">
           <div className="left-column">
-            <div className="avatar">
-              <Avatar src={data ? data.profile.picture : null} />
+            <div className="general-profile">
+              <div className="avatar">
+                <Avatar src={data ? data.profile.picture : null} />
+              </div>
+              <div className="general-profile-user">
+                <strong>Hayder Al-Deen</strong>
+                <span>@hayder</span>
+              </div>
+
+              <div className="general-profile-bio">
+                <p>Making some things happen and others disappear.</p>
+              </div>
+              <div className="general-profile-social">
+                <a href="#">
+                  <img src="/icons/github.svg" alt="Github icon" />
+                </a>
+                <a href="#">
+                  <img src="/icons/facebook.svg" alt="Facebook icon" />
+                </a>
+                <a href="#">
+                  <img src="/icons/twitter.svg" alt="Twitter icon" />
+                </a>
+              </div>
             </div>
-            <strong>Hayder Al-Deen</strong>
-            <span>@hayder</span>
+
+            <div className="general-tags">
+              <ul>
+                <li><a href="#">#Web Development</a></li>
+                <li><a href="#">#Organic</a></li>
+                <li><a href="#">#Pachamama</a></li>
+                <li><a href="#">#Aceitunas gazpacha</a></li>
+                <li><a href="#">#Infusión de Jengibre</a></li>
+                <li><a href="#">#Bacalao</a></li>
+                <li><a href="#">#Naturaleza</a></li>
+                <li><a href="#">#Cerezas y alcaparras</a></li>
+              </ul>
+            </div>
           </div>
           <div className="center-column">
             {contentType && <ContentListView type={contentType} />}
@@ -144,7 +176,7 @@ const Landing = (props) => {
           flex-flow: column;
         }
 
-        .left-column{
+        .left-column {
           align-items: center;
           background: var(--empz-background);
           border-radius: var(--empz-radius);
@@ -336,6 +368,85 @@ const Landing = (props) => {
 
         h2 {
           text-align: center;
+        }
+
+        .general-profile {
+          text-align: center;
+        }
+
+        .general-profile-user {
+          text-align: center;
+        }
+
+        .general-profile-user strong {
+          font-size: 16px;
+          font-weight: 600;
+          display: block;
+        }
+
+        .general-profile-user span {
+          font-size: 14px;
+        }
+
+        .general-profile-bio p {
+          text-align: center;
+          font-size: 14px;
+          line-height: 1.5;
+          margin-top: var(--empz-gap);
+          color: var(--accents-5);
+        }
+
+        .general-profile-social {
+          margin-top: var(--empz-gap-half);
+        }
+
+        .general-profile-social a img {
+          display: inline-block;
+          margin: 0 4pt;
+          width: 21px;
+        }
+
+        .general-tags {
+          border-top: 1px solid var(--accents-2);
+          margin-top: var(--empz-gap);
+          padding-top: var(--empz-gap);
+          width: 100%;
+        }
+
+        .general-tags:before {
+          content: 'Trending Tags';
+          background: var(--empz-foreground);
+          border-radius: 4px;
+          color: var(--empz-background);
+          display: block;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          margin-bottom: var(--empz-gap);
+          padding: 4px 8px;
+          text-align: center;
+          text-transform: uppercase;
+          width: fit-content;
+        }
+
+        .general-tags ul li {
+          display: block;
+          list-style: none;
+        }
+
+        .general-tags ul li a{
+          border-radius: 4px;
+          color: var(--empz-foreground);
+          display: block;
+          font-size: 14px;
+          padding: var(--empz-gap-half);
+          transition: background 0.35s ease;
+          color: inherit;
+          text-decoration: none;
+        }
+
+        .general-tags ul li a:hover {
+          background: var(--accents-2);
         }
       `}</style>
     </>
