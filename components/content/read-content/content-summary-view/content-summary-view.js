@@ -23,6 +23,10 @@ export default function (props) {
     `content.${props.content.type}.update`,
   ])
 
+  const shouldAddLink = field => {
+    return links && field.type !== FIELDS.IMAGE && field.type !== FIELDS.FILE && field.type !== FIELDS.TAGS && field.type !== FIELDS.VIDEO_URL
+  }
+
   const isContentOwner = user && user.id === props.content.author
 
   const onClickComments = (ev) => {
@@ -30,6 +34,7 @@ export default function (props) {
       props.onClickComments()
     }
   }
+
   return (
     <>
       
@@ -92,7 +97,7 @@ export default function (props) {
           {props.type.fields
             .filter(
               (f) =>
-                f.name !== props.type.publishing.title && f.type !== FIELDS.TAGS
+                f.name !== props.type.publishing.title
             )
             .map((field) => {
               return (
@@ -100,7 +105,7 @@ export default function (props) {
                   className="field"
                   key={`${field.name}-${props.content.id}`}
                 >
-                  {links && (
+                  {shouldAddLink(field) && (
                     <Link
                       href={`/content/${props.type.slug}/${props.content.slug}`}
                     >
@@ -113,7 +118,7 @@ export default function (props) {
                       </a>
                     </Link>
                   )}
-                  {!links && (
+                  {!shouldAddLink(field) && (
                     <DynamicFieldView
                       field={field}
                       value={props.content[field.name]}
@@ -123,25 +128,7 @@ export default function (props) {
                 </div>
               )
             })}
-          {props.type.fields
-            .filter(
-              (f) =>
-                f.name !== props.type.publishing.title && f.type === FIELDS.TAGS
-            )
-            .map((field) => {
-              return (
-                <div
-                  className="field"
-                  key={`${field.name}-${props.content.id}`}
-                >
-                  <DynamicFieldView
-                    field={field}
-                    value={props.content[field.name]}
-                    contentType={props.type}
-                  />
-                </div>
-              )
-            })}
+          
         </div>
         <div className="meta">
           <div className="post-details">
