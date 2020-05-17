@@ -12,8 +12,8 @@ export default function({ user }) {
             <Avatar
               src={user.profile ? user.profile.picture: null}
               title={`${user.username} avatar`}
-              width={40}
-              height={40}
+              width={32}
+              height={32}
             />
           </a>
         </Link>}
@@ -35,29 +35,35 @@ export default function({ user }) {
       <style jsx>{
         `
         .author-box {
-          text-align: center;
+          align-items: center;
+          display: flex;
         }
 
         .avatar {
           display: flex;
           justify-content: center;
-        }
-
-        .author-box-user {
-          text-align: center;
+          margin-right: 4px;
         }
 
         .author-box-user .display-name {
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
-          display: flex;
-          justify-content: center;
+          text-transform: lowercase;
+          line-height: 1;
         }
 
-        .author-box-user .username {
-          font-size: 14px;
-          display: flex;
-          justify-content: center;
+        .author-box-user .display-name::first-letter {
+          text-transform: uppercase;
+        }
+        
+        .username{
+          line-height: 1;
+        }
+
+        .author-box-user .username a{
+          color: var(--empz-foreground);
+          font-size: 12px;
+          text-decoration: none;
         }
 
         `

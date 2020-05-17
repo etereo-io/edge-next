@@ -24,25 +24,39 @@ export default function (props) {
     `content.${props.content.type}.update`,
   ])
 
-  const shouldAddLink = field => {
-    return links && field.type !== FIELDS.IMAGE && field.type !== FIELDS.FILE && field.type !== FIELDS.TAGS && field.type !== FIELDS.VIDEO_URL
+  const shouldAddLink = (field) => {
+    return (
+      links &&
+      field.type !== FIELDS.IMAGE &&
+      field.type !== FIELDS.FILE &&
+      field.type !== FIELDS.TAGS &&
+      field.type !== FIELDS.VIDEO_URL
+    )
   }
 
   const isContentOwner = user && user.id === props.content.author
 
   const onClickComments = (ev) => {
-    if ((props.canReadComments && props.content.comments) || props.canWriteComments) {
+    if (
+      (props.canReadComments && props.content.comments) ||
+      props.canWriteComments
+    ) {
       props.onClickComments()
     }
   }
 
   return (
     <>
-      
       <div className={`contentSummaryView ${props.className}`}>
         <div className="main-actions">
           {props.content.draft && (
             <div className="status">Draft - Not published</div>
+          )}
+
+          {!props.content.draft && (
+            <div className="author-info">
+              <AuthorBox user={props.content ? props.content.user : null} />
+            </div>
           )}
 
           <div className="action-dropdown">
@@ -72,9 +86,7 @@ export default function (props) {
             </DropDown>
           </div>
         </div>
-        <div className="author-info">
-          <AuthorBox user={props.content ? props.content.user : null } />
-        </div>
+
         <div className="content-summary-content">
           {props.type.fields
             .filter((f) => f.name === props.type.publishing.title)
@@ -98,10 +110,7 @@ export default function (props) {
               )
             })}
           {props.type.fields
-            .filter(
-              (f) =>
-                f.name !== props.type.publishing.title
-            )
+            .filter((f) => f.name !== props.type.publishing.title)
             .map((field) => {
               return (
                 <div
@@ -131,16 +140,21 @@ export default function (props) {
                 </div>
               )
             })}
-          
         </div>
         <div className="meta">
           <div className="post-details">
-            <span className="created-at">{format(props.content.createdAt)}</span>
-            {props.type.comments.enabled && props.canReadComments && typeof props.content.comments !== 'undefined' ? (
+            <span className="created-at">
+              {format(props.content.createdAt)}
+            </span>
+            {props.type.comments.enabled &&
+            props.canReadComments &&
+            typeof props.content.comments !== 'undefined' ? (
               <span className="comment-count" onClick={onClickComments}>
-                {props.content.comments === 0 && props.canWriteComments ? 'Add a comment' : `${props.content.comments} comments`}
+                {props.content.comments === 0 && props.canWriteComments
+                  ? 'Add a comment'
+                  : `${props.content.comments} comments`}
               </span>
-            ): null}
+            ) : null}
           </div>
           <SocialShare shareUrl={shareUrl} />
         </div>
@@ -163,7 +177,7 @@ export default function (props) {
           }
         }
 
-        .content-summary-content{
+        .content-summary-content {
           padding-right: var(--empz-gap-double);
         }
 
@@ -189,7 +203,7 @@ export default function (props) {
           justify-content: space-between;
         }
 
-        .main-actions{
+        .main-actions {
           align-items: center;
           display: flex;
           justify-content: space-between;
@@ -211,7 +225,7 @@ export default function (props) {
           width: fit-content;
         }
 
-        .action-dropdown{
+        .action-dropdown {
           margin-left: auto;
         }
 
@@ -226,13 +240,13 @@ export default function (props) {
           padding-left: var(--empz-gap-half);
         }
 
-        h1{
+        h1 {
           font-size: 24px;
         }
-        h1:first-letter{
+        h1:first-letter {
           text-transform: uppercase;
         }
-        .meta{
+        .meta {
           align-items: center;
           display: flex;
           justify-content: space-between;

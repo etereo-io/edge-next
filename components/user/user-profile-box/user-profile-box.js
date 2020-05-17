@@ -69,10 +69,12 @@ export default function({ user }) {
           justify-content: center;
         }
 
-        .general-profile-user .username {
+        .general-profile-user .username a{
           font-size: 14px;
           display: flex;
           justify-content: center;
+          color: var(--empz-foreground);
+          text-decoration: none;
         }
 
         .general-profile-bio p {
