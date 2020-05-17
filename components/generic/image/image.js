@@ -86,22 +86,50 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
         }
 
         .arrow {
+          background: var(--empz-background);
+          color: var(--empz-foreground);
+          cursor: pointer;
+          height: 32px;
+          overflow: hidden;
+          padding: 5px;
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
+          text-indent: -9999px;
+          width: 32px;
           z-index: 10;
-          background: var(--empz-background);
-          padding: 5px;
-          color: var(--empz-foreground);
-          cursor: pointer;
+        }
+
+        .arrow:before{
+          border-bottom: 2px solid var(--empz-foreground);
+          border-right: 2px solid var(--empz-foreground);
+          content: '';
+          height: 11px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          width: 11px;
         }
 
         .arrow-left {
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
           left: 0;
+        }
+        
+        .arrow-left:before{
+          transform: translate(-50%,-50%) rotate(135deg);
         }
 
         .arrow-right {
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
           right: 0;
+        }
+        
+        .arrow-right:before{
+          transform: translate(-50%,-50%) rotate(-45deg);
         }
 
         .image-container {
