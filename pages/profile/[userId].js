@@ -1,11 +1,11 @@
 import { useContentTypes, useUser } from '../../lib/client/hooks'
 
-import Avatar from '../../components/user/avatar/avatar'
 import Button from '../../components/generic/button/button'
 import ContentListView from '../../components/content/read-content/content-list-view/content-list-view'
 import DropdownMenu from '../../components/generic/dropdown-menu/dropdown-menu'
 import Layout from '../../components/layout/normal/layout'
 import UserActivity from '../../components/user/activity/activity'
+import UserProfileBox from '../../components/user/user-profile-box/user-profile-box'
 import config from '../../lib/config'
 import fetch from '../../lib/fetcher'
 import { useRouter } from 'next/router'
@@ -51,17 +51,12 @@ const Profile = (props) => {
     <Layout title="Profile">
       <div className="profile-user-info">
         <div className="avatar">
-          <Avatar src={data ? data.profile.picture : null} />
+          <UserProfileBox user={data} />
         </div>
         <div className="name">
           <div className="title">
             <div className="title-left">
-              <h2>
-                {data
-                  ? data.profile.displayName || data.username
-                  : 'User Profile'}
-              </h2>
-              <h3>@{data.username}</h3>
+              
             </div>
             <div className="title-right">
               { canEdit && <div className="item">

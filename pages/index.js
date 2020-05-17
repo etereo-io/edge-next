@@ -1,14 +1,16 @@
 import Layout from '../components/layout/normal/layout'
-import Avatar from '../components/user/avatar/avatar'
+
+import UserProfileBox from '../components/user/user-profile-box/user-profile-box'
 import GithubLogo from '../components/generic/icons/github-icon/github-icon'
 import NextJSLogo from '../components/generic/icons/nextjs-icon/nextjs-icon'
 
 import config from '../lib/config'
-import { useContentType } from '../lib/client/hooks'
+import { useContentType, useUser } from '../lib/client/hooks'
 import ContentListView from '../components/content/read-content/content-list-view/content-list-view'
 
 const Landing = (props) => {
   const { contentType } = useContentType('post')
+  const { user } = useUser()
 
   return (
     <>
@@ -18,12 +20,20 @@ const Landing = (props) => {
       >
         <div className="columns">
           <div className="left-column">
-            
-            <div className="avatar">
-              <Avatar src={null} />
+            <UserProfileBox user={user} />
+
+            <div className="general-tags">
+              <ul>
+                <li><a href="#">#Web Development</a></li>
+                <li><a href="#">#Organic</a></li>
+                <li><a href="#">#Pachamama</a></li>
+                <li><a href="#">#Aceitunas gazpacha</a></li>
+                <li><a href="#">#Infusión de Jengibre</a></li>
+                <li><a href="#">#Bacalao</a></li>
+                <li><a href="#">#Naturaleza</a></li>
+                <li><a href="#">#Cerezas y alcaparras</a></li>
+              </ul>
             </div>
-            <strong>Hayder Al-Deen</strong>
-            <span>@hayder</span>
           </div>
           <div className="center-column">
             {contentType && <ContentListView type={contentType} />}
@@ -135,7 +145,7 @@ const Landing = (props) => {
           flex-flow: column;
         }
 
-        .left-column{
+        .left-column {
           align-items: center;
           background: var(--empz-background);
           border-radius: var(--empz-radius);
@@ -327,6 +337,50 @@ const Landing = (props) => {
 
         h2 {
           text-align: center;
+        }
+
+
+        .general-tags {
+          border-top: 1px solid var(--accents-2);
+          margin-top: var(--empz-gap);
+          padding-top: var(--empz-gap);
+          width: 100%;
+        }
+
+        .general-tags:before {
+          content: 'Trending Tags';
+          background: var(--empz-foreground);
+          border-radius: 4px;
+          color: var(--empz-background);
+          display: block;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          margin-bottom: var(--empz-gap);
+          padding: 4px 8px;
+          text-align: center;
+          text-transform: uppercase;
+          width: fit-content;
+        }
+
+        .general-tags ul li {
+          display: block;
+          list-style: none;
+        }
+
+        .general-tags ul li a{
+          border-radius: 4px;
+          color: var(--empz-foreground);
+          display: block;
+          font-size: 14px;
+          padding: var(--empz-gap-half);
+          transition: background 0.35s ease;
+          color: inherit;
+          text-decoration: none;
+        }
+
+        .general-tags ul li a:hover {
+          background: var(--accents-2);
         }
       `}</style>
     </>

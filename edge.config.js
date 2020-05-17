@@ -547,11 +547,35 @@ const initialUsers = [{
       profile: {
         fields: [
           {
-            name: 'description',
+            name: 'bio',
             type: 'textarea',
-            label: 'Description',
+            label: 'Bio',
             required: false,
             minlength: 60,
+            maxlength: 300,
+          },
+          {
+            name: 'twitter',
+            type: 'text',
+            label: 'twitter',
+            required: false,
+            minlength: 10,
+            maxlength: 300,
+          },
+          {
+            name: 'facebook',
+            type: 'text',
+            label: 'facebook',
+            required: false,
+            minlength: 10,
+            maxlength: 300,
+          },
+          {
+            name: 'github',
+            type: 'text',
+            label: 'github',
+            required: false,
+            minlength: 10,
             maxlength: 300,
           },
           {

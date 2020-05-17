@@ -26,6 +26,7 @@ import TagsInput from '../components/generic/tags-input/tags-input'
 import ThemeSelector from '../components/generic/theme-selector/theme-selector'
 import Toggle from '../components/generic/toggle/toggle'
 import Upload from '../components/generic/upload/upload'
+import UserProfileBox from '../components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '../components/generic/video-recorder/video-recorder-wrapper'
 
 const Components = () => {
@@ -216,6 +217,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#avatar">Avatar</a>
+            </li>
+            <li>
+              <a href="#user-profile-box">User Profile Box</a>
             </li>
             <li>
               <a href="#badge">Badge</a>
@@ -420,6 +424,25 @@ const links = [{
             </div>
             <pre>{`
 <Avatar />
+            `}</pre>
+          </div>
+
+          <div id="user-profile-box" className="component">
+            <h3>User Profile Box</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <UserProfileBox user={{username: 'demo-user', profile: { bio: '', facebook: 'yes'}}} />
+              </div>
+              <div className="item-wrapper">
+                <UserProfileBox user={{username: 'demo-user', profile: { bio: 'My bio is something special', github: 'yes', facebook: 'yes', twitter: 'yes'}}} />
+              </div>
+              <div className="item-wrapper">
+                <UserProfileBox user={null} />
+              </div>
+
+            </div>
+            <pre>{`
+<UserProfileBox user={{username: 'demo-user', profile: { bio: 'My bio is something special'}}} />
             `}</pre>
           </div>
 
