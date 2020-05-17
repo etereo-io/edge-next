@@ -147,7 +147,7 @@ const Landing = (props) => {
           justify-content: space-between;
           position: sticky;
           top: 80px;
-          width: 32.5%;
+          width: 28.5%;
         }
 
         @media all and (max-width: 1080px){
@@ -172,7 +172,9 @@ const Landing = (props) => {
         }
 
         .center-column {
+          margin-left: auto;
           margin-right: var(--empz-gap);
+          max-width: 600px;
           width: 77%;
         }
 

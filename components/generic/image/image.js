@@ -81,6 +81,7 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
       <style jsx>{`
         .image-wrapper {
           border-radius: 4px;
+          /*THIS IS A TEST*/ max-height: 360px!important;
           overflow: hidden;
           position: relative;
           width: 100%;
@@ -136,6 +137,7 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
         .image-container {
           position: relative;
           display: flex;
+          height: 100%;
           transition: left 0.4s ease-in-out;
           will-change: left;
         }
