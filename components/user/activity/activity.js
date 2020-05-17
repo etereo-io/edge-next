@@ -5,12 +5,32 @@ import API from '../../../lib/api/api-endpoints'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import useSWR from 'swr'
 import {format} from 'timeago.js'
+import Link from 'next/link'
 
 export default function (props) {
   const { data, error } = useSWR(
     props.user ? API.activity + '/' + props.user.id : null,
     fetch
   )
+
+  const getMessage = activity => {
+    switch(activity.type) {
+      case 'content_updated':
+        return <span>updated <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="updated content">a content</a></Link></span>
+      
+      case 'content_added':
+        return <span>created <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="new content">a content</a></Link></span>
+        
+      case 'user_logged': 
+        return <span>logged in</span>
+
+      case 'comment_added': 
+      return <span>added <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="new comment">a comment</a></Link></span>
+
+      default: 
+        return <span>{ac.type}</span>
+    }
+  }
 
   return (
     <>
@@ -56,7 +76,7 @@ export default function (props) {
                 </div>
                 <div className="message">
                   {props.user.profile.displayName || props.user.username}{' '}
-                  {ac.type} {format(ac.createdAt)}
+                  {getMessage(ac)} {format(ac.createdAt)}
                 </div>
               </div>
             )

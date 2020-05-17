@@ -18,9 +18,13 @@ export async function getServerSideProps({ req, res, query }) {
 
   await connect()
 
-  const item = await findOneContent(query.type, {
-    slug: query.slug,
-  })
+  const searchOptions = query.field && query.field === 'id' ? {
+    id: query.slug
+  } : {
+    slug: query.slug
+  }
+
+  const item = await findOneContent(query.type, searchOptions)
 
   if (!item) {
     res.writeHead(302, { Location: '/404' })
