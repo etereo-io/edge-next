@@ -1,11 +1,11 @@
 import DropDown from '../../generic/dropdown-menu/dropdown-menu'
 import { commentPermission } from '../../../lib/permissions'
 import { useUser } from '../../../lib/client/hooks'
-import Avatar from '../../user/avatar/avatar'
 import { format } from 'timeago.js'
+import AuthorBox from '../../user/author-box/author-box'
 import { useState } from 'react'
 import CommentForm from '../comment-form/comment-form'
-import Link from 'next/link'
+
 
 export default function CommentEntry({
   contentId = '',
@@ -46,26 +46,12 @@ export default function CommentEntry({
   return (
     <>
       <div className="comment-entry">
-        <Link href={`/profile/@${commentUser.username}`}>
-          <a title={`${commentUser.username} profile`}>
-            <Avatar
-              width={40}
-              height={40}
-              src={commentUser.profile.picture}
-              title={`${commentUser.username} avatar`}
-            />
-          </a>
-        </Link>
-
+        
+     
         <div className="comment-body">
           <div className="info">
-            <span className="username">
-              <Link href={`/profile/@${commentUser.username}`}>
-                <a title={`${commentUser.username} profile`}>
-                  {commentUser.username}
-                </a>
-              </Link>
-            </span>
+            <AuthorBox user={commentUser } />
+            
             <span className="meta">
               <span className="time">{format(comment.createdAt)}</span>
             </span>
@@ -124,16 +110,6 @@ export default function CommentEntry({
 
         .actions{
           cursor: pointer;
-        }
-
-        .username {
-          font-weight: bold;
-          margin-right: var(--empz-gap-half);
-        }
-
-        .username a {
-          color: var(--empz-foreground);
-          text-decoration: none;
         }
 
         .meta {

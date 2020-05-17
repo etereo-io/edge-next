@@ -4,6 +4,7 @@ import Table, {
   TableRowBody,
 } from '../components/generic/table/table'
 
+import AuthorBox from '../components/user/author-box/author-box'
 import Avatar from '../components/user/avatar/avatar'
 import Badge from '../components/generic/badge/badge'
 import Button from '../components/generic/button/button'
@@ -220,6 +221,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#user-profile-box">User Profile Box</a>
+            </li>
+            <li>
+              <a href="#author-box">Author Box</a>
             </li>
             <li>
               <a href="#badge">Badge</a>
@@ -443,6 +447,25 @@ const links = [{
             </div>
             <pre>{`
 <UserProfileBox user={{username: 'demo-user', profile: { bio: 'My bio is something special'}}} />
+            `}</pre>
+          </div>
+
+          <div id="author-box" className="component">
+            <h3>Author Box</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <AuthorBox user={{username: 'demo-user', profile: { bio: '', facebook: 'yes'}}} />
+              </div>
+              <div className="item-wrapper">
+                <AuthorBox user={{username: 'demo-user', profile: { bio: 'My bio is something special', github: 'yes', facebook: 'yes', twitter: 'yes'}}} />
+              </div>
+              <div className="item-wrapper">
+                <AuthorBox user={null} />
+              </div>
+
+            </div>
+            <pre>{`
+<AuthorBox user={{username: 'demo-user', profile: { bio: 'My bio is something special'}}} />
             `}</pre>
           </div>
 

@@ -5,19 +5,21 @@ import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loadin
 export default function({ user }) {
   return (
     <>
-      <div className="general-profile">
+      <div className="author-box">
         <div className="avatar">
           { user && <Link href={`/profile/@${user.username}`}>
           <a title={`${user.username} profile`}>
             <Avatar
               src={user.profile ? user.profile.picture: null}
               title={`${user.username} avatar`}
+              width={40}
+              height={40}
             />
           </a>
         </Link>}
           { !user && <LoadingPlaceholder borderRadius='100%'  height={'100px'} width={'100px'} />}
         </div>
-        <div className="general-profile-user">
+        <div className="author-box-user">
           <div className="display-name">{ user && user.profile && user.profile ? user.profile.displayName : <LoadingPlaceholder width={'100px'} /> }</div>
           { user && <div className="username">
             <Link href={`/profile/@${user.username}`}>
@@ -29,27 +31,10 @@ export default function({ user }) {
           {!user && <div className="username"><LoadingPlaceholder width={'100px'} /></div>}
         </div>
 
-        { user && user.profile.bio && <div className="general-profile-bio">
-          <p>{user.profile.bio}</p>
-        </div>}
-
-        { user && <div className="general-profile-social">
-          { user.profile.github && <a href={user.profile.github}>
-            <img src="/icons/github.svg" alt="Github icon" />
-          </a>}
-
-          { user.profile.facebook && <a href={user.profile.facebook}>
-            <img src="/icons/facebook.svg" alt="Facebook icon" />
-          </a>}
-          { user.profile.twitter && <a href={user.profile.twitter}>
-            <img src="/icons/twitter.svg" alt="Twitter icon" />
-          </a>
-          }
-        </div>}
       </div>
       <style jsx>{
         `
-        .general-profile {
+        .author-box {
           text-align: center;
         }
 
@@ -58,40 +43,23 @@ export default function({ user }) {
           justify-content: center;
         }
 
-        .general-profile-user {
+        .author-box-user {
           text-align: center;
         }
 
-        .general-profile-user .display-name {
+        .author-box-user .display-name {
           font-size: 16px;
           font-weight: 600;
           display: flex;
           justify-content: center;
         }
 
-        .general-profile-user .username {
+        .author-box-user .username {
           font-size: 14px;
           display: flex;
           justify-content: center;
         }
 
-        .general-profile-bio p {
-          text-align: center;
-          font-size: 14px;
-          line-height: 1.5;
-          margin-top: var(--empz-gap);
-          color: var(--accents-5);
-        }
-
-        .general-profile-social {
-          margin-top: var(--empz-gap-half);
-        }
-
-        .general-profile-social a img {
-          display: inline-block;
-          margin: 0 4pt;
-          width: 21px;
-        }
         `
       } </style>
     </>

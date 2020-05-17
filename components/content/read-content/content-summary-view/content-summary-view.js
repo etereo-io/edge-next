@@ -5,6 +5,7 @@ import { hasPermission } from '../../../../lib/permissions'
 import { useUser } from '../../../../lib/client/hooks'
 import { FIELDS } from '../../../../lib/config/config-constants'
 import DynamicFieldView from '../../../generic/dynamic-field/dynamic-field-view'
+import AuthorBox from '../../../user/author-box/author-box'
 import { format } from 'timeago.js'
 
 export default function (props) {
@@ -71,7 +72,9 @@ export default function (props) {
             </DropDown>
           </div>
         </div>
-
+        <div className="author-info">
+          <AuthorBox user={props.content ? props.content.user : null } />
+        </div>
         <div className="content-summary-content">
           {props.type.fields
             .filter((f) => f.name === props.type.publishing.title)
