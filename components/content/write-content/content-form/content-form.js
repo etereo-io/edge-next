@@ -45,44 +45,47 @@ export default function (props) {
     const url = `${API.content[props.type.slug]}${
       props.content.id ? '/' + props.content.id + '?field=id' : ''
     }`
-    
+
     return fetch(url, {
       method: props.content.id ? 'PUT' : 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(jsonData),
-    })
-    .then((result) => {
+    }).then((result) => {
       console.log(result)
       // Files are always updated as a PUT
-      return fetch( `${API.content[props.type.slug]}${'/' + result.id + '?field=id'}`, {
-        method: 'PUT',
-        body: data,
-      })
-      
+      return fetch(
+        `${API.content[props.type.slug]}${'/' + result.id + '?field=id'}`,
+        {
+          method: 'PUT',
+          body: data,
+        }
+      )
     })
   }
-
-  
 
   const onSubmit = (ev) => {
     ev.preventDefault()
 
-    const formData = new FormData();
+    const formData = new FormData()
     const jsonData = {}
 
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
-      const fieldDefinition = props.type.fields.find(t => t.name === key)
-      
+      const fieldDefinition = props.type.fields.find((t) => t.name === key)
+
       console.log(fieldValue, key)
-      
-      if (fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
+
+      if (
+        fieldDefinition &&
+        (fieldDefinition.type === FIELDS.IMAGE ||
+          fieldDefinition.type === FIELDS.FILE)
+      ) {
         if (fieldValue && fieldValue.length > 0) {
           jsonData[key] = []
 
-          fieldValue.forEach(item => {
+          fieldValue.forEach((item) => {
             if (item.isFile) {
               formData.append(key, item.file)
             } else {
@@ -95,7 +98,6 @@ export default function (props) {
       } else {
         jsonData[key] = fieldValue
       }
-      
     })
 
     setLoading(true)
@@ -127,7 +129,7 @@ export default function (props) {
   return (
     <>
       <div className="contentForm">
-        <form name="content-form"  onSubmit={onSubmit}>
+        <form name="content-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
             <div className="draft input-group">
               <label>Draft</label>
@@ -166,15 +168,30 @@ export default function (props) {
         {error && <div className="error-message">Error saving </div>}
 
         <div className="preview">
-            <ContentSummaryView content={state} type={props.type} />
+          <ContentSummaryView content={state} type={props.type} />
         </div>
       </div>
       <style jsx>
         {`
           .contentForm {
+            align-items: flex-start;
             background: var(--empz-background);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
             padding: var(--empz-gap);
-            border: var(--light-border);
+          }
+
+          .contentForm form{
+            width: 50%;
+          }
+
+          .preview {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: var(--empz-gap);
+            position: sticky;
+            top: 72px;
+            width: 40%;
           }
 
           .actions {
