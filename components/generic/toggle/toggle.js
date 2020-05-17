@@ -29,10 +29,10 @@ export default function toggle({
         .toggle {
           cursor: pointer;
           border: var(--light-border);
-          border-radius: var(--empz-radius);
+          border-radius: 12px;
           background: var(--empz-foreground);
           position: relative;
-          width: 70px;
+          width: 56px;
           height: 24px;
           padding: 2px;
           transition: background 300ms linear;
@@ -43,18 +43,22 @@ export default function toggle({
           border: 2px solid var(--empz-background);
           background: var(--empz-background);
           position: absolute;
+          top: 50%;
+          transition: left 0.25s ease, transform 0.25s ease;
+          transform: translateY(-50%) translateX(4px);
           left: 0;
-          height: 20px;
-          width: 20px;
-          transition: left 300ms linear;
+          height: 16px;
+          width: 16px;
+          will-change: left, transform;
         }
 
         .toggle.enabled {
-          background: var(--empz-secondary);
+          background: var(--empz-success);
         }
 
         .toggle.enabled .toggle-ball {
-          left: 50px;
+          left: 100%;
+          transform: translateY(-50%) translateX(calc(-100% - 4px));
         }
       `}</style>
     </>
