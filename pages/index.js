@@ -211,12 +211,12 @@ const Landing = (props) => {
           .left-column{
             max-height: 40px;
             max-width: none;
-            width: 100%;
+            width: 100vw;
           }
           .left-column:hover{
             max-height: 100%;
             max-width: none;
-            width: 100%;
+            width: 100vw;
           }
         }
 
