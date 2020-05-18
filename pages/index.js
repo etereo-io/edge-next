@@ -207,6 +207,19 @@ const Landing = (props) => {
           }
         }
 
+        @media all and (max-width: 520px){
+          .left-column{
+            max-height: 40px;
+            max-width: none;
+            width: 100%;
+          }
+          .left-column:hover{
+            max-height: 100%;
+            max-width: none;
+            width: 100%;
+          }
+        }
+
         .right-column {
           display: flex;
           flex-wrap: wrap;
@@ -262,6 +275,14 @@ const Landing = (props) => {
             margin-left: auto;
             padding: 0;
             width: calc(100% - 80px);
+          }
+        }
+
+
+
+        @media all and (max-width: 520px){
+          .center-column{
+            width: 100%;
           }
         }
 
