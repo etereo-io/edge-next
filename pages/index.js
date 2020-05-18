@@ -21,7 +21,10 @@ const Landing = (props) => {
         <div className="columns">
           <div className="left-column">
             <div className="mobile-over">
-              <img className="avatar" src="https://storage.googleapis.com/edge-next/profilePicture/1589732055819-hayder-avatar.jpg" />
+              <img
+                className="avatar"
+                src="https://storage.googleapis.com/edge-next/profilePicture/1589732055819-hayder-avatar.jpg"
+              />
               <div className="open-mobile-over"></div>
             </div>
             <UserProfileBox user={user} />
@@ -56,6 +59,18 @@ const Landing = (props) => {
             </div>
           </div>
           <div className="center-column">
+            <aside className="featured-section">
+              <button className="close"></button>
+              <img
+                src="https://d2qulvgqu65efe.cloudfront.net/static/clouds-512-16d4c7d095ffb936e99ebf726881e701.png"
+                className="asset"
+              />
+              <h3 className="title">Hey, nice to see you here! 👋</h3>
+              <div className="list-actions">
+                <a href="#">Main documentation</a>
+                <a href="#">Web components</a>
+              </div>
+            </aside>
             {contentType && <ContentListView type={contentType} />}
           </div>
 
@@ -148,6 +163,84 @@ const Landing = (props) => {
         </div>
       </Layout>
       <style jsx>{`
+        .featured-section {
+          display: block;
+          width: 100%;
+          padding: var(--empz-gap-double);
+          padding-top: 0;
+          background: var(--empz-success);
+          position: relative;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          color: #fff;
+        }
+
+        .featured-section .close{
+          background: none;
+          border: none;
+          cursor: pointer;
+          height: 24px;
+          position: absolute;
+          right: var(--empz-gap);
+          top: var(--empz-gap);
+          width: 24px;
+        }
+
+        .featured-section .close::before, .featured-section .close::after{
+          background: var(--empz-background);
+          content: '';
+          height: 2px;
+          left: 0;
+          position: absolute;
+          top: 50%;
+          width: 100%;
+        }
+
+        .featured-section .close::before{
+          transform: translateY(-50%) rotate(-45deg);
+        }
+
+        .featured-section .close::after{
+          transform: translateY(-50%) rotate(45deg);
+        }
+
+        .featured-section .title {
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: var(--empz-gap-half);
+        }
+
+        .featured-section .list-title {
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+        }
+
+        .featured-section .list-actions {
+          align-items: center;
+          display: flex;
+          flex-flow: row;
+          justify-content: space-between;
+          margin-top: var(--empz-gap);
+        }
+
+        .featured-section .list-actions a {
+          background: var(--dark-border-color);
+          border-radius: 4px;
+          color: var(--empz-background);
+          font-weight: 500;
+          padding: var(--empz-gap);
+          text-align: center;
+          text-decoration: none;
+          width: calc(50% - var(--empz-gap-half));
+        }
+
+        .asset{
+          margin-bottom: var(--empz-gap-negative);
+          transform: translateY(-25%);
+          width: 210px;
+        }
+
         .columns {
           align-items: flex-start;
           background: var(--accents-1);
@@ -191,7 +284,7 @@ const Landing = (props) => {
           width: 100%;
         }
 
-        .mobile-over .open-mobile-over{
+        .mobile-over .open-mobile-over {
           border-bottom: 3px solid var(--accents-3);
           border-right: 3px solid var(--accents-3);
           transform: rotate(-45deg) translateX(-8px);
@@ -201,21 +294,21 @@ const Landing = (props) => {
           width: var(--empz-gap);
         }
 
-        @media all and (max-width: 720px){
+        @media all and (max-width: 720px) {
           .mobile-over {
             display: flex;
           }
         }
 
-        @media all and (max-width: 520px){
+        @media all and (max-width: 520px) {
           .mobile-over {
             flex-flow: row;
           }
-          .mobile-over .avatar{
+          .mobile-over .avatar {
             height: 40px;
             width: auto;
           }
-          .mobile-over .open-mobile-over{
+          .mobile-over .open-mobile-over {
             margin-bottom: 0;
             margin-right: var(--empz-gap-double);
             transform: rotate(-135deg) translateY(-6px);
@@ -269,7 +362,7 @@ const Landing = (props) => {
 
         @media all and (max-width: 520px) {
           .left-column {
-            box-shadow: 0 10px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.5);
             max-height: 40px;
             max-width: none;
             padding: 0;
