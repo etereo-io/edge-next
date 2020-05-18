@@ -36,6 +36,91 @@ function InputText(props) {
   )
 }
 
+function InputTel(props) {
+  const [touched, setTouched] = useState(false)
+  const onChange = (ev) => {
+    setTouched(true)
+    props.onChange(ev.target.value, ev)
+  }
+
+  return (
+    <input
+      type="tel"
+      name={props.field.name}
+      placeholder={props.field.placeholder}
+      defaultValue={props.value}
+      data-testid={props['data-testid']}
+      required={!!props.field.required}
+      pattern={props.pattern || null}
+      className={`${touched ? 'touched': ''}`}
+      onChange={onChange}
+    />
+  )
+}
+
+function InputDate(props) {
+  const [touched, setTouched] = useState(false)
+  const onChange = (ev) => {
+    setTouched(true)
+    props.onChange(ev.target.value, ev)
+  }
+
+  return (
+    <input
+      type="date"
+      name={props.field.name}
+      placeholder={props.field.placeholder}
+      defaultValue={props.value}
+      data-testid={props['data-testid']}
+      required={!!props.field.required}
+      min={
+        typeof props.field.min !== 'undefined'
+          ? props.field.min
+          : null
+      }
+      max={
+        typeof props.field.max !== 'undefined'
+          ? props.field.max
+          : null
+      }
+      className={`${touched ? 'touched': ''}`}
+      onChange={onChange}
+    />
+  )
+}
+
+function InputUrl(props) {
+  const [touched, setTouched] = useState(false)
+  const onChange = (ev) => {
+    setTouched(true)
+    props.onChange(ev.target.value, ev)
+  }
+
+  return (
+    <input
+      type="url"
+      name={props.field.name}
+      placeholder={props.field.placeholder}
+      defaultValue={props.value}
+      data-testid={props['data-testid']}
+      required={!!props.field.required}
+      minLength={
+        typeof props.field.minlength !== 'undefined'
+          ? props.field.minlength
+          : null
+      }
+      maxLength={
+        typeof props.field.maxlength !== 'undefined'
+          ? props.field.maxlength
+          : null
+      }
+      pattern={props.pattern || null}
+      className={`${touched ? 'touched': ''}`}
+      onChange={onChange}
+    />
+  )
+}
+
 function InputNumber(props) {
   const [touched, setTouched] = useState(false)
   const onChange = (ev) => {

@@ -20,7 +20,10 @@ export default function (props) {
       
       case 'content_added':
         return <span>created <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="new content">a content</a></Link></span>
-        
+      
+      case 'user_updated': 
+        return <span>updated the profile information</span>
+
       case 'user_logged': 
         return <span>logged in</span>
 

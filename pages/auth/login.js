@@ -2,6 +2,7 @@ import Form from '@components/auth/login-register.form'
 import Layout from '@components/layout/auth/auth-layout'
 import Router from 'next/router'
 import fetch from '@lib/fetcher'
+import { mutate } from 'swr'
 import { useState } from 'react'
 import { useUser } from '@lib/client/hooks'
 
@@ -28,6 +29,9 @@ const Login = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       })
+
+     
+      mutate('/api/users/me')
 
       Router.push('/')
     } catch (error) {

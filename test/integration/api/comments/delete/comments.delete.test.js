@@ -116,7 +116,6 @@ describe('Integrations tests for content deletion endpoint', () => {
       "id": "5ebf9dd6e1d3192ac0ae2466",
       "user": {
         "username": "rafael",
-        "displayname": "The admin",
       },
       "replies": 2
     }))

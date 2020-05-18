@@ -4,11 +4,14 @@ import { findOneUser, generateSaltAndHash, updateOneUser, userPasswordsMatch } f
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
 
 import { connect } from '@lib/api/db'
+import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/users/user.utils'
+import merge from 'deepmerge'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { v4 as uuidv4 } from 'uuid'
 
 // disable the default body parser to be able to use file upload
@@ -67,9 +70,13 @@ const delUser = (req, res) => {
   })
 }
 
-function updateProfile(userId, profile ) {
+async function updateProfile(userId, profile, req) {
+  const newData = await uploadFiles(edgeConfig.user.profile.fields, req.files, 'profile', req.item.profile)
+  const newContent = merge(profile, newData)
   return updateOneUser(userId, {
-    profile,
+    profile: {
+      ...newContent
+    }
   })
 }
 
@@ -174,7 +181,7 @@ const updateUser = (slug) => async (req, res) => {
       promiseChange = updateProfile(req.item.id, {
         ...req.item.profile,
         ...req.body,
-      })
+      }, req)
       break
     case 'username':
       /* Update only username */

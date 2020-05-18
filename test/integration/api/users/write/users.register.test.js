@@ -77,7 +77,6 @@ jest.mock('../../../../../edge.config', () => ({
       initialUsers: [
         {
           username: 'admin',
-          displayname: 'The admin',
           email: 'admin@demo.com',
           emailVerified: true,
           createdAt: Date.now(),

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
-import Button from '../../../generic/button/button'
-import DynamicField from '../../../generic/dynamic-field/dynamic-field-edit'
-import Toggle from '../../../generic/toggle/toggle'
+import Button from '@components/generic/button/button'
+import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
+import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 import { FIELDS } from '@lib/config/config-constants'
 import ContentSummaryView from '../../read-content/content-summary-view/content-summary-view'

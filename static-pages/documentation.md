@@ -241,6 +241,24 @@ const contentType = {
     - minlength
     - maxlength
     - defaultValue
+- tel
+  - Available options:
+    - required
+    - pattern
+    - defaultValue
+- date
+  - Available options:
+    - required
+    - max
+    - min
+    - defaultValue
+- url
+  - Available options:
+    - required
+    - minlength
+    - maxlength
+    - pattern
+    - defaultValue
 - video_url
   - Available options:
     - required
@@ -269,6 +287,7 @@ const contentType = {
     - options
       - ```[{label: 'a', value: 'a'}] ```
     - defaultValue
+ 
 
 
 You can see the example configuration file for more details about content types and fields.
