@@ -580,6 +580,17 @@ const initialUsers = [{
             maxlength: 300,
           },
           {
+            name: 'date',
+            type: 'date',
+            label: 'Birth date',
+            required: false,
+          },
+          {
+            name: 'phone',
+            type: 'tel',
+            label: 'Your phone'
+          },
+          {
             name: 'profile-images',
             type: 'img',
             label: 'Profile Images',

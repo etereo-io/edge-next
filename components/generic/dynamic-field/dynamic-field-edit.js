@@ -343,6 +343,36 @@ function Field(props) {
           />
         )
 
+      case FIELDS.TEL:
+        return (
+          <InputTel
+            field={field}
+            value={props.value}
+            data-testid={datatestId}
+            onChange={onChange}
+          />
+        )
+
+      case FIELDS.URL:
+        return (
+          <InputUrl
+            field={field}
+            value={props.value}
+            data-testid={datatestId}
+            onChange={onChange}
+          />
+        )
+        
+      case FIELDS.DATE:
+        return (
+          <InputDate
+            field={field}
+            value={props.value}
+            data-testid={datatestId}
+            onChange={onChange}
+          />
+        )
+
       case FIELDS.BOOLEAN:
         return (
           <Toggle
