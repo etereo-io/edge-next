@@ -186,8 +186,11 @@ const Landing = (props) => {
             width: 50%;
             z-index: 2;
           }
+          .left-column::-webkit-scrollbar { width: 0 !important }
+          .left-column { overflow: -moz-scrollbars-none; }
+          .left-column{ -ms-overflow-style: none; }
           .left-column:hover{
-            max-width: 210px;
+            max-width: 260px;
           }
 
           .left-column:hover:before{
