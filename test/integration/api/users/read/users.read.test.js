@@ -24,7 +24,12 @@ const demoUser = {
   email: 'demo@demo.com',
   id: '1',
   roles: ['USER'],
+  hash: 'asdadasd',
+  salt: 'asdasdsa',
   email: 'email@email.com',
+  facebook: 'abc',
+  github: 'abc',
+  tokens: [{ github: 'abc'}],
   profile: {
     displayName: 'A test user',
     picture: '',
@@ -85,9 +90,18 @@ describe('Integrations tests for user read', () => {
         profile: demoUser.profile,
       })
 
+      // Private fields
+      expect(jsonResult.email).toBeUndefined()
+      expect(jsonResult.hash).toBeUndefined()
+      expect(jsonResult.salt).toBeUndefined()
+      expect(jsonResult.facebook).toBeUndefined()
+      expect(jsonResult.github).toBeUndefined()
+      expect(jsonResult.tokens).toBeUndefined()
+
       expect(findOneUser).toHaveBeenCalledWith({
         id: 'userId'
       })
+
     })
 
 
@@ -153,7 +167,7 @@ describe('Integrations tests for user read', () => {
 
       // Current user is USER
       getSession.mockReturnValue({
-        id: 'userId',
+        id: '1',
         roles: ['USER']
       })
 
@@ -164,13 +178,21 @@ describe('Integrations tests for user read', () => {
         method: 'GET'
       })
 
-      const jsonResult = await response.json()
-      console.log(jsonResult)
+      
       expect(response.status).toBe(200)
-
+      
       expect(findOneUser).toHaveBeenCalledWith({
-        id: 'userId'
+        id: '1'
       })
+      
+      const jsonResult = await response.json()
+      // Private fields
+      expect(jsonResult.email).not.toBeUndefined()
+      expect(jsonResult.hash).not.toBeUndefined()
+      expect(jsonResult.salt).not.toBeUndefined()
+      expect(jsonResult.facebook).not.toBeUndefined()
+      expect(jsonResult.github).not.toBeUndefined()
+      expect(jsonResult.tokens).not.toBeUndefined()
     })
 
 
@@ -193,21 +215,61 @@ describe('Integrations tests for user read', () => {
       const response = await fetch(urlToBeUsed.href, {
         method: 'GET'
       })
-
       
       expect(response.status).toBe(200)
 
       expect(findOneUser).toHaveBeenCalledWith({
         username: 'username'
       })
+
+      const jsonResult = await response.json()
+      // Private fields
+      expect(jsonResult.email).toBeUndefined()
+      expect(jsonResult.hash).toBeUndefined()
+      expect(jsonResult.salt).toBeUndefined()
+      expect(jsonResult.facebook).toBeUndefined()
+      expect(jsonResult.github).toBeUndefined()
+      expect(jsonResult.tokens).toBeUndefined()
+    })
+
+    test('an admin should see private fields', async () => {
+      const urlToBeUsed = new URL(url)
+      urlToBeUsed.searchParams.append('slug', '@username')
+      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
+
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.read': ['PUBLIC'],
+        'user.admin': ['ADMIN'],
+      })
+
+      // Current user is PUBLIC
+      getSession.mockReturnValue({
+        roles: ['ADMIN'],
+        id: 'abc'
+      })
+
+      // The user it finds
+      findOneUser.mockReturnValue(Promise.resolve(demoUser))
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'GET'
+      })
+      
+      expect(response.status).toBe(200)
+
+      expect(findOneUser).toHaveBeenCalledWith({
+        username: 'username'
+      })
+
+      const jsonResult = await response.json()
+      // Private fields
+      expect(jsonResult.email).not.toBeUndefined()
+      expect(jsonResult.hash).not.toBeUndefined()
+      expect(jsonResult.salt).not.toBeUndefined()
+      expect(jsonResult.facebook).not.toBeUndefined()
+      expect(jsonResult.github).not.toBeUndefined()
+      expect(jsonResult.tokens).not.toBeUndefined()
     })
   })
 })
-
-/* TODO: 
-  Test that private data such as password and email is only shared to own user or admin
-  Test that anonymous users can request all users
-  Test that passwords and settings are not displayed 
-  Test that private data is only visible for own user
-  Test that private data is visible for admin
-*/

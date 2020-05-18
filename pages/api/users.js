@@ -29,6 +29,7 @@ const getUsers = (filterParams, searchParams, paginationParams) => (
       })
     })
     .catch((err) => {
+    
       res
         .status(500)
         .json({ error: 'Error while loading users: ' + err.message })
