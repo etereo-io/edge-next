@@ -121,6 +121,7 @@ export default function ({
         .actions {
           display: flex;
           justify-content: flex-end;
+          margin-top: var(--empz-gap-half-negative);
         }
 
         .action {

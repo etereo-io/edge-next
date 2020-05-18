@@ -39,16 +39,6 @@ export default function (props) {
             />
 
             {props.type.comments.enabled &&
-              canReadComments.available &&
-              showComments && (
-                <CommentsFeed
-                  type={props.type}
-                  contentId={props.content.id}
-                  newComments={newComments}
-                />
-              )}
-
-            {props.type.comments.enabled &&
               canWriteComments.available &&
               showComments && (
                 <div className="comment-form-wrapper">
@@ -59,6 +49,16 @@ export default function (props) {
                     onCancel={() => setShowComments(!showComments)}
                   />
                 </div>
+              )}
+
+            {props.type.comments.enabled &&
+              canReadComments.available &&
+              showComments && (
+                <CommentsFeed
+                  type={props.type}
+                  contentId={props.content.id}
+                  newComments={newComments}
+                />
               )}
           </div>
 
@@ -101,8 +101,7 @@ export default function (props) {
         }
 
         .comment-form-wrapper {
-          margin-bottom: var(--empz-gap);
-          padding: 0 var(--empz-gap);
+          margin: var(--empz-gap-half) 0 var(--empz-gap);
         }
       `}</style>
     </>

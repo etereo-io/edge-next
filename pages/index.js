@@ -20,6 +20,13 @@ const Landing = (props) => {
       >
         <div className="columns">
           <div className="left-column">
+            <div className="mobile-over">
+              <img
+                className="avatar"
+                src="https://storage.googleapis.com/edge-next/profilePicture/1589732055819-hayder-avatar.jpg"
+              />
+              <div className="open-mobile-over"></div>
+            </div>
             <UserProfileBox user={user} />
 
             <div className="general-tags">
@@ -52,6 +59,18 @@ const Landing = (props) => {
             </div>
           </div>
           <div className="center-column">
+            <aside className="featured-section">
+              <button className="close"></button>
+              <img
+                src="https://d2qulvgqu65efe.cloudfront.net/static/clouds-512-16d4c7d095ffb936e99ebf726881e701.png"
+                className="asset"
+              />
+              <h3 className="title">Hey, nice to see you here! 👋</h3>
+              <div className="list-actions">
+                <a href="#">Main documentation</a>
+                <a href="#">Web components</a>
+              </div>
+            </aside>
             {contentType && <ContentListView type={contentType} />}
           </div>
 
@@ -144,6 +163,84 @@ const Landing = (props) => {
         </div>
       </Layout>
       <style jsx>{`
+        .featured-section {
+          display: block;
+          width: 100%;
+          padding: var(--empz-gap-double);
+          padding-top: 0;
+          background: var(--empz-success);
+          position: relative;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          color: #fff;
+        }
+
+        .featured-section .close{
+          background: none;
+          border: none;
+          cursor: pointer;
+          height: 24px;
+          position: absolute;
+          right: var(--empz-gap);
+          top: var(--empz-gap);
+          width: 24px;
+        }
+
+        .featured-section .close::before, .featured-section .close::after{
+          background: var(--empz-background);
+          content: '';
+          height: 2px;
+          left: 0;
+          position: absolute;
+          top: 50%;
+          width: 100%;
+        }
+
+        .featured-section .close::before{
+          transform: translateY(-50%) rotate(-45deg);
+        }
+
+        .featured-section .close::after{
+          transform: translateY(-50%) rotate(45deg);
+        }
+
+        .featured-section .title {
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: var(--empz-gap-half);
+        }
+
+        .featured-section .list-title {
+          font-size: 12px;
+          font-weight: 500;
+          text-transform: uppercase;
+        }
+
+        .featured-section .list-actions {
+          align-items: center;
+          display: flex;
+          flex-flow: row;
+          justify-content: space-between;
+          margin-top: var(--empz-gap);
+        }
+
+        .featured-section .list-actions a {
+          background: var(--dark-border-color);
+          border-radius: 4px;
+          color: var(--empz-background);
+          font-weight: 500;
+          padding: var(--empz-gap);
+          text-align: center;
+          text-decoration: none;
+          width: calc(50% - var(--empz-gap-half));
+        }
+
+        .asset{
+          margin-bottom: var(--empz-gap-negative);
+          transform: translateY(-25%);
+          width: 210px;
+        }
+
         .columns {
           align-items: flex-start;
           background: var(--accents-1);
@@ -165,14 +262,67 @@ const Landing = (props) => {
           width: 20%;
         }
 
-        @media all and (max-width: 960px){
-          .left-column{
+        .mobile-over {
+          align-items: center;
+          display: none;
+          width: 100%;
+          flex-flow: column;
+          justify-content: space-between;
+          background: var(--empz-background);
+          content: '';
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          transition: opacity 0.35s ease, visibility 0.35s ease;
+          width: 100%;
+        }
+
+        .mobile-over .avatar {
+          transition: 0.35s ease;
+          max-width: 80px;
+          width: 100%;
+        }
+
+        .mobile-over .open-mobile-over {
+          border-bottom: 3px solid var(--accents-3);
+          border-right: 3px solid var(--accents-3);
+          transform: rotate(-45deg) translateX(-8px);
+          margin-bottom: var(--empz-gap-double);
+          display: block;
+          height: var(--empz-gap);
+          width: var(--empz-gap);
+        }
+
+        @media all and (max-width: 720px) {
+          .mobile-over {
+            display: flex;
+          }
+        }
+
+        @media all and (max-width: 520px) {
+          .mobile-over {
+            flex-flow: row;
+          }
+          .mobile-over .avatar {
+            height: 40px;
+            width: auto;
+          }
+          .mobile-over .open-mobile-over {
+            margin-bottom: 0;
+            margin-right: var(--empz-gap-double);
+            transform: rotate(-135deg) translateY(-6px);
+          }
+        }
+
+        @media all and (max-width: 960px) {
+          .left-column {
             width: 30%;
           }
         }
 
-        @media all and (max-width: 720px){
-          .left-column{
+        @media all and (max-width: 720px) {
+          .left-column {
             bottom: 0;
             box-shadow: var(--shadow-large);
             height: calc(100% - 56px);
@@ -186,24 +336,42 @@ const Landing = (props) => {
             width: 50%;
             z-index: 2;
           }
-          .left-column:hover{
-            max-width: 210px;
+          .left-column::-webkit-scrollbar {
+            width: 0 !important;
+          }
+          .left-column {
+            overflow: -moz-scrollbars-none;
+          }
+          .left-column {
+            -ms-overflow-style: none;
+          }
+          .left-column:hover {
+            max-width: 260px;
           }
 
-          .left-column:hover:before{
+          .left-column:hover .mobile-over {
             opacity: 0;
             visibility: hidden;
           }
 
-          .left-column:before{
-            background: var(--empz-background);
-            content: '';
-            height: 100%;
-            left: 0;
-            position: absolute;
-            top: 0;
-            transition: opacity 0.35s ease, visibility 0.35s ease;
-            width: 100%;
+          .left-column:hover .avatar {
+            border-radius: 50%;
+            transform: translateY(50%);
+          }
+        }
+
+        @media all and (max-width: 520px) {
+          .left-column {
+            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.5);
+            max-height: 40px;
+            max-width: none;
+            padding: 0;
+            width: 100vw;
+          }
+          .left-column:hover {
+            max-height: 100%;
+            max-width: none;
+            width: 100vw;
           }
         }
 
@@ -243,13 +411,13 @@ const Landing = (props) => {
         }
 
         @media all and (max-width: 1110px) {
-          .center-column{
+          .center-column {
             width: 60%;
           }
         }
 
         @media all and (max-width: 960px) {
-          .center-column{
+          .center-column {
             margin-right: 0;
             max-width: none;
             width: calc(70% - var(--empz-gap));
@@ -262,6 +430,12 @@ const Landing = (props) => {
             margin-left: auto;
             padding: 0;
             width: calc(100% - 80px);
+          }
+        }
+
+        @media all and (max-width: 520px) {
+          .center-column {
+            width: 100%;
           }
         }
 
