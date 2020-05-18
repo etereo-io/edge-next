@@ -67,12 +67,17 @@ app.use(async (req, res, next) => {
 
 const logUserIn = async (res, user) => {
   // session is the payload to save in the token, it may contain basic info about the user
-  const session = { ...user }
+  const { username, roles, id } = user
+  const session = {
+    username,
+    roles,
+    id,
+  }
   // The token is a string with the encrypted session
   const token = await encryptSession(session)
 
   // Store the activity
-  onUserLogged(session)
+  await onUserLogged(session)
 
   // Add last login information
   await updateOneUser(user.id, {

@@ -3,7 +3,7 @@ import Layout from '@components/layout/normal/layout'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import GithubLogo from '@components/generic/icons/github-icon/github-icon'
 import NextJSLogo from '@components/generic/icons/nextjs-icon/nextjs-icon'
-
+import Link from 'next/link'
 import config from '../lib/config'
 import { useContentType, useUser } from '../lib/client/hooks'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
@@ -67,8 +67,8 @@ const Landing = (props) => {
               />
               <h3 className="title">Hey, nice to see you here! 👋</h3>
               <div className="list-actions">
-                <a href="#">Main documentation</a>
-                <a href="#">Web components</a>
+                <Link href="/p/documentation"><a title="Main documentation">Main documentation</a></Link>
+                <Link href="/components"><a title="Components">React components</a></Link>
               </div>
             </aside>
             {contentType && <ContentListView type={contentType} />}
@@ -76,7 +76,8 @@ const Landing = (props) => {
 
           <div className="right-column">
             <div className="call-to-action-item">
-              <a href="/components">
+              <Link href="/components">
+              <a title="components">
                 <svg
                   width="32"
                   height="32"
@@ -101,11 +102,13 @@ const Landing = (props) => {
                     fill="var(--empz-success)"
                   ></path>
                 </svg>
-                <h6>Set of Web Components</h6>
+                <h6>Set of React Components</h6>
               </a>
+              </Link>
             </div>
             <div className="call-to-action-item alt">
-              <a href="/content/post">
+              <Link href="/content/post">
+              <a title="content">
                 <svg
                   width="32"
                   height="32"
@@ -120,9 +123,11 @@ const Landing = (props) => {
                 </svg>
                 <h6>Fast Rendering</h6>
               </a>
+              </Link>
             </div>
             <div className="call-to-action-item featured">
-              <a href="https://webmonetization.org/">
+              <a href="https://webmonetization.org/" rel="noopener"
+                target="_blank" title="Web monetization">
                 <svg
                   width="32"
                   xmlns="http://www.w3.org/2000/svg"
