@@ -20,6 +20,10 @@ const Landing = (props) => {
       >
         <div className="columns">
           <div className="left-column">
+            <div className="mobile-over">
+              <img className="avatar" src="https://storage.googleapis.com/edge-next/profilePicture/1589732055819-hayder-avatar.jpg" />
+              <div className="open-mobile-over"></div>
+            </div>
             <UserProfileBox user={user} />
 
             <div className="general-tags">
@@ -165,14 +169,67 @@ const Landing = (props) => {
           width: 20%;
         }
 
-        @media all and (max-width: 960px){
-          .left-column{
+        .mobile-over {
+          align-items: center;
+          display: none;
+          width: 100%;
+          flex-flow: column;
+          justify-content: space-between;
+          background: var(--empz-background);
+          content: '';
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          transition: opacity 0.35s ease, visibility 0.35s ease;
+          width: 100%;
+        }
+
+        .mobile-over .avatar {
+          transition: 0.35s ease;
+          max-width: 80px;
+          width: 100%;
+        }
+
+        .mobile-over .open-mobile-over{
+          border-bottom: 3px solid var(--accents-3);
+          border-right: 3px solid var(--accents-3);
+          transform: rotate(-45deg) translateX(-8px);
+          margin-bottom: var(--empz-gap-double);
+          display: block;
+          height: var(--empz-gap);
+          width: var(--empz-gap);
+        }
+
+        @media all and (max-width: 720px){
+          .mobile-over {
+            display: flex;
+          }
+        }
+
+        @media all and (max-width: 520px){
+          .mobile-over {
+            flex-flow: row;
+          }
+          .mobile-over .avatar{
+            height: 40px;
+            width: auto;
+          }
+          .mobile-over .open-mobile-over{
+            margin-bottom: 0;
+            margin-right: var(--empz-gap-double);
+            transform: rotate(-135deg) translateY(-6px);
+          }
+        }
+
+        @media all and (max-width: 960px) {
+          .left-column {
             width: 30%;
           }
         }
 
-        @media all and (max-width: 720px){
-          .left-column{
+        @media all and (max-width: 720px) {
+          .left-column {
             bottom: 0;
             box-shadow: var(--shadow-large);
             height: calc(100% - 56px);
@@ -186,37 +243,39 @@ const Landing = (props) => {
             width: 50%;
             z-index: 2;
           }
-          .left-column::-webkit-scrollbar { width: 0 !important }
-          .left-column { overflow: -moz-scrollbars-none; }
-          .left-column{ -ms-overflow-style: none; }
-          .left-column:hover{
+          .left-column::-webkit-scrollbar {
+            width: 0 !important;
+          }
+          .left-column {
+            overflow: -moz-scrollbars-none;
+          }
+          .left-column {
+            -ms-overflow-style: none;
+          }
+          .left-column:hover {
             max-width: 260px;
           }
 
-          .left-column:hover:before{
+          .left-column:hover .mobile-over {
             opacity: 0;
             visibility: hidden;
           }
 
-          .left-column:before{
-            background: var(--empz-background);
-            content: '';
-            height: 100%;
-            left: 0;
-            position: absolute;
-            top: 0;
-            transition: opacity 0.35s ease, visibility 0.35s ease;
-            width: 100%;
+          .left-column:hover .avatar {
+            border-radius: 50%;
+            transform: translateY(50%);
           }
         }
 
-        @media all and (max-width: 520px){
-          .left-column{
+        @media all and (max-width: 520px) {
+          .left-column {
+            box-shadow: 0 10px 60px rgba(0,0,0,0.5);
             max-height: 40px;
             max-width: none;
+            padding: 0;
             width: 100vw;
           }
-          .left-column:hover{
+          .left-column:hover {
             max-height: 100%;
             max-width: none;
             width: 100vw;
@@ -259,13 +318,13 @@ const Landing = (props) => {
         }
 
         @media all and (max-width: 1110px) {
-          .center-column{
+          .center-column {
             width: 60%;
           }
         }
 
         @media all and (max-width: 960px) {
-          .center-column{
+          .center-column {
             margin-right: 0;
             max-width: none;
             width: calc(70% - var(--empz-gap));
@@ -281,10 +340,8 @@ const Landing = (props) => {
           }
         }
 
-
-
-        @media all and (max-width: 520px){
-          .center-column{
+        @media all and (max-width: 520px) {
+          .center-column {
             width: 100%;
           }
         }
