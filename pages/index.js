@@ -82,8 +82,7 @@ const Landing = (props) => {
                     fill="var(--empz-success)"
                   ></path>
                 </svg>
-                <h6>Components</h6>
-                <p>Complete set of ready to use web components.</p>
+                <h6>Set of Web Components</h6>
               </a>
             </div>
             <div className="call-to-action-item alt">
@@ -101,7 +100,6 @@ const Landing = (props) => {
                   ></path>
                 </svg>
                 <h6>Fast Rendering</h6>
-                <p>Dynamic content that loads at lightning speed.</p>
               </a>
             </div>
             <div className="call-to-action-item featured">
@@ -116,11 +114,7 @@ const Landing = (props) => {
                     <path d="M13.7551 26.0833c0-1.1274-.3438-2.0559-1.0314-2.7854-.6875-.7428-1.8334-1.4059-3.4377-1.9896-1.6043-.5969-2.8521-1.1472-3.7434-1.6513-2.9667-1.658-4.45-4.1118-4.45-7.3614 0-2.2018.643-4.0123 1.929-5.4316 1.286-1.4192 2.6483-2.2217 4.851-2.487V0h3.4379v4.377c2.2154.3316 3.9279 1.3132 5.1375 2.9446 1.2097 1.6182 1.8144 3.7272 1.8144 6.3269h-4.6219c0-1.6712-.3629-2.9844-1.0887-3.9394-.7129-.9682-1.687-1.4524-2.922-1.4524-1.2224 0-2.1773.3449-2.8649 1.0346-.6875.6897-1.0313 1.6779-1.0313 2.9645 0 1.1539.3374 2.0824 1.0122 2.7854.6876.6897 1.8462 1.3463 3.476 1.9697 1.6298.6233 2.9094 1.2003 3.8389 1.7309.9295.5305 1.7125 1.1407 2.3491 1.8304.6367.6764 1.1269 1.459 1.4706 2.3477.3438.8887.5157 1.9298.5157 3.1237 0 2.2415-.6621 4.0587-1.9863 5.4514-1.3114 1.3926-2.903 2.2349-5.2585 2.4869v3.0573H7.8726v-3.0573c-2.521-.2918-4.4627-1.2335-5.825-2.8252C.6978 29.5651.023 27.4561.023 24.8298h4.641c0 1.6714.4011 2.9646 1.2033 3.8798.8149.9152 1.9608 1.3728 3.4377 1.3728 1.4515 0 2.5529-.3648 3.3042-1.0943.7639-.7295 1.1459-1.6978 1.1459-2.9048zM27.5818 15.433h-3.0622v9.2598h3.0622V15.433zM33.706 12.3464h-3.0621v15.4331h3.0621V12.3464zM39.8304 9.2598h-3.0622V30.866h3.0622V9.2598z"></path>
                   </g>
                 </svg>
-                <h6>Web Monetization</h6>
-                <p>
-                  Integrate a simple JS API to create payment stream with just a
-                  few lines of code.
-                </p>
+                <h6>Simple Web Monetization</h6>
               </a>
             </div>
             <div className="call-to-action-item simple">
@@ -225,7 +219,6 @@ const Landing = (props) => {
 
         @media all and (max-width: 1180px) {
           .right-column {
-            min-width: 180px;
             width: 18%;
           }
         }
@@ -363,7 +356,7 @@ const Landing = (props) => {
           color: var(--empz-foreground);
           display: block;
           font-size: 18px;
-          margin: var(--empz-gap) 0;
+          margin: var(--empz-gap) 0 var(--empz-gap-half);
         }
 
         .call-to-action-item p {
@@ -433,9 +426,13 @@ const Landing = (props) => {
           display: block;
           font-size: 14px;
           padding: var(--empz-gap-half);
-          transition: background 0.35s ease;
           color: inherit;
+          transition: background 0.35s ease;
+          overflow: hidden;
           text-decoration: none;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 100%;
         }
 
         .general-tags ul li a:hover {
