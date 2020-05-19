@@ -8,6 +8,7 @@ import {
 } from '@lib/api/users/user'
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
 
+import { FIELDS } from '@lib/config/config-constants'
 import { connect } from '@lib/api/db'
 import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
@@ -89,6 +90,33 @@ async function updateProfile(userId, profile, req) {
     req.item.profile
   )
   const newContent = merge(profile, newData)
+
+  // Check if there are any missing file fields and delete them from storage
+  const itemsToDelete = []
+  for (const field of edgeConfig.user.profile.fields) {
+    if (field.type === FIELDS.IMAGE || field.type === FIELDS.FILE) {
+      // Go through all the items and see if in the new content there is any difference
+      const previousValue = req.item.profile[field.name] || []
+      previousValue.forEach((f) => {
+        if (profile[field.name]) {
+          // Only delete if the field is set
+          if (!profile[field.name].find((item) => item.path === f.path)) {
+            itemsToDelete.push(f)
+          }
+        }
+      })
+    }
+  }
+
+  // Delete old items from storage
+  for (let i = 0; i < itemsToDelete.length; i++) {
+    try {
+      await deleteFile(itemsToDelete[i].path)
+    } catch (err) {
+      // Error deleting file, ignore ite
+    }
+  }
+
   return updateOneUser(userId, {
     profile: {
       ...newContent,
@@ -238,6 +266,7 @@ const updateUser = (slug) => async (req, res) => {
       })
     })
     .catch((err) => {
+      console.log(err)
       res.status(400).send({
         error: err.message ? err.message : err,
       })
