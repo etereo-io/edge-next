@@ -166,7 +166,6 @@ export default function (props) {
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('DESC')
 
-
   // Fetch user page by page
   const {
     pages,
@@ -177,7 +176,9 @@ export default function (props) {
   } = useSWRPages(
     `admin-users-list`,
     ({ offset, withSWR }) => {
-      const apiUrl = `${API.users}?limit=10${offset ? '&from=' + offset : ''}&sortBy=${sortBy}&sortOrder=${sortOrder}`
+      const apiUrl = `${API.users}?limit=10${
+        offset ? '&from=' + offset : ''
+      }&sortBy=${sortBy}&sortOrder=${sortOrder}`
       const { data } = withSWR(useSWR(apiUrl, fetch))
 
       if (!data) return <Placeholder />
@@ -197,27 +198,47 @@ export default function (props) {
   )
 
   const headerCells = [
-    <TableCellHeader onClick={() => {
-      setSortBy('username')
-      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-    }}>Username</TableCellHeader>,
-    <TableCellHeader onClick={() => {
-      setSortBy('email')
-      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-    }}>Email</TableCellHeader>,
+    <TableCellHeader
+      onClick={() => {
+        setSortBy('username')
+        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+      }}
+    >
+      Username
+    </TableCellHeader>,
+    <TableCellHeader
+      onClick={() => {
+        setSortBy('email')
+        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+      }}
+    >
+      Email
+    </TableCellHeader>,
     <TableCellHeader>Reported</TableCellHeader>,
-    <TableCellHeader onClick={() => {
-      setSortBy('metadta.lastLogin')
-      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-    }}>Last Login</TableCellHeader>,
-    <TableCellHeader onClick={() => {
-      setSortBy('createdAt')
-      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-    }}>Created at</TableCellHeader>,
-    <TableCellHeader onClick={() => {
-      setSortBy('blocked')
-      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-    }}>Blocked</TableCellHeader>,
+    <TableCellHeader
+      onClick={() => {
+        setSortBy('metadta.lastLogin')
+        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+      }}
+    >
+      Last Login
+    </TableCellHeader>,
+    <TableCellHeader
+      onClick={() => {
+        setSortBy('createdAt')
+        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+      }}
+    >
+      Created at
+    </TableCellHeader>,
+    <TableCellHeader
+      onClick={() => {
+        setSortBy('blocked')
+        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+      }}
+    >
+      Blocked
+    </TableCellHeader>,
     <TableCellHeader>Actions</TableCellHeader>,
   ]
 

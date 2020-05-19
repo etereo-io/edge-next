@@ -3,7 +3,10 @@
 
 import * as handler from '../../../../../pages/api/content/[type]/[slug]'
 
-import { deleteOneContent, findOneContent } from '../../../../../lib/api/content/content'
+import {
+  deleteOneContent,
+  findOneContent,
+} from '../../../../../lib/api/content/content'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import { deleteActivity } from '../../../../../lib/api/activity/activity'
@@ -23,7 +26,6 @@ jest.mock('../../../../../lib/api/activity/activity')
 jest.mock('../../../../../lib/api/content/content')
 
 jest.mock('../../../../../edge.config', () => {
-
   const mockPostContentType = {
     title: 'Post',
 
@@ -110,31 +112,35 @@ describe('Integrations tests for content deletion endpoint', () => {
 
   beforeEach(() => {
     deleteOneContent.mockReturnValue(Promise.resolve())
-    deleteActivity.mockReturnValue( Promise.resolve())
-    deleteComment.mockReturnValue( Promise.resolve())
-    deleteFile.mockReturnValue( Promise.resolve())
-    findOneContent.mockReturnValue( Promise.resolve({
-      type: 'post',
-      id: 'contentid',
-      author: 'userId',
-      title: 'Example post',
-      slug: 'example-post-0',
-      image: [{
-        path: 'abc.test'
-      }],
-      description: 'This is an example description',
-      draft: false,
-      tags: [
-        {
-          slug: 'software',
-          label: 'SOFTWARE',
-        },
-        {
-          slug: 'ai',
-          label: 'AI',
-        },
-      ],
-    }))
+    deleteActivity.mockReturnValue(Promise.resolve())
+    deleteComment.mockReturnValue(Promise.resolve())
+    deleteFile.mockReturnValue(Promise.resolve())
+    findOneContent.mockReturnValue(
+      Promise.resolve({
+        type: 'post',
+        id: 'contentid',
+        author: 'userId',
+        title: 'Example post',
+        slug: 'example-post-0',
+        image: [
+          {
+            path: 'abc.test',
+          },
+        ],
+        description: 'This is an example description',
+        draft: false,
+        tags: [
+          {
+            slug: 'software',
+            label: 'SOFTWARE',
+          },
+          {
+            slug: 'ai',
+            label: 'AI',
+          },
+        ],
+      })
+    )
   })
 
   afterEach(() => {
@@ -191,17 +197,16 @@ describe('Integrations tests for content deletion endpoint', () => {
 
       expect(deleteFile).toHaveBeenCalledWith('abc.test')
       expect(deleteComment).toHaveBeenCalledWith({
-        contentId: 'contentid'
+        contentId: 'contentid',
       })
       expect(deleteActivity).toHaveBeenCalledWith({
         meta: {
-          contentId: 'contentid'
-        }
+          contentId: 'contentid',
+        },
       })
       expect(deleteOneContent).toHaveBeenCalledWith('post', {
-        id: 'contentid'
+        id: 'contentid',
       })
-      
     })
   })
 
@@ -232,8 +237,7 @@ describe('Integrations tests for content deletion endpoint', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message:
-          'User not authorized to perform operation on content post',
+        message: 'User not authorized to perform operation on content post',
       })
     })
 
@@ -255,9 +259,8 @@ describe('Integrations tests for content deletion endpoint', () => {
         id: 'i am another user',
       })
 
-
       const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       expect(response.status).toBe(200)
@@ -283,7 +286,6 @@ describe('Integrations tests for content deletion endpoint', () => {
 
       const response = await fetch(urlToBeUsed.href, {
         method: 'DELETE',
-        
       })
 
       expect(response.status).toBe(200)
@@ -307,9 +309,8 @@ describe('Integrations tests for content deletion endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-
     const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     expect(response.status).toBe(401)
@@ -333,11 +334,9 @@ describe('Integrations tests for content deletion endpoint', () => {
     )
 
     const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     expect(response.status).toBe(200)
   })
-
-
 })

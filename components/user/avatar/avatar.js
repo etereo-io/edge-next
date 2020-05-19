@@ -7,7 +7,9 @@ export default function (props) {
   return (
     <>
       <div className="avatar">
-        {!props.loading && <img title={title} src={props.src || defaultSrc}></img>}
+        {!props.loading && (
+          <img title={title} src={props.src || defaultSrc}></img>
+        )}
         {props.loading && (
           <div className="empty-avatar">
             {' '}
@@ -38,7 +40,7 @@ export default function (props) {
           width: ${width}px;
         }
 
-        .avatar img{
+        .avatar img {
           height: 100%;
           object-fit: cover;
           width: 100%;

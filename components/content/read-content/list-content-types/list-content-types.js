@@ -4,13 +4,12 @@ import { useContentTypes } from '@lib/client/hooks'
 export default function () {
   const contentTypes = useContentTypes(['read', 'admin'])
 
-  const links = contentTypes
-    .map((type) => {
-      return {
-        link: `/content/${type.slug}`,
-        title: `See all ${type.title}s`,
-      }
-    })
+  const links = contentTypes.map((type) => {
+    return {
+      link: `/content/${type.slug}`,
+      title: `See all ${type.title}s`,
+    }
+  })
 
   return (
     <>

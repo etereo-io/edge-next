@@ -439,15 +439,31 @@ const links = [{
             <h3>User Profile Box</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <UserProfileBox user={{username: 'demo-user', profile: { bio: '', facebook: 'yes'}}} />
+                <UserProfileBox
+                  user={{
+                    username: 'demo-user',
+                    profile: { bio: '', facebook: 'yes' },
+                  }}
+                />
               </div>
               <div className="item-wrapper">
-                <UserProfileBox user={{username: 'demo-user', profile: { picture: 'https://loremflickr.com/240/240/food?random=3', displayName: 'Jonh Doe', bio: 'My bio is something special', github: 'yes', facebook: 'yes', twitter: 'yes'}}} />
+                <UserProfileBox
+                  user={{
+                    username: 'demo-user',
+                    profile: {
+                      picture: 'https://loremflickr.com/240/240/food?random=3',
+                      displayName: 'Jonh Doe',
+                      bio: 'My bio is something special',
+                      github: 'yes',
+                      facebook: 'yes',
+                      twitter: 'yes',
+                    },
+                  }}
+                />
               </div>
               <div className="item-wrapper">
                 <UserProfileBox user={null} />
               </div>
-
             </div>
             <pre>{`
 <UserProfileBox user={{username: 'demo-user', profile: { bio: 'My bio is something special'}}} />
@@ -458,15 +474,22 @@ const links = [{
             <h3>Author Box</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <AuthorBox user={{username: 'demo-user', profile: { picture: 'https://loremflickr.com/240/240/food?random=1', displayName: 'Jonh doe'}}} />
+                <AuthorBox
+                  user={{
+                    username: 'demo-user',
+                    profile: {
+                      picture: 'https://loremflickr.com/240/240/food?random=1',
+                      displayName: 'Jonh doe',
+                    },
+                  }}
+                />
               </div>
               <div className="item-wrapper">
-                <AuthorBox user={{username: 'demo-user'}} />
+                <AuthorBox user={{ username: 'demo-user' }} />
               </div>
               <div className="item-wrapper">
                 <AuthorBox user={null} />
               </div>
-
             </div>
             <pre>{`
 <AuthorBox user={{username: 'demo-user', profile: { bio: 'My bio is something special'}}} />
@@ -532,14 +555,22 @@ const links = [{
                   <Avatar />
                   <h3>This is a test card</h3>
                 </Card>
-                <Card alt><h3>This is a test card</h3></Card>
-                <Card secondary><h3>This is a test card</h3></Card>
-                <Card success><h3>This is a test card</h3></Card>
-                <Card warning><h3>This is a test card</h3></Card>
-                <Card alert><h3>This is a test card</h3></Card>
+                <Card alt>
+                  <h3>This is a test card</h3>
+                </Card>
+                <Card secondary>
+                  <h3>This is a test card</h3>
+                </Card>
+                <Card success>
+                  <h3>This is a test card</h3>
+                </Card>
+                <Card warning>
+                  <h3>This is a test card</h3>
+                </Card>
+                <Card alert>
+                  <h3>This is a test card</h3>
+                </Card>
               </div>
-
-             
             </div>
             <pre>{`
 <Card>Content</Card> 

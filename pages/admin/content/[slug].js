@@ -13,7 +13,7 @@ const AdminPage = () => {
     '/'
   )
 
-  const {contentType} = useContentType(slug ? slug: null)
+  const { contentType } = useContentType(slug ? slug : null)
 
   // Load data
   return (

@@ -3,16 +3,16 @@ import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 
-export default function({user, ...props}) {
+export default function ({ user, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
   const [fields, setFields] = useState({})
 
   const url = `${API.users}/${user.id}/email`
-  
-  const request = data => {
+
+  const request = (data) => {
     setLoading(true)
     setSuccess(false)
     setError(false)
@@ -24,23 +24,23 @@ export default function({user, ...props}) {
         'Content-Type': 'application/json',
       },
     })
-    .then(result => {
-      setLoading(false)
-      setSuccess(true)
-      setError(false)
-      setFields({})
-    })
-    .catch(err => {
-      setLoading(false)
-      setSuccess(false)
-      setError('Error updating your email, this email is already taken.')
-    })
+      .then((result) => {
+        setLoading(false)
+        setSuccess(true)
+        setError(false)
+        setFields({})
+      })
+      .catch((err) => {
+        setLoading(false)
+        setSuccess(false)
+        setError('Error updating your email, this email is already taken.')
+      })
   }
 
-  const handleFieldChange = (name) => value => {
+  const handleFieldChange = (name) => (value) => {
     setFields({
       ...fields,
-      [name]: value
+      [name]: value,
     })
 
     setError('')
@@ -49,7 +49,6 @@ export default function({user, ...props}) {
   const onSubmit = (ev) => {
     ev.preventDefault()
     const email = ev.currentTarget.email.value
-    
 
     if (email.length < 3) {
       setError('Invalid email')
@@ -57,26 +56,24 @@ export default function({user, ...props}) {
     }
 
     request({
-      email
+      email,
     })
-
   }
 
-   // Set default data
-   useEffect(() => {
+  // Set default data
+  useEffect(() => {
     setFields({
-      email: user.email
+      email: user.email,
     })
   }, [user])
 
-
   return (
-    <> 
+    <>
       <div className="change-password">
         <form onSubmit={onSubmit}>
           <div className="block-settings">
             <p>A new email will require e-mail validation</p>
-            <div className={`input-group required ${error ? 'error': ''}`}>
+            <div className={`input-group required ${error ? 'error' : ''}`}>
               <input
                 type="text"
                 placeholder="Email"
@@ -89,16 +86,12 @@ export default function({user, ...props}) {
           </div>
           <div className="actions">
             <div className="info">
-              {error && (
-                <div className="error-message">{error}</div>
-              )}
-              {loading && (
-                <div className="loading-message">Loading...</div>
-              )}
+              {error && <div className="error-message">{error}</div>}
+              {loading && <div className="loading-message">Loading...</div>}
               {success && (
                 <div className="success-message">
-                  Email updated correctly. Please check your email inbox
-                  to verify your new address.
+                  Email updated correctly. Please check your email inbox to
+                  verify your new address.
                 </div>
               )}
             </div>
@@ -107,8 +100,7 @@ export default function({user, ...props}) {
         </form>
       </div>
       <style jsx>
-        {
-          `
+        {`
           .actions {
             padding-top: var(--empz-gap);
             display: flex;
@@ -118,8 +110,7 @@ export default function({user, ...props}) {
           .info {
             padding-right: var(--empz-gap);
           }
-          `
-        }
+        `}
       </style>
     </>
   )

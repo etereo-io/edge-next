@@ -51,8 +51,7 @@ export default function (props) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(jsonData),
-    })
-    .then((result) => {
+    }).then((result) => {
       // Files are always updated as a PUT
       return fetch(
         `${API.content[props.type.slug]}${'/' + result.id + '?field=id'}`,
@@ -72,9 +71,13 @@ export default function (props) {
 
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
-      const fieldDefinition = props.type.fields.find(t => t.name === key)
-      
-      if (fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
+      const fieldDefinition = props.type.fields.find((t) => t.name === key)
+
+      if (
+        fieldDefinition &&
+        (fieldDefinition.type === FIELDS.IMAGE ||
+          fieldDefinition.type === FIELDS.FILE)
+      ) {
         if (fieldValue && fieldValue.length > 0) {
           jsonData[key] = []
 
@@ -158,7 +161,6 @@ export default function (props) {
           {error && <div className="error-message">Error saving </div>}
         </form>
 
-
         <div className="preview">
           <ContentSummaryView content={state} type={props.type} />
         </div>
@@ -174,7 +176,7 @@ export default function (props) {
             padding: var(--empz-gap);
           }
 
-          .contentForm form{
+          .contentForm form {
             width: 50%;
           }
 

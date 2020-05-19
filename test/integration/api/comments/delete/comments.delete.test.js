@@ -1,6 +1,10 @@
 import * as handler from '../../../../../pages/api/comments/[contentType]/[contentId]/[id]'
 
-import { deleteComment, deleteOneComment, findOneComment } from '../../../../../lib/api/comments/comments'
+import {
+  deleteComment,
+  deleteOneComment,
+  findOneComment,
+} from '../../../../../lib/api/comments/comments'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import { deleteActivity } from '../../../../../lib/api/activity/activity'
@@ -16,7 +20,6 @@ jest.mock('../../../../../lib/api/comments/comments')
 jest.mock('../../../../../lib/api/activity/activity')
 
 jest.mock('../../../../../edge.config', () => {
-
   const mockPostContentType = {
     title: 'Post',
 
@@ -103,22 +106,24 @@ describe('Integrations tests for content deletion endpoint', () => {
 
   beforeEach(() => {
     deleteOneComment.mockReturnValue(Promise.resolve())
-    deleteActivity.mockReturnValue( Promise.resolve())
-    deleteComment.mockReturnValue( Promise.resolve())
-    findOneComment.mockReturnValue( Promise.resolve({
-      "author": "userId",
-      "createdAt": 1589616086584,
-      "contentType": "post",
-      "contentId": "5ebe9d562779ed4d88c94f2f",
-      "message": "Another test comment",
-      "conversationId": null,
-      "slug": "1589616086584-5eb3240d5dd70535e812f402",
-      "id": "5ebf9dd6e1d3192ac0ae2466",
-      "user": {
-        "username": "rafael",
-      },
-      "replies": 2
-    }))
+    deleteActivity.mockReturnValue(Promise.resolve())
+    deleteComment.mockReturnValue(Promise.resolve())
+    findOneComment.mockReturnValue(
+      Promise.resolve({
+        author: 'userId',
+        createdAt: 1589616086584,
+        contentType: 'post',
+        contentId: '5ebe9d562779ed4d88c94f2f',
+        message: 'Another test comment',
+        conversationId: null,
+        slug: '1589616086584-5eb3240d5dd70535e812f402',
+        id: '5ebf9dd6e1d3192ac0ae2466',
+        user: {
+          username: 'rafael',
+        },
+        replies: 2,
+      })
+    )
   })
 
   afterEach(() => {
@@ -148,11 +153,14 @@ describe('Integrations tests for content deletion endpoint', () => {
     expect(response.status).toBe(405)
   })
 
-
   describe('Correct delete', () => {
     test('Should delete child comments if the comment has no conversationId and activity if a comment is deleted', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
+      const params = {
+        contentType: 'post',
+        contentId: '5ebe9d562779ed4d88c94f2f',
+        id: '5ebf9dd6e1d3192ac0ae2466',
+      }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
@@ -175,25 +183,28 @@ describe('Integrations tests for content deletion endpoint', () => {
       expect(response.status).toBe(200)
 
       expect(deleteComment).toHaveBeenCalledWith({
-        conversationId: '5ebf9dd6e1d3192ac0ae2466'
+        conversationId: '5ebf9dd6e1d3192ac0ae2466',
       })
       expect(deleteActivity).toHaveBeenCalledWith({
         meta: {
-          commentId: '5ebf9dd6e1d3192ac0ae2466'
-        }
+          commentId: '5ebf9dd6e1d3192ac0ae2466',
+        },
       })
 
       expect(deleteOneComment).toHaveBeenCalledWith({
-        id: '5ebf9dd6e1d3192ac0ae2466'
+        id: '5ebf9dd6e1d3192ac0ae2466',
       })
-      
     })
   })
 
   describe('Invalid delete', () => {
     test('Should return 401 when deleting other person content without the content.post.delete permission', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
+      const params = {
+        contentType: 'post',
+        contentId: '5ebe9d562779ed4d88c94f2f',
+        id: '5ebf9dd6e1d3192ac0ae2466',
+      }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
@@ -217,14 +228,17 @@ describe('Integrations tests for content deletion endpoint', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message:
-          'User not authorized to perform operation on comment post',
+        message: 'User not authorized to perform operation on comment post',
       })
     })
 
     test('Should return 200 when deleting other person content with the content.post.comments.delete permission', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
+      const params = {
+        contentType: 'post',
+        contentId: '5ebe9d562779ed4d88c94f2f',
+        id: '5ebf9dd6e1d3192ac0ae2466',
+      }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
@@ -240,9 +254,8 @@ describe('Integrations tests for content deletion endpoint', () => {
         id: 'i am another user',
       })
 
-
       const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       expect(response.status).toBe(200)
@@ -250,7 +263,11 @@ describe('Integrations tests for content deletion endpoint', () => {
 
     test('Should return 200 when deleting other person content with the content.post.admin permission', async () => {
       const urlToBeUsed = new URL(url)
-      const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
+      const params = {
+        contentType: 'post',
+        contentId: '5ebe9d562779ed4d88c94f2f',
+        id: '5ebf9dd6e1d3192ac0ae2466',
+      }
 
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
@@ -268,7 +285,6 @@ describe('Integrations tests for content deletion endpoint', () => {
 
       const response = await fetch(urlToBeUsed.href, {
         method: 'DELETE',
-        
       })
 
       expect(response.status).toBe(200)
@@ -277,7 +293,11 @@ describe('Integrations tests for content deletion endpoint', () => {
 
   test('Should return 401 for a role that is PUBLIC', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
+    const params = {
+      contentType: 'post',
+      contentId: '5ebe9d562779ed4d88c94f2f',
+      id: '5ebf9dd6e1d3192ac0ae2466',
+    }
 
     getPermissions.mockReturnValueOnce({
       'content.post.comments.delete': ['ADMIN'],
@@ -293,7 +313,7 @@ describe('Integrations tests for content deletion endpoint', () => {
     )
 
     const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     expect(response.status).toBe(401)
@@ -301,7 +321,11 @@ describe('Integrations tests for content deletion endpoint', () => {
 
   test('Should return 200 for ADMIN', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: '5ebe9d562779ed4d88c94f2f', id: '5ebf9dd6e1d3192ac0ae2466' }
+    const params = {
+      contentType: 'post',
+      contentId: '5ebe9d562779ed4d88c94f2f',
+      id: '5ebf9dd6e1d3192ac0ae2466',
+    }
 
     getPermissions.mockReturnValueOnce({
       'content.post.comments.delete': ['ADMIN'],
@@ -317,11 +341,9 @@ describe('Integrations tests for content deletion endpoint', () => {
     )
 
     const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     expect(response.status).toBe(200)
   })
-
-
 })

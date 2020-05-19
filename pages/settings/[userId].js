@@ -14,15 +14,14 @@ import { useUser } from '@lib/client/hooks'
 import { userPermission } from '@lib/permissions'
 
 const UserSettings = () => {
-
   // Check if the logged in user can access to this resource
   const router = useRouter()
   const { userId } = router.query
 
   // Check permissions to read
   const currentUser = useUser()
-  const hasPermissionsToEdit = userPermission(currentUser.user, 'update') 
-  
+  const hasPermissionsToEdit = userPermission(currentUser.user, 'update')
+
   // Load profile data
   const [user, setUser] = useState(null)
   const [loaded, setLoaded] = useState(false)
@@ -30,18 +29,18 @@ const UserSettings = () => {
   // Load user, just one time when accesing.
   useEffect(() => {
     if (userId) {
-      fetch(`/api/users/` + userId )
-      .then(result => {
-        setUser(result)
-        setLoaded(true)
-      })
-      .catch(err => {
-        setUser(null)
-        setLoaded(true)
-      })
+      fetch(`/api/users/` + userId)
+        .then((result) => {
+          setUser(result)
+          setLoaded(true)
+        })
+        .catch((err) => {
+          setUser(null)
+          setLoaded(true)
+        })
     }
   }, [userId])
-  
+
   // Loading
   if (!loaded || !currentUser.finished) {
     return (
@@ -52,7 +51,7 @@ const UserSettings = () => {
     )
   }
 
-  const isOwner = userId === 'me' || user && user.username === userId
+  const isOwner = userId === 'me' || (user && user.username === userId)
   const canAccess = hasPermissionsToEdit || isOwner
 
   if (!user || !canAccess) {
@@ -103,7 +102,7 @@ const UserSettings = () => {
             <div className="configuration-block">
               <h2>Change Password</h2>
               <div className="form-wrapper">
-                <EditPasswordForm user={user}/>
+                <EditPasswordForm user={user} />
               </div>
             </div>
 
@@ -146,10 +145,6 @@ const UserSettings = () => {
             .configuration-block .form-wrapper {
               padding: var(--empz-gap);
             }
-
-          
-
-           
           `}
         </style>
       </Layout>

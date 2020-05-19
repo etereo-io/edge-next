@@ -19,14 +19,16 @@ export default function (props) {
     alert,
     success,
     padding,
-    hoverable
+    hoverable,
   } = props
 
-  const classNames = `button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${fullWidth ? 'full-width' : ''} ${
-    big ? 'big' : ''
-  } ${success ? 'success' : ''} ${warning ? 'warning' : ''} ${
-    secondary ? 'secondary' : ''
-  } ${alert ? 'alert' : ''} ${hoverable ? 'hoverable' : ''} ${className}`
+  const classNames = `button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${
+    fullWidth ? 'full-width' : ''
+  } ${big ? 'big' : ''} ${success ? 'success' : ''} ${
+    warning ? 'warning' : ''
+  } ${secondary ? 'secondary' : ''} ${alert ? 'alert' : ''} ${
+    hoverable ? 'hoverable' : ''
+  } ${className}`
 
   const buttonItem = (
     <>
@@ -55,7 +57,7 @@ export default function (props) {
             display: inline-block;
             font-size: 14px;
             font-weight: 500;
-            padding: ${padding ? padding: '12px var(--empz-gap)'};
+            padding: ${padding ? padding : '12px var(--empz-gap)'};
             transition: 0.3s ease;
             -webkit-appearance: none;
           }
@@ -101,27 +103,25 @@ export default function (props) {
             width: fit-content;
           }
 
-          .button.full-width {
+          .button.full-width  {
             width: 100%;
           }
-          
-          .button.loading{
+
+          .button.loading {
             display: flex;
             justify-content: center;
             text-align: center;
           }
-          .button.loading div{
+          .button.loading div {
             display: inline-block;
           }
 
-          .button.hoverable:hover{
+          .button.hoverable:hover {
             background-color: inherit;
             box-shadow: var(--shadow-medium);
             color: inherit;
             transform: scale(1.025);
-          }          
-
-          
+          }
         `}
       </style>
     </>

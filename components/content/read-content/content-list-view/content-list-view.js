@@ -59,7 +59,6 @@ export default function (props) {
   const infiniteScroll = props.infiniteScroll
   const query = props.query
   const identificator = 'content-list-' + props.type.slug + '-' + query
-  
 
   // Fetch content type page by page
   const {
@@ -76,7 +75,11 @@ export default function (props) {
       }${query ? `&${query}` : ''}`
 
       const { data } = withSWR(
-        useSWR(apiUrl, fetch, !offset ? { initialData:  props.initialData} : null)
+        useSWR(
+          apiUrl,
+          fetch,
+          !offset ? { initialData: props.initialData } : null
+        )
       )
 
       if (!data) return <LoadingItems />
@@ -84,7 +87,7 @@ export default function (props) {
       const { results = [] } = data
       return results.map((item) => {
         return (
-          <div key={item.id + item.createdAt} >
+          <div key={item.id + item.createdAt}>
             <div className={`item`}>
               <ContentDetailView
                 content={item}
@@ -98,7 +101,6 @@ export default function (props) {
               .item {
                 margin-bottom: var(--empz-gap);
               }
-              
             `}</style>
           </div>
         )
@@ -106,9 +108,10 @@ export default function (props) {
     },
     (SWR) => {
       // Calculates the next page offset
-      const nextOffset = SWR.data && SWR.data.results && SWR.data.results.length >= 10
-        ? (SWR.data.from * 1) + (SWR.data.limit * 1)
-        : null
+      const nextOffset =
+        SWR.data && SWR.data.results && SWR.data.results.length >= 10
+          ? SWR.data.from * 1 + SWR.data.limit * 1
+          : null
 
       return nextOffset
     },
@@ -126,7 +129,7 @@ export default function (props) {
     <>
       <div className="contentListView">
         <div className={`items `}>
-          { pages }
+          {pages}
           {isLoadingMore && <LoadingItems />}
           {isEmpty && <EmptyComponent />}
         </div>
@@ -151,7 +154,6 @@ export default function (props) {
           padding-bottom: var(--empz-gap-double);
         }
 
-       
         .load-more {
           display: flex;
           justify-content: center;

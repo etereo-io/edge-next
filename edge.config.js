@@ -106,7 +106,6 @@ for (var i = 0; i < 30; i++) {
 
 const initialContent = [...posts, ...products, ...comments]
 
-
 export const getConfig = (defaultOptions) => {
   const userRole = defaultOptions.roles.user.value
   const adminRole = defaultOptions.roles.admin.value
@@ -114,76 +113,80 @@ export const getConfig = (defaultOptions) => {
   const publicRole = defaultOptions.roles.public.value
 
   const salt = crypto.randomBytes(16).toString('hex')
-const hash = crypto.pbkdf2Sync('1234', salt, 1000, 64, 'sha512').toString('hex')
+  const hash = crypto
+    .pbkdf2Sync('1234', salt, 1000, 64, 'sha512')
+    .toString('hex')
 
-const initialUsers = [{
-  username: 'admin',
-  displayname: 'The admin',
-  email: 'admin@demo.com', 
-  emailVerified: true,
-  createdAt: Date.now(),
-  roles: [adminRole, userRole],
-  id: ObjectID(),
-  salt,
-  hash,
-  profile: {
-    picture: '/static/demo-images/default-avatar.jpg',
-  },
-  metadata: {
-    lastLogin: null,
-  },
-},
-{
-  username: 'user',
-  email: 'user@demo.com',
-  emailVerified: true,
-  createdAt: Date.now(),
-  roles: [userRole],
-  id: userId,
-  salt,
-  hash,
-  profile: {
-    picture: '',
-  },
-  metadata: {
-    lastLogin: null,
-  },
-},
-{
-  username: 'blocked',
-  email: 'blocked@demo.com',
-  emailVerified: true,
-  createdAt: Date.now(),
-  roles: [userRole],
-  id: ObjectID(),
-  salt,
-  hash,
-  profile: {
-    picture: '',
-  },
-  blocked: true,
-  metadata: {
-    lastLogin: null,
-  },
-},
-{
-  username: 'notverified',
-  email: 'notverified@demo.com',
-  emailVerified: false,
-  emailVerificationToken: '1234',
-  createdAt: Date.now(),
-  roles: [userRole],
-  id: ObjectID(),
-  salt,
-  hash,
-  profile: {
-    picture: '',
-  },
-  blocked: true,
-  metadata: {
-    lastLogin: null,
-  },
-}]
+  const initialUsers = [
+    {
+      username: 'admin',
+      displayname: 'The admin',
+      email: 'admin@demo.com',
+      emailVerified: true,
+      createdAt: Date.now(),
+      roles: [adminRole, userRole],
+      id: ObjectID(),
+      salt,
+      hash,
+      profile: {
+        picture: '/static/demo-images/default-avatar.jpg',
+      },
+      metadata: {
+        lastLogin: null,
+      },
+    },
+    {
+      username: 'user',
+      email: 'user@demo.com',
+      emailVerified: true,
+      createdAt: Date.now(),
+      roles: [userRole],
+      id: userId,
+      salt,
+      hash,
+      profile: {
+        picture: '',
+      },
+      metadata: {
+        lastLogin: null,
+      },
+    },
+    {
+      username: 'blocked',
+      email: 'blocked@demo.com',
+      emailVerified: true,
+      createdAt: Date.now(),
+      roles: [userRole],
+      id: ObjectID(),
+      salt,
+      hash,
+      profile: {
+        picture: '',
+      },
+      blocked: true,
+      metadata: {
+        lastLogin: null,
+      },
+    },
+    {
+      username: 'notverified',
+      email: 'notverified@demo.com',
+      emailVerified: false,
+      emailVerificationToken: '1234',
+      createdAt: Date.now(),
+      roles: [userRole],
+      id: ObjectID(),
+      salt,
+      hash,
+      profile: {
+        picture: '',
+      },
+      blocked: true,
+      metadata: {
+        lastLogin: null,
+      },
+    },
+  ]
 
   const postContentType = {
     title: 'Post',
@@ -206,7 +209,7 @@ const initialUsers = [{
     },
 
     monetization: {
-      web: true
+      web: true,
     },
 
     comments: {
@@ -228,7 +231,7 @@ const initialUsers = [{
         placeholder: 'Title',
         minlength: 8,
         maxlength: 150,
-        errorMessage: 'Title must be between 8 and 150 characters'
+        errorMessage: 'Title must be between 8 and 150 characters',
       },
       {
         name: 'description',
@@ -237,7 +240,7 @@ const initialUsers = [{
         placeholder: 'Description',
         minlength: 20,
         maxlength: 2000,
-        errorMessage: 'Description must be between 20 and 2000 characters'
+        errorMessage: 'Description must be between 20 and 2000 characters',
       },
       {
         name: 'images',
@@ -245,20 +248,20 @@ const initialUsers = [{
         label: 'Images',
         placeholder: 'Images',
         multiple: true,
-        errorMessage: 'Only images supported'
+        errorMessage: 'Only images supported',
       },
       {
         name: 'video',
         type: 'video_url',
         label: 'Video (URL)',
-        errorMessage: 'Only urls (https://) are supported'
+        errorMessage: 'Only urls (https://) are supported',
       },
       {
         name: 'file',
         type: 'file',
         label: 'File',
         placeholder: 'File',
-        errorMessage: 'File size must be less than 3MB'
+        errorMessage: 'File size must be less than 3MB',
       },
       {
         name: 'tags',
@@ -269,7 +272,6 @@ const initialUsers = [{
     ],
   }
 
-  
   const dishContentType = {
     title: 'dish',
 
@@ -302,7 +304,7 @@ const initialUsers = [{
         placeholder: 'Title',
         minlength: 8,
         maxlength: 150,
-        errorMessage: 'Title must be between 8 and 150 characters'
+        errorMessage: 'Title must be between 8 and 150 characters',
       },
       {
         name: 'description',
@@ -311,7 +313,7 @@ const initialUsers = [{
         placeholder: 'Description',
         minlength: 20,
         maxlength: 2000,
-        errorMessage: 'Description must be between 20 and 2000 characters'
+        errorMessage: 'Description must be between 20 and 2000 characters',
       },
       {
         name: 'ingredients',
@@ -320,7 +322,7 @@ const initialUsers = [{
         placeholder: 'Ingredients',
         minlength: 20,
         maxlength: 2000,
-        errorMessage: 'Ingredients must be between 20 and 2000 characters'
+        errorMessage: 'Ingredients must be between 20 and 2000 characters',
       },
       {
         name: 'images',
@@ -328,7 +330,7 @@ const initialUsers = [{
         label: 'Images',
         placeholder: 'Images',
         multiple: true,
-        errorMessage: 'Only images supported'
+        errorMessage: 'Only images supported',
       },
       {
         name: 'price',
@@ -384,7 +386,7 @@ const initialUsers = [{
         placeholder: 'Title',
         minlength: 10,
         maxlength: 200,
-        errorMessage: 'Title must be between 10 and 200 characters'
+        errorMessage: 'Title must be between 10 and 200 characters',
       },
       {
         name: 'description',
@@ -393,7 +395,7 @@ const initialUsers = [{
         placeholder: 'Description',
         minlength: 10,
         maxlength: 2000,
-        errorMessage: ''
+        errorMessage: '',
       },
       {
         name: 'image',
@@ -438,10 +440,10 @@ const initialUsers = [{
     slogan: 'EDGE - OpenSource software for quickstarting your ideas',
 
     // Api
-    api : {
+    api: {
       bodyParser: {
-        sizeLimit: '1mb'
-      }
+        sizeLimit: '1mb',
+      },
     },
 
     // Storages: GOOGLE, AWS, FIREBASE
@@ -556,7 +558,7 @@ const initialUsers = [{
             name: 'twitter',
             type: 'url',
             label: 'twitter',
-            pattern: "https?://.*",
+            pattern: 'https?://.*',
             required: false,
             minlength: 10,
             maxlength: 300,
@@ -566,7 +568,7 @@ const initialUsers = [{
             type: 'url',
             label: 'facebook',
             required: false,
-            pattern: "https?://.*",
+            pattern: 'https?://.*',
             minlength: 10,
             maxlength: 300,
           },
@@ -575,7 +577,7 @@ const initialUsers = [{
             type: 'url',
             label: 'github',
             required: false,
-            pattern: "https?://.*",
+            pattern: 'https?://.*',
             minlength: 10,
             maxlength: 300,
           },
@@ -588,14 +590,14 @@ const initialUsers = [{
           {
             name: 'phone',
             type: 'tel',
-            label: 'Your phone'
+            label: 'Your phone',
           },
           {
             name: 'profile-images',
             type: 'img',
             label: 'Profile Images',
             required: false,
-            multiple: true
+            multiple: true,
           },
           {
             name: 'gender',

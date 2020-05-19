@@ -14,7 +14,6 @@ const Signup = () => {
   async function handleSubmit(e) {
     event.preventDefault()
 
-    
     if (errorMsg) setErrorMsg('')
 
     const body = {
@@ -59,7 +58,7 @@ const Signup = () => {
         />
       </div>
       <style jsx>{`
-        .form-title{
+        .form-title {
           display: block;
           margin: 0 auto;
           max-width: 480px;

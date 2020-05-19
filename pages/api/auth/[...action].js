@@ -4,15 +4,13 @@ import {
   googleStrategy,
   localStrategy,
 } from '@lib/api/auth/passport-strategies'
-import { findOneUser, generateSaltAndHash, updateOneUser } from '@lib/api/users/user'
 import {
-  onEmailVerified,
-  onUserLogged,
-} from '@lib/api/hooks/user.hooks'
-import {
-  removeTokenCookie,
-  setTokenCookie,
-} from '@lib/api/auth/auth-cookies'
+  findOneUser,
+  generateSaltAndHash,
+  updateOneUser,
+} from '@lib/api/users/user'
+import { onEmailVerified, onUserLogged } from '@lib/api/hooks/user.hooks'
+import { removeTokenCookie, setTokenCookie } from '@lib/api/auth/auth-cookies'
 
 import config from '@lib/config'
 import { connect } from '@lib/api/db'
@@ -88,7 +86,6 @@ const logUserIn = async (res, user) => {
 
   setTokenCookie(res, token)
 }
-
 
 // Normal login
 app.post('/api/auth/login', async (req, res) => {
@@ -180,7 +177,7 @@ app.get('/api/auth/logout', async (req, res) => {
 // Create a reset-password request
 app.get('/api/auth/reset-password', async (req, res) => {
   const email = req.query.email
-  
+
   if (!email) {
     res.status(400).json({
       error: 'Invalid request',
@@ -210,13 +207,11 @@ app.get('/api/auth/reset-password', async (req, res) => {
       res.status(200).send({
         reset: true,
       })
-
-    } catch(e) {
+    } catch (e) {
       res.status(500).json({
-        error: e.message
+        error: e.message,
       })
     }
-    
   }
 })
 
@@ -225,10 +220,10 @@ app.post('/api/auth/reset-password', async (req, res) => {
   const email = req.body.email
   const token = req.body.token
   const password = req.body.password
-  
+
   if (!email || !token || !password) {
     res.status(400).json({
-      error: 'Invalid request ' ,
+      error: 'Invalid request ',
     })
   } else {
     const user = await findOneUser({
@@ -256,7 +251,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
         passwordResetRequest: null,
         passwordResetToken: null,
         salt,
-        hash
+        hash,
       })
 
       res.status(200).send({
@@ -267,7 +262,6 @@ app.post('/api/auth/reset-password', async (req, res) => {
         error: err.message,
       })
     }
-    
   }
 })
 
@@ -310,10 +304,7 @@ if (config.user.providers.facebook) {
 
 // Github authentication routes
 if (config.user.providers.github) {
-  app.get(
-    '/api/auth/github',
-    passport.authenticate('github')
-  )
+  app.get('/api/auth/github', passport.authenticate('github'))
   app.get('/api/auth/github/callback', async (req, res) => {
     await oauthCallback('github', req, res)
   })
@@ -339,7 +330,6 @@ if (config.user.providers.google) {
     await oauthCallback('google', req, res)
   })
 }
-
 
 // Instagram authentication (deprecated)
 if (config.user.providers.instagram) {

@@ -2,13 +2,11 @@ import { useState, useEffect } from 'react'
 
 import Dropzone from './dropzone/dropzone'
 
-export default function ({accept, name, required, multiple, ...props}) {
-
-  const inputProps = {accept, name, required, multiple}
+export default function ({ accept, name, required, multiple, ...props }) {
+  const inputProps = { accept, name, required, multiple }
   const [files, setFiles] = useState([])
   const [loading, setLoading] = useState(false)
 
-  
   const onFilesAdded = (f) => {
     const newFiles = multiple ? [...files, ...f] : [...f]
 
@@ -46,7 +44,9 @@ export default function ({accept, name, required, multiple, ...props}) {
 
   useEffect(() => {
     if (props.value) {
-      Array.isArray(props.value) ? setFiles(props.value): setFiles([props.value])
+      Array.isArray(props.value)
+        ? setFiles(props.value)
+        : setFiles([props.value])
     }
   }, [props.value])
 
@@ -55,13 +55,23 @@ export default function ({accept, name, required, multiple, ...props}) {
       <div className="file-upload" data-testid={props['data-testid']}>
         <div className="content">
           <div>
-            <Dropzone onFilesAdded={onFilesAdded} {...inputProps} onLoading={setLoading} description={props.description}/>
+            <Dropzone
+              onFilesAdded={onFilesAdded}
+              {...inputProps}
+              onLoading={setLoading}
+              description={props.description}
+            />
           </div>
           <div className="files">
             {loading && <div className="loading">Loading...</div>}
             {files.map((file, index) => (
-              <div className="file-row" key={file.isFile ? file.file.name: file.name}>
-                <span className="file-name">{file.isFile ? file.file.name: file.name}</span>
+              <div
+                className="file-row"
+                key={file.isFile ? file.file.name : file.name}
+              >
+                <span className="file-name">
+                  {file.isFile ? file.file.name : file.name}
+                </span>
                 <div className="delete-file" onClick={() => deleteFile(index)}>
                   Delete
                 </div>

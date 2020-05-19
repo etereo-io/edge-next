@@ -37,7 +37,7 @@ export default class ProgressiveImage extends Component {
             height: ${this.props.height}px;
           }
 
-          img{
+          img {
             height: 100%;
             object-fit: cover;
             user-select: none;

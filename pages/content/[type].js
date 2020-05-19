@@ -10,7 +10,7 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 // Get serversideProps is important for SEO, and only available at the pages level
 export async function getServerSideProps({ req, res, query }) {
   const contentTypeDefinition = getContentTypeDefinition(query.type)
-  
+
   if (!contentTypeDefinition) {
     res.writeHead(302, { Location: '/404' })
     res.end()
@@ -33,22 +33,28 @@ export async function getServerSideProps({ req, res, query }) {
   if (query.tags) {
     filterOptions['tags.slug'] = query.tags
   }
-  
-  const response = await findContent(query.type, filterOptions, {  sortBy: 'createdAt', sortOrder: 'DESC'}, { limit: 10})
+
+  const response = await findContent(
+    query.type,
+    filterOptions,
+    { sortBy: 'createdAt', sortOrder: 'DESC' },
+    { limit: 10 }
+  )
 
   return {
     props: {
       data: response,
       type: query.type,
       canAccess: true,
-      query: `&sortBy=createdAt&sortOrder=DESC${query.tags ? `&tags=${query.tags}` : ''}` ,
-      contentType: contentTypeDefinition
+      query: `&sortBy=createdAt&sortOrder=DESC${
+        query.tags ? `&tags=${query.tags}` : ''
+      }`,
+      contentType: contentTypeDefinition,
     },
   }
 }
 
 const ContentPage = (props) => {
-
   return (
     <Layout title="Content">
       <div>

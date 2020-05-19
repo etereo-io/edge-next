@@ -4,7 +4,7 @@ import fetch from '@lib/fetcher'
 import API from '@lib/api/api-endpoints'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import useSWR from 'swr'
-import {format} from 'timeago.js'
+import { format } from 'timeago.js'
 import Link from 'next/link'
 
 export default function (props) {
@@ -13,24 +13,51 @@ export default function (props) {
     fetch
   )
 
-  const getMessage = activity => {
-    switch(activity.type) {
+  const getMessage = (activity) => {
+    switch (activity.type) {
       case 'content_updated':
-        return <span>updated <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="updated content">a content</a></Link></span>
-      
+        return (
+          <span>
+            updated{' '}
+            <Link
+              href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}
+            >
+              <a title="updated content">a content</a>
+            </Link>
+          </span>
+        )
+
       case 'content_added':
-        return <span>created <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="new content">a content</a></Link></span>
-      
-      case 'user_updated': 
+        return (
+          <span>
+            created{' '}
+            <Link
+              href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}
+            >
+              <a title="new content">a content</a>
+            </Link>
+          </span>
+        )
+
+      case 'user_updated':
         return <span>updated the profile information</span>
 
-      case 'user_logged': 
+      case 'user_logged':
         return <span>logged in</span>
 
-      case 'comment_added': 
-      return <span>added <Link href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}><a title="new comment">a comment</a></Link></span>
+      case 'comment_added':
+        return (
+          <span>
+            added{' '}
+            <Link
+              href={`/content/${activity.meta.contentType}/${activity.meta.contentId}?field=id`}
+            >
+              <a title="new comment">a comment</a>
+            </Link>
+          </span>
+        )
 
-      default: 
+      default:
         return <span>{activity.type}</span>
     }
   }

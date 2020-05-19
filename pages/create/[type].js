@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 const CreateContent = () => {
   const router = useRouter()
   const { type } = router.query
-  
+
   const { available } = usePermission(
     type ? [`content.${type}.create`, `content.${type}.admin`] : null,
     '/'

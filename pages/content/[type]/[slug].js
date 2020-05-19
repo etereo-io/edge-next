@@ -18,11 +18,14 @@ export async function getServerSideProps({ req, res, query }) {
 
   await connect()
 
-  const searchOptions = query.field && query.field === 'id' ? {
-    id: query.slug
-  } : {
-    slug: query.slug
-  }
+  const searchOptions =
+    query.field && query.field === 'id'
+      ? {
+          id: query.slug,
+        }
+      : {
+          slug: query.slug,
+        }
 
   const item = await findOneContent(query.type, searchOptions)
 
@@ -59,11 +62,14 @@ export async function getServerSideProps({ req, res, query }) {
 }
 
 const ContentPage = (props) => {
-  
   return (
     <Layout title={props.pageTitle}>
       {props.canAccess && props.data && (
-        <ContentDetailView type={props.contentType} content={props.data} showComments={true}/>
+        <ContentDetailView
+          type={props.contentType}
+          content={props.data}
+          showComments={true}
+        />
       )}
     </Layout>
   )

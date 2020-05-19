@@ -6,8 +6,7 @@ import ThemeSelector from '../../generic/theme-selector/theme-selector'
 import { hasPermission } from '@lib/permissions'
 import { useUser, useContentTypes } from '@lib/client/hooks'
 import { useState } from 'react'
-import Progress from './progress';
-
+import Progress from './progress'
 
 function UserHeader(props) {
   const user = props.user
@@ -18,17 +17,17 @@ function UserHeader(props) {
     setLoading(true)
 
     // Invalidate caches for service worker
-    await caches.keys().then(function(keyList) {
-      return Promise.all(keyList.map(function(key) {
-        return caches.delete(key);
-      }));
+    await caches.keys().then(function (keyList) {
+      return Promise.all(
+        keyList.map(function (key) {
+          return caches.delete(key)
+        })
+      )
     })
 
-    window.location.href = "/api/auth/logout"
+    window.location.href = '/api/auth/logout'
   }
 
-  
-  
   return (
     <nav>
       {user && (
@@ -56,22 +55,21 @@ function UserHeader(props) {
               <span className="spacer"></span>
               <h4>Content</h4>
               <ul>
-                {contentTypes
-                  .map((type) => {
-                    return (
-                      <li key={type.slug}>
-                        <Link href={`/create/${type.slug}`}>
-                          <a>Create {type.title}</a>
-                        </Link>
-                      </li>
-                    )
-                  })}
+                {contentTypes.map((type) => {
+                  return (
+                    <li key={type.slug}>
+                      <Link href={`/create/${type.slug}`}>
+                        <a>Create {type.title}</a>
+                      </Link>
+                    </li>
+                  )
+                })}
               </ul>
 
               <span className="spacer"></span>
               <ul>
                 <li>
-                  <a onClick={onClickLogout}>{loading ? '...': 'Logout'}</a>
+                  <a onClick={onClickLogout}>{loading ? '...' : 'Logout'}</a>
                 </li>
               </ul>
             </DropdownMenu>
@@ -118,7 +116,7 @@ function UserHeader(props) {
           margin-right: var(--empz-gap);
         }
 
-        li:last-of-type{
+        li:last-of-type {
           margin-right: 0;
         }
 
@@ -158,16 +156,11 @@ const Header = () => {
           </div>
 
           <div className="right-header">
-            <UserHeader user={user}/>
+            <UserHeader user={user} />
           </div>
         </div>
       </header>
-        <Progress
-          color="#29D"
-          startPosition={0.3}
-          stopDelayMs={200}
-          height={3}
-        />
+      <Progress color="#29D" startPosition={0.3} stopDelayMs={200} height={3} />
       <style jsx>{`
         .header {
           color: var(--empz-foreground);

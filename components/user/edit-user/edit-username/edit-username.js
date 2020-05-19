@@ -3,16 +3,16 @@ import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 
-export default function({user, ...props}) {
+export default function ({ user, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
   const [fields, setFields] = useState({})
 
   const url = `${API.users}/${user.id}/username`
-  
-  const request = data => {
+
+  const request = (data) => {
     setLoading(true)
     setSuccess(false)
     setError(false)
@@ -24,23 +24,25 @@ export default function({user, ...props}) {
         'Content-Type': 'application/json',
       },
     })
-    .then(result => {
-      setLoading(false)
-      setSuccess(true)
-      setError(false)
-      setFields({})
-    })
-    .catch(err => {
-      setLoading(false)
-      setSuccess(false)
-      setError('Error updating your username. This username is already taken.')
-    })
+      .then((result) => {
+        setLoading(false)
+        setSuccess(true)
+        setError(false)
+        setFields({})
+      })
+      .catch((err) => {
+        setLoading(false)
+        setSuccess(false)
+        setError(
+          'Error updating your username. This username is already taken.'
+        )
+      })
   }
 
-  const handleFieldChange = (name) => value => {
+  const handleFieldChange = (name) => (value) => {
     setFields({
       ...fields,
-      [name]: value
+      [name]: value,
     })
 
     setError('')
@@ -49,7 +51,6 @@ export default function({user, ...props}) {
   const onSubmit = (ev) => {
     ev.preventDefault()
     const username = ev.currentTarget.username.value
-    
 
     if (username.length < 3) {
       setError('Invalid username')
@@ -57,46 +58,42 @@ export default function({user, ...props}) {
     }
 
     request({
-      username
+      username,
     })
-
   }
 
-   // Set default data
-   useEffect(() => {
+  // Set default data
+  useEffect(() => {
     setFields({
-      username: user.username
+      username: user.username,
     })
   }, [user])
 
-
   return (
-    <> 
+    <>
       <div className="change-username">
         <form onSubmit={onSubmit}>
           <div className="block-settings">
             <p>
-              The username is unique and it's used for mentions or to
-              access your profile. Please use 48 characters at maximum.
+              The username is unique and it's used for mentions or to access
+              your profile. Please use 48 characters at maximum.
             </p>
-            <div className={`input-group required ${error ? 'error': ''}`}>
+            <div className={`input-group required ${error ? 'error' : ''}`}>
               <input
                 type="text"
                 placeholder="Your username"
                 name="username"
-                onChange={(ev) => handleFieldChange('username')(ev.target.value)}
+                onChange={(ev) =>
+                  handleFieldChange('username')(ev.target.value)
+                }
                 value={fields.username}
               />
             </div>
           </div>
           <div className="actions">
             <div className="info">
-              {error && (
-                <div className="error-message">{error}</div>
-              )}
-              {loading && (
-                <div className="loading-message">Loading...</div>
-              )}
+              {error && <div className="error-message">{error}</div>}
+              {loading && <div className="loading-message">Loading...</div>}
               {success && (
                 <div className="success-message">
                   Username updated correctly
@@ -109,8 +106,7 @@ export default function({user, ...props}) {
         </form>
       </div>
       <style jsx>
-        {
-          `
+        {`
           .actions {
             padding-top: var(--empz-gap);
             display: flex;
@@ -120,8 +116,7 @@ export default function({user, ...props}) {
           .info {
             padding-right: var(--empz-gap);
           }
-          `
-        }
+        `}
       </style>
     </>
   )

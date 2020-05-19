@@ -62,12 +62,11 @@ export default function ({
   const [isReachingEnd, setIsReachingEnd] = useState(false)
   const itemsPerPage = 10
   const [initialLoad, setInitialLoad] = useState(false)
-  
 
   // Store in memory the deleted items to filter them in real time
   const [deletedConversationIds, setDeletedConversationIds] = useState([])
 
-  const onConversationDeleted = c => {
+  const onConversationDeleted = (c) => {
     setDeletedConversationIds([...deletedConversationIds, c.id])
   }
 
@@ -116,33 +115,37 @@ export default function ({
             <EmptyComponent />
           )}
 
-          {newItems.filter(item => deletedConversationIds.indexOf(item.id) === -1).map((item) => {
-            return (
-              <div key={item.id} className={`item`}>
-                <Conversation
-                  comment={item}
-                  type={type}
-                  contentId={contentId}
-                  conversationId={item.id}
-                  onConversationDeleted={onConversationDeleted}
-                />
-              </div>
-            )
-          })}
+          {newItems
+            .filter((item) => deletedConversationIds.indexOf(item.id) === -1)
+            .map((item) => {
+              return (
+                <div key={item.id} className={`item`}>
+                  <Conversation
+                    comment={item}
+                    type={type}
+                    contentId={contentId}
+                    conversationId={item.id}
+                    onConversationDeleted={onConversationDeleted}
+                  />
+                </div>
+              )
+            })}
 
-          {items.filter(item => deletedConversationIds.indexOf(item.id) === -1).map((item) => {
-            return (
-              <div key={item.id} className={`item`}>
-                <Conversation
-                  comment={item}
-                  type={type}
-                  contentId={contentId}
-                  conversationId={item.id}
-                  onConversationDeleted={onConversationDeleted}
-                />
-              </div>
-            )
-          })}
+          {items
+            .filter((item) => deletedConversationIds.indexOf(item.id) === -1)
+            .map((item) => {
+              return (
+                <div key={item.id} className={`item`}>
+                  <Conversation
+                    comment={item}
+                    type={type}
+                    contentId={contentId}
+                    conversationId={item.id}
+                    onConversationDeleted={onConversationDeleted}
+                  />
+                </div>
+              )
+            })}
 
           {isLoadingMore && <LoadingItems />}
         </div>

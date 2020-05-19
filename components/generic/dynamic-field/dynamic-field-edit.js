@@ -30,7 +30,7 @@ function InputText(props) {
           : null
       }
       pattern={props.pattern || null}
-      className={`${touched ? 'touched': ''}`}
+      className={`${touched ? 'touched' : ''}`}
       onChange={onChange}
     />
   )
@@ -52,7 +52,7 @@ function InputTel(props) {
       data-testid={props['data-testid']}
       required={!!props.field.required}
       pattern={props.pattern || null}
-      className={`${touched ? 'touched': ''}`}
+      className={`${touched ? 'touched' : ''}`}
       onChange={onChange}
     />
   )
@@ -73,17 +73,9 @@ function InputDate(props) {
       defaultValue={props.value}
       data-testid={props['data-testid']}
       required={!!props.field.required}
-      min={
-        typeof props.field.min !== 'undefined'
-          ? props.field.min
-          : null
-      }
-      max={
-        typeof props.field.max !== 'undefined'
-          ? props.field.max
-          : null
-      }
-      className={`${touched ? 'touched': ''}`}
+      min={typeof props.field.min !== 'undefined' ? props.field.min : null}
+      max={typeof props.field.max !== 'undefined' ? props.field.max : null}
+      className={`${touched ? 'touched' : ''}`}
       onChange={onChange}
     />
   )
@@ -115,7 +107,7 @@ function InputUrl(props) {
           : null
       }
       pattern={props.pattern || null}
-      className={`${touched ? 'touched': ''}`}
+      className={`${touched ? 'touched' : ''}`}
       onChange={onChange}
     />
   )
@@ -138,12 +130,11 @@ function InputNumber(props) {
       data-testid={props['data-testid']}
       min={typeof props.field.min !== 'undefined' ? props.field.min : null}
       max={typeof props.field.max !== 'undefined' ? props.field.max : null}
-      className={`${touched ? 'touched': ''}`}
+      className={`${touched ? 'touched' : ''}`}
       onChange={onChange}
     />
   )
 }
-
 
 function Select(props) {
   const [touched, setTouched] = useState(false)
@@ -157,18 +148,19 @@ function Select(props) {
       <select
         data-testid={props['data-testid']}
         name={props.field.name}
-        className={`${touched ? 'touched': ''}`}
+        className={`${touched ? 'touched' : ''}`}
         onChange={onChange}
         value={props.value}
       >
         {props.field.options.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
         ))}
       </select>
     </div>
   )
 }
-
 
 function Radio(props) {
   const [touched, setTouched] = useState(false)
@@ -178,7 +170,11 @@ function Radio(props) {
   }
 
   return (
-    <div className="input-radio-group" data-testid={props['data-testid']} className={`${touched ? 'touched': ''}`}>
+    <div
+      className="input-radio-group"
+      data-testid={props['data-testid']}
+      className={`${touched ? 'touched' : ''}`}
+    >
       {props.field.options.map((o) => {
         return (
           <div className="input-radio" key={o.label}>
@@ -199,25 +195,31 @@ function Radio(props) {
 
 function InputImage(props) {
   const [touched, setTouched] = useState(false)
-  
+
   const onChange = (files) => {
     setTouched(true)
     props.onChange(files)
   }
-  
+
   return (
     <>
-      <Upload 
-        accept={props.field.accept ? props.field.accept : 'image/png, image/jpeg'}
+      <Upload
+        accept={
+          props.field.accept ? props.field.accept : 'image/png, image/jpeg'
+        }
         name={props.field.name}
         required={!!props.field.required}
         multiple={!!props.field.multiple}
         data-testid={props['data-testid']}
-        className={`${touched ? 'touched': ''}`}
+        className={`${touched ? 'touched' : ''}`}
         value={props.value}
-        description={props.field.multiple ? 'Upload multiple images to display a carousel' : 'Upload a single image'}
-        onChange={onChange} />
-
+        description={
+          props.field.multiple
+            ? 'Upload multiple images to display a carousel'
+            : 'Upload a single image'
+        }
+        onChange={onChange}
+      />
     </>
   )
 }
@@ -230,18 +232,22 @@ function InputFile(props) {
   }
 
   return (
-    
-    <Upload 
+    <Upload
       accept={props.field.accept ? props.field.accept : 'image/png, image/jpeg'}
       name={props.field.name}
       required={!!props.field.required}
       multiple={!!props.field.multiple}
       capture={props.field.capture ? props.field.capture : null}
       data-testid={props['data-testid']}
-      className={`${touched ? 'touched': ''}`}
+      className={`${touched ? 'touched' : ''}`}
       value={props.value}
-      description={props.field.multiple ? 'You can upload multiple files' : 'Upload a single file'}
-      onChange={onChange} />
+      description={
+        props.field.multiple
+          ? 'You can upload multiple files'
+          : 'Upload a single file'
+      }
+      onChange={onChange}
+    />
   )
 }
 
@@ -273,15 +279,15 @@ function TextArea(props) {
       required={!!props.field.required}
       minLength={
         typeof props.field.minlength !== 'undefined'
-        ? props.field.minlength
-        : null
+          ? props.field.minlength
+          : null
       }
       maxLength={
         typeof props.field.maxlength !== 'undefined'
-        ? props.field.maxlength
-        : null
+          ? props.field.maxlength
+          : null
       }
-      className={`${touched ? 'touched': ''}`}
+      className={`${touched ? 'touched' : ''}`}
       onChange={onChange}
     ></textarea>
   )
@@ -298,7 +304,6 @@ function Field(props) {
 
     props.onChange(value)
   }
-
 
   const getInput = (field) => {
     const datatestId = `${field.type}-${field.name}`
@@ -362,7 +367,7 @@ function Field(props) {
             onChange={onChange}
           />
         )
-        
+
       case FIELDS.DATE:
         return (
           <InputDate
@@ -420,7 +425,6 @@ function Field(props) {
             data-testid={datatestId}
             onChange={onChange}
           />
-          
         )
 
       case FIELDS.VIDEO_URL:
@@ -458,16 +462,22 @@ function Field(props) {
   }
 
   return (
-    <div className={`input-group ${props.field.required ? 'required' : ''} ${error ? 'error': ''}`}>
+    <div
+      className={`input-group ${props.field.required ? 'required' : ''} ${
+        error ? 'error' : ''
+      }`}
+    >
       {props.field.label && (
         <label forname={props.field.name}>{props.field.label}</label>
       )}
 
       {getInput(props.field)}
 
-      {error && (props.field.errorMessage || props.errorMessage) && <div className="error-message">
-        {props.field.errorMessage || props.errorMessage}  
-      </div>}
+      {error && (props.field.errorMessage || props.errorMessage) && (
+        <div className="error-message">
+          {props.field.errorMessage || props.errorMessage}
+        </div>
+      )}
     </div>
   )
 }

@@ -25,9 +25,7 @@ const Layout = (props) => (
       >
         <div className="auth-view-wrapper">
           <strong className="auth-title">{props.title}</strong>
-          <div className="auth-view">
-            {props.children}
-          </div>
+          <div className="auth-view">{props.children}</div>
         </div>
       </div>
     </main>

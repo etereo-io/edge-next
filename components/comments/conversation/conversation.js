@@ -5,7 +5,6 @@ import Button from '../../generic/button/button'
 import Placeholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import CommentEntry from '../comment-entry/comment-entry'
 
-
 function LoadingItems() {
   return (
     <>
@@ -46,7 +45,12 @@ function LoadingItems() {
   )
 }
 
-export default function ({ contentId = '', type = {}, comment = {}, onConversationDeleted = () => {} }) {
+export default function ({
+  contentId = '',
+  type = {},
+  comment = {},
+  onConversationDeleted = () => {},
+}) {
   // Conversation ID
   const conversationId = comment.id
 
@@ -74,7 +78,7 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
   }
 
   // The main conversation comment is deleted
-  const onMainCommentDeleted = c => {
+  const onMainCommentDeleted = (c) => {
     onConversationDeleted(c)
   }
 
@@ -133,23 +137,9 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
         ) : null}
 
         <div className={`replies`}>
-          {newReplies.filter(item => deletedCommentsIds.indexOf(item.id) === -1).map((item) => {
-            return (
-              <div key={item.id} className={`reply`}>
-                <CommentEntry
-                  comment={item}
-                  contentId={contentId}
-                  conversationId={conversationId}
-                  type={type}
-                  onCommentAdded={onCommentAdded}
-                  onCommentDeleted={onCommentDeleted}
-                />
-              </div>
-            )
-          })}
-
-          {showRepliesFeed &&
-            replies.filter(item => deletedCommentsIds.indexOf(item.id) === -1).map((item) => {
+          {newReplies
+            .filter((item) => deletedCommentsIds.indexOf(item.id) === -1)
+            .map((item) => {
               return (
                 <div key={item.id} className={`reply`}>
                   <CommentEntry
@@ -163,6 +153,24 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
                 </div>
               )
             })}
+
+          {showRepliesFeed &&
+            replies
+              .filter((item) => deletedCommentsIds.indexOf(item.id) === -1)
+              .map((item) => {
+                return (
+                  <div key={item.id} className={`reply`}>
+                    <CommentEntry
+                      comment={item}
+                      contentId={contentId}
+                      conversationId={conversationId}
+                      type={type}
+                      onCommentAdded={onCommentAdded}
+                      onCommentDeleted={onCommentDeleted}
+                    />
+                  </div>
+                )
+              })}
 
           {isLoadingMore && <LoadingItems />}
         </div>
@@ -180,7 +188,7 @@ export default function ({ contentId = '', type = {}, comment = {}, onConversati
             padding-left: var(--empz-gap-double);
           }
 
-          .comment-item{
+          .comment-item {
             border-top: 1px solid var(--accents-2);
           }
 

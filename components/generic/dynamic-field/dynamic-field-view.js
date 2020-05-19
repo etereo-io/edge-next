@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player'
 import TagsField from '../tags-field/tags-field'
 import marked from 'marked'
 
-function Field({ field, value, showLabel = false, contentType}) {
+function Field({ field, value, showLabel = false, contentType }) {
   const getField = (field, value) => {
     const datatestId = `${field.type}-${field.name}`
 
@@ -17,7 +17,7 @@ function Field({ field, value, showLabel = false, contentType}) {
           </p>
         )
       case FIELDS.MARKDOWN:
-        const  htmlString = marked(value || '')
+        const htmlString = marked(value || '')
         return (
           <div data-testid={datatestId} style={{ wordBreak: 'break-all' }}>
             <MarkdownRead htmlString={htmlString} />
@@ -25,17 +25,18 @@ function Field({ field, value, showLabel = false, contentType}) {
         )
       case FIELDS.IMAGE:
         if (value && Array.isArray(value) && value.length > 0) {
-          const transformedValues = value.map(i => i.isFile ? i.src : i.path)
+          const transformedValues = value.map((i) =>
+            i.isFile ? i.src : i.path
+          )
 
-            
           return (
-          <div
-            data-testid={datatestId}
-            style={{ display: 'flex', justifyContent: 'center' }}
-          >
-            <Image width={500} height={500} srcs={transformedValues} />
-          </div>
-        )
+            <div
+              data-testid={datatestId}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <Image width={500} height={500} srcs={transformedValues} />
+            </div>
+          )
         } else {
           return null
         }
@@ -44,22 +45,28 @@ function Field({ field, value, showLabel = false, contentType}) {
         return <p data-testid={datatestId}>{value}</p>
 
       case FIELDS.FILE:
-        if (value && Array.isArray(value) && value.length > 0 ) {
-          const transformedValues = value.map(i => i.isFile ? i.file.name : i.name)
+        if (value && Array.isArray(value) && value.length > 0) {
+          const transformedValues = value.map((i) =>
+            i.isFile ? i.file.name : i.name
+          )
 
-            
           return (
-          <div
-            data-testid={datatestId}
-          >
-           <p><strong>{field.label}: </strong></p>
-           {value.map(i => (<div key={i.isFile ? i.file.name: i.path}><a href={i.isFile ? i.file.src: i.path}>{i.isFile ? i.file.name: i.name}</a></div>))}
-          </div>
-        )
+            <div data-testid={datatestId}>
+              <p>
+                <strong>{field.label}: </strong>
+              </p>
+              {value.map((i) => (
+                <div key={i.isFile ? i.file.name : i.path}>
+                  <a href={i.isFile ? i.file.src : i.path}>
+                    {i.isFile ? i.file.name : i.name}
+                  </a>
+                </div>
+              ))}
+            </div>
+          )
         } else {
           return null
         }
-        
 
       case FIELDS.TAGS:
         return (

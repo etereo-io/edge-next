@@ -96,9 +96,9 @@ export default function (props) {
           </g>
         </svg>
         <p className="dropzone-text">Drag and drop files</p>
-        {props.description && <small className="dropzone-description">
-          {props.description}
-        </small>}
+        {props.description && (
+          <small className="dropzone-description">{props.description}</small>
+        )}
         <input
           ref={fileInputRef}
           className="fileinput"
@@ -124,7 +124,7 @@ export default function (props) {
           border: 2px dashed var(--empz-success);
         }
 
-        .dropzone:hover svg path{
+        .dropzone:hover svg path {
           fill: var(--empz-success);
         }
 
@@ -136,21 +136,21 @@ export default function (props) {
           background-color: rgb(188, 185, 236);
         }
 
-        svg{
+        svg {
           width: 80px;
         }
 
-        svg path{
+        svg path {
           fill: var(--accents-2);
           transition: fill 0.3s ease;
         }
 
-        .dropzone-text{
+        .dropzone-text {
           font-size: 21px;
           font-weight: 600;
         }
 
-        .dropzone-description{
+        .dropzone-description {
           color: var(--accents-3);
           display: block;
           margin-top: 4px;

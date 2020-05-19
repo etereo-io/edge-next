@@ -13,7 +13,6 @@ import ContentListView from '@components/content/read-content/content-list-view/
 const Landing = (props) => {
   const { contentType } = useContentType('post')
 
-
   return (
     <>
       <Layout
@@ -33,8 +32,12 @@ const Landing = (props) => {
               />
               <h3 className="title">Hey, nice to see you here! 👋</h3>
               <div className="list-actions">
-                <Link href="/p/documentation"><a title="Main documentation">Main documentation</a></Link>
-                <Link href="/components"><a title="Components">React components</a></Link>
+                <Link href="/p/documentation">
+                  <a title="Main documentation">Main documentation</a>
+                </Link>
+                <Link href="/components">
+                  <a title="Components">React components</a>
+                </Link>
               </div>
             </aside>
             {contentType && <ContentListView type={contentType} />}
@@ -43,10 +46,10 @@ const Landing = (props) => {
           <div className="right-column">
             <div className="call-to-action-item">
               <Link href="/components">
-              <a title="components">
-                <Card>
-                  <div className="top">
-                    <svg  
+                <a title="components">
+                  <Card>
+                    <div className="top">
+                      <svg
                         width="32"
                         height="32"
                         viewBox="0 0 32 32"
@@ -70,39 +73,42 @@ const Landing = (props) => {
                           fill="var(--empz-success)"
                         ></path>
                       </svg>
-                  </div>
-                  <h3>Set of React Components</h3>
-                </Card>
-                
+                    </div>
+                    <h3>Set of React Components</h3>
+                  </Card>
                 </a>
               </Link>
             </div>
             <div className="call-to-action-item">
               <Link href="/content/post">
-              <a title="content">
-                <Card alt>
-                  <div className="top">
-                    <svg
-                      width="32"
-                      height="32"
-                      viewBox="0 0 32 32"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M24.3158 0.475188C24.1491 0.18125 23.8378 0 23.5 0H12.25C11.8197 0 11.4452 0.293 11.3409 0.710437L7.59087 15.7729C7.52037 16.0531 7.58356 16.3498 7.76119 16.5767C7.93881 16.8047 8.21163 16.9374 8.5 16.9374H12.7719L7.62206 30.7329C7.45725 31.1723 7.64312 31.6658 8.056 31.8883C8.47075 32.1105 8.98388 31.9916 9.25806 31.6136L24.2581 10.9261C24.4659 10.6413 24.4952 10.2641 24.3359 9.94919C24.1757 9.63519 23.8525 9.43744 23.5 9.43744H19.5312L24.3038 1.41994C24.4778 1.12975 24.4824 0.769063 24.3158 0.475188Z"
-                        fill="var(--empz-background)"
-                      ></path>
-                    </svg>
-                  </div>
-                  <h3>Fast Rendering</h3>
-                </Card>
-              </a>
+                <a title="content">
+                  <Card alt>
+                    <div className="top">
+                      <svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M24.3158 0.475188C24.1491 0.18125 23.8378 0 23.5 0H12.25C11.8197 0 11.4452 0.293 11.3409 0.710437L7.59087 15.7729C7.52037 16.0531 7.58356 16.3498 7.76119 16.5767C7.93881 16.8047 8.21163 16.9374 8.5 16.9374H12.7719L7.62206 30.7329C7.45725 31.1723 7.64312 31.6658 8.056 31.8883C8.47075 32.1105 8.98388 31.9916 9.25806 31.6136L24.2581 10.9261C24.4659 10.6413 24.4952 10.2641 24.3359 9.94919C24.1757 9.63519 23.8525 9.43744 23.5 9.43744H19.5312L24.3038 1.41994C24.4778 1.12975 24.4824 0.769063 24.3158 0.475188Z"
+                          fill="var(--empz-background)"
+                        ></path>
+                      </svg>
+                    </div>
+                    <h3>Fast Rendering</h3>
+                  </Card>
+                </a>
               </Link>
             </div>
             <div className="call-to-action-item featured">
-              <a href="https://webmonetization.org/" rel="noopener"
-                target="_blank" title="Web monetization">
+              <a
+                href="https://webmonetization.org/"
+                rel="noopener"
+                target="_blank"
+                title="Web monetization"
+              >
                 <Card success>
                   <div className="top">
                     <svg
@@ -167,7 +173,7 @@ const Landing = (props) => {
           color: #fff;
         }
 
-        .featured-section .close{
+        .featured-section .close {
           background: none;
           border: none;
           cursor: pointer;
@@ -178,7 +184,8 @@ const Landing = (props) => {
           width: 24px;
         }
 
-        .featured-section .close::before, .featured-section .close::after{
+        .featured-section .close::before,
+        .featured-section .close::after {
           background: var(--empz-background);
           content: '';
           height: 2px;
@@ -188,11 +195,11 @@ const Landing = (props) => {
           width: 100%;
         }
 
-        .featured-section .close::before{
+        .featured-section .close::before {
           transform: translateY(-50%) rotate(-45deg);
         }
 
-        .featured-section .close::after{
+        .featured-section .close::after {
           transform: translateY(-50%) rotate(45deg);
         }
 
@@ -227,7 +234,7 @@ const Landing = (props) => {
           width: calc(50% - var(--empz-gap-half));
         }
 
-        .asset{
+        .asset {
           margin-bottom: var(--empz-gap-negative);
           transform: translateY(-25%);
           width: 210px;
@@ -249,7 +256,6 @@ const Landing = (props) => {
             width: 30%;
           }
         }
-
 
         .right-column {
           display: flex;
@@ -358,8 +364,6 @@ const Landing = (props) => {
         .call-to-action-item svg {
           width: var(--empz-double);
         }
-
-        
       `}</style>
     </>
   )

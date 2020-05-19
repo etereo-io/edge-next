@@ -4,16 +4,16 @@ import PasswordStrength from '@components/generic/password-strength/password-str
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 
-export default function({user, ...props}) {
+export default function ({ user, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
   const [fields, setFields] = useState({})
 
   const url = `${API.users}/${user.id}/password`
-  
-  const request = data => {
+
+  const request = (data) => {
     setLoading(true)
     setSuccess(false)
     setError(false)
@@ -25,23 +25,25 @@ export default function({user, ...props}) {
         'Content-Type': 'application/json',
       },
     })
-    .then(result => {
-      setLoading(false)
-      setSuccess(true)
-      setError(false)
-      setFields({})
-    })
-    .catch(err => {
-      setLoading(false)
-      setSuccess(false)
-      setError('Error updating your password. Make sure you entered correctly your current password.')
-    })
+      .then((result) => {
+        setLoading(false)
+        setSuccess(true)
+        setError(false)
+        setFields({})
+      })
+      .catch((err) => {
+        setLoading(false)
+        setSuccess(false)
+        setError(
+          'Error updating your password. Make sure you entered correctly your current password.'
+        )
+      })
   }
 
-  const handleFieldChange = (name) => value => {
+  const handleFieldChange = (name) => (value) => {
     setFields({
       ...fields,
-      [name]: value
+      [name]: value,
     })
 
     setError('')
@@ -66,14 +68,12 @@ export default function({user, ...props}) {
     request({
       password,
       newpassword,
-      rnewpassword
+      rnewpassword,
     })
-
   }
 
-
   return (
-    <> 
+    <>
       <div className="change-password">
         <form onSubmit={onSubmit}>
           <div className="block-settings">
@@ -81,7 +81,9 @@ export default function({user, ...props}) {
               <input
                 type="password"
                 name="password"
-                onChange={(ev) => handleFieldChange('password')(ev.target.value)}
+                onChange={(ev) =>
+                  handleFieldChange('password')(ev.target.value)
+                }
                 value={fields.password}
                 placeholder="Current Password"
               />
@@ -110,23 +112,20 @@ export default function({user, ...props}) {
                 placeholder="Repeat new Password"
               />
             </div>
-            
+
             <PasswordStrength password={fields.newpassword} />
           </div>
 
           <div className="actions">
             <div className="info">
-              {fields.newpassword && (fields.newpassword !== fields.rnewpassword) && (
-                <div className="error-message">Passwords do not match</div>
-              )}
-              
-              {error && (
-                <div className="error-message">{error}</div>
-              )}
+              {fields.newpassword &&
+                fields.newpassword !== fields.rnewpassword && (
+                  <div className="error-message">Passwords do not match</div>
+                )}
 
-              {loading && (
-                <div className="loading-message">Loading...</div>
-              )}
+              {error && <div className="error-message">{error}</div>}
+
+              {loading && <div className="loading-message">Loading...</div>}
               {success && (
                 <div className="success-message">
                   password updated correctly
@@ -139,8 +138,7 @@ export default function({user, ...props}) {
       </div>
 
       <style jsx>
-        {
-          `
+        {`
           .actions {
             padding-top: var(--empz-gap);
             display: flex;
@@ -150,8 +148,7 @@ export default function({user, ...props}) {
           .info {
             padding-right: var(--empz-gap);
           }
-          `
-        }
+        `}
       </style>
     </>
   )

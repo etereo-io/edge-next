@@ -15,7 +15,6 @@ jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/users/user')
 
-
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({

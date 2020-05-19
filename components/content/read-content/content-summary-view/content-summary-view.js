@@ -204,10 +204,10 @@ export default function (props) {
           padding-right: var(--empz-gap-double);
         }
 
-        @media all and (max-width: 720px){
+        @media all and (max-width: 720px) {
           .content-summary-content {
             padding-right: 0;
-          } 
+          }
         }
 
         a {
@@ -307,7 +307,8 @@ export default function (props) {
           width: 32px;
         }
 
-        .reaction-like-wr:before, .reaction-like-wr:after {
+        .reaction-like-wr:before,
+        .reaction-like-wr:after {
           border: 2px solid var(--accents-2);
           box-sizing: content-box;
           content: '';
@@ -318,7 +319,7 @@ export default function (props) {
           pointer-events: none;
         }
 
-        .reaction-like-wr:after{
+        .reaction-like-wr:after {
           border-color: var(--empz-alert);
           opacity: 0;
           transition: 0.35s ease;
@@ -339,19 +340,19 @@ export default function (props) {
           stroke: var(--empz-alert);
         }
 
-        .content-options .reaction-like-wr:hover .reaction-like{
+        .content-options .reaction-like-wr:hover .reaction-like {
           transform: scale(0.8);
         }
 
-        .content-options .reaction-like-wr:hover:after{
+        .content-options .reaction-like-wr:hover:after {
           animation: reactionLikeAfter 0.35s ease-in-out forwards;
 
-          @keyframes reactionLikeAfter{
-            10%{
+          @keyframes reactionLikeAfter {
+            10% {
               opacity: 1;
             }
 
-            100%{
+            100% {
               opacity: 0;
               border-width: 6px;
             }

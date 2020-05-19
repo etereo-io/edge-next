@@ -1,7 +1,7 @@
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import { useUser } from '@lib/client/hooks'
 
-export default function() {
+export default function () {
   const { user } = useUser()
   return (
     <>
@@ -44,8 +44,7 @@ export default function() {
           </ul>
         </div>
       </div>
-      <style jsx>{
-        `
+      <style jsx>{`
         .toolbar {
           align-items: center;
           background: var(--empz-background);
@@ -112,7 +111,6 @@ export default function() {
           }
         }
 
-        
         @media all and (max-width: 720px) {
           .toolbar {
             bottom: 0;
@@ -213,8 +211,7 @@ export default function() {
         .general-tags ul li a:hover {
           background: var(--accents-2);
         }
-        `
-      }</style>
+      `}</style>
     </>
   )
 }

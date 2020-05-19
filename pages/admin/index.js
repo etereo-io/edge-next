@@ -35,13 +35,12 @@ const AdminPage = () => {
     })
   }
 
-  const contentLinks = contentTypes
-    .map((type) => {
-      return {
-        link: `/admin/content/${type.slug}`,
-        title: `Administer ${type.title}s`,
-      }
-    })
+  const contentLinks = contentTypes.map((type) => {
+    return {
+      link: `/admin/content/${type.slug}`,
+      title: `Administer ${type.title}s`,
+    }
+  })
 
   return (
     available && (

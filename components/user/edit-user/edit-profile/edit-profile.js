@@ -6,15 +6,15 @@ import config from '@lib/config'
 import { FIELDS } from '@lib/config/config-constants'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 
-export default function({user, ...props}) {
+export default function ({ user, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
   const [fields, setFields] = useState({})
 
   const url = `${API.users}/${user.id}/profile`
-  
+
   const request = (formData, jsonData) => {
     setLoading(true)
     setSuccess(false)
@@ -27,33 +27,32 @@ export default function({user, ...props}) {
       },
       body: JSON.stringify(jsonData),
     })
-    .then((result) => {
-      // Files are always updated as a PUT
-      return fetch(
-        url,
-        {
+      .then((result) => {
+        // Files are always updated as a PUT
+        return fetch(url, {
           method: 'PUT',
           body: formData,
-        }
-      )
-    })
-    .then(result => {
-      setLoading(false)
-      setSuccess(true)
-      setError(false)
-      setFields({})
-    })
-    .catch(err => {
-      setLoading(false)
-      setSuccess(false)
-      setError('Error updating your profile information. Please try again later.')
-    })
+        })
+      })
+      .then((result) => {
+        setLoading(false)
+        setSuccess(true)
+        setError(false)
+        setFields({})
+      })
+      .catch((err) => {
+        setLoading(false)
+        setSuccess(false)
+        setError(
+          'Error updating your profile information. Please try again later.'
+        )
+      })
   }
 
-  const handleFieldChange = (name) => value => {
+  const handleFieldChange = (name) => (value) => {
     setFields({
       ...fields,
-      [name]: value
+      [name]: value,
     })
 
     setError('')
@@ -61,9 +60,9 @@ export default function({user, ...props}) {
 
   const onSubmit = (ev) => {
     ev.preventDefault()
-    
+
     let valid = true
-    
+
     // TODO: is this even needed?
     /*config.user.profile.fields.forEach((f) => {
       if (f.required && !d[f.name]) {
@@ -78,8 +77,8 @@ export default function({user, ...props}) {
         valid = false
       }
     })*/
-    
-    if (!valid){
+
+    if (!valid) {
       setError('Please check that the data is correct')
       return
     }
@@ -89,9 +88,15 @@ export default function({user, ...props}) {
 
     Object.keys(fields).forEach((key) => {
       const fieldValue = fields[key]
-      const fieldDefinition = config.user.profile.fields.find(t => t.name === key)
-      
-      if (fieldDefinition && (fieldDefinition.type === FIELDS.IMAGE || fieldDefinition.type === FIELDS.FILE)) {
+      const fieldDefinition = config.user.profile.fields.find(
+        (t) => t.name === key
+      )
+
+      if (
+        fieldDefinition &&
+        (fieldDefinition.type === FIELDS.IMAGE ||
+          fieldDefinition.type === FIELDS.FILE)
+      ) {
         if (fieldValue && fieldValue.length > 0) {
           jsonData[key] = []
 
@@ -110,23 +115,20 @@ export default function({user, ...props}) {
       }
     })
 
-
     request(formData, jsonData)
-
   }
 
-   // Set default data
-   useEffect(() => {
-     const newFields = {}
-     config.user.profile.fields.forEach(f => {
-       newFields[f.name] = user.profile ? user.profile[f.name] : null
-     })
+  // Set default data
+  useEffect(() => {
+    const newFields = {}
+    config.user.profile.fields.forEach((f) => {
+      newFields[f.name] = user.profile ? user.profile[f.name] : null
+    })
     setFields(newFields)
   }, [user])
 
-
   return (
-    <> 
+    <>
       <div className="change-displayname">
         <form onSubmit={onSubmit}>
           <div className="block-settings">
@@ -141,16 +143,10 @@ export default function({user, ...props}) {
           </div>
           <div className="actions">
             <div className="info">
-              {error && (
-                <div className="error-message">{error}</div>
-              )}
-              {loading && (
-                <div className="loading-message">Loading...</div>
-              )}
+              {error && <div className="error-message">{error}</div>}
+              {loading && <div className="loading-message">Loading...</div>}
               {success && (
-                <div className="success-message">
-                  profile updated correctly
-                </div>
+                <div className="success-message">profile updated correctly</div>
               )}
             </div>
 
@@ -159,8 +155,7 @@ export default function({user, ...props}) {
         </form>
       </div>
       <style jsx>
-        {
-          `
+        {`
           .actions {
             padding-top: var(--empz-gap);
             display: flex;
@@ -170,8 +165,7 @@ export default function({user, ...props}) {
           .info {
             padding-right: var(--empz-gap);
           }
-          `
-        }
+        `}
       </style>
     </>
   )

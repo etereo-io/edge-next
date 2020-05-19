@@ -3,16 +3,16 @@ import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Avatar from '@components/user/avatar/avatar'
 
-export default function({user, ...props}) {
+export default function ({ user, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
-  
+
   const [fields, setFields] = useState({})
 
   const url = `${API.users}/${user.id}/picture`
-  
-  const request = data => {
+
+  const request = (data) => {
     setLoading(true)
     setSuccess(false)
     setError(false)
@@ -21,16 +21,16 @@ export default function({user, ...props}) {
       method: 'PUT',
       body: data,
     })
-    .then(result => {
-      setLoading(false)
-      setSuccess(true)
-      setError(false)
-    })
-    .catch(err => {
-      setLoading(false)
-      setSuccess(false)
-      setError('Error updating your profile picture')
-    })
+      .then((result) => {
+        setLoading(false)
+        setSuccess(true)
+        setError(false)
+      })
+      .catch((err) => {
+        setLoading(false)
+        setSuccess(false)
+        setError('Error updating your profile picture')
+      })
   }
 
   // Avatar file upload
@@ -44,8 +44,8 @@ export default function({user, ...props}) {
     ev.preventDefault()
     const files = ev.target.files
 
-    var formData = new FormData();
-    
+    var formData = new FormData()
+
     if (files) {
       for (var i = 0; i < files.length; i++) {
         formData.append(`profilePicture`, files[i])
@@ -54,15 +54,15 @@ export default function({user, ...props}) {
       return
     }
 
-    var reader = new FileReader();
+    var reader = new FileReader()
 
     reader.onload = function (e) {
       setFields({
-        picture: e.target.result
+        picture: e.target.result,
       })
-    };
+    }
 
-    reader.readAsDataURL(files[0]);
+    reader.readAsDataURL(files[0])
 
     request(formData)
   }
@@ -70,12 +70,12 @@ export default function({user, ...props}) {
   // Set default data
   useEffect(() => {
     setFields({
-      picture: user.profile.picture
+      picture: user.profile.picture,
     })
   }, [user])
 
   return (
-    <> 
+    <>
       <div className="change-profile-picture">
         <div className="block-settings">
           <p>Click on the avatar image to change it</p>
@@ -91,23 +91,16 @@ export default function({user, ...props}) {
           />
 
           <div className="info">
-              {error && (
-                <div className="error-message">{error}</div>
-              )}
-              {loading && (
-                <div className="loading-message">Loading...</div>
-              )}
-              {success && (
-                <div className="success-message">
-                  Avatar successfuly updated
-                </div>
-              )}
-            </div>
+            {error && <div className="error-message">{error}</div>}
+            {loading && <div className="loading-message">Loading...</div>}
+            {success && (
+              <div className="success-message">Avatar successfuly updated</div>
+            )}
+          </div>
         </div>
       </div>
       <style jsx>
-        {
-          `
+        {`
           .fileinput-avatar {
             display: none;
           }
@@ -121,9 +114,7 @@ export default function({user, ...props}) {
           .info {
             padding-right: var(--empz-gap);
           }
-  
-          `
-        }
+        `}
       </style>
     </>
   )

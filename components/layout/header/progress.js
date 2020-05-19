@@ -1,6 +1,6 @@
-import NProgress from 'nprogress';
-import React from 'react';
-import Router from "next/router";
+import NProgress from 'nprogress'
+import React from 'react'
+import Router from 'next/router'
 
 /* eslint-disable react/prefer-stateless-function */
 class NextNProgress extends React.Component {
@@ -9,24 +9,24 @@ class NextNProgress extends React.Component {
     startPosition: 0.3,
     stopDelayMs: 200,
     height: 3,
-  };
+  }
 
-  timer = null;
+  timer = null
 
   routeChangeStart = () => {
-    NProgress.set(this.props.startPosition);
-    NProgress.start();
-  };
+    NProgress.set(this.props.startPosition)
+    NProgress.start()
+  }
 
   routeChangeEnd = () => {
-    clearTimeout(this.timer);
+    clearTimeout(this.timer)
     this.timer = setTimeout(() => {
-      NProgress.done(true);
-    }, this.props.stopDelayMs);
-  };
+      NProgress.done(true)
+    }, this.props.stopDelayMs)
+  }
 
   render() {
-    const { color, height } = this.props;
+    const { color, height } = this.props
 
     return (
       <style jsx global>{`
@@ -55,7 +55,7 @@ class NextNProgress extends React.Component {
           transform: rotate(3deg) translate(0px, -4px);
         }
         #nprogress .spinner {
-          display: "block";
+          display: 'block';
           position: fixed;
           z-index: 1031;
           top: 15px;
@@ -96,21 +96,21 @@ class NextNProgress extends React.Component {
             transform: rotate(360deg);
           }
         }
-      `}</style>);
+      `}</style>
+    )
   }
 
   componentDidMount() {
-    const { options } = this.props;
+    const { options } = this.props
 
     if (options) {
-      NProgress.configure(options);
+      NProgress.configure(options)
     }
 
-    Router.events.on('routeChangeStart', this.routeChangeStart);
-    Router.events.on('routeChangeComplete', this.routeChangeEnd);
-    Router.events.on('routeChangeError', this.routeChangeEnd);
+    Router.events.on('routeChangeStart', this.routeChangeStart)
+    Router.events.on('routeChangeComplete', this.routeChangeEnd)
+    Router.events.on('routeChangeError', this.routeChangeEnd)
   }
 }
 
-
-export default NextNProgress;
+export default NextNProgress

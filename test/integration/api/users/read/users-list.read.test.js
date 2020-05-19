@@ -29,7 +29,7 @@ const demoUser = {
   email: 'email@email.com',
   facebook: 'abc',
   github: 'abc',
-  tokens: [{ github: 'abc'}],
+  tokens: [{ github: 'abc' }],
   profile: {
     displayName: 'A test user',
     picture: '',
@@ -62,21 +62,23 @@ describe('Integrations tests for user list read', () => {
 
     test('a PUBLIC user should be able to read user lilst', async () => {
       const urlToBeUsed = new URL(url)
-     
+
       // Mock permissions
       getPermissions.mockReturnValue({
-        'user.read': ['PUBLIC'], 
-        'user.admin': ['ADMIN']
+        'user.read': ['PUBLIC'],
+        'user.admin': ['ADMIN'],
       })
 
       // Current user is PUBLIC
       getSession.mockReturnValue(null)
 
       // The user it finds
-      findUsers.mockReturnValue(Promise.resolve({ results: [demoUser] , from: 0, to: 15 }))
+      findUsers.mockReturnValue(
+        Promise.resolve({ results: [demoUser], from: 0, to: 15 })
+      )
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
 
       const jsonResult = await response.json()
@@ -84,12 +86,14 @@ describe('Integrations tests for user list read', () => {
       expect(response.status).toBe(200)
 
       expect(jsonResult).toMatchObject({
-        results: [{
-          username: demoUser.username,
-          profile: demoUser.profile
-        }],
+        results: [
+          {
+            username: demoUser.username,
+            profile: demoUser.profile,
+          },
+        ],
         from: 0,
-        to: 15
+        to: 15,
       })
 
       // Private fields
@@ -101,10 +105,9 @@ describe('Integrations tests for user list read', () => {
       expect(jsonResult.results[0].tokens).toBeUndefined()
     })
 
-
     test('should return 401 if the access is restricted to logged in users', async () => {
       const urlToBeUsed = new URL(url)
-     
+
       // Mock permissions
       getPermissions.mockReturnValue({
         'user.read': ['USER'],
@@ -114,10 +117,12 @@ describe('Integrations tests for user list read', () => {
       getSession.mockReturnValue()
 
       // The user it finds
-      findUsers.mockReturnValue(Promise.resolve({ results: [demoUser] , from: 0, to: 15 }))
+      findUsers.mockReturnValue(
+        Promise.resolve({ results: [demoUser], from: 0, to: 15 })
+      )
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
 
       expect(response.status).toBe(401)
@@ -125,10 +130,9 @@ describe('Integrations tests for user list read', () => {
       expect(findUsers).not.toHaveBeenCalled()
     })
 
-
     test('an admin should see private fields', async () => {
       const urlToBeUsed = new URL(url)
-  
+
       // Mock permissions
       getPermissions.mockReturnValue({
         'user.read': ['PUBLIC'],
@@ -138,18 +142,19 @@ describe('Integrations tests for user list read', () => {
       // Current user is PUBLIC
       getSession.mockReturnValue({
         roles: ['ADMIN'],
-        id: 'abc'
+        id: 'abc',
       })
 
       // The user it finds
-      findUsers.mockReturnValue(Promise.resolve({ results: [demoUser] , from: 0, to: 15 }))
+      findUsers.mockReturnValue(
+        Promise.resolve({ results: [demoUser], from: 0, to: 15 })
+      )
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
-      
-      expect(response.status).toBe(200)
 
+      expect(response.status).toBe(200)
 
       const jsonResult = await response.json()
       // Private fields
@@ -162,4 +167,3 @@ describe('Integrations tests for user list read', () => {
     })
   })
 })
-

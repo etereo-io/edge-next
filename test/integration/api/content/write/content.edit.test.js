@@ -44,9 +44,11 @@ jest.mock('../../../../../edge.config', () => {
       author: '2',
       title: 'Example post',
       slug: 'example-post-1',
-      image: [{
-        path: 'https://image.com'
-      }],
+      image: [
+        {
+          path: 'https://image.com',
+        },
+      ],
       description: 'This is an example description',
       draft: true,
       tags: [
@@ -304,8 +306,7 @@ describe('Integrations tests for content edition endpoint', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message:
-          'User not authorized to perform operation on content post',
+        message: 'User not authorized to perform operation on content post',
       })
     })
 
@@ -512,7 +513,7 @@ describe('Integrations tests for content edition endpoint', () => {
         title: 'test test test test test test test test test ',
         description:
           'test test test test test test test test test test test test test test test ',
-        image: []
+        image: [],
       }
 
       const response = await fetch(urlToBeUsed.href, {

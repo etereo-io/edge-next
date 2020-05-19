@@ -1,18 +1,19 @@
-export default function(props) {
+export default function (props) {
   const { children, alt, featured, success, secondary, warning, alert } = props
 
   return (
     <>
-      <div className={`card ${alt ? 'alt' : ''} ${featured ? 'featured' : ''} ${
+      <div
+        className={`card ${alt ? 'alt' : ''} ${featured ? 'featured' : ''} ${
           success ? 'success' : ''
-        } ${secondary ? 'secondary' : ''} ${
-          warning ? 'warning' : ''
-        } ${alert ? 'alert' : ''}`}>
-          {children}
+        } ${secondary ? 'secondary' : ''} ${warning ? 'warning' : ''} ${
+          alert ? 'alert' : ''
+        }`}
+      >
+        {children}
       </div>
       <style jsx>
-        {
-          `
+        {`
           .card {
             background: var(--empz-background);
             box-shadow: var(--shadow-smallest);
@@ -28,7 +29,7 @@ export default function(props) {
               transform: scale(1.05) !important;
             }
           }
-  
+
           .card:hover {
             box-shadow: var(--shadow-medium);
             transform: scale(1.1);
@@ -58,10 +59,8 @@ export default function(props) {
             background-color: var(--empz-alert);
             color: var(--empz-background);
           }
-          `
-        }
+        `}
       </style>
     </>
   )
-  
 }

@@ -5,7 +5,10 @@ import { render } from '@testing-library/react'
 
 test('renders login link', () => {
   const { getAllByText } = render(
-  <EdgeUserProvider><Index /></EdgeUserProvider>)
+    <EdgeUserProvider>
+      <Index />
+    </EdgeUserProvider>
+  )
   const linkElements = getAllByText(/Login/)
 
   linkElements.map((i) => {

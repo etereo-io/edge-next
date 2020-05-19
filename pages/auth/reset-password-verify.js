@@ -12,7 +12,6 @@ const RememberPassword = () => {
   const router = useRouter()
   const { token, email } = router.query
 
-
   const [errorMsg, setErrorMsg] = useState('')
   const [password, setPassword] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
@@ -27,11 +26,11 @@ const RememberPassword = () => {
       setErrorMsg('Invalid token.')
       return
     }
-    
+
     if (!password) {
       setErrorMsg('Please introduce a valid password')
       return
-    } else if(password.length < 6) {
+    } else if (password.length < 6) {
       setErrorMsg('Password length should be greater than 6 characters')
       return
     }
@@ -39,33 +38,28 @@ const RememberPassword = () => {
     setLoading(true)
     setShowConfirmation(false)
 
-    
     fetch('/api/auth/reset-password', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         password,
         email,
-        token
+        token,
+      }),
+    })
+      .then(() => {
+        setLoading(false)
+        setShowConfirmation(true)
+        setErrorMsg('')
+        setPassword('')
       })
-    })
-    .then(() => {
+      .catch((error) => {
+        setLoading(false)
 
-      setLoading(false)
-      setShowConfirmation(true)
-      setErrorMsg('')
-      setPassword('')
-    })
-    .catch(error => {
-      setLoading(false)
-
-      setErrorMsg(
-        'There was an error while trying to reset your password'
-      )
-    })
-
+        setErrorMsg('There was an error while trying to reset your password')
+      })
   }
 
   const onChangePassword = (ev) => {
@@ -74,70 +68,67 @@ const RememberPassword = () => {
 
   return (
     <Layout title="Update your password" fullWidth={true}>
-      
-        <div className="remember-password">
-          <form onSubmit={onSubmit} >
-            <div className="input-group password required">
-              <input
-                type="password"
-                name="password"
-                onChange={onChangePassword}
-                value={password}
-                placeholder="Password"
-                required
-              ></input>
-            </div>
+      <div className="remember-password">
+        <form onSubmit={onSubmit}>
+          <div className="input-group password required">
+            <input
+              type="password"
+              name="password"
+              onChange={onChangePassword}
+              value={password}
+              placeholder="Password"
+              required
+            ></input>
+          </div>
 
-            <div className="input-group required">
-              <PasswordStrength password={password} />
-            </div>
+          <div className="input-group required">
+            <PasswordStrength password={password} />
+          </div>
 
-
-            <div className="submit">
-
+          <div className="submit">
             <Button
-                loading={loading}
-                onClick={onSubmit}
-                big={true}
-                alt={true}
-                fullWidth={true}
-                type="submit"
-              >
-                Update my password
-              </Button>
-              
-              <div className="alt-actions">
-                <Link href="/auth/login">
-                  <a title="Go to password login">Go to login</a>
-                </Link>
-              </div>
+              loading={loading}
+              onClick={onSubmit}
+              big={true}
+              alt={true}
+              fullWidth={true}
+              type="submit"
+            >
+              Update my password
+            </Button>
+
+            <div className="alt-actions">
+              <Link href="/auth/login">
+                <a title="Go to password login">Go to login</a>
+              </Link>
             </div>
+          </div>
+        </form>
 
-          </form>
-
-          {errorMsg && <p className="error-message">{errorMsg}</p>}
-          {showConfirmation && <p className="success-message">Your password has been updated, now you can Log In.</p>}
-          
+        {errorMsg && <p className="error-message">{errorMsg}</p>}
+        {showConfirmation && (
+          <p className="success-message">
+            Your password has been updated, now you can Log In.
+          </p>
+        )}
       </div>
       <style jsx>{`
-    
-      .alt-actions {
-        font-size: 13px;
-        margin-top: var(--empz-gap);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
+        .alt-actions {
+          font-size: 13px;
+          margin-top: var(--empz-gap);
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+        }
 
-      .alt-actions a {
-        display: block;
-        color: var(--empz-foreground);
-        text-decoration: none;
-      }
+        .alt-actions a {
+          display: block;
+          color: var(--empz-foreground);
+          text-decoration: none;
+        }
       `}</style>
     </Layout>
   )
 }
 
 export default RememberPassword
-

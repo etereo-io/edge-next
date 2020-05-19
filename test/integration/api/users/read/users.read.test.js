@@ -29,7 +29,7 @@ const demoUser = {
   email: 'email@email.com',
   facebook: 'abc',
   github: 'abc',
-  tokens: [{ github: 'abc'}],
+  tokens: [{ github: 'abc' }],
   profile: {
     displayName: 'A test user',
     picture: '',
@@ -67,8 +67,8 @@ describe('Integrations tests for user read', () => {
 
       // Mock permissions
       getPermissions.mockReturnValue({
-        'user.read': ['PUBLIC'], 
-        'user.admin': ['ADMIN']
+        'user.read': ['PUBLIC'],
+        'user.admin': ['ADMIN'],
       })
 
       // Current user is PUBLIC
@@ -78,7 +78,7 @@ describe('Integrations tests for user read', () => {
       findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
 
       const jsonResult = await response.json()
@@ -99,11 +99,9 @@ describe('Integrations tests for user read', () => {
       expect(jsonResult.tokens).toBeUndefined()
 
       expect(findOneUser).toHaveBeenCalledWith({
-        id: 'userId'
+        id: 'userId',
       })
-
     })
-
 
     test('a PUBLIC user should not be able to read "me"', async () => {
       const urlToBeUsed = new URL(url)
@@ -122,7 +120,7 @@ describe('Integrations tests for user read', () => {
       findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
 
       expect(response.status).toBe(404)
@@ -147,7 +145,7 @@ describe('Integrations tests for user read', () => {
       findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
 
       expect(response.status).toBe(401)
@@ -168,23 +166,22 @@ describe('Integrations tests for user read', () => {
       // Current user is USER
       getSession.mockReturnValue({
         id: '1',
-        roles: ['USER']
+        roles: ['USER'],
       })
 
       // The user it finds
       findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
 
-      
       expect(response.status).toBe(200)
-      
+
       expect(findOneUser).toHaveBeenCalledWith({
-        id: '1'
+        id: '1',
       })
-      
+
       const jsonResult = await response.json()
       // Private fields
       expect(jsonResult.email).not.toBeUndefined()
@@ -194,7 +191,6 @@ describe('Integrations tests for user read', () => {
       expect(jsonResult.github).not.toBeUndefined()
       expect(jsonResult.tokens).not.toBeUndefined()
     })
-
 
     test('it should be possible to search by @username', async () => {
       const urlToBeUsed = new URL(url)
@@ -213,13 +209,13 @@ describe('Integrations tests for user read', () => {
       findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
-      
+
       expect(response.status).toBe(200)
 
       expect(findOneUser).toHaveBeenCalledWith({
-        username: 'username'
+        username: 'username',
       })
 
       const jsonResult = await response.json()
@@ -246,20 +242,20 @@ describe('Integrations tests for user read', () => {
       // Current user is PUBLIC
       getSession.mockReturnValue({
         roles: ['ADMIN'],
-        id: 'abc'
+        id: 'abc',
       })
 
       // The user it finds
       findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'GET'
+        method: 'GET',
       })
-      
+
       expect(response.status).toBe(200)
 
       expect(findOneUser).toHaveBeenCalledWith({
-        username: 'username'
+        username: 'username',
       })
 
       const jsonResult = await response.json()

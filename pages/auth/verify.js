@@ -31,12 +31,14 @@ const Login = () => {
   }, [token, email])
 
   return (
-    <Layout title="Verify email"  fullWidth>
+    <Layout title="Verify email" fullWidth>
       <div className="verify">
         {loading && <div className="loading">Loading...</div>}
         {error && <div className="error-message">Error veryfing</div>}
         {success && (
-          <div className="success-message">Success! Your email is verified.</div>
+          <div className="success-message">
+            Success! Your email is verified.
+          </div>
         )}
       </div>
       <style jsx>{`

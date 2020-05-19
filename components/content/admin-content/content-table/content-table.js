@@ -20,7 +20,6 @@ const ListItem = (props) => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
-
   const deleteRequest = () => {
     const url = `${API.content[props.type.slug]}/${props.item.id}?field=id`
     return fetch(url, {
@@ -81,7 +80,9 @@ const ListItem = (props) => {
       {props.type.publishing.draftMode && (
         <TableCellBody>{props.item.draft ? 'DRAFT' : '-'}</TableCellBody>
       )}
-      {props.type.comments.enabled && <TableCellBody>{props.item.comments || 0}</TableCellBody>}
+      {props.type.comments.enabled && (
+        <TableCellBody>{props.item.comments || 0}</TableCellBody>
+      )}
       <TableCellBody>0 times</TableCellBody>
       <TableCellBody>
         {!success && (
@@ -141,7 +142,6 @@ function EmptyComponent() {
 }
 
 export default function (props) {
-  
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('DESC')
 
@@ -177,22 +177,41 @@ export default function (props) {
   )
 
   const headerCells = props.type.fields.map((field) => {
-    return <TableCellHeader key={field.name} onClick={() => {
-      setSortBy(field.name)
-      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-    }}>{field.name}</TableCellHeader>
+    return (
+      <TableCellHeader
+        key={field.name}
+        onClick={() => {
+          setSortBy(field.name)
+          setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+        }}
+      >
+        {field.name}
+      </TableCellHeader>
+    )
   })
 
-  headerCells.push(<TableCellHeader onClick={() => {
-    setSortBy('createdAt')
-    setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-  }}>Created at</TableCellHeader>)
+  headerCells.push(
+    <TableCellHeader
+      onClick={() => {
+        setSortBy('createdAt')
+        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+      }}
+    >
+      Created at
+    </TableCellHeader>
+  )
 
   if (props.type.publishing.draftMode) {
-    headerCells.push(<TableCellHeader onClick={() => {
-      setSortBy('draft')
-      setSortOrder(sortOrder === 'DESC' ? 'ASC': 'DESC')
-    }}>Draft</TableCellHeader>)
+    headerCells.push(
+      <TableCellHeader
+        onClick={() => {
+          setSortBy('draft')
+          setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
+        }}
+      >
+        Draft
+      </TableCellHeader>
+    )
   }
 
   if (props.type.comments.enabled) {

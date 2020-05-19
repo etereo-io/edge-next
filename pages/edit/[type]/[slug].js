@@ -19,7 +19,7 @@ const EditContent = () => {
     query: { slug, type },
   } = router
 
-  const {contentType} = useContentType(type)
+  const { contentType } = useContentType(type)
   const [content, setContent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -27,18 +27,18 @@ const EditContent = () => {
   // Load data
   function loadData() {
     fetch(API.content[type] + '/' + slug)
-      .then(data => {
+      .then((data) => {
         setContent(data)
         setLoading(false)
       })
-      .catch(err => {
+      .catch((err) => {
         setError(true)
         setLoading(false)
       })
   }
 
   useEffect(() => {
-    if (slug && type && (!content && !error)) {
+    if (slug && type && !content && !error) {
       loadData()
     }
   }, [slug, type, content, error])
@@ -52,13 +52,15 @@ const EditContent = () => {
   }
 
   if (!currentUser.finished || loading || error) {
-    return  <Layout title="Edit content">
-      <LoadingView />
-    </Layout>
+    return (
+      <Layout title="Edit content">
+        <LoadingView />
+      </Layout>
+    )
   }
 
   // Redirect if user can not access
-  if ( !canAccess) {
+  if (!canAccess) {
     router.push('/404')
   }
 
@@ -67,7 +69,7 @@ const EditContent = () => {
       <Layout title="Edit content">
         {!loading && !error && canAccess && (
           <div className="edit-page">
-            <h1>Editing: {content ? content.title : null}</h1>            
+            <h1>Editing: {content ? content.title : null}</h1>
             <ContentForm type={contentType} onSave={onSave} content={content} />
           </div>
         )}

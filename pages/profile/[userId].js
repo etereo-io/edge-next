@@ -15,17 +15,17 @@ import { userPermission } from '@lib/permissions'
 const Profile = (props) => {
   const router = useRouter()
   const { userId } = router.query
-  
+
   const visibleContentTypes = useContentTypes(['read', 'admin'])
-  
+
   // Check permissions to read
   const currentUser = useUser()
 
   const hasPermissionsToRead = userPermission(currentUser.user, 'read')
-  const hasPermissionsToEdit = userPermission(currentUser.user, 'update') 
+  const hasPermissionsToEdit = userPermission(currentUser.user, 'update')
 
   // Load profile data
-  const { data, error } = useSWR( userId ? `/api/users/` + userId : null, fetch)
+  const { data, error } = useSWR(userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
   // Loading
@@ -38,7 +38,7 @@ const Profile = (props) => {
     )
   }
 
-  const isOwner = userId === 'me' || data && data.username === userId
+  const isOwner = userId === 'me' || (data && data.username === userId)
   const canAccess = hasPermissionsToRead || isOwner
   const canEdit = hasPermissionsToEdit || isOwner
 
@@ -55,15 +55,15 @@ const Profile = (props) => {
         </div>
         <div className="name">
           <div className="title">
-            <div className="title-left">
-              
-            </div>
+            <div className="title-left"></div>
             <div className="title-right">
-              { canEdit && <div className="item">
-                <Button href={`/settings/${data ? data.id : ''}`}>
-                  Edit Profile
-                </Button>
-              </div>}
+              {canEdit && (
+                <div className="item">
+                  <Button href={`/settings/${data ? data.id : ''}`}>
+                    Edit Profile
+                  </Button>
+                </div>
+              )}
 
               <div className="item">
                 <DropdownMenu align={'right'}>

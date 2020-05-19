@@ -17,7 +17,6 @@ const getUsers = (filterParams, searchParams, paginationParams) => (
   req,
   res
 ) => {
-
   const permission = [`user.admin`]
   const showPrivateFields = hasPermission(req.currentUser, permission)
 
@@ -25,11 +24,12 @@ const getUsers = (filterParams, searchParams, paginationParams) => (
     .then((data) => {
       res.status(200).json({
         ...data,
-        results: showPrivateFields ? data.results: data.results.map(hidePrivateUserFields)
+        results: showPrivateFields
+          ? data.results
+          : data.results.map(hidePrivateUserFields),
       })
     })
     .catch((err) => {
-    
       res
         .status(500)
         .json({ error: 'Error while loading users: ' + err.message })

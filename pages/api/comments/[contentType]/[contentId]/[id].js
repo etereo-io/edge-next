@@ -56,17 +56,15 @@ const deleteComment = async (req, res) => {
 
     // Trigger hook
     await onCommentDeleted(item, req.currentUser)
-    
+
     res.status(200).json({
-      deleted: true
+      deleted: true,
     })
   } catch (err) {
-    
     res.status(500).json({
-      error: err.message
-    }) 
+      error: err.message,
+    })
   }
-
 }
 
 const updateComment = (req, res) => {

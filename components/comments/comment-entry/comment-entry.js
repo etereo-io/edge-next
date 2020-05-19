@@ -6,22 +6,31 @@ import AuthorBox from '../../user/author-box/author-box'
 import { useState } from 'react'
 import CommentForm from '../comment-form/comment-form'
 
-
 export default function CommentEntry({
   contentId = '',
   conversationId = '',
   type = {},
   comment = {},
   onCommentAdded = () => {},
-  onCommentDeleted= () => {}
+  onCommentDeleted = () => {},
 }) {
   // Reply form
   const [showReplyForm, setShowReplyForm] = useState(false)
 
   // Check permissions to edit
   const currentUser = useUser()
-  const hasEditPermission = commentPermission(currentUser.user, type.slug, 'update', comment)
-  const hasWritePermission = commentPermission(currentUser.user, type.slug, 'create', comment)
+  const hasEditPermission = commentPermission(
+    currentUser.user,
+    type.slug,
+    'update',
+    comment
+  )
+  const hasWritePermission = commentPermission(
+    currentUser.user,
+    type.slug,
+    'create',
+    comment
+  )
 
   // In case the user was deleted, default to an empty object
   const commentUser = comment.user || {
@@ -37,7 +46,7 @@ export default function CommentEntry({
     onCommentAdded(c)
   }
 
-  const onClickDeleteComment = ev => {
+  const onClickDeleteComment = (ev) => {
     ev.preventDefault()
     onCommentDeleted(comment)
     // TODO: Call the api
@@ -46,19 +55,17 @@ export default function CommentEntry({
   return (
     <>
       <div className="comment-entry">
-        
-     
         <div className="comment-body">
           <div className="info">
-            <AuthorBox user={commentUser } />
-            
+            <AuthorBox user={commentUser} />
+
             <span className="meta">
               <span className="time">{format(comment.createdAt)}</span>
             </span>
           </div>
           <div className="content">{comment.message}</div>
           <div className="actions">
-            {hasWritePermission && !showReplyForm &&  (
+            {hasWritePermission && !showReplyForm && (
               <span
                 onClick={() => {
                   setShowReplyForm(true)
@@ -86,7 +93,13 @@ export default function CommentEntry({
           <DropDown align={'right'}>
             <ul>
               <li>Report</li>
-              {hasEditPermission && <li><a title="Delete comment" onClick={onClickDeleteComment}>Delete</a></li>}
+              {hasEditPermission && (
+                <li>
+                  <a title="Delete comment" onClick={onClickDeleteComment}>
+                    Delete
+                  </a>
+                </li>
+              )}
             </ul>
           </DropDown>
         </div>
@@ -108,7 +121,7 @@ export default function CommentEntry({
           margin-bottom: var(--empz-gap-half);
         }
 
-        .actions{
+        .actions {
           cursor: pointer;
         }
 

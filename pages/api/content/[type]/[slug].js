@@ -27,7 +27,7 @@ import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 export const config = {
   api: {
     bodyParser: false,
-  }
+  },
 }
 
 const loadContentItemMiddleware = async (req, res, cb) => {
@@ -67,24 +67,21 @@ const deleteContent = (req, res) => {
 
   deleteOneContent(item.type, { id: item.id })
     .then(async () => {
- 
       // Trigger on content deleted hook
       await onContentDeleted(item, req.currentUser, req.contentType)
-    
-      res.status(200).json({
-        deleted: true
-      })
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err.message
-      })
-    })
 
+      res.status(200).json({
+        deleted: true,
+      })
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err.message,
+      })
+    })
 }
 
 const updateContent = async (req, res) => {
-
   try {
     await runMiddleware(req, res, bodyParser)
   } catch (e) {
@@ -96,40 +93,43 @@ const updateContent = async (req, res) => {
   const type = req.contentType
 
   const content = {
-    ...req.body
+    ...req.body,
   }
 
   contentValidations(type, content)
     .then(async () => {
       // Content is valid
       // Upload all the files
-      const newData = await uploadFiles(type.fields, req.files, type.slug, req.item)
+      const newData = await uploadFiles(
+        type.fields,
+        req.files,
+        type.slug,
+        req.item
+      )
       const newContent = merge(content, newData)
-      
+
       // Check if there are any missing file fields and delete them from storage
       const itemsToDelete = []
       for (const field of type.fields) {
-
         if (field.type === FIELDS.IMAGE || field.type === FIELDS.FILE) {
           // Go through all the items and see if in the new content there is any difference
           const previousValue = req.item[field.name] || []
-          previousValue.forEach(f => {
+          previousValue.forEach((f) => {
             if (content[field.name]) {
               // Only delete if the field is set
-              if (!content[field.name].find(item => item.path === f.path)) {
+              if (!content[field.name].find((item) => item.path === f.path)) {
                 itemsToDelete.push(f)
               }
             }
           })
         }
       }
-      
 
       // Delete old items from storage
       for (let i = 0; i < itemsToDelete.length; i++) {
         try {
           await deleteFile(itemsToDelete[i].path)
-        } catch(err) {
+        } catch (err) {
           // Error deleting file, ignore ite
         }
       }
@@ -139,11 +139,9 @@ const updateContent = async (req, res) => {
         res.status(200).json(req.item)
         return
       }
-      
-      
+
       updateOneContent(type.slug, req.item.id, newContent)
         .then((data) => {
-          
           // Trigger on updated hook
           onContentUpdated(data, req.currentUser)
 

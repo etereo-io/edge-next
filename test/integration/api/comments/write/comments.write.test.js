@@ -204,7 +204,7 @@ describe('Integrations tests for comment creation endpoint', () => {
 
     const newComment = {
       message: 'test @anotheruser test',
-      conversationId: null
+      conversationId: null,
     }
 
     const response = await fetch(urlToBeUsed.href, {
@@ -225,7 +225,7 @@ describe('Integrations tests for comment creation endpoint', () => {
       message: newComment.message,
       author: 'test-id',
       id: expect.anything(),
-      user: expect.anything()
+      user: expect.anything(),
     })
   })
 })

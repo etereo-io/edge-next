@@ -30,7 +30,6 @@ const Login = () => {
         body: JSON.stringify(body),
       })
 
-     
       mutate('/api/users/me')
 
       Router.push('/')
@@ -54,11 +53,11 @@ const Login = () => {
         />
       </div>
       <style jsx>{`
-      .form-title{
-        display: block;
-        margin: 0 auto;
-        max-width: 480px;
-      }
+        .form-title {
+          display: block;
+          margin: 0 auto;
+          max-width: 480px;
+        }
       `}</style>
     </Layout>
   )
