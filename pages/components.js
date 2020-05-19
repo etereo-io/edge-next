@@ -8,6 +8,7 @@ import AuthorBox from '@components/user/author-box/author-box'
 import Avatar from '@components/user/avatar/avatar'
 import Badge from '@components/generic/badge/badge'
 import Button from '@components/generic/button/button'
+import Card from '@components/generic/card/card'
 import ContentSummaryView from '@components/content/read-content/content-summary-view/content-summary-view'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
@@ -229,6 +230,9 @@ const Components = () => {
               <a href="#badge">Badge</a>
             </li>
             <li>
+              <a href="#card">Card</a>
+            </li>
+            <li>
               <a href="#button">Button</a>
             </li>
             <li>
@@ -438,7 +442,7 @@ const links = [{
                 <UserProfileBox user={{username: 'demo-user', profile: { bio: '', facebook: 'yes'}}} />
               </div>
               <div className="item-wrapper">
-                <UserProfileBox user={{username: 'demo-user', profile: { bio: 'My bio is something special', github: 'yes', facebook: 'yes', twitter: 'yes'}}} />
+                <UserProfileBox user={{username: 'demo-user', profile: { picture: 'https://loremflickr.com/240/240/food?random=3', displayName: 'Jonh Doe', bio: 'My bio is something special', github: 'yes', facebook: 'yes', twitter: 'yes'}}} />
               </div>
               <div className="item-wrapper">
                 <UserProfileBox user={null} />
@@ -454,10 +458,10 @@ const links = [{
             <h3>Author Box</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <AuthorBox user={{username: 'demo-user', profile: { bio: '', facebook: 'yes'}}} />
+                <AuthorBox user={{username: 'demo-user', profile: { picture: 'https://loremflickr.com/240/240/food?random=1', displayName: 'Jonh doe'}}} />
               </div>
               <div className="item-wrapper">
-                <AuthorBox user={{username: 'demo-user', profile: { bio: 'My bio is something special', github: 'yes', facebook: 'yes', twitter: 'yes'}}} />
+                <AuthorBox user={{username: 'demo-user'}} />
               </div>
               <div className="item-wrapper">
                 <AuthorBox user={null} />
@@ -474,6 +478,7 @@ const links = [{
             <div className="component-demo">
               <div className="item-wrapper">
                 <Badge>42</Badge>
+                <Badge alt>42</Badge>
                 <Badge secondary>42</Badge>
                 <Badge success>42</Badge>
                 <Badge warning>42</Badge>
@@ -482,6 +487,9 @@ const links = [{
 
               <div className="item-wrapper">
                 <Badge featured>Featured</Badge>{' '}
+                <Badge alt featured>
+                  Featured
+                </Badge>{' '}
                 <Badge secondary featured>
                   Featured
                 </Badge>{' '}
@@ -497,6 +505,7 @@ const links = [{
               </div>
               <div className="item-wrapper">
                 <Badge featured></Badge>
+                <Badge featured alt></Badge>
                 <Badge featured secondary></Badge>
                 <Badge featured success></Badge>
                 <Badge featured warning></Badge>
@@ -505,12 +514,41 @@ const links = [{
             </div>
             <pre>{`
 <Badge>42</Badge> 
+<Badge alt >42</Badge> 
 <Badge secondary >42</Badge> 
 <Badge success >42</Badge> 
 <Badge warning >42</Badge> 
 <Badge alert >42</Badge>
-
 <Badge alert featured>42</Badge>
+
+            `}</pre>
+          </div>
+
+          <div id="card" className="component">
+            <h3>Card</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Card>
+                  <Avatar />
+                  <h3>This is a test card</h3>
+                </Card>
+                <Card alt><h3>This is a test card</h3></Card>
+                <Card secondary><h3>This is a test card</h3></Card>
+                <Card success><h3>This is a test card</h3></Card>
+                <Card warning><h3>This is a test card</h3></Card>
+                <Card alert><h3>This is a test card</h3></Card>
+              </div>
+
+             
+            </div>
+            <pre>{`
+<Card>Content</Card> 
+<Card alt >Content</Card> 
+<Card secondary >Content</Card> 
+<Card success >Content</Card> 
+<Card warning >Content</Card> 
+<Card alert >Content</Card>
+<Card alert featured>Content</Card>
 
             `}</pre>
           </div>

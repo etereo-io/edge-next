@@ -50,7 +50,7 @@ export default function() {
           align-items: center;
           background: var(--empz-background);
           border-radius: var(--empz-radius);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+          box-shadow: var(--shadow-smallest);
           color: var(--empz-foreground);
           display: flex;
           flex-flow: column;

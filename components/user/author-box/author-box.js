@@ -25,12 +25,12 @@ export default function(props) {
               height={32}
             />
           </a></Link>}
-          { !user && <LoadingPlaceholder borderRadius='100%'  height={'100px'} width={'100px'} />}
+          { !user && <LoadingPlaceholder borderRadius='100%'  height={'32px'} width={'32px'} />}
         </div>
         <div className="author-box-user">
           { user && <div className="display-name"><Link href={`/profile/@${user.username}`}>
            <a title={`${user.username} profile`}>{ user.profile && user.profile.displayName ? user.profile.displayName : user.username}</a></Link></div>}
-          {!user && <div className="display-name"><LoadingPlaceholder width={'100px'} /> </div>}
+          {!user && <div className="display-name"><LoadingPlaceholder width={'100px'} height={'10px'}/> </div>}
           { user && <div className="username">
             <Link href={`/profile/@${user.username}`}>
               <a title={`${user.username} profile`}>

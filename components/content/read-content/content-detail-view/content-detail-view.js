@@ -83,7 +83,7 @@ export default function (props) {
           margin-bottom: var(--empz-gap-double);
           flex: 1;
 
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+          box-shadow: var(--shadow-smallest);
           color: var(--empz-foreground);
           background: var(--empz-background);
           padding: var(--empz-gap);
