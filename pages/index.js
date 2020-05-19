@@ -1,16 +1,17 @@
 import Layout from '@components/layout/normal/layout'
 
-import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
+
 import GithubLogo from '@components/generic/icons/github-icon/github-icon'
 import NextJSLogo from '@components/generic/icons/nextjs-icon/nextjs-icon'
+import ToolBar from '@components/generic/toolbar/toolbar'
 import Link from 'next/link'
-import config from '../lib/config'
-import { useContentType, useUser } from '../lib/client/hooks'
+import config from '@lib/config'
+import { useContentType } from '@lib/client/hooks'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 
 const Landing = (props) => {
   const { contentType } = useContentType('post')
-  const { user } = useUser()
+
 
   return (
     <>
@@ -20,43 +21,7 @@ const Landing = (props) => {
       >
         <div className="columns">
           <div className="left-column">
-            <div className="mobile-over">
-              <img
-                className="avatar"
-                src="https://storage.googleapis.com/edge-next/profilePicture/1589732055819-hayder-avatar.jpg"
-              />
-              <div className="open-mobile-over"></div>
-            </div>
-            <UserProfileBox user={user} />
-
-            <div className="general-tags">
-              <ul>
-                <li>
-                  <a href="#">#Web Development</a>
-                </li>
-                <li>
-                  <a href="#">#Organic</a>
-                </li>
-                <li>
-                  <a href="#">#Pachamama</a>
-                </li>
-                <li>
-                  <a href="#">#Aceitunas gazpacha</a>
-                </li>
-                <li>
-                  <a href="#">#Infusión de Jengibre</a>
-                </li>
-                <li>
-                  <a href="#">#Bacalao</a>
-                </li>
-                <li>
-                  <a href="#">#Naturaleza</a>
-                </li>
-                <li>
-                  <a href="#">#Cerezas y alcaparras</a>
-                </li>
-              </ul>
-            </div>
+            <ToolBar />
           </div>
           <div className="center-column">
             <aside className="featured-section">
@@ -254,70 +219,7 @@ const Landing = (props) => {
         }
 
         .left-column {
-          align-items: center;
-          background: var(--empz-background);
-          border-radius: var(--empz-radius);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-          color: var(--empz-foreground);
-          display: flex;
-          flex-flow: column;
-          padding: var(--empz-gap);
-          position: sticky;
-          top: 80px;
           width: 20%;
-        }
-
-        .mobile-over {
-          align-items: center;
-          display: none;
-          width: 100%;
-          flex-flow: column;
-          justify-content: space-between;
-          background: var(--empz-background);
-          content: '';
-          height: 100%;
-          left: 0;
-          position: absolute;
-          top: 0;
-          transition: opacity 0.35s ease, visibility 0.35s ease;
-          width: 100%;
-        }
-
-        .mobile-over .avatar {
-          transition: 0.35s ease;
-          max-width: 80px;
-          width: 100%;
-        }
-
-        .mobile-over .open-mobile-over {
-          border-bottom: 3px solid var(--accents-3);
-          border-right: 3px solid var(--accents-3);
-          transform: rotate(-45deg) translateX(-8px);
-          margin-bottom: var(--empz-gap-double);
-          display: block;
-          height: var(--empz-gap);
-          width: var(--empz-gap);
-        }
-
-        @media all and (max-width: 720px) {
-          .mobile-over {
-            display: flex;
-          }
-        }
-
-        @media all and (max-width: 520px) {
-          .mobile-over {
-            flex-flow: row;
-          }
-          .mobile-over .avatar {
-            height: 40px;
-            width: auto;
-          }
-          .mobile-over .open-mobile-over {
-            margin-bottom: 0;
-            margin-right: var(--empz-gap-double);
-            transform: rotate(-135deg) translateY(-6px);
-          }
         }
 
         @media all and (max-width: 960px) {
@@ -326,59 +228,6 @@ const Landing = (props) => {
           }
         }
 
-        @media all and (max-width: 720px) {
-          .left-column {
-            bottom: 0;
-            box-shadow: var(--shadow-large);
-            height: calc(100% - 56px);
-            left: 0;
-            overflow-x: hidden;
-            overflow-y: scroll;
-            position: fixed;
-            top: auto;
-            transition: 0.35s ease;
-            max-width: 80px;
-            width: 50%;
-            z-index: 2;
-          }
-          .left-column::-webkit-scrollbar {
-            width: 0 !important;
-          }
-          .left-column {
-            overflow: -moz-scrollbars-none;
-          }
-          .left-column {
-            -ms-overflow-style: none;
-          }
-          .left-column:hover {
-            max-width: 260px;
-          }
-
-          .left-column:hover .mobile-over {
-            opacity: 0;
-            visibility: hidden;
-          }
-
-          .left-column:hover .avatar {
-            border-radius: 50%;
-            transform: translateY(50%);
-          }
-        }
-
-        @media all and (max-width: 520px) {
-          .left-column {
-            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.5);
-            max-height: 40px;
-            max-width: none;
-            padding: 0;
-            width: 100vw;
-          }
-          .left-column:hover {
-            max-height: 100%;
-            max-width: none;
-            width: 100vw;
-          }
-        }
 
         .right-column {
           display: flex;
@@ -571,52 +420,7 @@ const Landing = (props) => {
           text-align: center;
         }
 
-        .general-tags {
-          border-top: 1px solid var(--accents-2);
-          margin-top: var(--empz-gap);
-          padding-top: var(--empz-gap);
-          width: 100%;
-        }
-
-        .general-tags:before {
-          content: 'Trending Tags';
-          background: var(--empz-foreground);
-          border-radius: 4px;
-          color: var(--empz-background);
-          display: block;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 1px;
-          margin-bottom: var(--empz-gap);
-          padding: 4px 8px;
-          text-align: center;
-          text-transform: uppercase;
-          width: fit-content;
-        }
-
-        .general-tags ul li {
-          display: block;
-          list-style: none;
-        }
-
-        .general-tags ul li a {
-          border-radius: 4px;
-          color: var(--empz-foreground);
-          display: block;
-          font-size: 14px;
-          padding: var(--empz-gap-half);
-          color: inherit;
-          transition: background 0.35s ease;
-          overflow: hidden;
-          text-decoration: none;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          width: 100%;
-        }
-
-        .general-tags ul li a:hover {
-          background: var(--accents-2);
-        }
+        
       `}</style>
     </>
   )
