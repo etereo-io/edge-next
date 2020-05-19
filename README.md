@@ -82,8 +82,6 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - Get 100% on everything on lighthouse
 
-- Add an example google analytics script
-
 - Comments
   - Integrate mentions on comments
 
@@ -91,11 +89,8 @@ Check our roadmap if you want to add more cool things into Edge.
   - Improve the test suite on client and server side
   - Link author
 
-- Hide user private fields.
-
 - Add a cookies component
-  
-- Improve content creation experience
+
 
 - Connect to an additional database:
   - Firebase 

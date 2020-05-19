@@ -611,15 +611,35 @@ All the environment variables are defined inside the `.env.build` example file
 
 ```
 BASE_URL=http://localhost:3000
-FIREBASE_PROJECT_ID=XX
-FIREBASE_CLIENT_EMAIL=XX
-FIREBASE_DATABASE_URL=XX
-FIREBASE_PRIVATE_KEY=XX
+
 MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
 MONGODB_DATABASE=<database>
-NEXT_PUBLIC_GMAPS_API_KEY=XXXX
+
 SENDGRID_KEY=XXX
+
+GOOGLE_CLIENT_EMAIL=XX
+GOOGLE_PRIVATE_KEY=XX
+GOOGLE_PROJECTID=XX
+GOOGLE_BUCKET_NAME=edge-next
+
+FACEBOOK_ID=XX
+FACEBOOK_SECRET=XX
+GITHUB_ID=XX
+GITHUB_SECRET=XX
+GOOGLE_ID=XX
+GOOGLE_SECRET=XX
+
+NEXT_PUBLIC_GMAPS_API_KEY=XXXX
+
+NEXT_PUBLIC_GA_TRACKING_ID=xx
 ```
+
+- **Base url**: Used to redirect oauth enpoints. Set `BASE_URL` to the url of your deployment
+- **Google Analytics**: Set `NEXT_PUBLIC_GA_TRACKING_ID` to the Tracking Id from Google Analytics
+- **Social Providers**: Set `FACEBOOK_ID`, `FACEBOOK_SECRET`, `GOOGLE_ID`, `GOOGLE_SECRET`, and `GITHUB_ID`, `GITHUB_SECRET`
+- **Storage**: For google cloud storage configure `GOOGLE_CLIENT_EMAIL`, `GOOGLE_PRIVATE_KEY`, `GOOGLE_PROJECTID` and `GOOGLE_BUCKET_NAME` from your credentials file.
+- **Email**: Configure `SENDGRID_KEY`
+- **Google Maps**: Configure `NEXT_PUBLIC_GMAPS_API_KEY`
 
 ### Deploying on Vercel
 

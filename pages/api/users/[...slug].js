@@ -1,11 +1,14 @@
 import { bodyParser, hasPermissionsForUser } from '@lib/api/middlewares'
 import { deleteFile, uploadFile } from '@lib/api/storage'
 import {
+  deleteOneUser,
   findOneUser,
-  generateSaltAndHash,
   updateOneUser,
-  userPasswordsMatch,
 } from '@lib/api/users/user'
+import {
+  generateSaltAndHash,
+  userPasswordsMatch,
+} from '@lib/api/users/user.utils'
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
 
 import { FIELDS } from '@lib/config/config-constants'
@@ -75,11 +78,38 @@ const getUser = (req, res) => {
 }
 
 const delUser = (req, res) => {
-  // TODO: implement
-  onUserDeleted(req.item)
-  res.status(200).send({
-    deleted: true,
+
+  // Self deletion, check password
+  if (req.currentUser.id === req.item.id) {
+    
+    if (!req.query.password) {
+      res.status(400).json({ error: 'Missing password' })
+      return
+    }
+    
+    const passwordMatch = userPasswordsMatch(req.item, req.query.password)
+    
+    if (!passwordMatch ) {
+      res.status(401).json({ error: 'Invalid password' })
+      return
+    }
+  }
+
+  // Other deletion, user has roles to perform operation
+
+  deleteOneUser({
+    id: req.item.id
+  }).then(async () => {
+
+    await onUserDeleted(req.item)
+    
+    res.status(200).json({done: true})
   })
+  .catch(err => {
+    console.log('Error deleting user', err)
+    res.status(500).json({error: err.message})
+  })
+  
 }
 
 async function updateProfile(userId, profile, req) {
