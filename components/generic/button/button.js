@@ -103,7 +103,7 @@ export default function (props) {
             width: fit-content;
           }
 
-          .button.full-width  {
+          .button.full-width {
             width: 100%;
           }
 

@@ -35,6 +35,12 @@ const Layout = (props) => (
         padding: 2rem 1.25rem;
       }
 
+      @media all and (max-width: 600px){
+        .container{
+          padding: var(--empz-gap-half);
+        }
+      }
+
       .fullWidth {
         max-width: none;
         padding: 0;

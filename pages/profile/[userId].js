@@ -123,8 +123,8 @@ const Profile = (props) => {
           }
 
           .avatar {
-            width: 100px;
-            margin-right: var(--empz-gap-double);
+            //margin-right: var(--empz-gap-double);
+            //width: 100px;
           }
 
           .title {
