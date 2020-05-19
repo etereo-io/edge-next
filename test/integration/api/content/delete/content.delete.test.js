@@ -1,6 +1,3 @@
-// See discussion https://github.com/zeit/next.js/discussions/11784
-// See example
-
 import * as handler from '../../../../../pages/api/content/[type]/[slug]'
 
 import {

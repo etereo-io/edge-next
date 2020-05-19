@@ -1,5 +1,6 @@
 import * as handlerUser from '../../../../../pages/api/users/[...slug]'
 
+import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
 import { findOneUser, updateOneUser } from '../../../../../lib/api/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
@@ -14,6 +15,7 @@ jest.mock('../../../../../lib/email')
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/users/user')
+jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
@@ -45,6 +47,12 @@ jest.mock('../../../../../edge.config', () => ({
             minlength: 20,
             maxlength: 300,
             roles: [],
+          },
+          {
+            name: 'images',
+            type: 'img',
+            label: 'images',
+            multiple: true,
           },
           {
             name: 'gender',
@@ -224,7 +232,9 @@ describe('Integrations tests for login', () => {
           email: 'test@t.com',
           password: '12345678',
           username: 'test',
-          profile: null,
+          profile: {
+            
+          },
         })
       )
 
@@ -379,5 +389,56 @@ describe('Integrations tests for login', () => {
       - test that profile image uploading works
       - test that editing an email checks that that email does not exist
     */
+  })
+
+  describe('Files', () => {
+    it('should call the delete file for an update removing a file', async () => {
+      const urlToBeUsed = new URL(url)
+
+      urlToBeUsed.searchParams.append('slug', '1')
+      urlToBeUsed.searchParams.append('slug', 'profile')
+
+      // Mock permissions
+      getPermissions.mockReturnValueOnce({
+        'user.update': ['ADMIN'],
+        'user.admin': ['ADMIN'],
+      })
+
+      // Current user is logged
+      getSession.mockReturnValueOnce({
+        roles: ['USER'],
+        id: '1',
+      })
+
+      // Find one user returns the data
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve({
+          email: 'test@t.com',
+          password: '12345678',
+          username: 'test',
+          profile: {
+            images: [{
+              path: 'abc.test'
+            }]
+          },
+        })
+      )
+
+      const newData = {
+        images: [],
+      }
+
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+      })
+
+      expect(response.status).toBe(200)
+
+      expect(deleteFile).toHaveBeenCalledWith('abc.test')
+    })
   })
 })

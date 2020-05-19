@@ -11,19 +11,15 @@ export default function ({ user, ...props }) {
 
   const [fields, setFields] = useState({})
 
-  const url = `${API.users}/${user.id}/delete`
+  const url = `${API.users}/${user.id}`
 
   const request = (data) => {
     setLoading(true)
     setSuccess(false)
     setError(false)
 
-    fetch(url, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    fetch(url + `?password=${fields.password}`, {
+      method: 'DELETE'
     })
       .then((result) => {
         setLoading(false)

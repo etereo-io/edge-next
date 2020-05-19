@@ -100,7 +100,7 @@ jest.mock('../../../../../edge.config', () => {
   }
 })
 
-describe('Integrations tests for content deletion endpoint', () => {
+describe('Integrations tests for comment deletion endpoint', () => {
   let server
   let url
 

@@ -1,13 +1,17 @@
 import { bodyParser, hasPermissionsForUser } from '@lib/api/middlewares'
 import { deleteFile, uploadFile } from '@lib/api/storage'
 import {
+  deleteOneUser,
   findOneUser,
-  generateSaltAndHash,
   updateOneUser,
-  userPasswordsMatch,
 } from '@lib/api/users/user'
+import {
+  generateSaltAndHash,
+  userPasswordsMatch,
+} from '@lib/api/users/user.utils'
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
 
+import { FIELDS } from '@lib/config/config-constants'
 import { connect } from '@lib/api/db'
 import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
@@ -74,11 +78,38 @@ const getUser = (req, res) => {
 }
 
 const delUser = (req, res) => {
-  // TODO: implement
-  onUserDeleted(req.item)
-  res.status(200).send({
-    deleted: true,
+
+  // Self deletion, check password
+  if (req.currentUser.id === req.item.id) {
+    
+    if (!req.query.password) {
+      res.status(400).json({ error: 'Missing password' })
+      return
+    }
+    
+    const passwordMatch = userPasswordsMatch(req.item, req.query.password)
+    
+    if (!passwordMatch ) {
+      res.status(401).json({ error: 'Invalid password' })
+      return
+    }
+  }
+
+  // Other deletion, user has roles to perform operation
+
+  deleteOneUser({
+    id: req.item.id
+  }).then(async () => {
+
+    await onUserDeleted(req.item)
+    
+    res.status(200).json({done: true})
   })
+  .catch(err => {
+    console.log('Error deleting user', err)
+    res.status(500).json({error: err.message})
+  })
+  
 }
 
 async function updateProfile(userId, profile, req) {
@@ -89,6 +120,33 @@ async function updateProfile(userId, profile, req) {
     req.item.profile
   )
   const newContent = merge(profile, newData)
+
+  // Check if there are any missing file fields and delete them from storage
+  const itemsToDelete = []
+  for (const field of edgeConfig.user.profile.fields) {
+    if (field.type === FIELDS.IMAGE || field.type === FIELDS.FILE) {
+      // Go through all the items and see if in the new content there is any difference
+      const previousValue = req.item.profile[field.name] || []
+      previousValue.forEach((f) => {
+        if (profile[field.name]) {
+          // Only delete if the field is set
+          if (!profile[field.name].find((item) => item.path === f.path)) {
+            itemsToDelete.push(f)
+          }
+        }
+      })
+    }
+  }
+
+  // Delete old items from storage
+  for (let i = 0; i < itemsToDelete.length; i++) {
+    try {
+      await deleteFile(itemsToDelete[i].path)
+    } catch (err) {
+      // Error deleting file, ignore ite
+    }
+  }
+
   return updateOneUser(userId, {
     profile: {
       ...newContent,
@@ -238,6 +296,7 @@ const updateUser = (slug) => async (req, res) => {
       })
     })
     .catch((err) => {
+      console.log(err)
       res.status(400).send({
         error: err.message ? err.message : err,
       })
