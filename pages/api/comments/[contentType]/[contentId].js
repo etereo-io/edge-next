@@ -97,10 +97,7 @@ const createComment = (req, res) => {
           onCommentAdded(data, req.currentUser)
 
           // Respond
-          res.status(200).json({
-            ...data,
-            user: req.currentUser,
-          })
+          res.status(200).json(data)
         })
         .catch((err) => {
           res.status(500).json({

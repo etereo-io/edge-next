@@ -1,26 +1,36 @@
 import Avatar from '../avatar/avatar'
 import Link from 'next/link'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
+import {useEffect, useState} from 'react'
 
-export default function({ user }) {
+export default function(props) {
+  
+
+  const [user, setUser] = useState(props.user)
+
+  useEffect(() => {
+    setUser(props.user)
+  }, [props.user])
+
   return (
     <>
       <div className="author-box">
         <div className="avatar">
           { user && <Link href={`/profile/@${user.username}`}>
-          <a title={`${user.username} profile`}>
+           <a title={`${user.username} profile`}>
             <Avatar
-              src={user.profile ? user.profile.picture: null}
+              src={ user.profile ? user.profile.picture: null}
               title={`${user.username} avatar`}
               width={32}
               height={32}
             />
-          </a>
-        </Link>}
+          </a></Link>}
           { !user && <LoadingPlaceholder borderRadius='100%'  height={'100px'} width={'100px'} />}
         </div>
         <div className="author-box-user">
-          <div className="display-name">{ user && user.profile && user.profile ? user.profile.displayName : <LoadingPlaceholder width={'100px'} /> }</div>
+          { user && <div className="display-name"><Link href={`/profile/@${user.username}`}>
+           <a title={`${user.username} profile`}>{ user.profile && user.profile.displayName ? user.profile.displayName : user.username}</a></Link></div>}
+          {!user && <div className="display-name"><LoadingPlaceholder width={'100px'} /> </div>}
           { user && <div className="username">
             <Link href={`/profile/@${user.username}`}>
               <a title={`${user.username} profile`}>
@@ -58,11 +68,11 @@ export default function({ user }) {
         
         .username{
           line-height: 1;
+          font-size: 12px;
         }
 
-        .author-box-user .username a{
+        .author-box-user a{
           color: var(--empz-foreground);
-          font-size: 12px;
           text-decoration: none;
         }
 

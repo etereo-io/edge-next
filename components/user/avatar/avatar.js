@@ -1,5 +1,5 @@
 export default function (props) {
-  const src = props.src || '/static/demo-images/default-avatar.jpg'
+  const defaultSrc = '/static/demo-images/default-avatar.jpg'
   const title = props.title || 'Avatar'
   const width = props.width || 100
   const margin = props.margin || 5
@@ -7,7 +7,7 @@ export default function (props) {
   return (
     <>
       <div className="avatar">
-        {!props.loading && <img title={title} src={src}></img>}
+        {!props.loading && <img title={title} src={props.src || defaultSrc}></img>}
         {props.loading && (
           <div className="empty-avatar">
             {' '}
