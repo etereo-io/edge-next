@@ -60,7 +60,7 @@ export async function getServerSideProps({ req, res, query }) {
       canAccess: true,
       pageTitle: contentTitle,
       contentType: contentTypeDefinition,
-      monetizationMeta: monetizationMeta  
+      monetizationMeta: monetizationMeta || ''
     },
   }
 }
