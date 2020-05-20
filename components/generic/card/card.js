@@ -1,5 +1,5 @@
 export default function (props) {
-  const { children, alt, featured, success, secondary, warning, alert, simple } = props
+  const { children, alt, featured, success, secondary, warning, alert } = props
 
   return (
     <>
@@ -8,7 +8,7 @@ export default function (props) {
           success ? 'success' : ''
         } ${secondary ? 'secondary' : ''} ${warning ? 'warning' : ''} ${
           alert ? 'alert' : ''
-        }${simple ? 'simple' : ''}`}
+        }`}
       >
         {children}
       </div>
@@ -18,9 +18,9 @@ export default function (props) {
             background: var(--empz-background);
             box-shadow: var(--shadow-smallest);
             border-radius: var(--empz-radius);
-            margin-bottom: var(--empz-gap);
             transition: box-shadow 0.25s ease, transform 0.25s ease;
             padding: var(--empz-gap);
+            height: 100%;
             will-change: box-shadow, transform;
           }
 
@@ -60,10 +60,7 @@ export default function (props) {
             color: var(--empz-background);
           }
 
-          .card.simple {
-            height: 100%;
-            margin-bottom: 0;
-          }
+         
         `}
       </style>
     </>

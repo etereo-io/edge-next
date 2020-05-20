@@ -555,18 +555,28 @@ const links = [{
                   <Avatar />
                   <h3>This is a test card</h3>
                 </Card>
+              </div>
+              <div className="item-wrapper">
                 <Card alt>
                   <h3>This is a test card</h3>
                 </Card>
+              </div>
+              <div className="item-wrapper">
                 <Card secondary>
                   <h3>This is a test card</h3>
                 </Card>
+              </div>
+              <div className="item-wrapper">
                 <Card success>
                   <h3>This is a test card</h3>
                 </Card>
+              </div>
+              <div className="item-wrapper">
                 <Card warning>
                   <h3>This is a test card</h3>
                 </Card>
+              </div>
+              <div className="item-wrapper">
                 <Card alert>
                   <h3>This is a test card</h3>
                 </Card>

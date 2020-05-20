@@ -125,7 +125,7 @@ const Landing = (props, user) => {
                 rel="noopener"
                 target="_blank"
               >
-                <Card simple>
+                <Card>
                   <div className="top">
                     <Badge alt>Powered by</Badge>
                   </div>
@@ -141,7 +141,7 @@ const Landing = (props, user) => {
                 target="_blank"
                 title="Source code"
               >
-                <Card simple>
+                <Card>
                   <div className="top">
                     <Badge alt>Clone from</Badge>
                   </div>
@@ -332,6 +332,7 @@ const Landing = (props, user) => {
 
         .call-to-action-item {
           width: calc(50% - 8px);
+          margin-bottom: var(--empz-gap);
         }
 
         @media all and (max-width: 1180px) {
