@@ -48,10 +48,10 @@ const Profile = (props) => {
   }
 
   return (
-    <Layout title="Profile">
+    <Layout title="Profile" hasDivider={true}>
       <div className="profile-user-info">
         <div className="avatar">
-          <UserProfileBox user={data} />
+          <UserProfileBox user={data} horizontal={true}/>
         </div>
         <div className="name">
           <div className="title">
@@ -103,6 +103,7 @@ const Profile = (props) => {
       </div>
       <style jsx>
         {`
+          
           .profile-user-info {
             display: flex;
             flex-wrap: wrap;
@@ -119,12 +120,7 @@ const Profile = (props) => {
           }
 
           h3 {
-            margin-bottom: var(--empz-gap-double);
-          }
-
-          .avatar {
-            width: 100px;
-            margin-right: var(--empz-gap-double);
+            margin-bottom: var(--empz-gap);
           }
 
           .title {
@@ -135,6 +131,7 @@ const Profile = (props) => {
           }
 
           .title-right {
+            align-items: center;
             display: flex;
           }
 
@@ -143,12 +140,9 @@ const Profile = (props) => {
           }
 
           .content-container {
+            align-items: flex-start;
             display: flex;
-            flex-wrap: wrap;
-            background: var(--accents-2);
-            border-top: var(--light-border);
-            margin-top: var(--empz-gap-double);
-            padding: var(--empz-gap);
+            justify-content: space-between;
           }
 
           @media (max-width: 900px) {
@@ -159,11 +153,21 @@ const Profile = (props) => {
             }
           }
 
-          .content-types,
+          .content-types {
+            background: var(--empz-background);
+            box-shadow: var(--shadow-small);
+            border-radius: 4px;
+            margin-right: var(--empz-gap);
+            padding: var(--empz-gap-double);
+            width: 68%;
+          }
+
           .activity-report {
-            flex: 1;
-            transform: translateY(-75px);
-            padding: var(--empz-gap);
+            background: var(--empz-background);
+            box-shadow: var(--shadow-small);
+            border-radius: 4px;
+            padding: var(--empz-gap-double);
+            width: 30%;
           }
 
           @media (max-width: 600px) {

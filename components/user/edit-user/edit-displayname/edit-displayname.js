@@ -71,22 +71,17 @@ export default function ({ user, ...props }) {
     <>
       <div className="change-displayname">
         <form onSubmit={onSubmit}>
-          <div className="block-settings">
-            <p>
-              Please enter your full name, or a display name you are comfortable
-              with. Please use 32 characters at maximum.
-            </p>
-            <div className={`input-group required ${error ? 'error' : ''}`}>
-              <input
-                type="text"
-                name="displayName"
-                placeholder="Your username"
-                onChange={(ev) =>
-                  handleFieldChange('displayName')(ev.target.value)
-                }
-                value={fields.displayName}
-              />
-            </div>
+          <div className={`input-group required ${error ? 'error' : ''}`}>
+            <label>Name</label>
+            <input
+              type="text"
+              name="displayName"
+              placeholder="Your username"
+              onChange={(ev) =>
+                handleFieldChange('displayName')(ev.target.value)
+              }
+              value={fields.displayName}
+            />
           </div>
           <div className="actions">
             <div className="info">
@@ -96,14 +91,13 @@ export default function ({ user, ...props }) {
                 <div className="success-message">Name updated correctly</div>
               )}
             </div>
-            <Button loading={loading}>Change Your Name</Button>
+            <Button loading={loading} alt>Save changes</Button>
           </div>
         </form>
       </div>
       <style jsx>
         {`
           .actions {
-            padding-top: var(--empz-gap);
             display: flex;
             justify-content: flex-end;
           }

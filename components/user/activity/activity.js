@@ -100,13 +100,17 @@ export default function (props) {
               <div className="activity-item">
                 <div className="avatar">
                   <Avatar
-                    width={60}
+                    width={40}
                     src={props.user ? props.user.profile.picture : null}
                   />
                 </div>
                 <div className="message">
-                  {props.user.profile.displayName || props.user.username}{' '}
-                  {getMessage(ac)} {format(ac.createdAt)}
+                  <strong>
+                    {props.user.profile.displayName || props.user.username}{' '}
+                  </strong>{' '}
+                  <p>
+                    {getMessage(ac)} {format(ac.createdAt)}
+                  </p>
                 </div>
               </div>
             )
@@ -114,19 +118,43 @@ export default function (props) {
       </div>
       <style jsx>{`
         .avatar {
-          margin-right: var(--empz-gap);
+          margin-right: var(--empz-gap-half);
         }
 
         .activity-item {
-          display: flex;
-          border-bottom: var(--light-border);
           align-items: center;
+          border-bottom: 1px solid var(--accents-2);
+          display: flex;
           color: var(--empz-secondary);
+          padding: var(--empz-gap) 0;
+        }
+
+        .activity-item:first-of-type {
+          padding-top: 0;
+        }
+
+        .activity-item:last-of-type {
+          border-bottom: 0;
+          padding-bottom: 0;
         }
 
         .message {
-          width: 60%;
-          word-break: break-word;
+          font-size: 14px;
+        }
+
+        .message strong {
+          color: var(--empz-foreground);
+          display: inline-block;
+        }
+
+        .message p {
+          color: var(--accents-5);
+          display: inline-block;
+        }
+
+        .message p span a {
+          color: var(--empz-foreground);
+          display: inline-block;
         }
 
         .error {

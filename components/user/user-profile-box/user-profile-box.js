@@ -2,82 +2,117 @@ import Avatar from '../avatar/avatar'
 import Link from 'next/link'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 
-export default function ({ user }) {
+export default function ({ user, ...props }) {
   return (
     <>
-      <div className="general-profile">
-        <div className="avatar">
-          {user && (
-            <Link href={`/profile/@${user.username}`}>
-              <a title={`${user.username} profile`}>
-                <Avatar
-                  src={user.profile ? user.profile.picture : null}
-                  title={`${user.username} avatar`}
-                />
-              </a>
-            </Link>
-          )}
-          {!user && (
-            <LoadingPlaceholder
-              borderRadius="100%"
-              height={'100px'}
-              width={'100px'}
-            />
-          )}
-        </div>
-        <div className="general-profile-user">
-          <div className="display-name">
-            {user && user.profile && user.profile ? (
-              user.profile.displayName
-            ) : (
-              <LoadingPlaceholder width={'100px'} />
-            )}
-          </div>
-          {user && (
-            <div className="username">
+      <div
+        className={`general-profile ${props.horizontal ? 'horizontal' : ''}`}
+      >
+        <div className="profile-avatar-bio">
+          <div className="avatar">
+            {user && (
               <Link href={`/profile/@${user.username}`}>
-                <a title={`${user.username} profile`}>@{user.username}</a>
+                <a title={`${user.username} profile`}>
+                  <Avatar
+                    src={user.profile ? user.profile.picture : null}
+                    title={`${user.username} avatar`}
+                  />
+                </a>
               </Link>
+            )}
+            {!user && (
+              <LoadingPlaceholder
+                borderRadius="100%"
+                height={'100px'}
+                width={'100px'}
+              />
+            )}
+          </div>
+          <div className="general-profile-user">
+            <div className="display-name">
+              {user && user.profile && user.profile ? (
+                user.profile.displayName
+              ) : (
+                <LoadingPlaceholder width={'100px'} />
+              )}
+            </div>
+            {user && (
+              <div className="username">
+                <Link href={`/profile/@${user.username}`}>
+                  <a title={`${user.username} profile`}>@{user.username}</a>
+                </Link>
+              </div>
+            )}
+            {!user && (
+              <div className="username">
+                <LoadingPlaceholder width={'100px'} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="profile-bio-social">
+          {user && user.profile.bio && (
+            <div className="general-profile-bio">
+              <p>{user.profile.bio}</p>
             </div>
           )}
-          {!user && (
-            <div className="username">
-              <LoadingPlaceholder width={'100px'} />
+
+          {user && (
+            <div className="general-profile-social">
+              {user.profile.github && (
+                <a href={user.profile.github}>
+                  <img src="/icons/github.svg" alt="Github icon" />
+                </a>
+              )}
+
+              {user.profile.facebook && (
+                <a href={user.profile.facebook}>
+                  <img src="/icons/facebook.svg" alt="Facebook icon" />
+                </a>
+              )}
+              {user.profile.twitter && (
+                <a href={user.profile.twitter}>
+                  <img src="/icons/twitter.svg" alt="Twitter icon" />
+                </a>
+              )}
             </div>
           )}
         </div>
-
-        {user && user.profile.bio && (
-          <div className="general-profile-bio">
-            <p>{user.profile.bio}</p>
-          </div>
-        )}
-
-        {user && (
-          <div className="general-profile-social">
-            {user.profile.github && (
-              <a href={user.profile.github}>
-                <img src="/icons/github.svg" alt="Github icon" />
-              </a>
-            )}
-
-            {user.profile.facebook && (
-              <a href={user.profile.facebook}>
-                <img src="/icons/facebook.svg" alt="Facebook icon" />
-              </a>
-            )}
-            {user.profile.twitter && (
-              <a href={user.profile.twitter}>
-                <img src="/icons/twitter.svg" alt="Twitter icon" />
-              </a>
-            )}
-          </div>
-        )}
       </div>
       <style jsx>
         {`
           .general-profile {
             text-align: center;
+          }
+
+          .general-profile.horizontal {
+            align-items: center;
+            display: flex;
+          }
+
+          .general-profile.horizontal .general-profile-user{
+            text-align: left;
+            padding-left: var(--empz-gap-half);
+          }
+
+          .general-profile.horizontal .general-profile-user .username, .general-profile.horizontal .general-profile-user .display-name{
+            justify-content: flex-start;
+          }
+
+          .general-profile.horizontal .profile-avatar-bio {
+            align-items: center;
+            display: flex;
+            margin-right: var(--empz-gap-double);
+          }
+
+          .general-profile.horizontal .profile-bio-social{
+            max-width: 320px;
+          }
+
+          .general-profile.horizontal .profile-bio-social, .general-profile.horizontal .general-profile-bio p {
+            margin-top: 0;
+            text-align: left;
           }
 
           .avatar {

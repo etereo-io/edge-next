@@ -196,7 +196,7 @@ export default function (props) {
 
         @media (max-width: 600px) {
           .contentSummaryView {
-            padding: var(--empz-gap-half);
+            padding: 0;
           }
         }
 
@@ -221,7 +221,7 @@ export default function (props) {
 
         @media (max-width: 600px) {
           .field {
-            margin: var(--empz-gap-half);
+            //margin: var(--empz-gap-half);
           }
         }
 

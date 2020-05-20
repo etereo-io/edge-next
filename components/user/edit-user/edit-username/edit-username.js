@@ -73,22 +73,15 @@ export default function ({ user, ...props }) {
     <>
       <div className="change-username">
         <form onSubmit={onSubmit}>
-          <div className="block-settings">
-            <p>
-              The username is unique and it's used for mentions or to access
-              your profile. Please use 48 characters at maximum.
-            </p>
-            <div className={`input-group required ${error ? 'error' : ''}`}>
-              <input
-                type="text"
-                placeholder="Your username"
-                name="username"
-                onChange={(ev) =>
-                  handleFieldChange('username')(ev.target.value)
-                }
-                value={fields.username}
-              />
-            </div>
+          <div className={`input-group required ${error ? 'error' : ''}`}>
+            <label>Username</label>
+            <input
+              type="text"
+              placeholder="Your username"
+              name="username"
+              onChange={(ev) => handleFieldChange('username')(ev.target.value)}
+              value={fields.username}
+            />
           </div>
           <div className="actions">
             <div className="info">
@@ -101,14 +94,13 @@ export default function ({ user, ...props }) {
               )}
             </div>
 
-            <Button loading={loading}>Change username</Button>
+            <Button loading={loading} alt>Save changes</Button>
           </div>
         </form>
       </div>
       <style jsx>
         {`
           .actions {
-            padding-top: var(--empz-gap);
             display: flex;
             justify-content: flex-end;
           }

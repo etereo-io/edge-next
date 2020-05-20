@@ -1,5 +1,5 @@
 export default function (props) {
-  const { children, alt, featured, success, secondary, warning, alert } = props
+  const { children, alt, featured, success, secondary, warning, alert, simple } = props
 
   return (
     <>
@@ -8,7 +8,7 @@ export default function (props) {
           success ? 'success' : ''
         } ${secondary ? 'secondary' : ''} ${warning ? 'warning' : ''} ${
           alert ? 'alert' : ''
-        }`}
+        }${simple ? 'simple' : ''}`}
       >
         {children}
       </div>
@@ -58,6 +58,11 @@ export default function (props) {
           .card.alert {
             background-color: var(--empz-alert);
             color: var(--empz-background);
+          }
+
+          .card.simple {
+            height: 100%;
+            margin-bottom: 0;
           }
         `}
       </style>

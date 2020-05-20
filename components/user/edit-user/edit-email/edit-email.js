@@ -71,18 +71,16 @@ export default function ({ user, ...props }) {
     <>
       <div className="change-password">
         <form onSubmit={onSubmit}>
-          <div className="block-settings">
-            <p>A new email will require e-mail validation</p>
-            <div className={`input-group required ${error ? 'error' : ''}`}>
-              <input
-                type="text"
-                placeholder="Email"
-                name="email"
-                required
-                onChange={(ev) => handleFieldChange('email')(ev.target.value)}
-                value={fields.email}
-              />
-            </div>
+          <div className={`input-group required ${error ? 'error' : ''}`}>
+            <label>Email</label>
+            <input
+              type="text"
+              placeholder="Email"
+              name="email"
+              required
+              onChange={(ev) => handleFieldChange('email')(ev.target.value)}
+              value={fields.email}
+            />
           </div>
           <div className="actions">
             <div className="info">
@@ -95,14 +93,13 @@ export default function ({ user, ...props }) {
                 </div>
               )}
             </div>
-            <Button loading={loading}>Change email</Button>
+            <Button loading={loading} alt>Save changes</Button>
           </div>
         </form>
       </div>
       <style jsx>
         {`
           .actions {
-            padding-top: var(--empz-gap);
             display: flex;
             justify-content: flex-end;
           }

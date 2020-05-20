@@ -251,10 +251,18 @@
   --light-border: 1px solid var(--light-border-color);
 }
 
+a{
+  color: inherit;
+}
+
 #app-container {
   margin: 0;
-  background-color: var(--accents-1);
+  background-color: var(--empz-background);
   color: var(--empz-foreground);
+}
+
+main{
+  min-height: calc(100vh - 332px);
 }
 
 // Generic fields styles
@@ -269,6 +277,10 @@
     font-size: var(--empz-form-large-font);
     font-weight: 500;
     padding-bottom: var(--empz-gap-half);
+
+    &::first-letter{
+      text-transform: uppercase;
+    }
   }
 
   &.required {
