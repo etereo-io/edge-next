@@ -110,10 +110,14 @@ export default function CommentEntry({
           padding: var(--empz-gap);
         }
 
+        @media (max-width: 600px) {
+          .comment-entry {
+            padding: var(--empz-gap-half);
+          }
+        }
+
         .comment-body {
           flex: 1;
-          padding-left: var(--empz-gap-half);
-          padding-right: var(--empz-gap-half);
         }
 
         .info,

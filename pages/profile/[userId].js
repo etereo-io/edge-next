@@ -111,12 +111,14 @@ const Profile = (props) => {
             align-items: center;
           }
 
-          .name {
-            flex: 1;
+          @media (max-width: 600px) {
+            .profile-user-info {
+              margin-bottom: var(--empz-gap-half);
+            }
           }
 
-          h2 {
-            font-size: 30px;
+          .name {
+            flex: 1;
           }
 
           h3 {
@@ -173,8 +175,12 @@ const Profile = (props) => {
           @media (max-width: 600px) {
             .content-types,
             .activity-report {
-              transform: none;
               flex: 1;
+            }
+
+            .content-types {
+              width: 100%;
+              padding: var(--empz-gap-half);
             }
           }
 

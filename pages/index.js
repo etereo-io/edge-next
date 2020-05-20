@@ -10,7 +10,7 @@ import config from '@lib/config'
 import { useContentType } from '@lib/client/hooks'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 
-const Landing = (props, user) => {
+const Landing = () => {
   const { contentType } = useContentType('post')
 
   return (
@@ -347,10 +347,6 @@ const Landing = (props, user) => {
 
         .call-to-action-item.simple svg {
           max-width: 80px;
-        }
-
-        .call-to-action-item.simple .card {
-          min-height: 140px;
         }
 
         .call-to-action-item svg path {
