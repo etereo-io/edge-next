@@ -26,10 +26,6 @@ const Landing = (props, user) => {
           <div className="center-column">
             <aside className="featured-section">
               <button className="close"></button>
-              <img
-                src="https://d2qulvgqu65efe.cloudfront.net/static/clouds-512-16d4c7d095ffb936e99ebf726881e701.png"
-                className="asset"
-              />
               <h3 className="title">Hey, nice to see you here! 👋</h3>
               <div className="list-actions">
                 <Link href="/p/documentation">
@@ -160,7 +156,6 @@ const Landing = (props, user) => {
           display: block;
           width: 100%;
           padding: var(--empz-gap-double);
-          padding-top: 0;
           background: var(--empz-success);
           position: relative;
           border-top-left-radius: 4px;

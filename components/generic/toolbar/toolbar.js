@@ -80,14 +80,26 @@ export default function () {
           width: 100%;
         }
 
-        .mobile-over .open-mobile-over {
-          border-bottom: 3px solid var(--accents-3);
-          border-right: 3px solid var(--accents-3);
-          transform: rotate(-45deg) translateX(-8px);
+        .mobile-over .open-mobile-over {
+          background: var(--accents-2);
+          border-radius: 4px;
+          height: 32px;
           margin-bottom: var(--empz-gap-double);
+          position: relative;
+          width: 32px;
+        }
+
+        .mobile-over .open-mobile-over::before {
+          border-bottom: 2px solid var(--accents-3);
+          border-right: 2px solid var(--accents-3);
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: rotate(-45deg) translate(-20%,-80%);
           display: block;
-          height: var(--empz-gap);
-          width: var(--empz-gap);
+          height: var(--empz-gap-half);
+          width: var(--empz-gap-half);
         }
 
         @media all and (max-width: 720px) {
@@ -107,7 +119,6 @@ export default function () {
           .mobile-over .open-mobile-over {
             margin-bottom: 0;
             margin-right: var(--empz-gap-double);
-            transform: rotate(-135deg) translateY(-6px);
           }
         }
 

@@ -7,6 +7,8 @@ import EditPasswordForm from '@components/user/edit-user/edit-password/edit-pass
 import EditProfileForm from '@components/user/edit-user/edit-profile/edit-profile'
 import EditProfilePictureForm from '@components/user/edit-user/edit-profile-picture/edit-profile-picture'
 import EditUsernameForm from '@components/user/edit-user/edit-username/edit-username'
+import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
+import UserActivity from '@components/user/activity/activity'
 import Layout from '@components/layout/normal/layout'
 import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
@@ -14,6 +16,12 @@ import { useUser } from '@lib/client/hooks'
 import { userPermission } from '@lib/permissions'
 
 const UserSettings = () => {
+  //Profile Tabs
+  const [activeTab, setActiveTab] = useState('account')
+  const onClickTab = (name) => {
+    setActiveTab(name)
+  }
+
   // Check if the logged in user can access to this resource
   const router = useRouter()
   const { userId } = router.query
@@ -61,89 +69,151 @@ const UserSettings = () => {
 
   return (
     canAccess && (
-      <Layout title="User Settings">
-        <div className="user-settings-page">
-          <div className="settings">
-            <div className="configuration-block">
-              <h2>Avatar</h2>
-              <div className="form-wrapper">
-                <EditProfilePictureForm user={user} />
-              </div>
-            </div>
+      <Layout title="User Settings" hasDivider={true}>
 
-            <div className="configuration-block">
-              <h2>Username</h2>
-              <div className="form-wrapper">
-                <EditUsernameForm user={user} />
-              </div>
-            </div>
-
-            <div className="configuration-block">
-              <h2>Your Name</h2>
-              <div className="form-wrapper">
-                <EditDisplayNameForm user={user} />
-              </div>
-            </div>
-
-            <div className="configuration-block">
-              <h2>Profile Information</h2>
-              <div className="form-wrapper">
-                <EditProfileForm user={user} />
-              </div>
-            </div>
-
-            <div className="configuration-block">
-              <h2>Email address</h2>
-              <div className="form-wrapper">
-                <EditEmailForm user={user} />
-              </div>
-            </div>
-
-            <div className="configuration-block">
-              <h2>Change Password</h2>
-              <div className="form-wrapper">
-                <EditPasswordForm user={user} />
-              </div>
-            </div>
-
-            <div className="configuration-block">
-              <h2>Delete my account</h2>
-              <div className="form-wrapper">
-                <DeleteAccountForm user={user} />
-              </div>
-            </div>
+        <p>TESTEO</p>
+        <section className="user-profile-settings-wr">
+          <div className="user-profile-view">
+          <UserProfileBox user={user} />
           </div>
-        </div>
 
+          <div className="user-profile-configuration-wr">
+            <ul className="navigation">
+              <li onClick={() => onClickTab('account')} className={`${ activeTab === 'account' ? 'active': ''}`}>
+                <a>
+                  Account
+                </a>
+              </li>
+              <li onClick={() => onClickTab('profile')} className={`${ activeTab === 'profile' ? 'active': ''}`}>
+                <a>
+                  Profile
+                </a>
+              </li>
+              <li onClick={() => onClickTab('password')} className={`${ activeTab === 'password' ? 'active': ''}`}>
+                <a>
+                  Password
+                </a>
+              </li>
+              <li onClick={() => onClickTab('activity')} className={`${ activeTab === 'activity' ? 'active': ''}`}>
+                <a>
+                  Activity
+                </a>
+              </li>
+            </ul>
+
+            <div className={`${ activeTab === 'account' ? 'navigation-tab active': 'navigation-tab'}`}>
+              <EditUsernameForm user={user} />
+              <EditDisplayNameForm user={user} />
+              <EditEmailForm user={user} />
+              <DeleteAccountForm user={user} />
+            </div>
+
+            <div className={`${ activeTab === 'profile' ? 'navigation-tab active': 'navigation-tab'}`}>
+              <EditProfileForm user={user} />
+            </div>
+
+            <div className={`${ activeTab === 'password' ? 'navigation-tab active': 'navigation-tab'}`}>
+              <EditPasswordForm user={user} />
+            </div>
+
+            <div className={`${ activeTab === 'activity' ? 'navigation-tab active': 'navigation-tab'}`}>
+              <UserActivity user={user} />
+            </div>
+
+          </div>
+        </section>
         <style jsx>
           {`
-            .user-settings-page {
+
+            .user-profile-settings-wr {
+              align-items: flex-start;
               display: flex;
-              flex-wrap: wrap;
+              justify-content: space-between;
+              margin: 0 auto;
+              max-width: 960px;
+              width: 100%;
             }
 
-            .menu {
-              width: 200px;
+            .user-profile-view{
+              background: var(--empz-background);
+              border-radius: 4px;
+              box-shadow: var(--shadow-small);
+              padding: var(--empz-gap-double);
+              width: 35%;
             }
 
-            .configuration-block {
-              border-radius: var(--empz-radius);
+            .user-profile-configuration-wr{
+              background: var(--empz-background);
+              border-radius: 4px;
+              box-shadow: var(--shadow-small);
+              width: 60%;
+            }
+
+            .navigation{
+              background: var(--empz-background);
+              border-bottom: 1px solid var(--accents-2);
+              display: flex;
+              justify-content: space-between;
+              padding: var(--empz-gap-double);
+              padding-bottom: 0;
+              position: sticky;
+              top: 56px;
+              z-index: 1;
+            }
+
+            .navigation li{
+              cursor: pointer;
+              height: 100%;
+              list-style: none;
+              padding-bottom: var(--empz-gap-half);
+            }
+
+            .navigation li a{
+              color: var(--accents-3);
+              font-size: 12px;
+              font-weight: 500;
+              text-decoration: none;
+              text-transform: uppercase;
+            }
+
+            .navigation li.active{
+              border-bottom: 2px solid var(--empz-foreground);
+            }
+
+            .navigation li.active a{
+              color: var(--empz-foreground);
+            }
+
+            .navigation-tab{
+              height: 0;
+              opacity: 0;
               overflow: hidden;
-
-              margin-bottom: var(--empz-gap-double);
-              background: var(--accents-2);
+              padding: 0;
+              transition: opacity 0.65s ease;
             }
 
-            .configuration-block h2 {
-              display: block;
-              padding: var(--empz-gap);
-              background: var(--empz-foreground);
-              color: var(--empz-background);
-              margin-bottom: var(--empz-gap);
+            .navigation-tab.active{
+              height: auto;
+              opacity: 1;
+              padding: var(--empz-gap-double);
+              transition: opacity 1s ease;
             }
 
-            .configuration-block .form-wrapper {
-              padding: var(--empz-gap);
+            .settings{
+              display: none;
+            }
+
+
+            @media all and (max-width: 820px){
+              .user-profile-view{
+                display: none;
+              }
+              .user-profile-configuration-wr{
+                width: 100%;
+              }
+              .navigation{
+                padding-top: var(--empz-gap);
+              }
             }
           `}
         </style>

@@ -19,7 +19,7 @@ export default function ({ user, ...props }) {
     setError(false)
 
     fetch(url + `?password=${fields.password}`, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
       .then((result) => {
         setLoading(false)
@@ -64,10 +64,8 @@ export default function ({ user, ...props }) {
       <div className="delete-account">
         <form onSubmit={onSubmit}>
           <div className="block-settings">
-            <p>
-              <strong>Warning</strong>, this action can not be undone
-            </p>
-            <div className="field">
+            <div className="input-group">
+              <label>Delete account</label>
               <input
                 type="password"
                 name="password"
@@ -81,17 +79,20 @@ export default function ({ user, ...props }) {
 
           <div className="actions">
             <div className="info">
+              <p>This action cannot be undone.</p>
               {error && (
                 <div className="error-message">{state.deleteAccount.error}</div>
               )}
               {loading && <div className="loading-message">Loading...</div>}
               {success && (
                 <div className="success-message">
-                  Your account was deleted. You will be redirected shortly
+                  Your account was deleted. You'll be redirected shortly.
                 </div>
               )}
             </div>
-            <Button loading={loading}>Delete</Button>
+            <Button loading={loading} alert>
+              Delete account
+            </Button>
           </div>
         </form>
       </div>
@@ -99,13 +100,17 @@ export default function ({ user, ...props }) {
       <style jsx>
         {`
           .actions {
-            padding-top: var(--empz-gap);
             display: flex;
             justify-content: flex-end;
           }
 
           .info {
+            align-items: center;
+            display: flex;
             padding-right: var(--empz-gap);
+          }
+          .info p{
+            font-size: 14px;
           }
         `}
       </style>

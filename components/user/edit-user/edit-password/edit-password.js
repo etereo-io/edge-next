@@ -78,6 +78,7 @@ export default function ({ user, ...props }) {
         <form onSubmit={onSubmit}>
           <div className="block-settings">
             <div className="input-group required">
+              <label>Change your password</label>
               <input
                 type="password"
                 name="password"
@@ -132,7 +133,7 @@ export default function ({ user, ...props }) {
                 </div>
               )}
             </div>
-            <Button loading={loading}>Update</Button>
+            <Button loading={loading} alt>Save changes</Button>
           </div>
         </form>
       </div>
