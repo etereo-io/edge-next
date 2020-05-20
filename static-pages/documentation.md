@@ -32,7 +32,8 @@ description: "Empieza Documentation"
     - [Providers](#providers)
   - [Emails](#emails)
   - [Static Pages](#static-pages)
-  - [Payments](#payments)
+  - [Web monetization](#web-monetization)
+  - [Other Payments](#other-payments)
   - [Deploy your own](#deploy-your-own)
     - [Deploying on Vercel](#deploying-on-vercel)
 
@@ -184,11 +185,10 @@ There are different fields that can be configured with some standard attributes 
 - label (field label)
 - name (field name)
 - type ('text', 'number', 'radio'...)
+- required
 - errorMessage: String, error message displayed when validation fails
-- validation (NOT IMPLEMENTED)
-  - Optional validarion function in the form of `(value) => { return true or false } `
-- permissions (NOT IMPLEMENTED)
-  - Array, list of roles that can SEE this field when editing the content and when reading it
+- hidden
+- description
 
 Example: 
 
@@ -198,7 +198,10 @@ const contentType = {
     label: 'My field',
     type: 'text',
     required: true,
-    name: 'myfield'
+    name: 'myfield',
+    description: 'This is some information to help the user fill the field',
+    hidden: false, // Hide the field from display
+    errorMessage: 'The error message that is going to be displayed'
   }]
 }
 ```
@@ -315,12 +318,12 @@ The Content API is defined on your set of rules in the configuration file, the o
 ### Users
 - `GET /api/users`
   - Access limited to users with permission `user.list` or `user.admin`
-- `GET /api/users/ID` | `GET /api/users/me`
-  - Access limited to own user or users with permission `user.read` or `user.admin`
+- `GET /api/users/ID` | `GET /api/users/me` | `GET /api/users/@username`
+  - Access limited to own user or users with permission `user.read` or `user.admin` (or own user)
 - `POST /api/users`
-  - Access limited to `user.admin`
+  - Access limited to users with permission `user.create`. Default is public, to allow users to register.
 - `PUT /api/users/ID`
-  - Access limited to own user or users with permission `user.admin` and `user.write`
+  - Access limited to own user or users with permission `user.admin` and `user.update`
   - To update a user the different endpoint sufixes have to be added
   - `PUT /api/users/ID/profile`
     - Edit the fields of the profile such as displayName or dynamic fields
@@ -341,7 +344,7 @@ The Content API is defined on your set of rules in the configuration file, the o
     - Blocks / Unblocks an user
     - `{ blocked: true }`
 - `DELETE /api/users/ID`
-  - Access limited to own user or users with permission `user.admin` and `user.delete`
+  - Access limited to own user or users with permission `user.admin` and `user.delete`. For the current user is also required to send a `password` query parameter.
 
 ### Content
 - `GET /api/content/[TYPE]`
@@ -349,9 +352,9 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `GET /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
   - Access limited to own user or users with permission `content.TYPE.read` or `content.TYPE.admin`
 - `POST /api/content/[TYPE]`
-  - Access limited to `content.TYPE.admin`, or `content.TYPE.write`
+  - Access limited to `content.TYPE.admin`, or `content.TYPE.create`
 - `PUT /api/content/[TYPE]/[CONTENT_SLUG]` | `POST /api/content/[TYPE]/[CONTENT_SLUG]` |  `PUT /api/content/[TYPE]/[CONTENT_ID]?field=id` |  `POST /api/content/[TYPE]/[CONTENT_ID]?field=id`
-  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.write`
+  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.update`
 - `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
   - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.delete`
 
@@ -362,9 +365,9 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `GET /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
   - Access limited to own user or users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
 - `POST /api/comments/[TYPE]/[CONTENT_ID]`
-  - Access limited to `content.TYPE.comments.admin`, or `content.TYPE.comments.write`
+  - Access limited to `content.TYPE.comments.admin`, or `content.TYPE.comments.create`
 - `PUT /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
-  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.write`
+  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.update`
 - `DELETE /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]` 
   - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.delete`
 
@@ -576,7 +579,40 @@ Hello, this is a static page, automatically rendered.
 
 ````
 
-## Payments
+## Web monetization
+
+Web monetization is integrated into Edge and is easily enabled via configuration.
+
+To enable web monetization, first, enable web monetization on a content type. Set the following configuration on a content type.
+
+```javascript
+  monetization: {
+    web: true // Enable web monetization for a content type
+  },
+```
+
+Also you will need to add a field named `paymentPointer` into the fields list of that content type.
+
+Follow the example below:
+
+```javascript
+
+fields: [  {
+    name: 'paymentPointer',
+    type: 'text',
+    label: 'Payment Pointer',
+    placeholder: 'Web monetization payment pointer',
+    hidden: true,
+    description: 'Add your web monetization payment pointer to make this content private, and only accesible by web monetization'
+  }, {
+  /* Additional fields here */
+}]
+
+```
+
+When the user, introduces a [payment pointer](https://webmonetization.org/docs/getting-started) in the content, the content becomes private and only accesible via web monetization payments, destined to the user payment pointer.
+
+## Other Payments
 
 We have configured a HOC (higher order component) to integrate [stripe js](https://stripe.com/docs/stripe-js/react).
 
@@ -598,7 +634,6 @@ There are differente integrations:
 
 Depending on what you want to seel (if you want the users to be able to sell, or only the site owners) you will need to create different flows.
 
-*We strongly recommend you to code payment systems with caution*
 
 [Stripe DOCS](https://stripe.com/docs/)
 [Getting Charges](https://stripe.com/docs/connect/charges)

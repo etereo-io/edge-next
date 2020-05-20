@@ -473,6 +473,10 @@ function Field(props) {
 
       {getInput(props.field)}
 
+      {props.field.description && (
+        <span className="description">{props.field.description}</span>
+      )}
+
       {error && (props.field.errorMessage || props.errorMessage) && (
         <div className="error-message">
           {props.field.errorMessage || props.errorMessage}

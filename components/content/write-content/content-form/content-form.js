@@ -24,10 +24,14 @@ export default function (props) {
     // Preload the form values
     if (props.type && props.content) {
       const filteredData = {}
+      // We filter the data that comes from the API into the state, because we don't want to send to the PUT and POST request
+      // additional information
       const allowedKeys = props.type.fields.map((f) => f.name).concat('draft')
+
       allowedKeys.map((k) => {
         filteredData[k] = props.content[k]
       })
+
       setState(filteredData)
     }
   }, [props.content, props.type])

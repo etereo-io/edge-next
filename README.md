@@ -105,6 +105,13 @@ Check our roadmap if you want to add more cool things into Edge.
 
 ### Additional features
 
+- Field options
+  - validation (NOT IMPLEMENTED)
+    - Optional validarion function in the form of `(value) => { return true or false } `
+  - permissions (NOT IMPLEMENTED)
+    - Array, list of roles that can SEE this field when editing the content and when reading it
+
+
 - Create an example site running an online shop
   - Create the concept of "shopping cart"
   - Integrate with a payment provider

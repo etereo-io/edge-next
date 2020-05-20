@@ -269,6 +269,14 @@ export const getConfig = (defaultOptions) => {
         label: 'Tags',
         placeholder: 'Tags',
       },
+      {
+        name: 'paymentPointer',
+        type: 'text',
+        label: 'Payment Pointer',
+        placeholder: 'Web monetization payment pointer',
+        hidden: true,
+        description: 'Add your web monetization payment pointer to make this content private, and only accesible by web monetization'
+      }
     ],
   }
 

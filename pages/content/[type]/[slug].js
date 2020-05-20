@@ -49,6 +49,9 @@ export async function getServerSideProps({ req, res, query }) {
       ? item[contentTypeDefinition.publishing.title]
       : `${contentTypeDefinition.title} detail`
 
+  const hasWebMonetization = contentTypeDefinition.monetization && contentTypeDefinition.monetization.web 
+  const monetizationMeta = hasWebMonetization ? item.paymentPointer : null
+
   return {
     props: {
       data: item || null,
@@ -57,13 +60,14 @@ export async function getServerSideProps({ req, res, query }) {
       canAccess: true,
       pageTitle: contentTitle,
       contentType: contentTypeDefinition,
+      monetizationMeta: monetizationMeta  
     },
   }
 }
 
 const ContentPage = (props) => {
   return (
-    <Layout title={props.pageTitle}>
+    <Layout title={props.pageTitle} monetization={props.monetizationMeta}>
       {props.canAccess && props.data && (
         <ContentDetailView
           type={props.contentType}

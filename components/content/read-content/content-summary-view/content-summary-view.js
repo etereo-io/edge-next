@@ -133,6 +133,7 @@ export default function (props) {
               )
             })}
           {props.type.fields
+            .filter(f => !f.hidden)
             .filter((f) => f.name !== props.type.publishing.title)
             .map((field) => {
               return (

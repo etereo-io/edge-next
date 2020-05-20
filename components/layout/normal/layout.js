@@ -13,6 +13,10 @@ const Layout = (props) => (
         name="description"
         content={props.description || config.description}
       />
+      { props.monetization && <meta
+        name="monetization"
+        content={props.monetization}
+      />}
     </Head>
 
     <Header />
