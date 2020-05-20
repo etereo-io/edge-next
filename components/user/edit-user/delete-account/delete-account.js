@@ -81,7 +81,7 @@ export default function ({ user, ...props }) {
             <div className="info">
               <p>This action cannot be undone.</p>
               {error && (
-                <div className="error-message">{state.deleteAccount.error}</div>
+                <div className="error-message">{error}</div>
               )}
               {loading && <div className="loading-message">Loading...</div>}
               {success && (

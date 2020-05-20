@@ -172,16 +172,19 @@ const Profile = (props) => {
             width: 30%;
           }
 
+          @media (max-width: 900px) {
+            .content-types {
+              width: 100%;
+              padding: var(--empz-gap-half);
+            }
+          }
+
           @media (max-width: 600px) {
             .content-types,
             .activity-report {
               flex: 1;
             }
 
-            .content-types {
-              width: 100%;
-              padding: var(--empz-gap-half);
-            }
           }
 
           .content-block {

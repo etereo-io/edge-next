@@ -7,9 +7,9 @@ import EditPasswordForm from '@components/user/edit-user/edit-password/edit-pass
 import EditProfileForm from '@components/user/edit-user/edit-profile/edit-profile'
 import EditProfilePictureForm from '@components/user/edit-user/edit-profile-picture/edit-profile-picture'
 import EditUsernameForm from '@components/user/edit-user/edit-username/edit-username'
-import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
-import UserActivity from '@components/user/activity/activity'
 import Layout from '@components/layout/normal/layout'
+import UserActivity from '@components/user/activity/activity'
+import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import { useUser } from '@lib/client/hooks'
@@ -71,7 +71,6 @@ const UserSettings = () => {
     canAccess && (
       <Layout title="User Settings" hasDivider={true}>
 
-        <p>TESTEO</p>
         <section className="user-profile-settings-wr">
           <div className="user-profile-view">
           <UserProfileBox user={user} />

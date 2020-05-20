@@ -38,7 +38,6 @@ export default function ({ user, ...props }) {
         setLoading(false)
         setSuccess(true)
         setError(false)
-        setFields({})
       })
       .catch((err) => {
         setLoading(false)
