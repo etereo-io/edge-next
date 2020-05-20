@@ -15,7 +15,8 @@ export default function (props) {
           props.content.slug
         }`
       : ''
-  const links = !!props.links
+  // Link to detail if it's not a summary
+  const links = !!props.summary
 
   const { user } = useUser()
 

@@ -39,6 +39,7 @@
     "react-google-maps": "^9.4.5",
     "react-player": "^2.0.1",
     "react-share": "^4.1.0",
+    "react-web-monetization": "^0.0.13",
     "sass": "^1.26.3",
     "slugify": "^1.4.0",
     "swr": "0.2.0",

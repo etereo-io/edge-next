@@ -4,6 +4,9 @@ import ContentActions from '../../content-actions/content-actions'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { usePermission } from '@lib/client/hooks'
 import { useState } from 'react'
+import { useMonetizationState } from 'react-web-monetization'
+import Link from 'next/link'
+import Button from '@components/generic/button/button'
 
 export default function (props) {
   const [showComments, setShowComments] = useState(!!props.showComments)
@@ -24,14 +27,35 @@ export default function (props) {
     setNewComments([c, ...newComments])
   }
 
+  const contentIsMonetized = props.content.paymentPointer && props.type.monetization && props.type.monetization.web
+  const monetizedState = contentIsMonetized && !props.summary ? useMonetizationState() : null
+
   return (
     <>
       <div>
         <div className={'content-detail-wrapper'}>
           <div className={'content-detail-content'}>
+            {contentIsMonetized && props.summary && <div className="monetization-layer">
+              <div className="monetization-layer-content">
+                <p>This content is monetized, to see the full content please navigate to the detail.</p>
+
+                <Button href={`/content/${props.type.slug}/${props.content.slug}`}>See full content</Button>
+              </div>    
+            </div>}
+
+            {contentIsMonetized && !props.summary && !monetizedState.state && <div className="monetization-layer">
+              <div className="monetization-layer-content">
+                This content is monetized, to see the full content please, sign up for Coil to support the author
+              </div>    
+            </div>}
+
+            {contentIsMonetized && !props.summary && monetizedState.state === 'started' && <div className="monetization-layer">
+              <p>Thanks for supporting this author</p>  
+            </div>}
+
             <ContentSummaryView
               content={props.content}
-              links={!!props.links}
+              summary={!!props.summary}
               type={props.type}
               canReadComments={canReadComments.available}
               canWriteComments={canWriteComments.available}
@@ -81,6 +105,7 @@ export default function (props) {
 
         .content-detail-content {
           margin-bottom: var(--empz-gap-double);
+          position: relative;
           flex: 1;
 
           box-shadow: var(--shadow-smallest);
@@ -102,6 +127,26 @@ export default function (props) {
 
         .comment-form-wrapper {
           margin: var(--empz-gap-half) 0 var(--empz-gap);
+        }
+
+        .monetization-layer {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          width: 100%;
+          background: white;
+          padding: var(--empz-gap);
+          z-index: 1000;
+          background: linear-gradient(180deg, rgba(255,255,255,0) 0, var(--empz-background) 30%);
+        }
+
+        .monetization-layer-content {
+          width: 50%;
+          margin: 0 auto;
+          padding-top: 30%;
+          font-weight: bold;
+          text-align: center;
         }
       `}</style>
     </>

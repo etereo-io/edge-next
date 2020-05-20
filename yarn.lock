@@ -8196,6 +8196,13 @@ react-share@^4.1.0:
     classnames "^2.2.5"
     jsonp "^0.2.1"
 
+react-web-monetization@^0.0.13:
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/react-web-monetization/-/react-web-monetization-0.0.13.tgz#2a36e8b543fa9ba8f67cff96db09ae8361a04fa4"
+  integrity sha512-Alu8mIzKxsQnSIgJtey3NdqmVcdk7f1gs22ivQAQM1S8tyCOBFevPrIj8L54YWIdnxjjZK8U3o63EhqOz4CITw==
+  dependencies:
+    prop-types "^15.7.2"
+
 react@latest:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"

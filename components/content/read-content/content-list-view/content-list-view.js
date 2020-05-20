@@ -92,7 +92,7 @@ export default function (props) {
               <ContentDetailView
                 content={item}
                 type={props.type}
-                links={true}
+                summary={true}
                 showActions={false}
                 showComments={false}
               />
