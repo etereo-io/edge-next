@@ -100,6 +100,9 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - Introduce basic site stats
 
+- https://help.github.com/en/github/supporting-the-open-source-community-with-github-sponsors/about-github-sponsors
+- OpenColective
+
 ### Additional features
 
 - Create an example site running an online shop
