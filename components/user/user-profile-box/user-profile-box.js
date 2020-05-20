@@ -91,10 +91,23 @@ export default function ({ user, ...props }) {
             display: flex;
           }
 
+          .general-profile.horizontal .general-profile-user{
+            text-align: left;
+            padding-left: var(--empz-gap-half);
+          }
+
+          .general-profile.horizontal .general-profile-user .username, .general-profile.horizontal .general-profile-user .display-name{
+            justify-content: flex-start;
+          }
+
           .general-profile.horizontal .profile-avatar-bio {
             align-items: center;
             display: flex;
             margin-right: var(--empz-gap-double);
+          }
+
+          .general-profile.horizontal .profile-bio-social{
+            max-width: 320px;
           }
 
           .general-profile.horizontal .profile-bio-social, .general-profile.horizontal .general-profile-bio p {

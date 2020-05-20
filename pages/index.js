@@ -18,6 +18,7 @@ const Landing = (props, user) => {
       <Layout
         title={`${config.title} - ${config.slogan}`}
         description={config.slogan}
+        alt={true}
       >
         <div className="columns">
           <div className="left-column">
