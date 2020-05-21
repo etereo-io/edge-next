@@ -21,6 +21,7 @@ import Loading from '@components/generic/loading/loading-spinner/loading-spinner
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import Map from '@components/generic/map/map'
 import PasswordStrength from '@components/generic/password-strength/password-strength'
+import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
 import Select from '@components/generic/select/select'
 import SocialShare from '@components/generic/social-share/social-share'
 import TagsField from '@components/generic/tags-field/tags-field'
@@ -234,6 +235,9 @@ const Components = () => {
             </li>
             <li>
               <a href="#button">Button</a>
+            </li>
+            <li>
+              <a href="#reaction-counter">Reaction Counter</a>
             </li>
             <li>
               <a href="#loading">Loading</a>
@@ -660,6 +664,23 @@ const links = [{
             </div>
             <pre>{`
 <Button />
+            `}</pre>
+          </div>
+
+          <div id="reaction-counter" className="component">
+            <h3>Reaction Counter</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <ReactionCounter type='like' count={10} />
+              </div>
+              <div className="item-wrapper">
+                <ReactionCounter type='like' count={25} active />
+              </div>
+
+           
+            </div>
+            <pre>{`
+<ReactionCounter type='like' count={10} />
             `}</pre>
           </div>
 
