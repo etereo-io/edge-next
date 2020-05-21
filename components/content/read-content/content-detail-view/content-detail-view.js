@@ -142,11 +142,15 @@ export default function (props) {
         }
 
         .monetization-layer-content {
-          width: 50%;
+          width: 60%;
           margin: 0 auto;
-          padding-top: 30%;
+          padding-top: 20%;
           font-weight: bold;
           text-align: center;
+        }
+
+        .monetization-layer-content p {
+          margin-bottom: var(--empz-gap-half);
         }
       `}</style>
     </>

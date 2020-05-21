@@ -77,8 +77,6 @@ Check our roadmap if you want to add more cool things into Edge.
 - check that req.user is the user in passport strategies
 
 - Allow to report content and comments, we can use a flag on the content if anyone has reported it, instead of a list of reports.
-  
-- Integrate web monetization
 
 - Get 100% on everything on lighthouse
 
@@ -99,6 +97,8 @@ Check our roadmap if you want to add more cool things into Edge.
   - See if there is any ORM that can work for this use case
 
 - Introduce basic site stats
+
+- Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552
 
 - https://help.github.com/en/github/supporting-the-open-source-community-with-github-sponsors/about-github-sponsors
 - OpenColective

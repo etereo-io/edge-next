@@ -645,6 +645,8 @@ To deploy your site with all the functionalities you need to configure the diffe
 All the environment variables are defined inside the `.env.build` example file
 
 ```
+AUTH_TOKEN_SECRET=secret-token-to-generate-sessions
+
 BASE_URL=http://localhost:3000
 
 MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
