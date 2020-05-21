@@ -16,7 +16,7 @@ export default function () {
           <div className="open-mobile-over"></div>
         </div>
         { (!finished || user) && <UserProfileBox user={user} />}
-        { (finished  && !user) && <div><Button href='/auht/login'>Sign in</Button></div>}
+        { (finished  && !user) && <div><Button href='/auth/login'>Sign in</Button></div>}
 
         <div className="general-tags">
           <ul>
