@@ -86,7 +86,7 @@ export default function (props) {
 
         table thead {
           background: var(--accents-2);
-          z-index: 1;
+          z-index: var(--z-index-minimum);
         }
       `}</style>
     </>

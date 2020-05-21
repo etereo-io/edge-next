@@ -85,7 +85,7 @@ export default function (props) {
           color: var(--empz-foreground);
           padding: var(--empz-gap);
           box-shadow: var(--shadow-medium);
-          z-index: 1;
+          z-index: var(--z-index-minimum);
         }
 
         .dropdown-menu-wrapper.left {

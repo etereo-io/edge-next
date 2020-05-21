@@ -137,7 +137,7 @@ export default function (props) {
           width: 100%;
           background: white;
           padding: var(--empz-gap);
-          z-index: 1000;
+          z-index: var(--z-index-cover-content);
           background: linear-gradient(180deg, rgba(255,255,255,0) 0, var(--empz-background) 30%);
         }
 

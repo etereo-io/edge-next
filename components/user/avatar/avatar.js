@@ -6,13 +6,12 @@ export default function (props) {
 
   return (
     <>
-      <div className="avatar">
+      <div className={`avatar ${props.className}`}>
         {!props.loading && (
           <img title={title} src={props.src || defaultSrc}></img>
         )}
         {props.loading && (
           <div className="empty-avatar">
-            {' '}
             <img src="/static/demo-images/loading-avatar.gif" />
           </div>
         )}
@@ -26,7 +25,7 @@ export default function (props) {
 
         .empty-avatar {
           width: 100%;
-          height: ${width}px;
+          height: 100%;
           border: var(--light-border);
           display: block;
           border-radius: 100%;

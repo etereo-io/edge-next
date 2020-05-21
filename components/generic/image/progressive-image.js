@@ -31,7 +31,7 @@ export default class ProgressiveImage extends Component {
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 1;
+            z-index: var(--z-index-minimum);
             background: rgba(0, 0, 0, 0.3);
             width: 100%;
             height: ${this.props.height}px;

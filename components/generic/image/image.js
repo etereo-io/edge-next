@@ -99,7 +99,7 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
           transform: translateY(-50%);
           text-indent: -9999px;
           width: 32px;
-          z-index: 2;
+          z-index: var(--z-index-content);
         }
 
         .arrow:before{

@@ -16,6 +16,7 @@ function UserHeader(props) {
   const onClickLogout = async () => {
     setLoading(true)
 
+
     // Invalidate caches for service worker
     await caches.keys().then(function (keyList) {
       return Promise.all(
@@ -170,7 +171,7 @@ const Header = () => {
           height: 56px;
           position: sticky;
           top: 0;
-          z-index: 4;
+          z-index: var(--z-index-header);
         }
 
         .header-content {

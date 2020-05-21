@@ -157,7 +157,7 @@ const UserSettings = () => {
               padding-bottom: 0;
               position: sticky;
               top: 56px;
-              z-index: 1;
+              z-index: var(--z-index-minimum);
             }
 
             .navigation li{

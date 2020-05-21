@@ -1295,7 +1295,7 @@ const links = [{
           height: 100vh;
           max-width: 420px;
           width: 30%;
-          z-index: 3;
+          z-index: var(--z-index-header);
         }
 
         .list-menu::-webkit-scrollbar {

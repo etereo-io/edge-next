@@ -36,7 +36,7 @@ class NextNProgress extends React.Component {
         #nprogress .bar {
           background: ${color};
           position: fixed;
-          z-index: 9999;
+          z-index: var(--z-index-content);
           top: 0;
           left: 0;
           width: 100%;
@@ -57,7 +57,7 @@ class NextNProgress extends React.Component {
         #nprogress .spinner {
           display: 'block';
           position: fixed;
-          z-index: 1031;
+          z-index: var(--z-index-minimum);
           top: 15px;
           right: 15px;
         }

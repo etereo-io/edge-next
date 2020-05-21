@@ -1,19 +1,22 @@
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import { useUser } from '@lib/client/hooks'
-
+import Button from '@components/generic/button/button'
+import Avatar from '@components/user/avatar/avatar'
 export default function () {
-  const { user } = useUser()
+  const { user, finished } = useUser() 
   return (
     <>
       <div className="toolbar">
         <div className="mobile-over">
-          <img
-            className="avatar"
-            src="https://storage.googleapis.com/edge-next/profilePicture/1589732055819-hayder-avatar.jpg"
-          />
+          <Avatar
+              loading={!finished}
+              src={user && user.profile ? user.profile.picture : null}
+            />
+          
           <div className="open-mobile-over"></div>
         </div>
-        <UserProfileBox user={user} />
+        { (!finished || user) && <UserProfileBox user={user} />}
+        { (finished  && !user) && <div><Button href='/auht/login'>Sign in</Button></div>}
 
         <div className="general-tags">
           <ul>
@@ -74,9 +77,10 @@ export default function () {
           width: 100%;
         }
 
-        .mobile-over .avatar {
+        .mobile-over  > :global(.avatar) {
           transition: 0.35s ease;
           max-width: 80px;
+          height: 80px;
           width: 100%;
         }
 
@@ -112,9 +116,9 @@ export default function () {
           .mobile-over {
             flex-flow: row;
           }
-          .mobile-over .avatar {
+          .mobile-over > :global(.avatar) {
             height: 40px;
-            width: auto;
+            width: 40px;
           }
           .mobile-over .open-mobile-over {
             margin-bottom: 0;
@@ -135,7 +139,7 @@ export default function () {
             transition: 0.35s ease;
             max-width: 80px;
             width: 50%;
-            z-index: 2;
+            z-index: var(--z-index-toolbar);
           }
           .toolbar::-webkit-scrollbar {
             width: 0 !important;
@@ -155,7 +159,7 @@ export default function () {
             visibility: hidden;
           }
 
-          .toolbar:hover .avatar {
+          .toolbar:hover > :global(.avatar) {
             border-radius: 50%;
             transform: translateY(50%);
           }
