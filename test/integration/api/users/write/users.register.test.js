@@ -84,7 +84,9 @@ jest.mock('../../../../../edge.config', () => ({
           id: '1',
           password: 'admin',
           profile: {
-            picture: '/static/demo-images/default-avatar.jpg',
+            picture: { 
+              path: '/static/demo-images/default-avatar.jpg'
+            }
           },
           metadata: {
             lastLogin: null,
@@ -99,7 +101,7 @@ jest.mock('../../../../../edge.config', () => ({
           id: '2',
           password: 'user',
           profile: {
-            picture: '',
+            picture: { path: null }
           },
           metadata: {
             lastLogin: null,
@@ -114,7 +116,7 @@ jest.mock('../../../../../edge.config', () => ({
           id: '3',
           password: 'user',
           profile: {
-            picture: '',
+            picture: { path: null }
           },
           blocked: true,
           metadata: {
@@ -131,7 +133,7 @@ jest.mock('../../../../../edge.config', () => ({
           id: '3',
           password: 'user',
           profile: {
-            picture: '',
+            picture: { path: null }
           },
           blocked: true,
           metadata: {

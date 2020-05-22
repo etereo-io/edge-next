@@ -455,7 +455,9 @@ const links = [{
                   user={{
                     username: 'demo-user',
                     profile: {
-                      picture: 'https://loremflickr.com/240/240/food?random=3',
+                      picture: {
+                        path: 'https://loremflickr.com/240/240/food?random=3'
+                      },
                       displayName: 'Jonh Doe',
                       bio: 'My bio is something special',
                       github: 'yes',
@@ -482,7 +484,9 @@ const links = [{
                   user={{
                     username: 'demo-user',
                     profile: {
-                      picture: 'https://loremflickr.com/240/240/food?random=1',
+                      picture: {
+                        path:  'https://loremflickr.com/240/240/food?random=1'
+                      },
                       displayName: 'Jonh doe',
                     },
                   }}

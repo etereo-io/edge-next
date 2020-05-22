@@ -18,7 +18,7 @@ export default function (props) {
             <Link href={`/profile/@${user.username}`}>
               <a title={`${user.username} profile`}>
                 <Avatar
-                  src={user.profile ? user.profile.picture : null}
+                  src={user.profile && user.profile.picture ? user.profile.picture.path : null}
                   title={`${user.username} avatar`}
                   width={32}
                   height={32}

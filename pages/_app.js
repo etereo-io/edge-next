@@ -309,6 +309,178 @@ main{
   font-size: var(--empz-form-small-font);
   line-height: 2;
 }
+
+
+// Generic fields styles
+.input-group {
+  margin-bottom: var(--empz-gap);
+  position: relative;
+  width: 100%;
+}
+
+.input-group label {
+    display: block;
+    font-size: var(--empz-form-large-font);
+    font-weight: 500;
+    padding-bottom: var(--empz-gap-half);
+}
+.input-group label::first-letter{
+      text-transform: uppercase;
+    
+  }
+
+  .input-group.required label:after {
+        color: var(--empz-alert);
+        content: '*';
+        display: inline-block;
+  }
+
+  .input-group.error input,
+  .input-group.error textarea,
+  .input-group.error select {
+      border-color: var(--empz-error);
+    }
+  
+
+  .input-group.password {
+    position: relative;
+  }
+  .input-group.password input{
+      padding-right: 58px;
+    }
+
+.input-group.password svg{
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: var(--empz-gap);
+      width: 22px;
+}
+
+.input-group.password svg   path{
+    fill: var(--empz-foreground);
+  }
+
+.input-group.password svg.hide-password{
+display: none;
+margin-top: 1px;
+}
+
+.input-group.password .toggle-password{
+cursor: pointer;
+}
+
+.input-group.password .toggle-password  &:hover svg.show-password {
+
+  display: none;
+}
+.input-group.password .toggle-password  &:hover svg.hide-password{
+  display: block;
+}
+      
+    
+  
+
+
+input,
+textarea,
+select {
+  background: var(--empz-background);
+  border: var(--light-border);
+  border-radius: var(--empz-radius);
+  color: var(--empz-foreground);
+  font-size: var(--empz-form-large-font);
+  padding: var(--empz-gap);
+  transition: 0.25s ease;
+  width: 100%;
+}
+
+input:focus, input:hover,
+textarea:focus, textarea:hover,
+select:focus, select:hover {
+  border-color: var(--empz-foreground);
+    outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.input-select {
+  position: relative;
+}
+.input-select:after {
+    background: transparent;
+    border-bottom: 2px solid var(--accents-5);
+    border-right: 2px solid var(--accents-5);
+    content: '';
+    cursor: pointer;
+    height: var(--empz-gap-half);
+    position: absolute;
+    pointer-events: none;
+    right: var(--empz-gap);
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    transition: 0.25s ease;
+    width: var(--empz-gap-half);
+}
+
+.input-radio-group{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.input-radio {
+  display: inline-block;
+  margin: var(--empz-gap);
+  position: relative;
+  width: 100%;
+  flex: 1;
+}
+
+.input-radio:last-of-type{
+    margin-right: 0;
+  }
+
+  .input-radio label {
+    background: var(--empz-background);
+    border: var(--light-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: var(--empz-form-large-font);
+    padding: var(--empz-gap);
+    text-align: center;
+    transition: 0.25s ease;
+  }
+
+  .input-radio input{
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  .input-radio input:hover ~ label {
+      
+        border-color: var(--empz-foreground);
+  }
+
+  .input-radio input:hover:checked ~ labe {
+      
+        background: var(--empz-foreground);
+        color: var(--empz-background);
+      
+    
+  }
+
+
+select {
+  appearance: none;
+  padding-right: var(--empz-gap-double);
+  -webkit-appearance: none;
+}
+
       `
 }</style>
     </>

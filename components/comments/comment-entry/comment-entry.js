@@ -37,7 +37,9 @@ export default function CommentEntry({
     username: 'not found',
     id: 'not-found',
     profile: {
-      picture: null,
+      picture: {
+        path: null
+      },
     },
   }
 

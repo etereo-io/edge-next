@@ -230,7 +230,10 @@ describe('Integrations tests for user deletion endpoint', () => {
         id: 'userId',
         username: 'abcd',
         profile: {
-          picture: 'abc.test',
+          picture: {
+            source: 'internal',
+            path: 'abc.test'
+          },
           image: [{
             path: 'otherimage.test'
           }]

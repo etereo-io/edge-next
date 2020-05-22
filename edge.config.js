@@ -129,7 +129,9 @@ export const getConfig = (defaultOptions) => {
       salt,
       hash,
       profile: {
-        picture: '/static/demo-images/default-avatar.jpg',
+        picture: {
+          path: '/static/demo-images/default-avatar.jpg'
+        },
       },
       metadata: {
         lastLogin: null,
@@ -145,7 +147,9 @@ export const getConfig = (defaultOptions) => {
       salt,
       hash,
       profile: {
-        picture: '',
+        picture: {
+          path: null
+        }
       },
       metadata: {
         lastLogin: null,
@@ -161,7 +165,9 @@ export const getConfig = (defaultOptions) => {
       salt,
       hash,
       profile: {
-        picture: '',
+        picture: {
+          path: null
+        }
       },
       blocked: true,
       metadata: {
@@ -179,7 +185,9 @@ export const getConfig = (defaultOptions) => {
       salt,
       hash,
       profile: {
-        picture: '',
+        picture: {
+          path: null
+        }
       },
       blocked: true,
       metadata: {

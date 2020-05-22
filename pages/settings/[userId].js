@@ -101,6 +101,7 @@ const UserSettings = () => {
             </ul>
 
             <div className={`${ activeTab === 'account' ? 'navigation-tab active': 'navigation-tab'}`}>
+              <EditProfilePictureForm user={user} />
               <EditUsernameForm user={user} />
               <EditDisplayNameForm user={user} />
               <EditEmailForm user={user} />

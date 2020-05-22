@@ -8,7 +8,9 @@ export default function ({ user, ...props }) {
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const [fields, setFields] = useState({})
+  const [fields, setFields] = useState({
+    picture: {}
+  })
 
   const url = `${API.users}/${user.id}/picture`
 
@@ -58,7 +60,9 @@ export default function ({ user, ...props }) {
 
     reader.onload = function (e) {
       setFields({
-        picture: e.target.result,
+        picture: {
+          path: e.target.result
+        },
       })
     }
 
@@ -80,7 +84,7 @@ export default function ({ user, ...props }) {
         <div className="block-settings">
           <p>Click on the avatar image to change it</p>
           <div className="field" onClick={openFileDialog}>
-            <Avatar src={fields.picture} />
+            <Avatar src={fields.picture.path} />
           </div>
 
           <input

@@ -209,9 +209,9 @@ function updateProfilePicture(user, profilePicture) {
     }
 
     // Delete previous file
-    if (user.profile.picture) {
+    if (user.profile.picture && user.profile.picture.path && user.profile.picture.source === 'internal') {
       try {
-        await deleteFile(user.profile.picture)
+        await deleteFile(user.profile.picture.path)
       } catch (err) {
         console.log('Error deleting previous picture')
       }
@@ -221,7 +221,11 @@ function updateProfilePicture(user, profilePicture) {
     updateOneUser(user.id, {
       profile: {
         ...user.profile,
-        picture: path,
+        picture: {
+          source: 'internal',
+          path: path,
+          createdAt: Date.now()
+        },
       },
     })
       .then(resolve)

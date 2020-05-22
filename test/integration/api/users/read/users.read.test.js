@@ -32,7 +32,7 @@ const demoUser = {
   tokens: [{ github: 'abc' }],
   profile: {
     displayName: 'A test user',
-    picture: '',
+    picture: {},
   },
 }
 

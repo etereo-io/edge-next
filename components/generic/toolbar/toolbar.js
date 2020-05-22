@@ -10,7 +10,7 @@ export default function () {
         <div className="mobile-over">
           <Avatar
               loading={!finished}
-              src={user && user.profile ? user.profile.picture : null}
+              src={user && user.profile && user.profile.picture ? user.profile.picture.path : null}
             />
           
           <div className="open-mobile-over"></div>
