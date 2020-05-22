@@ -1,5 +1,5 @@
 import ContentDetailView from '@components/content/read-content/content-detail-view/content-detail-view'
-import Layout from '@components/layout/normal/layout'
+import Layout from '@components/layout/three-columns/layout'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/content/content'
 import { getContentTypeDefinition } from '@lib/config'

@@ -2,12 +2,14 @@ import { useContentTypes, useUser } from '@lib/client/hooks'
 
 import Button from '@components/generic/button/button'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
+import CoverImage from '@components/user/cover-image/cover-image'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
-import Layout from '@components/layout/normal/layout'
+import Layout from '@components/layout/three-columns/layout'
 import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import config from '@lib/config'
 import fetch from '@lib/fetcher'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
@@ -28,8 +30,23 @@ const Profile = (props) => {
   const { data, error } = useSWR(userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
+  
+  const isOwner = userId === 'me' || (data && data.username === userId)
+  const canAccess = hasPermissionsToRead || isOwner
+  const canEdit = hasPermissionsToEdit || isOwner
+
+
+  useEffect(() => {
+    if (finished && currentUser.finished) {
+      if (!data || !canAccess) {
+        // Redirect to 404 if the user is not found
+        router.push('/404')
+      }
+    }
+  }, [data, canAccess, finished, currentUser])
+
   // Loading
-  if (!finished || !currentUser.finished) {
+  if (!finished || !currentUser.finished || !canAccess || (finished && !data)) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -38,74 +55,67 @@ const Profile = (props) => {
     )
   }
 
-  const isOwner = userId === 'me' || (data && data.username === userId)
-  const canAccess = hasPermissionsToRead || isOwner
-  const canEdit = hasPermissionsToEdit || isOwner
-
-  if (!data || !canAccess) {
-    // Redirect to 404 if the user is not found
-    router.push('/404')
-  }
-
   return (
-    <Layout title="Profile" hasDivider={true}>
-      <div className="cover-wrapper">
-        <img style={{height: '200px'}} src={data && data.profile.cover ? data.profile.cover.path : '/static/demo-images/cover/clouds.jfif'} />
-      </div>
-      <div className="profile-user-info">
-        <div className="avatar">
-          <UserProfileBox user={data} horizontal={true} />
-        </div>
-        <div className="name">
-          <div className="title">
-            <div className="title-left"></div>
-            <div className="title-right">
-              {canEdit && (
-                <div className="item">
-                  <Button href={`/settings/${data ? data.id : ''}`}>
-                    Edit Profile
-                  </Button>
-                </div>
-              )}
+    <Layout title="Profile" >
+      <div className="profile-wrapper">
 
-              <div className="item">
-                <DropdownMenu align={'right'}>
-                  <ul>
-                    <li>Report</li>
-                  </ul>
-                </DropdownMenu>
+        <CoverImage user={data} />
+        <div className="profile-user-info">
+          <div className="avatar">
+            <UserProfileBox user={data} horizontal={true} />
+          </div>
+          <div className="name">
+            <div className="title">
+              <div className="title-left"></div>
+              <div className="title-right">
+                {canEdit && (
+                  <div className="item">
+                    <Button href={`/settings/${data ? data.id : ''}`}>
+                      Edit Profile
+                    </Button>
+                  </div>
+                )}
+
+                <div className="item">
+                  <DropdownMenu align={'right'}>
+                    <ul>
+                      <li>Report</li>
+                    </ul>
+                  </DropdownMenu>
+                </div>
               </div>
             </div>
+            <div className="dashboar-bar"></div>
           </div>
-          <div className="dashboar-bar"></div>
-        </div>
-      </div>
-
-      <div className="content-container">
-        <div className="content-types">
-          {visibleContentTypes.map((cData) => {
-            return (
-              <div className="content-block">
-                <h3>User's {cData.title}s</h3>
-                <ContentListView
-                  infiniteScroll={false}
-                  type={cData}
-                  query={`author=${data ? data.id : null}`}
-                />
-              </div>
-            )
-          })}
         </div>
 
-        {config.activity.enabled && (
-          <div className="activity-report">
-            <h3>Recent activity</h3>
-            {data && <UserActivity user={data} />}
+        <div className="content-container">
+          <div className="content-types">
+            {visibleContentTypes.map((cData) => {
+              return (
+                <div className="content-block">
+                  <h3>User's {cData.title}s</h3>
+                  <ContentListView
+                    infiniteScroll={false}
+                    type={cData}
+                    query={`author=${data ? data.id : null}`}
+                  />
+                </div>
+              )
+            })}
           </div>
-        )}
+
+          {config.activity.enabled && (
+            <div className="activity-report">
+              <h3>Recent activity</h3>
+              {data && <UserActivity user={data} />}
+            </div>
+          )}
+        </div>
       </div>
       <style jsx>
         {`
+  
           .profile-user-info {
             display: flex;
             flex-wrap: wrap;

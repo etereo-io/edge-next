@@ -92,7 +92,7 @@ export default function () {
           width: 100%;
         }
 
-        .mobile-over .open-mobile-over  {
+        .mobile-over .open-mobile-over {
           background: var(--accents-2);
           border-radius: 4px;
           height: 32px;

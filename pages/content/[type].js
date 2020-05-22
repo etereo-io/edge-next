@@ -1,5 +1,5 @@
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
-import Layout from '@components/layout/normal/layout'
+import Layout from '@components/layout/three-columns/layout'
 import ListContentTypes from '@components/content/read-content/list-content-types/list-content-types'
 import { connect } from '@lib/api/db'
 import { findContent } from '@lib/api/content/content'

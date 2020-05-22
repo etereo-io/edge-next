@@ -1,23 +1,11 @@
-import Head from 'next/head'
+import Head from '../head/head'
 import Header from '../header/header'
 import Footer from '../footer/footer'
-import config from '@lib/config'
+
 
 const Layout = (props) => (
   <>
-    <Head>
-      <title>
-        {props.title} - {config.title}
-      </title>
-      <meta
-        name="description"
-        content={props.description || config.description}
-      />
-      {props.monetization && (
-        <meta name="monetization" content={props.monetization} />
-      )}
-    </Head>
-
+    <Head props={props} />
     <Header />
 
     <main

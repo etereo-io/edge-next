@@ -1,15 +1,8 @@
-import Head from 'next/head'
+import Head from '../head/head'
 import Header from '../header/header'
-import config from '@lib/config'
-
 const Layout = (props) => (
   <>
-    <Head>
-      <title>
-        {props.title} - {config.title}
-      </title>
-    </Head>
-
+    <Head props={props} />
     <Header />
 
     <main>

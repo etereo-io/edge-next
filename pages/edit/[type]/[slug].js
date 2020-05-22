@@ -50,7 +50,17 @@ const EditContent = () => {
   const onSave = (newItem) => {
     setContent(newItem)
   }
+  
+  useEffect(() => {
+    if (!loading && currentUser.finished) {
+      if (error || !canAccess) {
+        // Redirect to 404 if the user is not found
+        router.push('/404')
+      }
+    }
+  }, [loading, canAccess, error, currentUser])
 
+  
   if (!currentUser.finished || loading || error) {
     return (
       <Layout title="Edit content">
@@ -59,20 +69,13 @@ const EditContent = () => {
     )
   }
 
-  // Redirect if user can not access
-  if (!canAccess) {
-    router.push('/404')
-  }
-
   return (
     <>
       <Layout title="Edit content">
-        {!loading && !error && canAccess && (
-          <div className="edit-page">
-            <h1>Editing: {content ? content.title : null}</h1>
-            <ContentForm type={contentType} onSave={onSave} content={content} />
-          </div>
-        )}
+        <div className="edit-page">
+          <h1>Editing: {content ? content.title : null}</h1>
+          <ContentForm type={contentType} onSave={onSave} content={content} />
+        </div>
       </Layout>
 
       <style jsx>{`

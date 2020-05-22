@@ -15,6 +15,7 @@ import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import { useUser } from '@lib/client/hooks'
 import { userPermission } from '@lib/permissions'
+import { useEffect } from 'react'
 
 const UserSettings = () => {
   //Profile Tabs
@@ -33,25 +34,43 @@ const UserSettings = () => {
 
   // Load profile data
   const [user, setUser] = useState(null)
-  const [loaded, setLoaded] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   // Load user, just one time when accesing.
   useEffect(() => {
     if (userId) {
+      setLoading(true)
       fetch(`/api/users/` + userId)
         .then((result) => {
           setUser(result)
-          setLoaded(true)
+          setLoading(false)
+          setError(false)
         })
         .catch((err) => {
           setUser(null)
-          setLoaded(true)
+          setLoading(false)
+          setError(true)
         })
     }
   }, [userId])
 
-  // Loading
-  if (!loaded || !currentUser.finished) {
+
+  const isOwner = userId === 'me' || (user && user.username === userId)
+  const canAccess = hasPermissionsToEdit || isOwner
+
+  
+  useEffect(() => {
+    if (!loading && currentUser.finished && (user || error)) {
+      if (error || !canAccess ) {
+        // Redirect to 404 if the user is not found
+        router.push('/404')
+      }
+    }
+  }, [user, canAccess, loading, error, currentUser])
+
+   // Loading
+   if (!loading || !currentUser.finished || !canAccess) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -60,16 +79,7 @@ const UserSettings = () => {
     )
   }
 
-  const isOwner = userId === 'me' || (user && user.username === userId)
-  const canAccess = hasPermissionsToEdit || isOwner
-
-  if (!user || !canAccess) {
-    // Redirect to 404 if the user is not found or doesnt have permissions
-    router.push('/404')
-  }
-
   return (
-    canAccess && (
       <Layout title="User Settings" hasDivider={true}>
         <section className="user-profile-settings-wr">
           <div className="user-profile-view">
@@ -244,7 +254,6 @@ const UserSettings = () => {
           `}
         </style>
       </Layout>
-    )
   )
 }
 
