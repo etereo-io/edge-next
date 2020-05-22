@@ -102,6 +102,8 @@ Check our roadmap if you want to add more cool things into Edge.
 - https://help.github.com/en/github/supporting-the-open-source-community-with-github-sponsors/about-github-sponsors
 - OpenColective
 
+- profile react re-renders
+
 ### After Version 1: Additional features
 
 - Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552

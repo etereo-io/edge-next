@@ -38,15 +38,18 @@ const UserSettings = () => {
 
   // Load user, just one time when accesing.
   useEffect(() => {
+    console.log('use effect', userId)
     if (userId) {
       setLoading(true)
       fetch(`/api/users/` + userId)
         .then((result) => {
+          
           setUser(result)
           setLoading(false)
           setError(false)
         })
         .catch((err) => {
+          
           setUser(null)
           setLoading(false)
           setError(true)
@@ -67,7 +70,7 @@ const UserSettings = () => {
   }, [user, canAccess, loading, error, currentUser])
 
   // Loading
-  if (!loading || !currentUser.finished || !canAccess) {
+  if (loading || !currentUser.finished || !canAccess || !user) {
     return (
       <Layout title="Profile">
         <h1>Profile</h1>
@@ -119,7 +122,7 @@ const UserSettings = () => {
             }`}
           >
             <EditProfilePictureForm user={user} />
-            <EditCoverImageForm user={user} />
+            <EditCoverImageForm user={user}/>
             <EditUsernameForm user={user} />
             <EditDisplayNameForm user={user} />
             <EditEmailForm user={user} />
@@ -159,7 +162,7 @@ const UserSettings = () => {
       </section>
       <style jsx>
         {`
-          .user-profile-settings-wr  {
+          .user-profile-settings-wr {
             align-items: flex-start;
             display: flex;
             justify-content: space-between;
