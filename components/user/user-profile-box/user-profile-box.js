@@ -14,7 +14,9 @@ export default function ({ user, ...props }) {
               <Link href={`/profile/@${user.username}`}>
                 <a title={`${user.username} profile`}>
                   <Avatar
-                    src={user.profile.picture ? user.profile.picture.path : null}
+                    src={
+                      user.profile.picture ? user.profile.picture.path : null
+                    }
                     title={`${user.username} avatar`}
                   />
                 </a>
@@ -91,12 +93,13 @@ export default function ({ user, ...props }) {
             display: flex;
           }
 
-          .general-profile.horizontal .general-profile-user{
+          .general-profile.horizontal .general-profile-user {
             text-align: left;
             padding-left: var(--empz-gap-half);
           }
 
-          .general-profile.horizontal .general-profile-user .username, .general-profile.horizontal .general-profile-user .display-name{
+          .general-profile.horizontal .general-profile-user .username,
+          .general-profile.horizontal .general-profile-user .display-name {
             justify-content: flex-start;
           }
 
@@ -106,11 +109,12 @@ export default function ({ user, ...props }) {
             margin-right: var(--empz-gap-double);
           }
 
-          .general-profile.horizontal .profile-bio-social{
+          .general-profile.horizontal .profile-bio-social {
             max-width: 320px;
           }
 
-          .general-profile.horizontal .profile-bio-social, .general-profile.horizontal .general-profile-bio p {
+          .general-profile.horizontal .profile-bio-social,
+          .general-profile.horizontal .general-profile-bio p {
             margin-top: 0;
             text-align: left;
           }

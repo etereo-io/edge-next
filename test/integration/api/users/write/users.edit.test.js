@@ -86,7 +86,7 @@ jest.mock('../../../../../edge.config', () => ({
           profile: {
             displayName: 'The admin',
             picture: {
-              path: '/static/demo-images/default-avatar.jpg'
+              path: '/static/demo-images/default-avatar.jpg',
             },
           },
           metadata: {
@@ -103,8 +103,8 @@ jest.mock('../../../../../edge.config', () => ({
           password: 'user',
           profile: {
             picture: {
-              path: null
-            }
+              path: null,
+            },
           },
           metadata: {
             lastLogin: null,
@@ -120,8 +120,8 @@ jest.mock('../../../../../edge.config', () => ({
           password: 'user',
           profile: {
             picture: {
-              path: null
-            }
+              path: null,
+            },
           },
           blocked: true,
           metadata: {
@@ -139,8 +139,8 @@ jest.mock('../../../../../edge.config', () => ({
           password: 'user',
           profile: {
             picture: {
-              path: null
-            }
+              path: null,
+            },
           },
           blocked: true,
           metadata: {
@@ -240,9 +240,7 @@ describe('Integrations tests for login', () => {
           email: 'test@t.com',
           password: '12345678',
           username: 'test',
-          profile: {
-            
-          },
+          profile: {},
         })
       )
 
@@ -425,9 +423,11 @@ describe('Integrations tests for login', () => {
           password: '12345678',
           username: 'test',
           profile: {
-            images: [{
-              path: 'abc.test'
-            }]
+            images: [
+              {
+                path: 'abc.test',
+              },
+            ],
           },
         })
       )

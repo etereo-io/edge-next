@@ -70,37 +70,46 @@ const UserSettings = () => {
   return (
     canAccess && (
       <Layout title="User Settings" hasDivider={true}>
-
         <section className="user-profile-settings-wr">
           <div className="user-profile-view">
-          <UserProfileBox user={user} />
+            <UserProfileBox user={user} />
           </div>
 
           <div className="user-profile-configuration-wr">
             <ul className="navigation">
-              <li onClick={() => onClickTab('account')} className={`${ activeTab === 'account' ? 'active': ''}`}>
-                <a>
-                  Account
-                </a>
+              <li
+                onClick={() => onClickTab('account')}
+                className={`${activeTab === 'account' ? 'active' : ''}`}
+              >
+                <a>Account</a>
               </li>
-              <li onClick={() => onClickTab('profile')} className={`${ activeTab === 'profile' ? 'active': ''}`}>
-                <a>
-                  Profile
-                </a>
+              <li
+                onClick={() => onClickTab('profile')}
+                className={`${activeTab === 'profile' ? 'active' : ''}`}
+              >
+                <a>Profile</a>
               </li>
-              <li onClick={() => onClickTab('password')} className={`${ activeTab === 'password' ? 'active': ''}`}>
-                <a>
-                  Password
-                </a>
+              <li
+                onClick={() => onClickTab('password')}
+                className={`${activeTab === 'password' ? 'active' : ''}`}
+              >
+                <a>Password</a>
               </li>
-              <li onClick={() => onClickTab('activity')} className={`${ activeTab === 'activity' ? 'active': ''}`}>
-                <a>
-                  Activity
-                </a>
+              <li
+                onClick={() => onClickTab('activity')}
+                className={`${activeTab === 'activity' ? 'active' : ''}`}
+              >
+                <a>Activity</a>
               </li>
             </ul>
 
-            <div className={`${ activeTab === 'account' ? 'navigation-tab active': 'navigation-tab'}`}>
+            <div
+              className={`${
+                activeTab === 'account'
+                  ? 'navigation-tab active'
+                  : 'navigation-tab'
+              }`}
+            >
               <EditProfilePictureForm user={user} />
               <EditUsernameForm user={user} />
               <EditDisplayNameForm user={user} />
@@ -108,24 +117,40 @@ const UserSettings = () => {
               <DeleteAccountForm user={user} />
             </div>
 
-            <div className={`${ activeTab === 'profile' ? 'navigation-tab active': 'navigation-tab'}`}>
+            <div
+              className={`${
+                activeTab === 'profile'
+                  ? 'navigation-tab active'
+                  : 'navigation-tab'
+              }`}
+            >
               <EditProfileForm user={user} />
             </div>
 
-            <div className={`${ activeTab === 'password' ? 'navigation-tab active': 'navigation-tab'}`}>
+            <div
+              className={`${
+                activeTab === 'password'
+                  ? 'navigation-tab active'
+                  : 'navigation-tab'
+              }`}
+            >
               <EditPasswordForm user={user} />
             </div>
 
-            <div className={`${ activeTab === 'activity' ? 'navigation-tab active': 'navigation-tab'}`}>
+            <div
+              className={`${
+                activeTab === 'activity'
+                  ? 'navigation-tab active'
+                  : 'navigation-tab'
+              }`}
+            >
               <UserActivity user={user} />
             </div>
-
           </div>
         </section>
         <style jsx>
           {`
-
-            .user-profile-settings-wr {
+            .user-profile-settings-wr  {
               align-items: flex-start;
               display: flex;
               justify-content: space-between;
@@ -134,7 +159,7 @@ const UserSettings = () => {
               width: 100%;
             }
 
-            .user-profile-view{
+            .user-profile-view {
               background: var(--empz-background);
               border-radius: 4px;
               box-shadow: var(--shadow-small);
@@ -142,14 +167,14 @@ const UserSettings = () => {
               width: 35%;
             }
 
-            .user-profile-configuration-wr{
+            .user-profile-configuration-wr {
               background: var(--empz-background);
               border-radius: 4px;
               box-shadow: var(--shadow-small);
               width: 60%;
             }
 
-            .navigation{
+            .navigation {
               background: var(--empz-background);
               border-bottom: 1px solid var(--accents-2);
               display: flex;
@@ -161,14 +186,14 @@ const UserSettings = () => {
               z-index: var(--z-index-minimum);
             }
 
-            .navigation li{
+            .navigation li {
               cursor: pointer;
               height: 100%;
               list-style: none;
               padding-bottom: var(--empz-gap-half);
             }
 
-            .navigation li a{
+            .navigation li a {
               color: var(--accents-3);
               font-size: 12px;
               font-weight: 500;
@@ -176,15 +201,15 @@ const UserSettings = () => {
               text-transform: uppercase;
             }
 
-            .navigation li.active{
+            .navigation li.active {
               border-bottom: 2px solid var(--empz-foreground);
             }
 
-            .navigation li.active a{
+            .navigation li.active a {
               color: var(--empz-foreground);
             }
 
-            .navigation-tab{
+            .navigation-tab {
               height: 0;
               opacity: 0;
               overflow: hidden;
@@ -192,26 +217,25 @@ const UserSettings = () => {
               transition: opacity 0.65s ease;
             }
 
-            .navigation-tab.active{
+            .navigation-tab.active {
               height: auto;
               opacity: 1;
               padding: var(--empz-gap-double);
               transition: opacity 1s ease;
             }
 
-            .settings{
+            .settings {
               display: none;
             }
 
-
-            @media all and (max-width: 820px){
-              .user-profile-view{
+            @media all and (max-width: 820px) {
+              .user-profile-view {
                 display: none;
               }
-              .user-profile-configuration-wr{
+              .user-profile-configuration-wr {
                 width: 100%;
               }
-              .navigation{
+              .navigation {
                 padding-top: var(--empz-gap);
               }
             }

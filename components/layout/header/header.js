@@ -16,7 +16,6 @@ function UserHeader(props) {
   const onClickLogout = async () => {
     setLoading(true)
 
-
     // Invalidate caches for service worker
     await caches.keys().then(function (keyList) {
       return Promise.all(

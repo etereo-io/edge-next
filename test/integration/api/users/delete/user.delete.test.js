@@ -1,14 +1,15 @@
 import * as handler from '../../../../../pages/api/users/[...slug]'
 
-import { deleteComment, deleteOneComment, findOneComment } from '../../../../../lib/api/comments/comments'
+import {
+  deleteComment,
+  deleteOneComment,
+  findOneComment,
+} from '../../../../../lib/api/comments/comments'
 import {
   deleteOneContent,
   findOneContent,
 } from '../../../../../lib/api/content/content'
-import {
- deleteOneUser,
- findOneUser,
-} from '../../../../../lib/api/users/user'
+import { deleteOneUser, findOneUser } from '../../../../../lib/api/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import crypto from 'crypto'
@@ -172,19 +173,19 @@ jest.mock('../../../../../edge.config', () => {
         // Different content types defined
         types: [mockPostContentType, mockProductContentType],
       },
-      
 
       user: {
         profile: {
-          fields: [{
-            label: 'image',
-            type: 'img',
-            name: 'image',
-            multiple: true
-          }]
-        }
-      }
-      
+          fields: [
+            {
+              label: 'image',
+              type: 'img',
+              name: 'image',
+              multiple: true,
+            },
+          ],
+        },
+      },
     }),
   }
 })
@@ -192,7 +193,7 @@ jest.mock('../../../../../edge.config', () => {
 describe('Integrations tests for user deletion endpoint', () => {
   let server
   let url
-  
+
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto
     .pbkdf2Sync('thepassword', salt, 1000, 64, 'sha512')
@@ -204,27 +205,28 @@ describe('Integrations tests for user deletion endpoint', () => {
     deleteComment.mockReturnValue(Promise.resolve())
     deleteFile.mockReturnValue(Promise.resolve())
     deleteOneUser.mockReturnValue(Promise.resolve())
-    findOneContent
-    .mockReturnValue(Promise.resolve())
-    .mockReturnValueOnce(Promise.resolve({
-      id: 'a content',
-      author: 'userId',
-      file: [{
-        path: 'content.file'
-      }]
-    }))
+    findOneContent.mockReturnValue(Promise.resolve()).mockReturnValueOnce(
+      Promise.resolve({
+        id: 'a content',
+        author: 'userId',
+        file: [
+          {
+            path: 'content.file',
+          },
+        ],
+      })
+    )
 
-    findOneComment
-      .mockReturnValue(Promise.resolve())
-      .mockReturnValueOnce(Promise.resolve({
+    findOneComment.mockReturnValue(Promise.resolve()).mockReturnValueOnce(
+      Promise.resolve({
         id: 'a comment',
         author: 'userId',
-        conversationId: null
-      }))
+        conversationId: null,
+      })
+    )
 
     deleteOneComment.mockReturnValue(Promise.resolve())
-    
-    
+
     findOneUser.mockReturnValue(
       Promise.resolve({
         id: 'userId',
@@ -232,14 +234,16 @@ describe('Integrations tests for user deletion endpoint', () => {
         profile: {
           picture: {
             source: 'internal',
-            path: 'abc.test'
+            path: 'abc.test',
           },
-          image: [{
-            path: 'otherimage.test'
-          }]
+          image: [
+            {
+              path: 'otherimage.test',
+            },
+          ],
         },
-        hash, 
-        salt
+        hash,
+        salt,
       })
     )
   })
@@ -270,13 +274,12 @@ describe('Integrations tests for user deletion endpoint', () => {
     server.close(done)
   })
 
-
   test('should return 401 if the password do not match', async () => {
     const urlToBeUsed = new URL(url)
     urlToBeUsed.searchParams.append('slug', 'userId')
     urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
-    urlToBeUsed.searchParams.append('password', '123') 
-    
+    urlToBeUsed.searchParams.append('password', '123')
+
     getPermissions.mockReturnValueOnce({
       'user.delete': ['ADMIN'],
       'user.admin': ['ADMIN'],
@@ -288,20 +291,19 @@ describe('Integrations tests for user deletion endpoint', () => {
     })
 
     const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     expect(response.status).toBe(401)
-
   })
 
   describe('Correct delete', () => {
     test('Should delete content, comments, files and activity if a user is deleted', async () => {
       const urlToBeUsed = new URL(url)
-      
+
       urlToBeUsed.searchParams.append('slug', 'userId')
       urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
-      urlToBeUsed.searchParams.append('password', 'thepassword') 
+      urlToBeUsed.searchParams.append('password', 'thepassword')
 
       getPermissions.mockReturnValueOnce({
         'user.delete': ['ADMIN'],
@@ -314,35 +316,34 @@ describe('Integrations tests for user deletion endpoint', () => {
       })
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       expect(response.status).toBe(200)
 
       expect(deleteFile).toHaveBeenNthCalledWith(1, 'abc.test')
       expect(deleteFile).toHaveBeenNthCalledWith(2, 'otherimage.test')
-      expect(deleteFile).toHaveBeenNthCalledWith(3, 'content.file')  
-    
+      expect(deleteFile).toHaveBeenNthCalledWith(3, 'content.file')
+
       expect(deleteComment).toHaveBeenCalledWith({
         author: 'userId',
       })
       expect(deleteActivity).toHaveBeenNthCalledWith(1, {
-        user: 'userId'
+        user: 'userId',
       })
 
       expect(deleteActivity).toHaveBeenNthCalledWith(2, {
         meta: {
-          contentId: 'a content'
-        }
+          contentId: 'a content',
+        },
       })
-      expect(deleteOneContent).toHaveBeenNthCalledWith(1, 'post',{
+      expect(deleteOneContent).toHaveBeenNthCalledWith(1, 'post', {
         id: 'a content',
       })
 
       expect(deleteOneComment).toHaveBeenNthCalledWith(1, {
         id: 'a comment',
       })
-
     })
   })
 
@@ -363,7 +364,7 @@ describe('Integrations tests for user deletion endpoint', () => {
       })
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       const jsonResult = await response.json()
@@ -390,7 +391,7 @@ describe('Integrations tests for user deletion endpoint', () => {
       })
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       expect(response.status).toBe(200)
@@ -412,7 +413,7 @@ describe('Integrations tests for user deletion endpoint', () => {
       })
 
       const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
 
       expect(response.status).toBe(200)
@@ -434,7 +435,7 @@ describe('Integrations tests for user deletion endpoint', () => {
     })
 
     const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     expect(response.status).toBe(401)
@@ -455,7 +456,7 @@ describe('Integrations tests for user deletion endpoint', () => {
     })
 
     const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE'
+      method: 'DELETE',
     })
 
     expect(response.status).toBe(200)

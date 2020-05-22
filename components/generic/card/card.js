@@ -59,8 +59,6 @@ export default function (props) {
             background-color: var(--empz-alert);
             color: var(--empz-background);
           }
-
-         
         `}
       </style>
     </>

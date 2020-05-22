@@ -60,8 +60,7 @@ export default function (props) {
             </div>
           )}
 
-          <div className="content-options">           
-
+          <div className="content-options">
             {(hasEditPermission || isContentOwner) && (
               <div className="action-dropdown">
                 <DropDown align={'right'}>
@@ -115,7 +114,7 @@ export default function (props) {
               )
             })}
           {props.type.fields
-            .filter(f => !f.hidden)
+            .filter((f) => !f.hidden)
             .filter((f) => f.name !== props.type.publishing.title)
             .map((field) => {
               return (
@@ -267,8 +266,6 @@ export default function (props) {
         .content-options {
           display: flex;
         }
-
-        
       `}</style>
     </>
   )

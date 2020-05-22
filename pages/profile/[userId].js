@@ -51,7 +51,7 @@ const Profile = (props) => {
     <Layout title="Profile" hasDivider={true}>
       <div className="profile-user-info">
         <div className="avatar">
-          <UserProfileBox user={data} horizontal={true}/>
+          <UserProfileBox user={data} horizontal={true} />
         </div>
         <div className="name">
           <div className="title">
@@ -103,7 +103,6 @@ const Profile = (props) => {
       </div>
       <style jsx>
         {`
-          
           .profile-user-info {
             display: flex;
             flex-wrap: wrap;
@@ -184,7 +183,6 @@ const Profile = (props) => {
             .activity-report {
               flex: 1;
             }
-
           }
 
           .content-block {

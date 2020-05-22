@@ -101,7 +101,11 @@ export default function (props) {
                 <div className="avatar">
                   <Avatar
                     width={40}
-                    src={props.user && props.user.profile.picture ? props.user.profile.picture.path : null}
+                    src={
+                      props.user && props.user.profile.picture
+                        ? props.user.profile.picture.path
+                        : null
+                    }
                   />
                 </div>
                 <div className="message">

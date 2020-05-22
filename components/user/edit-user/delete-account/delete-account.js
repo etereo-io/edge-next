@@ -80,9 +80,7 @@ export default function ({ user, ...props }) {
           <div className="actions">
             <div className="info">
               <p>This action cannot be undone.</p>
-              {error && (
-                <div className="error-message">{error}</div>
-              )}
+              {error && <div className="error-message">{error}</div>}
               {loading && <div className="loading-message">Loading...</div>}
               {success && (
                 <div className="success-message">
@@ -109,7 +107,7 @@ export default function ({ user, ...props }) {
             display: flex;
             padding-right: var(--empz-gap);
           }
-          .info p{
+          .info p {
             font-size: 14px;
           }
         `}

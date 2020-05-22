@@ -149,7 +149,9 @@ export default function ({ user, ...props }) {
               )}
             </div>
 
-            <Button loading={loading} alt>Save changes</Button>
+            <Button loading={loading} alt>
+              Save changes
+            </Button>
           </div>
         </form>
       </div>

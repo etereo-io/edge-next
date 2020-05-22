@@ -13,18 +13,17 @@ const Layout = (props) => (
         name="description"
         content={props.description || config.description}
       />
-      { props.monetization && <meta
-        name="monetization"
-        content={props.monetization}
-      />}
+      {props.monetization && (
+        <meta name="monetization" content={props.monetization} />
+      )}
     </Head>
 
     <Header />
 
     <main
-      className={`${props.hasDivider ? 'has-divider' : ''} ${props.alt ? 'alt' : ''} ${
-        props.className ? props.className : ''
-      }`}
+      className={`${props.hasDivider ? 'has-divider' : ''} ${
+        props.alt ? 'alt' : ''
+      } ${props.className ? props.className : ''}`}
     >
       <div
         className={`container ${props.fullWidth ? 'fullWidth' : ''} ${
@@ -40,11 +39,11 @@ const Layout = (props) => (
       main.alt {
         background-color: var(--accents-1);
       }
-      main.has-divider{
+      main.has-divider {
         position: relative;
       }
 
-      main.has-divider:before{
+      main.has-divider:before {
         background: var(--accents-1);
         border-bottom: 1px solid var(--accents-2);
         content: '';

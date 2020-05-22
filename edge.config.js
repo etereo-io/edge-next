@@ -130,7 +130,7 @@ export const getConfig = (defaultOptions) => {
       hash,
       profile: {
         picture: {
-          path: '/static/demo-images/default-avatar.jpg'
+          path: '/static/demo-images/default-avatar.jpg',
         },
       },
       metadata: {
@@ -148,8 +148,8 @@ export const getConfig = (defaultOptions) => {
       hash,
       profile: {
         picture: {
-          path: null
-        }
+          path: null,
+        },
       },
       metadata: {
         lastLogin: null,
@@ -166,8 +166,8 @@ export const getConfig = (defaultOptions) => {
       hash,
       profile: {
         picture: {
-          path: null
-        }
+          path: null,
+        },
       },
       blocked: true,
       metadata: {
@@ -186,8 +186,8 @@ export const getConfig = (defaultOptions) => {
       hash,
       profile: {
         picture: {
-          path: null
-        }
+          path: null,
+        },
       },
       blocked: true,
       metadata: {
@@ -283,8 +283,9 @@ export const getConfig = (defaultOptions) => {
         label: 'Payment Pointer',
         placeholder: 'Web monetization payment pointer',
         hidden: true,
-        description: 'Add your web monetization payment pointer to make this content private, and only accesible by web monetization'
-      }
+        description:
+          'Add your web monetization payment pointer to make this content private, and only accesible by web monetization',
+      },
     ],
   }
 

@@ -3,20 +3,28 @@ import { useUser } from '@lib/client/hooks'
 import Button from '@components/generic/button/button'
 import Avatar from '@components/user/avatar/avatar'
 export default function () {
-  const { user, finished } = useUser() 
+  const { user, finished } = useUser()
   return (
     <>
       <div className="toolbar">
         <div className="mobile-over">
           <Avatar
-              loading={!finished}
-              src={user && user.profile && user.profile.picture ? user.profile.picture.path : null}
-            />
-          
+            loading={!finished}
+            src={
+              user && user.profile && user.profile.picture
+                ? user.profile.picture.path
+                : null
+            }
+          />
+
           <div className="open-mobile-over"></div>
         </div>
-        { (!finished || user) && <UserProfileBox user={user} />}
-        { (finished  && !user) && <div><Button href='/auth/login'>Sign in</Button></div>}
+        {(!finished || user) && <UserProfileBox user={user} />}
+        {finished && !user && (
+          <div>
+            <Button href="/auth/login">Sign in</Button>
+          </div>
+        )}
 
         <div className="general-tags">
           <ul>
@@ -77,14 +85,14 @@ export default function () {
           width: 100%;
         }
 
-        .mobile-over  > :global(.avatar) {
+        .mobile-over > :global(.avatar) {
           transition: 0.35s ease;
           max-width: 80px;
           height: 80px;
           width: 100%;
         }
 
-        .mobile-over .open-mobile-over {
+        .mobile-over .open-mobile-over  {
           background: var(--accents-2);
           border-radius: 4px;
           height: 32px;
@@ -100,7 +108,7 @@ export default function () {
           position: absolute;
           top: 50%;
           left: 50%;
-          transform: rotate(-45deg) translate(-20%,-80%);
+          transform: rotate(-45deg) translate(-20%, -80%);
           display: block;
           height: var(--empz-gap-half);
           width: var(--empz-gap-half);

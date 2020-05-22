@@ -18,7 +18,11 @@ export default function (props) {
             <Link href={`/profile/@${user.username}`}>
               <a title={`${user.username} profile`}>
                 <Avatar
-                  src={user.profile && user.profile.picture ? user.profile.picture.path : null}
+                  src={
+                    user.profile && user.profile.picture
+                      ? user.profile.picture.path
+                      : null
+                  }
                   title={`${user.username} avatar`}
                   width={32}
                   height={32}
@@ -66,8 +70,7 @@ export default function (props) {
         </div>
       </div>
       <style jsx>
-        {
-        `
+        {`
           .author-box {
             align-items: center;
             display: flex;

@@ -9,7 +9,7 @@ export default function ({ user, ...props }) {
   const [loading, setLoading] = useState(false)
 
   const [fields, setFields] = useState({
-    picture: {}
+    picture: {},
   })
 
   const url = `${API.users}/${user.id}/picture`
@@ -61,7 +61,7 @@ export default function ({ user, ...props }) {
     reader.onload = function (e) {
       setFields({
         picture: {
-          path: e.target.result
+          path: e.target.result,
         },
       })
     }

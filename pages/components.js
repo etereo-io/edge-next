@@ -456,7 +456,7 @@ const links = [{
                     username: 'demo-user',
                     profile: {
                       picture: {
-                        path: 'https://loremflickr.com/240/240/food?random=3'
+                        path: 'https://loremflickr.com/240/240/food?random=3',
                       },
                       displayName: 'Jonh Doe',
                       bio: 'My bio is something special',
@@ -485,7 +485,7 @@ const links = [{
                     username: 'demo-user',
                     profile: {
                       picture: {
-                        path:  'https://loremflickr.com/240/240/food?random=1'
+                        path: 'https://loremflickr.com/240/240/food?random=1',
                       },
                       displayName: 'Jonh doe',
                     },
@@ -675,13 +675,11 @@ const links = [{
             <h3>Reaction Counter</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <ReactionCounter type='like' count={10} />
+                <ReactionCounter type="like" count={10} />
               </div>
               <div className="item-wrapper">
-                <ReactionCounter type='like' count={25} active />
+                <ReactionCounter type="like" count={25} active />
               </div>
-
-           
             </div>
             <pre>{`
 <ReactionCounter type='like' count={10} />

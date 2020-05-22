@@ -1,10 +1,6 @@
 import { bodyParser, hasPermissionsForUser } from '@lib/api/middlewares'
 import { deleteFile, uploadFile } from '@lib/api/storage'
-import {
-  deleteOneUser,
-  findOneUser,
-  updateOneUser,
-} from '@lib/api/users/user'
+import { deleteOneUser, findOneUser, updateOneUser } from '@lib/api/users/user'
 import {
   generateSaltAndHash,
   userPasswordsMatch,
@@ -78,18 +74,16 @@ const getUser = (req, res) => {
 }
 
 const delUser = (req, res) => {
-
   // Self deletion, check password
   if (req.currentUser.id === req.item.id) {
-    
     if (!req.query.password) {
       res.status(400).json({ error: 'Missing password' })
       return
     }
-    
+
     const passwordMatch = userPasswordsMatch(req.item, req.query.password)
-    
-    if (!passwordMatch ) {
+
+    if (!passwordMatch) {
       res.status(401).json({ error: 'Invalid password' })
       return
     }
@@ -98,18 +92,17 @@ const delUser = (req, res) => {
   // Other deletion, user has roles to perform operation
 
   deleteOneUser({
-    id: req.item.id
-  }).then(async () => {
+    id: req.item.id,
+  })
+    .then(async () => {
+      await onUserDeleted(req.item)
 
-    await onUserDeleted(req.item)
-    
-    res.status(200).json({done: true})
-  })
-  .catch(err => {
-    console.log('Error deleting user', err)
-    res.status(500).json({error: err.message})
-  })
-  
+      res.status(200).json({ done: true })
+    })
+    .catch((err) => {
+      console.log('Error deleting user', err)
+      res.status(500).json({ error: err.message })
+    })
 }
 
 async function updateProfile(userId, profile, req) {
@@ -209,7 +202,11 @@ function updateProfilePicture(user, profilePicture) {
     }
 
     // Delete previous file
-    if (user.profile.picture && user.profile.picture.path && user.profile.picture.source === 'internal') {
+    if (
+      user.profile.picture &&
+      user.profile.picture.path &&
+      user.profile.picture.source === 'internal'
+    ) {
       try {
         await deleteFile(user.profile.picture.path)
       } catch (err) {
@@ -224,7 +221,7 @@ function updateProfilePicture(user, profilePicture) {
         picture: {
           source: 'internal',
           path: path,
-          createdAt: Date.now()
+          createdAt: Date.now(),
         },
       },
     })

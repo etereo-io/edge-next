@@ -27,31 +27,51 @@ export default function (props) {
     setNewComments([c, ...newComments])
   }
 
-  const contentIsMonetized = props.content.paymentPointer && props.type.monetization && props.type.monetization.web
-  const monetizedState = contentIsMonetized && !props.summary ? useMonetizationState() : null
+  const contentIsMonetized =
+    props.content.paymentPointer &&
+    props.type.monetization &&
+    props.type.monetization.web
+  const monetizedState =
+    contentIsMonetized && !props.summary ? useMonetizationState() : null
 
   return (
     <>
       <div>
         <div className={'content-detail-wrapper'}>
           <div className={'content-detail-content'}>
-            {contentIsMonetized && props.summary && <div className="monetization-layer">
-              <div className="monetization-layer-content">
-                <p>This content is monetized, to see the full content please navigate to the detail.</p>
+            {contentIsMonetized && props.summary && (
+              <div className="monetization-layer">
+                <div className="monetization-layer-content">
+                  <p>
+                    This content is monetized, to see the full content please
+                    navigate to the detail.
+                  </p>
 
-                <Button href={`/content/${props.type.slug}/${props.content.slug}`}>See full content</Button>
-              </div>    
-            </div>}
+                  <Button
+                    href={`/content/${props.type.slug}/${props.content.slug}`}
+                  >
+                    See full content
+                  </Button>
+                </div>
+              </div>
+            )}
 
-            {contentIsMonetized && !props.summary && !monetizedState.state && <div className="monetization-layer">
-              <div className="monetization-layer-content">
-                This content is monetized, to see the full content please, sign up for Coil to support the author
-              </div>    
-            </div>}
+            {contentIsMonetized && !props.summary && !monetizedState.state && (
+              <div className="monetization-layer">
+                <div className="monetization-layer-content">
+                  This content is monetized, to see the full content please,
+                  sign up for Coil to support the author
+                </div>
+              </div>
+            )}
 
-            {contentIsMonetized && !props.summary && monetizedState.state === 'started' && <div className="monetization-layer">
-              <p>Thanks for supporting this author</p>  
-            </div>}
+            {contentIsMonetized &&
+              !props.summary &&
+              monetizedState.state === 'started' && (
+                <div className="monetization-layer">
+                  <p>Thanks for supporting this author</p>
+                </div>
+              )}
 
             <ContentSummaryView
               content={props.content}
@@ -138,7 +158,11 @@ export default function (props) {
           background: white;
           padding: var(--empz-gap);
           z-index: var(--z-index-cover-content);
-          background: linear-gradient(180deg, rgba(255,255,255,0) 0, var(--empz-background) 30%);
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0) 0,
+            var(--empz-background) 30%
+          );
         }
 
         .monetization-layer-content {
