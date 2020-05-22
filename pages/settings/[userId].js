@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import DeleteAccountForm from '@components/user/edit-user/delete-account/delete-account'
+import EditCoverImageForm from '@components/user/edit-user/edit-profile-picture/edit-cover-image'
 import EditDisplayNameForm from '@components/user/edit-user/edit-displayname/edit-displayname'
 import EditEmailForm from '@components/user/edit-user/edit-email/edit-email'
 import EditPasswordForm from '@components/user/edit-user/edit-password/edit-password'
@@ -111,6 +112,7 @@ const UserSettings = () => {
               }`}
             >
               <EditProfilePictureForm user={user} />
+              <EditCoverImageForm user={user} />
               <EditUsernameForm user={user} />
               <EditDisplayNameForm user={user} />
               <EditEmailForm user={user} />
@@ -150,7 +152,7 @@ const UserSettings = () => {
         </section>
         <style jsx>
           {`
-            .user-profile-settings-wr  {
+            .user-profile-settings-wr {
               align-items: flex-start;
               display: flex;
               justify-content: space-between;

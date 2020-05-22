@@ -1,7 +1,6 @@
 import { useState, createRef, useEffect } from 'react'
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
-import Avatar from '@components/user/avatar/avatar'
 
 export default function ({ user, ...props }) {
   const [error, setError] = useState('')
@@ -9,10 +8,10 @@ export default function ({ user, ...props }) {
   const [loading, setLoading] = useState(false)
 
   const [fields, setFields] = useState({
-    picture: {},
+    cover: {},
   })
 
-  const url = `${API.users}/${user.id}/picture`
+  const url = `${API.users}/${user.id}/cover`
 
   const request = (data) => {
     setLoading(true)
@@ -31,7 +30,7 @@ export default function ({ user, ...props }) {
       .catch((err) => {
         setLoading(false)
         setSuccess(false)
-        setError('Error updating your profile picture')
+        setError('Error updating your profile cover')
       })
   }
 
@@ -42,7 +41,7 @@ export default function ({ user, ...props }) {
     fileInputRef.current.click()
   }
 
-  const onProfilePictureChanged = (ev) => {
+  const onImageChanged = (ev) => {
     ev.preventDefault()
     const files = ev.target.files
 
@@ -50,7 +49,7 @@ export default function ({ user, ...props }) {
 
     if (files) {
       for (var i = 0; i < files.length; i++) {
-        formData.append(`profilePicture`, files[i])
+        formData.append(`profileCover`, files[i])
       }
     } else {
       return
@@ -60,7 +59,7 @@ export default function ({ user, ...props }) {
 
     reader.onload = function (e) {
       setFields({
-        picture: {
+        cover: {
           path: e.target.result,
         },
       })
@@ -74,32 +73,32 @@ export default function ({ user, ...props }) {
   // Set default data
   useEffect(() => {
     setFields({
-      picture: user.profile.picture || {},
+      cover: user.profile.cover || {},
     })
   }, [user])
 
   return (
     <>
-      <div className="change-profile-picture">
+      <div className="change-profile-cover">
         <div className="input-group">
-          <label>Profile Picture</label>
+          <label>Cover image</label>
           <p>Click on the image to change it</p>
           <div className="field" onClick={openFileDialog}>
-            <Avatar src={fields.picture.path} />
+            <img  style={{height: '200px', cursor: 'pointer'}} src={fields.cover.path || '/static/demo-images/cover/clouds.jfif'} />
           </div>
 
           <input
             ref={fileInputRef}
             className="fileinput-avatar"
             type="file"
-            onChange={onProfilePictureChanged}
+            onChange={onImageChanged}
           />
 
           <div className="info">
             {error && <div className="error-message">{error}</div>}
             {loading && <div className="loading-message">Loading...</div>}
             {success && (
-              <div className="success-message">Avatar successfuly updated</div>
+              <div className="success-message">Cover image successfuly updated</div>
             )}
           </div>
         </div>

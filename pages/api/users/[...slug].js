@@ -230,6 +230,47 @@ function updateProfilePicture(user, profilePicture) {
   })
 }
 
+function updateProfileCover(user, profileCover) {
+  return new Promise(async (resolve, reject) => {
+    let path = ''
+
+    // upload the new file
+    try {
+      path = await uploadFile(profileCover, 'profileCover')
+    } catch (err) {
+      reject(new Error('Error uploading file'))
+      return
+    }
+
+    // Delete previous file
+    if (
+      user.profile.cover &&
+      user.profile.cover.path &&
+      user.profile.cover.source === 'internal'
+    ) {
+      try {
+        await deleteFile(user.profile.cover.path)
+      } catch (err) {
+        console.log('Error deleting previous cover')
+      }
+    }
+
+    // Asign the new path
+    updateOneUser(user.id, {
+      profile: {
+        ...user.profile,
+        cover: {
+          source: 'internal',
+          path: path,
+          createdAt: Date.now(),
+        },
+      },
+    })
+      .then(resolve)
+      .catch(reject)
+  })
+}
+
 const updateUser = (slug) => async (req, res) => {
   try {
     await runMiddleware(req, res, bodyParser)
@@ -283,6 +324,10 @@ const updateUser = (slug) => async (req, res) => {
       promiseChange = updateProfilePicture(req.item, req.files.profilePicture)
 
       break
+    case 'cover':
+        promiseChange = updateProfileCover(req.item, req.files.profileCover)
+  
+        break
     default:
       promiseChange = Promise.reject('Update ' + updateData + ' not allowed')
   }

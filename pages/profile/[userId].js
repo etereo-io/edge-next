@@ -49,6 +49,9 @@ const Profile = (props) => {
 
   return (
     <Layout title="Profile" hasDivider={true}>
+      <div className="cover-wrapper">
+        <img style={{height: '200px'}} src={data && data.profile.cover ? data.profile.cover.path : '/static/demo-images/cover/clouds.jfif'} />
+      </div>
       <div className="profile-user-info">
         <div className="avatar">
           <UserProfileBox user={data} horizontal={true} />
