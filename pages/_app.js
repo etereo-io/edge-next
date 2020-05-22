@@ -24,22 +24,7 @@ function MyApp({ Component, pageProps }) {
         </EdgeUserProvider>
       </div>
       <style jsx global>{`
-        *,
-        *::before,
-        *::after {
-          box-sizing: border-box;
-        }
-
-        * {
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-          font-family: 'IBM Plex Sans', sans-serif;
-          scroll-behavior: smooth;
-        }
-
+      
         // Global variables
         :root {
           --edge-gap: 16pt;

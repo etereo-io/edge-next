@@ -15,7 +15,6 @@ import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import { useUser } from '@lib/client/hooks'
 import { userPermission } from '@lib/permissions'
-import { useEffect } from 'react'
 
 const UserSettings = () => {
   //Profile Tabs
