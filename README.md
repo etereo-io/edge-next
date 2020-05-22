@@ -31,6 +31,7 @@ The main features of Edge are:
 - A set of pre-implemented components
 - PWA (Progressive Web APP)
 - SSG (Static Site Generation) for static pages with markdown
+- Web monetization
 - Easy to deploy
 
 If you want to read about all the features you can check the [documentation](./static-pages/documentation.md) or check the [Website Demo](https://edge-next.now.sh/).
@@ -72,38 +73,38 @@ Do you think you can improve the performance of the solution? Send us a pull req
 
 Check our roadmap if you want to add more cool things into Edge.
 
-## Roadmap for version 1
 
-- check that req.user is the user in passport strategies
+----
+
+## Roadmap
+
+
+### Version 1
 
 - Allow to report content and comments, we can use a flag on the content if anyone has reported it, instead of a list of reports.
 
-- Get 100% on everything on lighthouse
+- Review everything on lighthouse
 
 - Comments
   - Integrate mentions on comments
 
-- Content CRUD
-  - Improve the test suite on client and server side
-  - Link author
-
 - Add a cookies component
-
 
 - Connect to an additional database:
   - Firebase 
-  - ~MongoDB~
-  - ~In Memory DB~
   - See if there is any ORM that can work for this use case
+
+- Add algolia as a search engine
 
 - Introduce basic site stats
 
-- Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552
 
 - https://help.github.com/en/github/supporting-the-open-source-community-with-github-sponsors/about-github-sponsors
 - OpenColective
 
-### Additional features
+### After Version 1: Additional features
+
+- Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552
 
 - Field options
   - validation (NOT IMPLEMENTED)
@@ -111,6 +112,7 @@ Check our roadmap if you want to add more cool things into Edge.
   - permissions (NOT IMPLEMENTED)
     - Array, list of roles that can SEE this field when editing the content and when reading it
 
+- Preprocess uploaded images to create a lighter version and allow the client to load them progresivelly
 
 - Create an example site running an online shop
   - Create the concept of "shopping cart"
