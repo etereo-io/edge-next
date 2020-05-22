@@ -8,6 +8,7 @@ description: "Empieza Documentation"
 - [Documentation](#documentation)
   - [Features](#features)
   - [edge.config.js](#edgeconfigjs)
+  - [Adding a new theme](#adding-a-new-theme)
   - [Content Types](#content-types)
   - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
@@ -81,6 +82,68 @@ All the configuration of Edge is done in this file on the root of the folder.
 Here users can define content types, permissions and much more. 
 
 Example config file [here](/p/configuration-file)
+
+
+## Adding a new theme
+
+To add a new theme, create the styles in the file `_app.js`, you can copy any other style defined there as a template.
+
+Theme variables are defined in the following way: 
+
+```css
+.robot-theme {
+  --edge-foreground: #33cf33;
+  --edge-background: #000;
+  --edge-selection: var(--edge-purple);
+  --accents-1: #082008;
+  --accents-2: #0d360d;
+  --accents-3: #124712;
+  --accents-4: #165816;
+  --accents-5: #1c721c;
+  --accents-6: #1f7a1f;
+  --accents-7: #269726;
+  --accents-8: #2cbe2c;
+  --edge-success-light: #3291ff;
+  --edge-success: #0070f3;
+  --edge-success-dark: #0366d6;
+  --edge-error-light: #f33;
+  --edge-error: red;
+```
+
+Then edit the `edge.config.js` file and add your new theme
+
+```javascript
+// Themes
+    theme: {
+      default: 'light-theme',
+      themes: [
+        {
+          label: 'Light',
+          value: 'light-theme',
+          mainColor: 'white',
+          borderColor: 'black',
+        },
+        {
+          label: 'Dark',
+          value: 'dark-theme',
+          mainColor: 'black',
+          borderColor: 'white',
+        },
+        {
+          label: 'Robot',
+          value: 'robot-theme',
+          mainColor: 'black',
+          borderColor: 'green',
+        },
+        {
+          label: 'Kawaii',
+          value: 'kawaii-theme',
+          mainColor: 'pink',
+          borderColor: 'black',
+        },
+      ],
+    },
+  ```
 
 ## Content Types
 Content types may be defined in `empieza.config.js`. You can create as many content types with different definitions and permissions. The API will validate the access to the endpoints based on the permissions you defined.

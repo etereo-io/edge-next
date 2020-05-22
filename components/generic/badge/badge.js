@@ -22,64 +22,64 @@ export default function (props) {
           }
 
           .badge span {
-            background: var(--empz-foreground);
+            background: var(--edge-foreground);
             border-radius: 24px;
-            color: var(--empz-background);
+            color: var(--edge-background);
             display: inline-block;
-            font-size: var(--empz-form-small-font);
-            padding: var(--empz-gap-quarter);
+            font-size: var(--edge-form-small-font);
+            padding: var(--edge-gap-quarter);
             position: relative;
             line-height: 1;
             vertical-align: middle;
           }
 
           .badge:before {
-            background: var(--empz-foreground);
+            background: var(--edge-foreground);
           }
 
           .badge.success span {
-            background: var(--empz-success);
-            color: var(--empz-background);
+            background: var(--edge-success);
+            color: var(--edge-background);
           }
 
           .badge.success:before {
-            background: var(--empz-success);
+            background: var(--edge-success);
           }
 
           .badge.alt span {
-            background: var(--empz-foreground);
-            color: var(--empz-background);
+            background: var(--edge-foreground);
+            color: var(--edge-background);
           }
 
           .badge.alt:before {
-            background: var(--empz-foreground);
+            background: var(--edge-foreground);
           }
 
           .badge.secondary span {
-            background: var(--empz-secondary);
-            color: var(--empz-background);
+            background: var(--edge-secondary);
+            color: var(--edge-background);
           }
 
           .badge.secondary:before {
-            background: var(--empz-secondary);
+            background: var(--edge-secondary);
           }
 
           .badge.warning span {
-            background: var(--empz-warning);
-            color: var(--empz-background);
+            background: var(--edge-warning);
+            color: var(--edge-background);
           }
 
           .badge.warning:before {
-            background: var(--empz-warning);
+            background: var(--edge-warning);
           }
 
           .badge.alert span {
-            background: var(--empz-alert);
-            color: var(--empz-background);
+            background: var(--edge-alert);
+            color: var(--edge-background);
           }
 
           .badge.alert:before {
-            background: var(--empz-alert);
+            background: var(--edge-alert);
           }
 
           .badge.featured:before {

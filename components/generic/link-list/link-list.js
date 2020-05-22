@@ -23,14 +23,14 @@ export default function (props) {
           }
 
           li {
-            margin-right: var(--empz-gap);
-            margin-bottom: var(--empz-gap);
+            margin-right: var(--edge-gap);
+            margin-bottom: var(--edge-gap);
           }
 
           a {
             border: var(--light-border);
-            padding: var(--empz-gap);
-            color: var(--empz-link-color);
+            padding: var(--edge-gap);
+            color: var(--edge-link-color);
             text-decoration: none;
             display: block;
           }

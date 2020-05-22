@@ -115,7 +115,7 @@ const RememberPassword = () => {
       <style jsx>{`
         .alt-actions {
           font-size: 13px;
-          margin-top: var(--empz-gap);
+          margin-top: var(--edge-gap);
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
@@ -123,7 +123,7 @@ const RememberPassword = () => {
 
         .alt-actions a {
           display: block;
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           text-decoration: none;
         }
       `}</style>

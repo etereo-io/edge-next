@@ -7,11 +7,11 @@ export default (props) => {
           width: 24px;
           height: 24px;
           border-radius: 100%;
-          border: 1px solid var(--empz-foreground);
+          border: 1px solid var(--edge-foreground);
         }
 
         .edge-icon.alt {
-          border: 1px solid var(--empz-background);
+          border: 1px solid var(--edge-background);
         }
       `}</style>
     </>

@@ -30,7 +30,7 @@ export default function (props) {
           display: flex;
           justify-content: center;
           align-items: center;
-          border-radius: var(--empz-radius);
+          border-radius: var(--edge-radius);
           background: var(--accents-2);
           cursor: pointer;
           transition: background-color 0.2s ease;
@@ -58,7 +58,7 @@ export default function (props) {
           display: block;
           height: 2px;
           width: 21px;
-          background-color: var(--empz-foreground);
+          background-color: var(--edge-foreground);
           transition: transform 0.15s ease;
         }
 
@@ -81,9 +81,9 @@ export default function (props) {
         .dropdown-menu-wrapper {
           top: 35px;
           position: absolute;
-          background: var(--empz-background);
-          color: var(--empz-foreground);
-          padding: var(--empz-gap);
+          background: var(--edge-background);
+          color: var(--edge-foreground);
+          padding: var(--edge-gap);
           box-shadow: var(--shadow-medium);
           z-index: var(--z-index-minimum);
         }
@@ -111,7 +111,7 @@ export default function (props) {
 
         nav.dropdown-menu-nav > :global(ul li a) {
           text-decoration: none;
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
         }
 
         nav.dropdown-menu-nav > :global(.spacer) {

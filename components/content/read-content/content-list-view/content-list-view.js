@@ -38,13 +38,13 @@ function LoadingItems() {
 
       <style jsx>{`
         .p {
-          background: var(--empz-background);
-          padding: var(--empz-gap);
-          margin-bottom: var(--empz-gap);
-          border-radius: var(--empz-radius);
+          background: var(--edge-background);
+          padding: var(--edge-gap);
+          margin-bottom: var(--edge-gap);
+          border-radius: var(--edge-radius);
         }
         .r {
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
         }
       `}</style>
     </>
@@ -99,7 +99,7 @@ export default function (props) {
             </div>
             <style jsx>{`
               .item {
-                margin-bottom: var(--empz-gap);
+                margin-bottom: var(--edge-gap);
               }
             `}</style>
           </div>
@@ -149,9 +149,9 @@ export default function (props) {
       </div>
       <style jsx>{`
         .content-summary-wrapper {
-          margin-bottom: var(--empz-gap-double);
+          margin-bottom: var(--edge-gap-double);
           border-bottom: var(--light-border);
-          padding-bottom: var(--empz-gap-double);
+          padding-bottom: var(--edge-gap-double);
         }
 
         .load-more {

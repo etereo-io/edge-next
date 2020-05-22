@@ -119,20 +119,20 @@ export default function (props) {
           display: flex;
         }
         .content-actions {
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
           max-width: 200px;
         }
 
         .content-detail-content {
-          margin-bottom: var(--empz-gap-double);
+          margin-bottom: var(--edge-gap-double);
           position: relative;
           flex: 1;
 
           box-shadow: var(--shadow-smallest);
-          color: var(--empz-foreground);
-          background: var(--empz-background);
-          padding: var(--empz-gap);
-          border-radius: var(--empz-radius);
+          color: var(--edge-foreground);
+          background: var(--edge-background);
+          padding: var(--edge-gap);
+          border-radius: var(--edge-radius);
           margin: 0 auto;
           width: 100%;
         }
@@ -142,11 +142,11 @@ export default function (props) {
         }
 
         .field {
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
         }
 
         .comment-form-wrapper {
-          margin: var(--empz-gap-half) 0 var(--empz-gap);
+          margin: var(--edge-gap-half) 0 var(--edge-gap);
         }
 
         .monetization-layer {
@@ -156,12 +156,12 @@ export default function (props) {
           height: 100%;
           width: 100%;
           background: white;
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
           z-index: var(--z-index-cover-content);
           background: linear-gradient(
             180deg,
             rgba(255, 255, 255, 0) 0,
-            var(--empz-background) 30%
+            var(--edge-background) 30%
           );
         }
 
@@ -174,7 +174,7 @@ export default function (props) {
         }
 
         .monetization-layer-content p {
-          margin-bottom: var(--empz-gap-half);
+          margin-bottom: var(--edge-gap-half);
         }
       `}</style>
     </>

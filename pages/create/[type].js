@@ -52,10 +52,10 @@ const CreateContent = () => {
       </Layout>
       <style jsx>{`
         .create-page {
-          margin-bottom: var(--empz-gap-double);
+          margin-bottom: var(--edge-gap-double);
         }
         h1 {
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
         }
       `}</style>
     </>

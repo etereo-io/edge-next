@@ -244,7 +244,7 @@ export default function (props) {
 
         .load-more {
           display: flex;
-          margin: var(--empz-gap);
+          margin: var(--edge-gap);
           justify-content: center;
         }
       `}</style>

@@ -63,7 +63,7 @@ export default function ({ password = '' }) {
       </div>
       <style jsx>{`
         .password-strength-wrapper {
-          margin-top: var(--empz-gap-half-negative);
+          margin-top: var(--edge-gap-half-negative);
         }
 
         .password-strength {
@@ -83,13 +83,13 @@ export default function ({ password = '' }) {
         }
 
         small span {
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
         }
 
         .strenght-levels {
           display: flex;
           justify-content: space-between;
-          margin-top: var(--empz-gap-half);
+          margin-top: var(--edge-gap-half);
           width: 100%;
         }
 
@@ -106,19 +106,19 @@ export default function ({ password = '' }) {
           border-radius: 50%;
           display: inline-block;
           height: 15px;
-          margin-right: var(--empz-gap-half);
+          margin-right: var(--edge-gap-half);
           transition: 0.25s ease;
           vertical-align: middle;
           width: 15px;
         }
 
         .strenght-levels li.active {
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
         }
 
         .strenght-levels li.active span {
-          background: var(--empz-success);
-          border-color: var(--empz-success);
+          background: var(--edge-success);
+          border-color: var(--edge-success);
         }
 
         .bar {
@@ -131,22 +131,22 @@ export default function ({ password = '' }) {
 
         .bar.weak {
           width: 25%;
-          background: var(--empz-error);
+          background: var(--edge-error);
         }
 
         .bar.medium {
           width: 50%;
-          background: var(--empz-warning);
+          background: var(--edge-warning);
         }
 
         .bar.medium-high {
           width: 75%;
-          background: var(--empz-success-light);
+          background: var(--edge-success-light);
         }
 
         .bar.strong {
           width: 100%;
-          background: var(--empz-success);
+          background: var(--edge-success);
         }
       `}</style>
     </>

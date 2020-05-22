@@ -105,7 +105,7 @@ export default function ({ user, ...props }) {
           .info {
             align-items: center;
             display: flex;
-            padding-right: var(--empz-gap);
+            padding-right: var(--edge-gap);
           }
           .info p {
             font-size: 14px;

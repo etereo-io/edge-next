@@ -213,7 +213,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
         .sign-up-form-separator {
           overflow: visible;
           padding: 0;
-          margin: var(--empz-gap-medium) 0 var(--empz-gap-half) 0;
+          margin: var(--edge-gap-medium) 0 var(--edge-gap-half) 0;
           border: none;
           border-top: 1px solid var(--accents-2);
           color: var(--accents-3);
@@ -224,27 +224,27 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           content: 'Or';
           display: inline-block;
           position: relative;
-          top: var(--empz-gap-half-negative);
-          padding: 0 var(--empz-gap);
-          background: var(--empz-background);
+          top: var(--edge-gap-half-negative);
+          padding: 0 var(--edge-gap);
+          background: var(--edge-background);
         }
 
         .terms {
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
           font-size: 13px;
         }
 
         .terms a {
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
         }
 
         .social-button {
-          margin-bottom: var(--empz-gap-half);
+          margin-bottom: var(--edge-gap-half);
         }
 
         .alt-actions {
           font-size: 13px;
-          margin-top: var(--empz-gap);
+          margin-top: var(--edge-gap);
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
@@ -252,7 +252,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
         .alt-actions a {
           display: block;
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           text-decoration: none;
         }
       `}</style>

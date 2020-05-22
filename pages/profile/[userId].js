@@ -30,11 +30,9 @@ const Profile = (props) => {
   const { data, error } = useSWR(userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
-  
   const isOwner = userId === 'me' || (data && data.username === userId)
   const canAccess = hasPermissionsToRead || isOwner
   const canEdit = hasPermissionsToEdit || isOwner
-
 
   useEffect(() => {
     if (finished && currentUser.finished) {
@@ -56,9 +54,8 @@ const Profile = (props) => {
   }
 
   return (
-    <Layout title="Profile" >
+    <Layout title="Profile">
       <div className="profile-wrapper">
-
         <CoverImage user={data} />
         <div className="profile-user-info">
           <div className="avatar">
@@ -115,7 +112,6 @@ const Profile = (props) => {
       </div>
       <style jsx>
         {`
-  
           .profile-user-info {
             display: flex;
             flex-wrap: wrap;
@@ -125,7 +121,7 @@ const Profile = (props) => {
 
           @media (max-width: 600px) {
             .profile-user-info {
-              margin-bottom: var(--empz-gap-half);
+              margin-bottom: var(--edge-gap-half);
             }
           }
 
@@ -134,14 +130,14 @@ const Profile = (props) => {
           }
 
           h3 {
-            margin-bottom: var(--empz-gap);
+            margin-bottom: var(--edge-gap);
           }
 
           .title {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            margin-bottom: var(--empz-gap);
+            margin-bottom: var(--edge-gap);
           }
 
           .title-right {
@@ -150,7 +146,7 @@ const Profile = (props) => {
           }
 
           .title-right .item {
-            margin-left: var(--empz-gap);
+            margin-left: var(--edge-gap);
           }
 
           .content-container {
@@ -163,31 +159,31 @@ const Profile = (props) => {
             .content-container {
               display: block;
               padding: 0;
-              margin-top: var(--empz-gap);
+              margin-top: var(--edge-gap);
             }
           }
 
           .content-types {
-            background: var(--empz-background);
+            background: var(--edge-background);
             box-shadow: var(--shadow-small);
             border-radius: 4px;
-            margin-right: var(--empz-gap);
-            padding: var(--empz-gap-double);
+            margin-right: var(--edge-gap);
+            padding: var(--edge-gap-double);
             width: 68%;
           }
 
           .activity-report {
-            background: var(--empz-background);
+            background: var(--edge-background);
             box-shadow: var(--shadow-small);
             border-radius: 4px;
-            padding: var(--empz-gap-double);
+            padding: var(--edge-gap-double);
             width: 30%;
           }
 
           @media (max-width: 900px) {
             .content-types {
               width: 100%;
-              padding: var(--empz-gap-half);
+              padding: var(--edge-gap-half);
             }
           }
 
@@ -199,13 +195,13 @@ const Profile = (props) => {
           }
 
           .content-block {
-            margin-bottom: var(--empz-gap-double);
+            margin-bottom: var(--edge-gap-double);
           }
 
           .content-summary-content {
-            padding: var(--empz-gap);
-            border-radius: var(--empz-radius);
-            background: var(--empz-foreground);
+            padding: var(--edge-gap);
+            border-radius: var(--edge-radius);
+            background: var(--edge-foreground);
           }
         `}
       </style>

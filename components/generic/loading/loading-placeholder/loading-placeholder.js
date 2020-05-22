@@ -8,7 +8,7 @@ export default function ({ width, height, borderRadius }) {
           height: ${height || '20px'};
           border-radius: ${typeof borderRadius !== 'undefined'
             ? borderRadius
-            : 'var(--empz-radius)'};
+            : 'var(--edge-radius)'};
           background: linear-gradient(
             -45deg,
             var(--accents-1),

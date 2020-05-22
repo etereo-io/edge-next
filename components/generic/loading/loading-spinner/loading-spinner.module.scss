@@ -5,14 +5,14 @@
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
-    border: 0.15em solid var(--empz-foreground);
-    border-color: var(--empz-foreground) var(--light-border-color) var(--light-border-color);
+    border: 0.15em solid var(--edge-foreground);
+    border-color: var(--edge-foreground) var(--light-border-color) var(--light-border-color);
     animation: lds-dual-ring 1.2s linear infinite;
 
   }
   &.alt .ring:after {
-    border: 0.15em solid var(--empz-background);
-    border-color: var(--empz-background) var(--dark-border-color) var(--dark-border-color);
+    border: 0.15em solid var(--edge-background);
+    border-color: var(--edge-background) var(--dark-border-color) var(--dark-border-color);
   }
   @keyframes lds-dual-ring {
     0% {

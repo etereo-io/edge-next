@@ -42,21 +42,21 @@ export default function (props) {
           display: flex;
           justify-content: center;
           align-items: center;
-          color: var(--empz-foreground);
-          background: var(--empz-background);
+          color: var(--edge-foreground);
+          background: var(--edge-background);
         }
 
         .select-prefix {
           display: inline-flex;
           position: absolute;
           pointer-events: none;
-          width: var(--empz-gap);´
-          height: var(--empz-gap);
+          width: var(--edge-gap);´
+          height: var(--edge-gap);
           left: 10px;
         }
 
         .no-prefixes select {
-          padding-left: var(--empz-gap-double);
+          padding-left: var(--edge-gap-double);
         }
 
         select {
@@ -72,7 +72,7 @@ export default function (props) {
           color: var(--accents-5);
           font-size: 14px;
           flex: 1;
-          padding: var(--empz-gap-half) var(--empz-gap-half) var(--empz-gap-half) var(--empz-gap-double);
+          padding: var(--edge-gap-half) var(--edge-gap-half) var(--edge-gap-half) var(--edge-gap-double);
           cursor: pointer;
         }
         
@@ -84,7 +84,7 @@ export default function (props) {
           position: relative;
           display: flex;
           overflow: hidden;
-          border-radius: var(--empz-radius);
+          border-radius: var(--edge-radius);
         }
         
         .select-wrapper.no-prefixes::after {

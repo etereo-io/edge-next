@@ -84,7 +84,10 @@ export default function ({ user, ...props }) {
           <label>Cover image</label>
           <p>Click on the image to change it</p>
           <div className="field" onClick={openFileDialog}>
-            <img  style={{height: '200px', cursor: 'pointer'}} src={fields.cover.path || '/static/demo-images/cover/clouds.jfif'} />
+            <img
+              style={{ height: '200px', cursor: 'pointer' }}
+              src={fields.cover.path || '/static/demo-images/cover/clouds.jfif'}
+            />
           </div>
 
           <input
@@ -98,7 +101,9 @@ export default function ({ user, ...props }) {
             {error && <div className="error-message">{error}</div>}
             {loading && <div className="loading-message">Loading...</div>}
             {success && (
-              <div className="success-message">Cover image successfuly updated</div>
+              <div className="success-message">
+                Cover image successfuly updated
+              </div>
             )}
           </div>
         </div>
@@ -110,13 +115,13 @@ export default function ({ user, ...props }) {
           }
 
           .actions {
-            padding-top: var(--empz-gap);
+            padding-top: var(--edge-gap);
             display: flex;
             justify-content: flex-end;
           }
 
           .info {
-            padding-right: var(--empz-gap);
+            padding-right: var(--edge-gap);
           }
         `}
       </style>

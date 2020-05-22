@@ -49,52 +49,52 @@ export default function (props) {
       <style jsx>
         {`
           .button {
-            border-radius: var(--empz-radius);
+            border-radius: var(--edge-radius);
             border: var(--light-border);
-            background: var(--empz-background);
-            color: var(--empz-foreground);
+            background: var(--edge-background);
+            color: var(--edge-foreground);
             cursor: pointer;
             display: inline-block;
             font-size: 14px;
             font-weight: 500;
-            padding: ${padding ? padding : '12px var(--empz-gap)'};
+            padding: ${padding ? padding : '12px var(--edge-gap)'};
             transition: 0.3s ease;
             -webkit-appearance: none;
           }
 
           .button:hover {
-            background-color: var(--empz-secondary);
-            color: var(--empz-background);
+            background-color: var(--edge-secondary);
+            color: var(--edge-background);
           }
 
           .button.alt {
-            background-color: var(--empz-foreground);
-            color: var(--empz-background);
+            background-color: var(--edge-foreground);
+            color: var(--edge-background);
             border: var(--light-border);
           }
 
           .button.alt:hover {
-            background-color: var(--empz-secondary);
+            background-color: var(--edge-secondary);
           }
 
           .button.success {
-            background-color: var(--empz-success);
-            color: var(--empz-background);
+            background-color: var(--edge-success);
+            color: var(--edge-background);
           }
 
           .button.secondary {
-            background-color: var(--empz-secondary);
-            color: var(--empz-background);
+            background-color: var(--edge-secondary);
+            color: var(--edge-background);
           }
 
           .button.warning {
-            background-color: var(--empz-warning);
-            color: var(--empz-background);
+            background-color: var(--edge-warning);
+            color: var(--edge-background);
           }
 
           .button.alert {
-            background-color: var(--empz-alert);
-            color: var(--empz-background);
+            background-color: var(--edge-alert);
+            color: var(--edge-background);
           }
 
           .button.big {

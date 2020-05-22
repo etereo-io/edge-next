@@ -19,7 +19,7 @@ export default function () {
 
       <style jsx>{`
         .listContentTypes {
-          margin-bottom: var(--empz-gap-double);
+          margin-bottom: var(--edge-gap-double);
         }
       `}</style>
     </>

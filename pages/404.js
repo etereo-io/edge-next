@@ -22,7 +22,7 @@ export default function Custom404() {
             margin: 0 auto;
             padding: 1rem;
             border: var(--light-border);
-            border-radius: var(--empz-radius);
+            border-radius: var(--edge-radius);
             text-align: center;
           }
 
@@ -34,7 +34,7 @@ export default function Custom404() {
           .links {
             display: flex;
             justify-content: center;
-            margin-top: var(--empz-gap);
+            margin-top: var(--edge-gap);
           }
         `}</style>
       </div>

@@ -88,8 +88,8 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
         }
 
         .arrow {
-          background: var(--empz-background);
-          color: var(--empz-foreground);
+          background: var(--edge-background);
+          color: var(--edge-foreground);
           cursor: pointer;
           height: 32px;
           overflow: hidden;
@@ -103,8 +103,8 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
         }
 
         .arrow:before{
-          border-bottom: 2px solid var(--empz-foreground);
-          border-right: 2px solid var(--empz-foreground);
+          border-bottom: 2px solid var(--edge-foreground);
+          border-right: 2px solid var(--edge-foreground);
           content: '';
           height: 11px;
           position: absolute;

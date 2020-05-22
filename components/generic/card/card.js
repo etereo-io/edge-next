@@ -15,11 +15,11 @@ export default function (props) {
       <style jsx>
         {`
           .card {
-            background: var(--empz-background);
+            background: var(--edge-background);
             box-shadow: var(--shadow-smallest);
-            border-radius: var(--empz-radius);
+            border-radius: var(--edge-radius);
             transition: box-shadow 0.25s ease, transform 0.25s ease;
-            padding: var(--empz-gap);
+            padding: var(--edge-gap);
             height: 100%;
             will-change: box-shadow, transform;
           }
@@ -36,28 +36,28 @@ export default function (props) {
           }
 
           .card.alt {
-            background: var(--empz-foreground);
-            color: var(--empz-background);
+            background: var(--edge-foreground);
+            color: var(--edge-background);
           }
 
           .card.success {
-            background-color: var(--empz-success);
-            color: var(--empz-background);
+            background-color: var(--edge-success);
+            color: var(--edge-background);
           }
 
           .card.secondary {
-            background-color: var(--empz-secondary);
-            color: var(--empz-background);
+            background-color: var(--edge-secondary);
+            color: var(--edge-background);
           }
 
           .card.warning {
-            background-color: var(--empz-warning);
-            color: var(--empz-background);
+            background-color: var(--edge-warning);
+            color: var(--edge-background);
           }
 
           .card.alert {
-            background-color: var(--empz-alert);
-            color: var(--empz-background);
+            background-color: var(--edge-alert);
+            color: var(--edge-background);
           }
         `}
       </style>

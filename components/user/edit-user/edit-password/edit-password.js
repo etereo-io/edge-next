@@ -143,13 +143,13 @@ export default function ({ user, ...props }) {
       <style jsx>
         {`
           .actions {
-            padding-top: var(--empz-gap);
+            padding-top: var(--edge-gap);
             display: flex;
             justify-content: flex-end;
           }
 
           .info {
-            padding-right: var(--empz-gap);
+            padding-right: var(--edge-gap);
           }
         `}
       </style>

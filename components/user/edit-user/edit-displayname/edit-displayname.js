@@ -105,7 +105,7 @@ export default function ({ user, ...props }) {
           }
 
           .info {
-            padding-right: var(--empz-gap);
+            padding-right: var(--edge-gap);
           }
         `}
       </style>

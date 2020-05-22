@@ -82,8 +82,8 @@ export default function ({ accept, name, required, multiple, ...props }) {
       </div>
       <style jsx>{`
         .files {
-          margin-top: var(--empz-gap);
-          margin-bottom: var(--empz-gap);
+          margin-top: var(--edge-gap);
+          margin-bottom: var(--edge-gap);
         }
 
         .file-row {
@@ -96,7 +96,7 @@ export default function ({ accept, name, required, multiple, ...props }) {
           max-width: 200px;
           text-overflow: ellipsis;
           font-size: 13px;
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
         }
 
         .delete-file {

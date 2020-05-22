@@ -325,9 +325,9 @@ const updateUser = (slug) => async (req, res) => {
 
       break
     case 'cover':
-        promiseChange = updateProfileCover(req.item, req.files.profileCover)
-  
-        break
+      promiseChange = updateProfileCover(req.item, req.files.profileCover)
+
+      break
     default:
       promiseChange = Promise.reject('Update ' + updateData + ' not allowed')
   }

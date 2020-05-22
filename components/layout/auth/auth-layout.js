@@ -33,7 +33,7 @@ const Layout = (props) => (
     <Footer />
     <style jsx>{`
       .container {
-        max-width: var(--empz-page-max-width);
+        max-width: var(--edge-page-max-width);
         margin: 0 auto;
         padding: 2rem 1.25rem;
       }
@@ -44,7 +44,7 @@ const Layout = (props) => (
       }
 
       .auth-view-wrapper {
-        padding: var(--empz-gap-double) 0;
+        padding: var(--edge-gap-double) 0;
         position: relative;
         width: 100%;
       }
@@ -62,21 +62,21 @@ const Layout = (props) => (
       }
 
       .auth-view {
-        background: var(--empz-background);
+        background: var(--edge-background);
         border-radius: 4px;
         box-shadow: var(--shadow-large);
-        padding: var(--empz-gap-medium);
+        padding: var(--edge-gap-medium);
         position: relative;
         margin: 0 auto;
         max-width: 480px;
       }
 
       .auth-title {
-        color: var(--empz-foreground);
+        color: var(--edge-foreground);
         display: block;
         font-size: 32px;
         font-weight: 500;
-        margin: 0 auto var(--empz-gap-medium) auto;
+        margin: 0 auto var(--edge-gap-medium) auto;
         max-width: 480px;
         position: relative;
         text-align: center;

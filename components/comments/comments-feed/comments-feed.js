@@ -26,19 +26,19 @@ function LoadingItems() {
 
       <style jsx>{`
         .p {
-          background: var(--empz-background);
-          padding: var(--empz-gap-half);
-          margin-bottom: var(--empz-gap-half);
-          border-radius: var(--empz-radius);
+          background: var(--edge-background);
+          padding: var(--edge-gap-half);
+          margin-bottom: var(--edge-gap-half);
+          border-radius: var(--edge-radius);
           display: flex;
         }
 
         .d {
           flex: 1;
-          padding-left: var(--empz-gap-half);
+          padding-left: var(--edge-gap-half);
         }
         .r {
-          margin-bottom: var(--empz-gap-half);
+          margin-bottom: var(--edge-gap-half);
         }
       `}</style>
     </>
@@ -161,7 +161,7 @@ export default function ({
       <style jsx>{`
         .comment-feed-view {
           max-width: 100%;
-          margin-top: var(--empz-gap);
+          margin-top: var(--edge-gap);
         }
 
         .load-more {

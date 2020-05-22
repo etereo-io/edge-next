@@ -112,20 +112,20 @@ export default function (props) {
       </div>
       <style jsx>{`
         .dropzone {
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
           border: 2px dashed var(--accents-2);
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           cursor: pointer;
           text-align: center;
           transition: border-color 0.3s ease;
         }
 
         .dropzone:hover  {
-          border: 2px dashed var(--empz-success);
+          border: 2px dashed var(--edge-success);
         }
 
         .dropzone:hover svg path {
-          fill: var(--empz-success);
+          fill: var(--edge-success);
         }
 
         .fileinput {

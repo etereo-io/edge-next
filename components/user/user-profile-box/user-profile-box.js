@@ -95,7 +95,7 @@ export default function ({ user, ...props }) {
 
           .general-profile.horizontal .general-profile-user {
             text-align: left;
-            padding-left: var(--empz-gap-half);
+            padding-left: var(--edge-gap-half);
           }
 
           .general-profile.horizontal .general-profile-user .username,
@@ -106,7 +106,7 @@ export default function ({ user, ...props }) {
           .general-profile.horizontal .profile-avatar-bio {
             align-items: center;
             display: flex;
-            margin-right: var(--empz-gap-double);
+            margin-right: var(--edge-gap-double);
           }
 
           .general-profile.horizontal .profile-bio-social {
@@ -141,7 +141,7 @@ export default function ({ user, ...props }) {
           }
 
           .general-profile-user a {
-            color: var(--empz-foreground);
+            color: var(--edge-foreground);
             text-decoration: none;
             font-size: 14px;
           }
@@ -150,12 +150,12 @@ export default function ({ user, ...props }) {
             text-align: center;
             font-size: 14px;
             line-height: 1.5;
-            margin-top: var(--empz-gap);
+            margin-top: var(--edge-gap);
             color: var(--accents-5);
           }
 
           .general-profile-social {
-            margin-top: var(--empz-gap-half);
+            margin-top: var(--edge-gap-half);
           }
 
           .general-profile-social a img {

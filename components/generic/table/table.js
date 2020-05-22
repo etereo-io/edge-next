@@ -8,7 +8,7 @@ export function TableCellHeader({ children, ...props }) {
         th {
           background: var(--accents-2);
           border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-          padding: var(--empz-gap-half);
+          padding: var(--edge-gap-half);
           position: sticky;
           text-align: left;
           top: 0;
@@ -25,7 +25,7 @@ export function TableCellBody({ children, ...props }) {
       <style jsx>{`
         td {
           border-bottom: 1px solid var(--accents-2);
-          padding: var(--empz-gap-half);
+          padding: var(--edge-gap-half);
           white-space: nowrap;
         }
       `}</style>

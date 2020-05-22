@@ -1289,8 +1289,8 @@ const links = [{
       </div>
       <style jsx>{`
         h1 {
-          padding-left: var(--empz-gap-double);
-          margin-bottom: var(--empz-gap);
+          padding-left: var(--edge-gap-double);
+          margin-bottom: var(--edge-gap);
         }
         .components-layout {
           align-items: flex-start;
@@ -1313,7 +1313,7 @@ const links = [{
           overflow: scroll;
           position: sticky;
           top: 56px;
-          padding: var(--empz-gap-double);
+          padding: var(--edge-gap-double);
           box-sizing: border-box;
           height: 100vh;
           max-width: 420px;
@@ -1357,8 +1357,8 @@ const links = [{
           opacity: 0;
           overflow: hidden;
           transition: 0.3s ease;
-          padding-left: var(--empz-gap-half);
-          margin-left: var(--empz-gap-half);
+          padding-left: var(--edge-gap-half);
+          margin-left: var(--edge-gap-half);
           visibility: hidden;
         }
 
@@ -1373,7 +1373,7 @@ const links = [{
         }
 
         .list-menu h3 {
-          padding: var(--empz-gap-half) 0 var(--empz-gap);
+          padding: var(--edge-gap-half) 0 var(--edge-gap);
         }
 
         .list-menu ul {
@@ -1384,40 +1384,40 @@ const links = [{
           color: var(--accents-6);
           font-size: 14px;
           font-weight: 500;
-          padding: var(--empz-gap-half);
+          padding: var(--edge-gap-half);
           display: block;
           text-decoration: none;
         }
 
         .list-menu li a:hover {
           background: var(--accents-2);
-          border-radius: var(--empz-radius);
+          border-radius: var(--edge-radius);
         }
 
         .components {
-          padding: var(--empz-gap-double);
-          background: var(--empz-background);
-          color: var(--empz-foreground);
-          margin-left: var(--empz-gap);
-          max-width: var(--empz-page-extra-width);
+          padding: var(--edge-gap-double);
+          background: var(--edge-background);
+          color: var(--edge-foreground);
+          margin-left: var(--edge-gap);
+          max-width: var(--edge-page-extra-width);
           flex: 1;
         }
 
         .item-wrapper {
-          margin-top: var(--empz-gap);
-          margin-bottom: var(--empz-gap);
+          margin-top: var(--edge-gap);
+          margin-bottom: var(--edge-gap);
           display-flex;
           align-items: center;
           justify-content: flex-start;
         }
 
         .components pre {
-          background: var(--empz-background);
+          background: var(--edge-background);
           box-sizing: border-box;
           color: var(--accents-5);
-          padding: var(--empz-gap-double) var(--empz-gap) var(--empz-gap);
+          padding: var(--edge-gap-double) var(--edge-gap) var(--edge-gap);
           border: 1px solid var(--accents-2);
-          border-radius: var(--empz-radius);
+          border-radius: var(--edge-radius);
           font-family: 'IBM Plex Mono', monospace;
           font-size: 13px;
           position: relative;
@@ -1426,14 +1426,14 @@ const links = [{
         }
 
         .components pre::before {
-          border-top-left-radius: var(--empz-radius);
-          border-top-right-radius: var(--empz-radius);
+          border-top-left-radius: var(--edge-radius);
+          border-top-right-radius: var(--edge-radius);
           box-sizing: border-box;
           content: 'Code';
           position: absolute;
           top: 0;
           left: 0;
-          padding: 8px var(--empz-gap);
+          padding: 8px var(--edge-gap);
           background: var(--accents-1);
           width: 100%;
         }
@@ -1450,8 +1450,8 @@ const links = [{
         }
 
         .component {
-          padding: calc(var(--empz-gap-double) * 1.6) var(--empz-gap-double)
-            var(--empz-gap-double);
+          padding: calc(var(--edge-gap-double) * 1.6) var(--edge-gap-double)
+            var(--edge-gap-double);
         }
         
         #form-elements .component-demo{
@@ -1470,7 +1470,7 @@ const links = [{
         .component p {
           color: var(--accents-4);
           display: block;
-          padding-top: var(--empz-gap-half);
+          padding-top: var(--edge-gap-half);
         }
 
         @media all and (max-width: 960px) {
@@ -1481,7 +1481,7 @@ const links = [{
 
           .components {
             margin-left: 0;
-            padding: var(--empz-gap-double) 0;
+            padding: var(--edge-gap-double) 0;
           }
         }
       `}</style>

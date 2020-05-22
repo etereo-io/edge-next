@@ -3,32 +3,30 @@ import Header from '../header/header'
 import Footer from '../footer/footer'
 import ToolBar from '@components/generic/toolbar/toolbar'
 
-
 const Layout = (props) => (
   <>
     <Head props={props} />
     <Header />
 
     <main
-      className={` ${
-        props.alt ? 'alt' : ''
-      } ${props.className ? props.className : ''}`}
+      className={` ${props.alt ? 'alt' : ''} ${
+        props.className ? props.className : ''
+      }`}
     >
-      <div
-        className={`container `}
-      >
-
-         <div className={`columns ${props.rightColumn ? 'three-columns': 'two-columns'}`}>
-            <div className="left-column">
-              <ToolBar />
-            </div>
-            <div className="center-column">
-              {props.children}
-            </div>
-            {props.rightColumn && <div className="right-column">
-              {props.rightColumn}
-            </div>}
+      <div className={`container `}>
+        <div
+          className={`columns ${
+            props.rightColumn ? 'three-columns' : 'two-columns'
+          }`}
+        >
+          <div className="left-column">
+            <ToolBar />
           </div>
+          <div className="center-column">{props.children}</div>
+          {props.rightColumn && (
+            <div className="right-column">{props.rightColumn}</div>
+          )}
+        </div>
       </div>
     </main>
 
@@ -37,10 +35,9 @@ const Layout = (props) => (
       main.alt {
         background-color: var(--accents-1);
       }
-   
 
       .container {
-        max-width: var(--empz-page-max-width);
+        max-width: var(--edge-page-max-width);
         margin: 0 auto;
         padding: 2rem 1.25rem;
         position: relative;
@@ -48,7 +45,7 @@ const Layout = (props) => (
 
       @media all and (max-width: 600px) {
         .container {
-          padding: var(--empz-gap-half);
+          padding: var(--edge-gap-half);
         }
       }
 
@@ -87,19 +84,19 @@ const Layout = (props) => (
 
       @media all and (max-width: 600px) {
         .right-column {
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
           width: 100%;
         }
       }
 
       .three-columns .center-column {
-        margin: 0 var(--empz-gap);
+        margin: 0 var(--edge-gap);
         max-width: 600px;
         width: 77%;
       }
 
       .two-columns .center-column {
-        margin: 0 var(--empz-gap);
+        margin: 0 var(--edge-gap);
         flex: auto;
       }
 
@@ -110,15 +107,17 @@ const Layout = (props) => (
       }
 
       @media all and (max-width: 960px) {
-        .three-columns .center-column, .two-columns .center-column {
+        .three-columns .center-column,
+        .two-columns .center-column {
           margin-right: 0;
           max-width: none;
-          width: calc(70% - var(--empz-gap));
+          width: calc(70% - var(--edge-gap));
         }
       }
 
       @media all and (max-width: 720px) {
-        .three-columns .center-column, .two-columns .center-column {
+        .three-columns .center-column,
+        .two-columns .center-column {
           margin: 0;
           margin-left: auto;
           padding: 0;
@@ -127,7 +126,8 @@ const Layout = (props) => (
       }
 
       @media all and (max-width: 520px) {
-        .three-columns .center-column, .two-columns .center-column {
+        .three-columns .center-column,
+        .two-columns .center-column {
           width: 100%;
         }
       }

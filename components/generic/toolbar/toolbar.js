@@ -58,13 +58,13 @@ export default function () {
       <style jsx>{`
         .toolbar {
           align-items: center;
-          background: var(--empz-background);
-          border-radius: var(--empz-radius);
+          background: var(--edge-background);
+          border-radius: var(--edge-radius);
           box-shadow: var(--shadow-smallest);
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           display: flex;
           flex-flow: column;
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
           position: sticky;
           top: 80px;
         }
@@ -75,7 +75,7 @@ export default function () {
           width: 100%;
           flex-flow: column;
           justify-content: space-between;
-          background: var(--empz-background);
+          background: var(--edge-background);
           content: '';
           height: 100%;
           left: 0;
@@ -96,7 +96,7 @@ export default function () {
           background: var(--accents-2);
           border-radius: 4px;
           height: 32px;
-          margin-bottom: var(--empz-gap-double);
+          margin-bottom: var(--edge-gap-double);
           position: relative;
           width: 32px;
         }
@@ -110,8 +110,8 @@ export default function () {
           left: 50%;
           transform: rotate(-45deg) translate(-20%, -80%);
           display: block;
-          height: var(--empz-gap-half);
-          width: var(--empz-gap-half);
+          height: var(--edge-gap-half);
+          width: var(--edge-gap-half);
         }
 
         @media all and (max-width: 720px) {
@@ -130,7 +130,7 @@ export default function () {
           }
           .mobile-over .open-mobile-over {
             margin-bottom: 0;
-            margin-right: var(--empz-gap-double);
+            margin-right: var(--edge-gap-double);
           }
         }
 
@@ -190,21 +190,21 @@ export default function () {
 
         .general-tags {
           border-top: 1px solid var(--accents-2);
-          margin-top: var(--empz-gap);
-          padding-top: var(--empz-gap);
+          margin-top: var(--edge-gap);
+          padding-top: var(--edge-gap);
           width: 100%;
         }
 
         .general-tags:before {
           content: 'Trending Tags';
-          background: var(--empz-foreground);
+          background: var(--edge-foreground);
           border-radius: 4px;
-          color: var(--empz-background);
+          color: var(--edge-background);
           display: block;
           font-size: 10px;
           font-weight: 500;
           letter-spacing: 1px;
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
           padding: 4px 8px;
           text-align: center;
           text-transform: uppercase;
@@ -218,10 +218,10 @@ export default function () {
 
         .general-tags ul li a {
           border-radius: 4px;
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           display: block;
           font-size: 14px;
-          padding: var(--empz-gap-half);
+          padding: var(--edge-gap-half);
           color: inherit;
           transition: background 0.35s ease;
           overflow: hidden;

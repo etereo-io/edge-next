@@ -60,12 +60,12 @@ export default function () {
       </footer>
       <style jsx>{`
         .footer {
-          background: var(--empz-foreground);
-          padding-top: var(--empz-gap-double);
-          padding-bottom: var(--empz-gap-double);
-          padding-left: var(--empz-gap);
-          padding-right: var(--empz-gap);
-          color: var(--empz-background);
+          background: var(--edge-foreground);
+          padding-top: var(--edge-gap-double);
+          padding-bottom: var(--edge-gap-double);
+          padding-left: var(--edge-gap);
+          padding-right: var(--edge-gap);
+          color: var(--edge-background);
         }
         .site-logo {
           margin-bottom: 24px;
@@ -77,7 +77,7 @@ export default function () {
         }
 
         .footer-content {
-          max-width: var(--empz-page-width);
+          max-width: var(--edge-page-width);
           margin: 0 auto;
         }
 
@@ -86,13 +86,13 @@ export default function () {
         }
 
         a {
-          color: var(--empz-background);
+          color: var(--edge-background);
           text-decoration: none;
         }
 
         .strong {
-          color: var(--empz-secondary);
-          padding-right: var(--empz-gap);
+          color: var(--edge-secondary);
+          padding-right: var(--edge-gap);
         }
 
         ul {
@@ -103,12 +103,12 @@ export default function () {
         }
 
         li {
-          padding-bottom: var(--empz-gap);
-          padding-right: var(--empz-gap);
+          padding-bottom: var(--edge-gap);
+          padding-right: var(--edge-gap);
         }
 
         .copy {
-          color: var(--empz-secondary);
+          color: var(--edge-secondary);
           margin-top: 30px;
         }
       `}</style>

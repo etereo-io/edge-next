@@ -13,8 +13,8 @@ function ColorBubble(props) {
       <div className="color-bubble"></div>
       <style jsx>{`
         .color-bubble {
-          width: var(--empz-gap);
-          height: var(--empz-gap);
+          width: var(--edge-gap);
+          height: var(--edge-gap);
           border-radius: 100%;
           border: 1px solid ${props.border || 'var(--accents-5)'};
           background: ${props.color || 'white'};

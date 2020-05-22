@@ -122,15 +122,15 @@ export default function (props) {
       </div>
       <style jsx>{`
         .avatar {
-          margin-right: var(--empz-gap-half);
+          margin-right: var(--edge-gap-half);
         }
 
         .activity-item {
           align-items: center;
           border-bottom: 1px solid var(--accents-2);
           display: flex;
-          color: var(--empz-secondary);
-          padding: var(--empz-gap) 0;
+          color: var(--edge-secondary);
+          padding: var(--edge-gap) 0;
         }
 
         .activity-item:first-of-type {
@@ -147,7 +147,7 @@ export default function (props) {
         }
 
         .message strong {
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           display: inline-block;
         }
 
@@ -157,12 +157,12 @@ export default function (props) {
         }
 
         .message p span a {
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           display: inline-block;
         }
 
         .error {
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
         }
       `}</style>
     </>

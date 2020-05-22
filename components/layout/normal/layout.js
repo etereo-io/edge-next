@@ -2,7 +2,6 @@ import Head from '../head/head'
 import Header from '../header/header'
 import Footer from '../footer/footer'
 
-
 const Layout = (props) => (
   <>
     <Head props={props} />
@@ -43,7 +42,7 @@ const Layout = (props) => (
         width: 100%;
       }
       .container {
-        max-width: var(--empz-page-max-width);
+        max-width: var(--edge-page-max-width);
         margin: 0 auto;
         padding: 2rem 1.25rem;
         position: relative;
@@ -51,7 +50,7 @@ const Layout = (props) => (
 
       @media all and (max-width: 600px) {
         .container {
-          padding: var(--empz-gap-half);
+          padding: var(--edge-gap-half);
         }
       }
 

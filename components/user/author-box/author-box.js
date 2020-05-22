@@ -99,7 +99,7 @@ export default function (props) {
           }
 
           .author-box-user a {
-            color: var(--empz-foreground);
+            color: var(--edge-foreground);
             text-decoration: none;
           }
         `}

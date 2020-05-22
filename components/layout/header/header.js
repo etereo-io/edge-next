@@ -113,7 +113,7 @@ function UserHeader(props) {
         }
 
         li {
-          margin-right: var(--empz-gap);
+          margin-right: var(--edge-gap);
         }
 
         li:last-of-type {
@@ -130,7 +130,7 @@ function UserHeader(props) {
           margin-left: auto;
         }
         a {
-          color: var(--empz-link-color);
+          color: var(--edge-link-color);
           display: block;
           font-size: 14px;
           text-decoration: none;
@@ -163,8 +163,8 @@ const Header = () => {
       <Progress color="#29D" startPosition={0.3} stopDelayMs={200} height={3} />
       <style jsx>{`
         .header {
-          color: var(--empz-foreground);
-          background: var(--empz-background);
+          color: var(--edge-foreground);
+          background: var(--edge-background);
           display: flex;
           border-bottom: 1px solid var(--accents-2);
           height: 56px;
@@ -179,13 +179,13 @@ const Header = () => {
           margin: 0 auto;
           justify-content: space-between;
           align-items: center;
-          padding: 0 var(--empz-gap-double);
+          padding: 0 var(--edge-gap-double);
           width: 100%;
         }
 
         @media (max-width: 600px) {
           .header-content {
-            padding: 0 var(--empz-gap);
+            padding: 0 var(--edge-gap);
           }
         }
 

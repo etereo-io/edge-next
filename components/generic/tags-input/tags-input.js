@@ -35,8 +35,8 @@ function Tag(props) {
       <style jsx>{`
         .tag {
           padding: 4px 4px 4px 8px;
-          border-radius: var(--empz-radius);
-          color: var(--empz-foreground);
+          border-radius: var(--edge-radius);
+          color: var(--edge-foreground);
           background: var(--accents-2);
           margin-right: 8px;
           font-size: 13px;
@@ -57,7 +57,7 @@ function Tag(props) {
         }
 
         #close-path {
-          fill: var(--empz-foreground);
+          fill: var(--edge-foreground);
         }
       `}</style>
     </>

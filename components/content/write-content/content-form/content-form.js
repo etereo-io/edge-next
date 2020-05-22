@@ -173,11 +173,11 @@ export default function (props) {
         {`
           .contentForm {
             align-items: flex-start;
-            background: var(--empz-background);
+            background: var(--edge-background);
             box-shadow: var(--shadow-smallest);
             display: flex;
             justify-content: space-between;
-            padding: var(--empz-gap);
+            padding: var(--edge-gap);
           }
 
           .contentForm form {
@@ -187,14 +187,14 @@ export default function (props) {
           .preview {
             border-radius: 4px;
             box-shadow: var(--shadow-large);
-            padding: var(--empz-gap);
+            padding: var(--edge-gap);
             position: sticky;
             top: 72px;
             width: 40%;
           }
 
           .actions {
-            padding-top: var(--empz-gap);
+            padding-top: var(--edge-gap);
           }
         `}
       </style>

@@ -109,12 +109,12 @@ export default function CommentEntry({
       <style jsx>{`
         .comment-entry {
           display: flex;
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
         }
 
         @media (max-width: 600px) {
           .comment-entry {
-            padding: var(--empz-gap-half);
+            padding: var(--edge-gap-half);
           }
         }
 
@@ -124,7 +124,7 @@ export default function CommentEntry({
 
         .info,
         .content {
-          margin-bottom: var(--empz-gap-half);
+          margin-bottom: var(--edge-gap-half);
         }
 
         .actions {

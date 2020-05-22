@@ -30,7 +30,7 @@ export default function toggle({
           cursor: pointer;
           border: var(--light-border);
           border-radius: 12px;
-          background: var(--empz-foreground);
+          background: var(--edge-foreground);
           position: relative;
           width: 56px;
           height: 24px;
@@ -40,8 +40,8 @@ export default function toggle({
 
         .toggle-ball {
           border-radius: 100%;
-          border: 2px solid var(--empz-background);
-          background: var(--empz-background);
+          border: 2px solid var(--edge-background);
+          background: var(--edge-background);
           position: absolute;
           top: 50%;
           transition: left 0.2s ease, transform 0.2s ease;
@@ -53,8 +53,8 @@ export default function toggle({
         }
 
         .toggle.enabled {
-          background: var(--empz-success);
-          border-color: var(--empz-success);
+          background: var(--edge-success);
+          border-color: var(--edge-success);
         }
 
         .toggle.enabled .toggle-ball {

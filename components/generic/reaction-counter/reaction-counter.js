@@ -65,7 +65,7 @@ export default function ({
         }
 
         .reaction-item-wr:after {
-          border-color: var(--empz-alert);
+          border-color: var(--edge-alert);
           opacity: 0;
           transition: 0.35s ease;
         }
@@ -100,13 +100,13 @@ export default function ({
         }
 
         .active .reaction-item-like path {
-          fill: var(--empz-alert);
-          stroke: var(--empz-alert);
+          fill: var(--edge-alert);
+          stroke: var(--edge-alert);
         }
 
         .reaction-item-wr:hover .reaction-item-like path {
-          fill: var(--empz-alert);
-          stroke: var(--empz-alert);
+          fill: var(--edge-alert);
+          stroke: var(--edge-alert);
         }
       `}</style>
     </>

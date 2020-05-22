@@ -12,7 +12,6 @@ import ContentListView from '@components/content/read-content/content-list-view/
 const Landing = () => {
   const { contentType } = useContentType('post')
 
-
   const rightColumnItems = (
     <>
       <div className="right-column-items">
@@ -115,16 +114,15 @@ const Landing = () => {
           </a>
         </div>
       </div>
-      <style jsx>{
-        `
+      <style jsx>{`
         .right-column-items {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-between;
           position: sticky;
-          top: 80px;  
+          top: 80px;
         }
-        
+
         .call-to-action {
           display: flex;
           flex-wrap: wrap;
@@ -132,7 +130,7 @@ const Landing = () => {
 
         .call-to-action-item {
           width: calc(50% - 8px);
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
         }
 
         @media all and (max-width: 1180px) {
@@ -142,7 +140,7 @@ const Landing = () => {
         }
 
         .call-to-action-item .top {
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
         }
 
         .call-to-action-item.simple svg {
@@ -150,11 +148,11 @@ const Landing = () => {
         }
 
         .call-to-action-item svg path {
-          fill: var(--empz-success);
+          fill: var(--edge-success);
         }
 
         .call-to-action-item.alt svg path {
-          fill: var(--empz-background);
+          fill: var(--edge-background);
         }
 
         .call-to-action-item.featured {
@@ -162,7 +160,7 @@ const Landing = () => {
         }
 
         .call-to-action-item.featured svg path {
-          fill: var(--empz-success);
+          fill: var(--edge-success);
         }
 
         .call-to-action-item a {
@@ -171,10 +169,9 @@ const Landing = () => {
         }
 
         .call-to-action-item svg {
-          width: var(--empz-double);
+          width: var(--edge-double);
         }
-        ` 
-      }</style>
+      `}</style>
     </>
   )
   return (
@@ -185,28 +182,26 @@ const Landing = () => {
         alt={true}
         rightColumn={rightColumnItems}
       >
-        
-            <aside className="featured-section">
-              <button className="close"></button>
-              <h3 className="title">Hey, nice to see you here! 👋</h3>
-              <div className="list-actions">
-                <Link href="/p/documentation">
-                  <a title="Main documentation">Main documentation</a>
-                </Link>
-                <Link href="/components">
-                  <a title="Components">React components</a>
-                </Link>
-              </div>
-            </aside>
-            {contentType && <ContentListView type={contentType} />}
-          
+        <aside className="featured-section">
+          <button className="close"></button>
+          <h3 className="title">Hey, nice to see you here! 👋</h3>
+          <div className="list-actions">
+            <Link href="/p/documentation">
+              <a title="Main documentation">Main documentation</a>
+            </Link>
+            <Link href="/components">
+              <a title="Components">React components</a>
+            </Link>
+          </div>
+        </aside>
+        {contentType && <ContentListView type={contentType} />}
       </Layout>
       <style jsx>{`
         .featured-section {
           display: block;
           width: 100%;
-          padding: var(--empz-gap-double);
-          background: var(--empz-success);
+          padding: var(--edge-gap-double);
+          background: var(--edge-success);
           position: relative;
           border-top-left-radius: 4px;
           border-top-right-radius: 4px;
@@ -215,7 +210,7 @@ const Landing = () => {
 
         @media all and (max-width: 600px) {
           .featured-section {
-            padding: var(--empz-gap);
+            padding: var(--edge-gap);
           }
         }
 
@@ -225,14 +220,14 @@ const Landing = () => {
           cursor: pointer;
           height: 24px;
           position: absolute;
-          right: var(--empz-gap);
-          top: var(--empz-gap);
+          right: var(--edge-gap);
+          top: var(--edge-gap);
           width: 24px;
         }
 
         .featured-section .close::before,
         .featured-section .close::after {
-          background: var(--empz-background);
+          background: var(--edge-background);
           content: '';
           height: 2px;
           left: 0;
@@ -252,7 +247,7 @@ const Landing = () => {
         .featured-section .title {
           font-size: 28px;
           font-weight: 600;
-          margin-bottom: var(--empz-gap-half);
+          margin-bottom: var(--edge-gap-half);
         }
 
         .featured-section .list-title {
@@ -266,24 +261,19 @@ const Landing = () => {
           display: flex;
           flex-flow: row;
           justify-content: space-between;
-          margin-top: var(--empz-gap);
+          margin-top: var(--edge-gap);
         }
 
         .featured-section .list-actions a {
           background: var(--dark-border-color);
           border-radius: 4px;
-          color: var(--empz-background);
+          color: var(--edge-background);
           font-weight: 500;
-          padding: var(--empz-gap);
+          padding: var(--edge-gap);
           text-align: center;
           text-decoration: none;
-          width: calc(50% - var(--empz-gap-half));
+          width: calc(50% - var(--edge-gap-half));
         }
-
-
-       
-
-       
       `}</style>
     </>
   )

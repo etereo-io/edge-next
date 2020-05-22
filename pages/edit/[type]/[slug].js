@@ -50,7 +50,7 @@ const EditContent = () => {
   const onSave = (newItem) => {
     setContent(newItem)
   }
-  
+
   useEffect(() => {
     if (!loading && currentUser.finished) {
       if (error || !canAccess) {
@@ -60,7 +60,6 @@ const EditContent = () => {
     }
   }, [loading, canAccess, error, currentUser])
 
-  
   if (!currentUser.finished || loading || error) {
     return (
       <Layout title="Edit content">
@@ -80,10 +79,10 @@ const EditContent = () => {
 
       <style jsx>{`
         .edit-page {
-          margin-bottom: var(--empz-gap-double);
+          margin-bottom: var(--edge-gap-double);
         }
         h1 {
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
         }
       `}</style>
     </>

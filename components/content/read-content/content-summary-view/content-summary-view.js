@@ -167,11 +167,11 @@ export default function (props) {
       <style jsx>{`
         /*.contentSummaryView {
           box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-          color: var(--empz-foreground);
-          background: var(--empz-background);
+          color: var(--edge-foreground);
+          background: var(--edge-background);
           //border: var(--light-border);
-          padding: var(--empz-gap);
-          border-radius: var(--empz-radius);
+          padding: var(--edge-gap);
+          border-radius: var(--edge-radius);
           margin: 0 auto;
           width: 100%;
         }*/
@@ -183,7 +183,7 @@ export default function (props) {
         }
 
         .content-summary-content {
-          padding-right: var(--empz-gap-double);
+          padding-right: var(--edge-gap-double);
         }
 
         @media all and (max-width: 720px) {
@@ -194,16 +194,16 @@ export default function (props) {
 
         a {
           text-decoration: none;
-          color: var(--empz-link-color);
+          color: var(--edge-link-color);
         }
 
         .field {
-          margin: var(--empz-gap) 0;
+          margin: var(--edge-gap) 0;
         }
 
         @media (max-width: 600px) {
           .field {
-            //margin: var(--empz-gap-half);
+            //margin: var(--edge-gap-half);
           }
         }
 
@@ -218,14 +218,14 @@ export default function (props) {
           align-items: center;
           display: flex;
           justify-content: space-between;
-          margin-bottom: var(--empz-gap);
+          margin-bottom: var(--edge-gap);
           width: 100%;
         }
 
         .status {
           background: var(--accents-2);
           border-radius: 4px;
-          color: var(--empz-foreground);
+          color: var(--edge-foreground);
           display: block;
           font-size: 10px;
           font-weight: 500;
@@ -237,18 +237,18 @@ export default function (props) {
         }
 
         .action-dropdown {
-          margin-left: var(--empz-gap-half);
+          margin-left: var(--edge-gap-half);
         }
 
         .meta {
           color: var(--accents-5);
           font-size: 13px;
-          margin-top: var(--empz-gap-half);
+          margin-top: var(--edge-gap-half);
         }
 
         .meta .comment-count {
           cursor: pointer;
-          padding-left: var(--empz-gap-half);
+          padding-left: var(--edge-gap-half);
         }
 
         h1 {

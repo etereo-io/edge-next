@@ -121,11 +121,11 @@ export default function ({
         .actions {
           display: flex;
           justify-content: flex-end;
-          margin-top: var(--empz-gap-half-negative);
+          margin-top: var(--edge-gap-half-negative);
         }
 
         .action {
-          margin-left: var(--empz-gap);
+          margin-left: var(--edge-gap);
         }
       `}</style>
     </>
