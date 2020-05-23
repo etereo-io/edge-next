@@ -2,14 +2,14 @@ import * as handlerAuth from '../../../../../pages/api/auth/[...action]'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import { findUserWithPassword } from '../../../../../lib/api/users/user'
+import { findUserWithPassword } from '../../../../../lib/api/entities/users/user'
 import http from 'http'
 import listen from 'test-listen'
 import { onUserAdded } from '../../../../../lib/api/hooks/user.hooks'
 import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
-jest.mock('../../../../../lib/api/users/user')
+jest.mock('../../../../../lib/api/entities/users/user')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({

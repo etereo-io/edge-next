@@ -1,4 +1,4 @@
-import { addContent, findContent } from '@lib/api/content/content'
+import { addContent, findContent } from '@lib/api/entities/content/content'
 import {
   hasPermissionsForContent,
   isValidContentType,

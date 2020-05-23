@@ -3,12 +3,12 @@ import {
   findOneUser,
   findUsers,
   validateNewUser,
-} from '@lib/api/users/user'
+} from '@lib/api/entities/users/user'
 
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
 import { hasPermissionsForUser } from '@lib/api/middlewares'
-import { hidePrivateUserFields } from '@lib/api/users/user.utils'
+import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'

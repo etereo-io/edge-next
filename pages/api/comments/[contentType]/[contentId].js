@@ -1,4 +1,4 @@
-import { addComment, findComments } from '@lib/api/comments/comments'
+import { addComment, findComments } from '@lib/api/entities/comments/comments'
 import {
   hasPermissionsForComment,
   hasQueryParameters,

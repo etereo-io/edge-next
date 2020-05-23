@@ -1,7 +1,7 @@
 import ContentDetailView from '@components/content/read-content/content-detail-view/content-detail-view'
 import Layout from '@components/layout/three-columns/layout'
 import { connect } from '@lib/api/db'
-import { findOneContent } from '@lib/api/content/content'
+import { findOneContent } from '@lib/api/entities/content/content'
 import { getContentTypeDefinition } from '@lib/config'
 import { hasPermissionsForContent } from '@lib/api/middlewares'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'

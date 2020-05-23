@@ -3,11 +3,11 @@ import * as handler from '../../../../../pages/api/content/[type]/[slug]'
 import {
   deleteOneContent,
   findOneContent,
-} from '../../../../../lib/api/content/content'
+} from '../../../../../lib/api/entities/content/content'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import { deleteActivity } from '../../../../../lib/api/activity/activity'
-import { deleteComment } from '../../../../../lib/api/comments/comments'
+import { deleteActivity } from '../../../../../lib/api/entities/activity/activity'
+import { deleteComment } from '../../../../../lib/api/entities/comments/comments'
 import { deleteFile } from '../../../../../lib/api/storage'
 import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
@@ -18,9 +18,9 @@ import listen from 'test-listen'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/storage')
-jest.mock('../../../../../lib/api/comments/comments')
-jest.mock('../../../../../lib/api/activity/activity')
-jest.mock('../../../../../lib/api/content/content')
+jest.mock('../../../../../lib/api/entities/comments/comments')
+jest.mock('../../../../../lib/api/entities/activity/activity')
+jest.mock('../../../../../lib/api/entities/content/content')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {

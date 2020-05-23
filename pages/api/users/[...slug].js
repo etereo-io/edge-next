@@ -1,10 +1,10 @@
 import { bodyParser, hasPermissionsForUser } from '@lib/api/middlewares'
 import { deleteFile, uploadFile } from '@lib/api/storage'
-import { deleteOneUser, findOneUser, updateOneUser } from '@lib/api/users/user'
+import { deleteOneUser, findOneUser, updateOneUser } from '@lib/api/entities/users/user'
 import {
   generateSaltAndHash,
   userPasswordsMatch,
-} from '@lib/api/users/user.utils'
+} from '@lib/api/entities/users/user.utils'
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
 
 import { FIELDS } from '@lib/config/config-constants'
@@ -12,7 +12,7 @@ import { connect } from '@lib/api/db'
 import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 import { hasPermission } from '@lib/permissions'
-import { hidePrivateUserFields } from '@lib/api/users/user.utils'
+import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 import merge from 'deepmerge'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
