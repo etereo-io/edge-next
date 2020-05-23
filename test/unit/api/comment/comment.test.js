@@ -34,4 +34,13 @@ describe('parse mentions test', () => {
     expect(images.length).toEqual(1)
     expect(images[0]).toEqual('https://something.com/image.jpeg')
   })
+
+  it('should parse images and mentions at the same time', () => {
+    const { parsedText, images, mentions } = parseCommentBody('@hayder https://something.com/image.jpeg hola')
+    expect(parsedText).toEqual('[@hayder](/profile/@hayder) ![https://something.com/image.jpeg](https://something.com/image.jpeg) hola')
+    expect(images.length).toEqual(1)
+    expect(images[0]).toEqual('https://something.com/image.jpeg')
+    expect(mentions.length).toEqual(1)
+    expect(mentions[0]).toEqual('@hayder')
+  })
 })

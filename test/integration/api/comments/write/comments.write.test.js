@@ -222,7 +222,7 @@ describe('Integrations tests for comment creation endpoint', () => {
       contentType: 'post',
       contentId: '0',
       slug: expect.any(String),
-      message: newComment.message,
+      message: 'test [@anotheruser](/profile/@anotheruser) test',
       author: 'test-id',
       id: expect.anything(),
       user: expect.anything(),

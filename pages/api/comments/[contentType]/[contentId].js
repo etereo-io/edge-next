@@ -19,11 +19,11 @@ export const parseCommentBody = (text) => {
   let parsedText = text
 
   mentions.forEach(m  => {
-    parsedText = text.replace(m, `[${m}](/profile/${m})`)
+    parsedText = parsedText.replace(m, `[${m}](/profile/${m})`)
   })
 
   images.forEach(m  => {
-    parsedText = text.replace(m, `![${m}](${m})`)
+    parsedText = parsedText.replace(m, `![${m}](${m})`)
   })
 
   return {
