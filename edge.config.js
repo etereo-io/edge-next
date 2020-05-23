@@ -248,6 +248,7 @@ export const getConfig = (defaultOptions) => {
         placeholder: 'Description',
         minlength: 20,
         maxlength: 2000,
+        description: 'Markdown supported.',
         errorMessage: 'Description must be between 20 and 2000 characters',
       },
       {

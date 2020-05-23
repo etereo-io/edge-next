@@ -1,4 +1,4 @@
-import { addComment, findComments } from '@lib/api/comments/comments'
+import { addComment, findComments } from '@lib/api/entities/comments/comments'
 import {
   hasPermissionsForComment,
   hasQueryParameters,
@@ -11,6 +11,27 @@ import methods from '@lib/api/api-helpers/methods'
 import { onCommentAdded } from '@lib/api/hooks/comment.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
+
+export const parseCommentBody = (text) => {
+
+  const mentions = (text.match(/@([A-Za-z]+[A-Za-z0-9_-]+)/g)) || []
+  const images = (text.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|jfif|webp)/g)) || []
+  let parsedText = text
+
+  mentions.forEach(m  => {
+    parsedText = text.replace(m, `[${m}](/profile/${m})`)
+  })
+
+  images.forEach(m  => {
+    parsedText = text.replace(m, `![${m}](${m})`)
+  })
+
+  return {
+    parsedText,
+    mentions: [...new Set(mentions)],
+    images: [...new Set(images)]
+  }
+}
 
 // Check that the comments are allowed for this content type
 function contentTypeAllowsCommentsMiddleware(req, res, cb) {
@@ -47,16 +68,19 @@ export function fillCommentWithDefaultData(
   user
 ) {
   try {
-    // TODO: Parse message to extract mentions, links, images, etc
-    // Best way to store mentions https://stackoverflow.com/questions/31821751/best-way-to-store-comments-with-mentions-firstname-in-database
 
+    const { parsedText , mentions, images } = parseCommentBody(comment.message)
+
+    // Best way to store mentions https://stackoverflow.com/questions/31821751/best-way-to-store-comments-with-mentions-firstname-in-database
     // Fill in the mandatory data like author, date, type
     const newComment = {
       author: user.id,
       createdAt: Date.now(),
       contentType: contentType.slug,
       contentId: contentId,
-      message: comment.message,
+      message: parsedText,
+      mentions,
+      images,
       conversationId: comment.conversationId || null,
     }
 

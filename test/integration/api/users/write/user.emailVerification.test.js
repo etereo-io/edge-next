@@ -4,7 +4,7 @@ import {
   findOneUser,
   findUserWithPassword,
   updateOneUser,
-} from '../../../../../lib/api/users/user'
+} from '../../../../../lib/api/entities/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
@@ -14,7 +14,7 @@ import { onUserAdded } from '../../../../../lib/api/hooks/user.hooks'
 import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
-jest.mock('../../../../../lib/api/users/user')
+jest.mock('../../../../../lib/api/entities/users/user')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({

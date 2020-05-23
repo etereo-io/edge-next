@@ -1,9 +1,13 @@
 import { FIELDS } from '@lib/config/config-constants'
 import Image from '../image/image'
+import MarkdownIt from 'markdown-it'
 import MarkdownRead from '../markdown-read/markdown-read'
 import ReactPlayer from 'react-player'
 import TagsField from '../tags-field/tags-field'
-import marked from 'marked'
+const md = MarkdownIt({
+  html: false,
+  linkify: true,
+})
 
 function Field({ field, value, showLabel = false, contentType }) {
   const getField = (field, value) => {
@@ -17,7 +21,7 @@ function Field({ field, value, showLabel = false, contentType }) {
           </p>
         )
       case FIELDS.MARKDOWN:
-        const htmlString = marked(value || '')
+        const htmlString = md.render(value || '')
         return (
           <div data-testid={datatestId} style={{ wordBreak: 'break-all' }}>
             <MarkdownRead htmlString={htmlString} />

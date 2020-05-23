@@ -1,7 +1,7 @@
 import * as handlerUser from '../../../../../pages/api/users/[...slug]'
 
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
-import { findOneUser, updateOneUser } from '../../../../../lib/api/users/user'
+import { findOneUser, updateOneUser } from '../../../../../lib/api/entities/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
@@ -14,7 +14,7 @@ import { sendVerifyEmail } from '../../../../../lib/email'
 jest.mock('../../../../../lib/email')
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/users/user')
+jest.mock('../../../../../lib/api/entities/users/user')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => ({

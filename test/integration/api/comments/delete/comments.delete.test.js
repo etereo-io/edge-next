@@ -4,10 +4,10 @@ import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '../../../../../lib/api/comments/comments'
+} from '../../../../../lib/api/entities/comments/comments'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import { deleteActivity } from '../../../../../lib/api/activity/activity'
+import { deleteActivity } from '../../../../../lib/api/entities/activity/activity'
 import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
@@ -16,8 +16,8 @@ import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/comments/comments')
-jest.mock('../../../../../lib/api/activity/activity')
+jest.mock('../../../../../lib/api/entities/comments/comments')
+jest.mock('../../../../../lib/api/entities/activity/activity')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {

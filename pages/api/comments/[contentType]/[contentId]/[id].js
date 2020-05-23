@@ -2,7 +2,7 @@ import {
   deleteOneComment,
   findOneComment,
   updateOneComment,
-} from '@lib/api/comments/comments'
+} from '@lib/api/entities/comments/comments'
 import {
   hasPermissionsForComment,
   hasQueryParameters,

@@ -2,11 +2,11 @@ import * as handlerAuth from '../../../../../pages/api/auth/[...action]'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import { findUserWithPassword } from '../../../../../lib/api/users/user'
+import { findUserWithPassword } from '../../../../../lib/api/entities/users/user'
 import http from 'http'
 import listen from 'test-listen'
 
-jest.mock('../../../../../lib/api/users/user')
+jest.mock('../../../../../lib/api/entities/users/user')
 
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,

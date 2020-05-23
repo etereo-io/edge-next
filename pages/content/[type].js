@@ -2,7 +2,7 @@ import ContentListView from '@components/content/read-content/content-list-view/
 import Layout from '@components/layout/three-columns/layout'
 import ListContentTypes from '@components/content/read-content/list-content-types/list-content-types'
 import { connect } from '@lib/api/db'
-import { findContent } from '@lib/api/content/content'
+import { findContent } from '@lib/api/entities/content/content'
 import { getContentTypeDefinition } from '@lib/config'
 import { hasPermissionsForContent } from '@lib/api/middlewares'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'

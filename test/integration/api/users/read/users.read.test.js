@@ -1,6 +1,6 @@
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import { findOneUser } from '../../../../../lib/api/users/user'
+import { findOneUser } from '../../../../../lib/api/entities/users/user'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handlerUser from '../../../../../pages/api/users/[...slug]'
@@ -9,7 +9,7 @@ import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/users/user')
+jest.mock('../../../../../lib/api/entities/users/user')
 
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,

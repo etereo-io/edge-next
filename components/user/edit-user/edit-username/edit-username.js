@@ -79,9 +79,11 @@ export default function ({ user, ...props }) {
               type="text"
               placeholder="Your username"
               name="username"
+              pattern="/([a-z]+[a-z0-9_-]+)/g"
               onChange={(ev) => handleFieldChange('username')(ev.target.value)}
               value={fields.username}
             />
+            <span className="description">A single word with letters, numbers, upperscores and underscores allowed. Example: jonh-doe123, mrs_shirley2</span>
           </div>
           <div className="actions">
             <div className="info">
