@@ -54,6 +54,8 @@ export default function CommentEntry({
     // TODO: Call the api
   }
 
+  const htmlString = marked(comment.message || '')
+
   return (
     <>
       <div className="comment-entry">
@@ -65,7 +67,7 @@ export default function CommentEntry({
               <span className="time">{format(comment.createdAt)}</span>
             </span>
           </div>
-          <div className="content">{comment.message}</div>
+          <div className="content" dangerouslySetInnerHTML={{ __html: htmlString }}></div>
           <div className="actions">
             {hasWritePermission && !showReplyForm && (
               <span

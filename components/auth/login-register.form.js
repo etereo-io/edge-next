@@ -74,6 +74,7 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
               type="text"
               placeholder="Choose username"
               name="username"
+              pattern="/([a-z]+[a-z0-9_-]+)/g"
               required
             ></input>
           </div>
