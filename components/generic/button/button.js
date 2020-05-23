@@ -17,6 +17,7 @@ export default function (props) {
     warning,
     fullWidth,
     alert,
+    soft,
     success,
     padding,
     hoverable,
@@ -24,7 +25,7 @@ export default function (props) {
 
   const classNames = `button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${
     fullWidth ? 'full-width' : ''
-  } ${big ? 'big' : ''} ${success ? 'success' : ''} ${
+  } ${big ? 'big' : ''} ${soft ? 'soft' : ''} ${success ? 'success' : ''} ${
     warning ? 'warning' : ''
   } ${secondary ? 'secondary' : ''} ${alert ? 'alert' : ''} ${
     hoverable ? 'hoverable' : ''
@@ -69,6 +70,7 @@ export default function (props) {
 
           .button.alt {
             background-color: var(--edge-foreground);
+            border-color: var(--edge-foreground);
             color: var(--edge-background);
             border: var(--light-border);
           }
@@ -79,22 +81,32 @@ export default function (props) {
 
           .button.success {
             background-color: var(--edge-success);
+            border-color: var(--edge-success);
             color: var(--edge-background);
           }
 
           .button.secondary {
             background-color: var(--edge-secondary);
+            border-color: var(--edge-secondary);
             color: var(--edge-background);
           }
 
           .button.warning {
             background-color: var(--edge-warning);
+            border-color: var(--edge-warning);
             color: var(--edge-background);
           }
 
           .button.alert {
             background-color: var(--edge-alert);
+            border-color: var(--edge-alert);
             color: var(--edge-background);
+          }
+
+          .button.soft{
+            background-color: var(--edge-success-soft);
+            border-color: transparent;
+            color: var(--edge-success);
           }
 
           .button.big {

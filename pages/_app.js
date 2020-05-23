@@ -24,7 +24,6 @@ function MyApp({ Component, pageProps }) {
         </EdgeUserProvider>
       </div>
       <style jsx global>{`
-      
         // Global variables
         :root {
           --edge-gap: 16pt;
@@ -40,7 +39,7 @@ function MyApp({ Component, pageProps }) {
           --edge-page-margin: 16pt;
           --edge-page-width: 750pt;
           --edge-page-extra-width: 1024px;
-          --edge-page-max-width: 1240px;
+          --edge-page-max-width: 1292px;
           --edge-page-width-with-margin: 782pt;
           --edge-breakpoint-mobile: 600px;
           --edge-breakpoint-tablet: 960px;
@@ -97,6 +96,7 @@ function MyApp({ Component, pageProps }) {
           --edge-success-light: #3291ff;
           --edge-success: #0070f3;
           --edge-success-dark: #0366d6;
+          --edge-success-soft: #0070f321;
           --edge-error-light: #ff1a1a;
           --edge-error: #e00;
           --edge-error-dark: #c00;
@@ -279,6 +279,14 @@ function MyApp({ Component, pageProps }) {
 
         main {
           min-height: calc(100vh - 332px);
+        }
+
+        .container {
+          padding: 0 32px;
+          position: relative;
+          margin: 0 auto;
+          max-width: var(--edge-page-max-width);
+          width: 100%;
         }
 
         .error-message {

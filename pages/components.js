@@ -1312,7 +1312,7 @@ const links = [{
           background: var(--accents-1);
           overflow: scroll;
           position: sticky;
-          top: 56px;
+          top: 80px;
           padding: var(--edge-gap-double);
           box-sizing: border-box;
           height: 100vh;

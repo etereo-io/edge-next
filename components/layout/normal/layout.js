@@ -41,11 +41,13 @@ const Layout = (props) => (
         top: 0;
         width: 100%;
       }
-      .container {
-        max-width: var(--edge-page-max-width);
-        margin: 0 auto;
-        padding: 2rem 1.25rem;
+
+      .container{
+        padding: 0 32px;
         position: relative;
+        margin: 0 auto;
+        max-width: var(--edge-page-max-width);
+        width: 100%;
       }
 
       @media all and (max-width: 600px) {

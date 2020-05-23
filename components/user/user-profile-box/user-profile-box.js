@@ -6,7 +6,7 @@ export default function ({ user, ...props }) {
   return (
     <>
       <div
-        className={`general-profile ${props.horizontal ? 'horizontal' : ''}`}
+        className={`general-profile ${props.horizontal ? 'horizontal' : ''} ${props.basic ? 'basic' : ''} ${props.small ? 'small' : ''}`}
       >
         <div className="profile-avatar-bio">
           <div className="avatar">
@@ -91,6 +91,18 @@ export default function ({ user, ...props }) {
           .general-profile.horizontal {
             align-items: center;
             display: flex;
+          }
+
+          /*.general-profile.small .avatar{
+            width: 48px;
+          }*/
+
+          .general-profile.basic.horizontal .profile-avatar-bio{
+            margin-right: 0;
+          }
+
+          .general-profile.basic .profile-bio-social{
+            display: none;
           }
 
           .general-profile.horizontal .general-profile-user {

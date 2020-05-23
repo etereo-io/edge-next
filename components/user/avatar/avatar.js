@@ -18,7 +18,7 @@ export default function (props) {
       </div>
       <style jsx>{`
         img {
-          border-radius: 100%;
+          border-radius: 50%;
           overflow: hidden;
           width: 100%;
         }
@@ -28,13 +28,15 @@ export default function (props) {
           height: 100%;
           border: var(--light-border);
           display: block;
-          border-radius: 100%;
+          border-radius: 8px;
         }
 
         .avatar {
+          border-radius: 50%;
           display: inline-block;
-          margin: ${margin}px;
           height: ${width}px;
+          max-height: 80px;
+          max-width: 80px;
           vertical-align: middle;
           width: ${width}px;
         }

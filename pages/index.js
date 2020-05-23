@@ -1,5 +1,5 @@
 import Layout from '@components/layout/three-columns/layout'
-
+import Button from '@components/generic/button/button'
 import Badge from '@components/generic/badge/badge'
 import GithubLogo from '@components/generic/icons/github-icon/github-icon'
 import NextJSLogo from '@components/generic/icons/nextjs-icon/nextjs-icon'
@@ -117,6 +117,7 @@ const Landing = () => {
       <style jsx>{`
         .right-column-items {
           display: flex;
+          display: none;
           flex-wrap: wrap;
           justify-content: space-between;
           position: sticky;
@@ -179,18 +180,26 @@ const Landing = () => {
       <Layout
         title={`${config.title} - ${config.slogan}`}
         description={config.slogan}
-        alt={true}
+        alt={false}
         rightColumn={rightColumnItems}
       >
         <aside className="featured-section">
           <button className="close"></button>
           <h3 className="title">Hey, nice to see you here! 👋</h3>
+          <p>
+            This is our demo site to show you all the main features and options
+            you can build with the Edge platform.
+          </p>
           <div className="list-actions">
             <Link href="/p/documentation">
-              <a title="Main documentation">Main documentation</a>
+              <a title="Main documentation">
+                <Button soft>Main documentation</Button>
+              </a>
             </Link>
             <Link href="/components">
-              <a title="Components">React components</a>
+              <a title="Components">
+                <Button success>React components</Button>
+              </a>
             </Link>
           </div>
         </aside>
@@ -198,14 +207,16 @@ const Landing = () => {
       </Layout>
       <style jsx>{`
         .featured-section {
+          background: var(--edge-background);
+          border-radius: 4px;
+          box-shadow: var(--shadow-smallest);
+          color: var(--edge-foreground);
           display: block;
-          width: 100%;
           padding: var(--edge-gap-double);
-          background: var(--edge-success);
           position: relative;
-          border-top-left-radius: 4px;
-          border-top-right-radius: 4px;
-          color: #fff;
+          text-align: center;
+          margin-bottom: var(--edge-gap);
+          width: 100%;
         }
 
         @media all and (max-width: 600px) {
@@ -245,9 +256,18 @@ const Landing = () => {
         }
 
         .featured-section .title {
-          font-size: 28px;
+          font-size: 24px;
           font-weight: 600;
-          margin-bottom: var(--edge-gap-half);
+          margin-bottom: var(--edge-gap);
+        }
+
+        .featured-section p {
+          font-size: 16px;
+          color: var(--accents-4);
+          line-height: 1.5;
+          margin-bottom: var(--edge-gap);
+          margin: 0 auto;
+          width: 90%;
         }
 
         .featured-section .list-title {
@@ -260,19 +280,12 @@ const Landing = () => {
           align-items: center;
           display: flex;
           flex-flow: row;
-          justify-content: space-between;
+          justify-content: center;
           margin-top: var(--edge-gap);
         }
 
         .featured-section .list-actions a {
-          background: var(--dark-border-color);
-          border-radius: 4px;
-          color: var(--edge-background);
-          font-weight: 500;
-          padding: var(--edge-gap);
-          text-align: center;
-          text-decoration: none;
-          width: calc(50% - var(--edge-gap-half));
+          margin: 0 var(--edge-gap-half);
         }
       `}</style>
     </>

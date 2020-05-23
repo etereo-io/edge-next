@@ -194,7 +194,7 @@ const UserSettings = () => {
             padding: var(--edge-gap-double);
             padding-bottom: 0;
             position: sticky;
-            top: 56px;
+            top: 80px;
             z-index: var(--z-index-minimum);
           }
 
