@@ -50,7 +50,7 @@ const Layout = (props) => (
         width: 100%;
       }
 
-      @media all and (max-width: 600px) {
+      @media all and (max-width: 720px) {
         .container {
           padding: var(--edge-gap-half);
         }

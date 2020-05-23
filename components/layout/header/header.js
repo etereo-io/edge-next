@@ -195,7 +195,7 @@ function UserHeader(props) {
           align-items: center;
           display: flex;
         }
-        .user-actions-button{
+        .user-actions-button {
           margin-left: var(--edge-gap);
         }
       `}</style>
@@ -235,6 +235,12 @@ const Header = () => {
           position: sticky;
           top: 0;
           z-index: var(--z-index-header);
+        }
+
+        @media all and (max-width: 720px){
+          .header{
+            height: 56px;
+          }
         }
 
         .header .container {
