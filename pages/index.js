@@ -7,6 +7,7 @@ import Card from '@components/generic/card/card'
 import Link from 'next/link'
 import config from '@lib/config'
 import { useContentType } from '@lib/client/hooks'
+import ToolBar from '@components/generic/toolbar/toolbar'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 
 const Landing = () => {
@@ -182,6 +183,7 @@ const Landing = () => {
         description={config.slogan}
         alt={false}
         rightColumn={rightColumnItems}
+        leftColumn={<ToolBar />}
       >
         <aside className="featured-section">
           <button className="close"></button>

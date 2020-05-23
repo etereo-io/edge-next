@@ -5,6 +5,7 @@ import ContentListView from '@components/content/read-content/content-list-view/
 import CoverImage from '@components/user/cover-image/cover-image'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import Layout from '@components/layout/three-columns/layout'
+import ToolBar from '@components/generic/toolbar/toolbar'
 import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import config from '@lib/config'
@@ -46,7 +47,7 @@ const Profile = (props) => {
   // Loading
   if (!finished || !currentUser.finished || !canAccess || (finished && !data)) {
     return (
-      <Layout title="Profile">
+      <Layout title="Profile" >
         <h1>Profile</h1>
         <div>Loading...</div>
       </Layout>
@@ -54,7 +55,7 @@ const Profile = (props) => {
   }
 
   return (
-    <Layout title="Profile">
+    <Layout title="Profile" leftColumn={<ToolBar />}>
       <div className="profile-wrapper">
         <CoverImage user={data} />
         <div className="profile-user-info">

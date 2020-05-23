@@ -1,6 +1,7 @@
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import Layout from '@components/layout/three-columns/layout'
 import ListContentTypes from '@components/content/read-content/list-content-types/list-content-types'
+import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
 import { findContent } from '@lib/api/entities/content/content'
 import { getContentTypeDefinition } from '@lib/config'
@@ -56,7 +57,7 @@ export async function getServerSideProps({ req, res, query }) {
 
 const ContentPage = (props) => {
   return (
-    <Layout title="Content">
+    <Layout title="Content" leftColumn={<ToolBar/>}>
       <div>
         <ListContentTypes />
 

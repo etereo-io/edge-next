@@ -85,9 +85,6 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - Review everything on lighthouse
 
-- Comments
-  - Integrate mentions on comments
-
 - Add a cookies component
 
 - Connect to an additional database:
@@ -97,7 +94,6 @@ Check our roadmap if you want to add more cool things into Edge.
 - Add algolia as a search engine
 
 - Introduce basic site stats
-
 
 - https://help.github.com/en/github/supporting-the-open-source-community-with-github-sponsors/about-github-sponsors
 - OpenColective

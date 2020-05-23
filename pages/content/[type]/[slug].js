@@ -1,5 +1,6 @@
 import ContentDetailView from '@components/content/read-content/content-detail-view/content-detail-view'
 import Layout from '@components/layout/three-columns/layout'
+import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content/content'
 import { getContentTypeDefinition } from '@lib/config'
@@ -68,7 +69,7 @@ export async function getServerSideProps({ req, res, query }) {
 
 const ContentPage = (props) => {
   return (
-    <Layout title={props.pageTitle} monetization={props.monetizationMeta}>
+    <Layout title={props.pageTitle} monetization={props.monetizationMeta} leftColumn={<ToolBar/>}>
       {props.canAccess && props.data && (
         <ContentDetailView
           type={props.contentType}

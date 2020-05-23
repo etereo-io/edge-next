@@ -10,7 +10,7 @@ import Progress from './progress'
 import Avatar from '@components/user/avatar/avatar'
 
 function UserHeader(props) {
-  const { user, finished } = useUser(props)
+  const user = props.user
   const contentTypes = useContentTypes(['create', 'admin'])
   const [loading, setLoading] = useState(false)
 
@@ -36,7 +36,6 @@ function UserHeader(props) {
           <Link href={`/profile/@${user.username}`}>
             <a title="User profile">
               <Avatar
-                loading={!finished}
                 src={
                   user && user.profile && user.profile.picture
                     ? user.profile.picture.path

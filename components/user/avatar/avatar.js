@@ -2,7 +2,6 @@ export default function (props) {
   const defaultSrc = '/static/demo-images/default-avatar.jpg'
   const title = props.title || 'Avatar'
   const width = props.width || 100
-  const margin = props.margin || 5
 
   return (
     <>
@@ -18,7 +17,7 @@ export default function (props) {
       </div>
       <style jsx>{`
         img {
-          border-radius: 50%;
+          border-radius: 15%;
           overflow: hidden;
           width: 100%;
         }
@@ -32,7 +31,7 @@ export default function (props) {
         }
 
         .avatar {
-          border-radius: 50%;
+          border-radius: 15%;
           display: inline-block;
           height: ${width}px;
           max-height: 80px;

@@ -24,7 +24,7 @@ export default function ({ user, ...props }) {
             )}
             {!user && (
               <LoadingPlaceholder
-                borderRadius="100%"
+                borderRadius="15%"
                 height={'100px'}
                 width={'100px'}
               />

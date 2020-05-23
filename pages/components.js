@@ -14,7 +14,7 @@ import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import Image from '@components/generic/image/image'
-import Layout from '@components/layout/normal/layout'
+import Layout from '@components/layout/three-columns/layout'
 import Link from 'next/link'
 import LinkList from '@components/generic/link-list/link-list'
 import Loading from '@components/generic/loading/loading-spinner/loading-spinner'
@@ -31,6 +31,188 @@ import Toggle from '@components/generic/toggle/toggle'
 import Upload from '@components/generic/upload/upload'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '@components/generic/video-recorder/video-recorder-wrapper'
+
+
+function Menu() {
+  return (
+    <>
+      <div className="list-menu">
+          <ul>
+            <li>
+              <a href="#drop-menu">Dropdown menu</a>
+            </li>
+            <li>
+              <a href="#linklist">Link list</a>
+            </li>
+            <li>
+              <a href="#avatar">Avatar</a>
+            </li>
+            <li>
+              <a href="#user-profile-box">User Profile Box</a>
+            </li>
+            <li>
+              <a href="#author-box">Author Box</a>
+            </li>
+            <li>
+              <a href="#badge">Badge</a>
+            </li>
+            <li>
+              <a href="#card">Card</a>
+            </li>
+            <li>
+              <a href="#button">Button</a>
+            </li>
+            <li>
+              <a href="#reaction-counter">Reaction Counter</a>
+            </li>
+            <li>
+              <a href="#loading">Loading</a>
+            </li>
+            <li>
+              <a href="#loading-placeholder">Loading Placeholder</a>
+            </li>
+            <li>
+              <a href="#toggle">Toggle</a>
+            </li>
+            <li>
+              <a href="#socialshare">Social Share</a>
+            </li>
+            <li>
+              <a href="#themeselector">Theme selector</a>
+            </li>
+
+            <li>
+              <a href="#contentsummaryview">Content Summary View</a>
+            </li>
+            <li>
+              <a href="#image">Image</a>
+            </li>
+            <li className="submenu">
+              <a href="#form-elements">Form elements</a>
+              <ul>
+                <li>
+                  <a href="#select">Select</a>
+                </li>
+                <li>
+                  <a href="#input-radio">Input Radio</a>
+                </li>
+                <li>
+                  <a href="#input-text">Input Text</a>
+                </li>
+                <li>
+                  <a href="#textarea">Textarea</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#form-elements-dynamic">Form Elements Dynamic</a>
+            </li>
+            <li>
+              <a href="#dynamic-field-view">Dynamic field view</a>
+            </li>
+            <li>
+              <a href="#tagsinput">Tags Input</a>
+            </li>
+            <li>
+              <a href="#tagsfield">Tags Field</a>
+            </li>
+            <li>
+              <a href="#passwordstrength">Password strength</a>
+            </li>
+            <li>
+              <a href="#table">Table</a>
+            </li>
+            <li>
+              <a href="#videorecorder">Video Recorder</a>
+            </li>
+            <li>
+              <a href="#upload">Upload</a>
+            </li>
+            <li>
+              <a href="#map">Map</a>
+            </li>
+          </ul>
+        </div>
+      <style jsx>{
+        `
+        .list-menu {
+          background: var(--accents-1);
+          padding: var(--edge-gap-double);
+          box-sizing: border-box;
+          z-index: var(--z-index-header);
+        }
+
+        .list-menu::-webkit-scrollbar {
+          width: 10px;
+        }
+
+       
+        .list-menu .submenu a::after {
+          background: transparent;
+          border-bottom: 2px solid var(--accents-6);
+          border-right: 2px solid var(--accents-6);
+          content: '';
+          display: inline-block;
+          height: 8px;
+          margin: 0 0 2px 8px;
+          transform: rotate(45deg);
+          transform-origin: 50% 50%;
+          transition: 0.3s ease;
+          width: 8px;
+        }
+
+        .list-menu .submenu ul li a::after {
+          display: none;
+        }
+
+        .list-menu .submenu ul {
+          max-height: 0;
+          border-left: 2px solid var(--accents-2);
+          opacity: 0;
+          overflow: hidden;
+          transition: 0.3s ease;
+          padding-left: var(--edge-gap-half);
+          margin-left: var(--edge-gap-half);
+          visibility: hidden;
+        }
+
+        .list-menu .submenu:hover ul {
+          max-height: 260px;
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .list-menu .submenu:hover a::after {
+          transform: rotate(-135deg) translate(-2px, -2px);
+        }
+
+        .list-menu h3 {
+          padding: var(--edge-gap-half) 0 var(--edge-gap);
+        }
+
+        .list-menu ul {
+          list-style: none;
+        }
+
+        .list-menu li a {
+          color: var(--accents-6);
+          font-size: 14px;
+          font-weight: 500;
+          padding: var(--edge-gap-half);
+          display: block;
+          text-decoration: none;
+        }
+
+        .list-menu li a:hover {
+          background: var(--accents-2);
+          border-radius: var(--edge-radius);
+        }
+
+        `
+      }</style>
+    </>
+  )
+}
 
 const Components = () => {
   const demoContent = {
@@ -208,105 +390,9 @@ const Components = () => {
   ]
 
   return (
-    <Layout title="Components showcase" fullWidth={true}>
+    <Layout title="Components showcase" fullWidth={true} leftColumn={<Menu />}>
       <div className="components-layout">
-        <div className="list-menu">
-          <ul>
-            <li>
-              <a href="#drop-menu">Dropdown menu</a>
-            </li>
-            <li>
-              <a href="#linklist">Link list</a>
-            </li>
-            <li>
-              <a href="#avatar">Avatar</a>
-            </li>
-            <li>
-              <a href="#user-profile-box">User Profile Box</a>
-            </li>
-            <li>
-              <a href="#author-box">Author Box</a>
-            </li>
-            <li>
-              <a href="#badge">Badge</a>
-            </li>
-            <li>
-              <a href="#card">Card</a>
-            </li>
-            <li>
-              <a href="#button">Button</a>
-            </li>
-            <li>
-              <a href="#reaction-counter">Reaction Counter</a>
-            </li>
-            <li>
-              <a href="#loading">Loading</a>
-            </li>
-            <li>
-              <a href="#loading-placeholder">Loading Placeholder</a>
-            </li>
-            <li>
-              <a href="#toggle">Toggle</a>
-            </li>
-            <li>
-              <a href="#socialshare">Social Share</a>
-            </li>
-            <li>
-              <a href="#themeselector">Theme selector</a>
-            </li>
-
-            <li>
-              <a href="#contentsummaryview">Content Summary View</a>
-            </li>
-            <li>
-              <a href="#image">Image</a>
-            </li>
-            <li className="submenu">
-              <a href="#form-elements">Form elements</a>
-              <ul>
-                <li>
-                  <a href="#select">Select</a>
-                </li>
-                <li>
-                  <a href="#input-radio">Input Radio</a>
-                </li>
-                <li>
-                  <a href="#input-text">Input Text</a>
-                </li>
-                <li>
-                  <a href="#textarea">Textarea</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#form-elements-dynamic">Form Elements Dynamic</a>
-            </li>
-            <li>
-              <a href="#dynamic-field-view">Dynamic field view</a>
-            </li>
-            <li>
-              <a href="#tagsinput">Tags Input</a>
-            </li>
-            <li>
-              <a href="#tagsfield">Tags Field</a>
-            </li>
-            <li>
-              <a href="#passwordstrength">Password strength</a>
-            </li>
-            <li>
-              <a href="#table">Table</a>
-            </li>
-            <li>
-              <a href="#videorecorder">Video Recorder</a>
-            </li>
-            <li>
-              <a href="#upload">Upload</a>
-            </li>
-            <li>
-              <a href="#map">Map</a>
-            </li>
-          </ul>
-        </div>
+        
         <div className="components">
           <h1>Components showcase</h1>
 
@@ -452,6 +538,44 @@ const links = [{
               </div>
               <div className="item-wrapper">
                 <UserProfileBox
+                  user={{
+                    username: 'demo-user',
+                    profile: {
+                      picture: {
+                        path: 'https://loremflickr.com/240/240/food?random=3',
+                      },
+                      displayName: 'Jonh Doe',
+                      bio: 'My bio is something special',
+                      github: 'yes',
+                      facebook: 'yes',
+                      twitter: 'yes',
+                    },
+                  }}
+                />
+              </div>
+              <div className="item-wrapper">
+                <UserProfileBox
+                  horizontal
+                  user={{
+                    username: 'demo-user',
+                    profile: {
+                      picture: {
+                        path: 'https://loremflickr.com/240/240/food?random=3',
+                      },
+                      displayName: 'Jonh Doe',
+                      bio: 'My bio is something special',
+                      github: 'yes',
+                      facebook: 'yes',
+                      twitter: 'yes',
+                    },
+                  }}
+                />
+              </div>
+              <div className="item-wrapper">
+                <UserProfileBox
+                  basic
+                  small
+                  horizontal
                   user={{
                     username: 'demo-user',
                     profile: {
@@ -629,6 +753,12 @@ const links = [{
 
               <div className="item-wrapper">
                 <Button aria-label="Normal button" secondary>
+                  Button example
+                </Button>
+              </div>
+
+              <div className="item-wrapper">
+                <Button aria-label="Soft button" soft>
                   Button example
                 </Button>
               </div>
@@ -1292,108 +1422,15 @@ const links = [{
           padding-left: var(--edge-gap-double);
           margin-bottom: var(--edge-gap);
         }
-        .components-layout {
-          align-items: flex-start;
-          display: flex;
-          flex-wrap: wrap;
-        }
+        
 
         .components-layout h3{
           font-size: 24px;
         }
 
-        @media (max-width: 780px) {
-          .components-layout {
-            flex-direction: column;
-          }
-        }
+       
 
-        .list-menu {
-          background: var(--accents-1);
-          overflow: scroll;
-          position: sticky;
-          top: 80px;
-          padding: var(--edge-gap-double);
-          box-sizing: border-box;
-          height: 100vh;
-          max-width: 420px;
-          width: 30%;
-          z-index: var(--z-index-header);
-        }
-
-        .list-menu::-webkit-scrollbar {
-          width: 10px;
-        }
-
-        .list-menu::-webkit-scrollbar-thumb {
-          background: var(--accents-3);
-        }
-
-        .list-menu::-webkit-scrollbar-track {
-          background: var(--accents-1);
-        }
-
-        .list-menu .submenu a::after {
-          background: transparent;
-          border-bottom: 2px solid var(--accents-6);
-          border-right: 2px solid var(--accents-6);
-          content: '';
-          display: inline-block;
-          height: 8px;
-          margin: 0 0 2px 8px;
-          transform: rotate(45deg);
-          transform-origin: 50% 50%;
-          transition: 0.3s ease;
-          width: 8px;
-        }
-
-        .list-menu .submenu ul li a::after {
-          display: none;
-        }
-
-        .list-menu .submenu ul {
-          max-height: 0;
-          border-left: 2px solid var(--accents-2);
-          opacity: 0;
-          overflow: hidden;
-          transition: 0.3s ease;
-          padding-left: var(--edge-gap-half);
-          margin-left: var(--edge-gap-half);
-          visibility: hidden;
-        }
-
-        .list-menu .submenu:hover ul {
-          max-height: 260px;
-          opacity: 1;
-          visibility: visible;
-        }
-
-        .list-menu .submenu:hover a::after {
-          transform: rotate(-135deg) translate(-2px, -2px);
-        }
-
-        .list-menu h3 {
-          padding: var(--edge-gap-half) 0 var(--edge-gap);
-        }
-
-        .list-menu ul {
-          list-style: none;
-        }
-
-        .list-menu li a {
-          color: var(--accents-6);
-          font-size: 14px;
-          font-weight: 500;
-          padding: var(--edge-gap-half);
-          display: block;
-          text-decoration: none;
-        }
-
-        .list-menu li a:hover {
-          background: var(--accents-2);
-          border-radius: var(--edge-radius);
-        }
-
+       
         .components {
           padding: var(--edge-gap-double);
           background: var(--edge-background);

@@ -1,7 +1,6 @@
 import Head from '../head/head'
 import Header from '../header/header'
 import Footer from '../footer/footer'
-import ToolBar from '@components/generic/toolbar/toolbar'
 
 const Layout = (props) => (
   <>
@@ -20,7 +19,7 @@ const Layout = (props) => (
           }`}
         >
           <div className="left-column">
-            <ToolBar />
+            {props.leftColumn}
           </div>
           <div className="center-column">
             <div className="center-column-content">{props.children}</div>
