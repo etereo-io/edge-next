@@ -139,13 +139,11 @@ function Menu() {
           background: var(--accents-1);
           padding: var(--edge-gap-double);
           box-sizing: border-box;
-          z-index: var(--z-index-header);
         }
 
         .list-menu::-webkit-scrollbar {
           width: 10px;
         }
-
        
         .list-menu .submenu a::after {
           background: transparent;
