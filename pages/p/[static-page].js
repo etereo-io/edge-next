@@ -1,8 +1,8 @@
 import Layout from '@components/layout/normal/layout'
+import MarkdownIt from 'markdown-it'
 import MarkdownRead from '@components/generic/markdown-read/markdown-read'
 import React from 'react'
 import fs from 'fs'
-import marked from 'marked'
 import matter from 'gray-matter'
 import path from 'path'
 
@@ -30,6 +30,11 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }) => {
+  const md = new MarkdownIt({
+    html: true,
+    linkify: true
+  })
+
   const slug = params['static-page']
   const markdownWithMetadata = fs
     .readFileSync(path.join('static-pages', slug + '.md'))
@@ -39,7 +44,7 @@ export const getStaticProps = async ({ params }) => {
   return {
     props: {
       data: parsedMarkdown.data,
-      htmlString: marked(parsedMarkdown.content),
+      htmlString: md.render(parsedMarkdown.content),
     },
   }
 }

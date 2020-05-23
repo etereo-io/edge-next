@@ -4,21 +4,6 @@ import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 
 
-export const extractUserMentions = (text) => {
-
-  const mentions = (text.match(/@([A-Za-z]+[A-Za-z0-9_-]+)/g)) || []
-
-  let parsedText = text
-
-  mentions.forEach(m  => {
-    parsedText = text.replace(m, `[${m}](/profile/${m})`)
-  })
-
-  return {
-    parsedText,
-    mentions: [...new Set(mentions)]
-  }
-}
 
 export default function ({
   contentId = '',
@@ -71,11 +56,8 @@ export default function ({
     setLoading(true)
     setError(false)
 
-    const { parsedText , mentions } = extractUserMentions(message)
-
     submitRequest({
-      message: parsedText,
-      mentions, mentions,
+      message,
       conversationId: conversationId ? conversationId : null,
     })
       .then((result) => {

@@ -5,6 +5,15 @@ import { format } from 'timeago.js'
 import AuthorBox from '../../user/author-box/author-box'
 import { useState } from 'react'
 import CommentForm from '../comment-form/comment-form'
+import MarkdownRead from '@components/generic/markdown-read/markdown-read'
+
+
+import MarkdownIt from 'markdown-it'
+const md = MarkdownIt({
+  html: false,
+  linkify: true,
+})
+.disable(['heading', 'hr', 'table'])
 
 export default function CommentEntry({
   contentId = '',
@@ -54,7 +63,7 @@ export default function CommentEntry({
     // TODO: Call the api
   }
 
-  const htmlString = marked(comment.message || '')
+  const htmlString = md.render(comment.message || '')
 
   return (
     <>
@@ -67,7 +76,9 @@ export default function CommentEntry({
               <span className="time">{format(comment.createdAt)}</span>
             </span>
           </div>
-          <div className="content" dangerouslySetInnerHTML={{ __html: htmlString }}></div>
+          <div className="content">
+            <MarkdownRead htmlString={htmlString} />
+          </div>
           <div className="actions">
             {hasWritePermission && !showReplyForm && (
               <span
