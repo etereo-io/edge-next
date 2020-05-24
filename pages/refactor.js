@@ -56,7 +56,10 @@ const Refactor = () => {
             <ul>
               <li>
                 <a href="#" className="edge-panel-user-navigation-item">
-                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-groups.svg" />
+                  <img
+                    className="edge-panel-user-navigation-icon"
+                    src="/refactor/icon-groups.svg"
+                  />
                   <span className="edge-panel-user-navigation-title">
                     My Groups
                   </span>
@@ -64,7 +67,10 @@ const Refactor = () => {
               </li>
               <li>
                 <a href="#" className="edge-panel-user-navigation-item">
-                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-rewards.svg" />
+                  <img
+                    className="edge-panel-user-navigation-icon"
+                    src="/refactor/icon-rewards.svg"
+                  />
                   <span className="edge-panel-user-navigation-title">
                     Rewards
                   </span>
@@ -72,7 +78,10 @@ const Refactor = () => {
               </li>
               <li>
                 <a href="#" className="edge-panel-user-navigation-item">
-                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-courses.svg" />
+                  <img
+                    className="edge-panel-user-navigation-icon"
+                    src="/refactor/icon-courses.svg"
+                  />
                   <span className="edge-panel-user-navigation-title">
                     Courses
                   </span>
@@ -80,7 +89,10 @@ const Refactor = () => {
               </li>
               <li>
                 <a href="#" className="edge-panel-user-navigation-item">
-                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-analytics.svg" />
+                  <img
+                    className="edge-panel-user-navigation-icon"
+                    src="/refactor/icon-analytics.svg"
+                  />
                   <span className="edge-panel-user-navigation-title">
                     Analytics
                   </span>
@@ -89,8 +101,50 @@ const Refactor = () => {
             </ul>
           </nav>
 
+          {/*Panel User Tags*/}
+          <ul className="edge-panel-user-tags">
+            <span className="edge-tag">
+              Trending Tags
+            </span>
+            <li>
+              <a className="edge-panel-user-tag-unit" href="#">
+                Web Development
+              </a>
+            </li>
+            <li>
+              <a className="edge-panel-user-tag-unit" href="#">
+                NextJS
+              </a>
+            </li>
+            <li>
+              <a className="edge-panel-user-tag-unit" href="#">
+                New Vercel
+              </a>
+            </li>
+            <li>
+              <a className="edge-panel-user-tag-unit" href="#">
+                React
+              </a>
+            </li>
+            <li>
+              <a className="edge-panel-user-tag-unit" href="#">
+                Startup
+              </a>
+            </li>
+            <li>
+              <a className="edge-panel-user-tag-unit" href="#">
+                Web Monetization
+              </a>
+            </li>
+            <li>
+              <a className="edge-panel-user-tag-unit" href="#">
+                Components
+              </a>
+            </li>
+          </ul>
+
           <button className="edge-panel-user-action-mobile">
-            <img src="/refactor/icon-add.svg"/>
+            <img src="/refactor/icon-add.svg" />
           </button>
         </aside>
 
@@ -136,18 +190,23 @@ const Refactor = () => {
 
               {/*Edge Item Card Content*/}
               <div className="edge-item-card-content">
-                <h6 className="edge-item-card-title">Find a purporse. Awake inner potential.</h6>
+                <h6 className="edge-item-card-title">
+                  Find a purporse. Awake inner potential.
+                </h6>
                 <div className="edge-item-card-content-inner">
                   <p className="edge-item-card-text">
-                    Sus hojas del tabaco se siembran y cosechan totalmente libres
-                    de fertilizantes y pesticidas. Además, como su otra versión,
-                    no contiene ningún tipo de químico agregado ni aditivo, pero
-                    su sabor es algo más suave que el anterior. Ahora bien, el
-                    precio de la versión orgánica es algo más elevado que el de la
-                    versión regular.
+                    Sus hojas del tabaco se siembran y cosechan totalmente
+                    libres de fertilizantes y pesticidas. Además, como su otra
+                    versión, no contiene ningún tipo de químico agregado ni
+                    aditivo, pero su sabor es algo más suave que el anterior.
+                    Ahora bien, el precio de la versión orgánica es algo más
+                    elevado que el de la versión regular.
                   </p>
 
-                  <img className="edge-item-card-image" src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"/>
+                  <img
+                    className="edge-item-card-image"
+                    src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"
+                  />
                 </div>
               </div>
 
@@ -221,18 +280,23 @@ const Refactor = () => {
 
               {/*Edge Item Card Content*/}
               <div className="edge-item-card-content">
-                <h6 className="edge-item-card-title">Find a purporse. Awake inner potential.</h6>
+                <h6 className="edge-item-card-title">
+                  Find a purporse. Awake inner potential.
+                </h6>
                 <div className="edge-item-card-content-inner">
                   <p className="edge-item-card-text">
-                    Sus hojas del tabaco se siembran y cosechan totalmente libres
-                    de fertilizantes y pesticidas. Además, como su otra versión,
-                    no contiene ningún tipo de químico agregado ni aditivo, pero
-                    su sabor es algo más suave que el anterior. Ahora bien, el
-                    precio de la versión orgánica es algo más elevado que el de la
-                    versión regular.
+                    Sus hojas del tabaco se siembran y cosechan totalmente
+                    libres de fertilizantes y pesticidas. Además, como su otra
+                    versión, no contiene ningún tipo de químico agregado ni
+                    aditivo, pero su sabor es algo más suave que el anterior.
+                    Ahora bien, el precio de la versión orgánica es algo más
+                    elevado que el de la versión regular.
                   </p>
 
-                  <img className="edge-item-card-image" src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"/>
+                  <img
+                    className="edge-item-card-image"
+                    src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"
+                  />
                 </div>
               </div>
 
@@ -306,18 +370,23 @@ const Refactor = () => {
 
               {/*Edge Item Card Content*/}
               <div className="edge-item-card-content">
-                <h6 className="edge-item-card-title">Find a purporse. Awake inner potential.</h6>
+                <h6 className="edge-item-card-title">
+                  Find a purporse. Awake inner potential.
+                </h6>
                 <div className="edge-item-card-content-inner">
                   <p className="edge-item-card-text">
-                    Sus hojas del tabaco se siembran y cosechan totalmente libres
-                    de fertilizantes y pesticidas. Además, como su otra versión,
-                    no contiene ningún tipo de químico agregado ni aditivo, pero
-                    su sabor es algo más suave que el anterior. Ahora bien, el
-                    precio de la versión orgánica es algo más elevado que el de la
-                    versión regular.
+                    Sus hojas del tabaco se siembran y cosechan totalmente
+                    libres de fertilizantes y pesticidas. Además, como su otra
+                    versión, no contiene ningún tipo de químico agregado ni
+                    aditivo, pero su sabor es algo más suave que el anterior.
+                    Ahora bien, el precio de la versión orgánica es algo más
+                    elevado que el de la versión regular.
                   </p>
 
-                  <img className="edge-item-card-image" src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"/>
+                  <img
+                    className="edge-item-card-image"
+                    src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"
+                  />
                 </div>
               </div>
 
