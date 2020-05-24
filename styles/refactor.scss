@@ -141,7 +141,7 @@ $edge-gap-triple: 24px;
     display: inline-block;
     font-size: 10px;
     font-weight: 500;
-    padding: $edge-gap-half;
+    padding: $edge-gap-half $edge-gap;
     text-transform: uppercase;
   }
 
@@ -380,7 +380,7 @@ $edge-gap-triple: 24px;
     //Three Panels
     &.three-panels {
       display: grid;
-      grid-template-columns: 0.3fr 1fr 0.3fr;
+      grid-template-columns: 0.3fr 1fr 0.25fr;
       grid-template-rows: 0.5fr;
       gap: 0px $edge-gap-triple;
       grid-template-areas: 'edge-panel-user edge-panel-content edge-panel-ads';
@@ -458,6 +458,26 @@ $edge-gap-triple: 24px;
     padding: $edge-gap * 5 0;
     height: 100%;
 
+    .edge-tag{
+      margin-bottom: $edge-gap-double;
+    }
+
+    .edge-panel-ads-featured-sponsors{
+      margin-top: $edge-gap-triple;
+    }
+
+    .edge-placeholder{
+      background-color: $edge-emph-2;
+      border-radius: $edge-gap;
+      height: 160px;
+      margin-bottom: $edge-gap-double;
+      width: 100%;
+
+      &.small{
+        height: 56px;
+      }
+    }
+
     @media all and (max-width: 960px) {
       display: none;
     }
@@ -528,9 +548,11 @@ $edge-gap-triple: 24px;
         .edge-item-card-title {
           font-size: 21px;
           line-height: 1.25;
+          padding-right: 0;
         }
         .edge-item-card-text {
           font-size: 14px;
+          padding-right: 0;
         }
       }
     }

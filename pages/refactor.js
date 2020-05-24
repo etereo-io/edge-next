@@ -128,17 +128,7 @@ const Refactor = () => {
             </li>
             <li>
               <a className="edge-panel-user-tag-unit" href="#">
-                Startup
-              </a>
-            </li>
-            <li>
-              <a className="edge-panel-user-tag-unit" href="#">
                 Web Monetization
-              </a>
-            </li>
-            <li>
-              <a className="edge-panel-user-tag-unit" href="#">
-                Components
               </a>
             </li>
           </ul>
@@ -423,8 +413,30 @@ const Refactor = () => {
             </article>
           </div>
         </section>
+
         {/*Edge Panel Ads*/}
-        <aside className="edge-panel-ads">asdf</aside>
+        <aside className="edge-panel-ads">
+          {/*Edge Panel Featured Content*/}
+          <div className="edge-panel-ads-featured-content">
+            <span className="edge-tag">
+              Featured Content
+            </span>
+            <div className="edge-placeholder"></div>
+            <div className="edge-placeholder small"></div>
+            <div className="edge-placeholder small"></div>
+          </div>
+
+          {/*Edge Panel Featured Sponsors*/}
+          <div className="edge-panel-ads-featured-sponsors">
+            <span className="edge-tag">
+              Featured Sponsors
+            </span>
+            <div className="edge-placeholder"></div>
+            <div className="edge-placeholder small"></div>
+            <div className="edge-placeholder small"></div>
+          </div>
+
+        </aside>
       </div>
     </section>
   )
