@@ -385,7 +385,7 @@ $edge-gap-triple: 24px;
       gap: 0px $edge-gap-triple;
       grid-template-areas: 'edge-panel-user edge-panel-content edge-panel-ads';
 
-      .edge-panel-user {
+      .edge-panel-user, .edge-panel-ads {
         height: fit-content;
         position: sticky;
         top: 80px;
@@ -403,7 +403,8 @@ $edge-gap-triple: 24px;
         grid-template-columns: auto 1fr;
 
         .edge-panel-user-navigation-title,
-        .edge-panel-user .edge-avatar-user-info {
+        .edge-panel-user .edge-avatar-user-info,
+        .edge-panel-user-footer {
           display: none;
         }
         .edge-panel-user {
@@ -434,6 +435,8 @@ $edge-gap-triple: 24px;
 
   //Edge Panel User
   .edge-panel-user {
+    display: flex;
+    flex-flow: column;
     grid-area: edge-panel-user;
     overflow-y: auto;
     overflow-x: hidden;
@@ -442,6 +445,31 @@ $edge-gap-triple: 24px;
 
     @media all and (max-width: 720px) {
       padding: $edge-gap-double 0;
+    }
+  }
+
+  //Edge Panel User Footer
+  .edge-panel-user-footer{
+    align-items: center;
+    display: flex;
+    height: fit-content;
+    margin-top: auto;
+    justify-content: space-between;
+
+    .edge-panel-user-faqs{
+      width: $edge-gap-triple;
+    }
+
+    select{
+      border: 1px solid #bdbdbd;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      position: relative;
+      transition: border-color 0.35s ease;
+      will-change: border-color;
+      width: fit-content;
     }
   }
 

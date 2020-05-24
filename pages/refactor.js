@@ -103,9 +103,7 @@ const Refactor = () => {
 
           {/*Panel User Tags*/}
           <ul className="edge-panel-user-tags">
-            <span className="edge-tag">
-              Trending Tags
-            </span>
+            <span className="edge-tag">Trending Tags</span>
             <li>
               <a className="edge-panel-user-tag-unit" href="#">
                 Web Development
@@ -132,6 +130,17 @@ const Refactor = () => {
               </a>
             </li>
           </ul>
+
+          <footer className="edge-panel-user-footer">
+            <a className="edge-panel-user-faqs" href="#">
+              <img src="/refactor/icon-question.svg"/>
+            </a>
+            <select>
+              <option>Light theme</option>
+              <option>Dark theme</option>
+              <option>Edge theme</option>
+            </select>
+          </footer>
 
           <button className="edge-panel-user-action-mobile">
             <img src="/refactor/icon-add.svg" />
@@ -418,9 +427,7 @@ const Refactor = () => {
         <aside className="edge-panel-ads">
           {/*Edge Panel Featured Content*/}
           <div className="edge-panel-ads-featured-content">
-            <span className="edge-tag">
-              Featured Content
-            </span>
+            <span className="edge-tag">Featured Content</span>
             <div className="edge-placeholder"></div>
             <div className="edge-placeholder small"></div>
             <div className="edge-placeholder small"></div>
@@ -428,14 +435,11 @@ const Refactor = () => {
 
           {/*Edge Panel Featured Sponsors*/}
           <div className="edge-panel-ads-featured-sponsors">
-            <span className="edge-tag">
-              Featured Sponsors
-            </span>
+            <span className="edge-tag">Featured Sponsors</span>
             <div className="edge-placeholder"></div>
             <div className="edge-placeholder small"></div>
             <div className="edge-placeholder small"></div>
           </div>
-
         </aside>
       </div>
     </section>
