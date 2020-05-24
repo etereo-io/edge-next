@@ -33,7 +33,7 @@ const Refactor = () => {
       </header>
 
       {/*Edge Panels*/}
-      <div className="edge-panels three-panels container">
+      <div className="edge-panels three-panels edge-container">
         {/*Edge Panel User*/}
         <aside className="edge-panel-user">
           {/*Edge Avatar User*/}
@@ -55,37 +55,219 @@ const Refactor = () => {
           <nav className="edge-panel-user-navigation">
             <ul>
               <li>
-                <a href="#">
-                  <img src="/refactor/icon-groups.svg" />
-                  My Groups
+                <a href="#" className="edge-panel-user-navigation-item">
+                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-groups.svg" />
+                  <span className="edge-panel-user-navigation-title">
+                    My Groups
+                  </span>
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <img src="/refactor/icon-rewards.svg" />
-                  Rewards
+                <a href="#" className="edge-panel-user-navigation-item">
+                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-rewards.svg" />
+                  <span className="edge-panel-user-navigation-title">
+                    Rewards
+                  </span>
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <img src="/refactor/icon-courses.svg" />
-                  Courses
+                <a href="#" className="edge-panel-user-navigation-item">
+                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-courses.svg" />
+                  <span className="edge-panel-user-navigation-title">
+                    Courses
+                  </span>
                 </a>
               </li>
               <li>
-                <a href="#">
-                  <img src="/refactor/icon-analytics.svg" />
-                  Analytics
+                <a href="#" className="edge-panel-user-navigation-item">
+                  <img className="edge-panel-user-navigation-icon" src="/refactor/icon-analytics.svg" />
+                  <span className="edge-panel-user-navigation-title">
+                    Analytics
+                  </span>
                 </a>
               </li>
             </ul>
           </nav>
+
+          <button className="edge-panel-user-action-mobile">
+            <img src="/refactor/icon-add.svg"/>
+          </button>
         </aside>
 
         {/*Edge Panel Content*/}
         <section className="edge-panel-content">
           {/*Edge Panel Content Inner*/}
           <div className="edge-panel-content-inner">
+            {/*Edge Item Card*/}
+            <article className="edge-item-card">
+              {/*Edge Item Card Header*/}
+              <header className="edge-item-card-header">
+                {/*Edge Avatar User*/}
+                <div className="edge-avatar-user">
+                  {/*Avatar*/}
+                  <div className="edge-avatar small has-status available">
+                    <img
+                      className="edge-avatar-image"
+                      src="https://storage.googleapis.com/edge-next/profilePicture/1590225157254-image_processing20200203-15714-1coq9nh.jpg"
+                    />
+                  </div>
+                  <div className="edge-avatar-user-info">
+                    <strong className="edge-user-name">Hayder Al-Deen</strong>
+                    <small className="edge-user-alias">@hayder</small>
+                  </div>
+                </div>
+
+                {/*Edge Item Card Actions*/}
+                <div className="edge-item-card-actions">
+                  {/*Edge Button Has Icon*/}
+                  <button className="edge-button has-icon check">
+                    Following
+                  </button>
+
+                  {/*Edge Button Icon Counter*/}
+                  <div className="edge-button-icon-counter">
+                    <small className="edge-button-counter">21</small>
+                    <button className="edge-button-icon">
+                      <img src="/refactor/icon-heart.svg" />
+                    </button>
+                  </div>
+                </div>
+              </header>
+
+              {/*Edge Item Card Content*/}
+              <div className="edge-item-card-content">
+                <h6 className="edge-item-card-title">Find a purporse. Awake inner potential.</h6>
+                <div className="edge-item-card-content-inner">
+                  <p className="edge-item-card-text">
+                    Sus hojas del tabaco se siembran y cosechan totalmente libres
+                    de fertilizantes y pesticidas. Además, como su otra versión,
+                    no contiene ningún tipo de químico agregado ni aditivo, pero
+                    su sabor es algo más suave que el anterior. Ahora bien, el
+                    precio de la versión orgánica es algo más elevado que el de la
+                    versión regular.
+                  </p>
+
+                  <img className="edge-item-card-image" src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"/>
+                </div>
+              </div>
+
+              {/*Edge Item Card Tags*/}
+              <div className="edge-tags-group">
+                <span className="edge-tag">Startup</span>
+                <span className="edge-tag">Entrepeneur</span>
+                <span className="edge-tag">Salsa</span>
+              </div>
+
+              {/*Edge Item Card Footer*/}
+              <footer className="edge-item-card-footer">
+                <ul className="edge-item-card-stats">
+                  <li className="edge-item-card-stats-item">
+                    <b>954</b>
+                    <span>comments</span>
+                  </li>
+
+                  <li className="edge-item-card-stats-item">
+                    <b>3677</b>
+                    <span>views</span>
+                  </li>
+                </ul>
+
+                <div className="edge-button-share">
+                  <span className="edge-button-share-title">Share this</span>
+                  <ul className="edge-button-share-list">
+                    <li className="edge-button-share-unit">F</li>
+                    <li className="edge-button-share-unit">T</li>
+                    <li className="edge-button-share-unit">W</li>
+                  </ul>
+                </div>
+              </footer>
+            </article>
+
+            {/*Edge Item Card*/}
+            <article className="edge-item-card">
+              {/*Edge Item Card Header*/}
+              <header className="edge-item-card-header">
+                {/*Edge Avatar User*/}
+                <div className="edge-avatar-user">
+                  {/*Avatar*/}
+                  <div className="edge-avatar small has-status available">
+                    <img
+                      className="edge-avatar-image"
+                      src="https://storage.googleapis.com/edge-next/profilePicture/1590225157254-image_processing20200203-15714-1coq9nh.jpg"
+                    />
+                  </div>
+                  <div className="edge-avatar-user-info">
+                    <strong className="edge-user-name">Hayder Al-Deen</strong>
+                    <small className="edge-user-alias">@hayder</small>
+                  </div>
+                </div>
+
+                {/*Edge Item Card Actions*/}
+                <div className="edge-item-card-actions">
+                  {/*Edge Button Has Icon*/}
+                  <button className="edge-button has-icon check">
+                    Following
+                  </button>
+
+                  {/*Edge Button Icon Counter*/}
+                  <div className="edge-button-icon-counter">
+                    <small className="edge-button-counter">21</small>
+                    <button className="edge-button-icon">
+                      <img src="/refactor/icon-heart.svg" />
+                    </button>
+                  </div>
+                </div>
+              </header>
+
+              {/*Edge Item Card Content*/}
+              <div className="edge-item-card-content">
+                <h6 className="edge-item-card-title">Find a purporse. Awake inner potential.</h6>
+                <div className="edge-item-card-content-inner">
+                  <p className="edge-item-card-text">
+                    Sus hojas del tabaco se siembran y cosechan totalmente libres
+                    de fertilizantes y pesticidas. Además, como su otra versión,
+                    no contiene ningún tipo de químico agregado ni aditivo, pero
+                    su sabor es algo más suave que el anterior. Ahora bien, el
+                    precio de la versión orgánica es algo más elevado que el de la
+                    versión regular.
+                  </p>
+
+                  <img className="edge-item-card-image" src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"/>
+                </div>
+              </div>
+
+              {/*Edge Item Card Tags*/}
+              <div className="edge-tags-group">
+                <span className="edge-tag">Startup</span>
+                <span className="edge-tag">Entrepeneur</span>
+                <span className="edge-tag">Salsa</span>
+              </div>
+
+              {/*Edge Item Card Footer*/}
+              <footer className="edge-item-card-footer">
+                <ul className="edge-item-card-stats">
+                  <li className="edge-item-card-stats-item">
+                    <b>954</b>
+                    <span>comments</span>
+                  </li>
+
+                  <li className="edge-item-card-stats-item">
+                    <b>3677</b>
+                    <span>views</span>
+                  </li>
+                </ul>
+
+                <div className="edge-button-share">
+                  <span className="edge-button-share-title">Share this</span>
+                  <ul className="edge-button-share-list">
+                    <li className="edge-button-share-unit">F</li>
+                    <li className="edge-button-share-unit">T</li>
+                    <li className="edge-button-share-unit">W</li>
+                  </ul>
+                </div>
+              </footer>
+            </article>
+
             {/*Edge Item Card*/}
             <article className="edge-item-card">
               {/*Edge Item Card Header*/}
