@@ -418,6 +418,17 @@ $edge-gap-triple: 24px;
           display: none;
         }
       }
+
+      @media all and (max-width: 460px){
+        padding-left: 0;
+        .edge-panel-user {
+          transform: none;
+          .edge-avatar-image{
+            height: 32px;
+            width: 32px;
+          }
+        }
+      }
     }
   }
 
@@ -589,6 +600,12 @@ $edge-gap-triple: 24px;
 
     @media all and (max-width: 720px) {
       padding: $edge-gap-double;
+
+      .edge-item-card-stats-item{
+        display: flex;
+        flex-flow: column;
+        font-size: 12px;
+      }
     }
   }
 }
