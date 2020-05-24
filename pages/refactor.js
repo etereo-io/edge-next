@@ -88,6 +88,7 @@ const Refactor = () => {
           <div className="edge-panel-content-inner">
             {/*Edge Item Card*/}
             <article className="edge-item-card">
+              {/*Edge Item Card Header*/}
               <header className="edge-item-card-header">
                 {/*Edge Avatar User*/}
                 <div className="edge-avatar-user">
@@ -106,9 +107,45 @@ const Refactor = () => {
 
                 {/*Edge Item Card Actions*/}
                 <div className="edge-item-card-actions">
-                  <button className="edge-button has-icon check">Following</button>
+                  {/*Edge Button Has Icon*/}
+                  <button className="edge-button has-icon check">
+                    Following
+                  </button>
+
+                  {/*Edge Button Icon Counter*/}
+                  <div className="edge-button-icon-counter">
+                    <small className="edge-button-counter">21</small>
+                    <button className="edge-button-icon">
+                      <img src="/refactor/icon-heart.svg" />
+                    </button>
+                  </div>
                 </div>
               </header>
+
+
+              {/*Edge Item Card Footer*/}
+              <footer className="edge-item-card-footer">
+                <ul className="edge-item-card-stats">
+                  <li className="edge-item-card-stats-item">
+                    <b>954</b>
+                    <span>comments</span>
+                  </li>
+
+                  <li className="edge-item-card-stats-item">
+                    <b>3677</b>
+                    <span>views</span>
+                  </li>
+                </ul>
+
+                <div className="edge-button-share">
+                  <span className="edge-button-share-title">Share this</span>
+                  <ul className="edge-button-share-list">
+                    <li className="edge-button-share-unit">F</li>
+                    <li className="edge-button-share-unit">T</li>
+                    <li className="edge-button-share-unit">W</li>
+                  </ul>
+                </div>
+              </footer>
             </article>
           </div>
         </section>

@@ -1,4 +1,6 @@
 //Variables
+$edge-emph-4: #bdbdbd;
+$edge-emph-3: #eaeaea;
 $edge-emph-2: #f3f3f3;
 $edge-empg-1: #f9f9f9;
 $edge-blue: #288fef;
@@ -30,15 +32,101 @@ $edge-gap-triple: 24px;
     padding: $edge-gap $edge-gap-double;
     position: relative;
 
-    &.has-icon{
+    &.has-icon {
       background-position: ($edge-gap + 4px) 50%;
       background-repeat: no-repeat;
       background-size: 14px;
       padding-left: $edge-gap * 4;
 
-      &.check{
+      &.check {
         background-image: url('/refactor/icon-check.svg');
       }
+    }
+  }
+
+  //Buttons Icon
+  .edge-button-icon {
+    border: 2px solid $edge-emph-3;
+    border-radius: 50%;
+    text-align: center;
+    padding: $edge-gap;
+
+    img {
+      display: inline-block;
+      vertical-align: middle;
+      width: $edge-gap-double - 1px;
+    }
+  }
+
+  //Edge Button Share
+  .edge-button-share {
+    border: 1px solid $edge-emph-4;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: $edge-gap $edge-gap-double;
+    position: relative;
+    transition: border-color 0.35s ease;
+    will-change: border-color;
+
+    .edge-button-share-title {
+      display: inline-block;
+      position: relative;
+      transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s ease;
+      will-change: opacity, transform, visibility;
+    }
+
+    .edge-button-share-list {
+      display: flex;
+      justify-content: space-between;
+      left: 0;
+      padding: 0 $edge-gap;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+
+      .edge-button-share-unit {
+        list-style: none;
+        opacity: 0;
+        transition: opacity 0.35s ease, transform 0.35s ease visibility 0.35s ease;
+        transform: translateY(4px);
+        visibility: hidden;
+        will-change: opacity, transform, visibility;
+      }
+    }
+
+    &:hover {
+      border-color: transparent;
+
+      .edge-button-share-title {
+        opacity: 0;
+        transform: translateY(4px);
+        visibility: hidden;
+      }
+      .edge-button-share-unit {
+        opacity: 1;
+        transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s ease;
+        transform: translateY(0);
+        visibility: visible;
+
+        @for $i from 1 through 3 {
+          &:nth-of-type(#{$i}) {
+            transition-delay: $i * 0.1 + s;
+          }
+        }
+      }
+    }
+  }
+
+  //Buttons Icons Counter
+  .edge-button-icon-counter {
+    align-items: center;
+    display: flex;
+
+    .edge-button-counter {
+      font-size: 13px;
+      margin-right: $edge-gap-half;
     }
   }
 
@@ -167,7 +255,7 @@ $edge-gap-triple: 24px;
         font-size: 12px;
       }
 
-      .edge-user-alias{
+      .edge-user-alias {
         font-size: 12px;
       }
     }
@@ -258,20 +346,46 @@ $edge-gap-triple: 24px;
     }
   }
 
-  //Cards
-  .edge-item-card{
+  //Item Cards
+  .edge-item-card {
     background-color: $edge-background;
     border-radius: $edge-gap-double;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: $edge-gap * 4;
     padding: $edge-gap * 4;
 
-
-    .edge-item-card-header{
+    .edge-item-card-header {
       align-items: center;
       display: flex;
       justify-content: space-between;
       width: 100%;
+    }
+
+    .edge-item-card-actions {
+      display: flex;
+
+      .edge-button-icon-counter {
+        margin-left: $edge-gap-double;
+      }
+    }
+
+    .edge-item-card-footer {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+
+      .edge-item-card-stats {
+        display: flex;
+        .edge-item-card-stats-item {
+          font-size: 13px;
+          list-style: none;
+          margin-right: $edge-gap-double;
+
+          b {
+            margin-right: $edge-gap-half;
+          }
+        }
+      }
     }
   }
 }
