@@ -439,9 +439,20 @@ $edge-gap-triple: 24px;
       display: flex;
       justify-content: space-between;
       width: 100%;
+
+      @media all and (max-width: 460px){
+        .edge-button.has-icon{
+          background-position: 50%;
+          height: $edge-gap-triple;
+          padding-left: 0;
+          text-indent: -9999px;
+          width: $edge-gap-triple;
+        }
+      }
     }
 
     .edge-item-card-actions {
+      align-items: center;
       display: flex;
 
       .edge-button-icon-counter {
