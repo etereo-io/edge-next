@@ -29,6 +29,17 @@ $edge-gap-triple: 24px;
     font-weight: 500;
     padding: $edge-gap $edge-gap-double;
     position: relative;
+
+    &.has-icon{
+      background-position: ($edge-gap + 4px) 50%;
+      background-repeat: no-repeat;
+      background-size: 14px;
+      padding-left: $edge-gap * 4;
+
+      &.check{
+        background-image: url('/refactor/icon-check.svg');
+      }
+    }
   }
 
   //Input Search
@@ -97,8 +108,9 @@ $edge-gap-triple: 24px;
   }
 
   //Header
-  header {
+  .edge-header {
     align-items: center;
+    background: $edge-background;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
     display: flex;
     height: 80px;
@@ -198,6 +210,7 @@ $edge-gap-triple: 24px;
     flex-flow: row;
     justify-content: space-between;
 
+    //Three Panels
     &.three-panels {
       display: grid;
       grid-template-columns: 0.3fr 1fr 0.3fr;
@@ -242,6 +255,23 @@ $edge-gap-triple: 24px;
 
     @media all and (max-width: 960px) {
       display: none;
+    }
+  }
+
+  //Cards
+  .edge-item-card{
+    background-color: $edge-background;
+    border-radius: $edge-gap-double;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: $edge-gap * 4;
+    padding: $edge-gap * 4;
+
+
+    .edge-item-card-header{
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
     }
   }
 }

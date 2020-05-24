@@ -2,7 +2,7 @@ const Refactor = () => {
   return (
     <section className="refactor">
       {/*Header*/}
-      <header>
+      <header className="edge-header">
         <div className="edge-container">
           {/*Logo*/}
           <h1 className="edge-logo">edge</h1>
@@ -84,9 +84,33 @@ const Refactor = () => {
 
         {/*Edge Panel Content*/}
         <section className="edge-panel-content">
-            <div className="edge-panel-content-inner">
-                asdf
-            </div>
+          {/*Edge Panel Content Inner*/}
+          <div className="edge-panel-content-inner">
+            {/*Edge Item Card*/}
+            <article className="edge-item-card">
+              <header className="edge-item-card-header">
+                {/*Edge Avatar User*/}
+                <div className="edge-avatar-user">
+                  {/*Avatar*/}
+                  <div className="edge-avatar small has-status available">
+                    <img
+                      className="edge-avatar-image"
+                      src="https://storage.googleapis.com/edge-next/profilePicture/1590225157254-image_processing20200203-15714-1coq9nh.jpg"
+                    />
+                  </div>
+                  <div className="edge-avatar-user-info">
+                    <strong className="edge-user-name">Hayder Al-Deen</strong>
+                    <small className="edge-user-alias">@hayder</small>
+                  </div>
+                </div>
+
+                {/*Edge Item Card Actions*/}
+                <div className="edge-item-card-actions">
+                  <button className="edge-button has-icon check">Following</button>
+                </div>
+              </header>
+            </article>
+          </div>
         </section>
         {/*Edge Panel Ads*/}
         <aside className="edge-panel-ads">asdf</aside>
