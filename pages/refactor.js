@@ -122,6 +122,29 @@ const Refactor = () => {
                 </div>
               </header>
 
+              {/*Edge Item Card Content*/}
+              <div className="edge-item-card-content">
+                <h6 className="edge-item-card-title">Find a purporse. Awake inner potential.</h6>
+                <div className="edge-item-card-content-inner">
+                  <p className="edge-item-card-text">
+                    Sus hojas del tabaco se siembran y cosechan totalmente libres
+                    de fertilizantes y pesticidas. Además, como su otra versión,
+                    no contiene ningún tipo de químico agregado ni aditivo, pero
+                    su sabor es algo más suave que el anterior. Ahora bien, el
+                    precio de la versión orgánica es algo más elevado que el de la
+                    versión regular.
+                  </p>
+
+                  <img className="edge-item-card-image" src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"/>
+                </div>
+              </div>
+
+              {/*Edge Item Card Tags*/}
+              <div className="edge-tags-group">
+                <span className="edge-tag">Startup</span>
+                <span className="edge-tag">Entrepeneur</span>
+                <span className="edge-tag">Salsa</span>
+              </div>
 
               {/*Edge Item Card Footer*/}
               <footer className="edge-item-card-footer">

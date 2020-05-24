@@ -1,4 +1,5 @@
 //Variables
+$edge-emph-7: #666666;
 $edge-emph-4: #bdbdbd;
 $edge-emph-3: #eaeaea;
 $edge-emph-2: #f3f3f3;
@@ -128,6 +129,18 @@ $edge-gap-triple: 24px;
       font-size: 13px;
       margin-right: $edge-gap-half;
     }
+  }
+
+  //Tag Item
+  .edge-tag{
+    background: $edge-foreground;
+    border-radius: $edge-gap-half;
+    color: $edge-background;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: $edge-gap-half;
+    text-transform: uppercase;
   }
 
   //Input Search
@@ -369,6 +382,43 @@ $edge-gap-triple: 24px;
       }
     }
 
+    //Item Card Content
+    .edge-item-card-content{
+      margin: $edge-gap * 5 0 $edge-gap-triple;
+
+      .edge-item-card-title{
+        font-size: 24px;
+        line-height: 1;
+        margin-bottom: $edge-gap-triple;
+        padding-right: $edge-gap-triple;
+      }
+
+      .edge-item-card-text{
+        color: $edge-emph-7;
+        font-size: 16px;
+        line-height: 1.5;
+        padding-right: $edge-gap-triple;
+      }
+
+      .edge-item-card-image{
+        border-radius: $edge-gap-double;
+        margin-top: $edge-gap * 4;
+        object-fit: cover;
+        width: 100%;
+      }
+    }
+
+    //Item Card Tags
+    .edge-tags-group{
+      display: flex;
+      margin-bottom: $edge-gap-double;
+
+      .edge-tag{
+        margin-right: $edge-gap;
+      }
+    }
+
+    //Item Card Footer
     .edge-item-card-footer {
       align-items: center;
       display: flex;
