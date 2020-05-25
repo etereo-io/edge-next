@@ -73,6 +73,18 @@ description: "Empieza Documentation"
 - Easy to deploy
   - Deploy on platforms like Vercel in minutes
 - ~Multilingual support~
+
+
+## How to start using Edge.
+
+1) Clone the [repo](https://github.com/nucleo-org/edge-next)
+2) Edit `edge.config.js` to define your *Content Types* and permissions
+3) Create the different accounts:
+   - Google storage
+   - Social provider apps for sign-in/sign-up (github, facebook, google)
+   - Mongo db database
+4) Configure the environment variables in the `.env.local` file.
+5) Run with `yarn dev` or `npm run dev`
  
 
 ## edge.config.js
@@ -360,86 +372,6 @@ You can see the example configuration file for more details about content types 
 
 In the [components page](/components) you will find more implemented dynamic fields.
 
-## API
-
-The Content API is defined on your set of rules in the configuration file, the other APIs are standard.
-
-### Auth
-- `POST /api/auth/login`
-  - `{ email: xxx@xxx.com, password: password}`
-  - Logs in a user
-- `GET /api/auth/logout`
-  - Logout a user
-- `GET /api/auth/reset-password?email=xxx@xxx.com`
-  - Marks the user for reset password, sends an email with a token
-- `POST /api/auth/reset-password`
-  - `{email: xxx@xxx.com, password: NewPassword, token: token }`
-  - Enables de new password for a user
-- `GET /api/auth/verify?email=xxx@xxx.com&token=TOKEN`
-  - Verifies a user email
-
-### Users
-- `GET /api/users`
-  - Access limited to users with permission `user.list` or `user.admin`
-- `GET /api/users/ID` | `GET /api/users/me` | `GET /api/users/@username`
-  - Access limited to own user or users with permission `user.read` or `user.admin` (or own user)
-- `POST /api/users`
-  - Access limited to users with permission `user.create`. Default is public, to allow users to register.
-- `PUT /api/users/ID`
-  - Access limited to own user or users with permission `user.admin` and `user.update`
-  - To update a user the different endpoint sufixes have to be added
-  - `PUT /api/users/ID/profile`
-    - Edit the fields of the profile such as displayName or dynamic fields
-    - `{ displayName: 'Jonh Doe'}`
-  - `PUT /api/users/ID/email`
-    - Change email
-    - `{ email: 'johndoe@gmail.com'}`
-  - `PUT /api/users/ID/username`
-    - Change username
-    - `{ username: 'mrdoe'}`
-  - `PUT /api/users/ID/picture`
-    - Change profile picture
-    - request profilePicture should be a binary file
-  - `PUT /api/users/ID/password`
-    - Updates user password
-    - `{ password: currentPassword, newPassword: newPassword }`
-  - `PUT /api/users/ID/block`
-    - Blocks / Unblocks an user
-    - `{ blocked: true }`
-- `DELETE /api/users/ID`
-  - Access limited to own user or users with permission `user.admin` and `user.delete`. For the current user is also required to send a `password` query parameter.
-
-### Content
-- `GET /api/content/[TYPE]`
-  - Access limited to users with permission `content.TYPE.read` or `content.TYPE.admin`
-- `GET /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
-  - Access limited to own user or users with permission `content.TYPE.read` or `content.TYPE.admin`
-- `POST /api/content/[TYPE]`
-  - Access limited to `content.TYPE.admin`, or `content.TYPE.create`
-- `PUT /api/content/[TYPE]/[CONTENT_SLUG]` | `POST /api/content/[TYPE]/[CONTENT_SLUG]` |  `PUT /api/content/[TYPE]/[CONTENT_ID]?field=id` |  `POST /api/content/[TYPE]/[CONTENT_ID]?field=id`
-  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.update`
-- `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
-  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.delete`
-
-### Comments
-
-- `GET /api/comments/[TYPE]/[CONTENT_ID]`
-  - Access limited to users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
-- `GET /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
-  - Access limited to own user or users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
-- `POST /api/comments/[TYPE]/[CONTENT_ID]`
-  - Access limited to `content.TYPE.comments.admin`, or `content.TYPE.comments.create`
-- `PUT /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
-  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.update`
-- `DELETE /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]` 
-  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.delete`
-
-### Activity
-
-- `GET /api/activity/[USER_ID]`
-  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin`
-
-
 ## Storage
 
 To upload images and other files you will need to configure a storage. 
@@ -591,9 +523,9 @@ By changing this configuration, both the login and the register will change to s
 
 To configure the different API keys for each provider you must edit the environment files.
 
-- [Register your Github application](https://developer.github.com/v3/guides/basics-of-authentication/)
+- [Register your Github application](https://github.com/settings/applications/new)
 - [Register your Google application](https://developers.google.com/identity/sign-in/web/sign-in)
-- [Register your Facebook application](https://developers.facebook.com/docs/facebook-login/manually-build-a-login-flow/)
+- [Register your Facebook application](https://developers.facebook.com/)
 
 After creating your applications you will need to define the following environment variables in your `.env.local` file.
 
@@ -605,6 +537,17 @@ GITHUB_SECRET=XX
 GOOGLE_ID=XX
 GOOGLE_SECRET=XX
 ````
+
+In the Oauth callbacks fill in the following API urls:
+
+```
+YOURSITE.COM/api/auth/github/callback
+YOURSITE.COM/api/auth/facebook/callback
+YOURSITE.COM/api/auth/google/callback
+```
+
+You don't need to configure any or all of the authentication providers. You can disable them on the `edge.config.js` file.
+
 
 ## Emails
 
@@ -751,3 +694,84 @@ If you want your deployment in Vercel to recognize the `ENVIRONMENT` values, you
 You can add them through the command line or through the administration dashboard in Vercel.com
 
 ![](/static/docs/env-variables-vercel-2.png)
+
+
+## API
+
+The Content API is defined on your set of rules in the configuration file, the other APIs are standard.
+
+### Auth
+- `POST /api/auth/login`
+  - `{ email: xxx@xxx.com, password: password}`
+  - Logs in a user
+- `GET /api/auth/logout`
+  - Logout a user
+- `GET /api/auth/reset-password?email=xxx@xxx.com`
+  - Marks the user for reset password, sends an email with a token
+- `POST /api/auth/reset-password`
+  - `{email: xxx@xxx.com, password: NewPassword, token: token }`
+  - Enables de new password for a user
+- `GET /api/auth/verify?email=xxx@xxx.com&token=TOKEN`
+  - Verifies a user email
+
+### Users
+- `GET /api/users`
+  - Access limited to users with permission `user.list` or `user.admin`
+- `GET /api/users/ID` | `GET /api/users/me` | `GET /api/users/@username`
+  - Access limited to own user or users with permission `user.read` or `user.admin` (or own user)
+- `POST /api/users`
+  - Access limited to users with permission `user.create`. Default is public, to allow users to register.
+- `PUT /api/users/ID`
+  - Access limited to own user or users with permission `user.admin` and `user.update`
+  - To update a user the different endpoint sufixes have to be added
+  - `PUT /api/users/ID/profile`
+    - Edit the fields of the profile such as displayName or dynamic fields
+    - `{ displayName: 'Jonh Doe'}`
+  - `PUT /api/users/ID/email`
+    - Change email
+    - `{ email: 'johndoe@gmail.com'}`
+  - `PUT /api/users/ID/username`
+    - Change username
+    - `{ username: 'mrdoe'}`
+  - `PUT /api/users/ID/picture`
+    - Change profile picture
+    - request profilePicture should be a binary file
+  - `PUT /api/users/ID/password`
+    - Updates user password
+    - `{ password: currentPassword, newPassword: newPassword }`
+  - `PUT /api/users/ID/block`
+    - Blocks / Unblocks an user
+    - `{ blocked: true }`
+- `DELETE /api/users/ID`
+  - Access limited to own user or users with permission `user.admin` and `user.delete`. For the current user is also required to send a `password` query parameter.
+
+### Content
+- `GET /api/content/[TYPE]`
+  - Access limited to users with permission `content.TYPE.read` or `content.TYPE.admin`
+- `GET /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
+  - Access limited to own user or users with permission `content.TYPE.read` or `content.TYPE.admin`
+- `POST /api/content/[TYPE]`
+  - Access limited to `content.TYPE.admin`, or `content.TYPE.create`
+- `PUT /api/content/[TYPE]/[CONTENT_SLUG]` | `POST /api/content/[TYPE]/[CONTENT_SLUG]` |  `PUT /api/content/[TYPE]/[CONTENT_ID]?field=id` |  `POST /api/content/[TYPE]/[CONTENT_ID]?field=id`
+  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.update`
+- `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
+  - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.delete`
+
+### Comments
+
+- `GET /api/comments/[TYPE]/[CONTENT_ID]`
+  - Access limited to users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
+- `GET /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
+  - Access limited to own user or users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
+- `POST /api/comments/[TYPE]/[CONTENT_ID]`
+  - Access limited to `content.TYPE.comments.admin`, or `content.TYPE.comments.create`
+- `PUT /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
+  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.update`
+- `DELETE /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]` 
+  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.delete`
+
+### Activity
+
+- `GET /api/activity/[USER_ID]`
+  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin`
+
