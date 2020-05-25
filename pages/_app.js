@@ -1,4 +1,5 @@
 import '../styles/index.scss'
+import '../styles/refactor.scss'
 
 import * as gtag from '../lib/client/gtag'
 
@@ -287,6 +288,12 @@ function MyApp({ Component, pageProps }) {
           margin: 0 auto;
           max-width: var(--edge-page-max-width);
           width: 100%;
+        }
+
+        @media all and (max-width: 720px){
+          .container{
+            padding: 0 var(--edge-gap);
+          }
         }
 
         .error-message {

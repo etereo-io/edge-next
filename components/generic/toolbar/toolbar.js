@@ -225,6 +225,7 @@ export default function () {
           top: 0;
           transition: opacity 0.35s ease, visibility 0.35s ease;
           width: 100%;
+          z-index: 1;
         }
 
         .mobile-over > :global(.avatar) {
@@ -262,7 +263,7 @@ export default function () {
           }
         }
 
-        @media all and (max-width: 520px) {
+        @media all and (max-width: 720px) {
           .mobile-over {
             flex-flow: row;
           }
@@ -315,7 +316,7 @@ export default function () {
           }
         }
 
-        @media all and (max-width: 520px) {
+        @media all and (max-width: 720px) {
           .toolbar {
             box-shadow: 0 10px 60px rgba(0, 0, 0, 0.5);
             max-height: 40px;

@@ -58,7 +58,7 @@ export default function (props) {
             display: inline-block;
             font-size: 14px;
             font-weight: 500;
-            padding: ${padding ? padding : '12px var(--edge-gap)'};
+            padding: ${padding ? padding : '8px var(--edge-gap)'};
             transition: 0.3s ease;
             -webkit-appearance: none;
           }

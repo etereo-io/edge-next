@@ -18,9 +18,7 @@ const Layout = (props) => (
             props.rightColumn ? 'three-columns' : 'two-columns'
           }`}
         >
-          <div className="left-column">
-            {props.leftColumn}
-          </div>
+          <div className="left-column">{props.leftColumn}</div>
           <div className="center-column">
             <div className="center-column-content">{props.children}</div>
           </div>
@@ -45,7 +43,7 @@ const Layout = (props) => (
         width: 100%;
       }
 
-      @media all and (max-width: 600px) {
+      @media all and (max-width: 720px) {
         .container {
           padding: var(--edge-gap-half);
         }
@@ -64,6 +62,7 @@ const Layout = (props) => (
         overflow-y: auto;
         top: calc(80px + var(--edge-gap));
         width: 24%;
+        z-index: 1;
       }
 
       .left-column::-webkit-scrollbar {
@@ -98,6 +97,16 @@ const Layout = (props) => (
       }
 
       @media all and (max-width: 960px) {
+        .container {
+          padding: 0;
+        }
+        .left-column {
+          padding-left: 32px;
+        }
+        .center-column {
+          padding-right: 32px;
+          width: 70%;
+        }
         .right-column {
           display: none;
         }
@@ -125,6 +134,12 @@ const Layout = (props) => (
         width: 100%;
       }
 
+      @media all and (max-widht: 960px) {
+        .three-columns .center-column .center-column-content {
+          padding: 0;
+        }
+      }
+
       .two-columns .center-column {
         margin: 0 var(--edge-gap);
         flex: auto;
@@ -141,7 +156,7 @@ const Layout = (props) => (
         .two-columns .center-column {
           margin-right: 0;
           max-width: none;
-          width: calc(70% - var(--edge-gap));
+          width: 70%;
         }
       }
 
@@ -149,9 +164,19 @@ const Layout = (props) => (
         .three-columns .center-column,
         .two-columns .center-column {
           margin: 0;
-          margin-left: auto;
+          margin-left: 0;
           padding: 0;
-          width: calc(100% - 80px);
+          width: 100%;
+        }
+
+        .three-columns .center-column .center-column-content,
+        .two-columns .center-column .center-column-content {
+          max-width: none;
+        }
+
+        .three-columns .left-column, .two-columns .left-column {
+          padding-left: 0;
+          width: 0;
         }
       }
 
