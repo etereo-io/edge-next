@@ -28,13 +28,6 @@ const AdminPage = () => {
     })
   }
 
-  if (config.user.captureGeolocation) {
-    links.push({
-      title: 'Real Time geolocation',
-      link: '/admin/geolocation',
-    })
-  }
-
   const contentLinks = contentTypes.map((type) => {
     return {
       link: `/admin/content/${type.slug}`,

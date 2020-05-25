@@ -197,8 +197,6 @@ export const getConfig = (defaultOptions) => {
 
     // Users configuration
     user: {
-      // Capture user geolocation and enable geolocation display on the admin dashboard
-      captureGeolocation: true,
 
       // Require email verification
       emailVerification: true,
