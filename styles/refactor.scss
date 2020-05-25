@@ -13,7 +13,7 @@ $edge-gap: 8px;
 $edge-gap-double: 16px;
 $edge-gap-triple: 24px;
 
-.refactor {
+
   //Container
   .edge-container {
     padding: 0 $edge-gap-triple;
@@ -47,10 +47,19 @@ $edge-gap-triple: 24px;
 
   //Buttons Icon
   .edge-button-icon {
+    align-items: center;
     border: 2px solid $edge-emph-3;
     border-radius: 50%;
+    display: flex;
+    height: 32px;
+    justify-content: center;
     text-align: center;
     padding: $edge-gap;
+    width: 32px;
+
+    &.edit-content{
+      margin-left: $edge-gap;
+    }
 
     img {
       display: inline-block;
@@ -65,8 +74,10 @@ $edge-gap-triple: 24px;
     border-radius: 4px;
     font-size: 13px;
     font-weight: 500;
-    padding: $edge-gap $edge-gap-double;
+    min-width: 96px;
+    padding: $edge-gap $edge-gap-triple;
     position: relative;
+    text-align: center;
     transition: border-color 0.35s ease;
     will-change: border-color;
 
@@ -232,6 +243,12 @@ $edge-gap-triple: 24px;
       display: flex;
     }
 
+    //User Actions Logged
+    .edge-user-actions-logged {
+      align-items: center;;
+      display: flex;
+    }
+
     //User Actions Buttons
     .edge-user-actions-buttons {
       margin: 0 $edge-gap-triple;
@@ -259,8 +276,8 @@ $edge-gap-triple: 24px;
       }
     }
     @media all and (max-width: 460px) {
-      .edge-button {
-        display: none;
+      .edge-button, .user-actions-button {
+        display: none!important;
       }
     }
   }
@@ -529,6 +546,7 @@ $edge-gap-triple: 24px;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: $edge-gap * 4;
     padding: $edge-gap * 4;
+    position: relative;
 
     .edge-item-card-header {
       align-items: center;
@@ -558,7 +576,7 @@ $edge-gap-triple: 24px;
 
     //Item Card Content
     .edge-item-card-content {
-      margin: $edge-gap * 5 0 $edge-gap-triple;
+      margin: $edge-gap * 5 0 0;
 
       .edge-item-card-title {
         font-size: 24px;
@@ -636,4 +654,3 @@ $edge-gap-triple: 24px;
       }
     }
   }
-}

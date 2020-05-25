@@ -19,22 +19,25 @@ export default function (props) {
   return (
     <>
       <div className="social-share">
-        <div className="social-icon">
-          <FacebookShareButton url={shareUrl} quote={'Share'}>
-            <FacebookIcon size={32} round />
-          </FacebookShareButton>
-        </div>
-
-        <div className="social-icon">
-          <PinterestShareButton url={shareUrl} media={shareUrl}>
-            <PinterestIcon size={32} round />
-          </PinterestShareButton>
-        </div>
-
-        <div className="social-icon">
-          <WhatsappShareButton url={shareUrl}>
-            <WhatsappIcon size={32} round />
-          </WhatsappShareButton>
+        <div className="edge-button-share">
+          <span className="edge-button-share-title">Share</span>
+          <ul className="edge-button-share-list">
+            <li className="edge-button-share-unit">
+              <FacebookShareButton url={shareUrl} quote={'Share'}>
+                <FacebookIcon size={24} round />
+              </FacebookShareButton>
+            </li>
+            <li className="edge-button-share-unit">
+              <PinterestShareButton url={shareUrl} media={shareUrl}>
+                <PinterestIcon size={24} round />
+              </PinterestShareButton>
+            </li>
+            <li className="edge-button-share-unit">
+              <WhatsappShareButton url={shareUrl}>
+                <WhatsappIcon size={24} round />
+              </WhatsappShareButton>
+            </li>
+          </ul>
         </div>
       </div>
       <style jsx>

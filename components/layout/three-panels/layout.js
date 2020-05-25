@@ -7,27 +7,19 @@ const Layout = (props) => (
     <Head props={props} />
     <Header />
 
-    <main
-      className={` ${props.alt ? 'alt' : ''} ${
-        props.className ? props.className : ''
-      }`}
+    <div
+      className={`edge-panels ${
+        props.panelAds ? 'three-panels' : 'two-panels'
+      } edge-container`}
     >
-      <div className={`container `}>
-        <div
-          className={`columns ${
-            props.rightColumn ? 'three-columns' : 'two-columns'
-          }`}
-        >
-          <div className="left-column">{props.leftColumn}</div>
-          <div className="center-column">
-            <div className="center-column-content">{props.children}</div>
-          </div>
-          {props.rightColumn && (
-            <div className="right-column">{props.rightColumn}</div>
-          )}
-        </div>
+      {props.panelUser}
+      <div className="edge-panel-content">
+        <div className="edge-panel-content-inner">{props.children}</div>
       </div>
-    </main>
+      {props.panelAds && (
+        <aside className="edge-panel-ads">{props.panelAds}</aside>
+      )}
+    </div>
 
     <Footer />
     <style jsx>{`
@@ -174,7 +166,8 @@ const Layout = (props) => (
           max-width: none;
         }
 
-        .three-columns .left-column, .two-columns .left-column {
+        .three-columns .left-column,
+        .two-columns .left-column {
           padding-left: 0;
           width: 0;
         }

@@ -3,7 +3,6 @@ import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
 import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import ThemeSelector from '../../generic/theme-selector/theme-selector'
-import { hasPermission } from '@lib/permissions'
 import { useUser, useContentTypes } from '@lib/client/hooks'
 import { useState } from 'react'
 import Progress from './progress'
@@ -30,19 +29,33 @@ function UserHeader(props) {
   }
 
   return (
-    <nav>
+    <div className="edge-user-actions">
+      {/*Searchbox*/}
+      <div className="edge-searchbox">
+        <img src="/refactor/icon-search.svg" />
+        <input type="text" placeholder="Search" />
+      </div>
+
       {user && (
-        <div className="user-actions">
+        <div className="edge-user-actions-logged">
+          {/*User Actions Buttons*/}
+          <div className="edge-user-actions-buttons">
+            <img src="/refactor/icon-configuration.svg" />
+            <img src="/refactor/icon-messages.svg" />
+          </div>
           <Link href={`/profile/@${user.username}`}>
             <a title="User profile">
-              <Avatar
-                src={
-                  user && user.profile && user.profile.picture
-                    ? user.profile.picture.path
-                    : null
-                }
-                width="36"
-              />
+              {/*Avatar*/}
+              <div className="edge-avatar has-status available">
+                <img
+                  className="edge-avatar-image"
+                  src={
+                    user && user.profile && user.profile.picture
+                      ? user.profile.picture.path
+                      : null
+                  }
+                />
+              </div>
             </a>
           </Link>
 
@@ -53,30 +66,6 @@ function UserHeader(props) {
           </Link>
 
           <ul className="navigation">
-            {hasPermission(user, 'admin.access') && (
-              <li>
-                <Link href="/admin">
-                  <a className="user-admin-button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <defs />
-                      <path
-                        fill="var(--edge-foreground)"
-                        d="M23.539 14.7955l-2.4276-1.8602a8.8388 8.8388 0 000-1.8706l2.4276-1.8601a.9375.9375 0 00.2371-1.2207l-2.3509-3.9834a.9374.9374 0 00-1.1509-.3957l-2.8802 1.1344a9.1663 9.1663 0 00-1.683-.9535L15.2787.803A.9376.9376 0 0014.3509 0H9.6491a.9374.9374 0 00-.9277.803L8.289 3.7858c-.594.2581-1.157.577-1.683.9535L3.7258 3.6048a.9374.9374 0 00-1.151.3958L.224 7.9839a.9375.9375 0 00.2372 1.2207l2.4276 1.8601a8.8368 8.8368 0 000 1.8706L.461 14.7954a.9375.9375 0 00-.2371 1.2207l2.3508 3.9834a.9375.9375 0 001.151.3957l2.8802-1.1343a9.1591 9.1591 0 001.683.9534l.4323 2.9827c.0669.461.462.803.9278.803h4.7018a.9376.9376 0 00.9278-.803l.4324-2.9826a9.1653 9.1653 0 001.6829-.9535l2.8803 1.1344a.9375.9375 0 001.1509-.3958l2.3509-3.9833a.9376.9376 0 00-.2371-1.2207z"
-                      />
-                      <path
-                        fill="var(--edge-background)"
-                        d="M12 7c-2.757 0-5 2.243-5 5s2.243 5 5 5 5-2.243 5-5-2.2429-5-5-5zm0 7.5c-1.3785 0-2.5-1.1215-2.5-2.5s1.1215-2.5 2.5-2.5 2.5 1.1215 2.5 2.5-1.1215 2.5-2.5 2.5z"
-                      />
-                    </svg>
-                  </a>
-                </Link>
-              </li>
-            )}
-
             <li>
               <DropdownMenu align="right" width={'155px'}>
                 <ul>
@@ -145,7 +134,7 @@ function UserHeader(props) {
         .navigation {
           display: flex;
           list-style: none;
-          margin-left: 0;
+          margin-left: var(--edge-gap);
           padding-left: 0;
           align-items: center;
         }
@@ -199,7 +188,7 @@ function UserHeader(props) {
           margin-left: var(--edge-gap);
         }
       `}</style>
-    </nav>
+    </div>
   )
 }
 
@@ -207,21 +196,15 @@ const Header = () => {
   const { user } = useUser()
   return (
     <>
-      <header className="header">
-        <div className="container">
-          <div className="header-content">
-            <div className="left-header">
-              <Link href="/">
-                <a title="Home page">
-                  <EdgeLogo />
-                </a>
-              </Link>
-            </div>
+      <header className="edge-header">
+        <div className="edge-container">
+          <Link href="/">
+            <a title="Home page">
+              <EdgeLogo />
+            </a>
+          </Link>
 
-            <div className="right-header">
-              <UserHeader user={user} />
-            </div>
-          </div>
+          <UserHeader user={user} />
         </div>
       </header>
       <Progress color="#29D" startPosition={0.3} stopDelayMs={200} height={3} />
@@ -237,8 +220,8 @@ const Header = () => {
           z-index: var(--z-index-header);
         }
 
-        @media all and (max-width: 720px){
-          .header{
+        @media all and (max-width: 720px) {
+          .header {
             height: 56px;
           }
         }

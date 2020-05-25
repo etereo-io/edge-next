@@ -36,9 +36,9 @@ function Field({ field, value, showLabel = false, contentType }) {
           return (
             <div
               data-testid={datatestId}
-              style={{ display: 'flex', justifyContent: 'center' }}
+              style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
             >
-              <Image width={500} height={500} srcs={transformedValues} />
+              <Image srcs={transformedValues} />
             </div>
           )
         } else {

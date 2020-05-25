@@ -14,7 +14,6 @@ function Tag(props) {
           font-size: 10px;
           font-weight: 500;
           letter-spacing: 1px;
-          margin-bottom: var(--edge-gap);
           margin-right: var(--edge-gap-half);
           padding: 4px 8px;
           text-align: center;
@@ -39,6 +38,7 @@ export default function ({ tags = [], type = {} }) {
         .tags-field {
           display: flex;
           flex-wrap: wrap;
+          margin-top: var(--edge-gap-double);
         }
       `}</style>
     </>

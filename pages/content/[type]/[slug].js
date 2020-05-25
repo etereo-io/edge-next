@@ -1,5 +1,5 @@
 import ContentDetailView from '@components/content/read-content/content-detail-view/content-detail-view'
-import Layout from '@components/layout/three-columns/layout'
+import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content/content'
@@ -69,7 +69,7 @@ export async function getServerSideProps({ req, res, query }) {
 
 const ContentPage = (props) => {
   return (
-    <Layout title={props.pageTitle} monetization={props.monetizationMeta} leftColumn={<ToolBar/>}>
+    <Layout title={props.pageTitle} monetization={props.monetizationMeta} panelUser={<ToolBar/>}>
       {props.canAccess && props.data && (
         <ContentDetailView
           type={props.contentType}

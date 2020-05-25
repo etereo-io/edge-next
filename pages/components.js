@@ -14,7 +14,7 @@ import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import Image from '@components/generic/image/image'
-import Layout from '@components/layout/three-columns/layout'
+import Layout from '@components/layout/three-panels/layout'
 import Link from 'next/link'
 import LinkList from '@components/generic/link-list/link-list'
 import Loading from '@components/generic/loading/loading-spinner/loading-spinner'
@@ -388,7 +388,7 @@ const Components = () => {
   ]
 
   return (
-    <Layout title="Components showcase" fullWidth={true} leftColumn={<Menu />}>
+    <Layout title="Components showcase" fullWidth={true} panelUser={<Menu />}>
       <div className="components-layout">
         
         <div className="components">

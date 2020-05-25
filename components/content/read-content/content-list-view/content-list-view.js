@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import useSWR, { useSWRPages } from 'swr'
-
+import Link from 'next/link'
 import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import ContentDetailView from '../content-detail-view/content-detail-view'
@@ -87,22 +87,21 @@ export default function (props) {
       const { results = [] } = data
       return results.map((item) => {
         return (
-          <div key={item.id + item.createdAt}>
-            <div className={`item`}>
-              <ContentDetailView
-                content={item}
-                type={props.type}
-                summary={true}
-                showActions={false}
-                showComments={false}
-              />
-            </div>
+          <article className="edge-item-card" key={item.id + item.createdAt}>
+            <ContentDetailView
+              content={item}
+              type={props.type}
+              summary={true}
+              showActions={false}
+              showComments={false}
+            />
+
             <style jsx>{`
               .item {
                 margin-bottom: var(--edge-gap);
               }
             `}</style>
-          </div>
+          </article>
         )
       })
     },
@@ -128,11 +127,10 @@ export default function (props) {
   return (
     <>
       <div className="contentListView">
-        <div className={`items `}>
-          {pages}
-          {isLoadingMore && <LoadingItems />}
-          {isEmpty && <EmptyComponent />}
-        </div>
+        
+        {pages}
+        {isLoadingMore && <LoadingItems />}
+        {isEmpty && <EmptyComponent />}
         <div className="load-more">
           {isReachingEnd ? null : (
             <Button

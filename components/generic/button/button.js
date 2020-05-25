@@ -23,7 +23,7 @@ export default function (props) {
     hoverable,
   } = props
 
-  const classNames = `button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${
+  const classNames = `edge-button button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${
     fullWidth ? 'full-width' : ''
   } ${big ? 'big' : ''} ${soft ? 'soft' : ''} ${success ? 'success' : ''} ${
     warning ? 'warning' : ''

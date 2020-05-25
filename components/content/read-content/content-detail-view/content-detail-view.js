@@ -37,82 +37,78 @@ export default function (props) {
   return (
     <>
       <div>
-        <div className={'content-detail-wrapper'}>
-          <div className={'content-detail-content'}>
-            {contentIsMonetized && props.summary && (
-              <div className="monetization-layer">
-                <div className="monetization-layer-content">
-                  <p>
-                    This content is monetized, to see the full content please
-                    navigate to the detail.
-                  </p>
+        {contentIsMonetized && props.summary && (
+          <div className="monetization-layer">
+            <div className="monetization-layer-content">
+              <p>
+                This content is monetized, to see the full content please
+                navigate to the detail.
+              </p>
 
-                  <Button
-                    href={`/content/${props.type.slug}/${props.content.slug}`}
-                  >
-                    See full content
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {contentIsMonetized && !props.summary && !monetizedState.state && (
-              <div className="monetization-layer">
-                <div className="monetization-layer-content">
-                  This content is monetized, to see the full content please,
-                  sign up for Coil to support the author
-                </div>
-              </div>
-            )}
-
-            {contentIsMonetized &&
-              !props.summary &&
-              monetizedState.state === 'started' && (
-                <div className="monetization-layer">
-                  <p>Thanks for supporting this author</p>
-                </div>
-              )}
-
-            <ContentSummaryView
-              content={props.content}
-              summary={!!props.summary}
-              type={props.type}
-              canReadComments={canReadComments.available}
-              canWriteComments={canWriteComments.available}
-              onClickComments={() => setShowComments(!showComments)}
-            />
-
-            {props.type.comments.enabled &&
-              canWriteComments.available &&
-              showComments && (
-                <div className="comment-form-wrapper">
-                  <CommentForm
-                    onSave={onCommentAdded}
-                    type={props.type}
-                    contentId={props.content.id}
-                    onCancel={() => setShowComments(!showComments)}
-                  />
-                </div>
-              )}
-
-            {props.type.comments.enabled &&
-              canReadComments.available &&
-              showComments && (
-                <CommentsFeed
-                  type={props.type}
-                  contentId={props.content.id}
-                  newComments={newComments}
-                />
-              )}
+              <Button
+                href={`/content/${props.type.slug}/${props.content.slug}`}
+              >
+                See full content
+              </Button>
+            </div>
           </div>
+        )}
 
-          {props.showActions && (
-            <ContentActions
-              className={'content-actions'}
-              content={props.content}
+        {contentIsMonetized && !props.summary && !monetizedState.state && (
+          <div className="monetization-layer">
+            <div className="monetization-layer-content">
+              This content is monetized, to see the full content please, sign up
+              for Coil to support the author
+            </div>
+          </div>
+        )}
+
+        {contentIsMonetized &&
+          !props.summary &&
+          monetizedState.state === 'started' && (
+            <div className="monetization-layer">
+              <p>Thanks for supporting this author</p>
+            </div>
+          )}
+
+        <ContentSummaryView
+          content={props.content}
+          summary={!!props.summary}
+          type={props.type}
+          canReadComments={canReadComments.available}
+          canWriteComments={canWriteComments.available}
+          onClickComments={() => setShowComments(!showComments)}
+        />
+
+        {props.type.comments.enabled &&
+          canWriteComments.available &&
+          showComments && (
+            <div className="comment-form-wrapper">
+              <CommentForm
+                onSave={onCommentAdded}
+                type={props.type}
+                contentId={props.content.id}
+                onCancel={() => setShowComments(!showComments)}
+              />
+            </div>
+          )}
+
+        {props.type.comments.enabled &&
+          canReadComments.available &&
+          showComments && (
+            <CommentsFeed
+              type={props.type}
+              contentId={props.content.id}
+              newComments={newComments}
             />
           )}
-        </div>
+
+        {props.showActions && (
+          <ContentActions
+            className={'content-actions'}
+            content={props.content}
+          />
+        )}
       </div>
       <style jsx>{`
         .content-detail-wrapper {
@@ -157,7 +153,6 @@ export default function (props) {
           width: 100%;
           background: white;
           padding: var(--edge-gap);
-          z-index: var(--z-index-cover-content);
           background: linear-gradient(
             180deg,
             rgba(255, 255, 255, 0) 0,

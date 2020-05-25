@@ -12,20 +12,18 @@ export default function (props) {
 
   return (
     <>
-      <div className="author-box">
-        <div className="avatar">
+      <div className="edge-avatar-user">
+        <div className="edge-avatar small has-status available">
           {user && (
             <Link href={`/profile/@${user.username}`}>
               <a title={`${user.username} profile`}>
-                <Avatar
+                <img
+                  className="edge-avatar-image"
                   src={
                     user.profile && user.profile.picture
                       ? user.profile.picture.path
                       : null
                   }
-                  title={`${user.username} avatar`}
-                  width={32}
-                  height={32}
                 />
               </a>
             </Link>
@@ -38,9 +36,10 @@ export default function (props) {
             />
           )}
         </div>
-        <div className="author-box-user">
+
+        <div className="edge-avatar-user-info">
           {user && (
-            <div className="display-name">
+            <strong className="edge-user-name">
               <Link href={`/profile/@${user.username}`}>
                 <a title={`${user.username} profile`}>
                   {user.profile && user.profile.displayName
@@ -48,7 +47,7 @@ export default function (props) {
                     : user.username}
                 </a>
               </Link>
-            </div>
+            </strong>
           )}
           {!user && (
             <div className="display-name">
@@ -56,16 +55,16 @@ export default function (props) {
             </div>
           )}
           {user && (
-            <div className="username">
+            <small className="edge-user-alias">
               <Link href={`/profile/@${user.username}`}>
                 <a title={`${user.username} profile`}>@{user.username}</a>
               </Link>
-            </div>
+            </small>
           )}
           {!user && (
-            <div className="username">
+            <span className="edge-user-alias">
               <LoadingPlaceholder width={'100px'} />
-            </div>
+            </span>
           )}
         </div>
       </div>

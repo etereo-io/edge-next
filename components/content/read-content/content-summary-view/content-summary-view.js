@@ -49,10 +49,8 @@ export default function (props) {
   return (
     <>
       <div className={`contentSummaryView ${props.className}`}>
-        <div className="main-actions">
-          {props.content.draft && (
-            <div className="status">Draft - Not published</div>
-          )}
+        <header className="edge-item-card-header">
+          {props.content.draft && <div className="status">Draft</div>}
 
           {!props.content.draft && (
             <div className="author-info">
@@ -60,66 +58,67 @@ export default function (props) {
             </div>
           )}
 
-          <div className="content-options">
+          <div className="edge-item-card-actions">
+            <button className="edge-button has-icon check">Following</button>
+            <div className="edge-button-icon-counter">
+              <small className="edge-button-counter">21</small>
+              <button className="edge-button-icon">
+                <img src="/refactor/icon-heart.svg" />
+              </button>
+            </div>
             {(hasEditPermission || isContentOwner) && (
-              <div className="action-dropdown">
-                <DropDown align={'right'}>
-                  <ul>
-                    {!isContentOwner && <li>Report</li>}
-                    <li>
-                      <a
-                        href={`mailto:?${JSON.stringify({
-                          subject: 'Check this out',
-                          body: shareUrl,
-                        })}`}
-                      >
-                        Email
-                      </a>
-                    </li>
-
-                    <li>
-                      <Link
-                        href={`/edit/${props.content.type}/${props.content.slug}`}
-                      >
-                        <a>Edit</a>
-                      </Link>
-                    </li>
-                  </ul>
-                </DropDown>
-              </div>
+              <Link href={`/edit/${props.content.type}/${props.content.slug}`}>
+                <a className="edge-button-icon edit-content">
+                  <img src="/refactor/icon-edit.svg" />
+                </a>
+              </Link>
             )}
           </div>
-        </div>
+        </header>
 
-        <div className="content-summary-content">
+        <div className="edge-item-card-content">
           {props.type.fields
             .filter((f) => f.name === props.type.publishing.title)
             .map((field) => {
               return (
-                <div
-                  className="field"
+                <h6
+                  className="edge-item-card-title"
                   key={`${field.name}-${props.content.id}`}
                 >
                   {links && (
                     <Link
                       href={`/content/${props.type.slug}/${props.content.slug}`}
                     >
-                      <a>
-                        <h1>{props.content[field.name]}</h1>
-                      </a>
+                      <a>{props.content[field.name]}</a>
                     </Link>
                   )}
-                  {!links && <h1>{props.content[field.name]}</h1>}
-                </div>
+                  {!links && (
+                    <h6 className="edge-item-card-title">
+                      {props.content[field.name]}
+                    </h6>
+                  )}
+                </h6>
               )
             })}
+
+          {/*
+          <div className="edge-item-card-content-inner">
+            <p className="edge-item-card-text">Un texto</p>
+
+            <img
+              className="edge-item-card-image"
+              src="https://storage.googleapis.com/edge-next/post-images/1589797092792-Bitmap.jpg"
+            />
+          </div>
+        */}
+
           {props.type.fields
             .filter((f) => !f.hidden)
             .filter((f) => f.name !== props.type.publishing.title)
             .map((field) => {
               return (
                 <div
-                  className="field"
+                  className="edge-item-card-content-inner"
                   key={`${field.name}-${props.content.id}`}
                 >
                   {shouldAddLink(field) && (
@@ -146,23 +145,31 @@ export default function (props) {
               )
             })}
         </div>
-        <div className="meta">
-          <div className="post-details">
-            <span className="created-at">
-              {format(props.content.createdAt)}
-            </span>
-            {props.type.comments.enabled &&
-            props.canReadComments &&
-            typeof props.content.comments !== 'undefined' ? (
-              <span className="comment-count" onClick={onClickComments}>
-                {props.content.comments === 0 && props.canWriteComments
-                  ? 'Add a comment'
-                  : `${props.content.comments} comments`}
-              </span>
-            ) : null}
-          </div>
+        <footer className="edge-item-card-footer">
+          <ul className="edge-item-card-stats">
+            <li className="edge-item-card-stats-item">
+              <b>{format(props.content.createdAt)}</b>
+              <span>created at</span>
+            </li>
+
+            <li className="edge-item-card-stats-item">
+              <b>
+                {props.type.comments.enabled &&
+                props.canReadComments &&
+                typeof props.content.comments !== 'undefined' ? (
+                  <span className="comment-count" onClick={onClickComments}>
+                    {props.content.comments === 0 && props.canWriteComments
+                      ? 'Add a comment'
+                      : `${props.content.comments} comments`}
+                  </span>
+                ) : null}
+              </b>
+              <span>comments</span>
+            </li>
+          </ul>
+
           <SocialShare shareUrl={shareUrl} />
-        </div>
+        </footer>
       </div>
       <style jsx>{`
         /*.contentSummaryView {

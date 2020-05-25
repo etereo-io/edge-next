@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ProgressiveImage from './progressive-image'
-export default function ({ srcs = [], width = 240, height = 240 }) {
+export default function ({ srcs = [], width = '100%', height = '100%' }) {
   const isMultiple = srcs.length > 1
   const [position, setPosition] = useState(0)
 
@@ -146,6 +146,7 @@ export default function ({ srcs = [], width = 240, height = 240 }) {
           height: 100%;
           object-fit-cover;
           user-select: none;
+          width: 100%;
         }
 
         .quote {
