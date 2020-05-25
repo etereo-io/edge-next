@@ -174,6 +174,7 @@ export const getConfig = (defaultOptions) => {
         maxlength: 200,
         errorMessage: 'Title must be between 10 and 200 characters',
       },
+      
       {
         name: 'description',
         type: 'markdown',
@@ -182,6 +183,43 @@ export const getConfig = (defaultOptions) => {
         minlength: 10,
         maxlength: 2000,
         errorMessage: '',
+      },
+      {
+        name: 'severity',
+        type: 'radio',
+        label: 'News severity',
+        showLabel: true,
+        options: [{
+          label: 'Weak',
+          value: 'weak'
+        }, {
+          label: 'Medium',
+          value: 'Medium'
+        }, {
+          label: 'High',
+          value: 'high'
+        }]
+      },
+
+      {
+        name: 'affects',
+        type: 'radio',
+        multiple: true,
+        label: 'Affects to systems',
+        showLabel: true,
+        options: [{
+          label: 'Content Api',
+          value: 'content-api'
+        }, {
+          label: 'Users API',
+          value: 'users-api'
+        }, {
+          label: 'Auth API',
+          value: 'auth-api'
+        }, {
+          label: 'Website',
+          value: 'website'
+        }]
       },
       {
         name: 'tags',

@@ -164,9 +164,26 @@ function Select(props) {
 
 function Radio(props) {
   const [touched, setTouched] = useState(false)
+  const value = props.field.multiple ? (props.value || []) : props.value
+
   const onChange = (ev) => {
     setTouched(true)
-    props.onChange(ev.target.value, ev)
+    const isChecked = ev.target.checked
+    const itemValue = ev.target.value
+    let newValues = value
+
+    if (props.field.multiple) {
+      if (isChecked) {
+        newValues = [...newValues, itemValue]
+      } else {
+        newValues = [...newValues.filter(i => i !==itemValue)]
+      }
+    } else {
+      newValues = itemValue
+    }
+
+    
+    props.onChange(newValues, ev)
   }
 
   return (
@@ -179,13 +196,15 @@ function Radio(props) {
         return (
           <div className="input-radio" key={o.label}>
             <input
-              type="radio"
-              id={o.label}
+              type={props.field.multiple ? 'checkbox': 'radio'}
+              id={props['data-testid'] + o.value}
+              key={props['data-testid'] + o.value}
               value={o.value}
+              checked={props.field.multiple ? value.indexOf(o.value) !== -1 : value === o.value}
               name={props.field.name}
               onChange={onChange}
             ></input>
-            <label for={o.label}>{o.label}</label>
+            <label for={props['data-testid'] + o.value}>{o.label}</label>
           </div>
         )
       })}

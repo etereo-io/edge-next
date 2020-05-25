@@ -7,17 +7,12 @@ description: "Empieza Documentation"
 
 - [Documentation](#documentation)
   - [Features](#features)
+  - [How to start using Edge.](#how-to-start-using-edge)
   - [edge.config.js](#edgeconfigjs)
   - [Adding a new theme](#adding-a-new-theme)
   - [Content Types](#content-types)
   - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
-  - [API](#api)
-    - [Auth](#auth)
-    - [Users](#users)
-    - [Content](#content)
-    - [Comments](#comments)
-    - [Activity](#activity)
   - [Storage](#storage)
     - [Google](#google)
   - [Databases](#databases)
@@ -33,10 +28,20 @@ description: "Empieza Documentation"
     - [Providers](#providers)
   - [Emails](#emails)
   - [Static Pages](#static-pages)
+  - [````markdown](#predivdivpre)
+  - [description: "Example page description"](#description-example-page-description)
+- [THIS IS A TITLE](#this-is-a-title)
   - [Web monetization](#web-monetization)
   - [Other Payments](#other-payments)
+- [env.local file](#envlocal-file)
   - [Deploy your own](#deploy-your-own)
     - [Deploying on Vercel](#deploying-on-vercel)
+  - [API](#api)
+    - [Auth](#auth)
+    - [Users](#users)
+    - [Content](#content)
+    - [Comments](#comments)
+    - [Activity](#activity)
 
 
 
@@ -264,6 +269,7 @@ There are different fields that can be configured with some standard attributes 
 - errorMessage: String, error message displayed when validation fails
 - hidden
 - description
+- showLabel: shows the field label on the content view, default false
 
 Example: 
 
