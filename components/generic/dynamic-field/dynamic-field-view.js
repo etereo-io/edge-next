@@ -9,7 +9,7 @@ const md = MarkdownIt({
   linkify: true,
 })
 
-function Field({ field, value, showLabel = false, contentType }) {
+function Field({ field, value, contentType }) {
   const getField = (field, value) => {
     const datatestId = `${field.type}-${field.name}`
 
@@ -56,9 +56,6 @@ function Field({ field, value, showLabel = false, contentType }) {
 
           return (
             <div data-testid={datatestId}>
-              <p>
-                <strong>{field.label}: </strong>
-              </p>
               {value.map((i) => (
                 <div key={i.isFile ? i.file.name : i.path}>
                   <a href={i.isFile ? i.file.src : i.path}>
@@ -86,6 +83,20 @@ function Field({ field, value, showLabel = false, contentType }) {
           </div>
         ) : null
 
+      
+      case FIELDS.RADIO:
+        return value ? (
+          <div data-testid={datatestId}>
+            { (Array.isArray(value) ? value : [value]).map(i => <span>{field.options.find(o => o.value === i).label}</span>)}
+            <style jsx>{
+            `
+            span {
+              padding-right: 5px;
+            }
+            `
+            }</style>
+          </div>
+        ) : null
       default:
         return <p data-testid={datatestId}>{value}</p>
         break
@@ -94,9 +105,16 @@ function Field({ field, value, showLabel = false, contentType }) {
 
   return (
     <div className={`field-view`}>
-      {field.label && showLabel && <label>{field.label}</label>}
+      {field.label && field.showLabel && <label>{field.label}</label>}
 
       {getField(field, value)}
+      <style jsx>{
+        `
+        label {
+          font-weight: bold;
+        }
+        `
+      }</style>
     </div>
   )
 }

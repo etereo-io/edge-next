@@ -1,5 +1,4 @@
 import crypto from 'crypto'
-import randomWords from 'random-words'
 
 function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
   return (
@@ -8,108 +7,9 @@ function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
   )
 }
 
-const posts = []
-const products = []
-const comments = []
-const initialActivity = []
-
-function generateParagraph() {
-  const phrases = []
-  const max = Math.round(Math.random() * 5) + 1
-
-  for (var i = 0; i < max; i++) {
-    phrases.push(randomWords({ min: 5, max: 50 }).join(' '))
-  }
-
-  return phrases.join('\n')
-}
-
-const userId = ObjectID()
-
-for (var i = 0; i < 30; i++) {
-  const postId = ObjectID()
-  const productId = ObjectID()
-
-  posts.push({
-    type: 'post',
-    id: postId,
-    author: userId,
-    title: randomWords({ min: 3, max: 10 }).join(' '),
-    slug: 'example-post-' + postId,
-    image: 'https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg',
-    description: generateParagraph(),
-    draft: Math.random() > 0.5 ? true : false,
-    tags: [
-      {
-        slug: 'software',
-        label: 'SOFTWARE',
-      },
-      {
-        slug: 'ai',
-        label: 'AI',
-      },
-    ],
-  })
-
-  products.push({
-    type: 'product',
-    id: productId,
-    image: 'https://loremflickr.com/240/240/food?random=' + i,
-    author: userId,
-    title: randomWords({ min: 3, max: 10 }).join(' '),
-    slug: 'example-product-' + productId,
-    draft: Math.random() > 0.5 ? true : false,
-    description: generateParagraph(),
-  })
-
-  initialActivity.push({
-    author: userId,
-    type: 'content_added',
-    meta: {
-      contentTitle: 'Example post', // This will not work with dynamic fields
-      contentType: 'post',
-      contentId: postId,
-    },
-  })
-
-  initialActivity.push({
-    author: userId,
-    type: 'content_added',
-    meta: {
-      contentTitle: 'Example product', // This will not work with dynamic fields
-      contentType: 'product',
-      contentId: productId,
-    },
-  })
-
-  for (var j = 0; j < 20; j++) {
-    comments.push({
-      type: 'comment',
-      contentType: 'post',
-      contentId: postId,
-      message: generateParagraph(),
-      author: userId,
-      slug: 'test-comment-' + j,
-    })
-
-    initialActivity.push({
-      author: userId,
-      type: 'comment_added',
-      meta: {
-        commentId: j,
-        contentId: i,
-        contentType: 'post',
-      },
-    })
-  }
-}
-
-const initialContent = [...posts, ...products, ...comments]
-
 export const getConfig = (defaultOptions) => {
   const userRole = defaultOptions.roles.user.value
   const adminRole = defaultOptions.roles.admin.value
-  const shopOwnerRole = 'SHOP_OWNER'
   const publicRole = defaultOptions.roles.public.value
 
   const salt = crypto.randomBytes(16).toString('hex')
@@ -136,64 +36,7 @@ export const getConfig = (defaultOptions) => {
       metadata: {
         lastLogin: null,
       },
-    },
-    {
-      username: 'user',
-      email: 'user@demo.com',
-      emailVerified: true,
-      createdAt: Date.now(),
-      roles: [userRole],
-      id: userId,
-      salt,
-      hash,
-      profile: {
-        picture: {
-          path: null,
-        },
-      },
-      metadata: {
-        lastLogin: null,
-      },
-    },
-    {
-      username: 'blocked',
-      email: 'blocked@demo.com',
-      emailVerified: true,
-      createdAt: Date.now(),
-      roles: [userRole],
-      id: ObjectID(),
-      salt,
-      hash,
-      profile: {
-        picture: {
-          path: null,
-        },
-      },
-      blocked: true,
-      metadata: {
-        lastLogin: null,
-      },
-    },
-    {
-      username: 'notverified',
-      email: 'notverified@demo.com',
-      emailVerified: false,
-      emailVerificationToken: '1234',
-      createdAt: Date.now(),
-      roles: [userRole],
-      id: ObjectID(),
-      salt,
-      hash,
-      profile: {
-        picture: {
-          path: null,
-        },
-      },
-      blocked: true,
-      metadata: {
-        lastLogin: null,
-      },
-    },
+    }
   ]
 
   const postContentType = {
@@ -290,16 +133,16 @@ export const getConfig = (defaultOptions) => {
     ],
   }
 
-  const dishContentType = {
-    title: 'dish',
+  const siteNewsContentType = {
+    title: 'Site news',
 
-    slug: 'dish',
+    slug: 'site-news',
 
     slugGeneration: ['title', 'createdAt'],
 
     permissions: {
       read: [publicRole],
-      create: [adminRole, userRole],
+      create: [adminRole],
       update: [adminRole],
       delete: [adminRole],
       admin: [adminRole],
@@ -311,82 +154,7 @@ export const getConfig = (defaultOptions) => {
     },
 
     comments: {
-      enabled: false,
-    },
-
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-        placeholder: 'Title',
-        minlength: 8,
-        maxlength: 150,
-        errorMessage: 'Title must be between 8 and 150 characters',
-      },
-      {
-        name: 'description',
-        type: 'textarea',
-        label: 'Description',
-        placeholder: 'Description',
-        minlength: 20,
-        maxlength: 2000,
-        errorMessage: 'Description must be between 20 and 2000 characters',
-      },
-      {
-        name: 'ingredients',
-        type: 'textarea',
-        label: 'Ingredients',
-        placeholder: 'Ingredients',
-        minlength: 20,
-        maxlength: 2000,
-        errorMessage: 'Ingredients must be between 20 and 2000 characters',
-      },
-      {
-        name: 'images',
-        type: 'img',
-        label: 'Images',
-        placeholder: 'Images',
-        multiple: true,
-        errorMessage: 'Only images supported',
-      },
-      {
-        name: 'price',
-        type: 'number',
-        label: 'Price',
-        placeholder: 'Price',
-      },
-      {
-        name: 'tags',
-        type: 'tags',
-        label: 'Tags',
-        placeholder: 'Tags',
-      },
-    ],
-  }
-
-  const productContentType = {
-    title: 'Product',
-
-    slug: 'product',
-
-    slugGeneration: ['title', 'createdAt'],
-
-    permissions: {
-      read: [publicRole],
-      create: [adminRole, shopOwnerRole],
-      update: [adminRole],
-      delete: [adminRole],
-      admin: [adminRole],
-    },
-
-    publishing: {
-      draftMode: true,
-      title: 'title',
-    },
-
-    comments: {
-      enabled: false,
+      enabled: true,
       permissions: {
         read: [publicRole],
         create: [userRole, adminRole],
@@ -406,6 +174,7 @@ export const getConfig = (defaultOptions) => {
         maxlength: 200,
         errorMessage: 'Title must be between 10 and 200 characters',
       },
+      
       {
         name: 'description',
         type: 'markdown',
@@ -416,34 +185,47 @@ export const getConfig = (defaultOptions) => {
         errorMessage: '',
       },
       {
-        name: 'image',
-        type: 'img',
-        label: 'Image',
+        name: 'severity',
+        type: 'radio',
+        label: 'News severity',
+        showLabel: true,
+        options: [{
+          label: 'Weak',
+          value: 'weak'
+        }, {
+          label: 'Medium',
+          value: 'Medium'
+        }, {
+          label: 'High',
+          value: 'high'
+        }]
+      },
+
+      {
+        name: 'affects',
+        type: 'radio',
         multiple: true,
-        placeholder: 'Image',
+        label: 'Affects to systems',
+        showLabel: true,
+        options: [{
+          label: 'Content Api',
+          value: 'content-api'
+        }, {
+          label: 'Users API',
+          value: 'users-api'
+        }, {
+          label: 'Auth API',
+          value: 'auth-api'
+        }, {
+          label: 'Website',
+          value: 'website'
+        }]
       },
       {
-        name: 'stocknumber',
-        type: 'text',
-        label: 'Stock Number',
-        placeholder: 'SKU',
-        maxlength: 200,
-      },
-      {
-        name: 'price',
-        type: 'number',
-        label: 'Price',
-        placeholder: 'Price',
-        min: 0,
-        max: 100000,
-      },
-      {
-        name: 'stockamount',
-        type: 'number',
-        label: 'Stock Amount',
-        placeholder: 'Stock Amount',
-        private: true,
-      },
+        name: 'tags',
+        type: 'tags',
+        label: 'Tags'
+      }
     ],
   }
 
@@ -513,16 +295,6 @@ export const getConfig = (defaultOptions) => {
       ],
     },
 
-    // Add one more role
-    // TODO: see how to use them
-    roles: {
-      ...defaultOptions.roles,
-      shopOwner: {
-        label: 'Shop Owner',
-        value: shopOwnerRole,
-      },
-    },
-
     // Users activity logging & API
     activity: {
       // Enables Activity API and stores content, comment and user activities,
@@ -544,13 +316,13 @@ export const getConfig = (defaultOptions) => {
           edited: [adminRole],
         },
       },
-      initialActivity: initialActivity,
+      initialActivity: [],
     },
 
     // Users configuration
     user: {
       // Capture user geolocation and enable geolocation display on the admin dashboard
-      captureGeolocation: true,
+      captureGeolocation: false,
 
       // Require email verification
       emailVerification: true,
@@ -645,12 +417,9 @@ export const getConfig = (defaultOptions) => {
       // Different content types defined
       types: [
         postContentType,
-        productContentType,
-        dishContentType,
-        // recipeContentType,
-        // videoTutorialContentType,
+        siteNewsContentType
       ],
-      initialContent: initialContent,
+      initialContent: [],
     },
   }
 }

@@ -458,7 +458,7 @@ function MyApp({ Component, pageProps }) {
           border-color: var(--edge-foreground);
         }
 
-        .input-radio input:hover:checked ~ labe {
+        .input-radio input:checked ~ label {
           background: var(--edge-foreground);
           color: var(--edge-background);
         }

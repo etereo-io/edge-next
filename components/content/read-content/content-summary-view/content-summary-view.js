@@ -125,7 +125,7 @@ export default function (props) {
                     <Link
                       href={`/content/${props.type.slug}/${props.content.slug}`}
                     >
-                      <a>
+                      <a title="Go to content detail">
                         <DynamicFieldView
                           field={field}
                           value={props.content[field.name]}
