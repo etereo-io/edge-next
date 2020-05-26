@@ -102,13 +102,13 @@ const Profile = (props) => {
               )
             })}
           </div>
-
+{/*
           {config.activity.enabled && (
             <div className="activity-report">
               <h3>Recent activity</h3>
               {data && <UserActivity user={data} />}
             </div>
-          )}
+          )}*/}
         </div>
       </div>
       <style jsx>
@@ -168,8 +168,6 @@ const Profile = (props) => {
             background: var(--edge-background);
             box-shadow: var(--shadow-small);
             border-radius: 4px;
-            margin-right: var(--edge-gap);
-            padding: var(--edge-gap-double);
             width: 68%;
           }
 
@@ -184,7 +182,6 @@ const Profile = (props) => {
           @media (max-width: 900px) {
             .content-types {
               width: 100%;
-              padding: var(--edge-gap-half);
             }
           }
 

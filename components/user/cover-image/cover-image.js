@@ -15,8 +15,8 @@ export default function ({ user, loading = false }) {
       .cover-image {
         background-size: cover;
         height: 100%;
-        backgroun-pozition: center;
-        background: url("${
+        background-position: center;
+        background-image: url("${
           user && user.profile.cover
             ? user.profile.cover.path
             : '/static/demo-images/cover/clouds.jfif'
