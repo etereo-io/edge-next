@@ -31,8 +31,8 @@ export default function ({
   }
 
   const submitRequest = (data) => {
-    const url = `${API.comments[type.slug]}/${contentId}/${
-      comment.id ? '/' + comment.id + '?field=id' : ''
+    const url = `${API.comments}${
+      comment.id ? `/${comment.id}?field=id` : `?contentType=${type.slug}&contentId=${contentId}`
     }`
 
     return fetch(url, {

@@ -1,12 +1,13 @@
 import { addComment, findComments } from '@lib/api/entities/comments/comments'
+
+import { commentPermission } from '@lib/permissions'
+import { commentValidations } from '@lib/validations/comment'
+import config from '@lib/config'
+import { connect } from '@lib/api/db'
 import {
-  hasPermissionsForComment,
-  hasQueryParameters,
   isValidContentType,
 } from '@lib/api/middlewares'
-
-import { commentValidations } from '@lib/validations/comment'
-import { connect } from '@lib/api/db'
+import { loadUser } from '@lib/api/middlewares'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentAdded } from '@lib/api/hooks/comment.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
@@ -46,11 +47,78 @@ function contentTypeAllowsCommentsMiddleware(req, res, cb) {
   }
 }
 
-const getComments = (filterParams, searchParams, paginationParams) => (
+const getComments = (
   req,
   res
 ) => {
-  findComments(filterParams, searchParams, paginationParams)
+
+  const {
+    query: {
+      contentType,
+      contentId,
+      sortBy,
+      sortOrder,
+      from,
+      limit,
+      author,
+      conversationId,
+    },
+  } = req
+
+  const filterParams = {
+    contentType,
+  }
+
+  if (contentId) {
+    filterParams.contentId = contentId
+  }
+
+  // If we dont specify a conversation ID we get the ones that have it to null 
+  if (conversationId && conversationId !== 'false') {
+    filterParams.conversationId = conversationId
+  } else if (conversationId === 'false') {
+    // Only root comments
+    filterParams.conversationId = null
+  }
+
+  if (author) {
+    filterParams.author = author
+  }
+
+  const paginationParams = {
+    sortBy,
+    sortOrder,
+    from: typeof from !== 'undefined' ? parseInt(from, 10): from,
+    limit: typeof limit !== 'undefined' ? parseInt(limit, 10): limit,
+  }
+  
+
+  if (!filterParams.contentType) {
+    // If no content type is specified, bring in all that the user can read
+    const allowedContentTypes = config.content.types.filter(type => commentPermission(req.currentUser, type.slug, 'read')).map(t => t.slug)
+
+    // If there are no allowed content types with comments that the user can read, reject
+    if (allowedContentTypes.length === 0) {
+      return res.status(401).json({
+        message: 'User not allowed to read comments'
+      })
+    }
+
+    filterParams.contentType = {
+      $in: allowedContentTypes
+    }
+  } else {
+
+    // There was a specified content type check if it has permissions
+    if (!commentPermission(req.currentUser, filterParams.contentType, 'read')) {
+      return res.status(401).json({
+        message: 'User not allowed to read comments',
+      })  
+    }
+  }
+
+
+  findComments(filterParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })
@@ -103,6 +171,26 @@ const createComment = (req, res) => {
   const type = req.contentType
   const contentId = req.query.contentId
 
+
+  if (!contentId) {
+    return res.status(405).json({
+      error: 'Missing contentId'
+    })
+  }
+
+  if (!type) {
+    return res.status(400).json({
+      error: 'Missing contentType'
+    })
+  }
+
+    
+  if (!commentPermission(req.currentUser, req.query.contentType, 'create')) {
+    return res.status(401).json({
+      message: 'User not allowed to create comments',
+    })
+  }
+  
   const comment = req.body
 
   commentValidations(comment)
@@ -140,74 +228,27 @@ export default async (req, res) => {
   const {
     query: {
       contentType,
-      contentId,
-      search,
-      sortBy,
-      sortOrder,
-      from,
-      limit,
-      author,
-      conversationId,
     },
   } = req
 
-  const filterParams = {
-    contentId,
-    contentType,
+  if (contentType) {
+    try {
+      await runMiddleware(req, res, isValidContentType(contentType))
+    } catch (e) {
+      return res.status(405).json({
+        message: e.message,
+      })
+    }
+  
+    try {
+      await runMiddleware(req, res, contentTypeAllowsCommentsMiddleware)
+    } catch (e) {
+      return res.status(401).json({
+        message: e.message,
+      })
+    }
   }
 
-  if (conversationId) {
-    filterParams.conversationId = conversationId
-  } else {
-    filterParams.conversationId = null
-  }
-
-  if (author) {
-    filterParams.author = author
-  }
-
-  const searchParams = {
-    search,
-  }
-
-  const paginationParams = {
-    sortBy,
-    sortOrder,
-    from,
-    limit,
-  }
-
-  try {
-    await runMiddleware(req, res, isValidContentType(contentType))
-  } catch (e) {
-    return res.status(405).json({
-      message: e.message,
-    })
-  }
-
-  try {
-    await runMiddleware(req, res, contentTypeAllowsCommentsMiddleware)
-  } catch (e) {
-    return res.status(401).json({
-      message: e.message,
-    })
-  }
-
-  try {
-    await runMiddleware(req, res, hasQueryParameters(['contentId']))
-  } catch (e) {
-    return res.status(405).json({
-      message: e.message,
-    })
-  }
-
-  try {
-    await runMiddleware(req, res, hasPermissionsForComment(contentType))
-  } catch (e) {
-    return res.status(401).json({
-      message: e.message,
-    })
-  }
 
   try {
     // Connect to database
@@ -219,8 +260,16 @@ export default async (req, res) => {
     })
   }
 
+  try {
+    await runMiddleware(req, res, loadUser)
+  } catch (e) {
+    return res.status(500).json({
+      message: e.message,
+    })
+  }
+
   methods(req, res, {
-    get: getComments(filterParams, searchParams, paginationParams),
+    get: getComments,
     post: createComment,
   })
 }

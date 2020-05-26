@@ -91,8 +91,8 @@ export default function ({
 
   const loadReplies = async () => {
     const apiUrl = `${
-      API.comments[type.slug]
-    }/${contentId}?limit=${itemsPerPage}${
+      API.comments
+    }/?contentType=${type.slug}&contentId=${contentId}&limit=${itemsPerPage}${
       from ? '&from=' + from : ''
     }&conversationId=${conversationId}`
 

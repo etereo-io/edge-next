@@ -3,6 +3,7 @@ import {
   hasPermissionsForContent,
   hasQueryParameters,
   isValidContentType,
+  loadUser,
 } from '@lib/api/middlewares'
 import {
   deleteOneContent,
@@ -196,6 +197,14 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadContentItemMiddleware)
   } catch (e) {
     return res.status(404).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    await runMiddleware(req, res, loadUser)
+  } catch (e) {
+    return res.status(500).json({
       message: e.message,
     })
   }
