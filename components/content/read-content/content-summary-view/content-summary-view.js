@@ -188,6 +188,31 @@ export default function (props) {
           margin-right: var(--edge-gap);
         }
 
+        .edge-item-card {
+          background-color: var(--edge-background);
+          border-radius: var(--edge-gap);
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          margin-bottom: var(--edge-gap);
+          padding: var(--edge-gap-medium);
+          position: relative;
+        }
+        @media all and (max-width: 720px) {
+          .edge-item-card-footer{
+            display: flex;
+            flex-flow: column;
+          }
+
+          .edge-item-card {
+            padding: var(--edge-gap);
+          }
+
+          .edge-item-card-stats-item {
+            display: flex;
+            flex-flow: column;
+            font-size: 12px;
+          }
+        }
+
         .edge-item-card-stats-item b {
           margin-right: var(--edge-gap-half);
         }

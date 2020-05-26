@@ -44,7 +44,7 @@ export default function () {
           </div>
         )}
         {finished && !user && (
-          <div>
+          <div className="not-logged">
             <Button href="/auth/login">Sign in</Button>
           </div>
         )}
@@ -167,6 +167,10 @@ export default function () {
           .edge-panel-user {
             padding: var(--edge-gap) 0;
           }
+
+          .not-logged{
+            display: none;
+          }
         }
 
         /*Edge Panel User Footer*/
@@ -278,6 +282,38 @@ export default function () {
 
         .edge-panel-user-navigation-title {
           margin-left: var(--edge-gap-half);
+        }
+
+        @media all and (max-width: 720px) {
+          .edge-panel-user-navigation-title,
+          .edge-panel-user .edge-avatar-user-info,
+          .edge-panel-user-footer {
+            display: none;
+          }
+          .edge-panel-user {
+            align-items: center;
+            display: flex;
+            flex-flow: column;
+            min-height: calc(100vh - 56px);
+            top: 56px;
+            transform: translateX(-12px);
+          }
+          .edge-panel-user-tags {
+            display: none;
+          }
+        }
+
+        @media all and (max-width: 460px) {
+          .edge-panels.three-panels {
+            padding-left: 0;
+          }
+          .edge-panel-user {
+            transform: none;
+          }
+          .edge-panel-user .edge-avatar-image {
+            height: 32px;
+            width: 32px;
+          }
         }
       `}</style>
     </>

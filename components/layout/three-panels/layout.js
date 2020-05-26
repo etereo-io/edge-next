@@ -181,7 +181,12 @@ const Layout = (props) => (
       .edge-panel-ads {
         grid-area: edge-panel-ads;
         padding: $edge-gap * 5 0;
-        height: 100%;
+        height: fit-content;
+        padding: var(--edge-gap-double) 0;
+        position: sticky;
+        top: 80px;
+        height: calc(100vh - 80px);
+        max-width: 232px;
       }
 
       @media all and (max-width: 960px) {
