@@ -10,7 +10,10 @@ export default function ({ user, loading = false }) {
       </div>
       <style jsx>{`
       .cover-image-wrapper {
-        height: 200px;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        height: 280px;
+        overflow: hidden;
       }  
       .cover-image {
         background-size: cover;
@@ -19,7 +22,7 @@ export default function ({ user, loading = false }) {
         background-image: url("${
           user && user.profile.cover
             ? user.profile.cover.path
-            : '/static/demo-images/cover/clouds.jfif'
+            : '/static/demo-images/default-background.jpg'
         }");
       }
     `}</style>

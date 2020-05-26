@@ -92,7 +92,6 @@ const Profile = (props) => {
             {visibleContentTypes.map((cData) => {
               return (
                 <div className="content-block">
-                  <h3>User's {cData.title}s</h3>
                   <ContentListView
                     infiniteScroll={false}
                     type={cData}
@@ -114,10 +113,12 @@ const Profile = (props) => {
       <style jsx>
         {`
           .profile-user-info {
+            align-items: center;
             display: flex;
             flex-wrap: wrap;
-            margin-bottom: 60px;
-            align-items: center;
+            margin: var(--edge-gap-double) auto 60px;
+            max-width: 600px;
+            width: 100%;
           }
 
           @media (max-width: 600px) {
@@ -165,10 +166,10 @@ const Profile = (props) => {
           }
 
           .content-types {
-            background: var(--edge-background);
-            box-shadow: var(--shadow-small);
             border-radius: 4px;
-            width: 68%;
+            margin: 0 auto;
+            max-width: 600px;
+            width: 100%;
           }
 
           .activity-report {
