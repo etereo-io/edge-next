@@ -765,15 +765,16 @@ The Content API is defined on your set of rules in the configuration file, the o
 
 ### Comments
 
-- `GET /api/comments/[TYPE]/[CONTENT_ID]`
-  - Access limited to users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
-- `GET /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
-  - Access limited to own user or users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
-- `POST /api/comments/[TYPE]/[CONTENT_ID]`
+- `GET /api/comments?contentType=CONTENT_TYPE`
+  - Access limited to users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`. If no CONTENT_TYPE is specified, it will list all the comments that the current user has access to.
+  - Other filters available are `contentId`, `author` (user id), `conversationId` (can be set to the string `'false'` to ellicit empty conversationIds)
+
+- `POST /api/comments?contentId=CONTENT_ID&contentType=CONTENT_TYPE`
   - Access limited to `content.TYPE.comments.admin`, or `content.TYPE.comments.create`
-- `PUT /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]`
-  - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.update`
-- `DELETE /api/comments/[TYPE]/[CONTENT_ID]/[COMMENT_ID]` 
+
+- `GET /api/comments/[COMMENT_SLUG]` or `GET /api/comments/[COMMENT_ID]?field=id` 
+  - Access limited to own user or users with permission `content.TYPE.comments.read` or `content.TYPE.comments.admin`
+- `DELETE /api/comments/[COMMENT_SLUG]` or `DELETE /api/comments/[COMMENT_ID]?field=id` 
   - Access limited to own user or users with permission `content.TYPE.comments.admin` or `content.TYPE.comments.delete`
 
 ### Activity

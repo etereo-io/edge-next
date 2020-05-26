@@ -4,10 +4,10 @@ import {
   findUsers,
   validateNewUser,
 } from '@lib/api/entities/users/user'
+import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
-import { hasPermissionsForUser } from '@lib/api/middlewares'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
@@ -98,6 +98,14 @@ export default async (req, res) => {
     await connect()
   } catch (e) {
     console.log(e)
+    return res.status(500).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    await runMiddleware(req, res, loadUser)
+  } catch (e) {
     return res.status(500).json({
       message: e.message,
     })

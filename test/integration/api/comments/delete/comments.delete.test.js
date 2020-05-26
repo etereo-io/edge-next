@@ -1,4 +1,4 @@
-import * as handler from '../../../../../pages/api/comments/[contentType]/[contentId]/[id]'
+import * as handler from '../../../../../pages/api/comments/[id]'
 
 import {
   deleteComment,

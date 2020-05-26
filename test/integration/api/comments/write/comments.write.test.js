@@ -2,7 +2,7 @@ import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import handler from '../../../../../pages/api/comments/[contentType]/[contentId]'
+import handler from '../../../../../pages/api/comments'
 // See discussion https://github.com/zeit/next.js/discussions/11784
 // See example
 import http from 'http'
@@ -161,9 +161,27 @@ describe('Integrations tests for comment creation endpoint', () => {
   })
 
   test('Should return 405 if required query string is missing', async () => {
-    const response = await fetch(url)
+    getPermissions.mockReturnValue({
+      'content.post.comments.create': ['USER'],
+      'content.post.comments.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValue({
+      roles: ['USER'],
+      id: 'test-id',
+    })
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
+    })
+    
     expect(response.status).toBe(405)
   })
+
 
   test('Should return 405 if contentId is missing', async () => {
     const urlToBeUsed = new URL(url)
@@ -172,6 +190,16 @@ describe('Integrations tests for comment creation endpoint', () => {
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])
     )
+
+    getPermissions.mockReturnValue({
+      'content.post.comments.create': ['USER'],
+      'content.post.comments.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValue({
+      roles: ['USER'],
+      id: 'test-id',
+    })
 
     const response = await fetch(urlToBeUsed.href, {
       method: 'POST',
@@ -186,18 +214,18 @@ describe('Integrations tests for comment creation endpoint', () => {
 
   test('Should return comment details given a valid request', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: '0' }
+    const params = { contentType: 'post', contentId: 'abc' }
 
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.comments.create': ['USER'],
       'content.post.comments.admin': ['ADMIN'],
     })
 
-    getSession.mockReturnValueOnce({
+    getSession.mockReturnValue({
       roles: ['USER'],
       id: 'test-id',
     })
@@ -220,7 +248,7 @@ describe('Integrations tests for comment creation endpoint', () => {
     expect(response.status).toBe(200)
     expect(jsonResult).toMatchObject({
       contentType: 'post',
-      contentId: '0',
+      contentId: 'abc',
       slug: expect.any(String),
       message: 'test [@anotheruser](/profile/@anotheruser) test',
       author: 'test-id',

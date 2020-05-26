@@ -2,6 +2,7 @@ import { addContent, findContent } from '@lib/api/entities/content/content'
 import {
   hasPermissionsForContent,
   isValidContentType,
+  loadUser,
 } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
@@ -159,6 +160,14 @@ export default async (req, res) => {
     await connect()
   } catch (e) {
     // console.log(e)
+    return res.status(500).json({
+      message: e.message,
+    })
+  }
+
+  try {
+    await runMiddleware(req, res, loadUser)
+  } catch (e) {
     return res.status(500).json({
       message: e.message,
     })
