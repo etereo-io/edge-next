@@ -6,7 +6,9 @@ export default function ({ user, ...props }) {
   return (
     <>
       <div
-        className={`general-profile ${props.horizontal ? 'horizontal' : ''} ${props.basic ? 'basic' : ''} ${props.small ? 'small' : ''}`}
+        className={`general-profile ${props.horizontal ? 'horizontal' : ''} ${
+          props.basic ? 'basic' : ''
+        } ${props.small ? 'small' : ''}`}
       >
         <div className="profile-avatar-bio">
           <div className="avatar">
@@ -50,36 +52,35 @@ export default function ({ user, ...props }) {
                 <LoadingPlaceholder width={'100px'} />
               </div>
             )}
+            <div className="profile-bio-social">
+              {user && user.profile.bio && (
+                <div className="general-profile-bio">
+                  <p>{user.profile.bio}</p>
+                </div>
+              )}
+
+              {user && (
+                <div className="general-profile-social">
+                  {user.profile.github && (
+                    <a href={user.profile.github}>
+                      <img src="/icons/github.svg" alt="Github icon" />
+                    </a>
+                  )}
+
+                  {user.profile.facebook && (
+                    <a href={user.profile.facebook}>
+                      <img src="/icons/facebook.svg" alt="Facebook icon" />
+                    </a>
+                  )}
+                  {user.profile.twitter && (
+                    <a href={user.profile.twitter}>
+                      <img src="/icons/twitter.svg" alt="Twitter icon" />
+                    </a>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-
-        <div className="profile-bio-social">
-          {user && user.profile.bio && (
-            <div className="general-profile-bio">
-              <p>{user.profile.bio}</p>
-            </div>
-          )}
-
-          {user && (
-            <div className="general-profile-social">
-              {user.profile.github && (
-                <a href={user.profile.github}>
-                  <img src="/icons/github.svg" alt="Github icon" />
-                </a>
-              )}
-
-              {user.profile.facebook && (
-                <a href={user.profile.facebook}>
-                  <img src="/icons/facebook.svg" alt="Facebook icon" />
-                </a>
-              )}
-              {user.profile.twitter && (
-                <a href={user.profile.twitter}>
-                  <img src="/icons/twitter.svg" alt="Twitter icon" />
-                </a>
-              )}
-            </div>
-          )}
         </div>
       </div>
       <style jsx>
@@ -97,17 +98,17 @@ export default function ({ user, ...props }) {
             width: 48px;
           }*/
 
-          .general-profile.basic.horizontal .profile-avatar-bio{
+          .general-profile.basic.horizontal .profile-avatar-bio {
             margin-right: 0;
           }
 
-          .general-profile.basic .profile-bio-social{
+          .general-profile.basic .profile-bio-social {
             display: none;
           }
 
           .general-profile.horizontal .general-profile-user {
             text-align: left;
-            padding-left: var(--edge-gap-half);
+            padding-left: var(--edge-gap);
           }
 
           .general-profile.horizontal .general-profile-user .username,
@@ -115,8 +116,17 @@ export default function ({ user, ...props }) {
             justify-content: flex-start;
           }
 
+          .general-profile.horizontal .general-profile-user .display-name{
+            font-size: 32px;
+          }
+
+          .general-profile.horizontal .general-profile-user .username a{
+            color: var(--accents-3);
+            font-size: 18px;
+          }
+
           .general-profile.horizontal .profile-avatar-bio {
-            align-items: center;
+            align-items: flex-start;
             display: flex;
             margin-right: var(--edge-gap-double);
           }
@@ -172,8 +182,12 @@ export default function ({ user, ...props }) {
 
           .general-profile-social a img {
             display: inline-block;
-            margin: 0 4pt;
-            width: 21px;
+            margin-right: var(--edge-gap-half);
+            width: 24px;
+          }
+
+          .general-profile-bio {
+            margin-top: var(--edge-gap);
           }
         `}
       </style>

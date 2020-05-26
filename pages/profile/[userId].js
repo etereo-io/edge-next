@@ -10,12 +10,17 @@ import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import config from '@lib/config'
 import fetch from '@lib/fetcher'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
 
 const Profile = (props) => {
+  //Profile Tabs
+  const [activeTab, setActiveTab] = useState('account')
+  const onClickTab = (name) => {
+    setActiveTab(name)
+  }
   const router = useRouter()
   const { userId } = router.query
 
@@ -47,7 +52,7 @@ const Profile = (props) => {
   // Loading
   if (!finished || !currentUser.finished || !canAccess || (finished && !data)) {
     return (
-      <Layout title="Profile" >
+      <Layout title="Profile">
         <h1>Profile</h1>
         <div>Loading...</div>
       </Layout>
@@ -59,36 +64,41 @@ const Profile = (props) => {
       <div className="profile-wrapper">
         <CoverImage user={data} />
         <div className="profile-user-info">
-          <div className="avatar">
-            <UserProfileBox user={data} horizontal={true} />
-          </div>
-          <div className="name">
-            <div className="title">
-              <div className="title-left"></div>
-              <div className="title-right">
-                {canEdit && (
-                  <div className="item">
-                    <Button href={`/settings/${data ? data.id : ''}`}>
-                      Edit Profile
-                    </Button>
-                  </div>
-                )}
+          <UserProfileBox user={data} horizontal={true} />
 
-                <div className="item">
-                  <DropdownMenu align={'right'}>
-                    <ul>
-                      <li>Report</li>
-                    </ul>
-                  </DropdownMenu>
-                </div>
+          <div className="profile-edit">
+            {canEdit && (
+              <div className="item">
+                <Button href={`/settings/${data ? data.id : ''}`}>
+                  Edit Profile
+                </Button>
               </div>
-            </div>
-            <div className="dashboar-bar"></div>
+            )}
           </div>
         </div>
 
         <div className="content-container">
           <div className="content-types">
+            <ul className="navigation">
+              <li
+                onClick={() => onClickTab('posts')}
+                className={`${activeTab === 'posts' ? 'active' : ''}`}
+              >
+                <a>Posts</a>
+              </li>
+              <li
+                onClick={() => onClickTab('comments')}
+                className={`${activeTab === 'comments' ? 'active' : ''}`}
+              >
+                <a>Comments</a>
+              </li>
+              <li
+                onClick={() => onClickTab('likes')}
+                className={`${activeTab === 'likes' ? 'active' : ''}`}
+              >
+                <a>Likes</a>
+              </li>
+            </ul>
             {visibleContentTypes.map((cData) => {
               return (
                 <div className="content-block">
@@ -101,7 +111,7 @@ const Profile = (props) => {
               )
             })}
           </div>
-{/*
+          {/*
           {config.activity.enabled && (
             <div className="activity-report">
               <h3>Recent activity</h3>
@@ -113,10 +123,10 @@ const Profile = (props) => {
       <style jsx>
         {`
           .profile-user-info {
-            align-items: center;
+            align-items: flex-start;
             display: flex;
             flex-wrap: wrap;
-            margin: var(--edge-gap-double) auto 60px;
+            margin: 60px auto;
             max-width: 600px;
             width: 100%;
           }
@@ -201,6 +211,56 @@ const Profile = (props) => {
             padding: var(--edge-gap);
             border-radius: var(--edge-radius);
             background: var(--edge-foreground);
+          }
+
+          .navigation {
+            background: var(--edge-background);
+            border-bottom: 1px solid var(--accents-2);
+            display: flex;
+            justify-content: space-between;
+            padding: var(--edge-gap-double);
+            padding-bottom: 0;
+            position: sticky;
+            top: 80px;
+            z-index: var(--z-index-minimum);
+          }
+
+          .navigation li {
+            cursor: pointer;
+            height: 100%;
+            list-style: none;
+            padding-bottom: var(--edge-gap-half);
+          }
+
+          .navigation li a {
+            color: var(--accents-3);
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            text-transform: uppercase;
+          }
+
+          .navigation li.active {
+            border-bottom: 2px solid var(--edge-foreground);
+          }
+
+          .navigation li.active a {
+            color: var(--edge-foreground);
+          }
+
+          .navigation-tab {
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding: 0;
+            transition: opacity 0.65s ease;
+          }
+
+          .navigation-tab.active {
+            height: auto;
+            opacity: 1;
+            padding: var(--edge-gap-double);
+            transition: opacity 1s ease;
           }
         `}
       </style>
