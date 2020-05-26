@@ -126,8 +126,9 @@ const Profile = (props) => {
             align-items: flex-start;
             display: flex;
             flex-wrap: wrap;
-            margin: 60px auto;
+            margin: 60px auto 0;
             max-width: 600px;
+            padding: 0 var(--edge-gap-medium);
             width: 100%;
           }
 

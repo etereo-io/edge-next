@@ -131,10 +131,6 @@ export default function ({ user, ...props }) {
             margin-right: var(--edge-gap-double);
           }
 
-          .general-profile.horizontal .profile-bio-social {
-            max-width: 320px;
-          }
-
           .general-profile.horizontal .profile-bio-social,
           .general-profile.horizontal .general-profile-bio p {
             margin-top: 0;
@@ -173,7 +169,6 @@ export default function ({ user, ...props }) {
             font-size: 14px;
             line-height: 1.5;
             margin-top: var(--edge-gap);
-            color: var(--accents-5);
           }
 
           .general-profile-social {

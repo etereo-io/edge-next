@@ -614,6 +614,10 @@ function MyApp({ Component, pageProps }) {
           margin-left: var(--edge-gap-half);
         }
 
+        .edge-avatar-user .edge-avatar-user-info a {
+          text-decoration: none;
+        }
+
         .edge-user-name {
           font-size: 12px;
         }
