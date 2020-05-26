@@ -33,67 +33,24 @@ const Landing = () => {
         </div>
       </div>
       <style jsx>{`
-        .edge-panel-ads-items{
-          display: flex;
-          flex-flow: column;
-          width: 100%;
-        }
-        .right-column-items {
-          display: flex;
-          display: none;
-          flex-wrap: wrap;
-          justify-content: space-between;
-          position: sticky;
-          top: 80px;
-        }
-
-        .call-to-action {
-          display: flex;
-          flex-wrap: wrap;
-        }
-
-        .call-to-action-item {
-          width: calc(50% - 8px);
+        .edge-tag {
           margin-bottom: var(--edge-gap);
         }
 
-        @media all and (max-width: 1180px) {
-          .call-to-action-item {
-            width: 100%;
-          }
+        .edge-panel-ads-featured-sponsors {
+          margin-top: var(--edge-gap-double);
         }
 
-        .call-to-action-item .top {
+        .edge-placeholder {
+          background-color: var(--accents-1);
+          border-radius: 4px;
+          height: 160px;
           margin-bottom: var(--edge-gap);
-        }
-
-        .call-to-action-item.simple svg {
-          max-width: 80px;
-        }
-
-        .call-to-action-item svg path {
-          fill: var(--edge-success);
-        }
-
-        .call-to-action-item.alt svg path {
-          fill: var(--edge-background);
-        }
-
-        .call-to-action-item.featured {
           width: 100%;
         }
 
-        .call-to-action-item.featured svg path {
-          fill: var(--edge-success);
-        }
-
-        .call-to-action-item a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .call-to-action-item svg {
-          width: var(--edge-double);
+        .edge-placeholder.small {
+          height: 56px;
         }
       `}</style>
     </>

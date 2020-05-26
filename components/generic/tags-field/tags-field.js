@@ -38,6 +38,7 @@ export default function ({ tags = [], type = {} }) {
         .tags-field {
           display: flex;
           flex-wrap: wrap;
+          margin-bottom: var(--edge-gap);
           margin-top: var(--edge-gap-double);
         }
       `}</style>

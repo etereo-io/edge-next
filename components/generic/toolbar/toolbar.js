@@ -44,7 +44,7 @@ export default function () {
           </div>
         )}
         {finished && !user && (
-          <div>
+          <div className="not-logged">
             <Button href="/auth/login">Sign in</Button>
           </div>
         )}
@@ -144,241 +144,176 @@ export default function () {
         </button>
       </aside>
       <style jsx>{`
-        .toolbar {
-          align-items: flex-start;
-          background: var(--edge-background);
-          border-radius: var(--edge-radius);
-          color: var(--edge-foreground);
+        /*Edge Panel User*/
+        .edge-panel-user {
           display: flex;
           flex-flow: column;
-          padding: 0 var(--edge-gap) var(--edge-gap) 0;
-        }
-
-        .user-menu {
-          margin-top: 32px;
-          width: 100%;
-        }
-
-        .user-menu ul {
-          display: flex;
-          flex-flow: column;
-          width: 100%;
-        }
-
-        .user-menu ul li {
-          list-style: none;
-          width: 100%;
-        }
-
-        .user-menu ul li a {
-          align-items: center;
-          border-radius: 4px;
-          color: var(--edge-foreground);
-          display: flex;
-          font-size: 14px;
-          color: inherit;
-          transition: background 0.35s ease;
-          overflow: hidden;
-          padding: 16px var(--edge-gap-half);
-          text-decoration: none;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          width: 100%;
-        }
-
-        .user-menu ul li a:hover {
-          background: var(--accents-2);
-        }
-
-        .user-menu ul li a svg {
-          height: auto;
-          margin-right: 8px;
-          width: 16px;
-        }
-
-        .user-menu ul li a svg path {
-          fill: var(--edge-foreground);
-        }
-
-        .bottom-actions {
-          align-items: center;
-          display: flex;
-          margin-top: var(--edge-gap-double);
-          justify-content: space-between;
-          width: 100%;
-        }
-
-        .bottom-actions .faqs-icon {
-          width: 24px;
-        }
-
-        .mobile-over {
-          align-items: center;
-          display: none;
-          width: 100%;
-          flex-flow: column;
-          justify-content: space-between;
-          background: var(--edge-background);
-          content: '';
+          grid-area: edge-panel-user;
+          overflow-y: auto;
+          overflow-x: hidden;
+          padding: var(--edge-gap-double) 0;
           height: 100%;
-          left: 0;
-          position: absolute;
-          top: 0;
-          transition: opacity 0.35s ease, visibility 0.35s ease;
-          width: 100%;
-          z-index: 1;
         }
 
-        .mobile-over > :global(.avatar) {
-          transition: 0.35s ease;
-          max-width: 80px;
-          height: 80px;
-          width: 100%;
-        }
-
-        .mobile-over .open-mobile-over {
-          background: var(--accents-2);
-          border-radius: 4px;
-          height: 32px;
-          margin-bottom: var(--edge-gap-double);
-          position: relative;
-          width: 32px;
-        }
-
-        .mobile-over .open-mobile-over::before {
-          border-bottom: 2px solid var(--accents-3);
-          border-right: 2px solid var(--accents-3);
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: rotate(-45deg) translate(-20%, -80%);
-          display: block;
-          height: var(--edge-gap-half);
-          width: var(--edge-gap-half);
+        .edge-panel-user {
+          height: fit-content;
+          position: sticky;
+          top: 80px;
+          height: calc(100vh - 80px);
+          max-width: 232px;
         }
 
         @media all and (max-width: 720px) {
-          .mobile-over {
+          .edge-panel-user {
+            padding: var(--edge-gap) 0;
+          }
+
+          .not-logged{
+            display: none;
+          }
+        }
+
+        /*Edge Panel User Footer*/
+
+        .edge-panel-user-footer {
+          align-items: center;
+          display: flex;
+          height: fit-content;
+          margin-top: auto;
+          justify-content: space-between;
+        }
+
+        .edge-panel-user-faqs {
+          width: $edge-gap-triple;
+        }
+
+        .edge-panel-user-footer select {
+          border: 1px solid #bdbdbd;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 500;
+          padding: 8px 16px;
+          position: relative;
+          transition: border-color 0.35s ease;
+          will-change: border-color;
+          width: fit-content;
+        }
+
+        /*Edge Mobile Action*/
+        .edge-panel-user-action-mobile {
+          align-items: center;
+          background: $edge-blue;
+          border: none;
+          border-radius: $edge-gap;
+          display: none;
+          justify-content: center;
+          margin-top: auto;
+          padding: $edge-gap;
+        }
+        .edge-panel-user-action-mobile img {
+          width: $edge-gap-double;
+        }
+
+        @media all and (max-width: 460px) {
+          .edge-panel-user-action-mobile {
             display: flex;
           }
         }
 
-        @media all and (max-width: 720px) {
-          .mobile-over {
-            flex-flow: row;
-          }
-          .mobile-over > :global(.avatar) {
-            height: 40px;
-            width: 40px;
-          }
-          .mobile-over .open-mobile-over {
-            margin-bottom: 0;
-            margin-right: var(--edge-gap-double);
-          }
-        }
-
-        @media all and (max-width: 720px) {
-          .toolbar {
-            bottom: 0;
-            box-shadow: var(--shadow-large);
-            height: calc(100% - 80px);
-            left: 0;
-            overflow-x: hidden;
-            overflow-y: scroll;
-            position: fixed;
-            top: auto;
-            transition: 0.35s ease;
-            max-width: 80px;
-            width: 50%;
-            z-index: var(--z-index-toolbar);
-          }
-          .toolbar::-webkit-scrollbar {
-            width: 0 !important;
-          }
-          .toolbar {
-            overflow: -moz-scrollbars-none;
-          }
-          .toolbar {
-            -ms-overflow-style: none;
-          }
-          .toolbar:hover {
-            max-width: 260px;
-          }
-
-          .toolbar:hover .mobile-over {
-            opacity: 0;
-            visibility: hidden;
-          }
-
-          .toolbar:hover > :global(.avatar) {
-            border-radius: 50%;
-            transform: translateY(50%);
-          }
-        }
-
-        @media all and (max-width: 720px) {
-          .toolbar {
-            box-shadow: 0 10px 60px rgba(0, 0, 0, 0.5);
-            max-height: 40px;
-            max-width: none;
-            padding: 0;
-            width: 100vw;
-          }
-          .toolbar:hover {
-            max-height: 100%;
-            max-width: none;
-            width: 100vw;
-          }
-        }
-
-        .general-tags {
-          border-top: 1px solid var(--accents-2);
-          margin-top: var(--edge-gap);
-          padding-top: var(--edge-gap);
-          width: 100%;
-        }
-
-        .general-tags:before {
-          content: 'Trending Tags';
-          background: var(--edge-foreground);
-          border-radius: 4px;
-          color: var(--edge-background);
-          display: block;
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 1px;
+        /*Panel User Tags*/
+        .edge-panel-user-tags .edge-tag {
           margin-bottom: var(--edge-gap);
-          padding: 4px 8px;
-          position: sticky;
-          top: 0;
-          text-align: center;
-          text-transform: uppercase;
-          width: fit-content;
         }
 
-        .general-tags ul li {
-          display: block;
+        .edge-panel-user-tags li {
           list-style: none;
         }
 
-        .general-tags ul li a {
+        .edge-panel-user-tag-unit {
           border-radius: 4px;
-          color: var(--edge-foreground);
           display: block;
           font-size: 14px;
-          padding: var(--edge-gap-half);
-          color: inherit;
-          transition: background 0.35s ease;
+          font-weight: 500;
+          max-width: 164px;
           overflow: hidden;
+          padding: 16px;
           text-decoration: none;
           text-overflow: ellipsis;
+          transition: background-color 0.35s ease;
+          will-change: background-color;
           white-space: nowrap;
-          width: 100%;
         }
 
-        .general-tags ul li a:hover {
-          background: var(--accents-2);
+        .edge-panel-user-tag-unit:before {
+          content: '#';
+        }
+
+        .edge-panel-user-tag-unit:hover {
+          background-color: var(--accents-2);
+        }
+
+        .edge-panel-user-navigation {
+          padding: var(--edge-gap) 0;
+        }
+
+        .edge-panel-user-navigation ul li {
+          list-style: none;
+        }
+
+        .edge-panel-user-navigation-item {
+          align-items: center;
+          border-radius: 4px;
+          display: flex;
+          font-size: 14px;
+          font-weight: 500;
+          padding: 16px;
+          text-decoration: none;
+          transition: background-color 0.35s ease;
+          will-change: background-color;
+        }
+
+        .edge-panel-user-navigation-item:hover {
+          background-color: var(--accents-);
+        }
+
+        .edge-panel-user-navigation-icon {
+          width: 16px;
+        }
+
+        .edge-panel-user-navigation-title {
+          margin-left: var(--edge-gap-half);
+        }
+
+        @media all and (max-width: 720px) {
+          .edge-panel-user-navigation-title,
+          .edge-panel-user .edge-avatar-user-info,
+          .edge-panel-user-footer {
+            display: none;
+          }
+          .edge-panel-user {
+            align-items: center;
+            display: flex;
+            flex-flow: column;
+            min-height: calc(100vh - 56px);
+            top: 56px;
+            transform: translateX(-12px);
+          }
+          .edge-panel-user-tags {
+            display: none;
+          }
+        }
+
+        @media all and (max-width: 460px) {
+          .edge-panels.three-panels {
+            padding-left: 0;
+          }
+          .edge-panel-user {
+            transform: none;
+          }
+          .edge-panel-user .edge-avatar-image {
+            height: 32px;
+            width: 32px;
+          }
         }
       `}</style>
     </>

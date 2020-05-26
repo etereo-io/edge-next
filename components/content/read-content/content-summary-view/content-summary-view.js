@@ -172,16 +172,116 @@ export default function (props) {
         </footer>
       </div>
       <style jsx>{`
-        /*.contentSummaryView {
-          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-          color: var(--edge-foreground);
-          background: var(--edge-background);
-          //border: var(--light-border);
-          padding: var(--edge-gap);
-          border-radius: var(--edge-radius);
-          margin: 0 auto;
+        .edge-item-card-footer {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .edge-item-card-stats {
+          display: flex;
+        }
+
+        .edge-item-card-stats-item {
+          font-size: 13px;
+          list-style: none;
+          margin-right: var(--edge-gap);
+        }
+
+        .edge-item-card {
+          background-color: var(--edge-background);
+          border-radius: var(--edge-gap);
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          margin-bottom: var(--edge-gap);
+          padding: var(--edge-gap-medium);
+          position: relative;
+        }
+        @media all and (max-width: 720px) {
+          .edge-item-card-footer{
+            display: flex;
+            flex-flow: column;
+          }
+
+          .edge-item-card {
+            padding: var(--edge-gap);
+          }
+
+          .edge-item-card-stats-item {
+            display: flex;
+            flex-flow: column;
+            font-size: 12px;
+          }
+        }
+
+        .edge-item-card-stats-item b {
+          margin-right: var(--edge-gap-half);
+        }
+
+        .edge-item-card-header {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
           width: 100%;
-        }*/
+        }
+
+        @media all and (max-width: 460px) {
+          .edge-button.has-icon {
+            background-position: 50%;
+            height: $edge-gap-triple;
+            padding-left: 0;
+            text-indent: -9999px;
+            width: $edge-gap-triple;
+          }
+        }
+
+        .edge-item-card-actions {
+          align-items: center;
+          display: flex;
+        }
+
+        .edge-button-icon-counter {
+          margin-left: var(--edge-gap);
+        }
+
+        .edge-button-icon-counter {
+          align-items: center;
+          display: flex;
+        }
+
+        .edge-button-counter {
+          font-size: 13px;
+          margin-right: var(--edge-gap-half);
+        }
+
+        .edge-item-card-content {
+          margin: var(--edge-gap-double) 0 0;
+        }
+
+        .edge-item-card-title {
+          font-size: 24px;
+          line-height: 1;
+          margin-bottom: var(--edge-gap);
+          padding-right: var(--edge-gap);
+        }
+
+        .edge-item-card-text {
+          color: var(--accents-4);
+          font-size: 16px;
+          line-height: 1.5;
+          padding-right: var(--edge-gap);
+        }
+
+        @media all and (max-width: 720px) {
+          .edge-item-card-title {
+            font-size: 21px;
+            line-height: 1.25;
+            padding-right: 0;
+          }
+          .edge-item-card-text {
+            font-size: 14px;
+            padding-right: 0;
+          }
+        }
 
         @media (max-width: 600px) {
           .contentSummaryView {
