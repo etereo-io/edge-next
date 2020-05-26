@@ -1,5 +1,5 @@
 import '../styles/index.scss'
-import '../styles/refactor.scss'
+//import '../styles/refactor.scss'
 
 import * as gtag from '../lib/client/gtag'
 
@@ -290,8 +290,15 @@ function MyApp({ Component, pageProps }) {
           width: 100%;
         }
 
-        @media all and (max-width: 720px){
-          .container{
+        .edge-container {
+          padding: 0 var(--edge-gap);
+          margin: 0 auto;
+          max-width: 1292px;
+          width: 100%;
+        }
+
+        @media all and (max-width: 720px) {
+          .container {
             padding: 0 var(--edge-gap);
           }
         }
@@ -467,6 +474,152 @@ function MyApp({ Component, pageProps }) {
           appearance: none;
           padding-right: var(--edge-gap-double);
           -webkit-appearance: none;
+        }
+
+        /* Button Icon */
+
+        .edge-button-icon {
+          align-items: center;
+          border: 2px solid var(--accents-2);
+          border-radius: 50%;
+          display: flex;
+          height: 32px;
+          justify-content: center;
+          text-align: center;
+          padding: 8px;
+          width: 32px;
+        }
+
+        .edge-button-icon.edit-content {
+          margin-left: 8px;
+        }
+        .edge-button-icon img {
+          display: inline-block;
+          vertical-align: middle;
+          width: 15px;
+        }
+
+        /* Edge Button */
+        .edge-button {
+          background-color: var(--edge-success);
+          border: none;
+          border-radius: 4px;
+          color: var(--edge-background);
+          font-size: 13px;
+          font-weight: 500;
+          padding: var(--edge-gap-half) var(--edge-gap);
+          position: relative;
+        }
+
+        .edge-button.has-icon {
+          background-position: var(--edge-gap-half) 50%;
+          background-repeat: no-repeat;
+          background-size: 14px;
+          padding-left: var(--edge-gap-medium);
+        }
+
+        .edge-button.has-icon.check {
+          background-image: url('/refactor/icon-check.svg');
+        }
+
+        .edge-tag {
+          background: var(--edge-foreground);
+          border-radius: 4px;
+          color: var(--edge-background);
+          display: inline-block;
+          font-size: 10px;
+          font-weight: 500;
+          padding: 4px 8px;
+          text-transform: uppercase;
+        }
+
+        .edge-searchbox {
+          position: relative;
+        }
+
+        .edge-searchbox img {
+          left: 16px;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 16px;
+        }
+
+        .edge-searchbox input {
+          background-color: var(--accents-1);
+          border: none;
+          font-size: 14px;
+          padding: var(--edge-gap-half);
+          padding-left: var(--edge-gap-double);
+        }
+
+        .edge-avatar {
+          display: inherit;
+          position: relative;
+        }
+
+        .edge-avatar-image {
+          border-radius: 8px;
+          height: 36px;
+          object-fit: cover;
+          width: 36px;
+        }
+
+        .edge-avatar.big .edge-avatar-image {
+          height: 80px;
+          width: 80px;
+        }
+        .edge-avatar.big.has-status:after {
+          height: 12px;
+          transform: translate(1px, -1px);
+          width: 12px;
+        }
+
+        .edge-avatar.medium .edge-avatar-image {
+          height: 48px;
+          width: 48px;
+        }
+
+        .edge-avatar.small .edge-avatar-image {
+          height: 32px;
+          width: 32px;
+        }
+
+        .edge-avatar.has-status:after {
+          border: 2px solid var(--edge-background);
+          border-radius: 50%;
+          box-sizing: content-box;
+          content: '';
+          height: 8px;
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 8px;
+        }
+
+        .edge-avatar.has-status.available:after {
+          background-color: var(--edge-cyan-dark);
+        }
+
+        /* Avatar User*/
+
+        .edge-avatar-user {
+          align-items: center;
+          display: flex;
+        }
+
+        .edge-avatar-user .edge-avatar-user-info {
+          display: flex;
+          flex-flow: column;
+          margin-left: var(--edge-gap-half);
+        }
+
+        .edge-user-name {
+          font-size: 12px;
+        }
+
+        .edge-user-alias {
+          font-size: 12px;
         }
       `}</style>
     </>

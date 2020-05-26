@@ -133,59 +133,82 @@ function UserHeader(props) {
       <style jsx>{`
         .navigation {
           display: flex;
+          align-items: center;
+        }
+
+        .navigation li {
           list-style: none;
           margin-left: var(--edge-gap);
-          padding-left: 0;
-          align-items: center;
         }
 
-        .user-admin-button {
+        .navigation .dropdown-menu-nav ul li {
+          margin-left: 0;
+        }
+
+        .edge-header {
           align-items: center;
           background: var(--edge-background);
-          border-radius: 50%;
-          bottom: var(--edge-gap-double);
-          box-shadow: var(--shadow-medium);
+          box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
           display: flex;
-          height: 36px;
-          justify-content: center;
-          position: fixed;
-          right: var(--edge-gap-double);
-          width: 36px;
+          height: 80px;
+          position: sticky;
+          top: 0;
+          z-index: 1;
         }
 
-        .user-admin-button svg {
-          width: 18px;
+        .edge-container {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
         }
 
-        li {
-          margin-right: var(--edge-gap);
+        /*User Actions */
+        .edge-user-actions {
+          align-items: center;
+          display: flex;
         }
 
-        li:last-of-type {
+        /*User Actions Logged */
+        .edge-user-actions-logged {
+          align-items: center;
+          display: flex;
+        }
+
+        /*User Actions Buttons */
+        .edge-user-actions-buttons {
+          margin: 0 $edge-gap-triple;
+        }
+
+        .edge-user-actions-buttons img {
+          margin-right: $edge-gap-double;
+          width: $edge-gap-triple;
+        }
+
+        .edge-user-actions-buttons img:last-of-type {
           margin-right: 0;
         }
 
-        @media (max-width: 600px) {
-          li {
-            font-size: 13px;
+        .edge-header .edge-button {
+          margin-left: $edge-gap-triple;
+        }
+
+        @media all and (max-width: 720px) {
+          .edge-header {
+            height: 56px;
           }
         }
 
-        li:first-child {
-          margin-left: auto;
+        @media all and (max-width: 640px) {
+          .edge-searchbox {
+            display: none;
+          }
         }
-        a {
-          color: var(--edge-link-color);
-          display: block;
-          font-size: 14px;
-          text-decoration: none;
-        }
-        .user-actions {
-          align-items: center;
-          display: flex;
-        }
-        .user-actions-button {
-          margin-left: var(--edge-gap);
+
+        @media all and (max-width: 460px) {
+          .edge-button,
+          .user-actions-button {
+            display: none !important;
+          }
         }
       `}</style>
     </div>
@@ -209,46 +232,70 @@ const Header = () => {
       </header>
       <Progress color="#29D" startPosition={0.3} stopDelayMs={200} height={3} />
       <style jsx>{`
-        .header {
-          color: var(--edge-foreground);
+        .edge-header {
+          align-items: center;
           background: var(--edge-background);
+          box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
           display: flex;
-          border-bottom: 1px solid var(--accents-2);
           height: 80px;
           position: sticky;
           top: 0;
-          z-index: var(--z-index-header);
+          z-index: 1;
+        }
+
+        .edge-container {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        /*User Actions */
+        .edge-user-actions {
+          align-items: center;
+          display: flex;
+        }
+
+        /*User Actions Logged */
+        .edge-user-actions-logged {
+          align-items: center;
+          display: flex;
+        }
+
+        /*User Actions Buttons */
+        .edge-user-actions-buttons {
+          margin: 0 $edge-gap-triple;
+        }
+
+        .edge-user-actions-buttons img {
+          margin-right: $edge-gap-double;
+          width: $edge-gap-triple;
+        }
+
+        .edge-user-actions-buttons img:last-of-type {
+          margin-right: 0;
+        }
+
+        .edge-header .edge-button {
+          margin-left: $edge-gap-triple;
         }
 
         @media all and (max-width: 720px) {
-          .header {
+          .edge-header {
             height: 56px;
           }
         }
 
-        .header .container {
-          align-items: center;
-          display: flex;
-        }
-
-        .header-content {
-          display: flex;
-          flex-wrap: wrap;
-          margin: 0 auto;
-          justify-content: space-between;
-          align-items: center;
-          width: 100%;
-        }
-
-        @media (max-width: 600px) {
-          .header-content {
-            padding: 0 var(--edge-gap);
+        @media all and (max-width: 640px) {
+          .edge-searchbox {
+            display: none;
           }
         }
 
-        .logo {
-          width: 32px;
-          cursor: pointer;
+        @media all and (max-width: 460px) {
+          .edge-button,
+          .user-actions-button {
+            display: none !important;
+          }
         }
       `}</style>
     </>
