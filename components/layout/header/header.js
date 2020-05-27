@@ -176,12 +176,16 @@ function UserHeader(props) {
 
         /*User Actions Buttons */
         .edge-user-actions-buttons {
-          margin: 0 $edge-gap-triple;
+          margin: 0 var(--edge-gap);
         }
 
         .edge-user-actions-buttons img {
-          margin-right: $edge-gap-double;
-          width: $edge-gap-triple;
+          margin-right: var(--edge-gap);
+          width: var(--edge-gap);
+        }
+
+        .edge-avatar {
+          margin-right: var(--edge-gap);
         }
 
         .edge-user-actions-buttons img:last-of-type {
@@ -189,7 +193,7 @@ function UserHeader(props) {
         }
 
         .edge-header .edge-button {
-          margin-left: $edge-gap-triple;
+          margin-left: var(--edge-gap);
         }
 
         @media all and (max-width: 720px) {
@@ -263,11 +267,11 @@ const Header = () => {
 
         /*User Actions Buttons */
         .edge-user-actions-buttons {
-          margin: 0 $edge-gap-triple;
+          margin: 0 var(--edge-gap);
         }
 
         .edge-user-actions-buttons img {
-          margin-right: $edge-gap-double;
+          margin-right: var(--edge-gap);
           width: $edge-gap-triple;
         }
 
