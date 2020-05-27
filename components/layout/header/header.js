@@ -131,7 +131,11 @@ function UserHeader(props) {
 
                 <ul>
                   <li>
-                    <a onClick={onClickLogout}>{loading ? '...' : 'Logout'}</a>
+                    <Button fullWidth>
+                      <a onClick={onClickLogout}>
+                        {loading ? '...' : 'Logout'}
+                      </a>
+                    </Button>
                   </li>
                 </ul>
               </DropdownMenu>
@@ -140,11 +144,9 @@ function UserHeader(props) {
         </div>
       )}
       {!user && (
-        <ul className="navigation">
+        <ul className="navigation not-logged">
           <li>
-            <Link href="/auth/login">
-              <a>Login</a>
-            </Link>
+            <Button href="/auth/login">Login</Button>
           </li>
           <li>
             <Button href="/auth/signup">Sign up</Button>
@@ -176,6 +178,14 @@ function UserHeader(props) {
         .navigation li {
           list-style: none;
           margin-left: 0;
+        }
+
+        .navigation.not-logged li {
+          margin: 0 4px;
+        }
+
+        .navigation.not-logged li:last-of-type {
+          margin-left: var(--edge-gap);
         }
 
         .navigation .dropdown-menu-nav ul li {
