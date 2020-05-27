@@ -310,8 +310,8 @@ const Header = () => {
 
           <UserHeader user={user} />
         </div>
+        <Progress color="#29D" startPosition={0.3} stopDelayMs={200} height={3} />
       </header>
-      <Progress color="#29D" startPosition={0.3} stopDelayMs={200} height={3} />
       <style jsx>{`
         .edge-header {
           align-items: center;

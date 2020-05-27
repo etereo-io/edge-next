@@ -1,16 +1,17 @@
 import { useContentTypes, useUser } from '@lib/client/hooks'
+import { useEffect, useState } from 'react'
 
 import Button from '@components/generic/button/button'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import CoverImage from '@components/user/cover-image/cover-image'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import Layout from '@components/layout/three-panels/layout'
+import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import config from '@lib/config'
 import fetch from '@lib/fetcher'
-import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
@@ -52,9 +53,8 @@ const Profile = (props) => {
   // Loading
   if (!finished || !currentUser.finished || !canAccess || (finished && !data)) {
     return (
-      <Layout title="Profile">
-        <h1>Profile</h1>
-        <div>Loading...</div>
+      <Layout title="Profile" panelUser={<ToolBar />}>
+        <LoadingPage />
       </Layout>
     )
   }

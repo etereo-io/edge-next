@@ -5,13 +5,10 @@ import API from '@lib/api/api-endpoints'
 import ContentForm from '@components/content/write-content/content-form/content-form'
 import Layout from '@components/layout/normal/layout'
 import fetch from '@lib/fetcher'
-
+import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-function LoadingView() {
-  return <h1>Loading...</h1>
-}
 
 const EditContent = () => {
   const router = useRouter()
@@ -60,10 +57,10 @@ const EditContent = () => {
     }
   }, [loading, canAccess, error, currentUser])
 
-  if (!currentUser.finished || loading || error) {
+  if (!currentUser.finished || loading || error || !canAccess) {
     return (
       <Layout title="Edit content">
-        <LoadingView />
+        <LoadingPage />
       </Layout>
     )
   }

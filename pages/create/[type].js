@@ -3,6 +3,7 @@ import Layout from '@components/layout/normal/layout'
 import { usePermission, useContentType } from '@lib/client/hooks'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
+import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 
 const CreateContent = () => {
   const router = useRouter()
@@ -43,11 +44,12 @@ const CreateContent = () => {
     <>
       <Layout title="New content">
         <div className="create-page">
-          <h1>Create new {contentType ? contentType.title : 'content'}</h1>
 
           {available && (
-            <ContentForm content={content} type={contentType} onSave={onSave} />
+            <><h1>Create new {contentType ? contentType.title : 'content'}</h1>
+            <ContentForm content={content} type={contentType} onSave={onSave} /></>
           )}
+          { !available && (<LoadingPage />)}
         </div>
       </Layout>
       <style jsx>{`

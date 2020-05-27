@@ -4,7 +4,7 @@ import Footer from '../footer/footer'
 
 const Layout = (props) => (
   <>
-    <Head props={props} />
+    <Head {...props}/>
     <Header />
 
     <div
@@ -118,7 +118,7 @@ const Layout = (props) => (
       }
 
       .edge-panels .edge-panel-content {
-        background: #f9f9f9;
+        background: var(--accents-1);
         grid-area: edge-panel-content;
         padding: var(--edge-gap-medium) var(--edge-gap);
         height: 100%;
@@ -131,7 +131,6 @@ const Layout = (props) => (
       }
 
       .edge-panels .edge-panel-content .edge-panel-content-inner {
-        background-color: var(--accents-1);
         margin: 0 auto;
         max-width: 600px;
       }

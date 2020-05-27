@@ -9,6 +9,7 @@ import EditProfileForm from '@components/user/edit-user/edit-profile/edit-profil
 import EditProfilePictureForm from '@components/user/edit-user/edit-profile-picture/edit-profile-picture'
 import EditUsernameForm from '@components/user/edit-user/edit-username/edit-username'
 import Layout from '@components/layout/normal/layout'
+import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import fetch from '@lib/fetcher'
@@ -73,8 +74,7 @@ const UserSettings = () => {
   if (loading || !currentUser.finished || !canAccess || !user) {
     return (
       <Layout title="Profile">
-        <h1>Profile</h1>
-        <div>Loading...</div>
+        <LoadingPage />
       </Layout>
     )
   }
