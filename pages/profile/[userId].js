@@ -100,12 +100,21 @@ const Profile = (props) => {
               >
                 <a>Comments</a>
               </li>
-              <li
+              {config.like.enabled && <li
                 onClick={() => onClickTab('likes')}
                 className={`${activeTab === 'likes' ? 'active' : ''}`}
               >
                 <a>Likes</a>
+              </li>}
+              {config.activity.enabled && (
+                <li
+                onClick={() => onClickTab('activity')}
+                className={`${activeTab === 'activity' ? 'active' : ''}`}
+              >
+                <a>Activity</a>
               </li>
+              )}
+             
             </ul>
            
             {visibleContentTypes.map((cData) => {
@@ -145,14 +154,21 @@ const Profile = (props) => {
 
               THE LIKES
             </div>
-          </div>
-          {/*
-          {config.activity.enabled && (
-            <div className="activity-report">
-              <h3>Recent activity</h3>
-              {data && <UserActivity user={data} />}
+
+            <div
+              className={`${
+                activeTab === 'activity'
+                  ? 'navigation-tab active'
+                  : 'navigation-tab'
+              }`}
+            >
+
+              <UserActivity user={data} />
             </div>
-          )}*/}
+
+           
+          </div>
+         
         </div>
       </div>
       <style jsx>
