@@ -47,7 +47,7 @@ const Layout = (props) => (
         display: grid;
         grid-template-columns: 0.25fr 1fr 0.25fr;
         grid-template-rows: 0.5fr;
-        gap: 0px var(--edge-gap);
+        gap: 0;
         grid-template-areas: 'edge-panel-user edge-panel-content edge-panel-ads';
       }
 
@@ -97,7 +97,7 @@ const Layout = (props) => (
         display: grid;
         grid-template-columns: 0.25fr 1.25fr;
         grid-template-rows: 0.5fr;
-        gap: 0px var(--edge-gap);
+        gap: 0;
         grid-template-areas: 'edge-panel-user edge-panel-content';
       }
 
@@ -122,6 +122,12 @@ const Layout = (props) => (
         grid-area: edge-panel-content;
         padding: var(--edge-gap-medium) var(--edge-gap);
         height: 100%;
+      }
+
+      @media all and (max-width: 460px){
+        .edge-panels .edge-panel-content {
+          padding: var(--edge-gap-half) 0;
+        }
       }
 
       .edge-panels .edge-panel-content .edge-panel-content-inner {
@@ -176,13 +182,18 @@ const Layout = (props) => (
 
       .edge-panel-ads {
         grid-area: edge-panel-ads;
-        padding: $edge-gap * 5 0;
         height: fit-content;
-        padding: var(--edge-gap-double) 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: var(--edge-gap-double) 0 var(--edge-gap-double) var(--edge-gap);
         position: sticky;
         top: 80px;
         height: calc(100vh - 80px);
         max-width: 232px;
+      }
+
+      .edge-panel-ads::-webkit-scrollbar {
+        width: 0;
       }
 
       @media all and (max-width: 960px) {

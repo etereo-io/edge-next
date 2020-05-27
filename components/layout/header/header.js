@@ -46,37 +46,77 @@ function UserHeader(props) {
           <Link href={`/profile/@${user.username}`}>
             <a title="User profile">
               <Avatar
-                  width={'36px'}
-                  src={
-                    user && user.profile && user.profile.picture
-                      ? user.profile.picture.path
-                      : null
-                  }
-                />
+                width={'36px'}
+                src={
+                  user && user.profile && user.profile.picture
+                    ? user.profile.picture.path
+                    : null
+                }
+              />
             </a>
           </Link>
 
-          <Link href={`/create/post`}>
-            <a className="user-actions-button">
-              <Button success>Write a post</Button>
-            </a>
-          </Link>
+          <div className="user-actions-button">
+            <Link href={`/create/post`}>
+              <a>
+                <Button success>Write a post</Button>
+              </a>
+            </Link>
+          </div>
 
           <ul className="navigation">
             <li>
-              <DropdownMenu align="right" width={'155px'}>
+              <DropdownMenu align="right" width={'180px'}>
                 <ul>
                   <li>
                     <ThemeSelector />
                   </li>
                   <li>
-                    <Link href={`/profile/@${user.username}`}>
-                      <a>Profile</a>
-                    </Link>
+                    <a href="#" className="edge-header-navigation-item">
+                      <img
+                        className="edge-header-navigation-icon"
+                        src="/icons/icon-groups.svg"
+                      />
+                      <span className="edge-header-navigation-title">
+                        My Groups
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="edge-header-navigation-item">
+                      <img
+                        className="edge-header-navigation-icon"
+                        src="/icons/icon-rewards.svg"
+                      />
+                      <span className="edge-header-navigation-title">
+                        Rewards
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="edge-header-navigation-item">
+                      <img
+                        className="edge-header-navigation-icon"
+                        src="/icons/icon-courses.svg"
+                      />
+                      <span className="edge-header-navigation-title">
+                        Courses
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" className="edge-header-navigation-item">
+                      <img
+                        className="edge-header-navigation-icon"
+                        src="/icons/icon-analytics.svg"
+                      />
+                      <span className="edge-header-navigation-title">
+                        Analytics
+                      </span>
+                    </a>
                   </li>
                 </ul>
-                <span className="spacer"></span>
-                <h4>Content</h4>
+                {/*
                 <ul>
                   {contentTypes.map((type) => {
                     return (
@@ -87,9 +127,8 @@ function UserHeader(props) {
                       </li>
                     )
                   })}
-                </ul>
+                </ul>*/}
 
-                <span className="spacer"></span>
                 <ul>
                   <li>
                     <a onClick={onClickLogout}>{loading ? '...' : 'Logout'}</a>
@@ -131,11 +170,12 @@ function UserHeader(props) {
         .navigation {
           display: flex;
           align-items: center;
+          margin-left: var(--edge-gap-half);
         }
 
         .navigation li {
           list-style: none;
-          margin-left: var(--edge-gap);
+          margin-left: 0;
         }
 
         .navigation .dropdown-menu-nav ul li {
@@ -165,6 +205,10 @@ function UserHeader(props) {
           display: flex;
         }
 
+        .user-actions-button {
+          margin-left: var(--edge-gap);
+        }
+
         /*User Actions Logged */
         .edge-user-actions-logged {
           align-items: center;
@@ -181,7 +225,7 @@ function UserHeader(props) {
           width: var(--edge-gap);
         }
 
-        .edge-avatar {
+        .edge-avatar  {
           margin-right: var(--edge-gap);
         }
 
@@ -191,6 +235,40 @@ function UserHeader(props) {
 
         .edge-header .edge-button {
           margin-left: var(--edge-gap);
+        }
+
+        .edge-panel-header-navigation {
+          padding: var(--edge-gap) 0;
+        }
+
+        .edge-panel-header-navigation ul li {
+          list-style: none;
+          width: 1005;
+        }
+
+        .edge-header-navigation-item {
+          align-items: center;
+          border-radius: 4px;
+          display: flex;
+          font-size: 14px;
+          font-weight: 500;
+          padding: var(--edge-gap-half);
+          text-decoration: none;
+          transition: background-color 0.35s ease;
+          width: 100%;
+          will-change: background-color;
+        }
+
+        .edge-header-navigation-item:hover {
+          background-color: var(--accents-1);
+        }
+
+        .edge-header-navigation-icon {
+          width: 16px;
+        }
+
+        .edge-header-navigation-title {
+          margin-left: var(--edge-gap-half);
         }
 
         @media all and (max-width: 720px) {

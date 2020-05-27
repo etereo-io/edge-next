@@ -83,7 +83,7 @@ export default function (props) {
           position: absolute;
           background: var(--edge-background);
           color: var(--edge-foreground);
-          padding: var(--edge-gap);
+          padding: var(--edge-gap-half);
           box-shadow: var(--shadow-medium);
           z-index: var(--z-index-minimum);
         }

@@ -12,12 +12,15 @@ export default function () {
       <aside className="edge-panel-user">
         {(!finished || user) && (
           <div className="edge-avatar-user">
-            <Avatar width={'32px'} src={
-                  user && user.profile && user.profile.picture
-                    ? user.profile.picture.path
-                    : null
-                } />
-            
+            <Avatar
+              width={'32px'}
+              src={
+                user && user.profile && user.profile.picture
+                  ? user.profile.picture.path
+                  : null
+              }
+            />
+
             <div className="edge-avatar-user-info">
               <strong className="edge-user-name">
                 {user && (
@@ -146,7 +149,8 @@ export default function () {
           grid-area: edge-panel-user;
           overflow-y: auto;
           overflow-x: hidden;
-          padding: var(--edge-gap-double) 0;
+          padding: var(--edge-gap-double) var(--edge-gap) var(--edge-gap-double)
+            0;
           height: 100%;
         }
 
@@ -158,12 +162,16 @@ export default function () {
           max-width: 232px;
         }
 
+        .edge-panel-user::-webkit-scrollbar {
+          width: 0;
+        }
+
         @media all and (max-width: 720px) {
           .edge-panel-user {
             padding: var(--edge-gap) 0;
           }
 
-          .not-logged{
+          .not-logged {
             display: none;
           }
         }
@@ -303,6 +311,7 @@ export default function () {
             padding-left: 0;
           }
           .edge-panel-user {
+            display: none;
             transform: none;
           }
           .edge-panel-user .edge-avatar-image {

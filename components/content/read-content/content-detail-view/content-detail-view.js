@@ -18,11 +18,11 @@ import { useUser } from '@lib/client/hooks'
 
 export default function (props) {
   const shareUrl =
-  typeof window !== 'undefined'
-    ? `${String(window.location)}/content/${props.type.slug}/${
-        props.content.slug
-      }`
-    : ''
+    typeof window !== 'undefined'
+      ? `${String(window.location)}/content/${props.type.slug}/${
+          props.content.slug
+        }`
+      : ''
   const [showComments, setShowComments] = useState(!!props.showComments)
 
   const canReadComments = usePermission([
@@ -37,12 +37,12 @@ export default function (props) {
 
   const { user } = useUser()
 
-  const canEditComment = usePermission( [
+  const canEditComment = usePermission([
     `content.${props.content.type}.admin`,
     `content.${props.content.type}.update`,
   ])
 
-  const isContentOwner = user && (user.id === props.content.author)
+  const isContentOwner = user && user.id === props.content.author
 
   // Display new comments on top of feed
   const [newComments, setNewComments] = useState([])
@@ -102,37 +102,42 @@ export default function (props) {
             </div>
           )}
 
-          <div className="edge-item-card-header">
-            {props.content.draft && <div className="status">Draft</div>}
+        <div className="edge-item-card-header">
+          {props.content.draft && <div className="status">Draft</div>}
 
-            {!props.content.draft && (
-              <div className="author-info">
-                <AuthorBox user={props.content ? props.content.user : null} />
+          {!props.content.draft && (
+            <div className="author-info">
+              <AuthorBox user={props.content ? props.content.user : null} />
+            </div>
+          )}
+
+          <div className="edge-item-card-actions">
+            <div className="header-item-action follow-button">
+              <FollowButton following={true} />
+            </div>
+            <div className="header-item-action">
+              <ReactionCounter type="like" count={10} />
+            </div>
+
+            {(canEditComment.available || isContentOwner) && (
+              <div className="header-item-action">
+                <Button
+                  href={`/edit/${props.content.type}/${props.content.slug}`}
+                  round
+                  aria-label="round button"
+                >
+                  <img style={{ width: '15px' }} src="/icons/icon-edit.svg" />
+                </Button>
               </div>
             )}
-
-            <div className="edge-item-card-actions">
-              <div className="header-item-action">
-                <FollowButton following={true}/>
-              </div>
-              <div className="header-item-action">
-                <ReactionCounter type="like" count={10} />
-              </div>
-
-              {(canEditComment.available || isContentOwner) && (
-                <div className="header-item-action">
-                  <Button href={`/edit/${props.content.type}/${props.content.slug}`} round aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-edit.svg' /></Button>
-                </div>
-              )}
-            </div>
           </div>
+        </div>
         <div className="edge-item-card-content">
           <ContentSummaryView
             content={props.content}
             summary={!!props.summary}
             type={props.type}
           />
-  
         </div>
 
         <footer className="edge-item-card-footer">
@@ -155,7 +160,7 @@ export default function (props) {
               </b>
             </li>
           </ul>
-          
+
           <SocialShare shareUrl={shareUrl} />
         </footer>
 
@@ -190,7 +195,6 @@ export default function (props) {
         )}
       </article>
       <style jsx>{`
-       
         .edge-item-card-footer {
           align-items: center;
           display: flex;
@@ -209,14 +213,14 @@ export default function (props) {
 
         .edge-item-card {
           background-color: var(--edge-background);
-          border-radius: var(--edge-gap);
+          border-radius: var(--edge-gap-half);
           box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
           margin-bottom: var(--edge-gap);
           padding: var(--edge-gap-medium);
           position: relative;
         }
         @media all and (max-width: 720px) {
-          .edge-item-card-footer{
+          .edge-item-card-footer {
             display: flex;
             flex-flow: column;
           }
@@ -225,10 +229,18 @@ export default function (props) {
             padding: var(--edge-gap);
           }
 
+          .edge-item-card-stats {
+            margin-bottom: var(--edge-gap);
+          }
+
           .edge-item-card-stats-item {
             display: flex;
             flex-flow: column;
             font-size: 12px;
+          }
+
+          .edge-item-card-stats-item:last-of-type {
+            margin-right: 0;
           }
         }
 
@@ -251,6 +263,10 @@ export default function (props) {
             text-indent: -9999px;
             width: $edge-gap-triple;
           }
+
+          .edge-item-card {
+            padding: var(--edge-gap);
+          }
         }
 
         .edge-item-card-actions {
@@ -259,7 +275,13 @@ export default function (props) {
         }
 
         .edge-item-card-actions .header-item-action {
-          margin-left: 5px;
+          margin-left: var(--edge-gap-half);
+        }
+
+        @media all and (max-width: 600px) {
+          .edge-item-card-actions .header-item-action.follow-button {
+            display: none;
+          }
         }
 
         .edge-item-card-content {
@@ -274,7 +296,6 @@ export default function (props) {
         }
 
         @media all and (max-width: 720px) {
-          
           .edge-item-card-text {
             font-size: 14px;
             padding-right: 0;

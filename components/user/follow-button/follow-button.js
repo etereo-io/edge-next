@@ -16,7 +16,7 @@ export default ({ following }) => {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5px;
+            padding: 4px 10px 4px 8px;
           }
 
           .button-inner img {
