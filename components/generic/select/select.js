@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function (props) {
   const { name, children, prefixes = [] } = props
@@ -22,6 +22,10 @@ export default function (props) {
       props.onChange(ev)
     }
   }
+
+  useEffect(() => {
+    setSelectedValue(props.value)
+  }, [props.value])
 
   return (
     <>

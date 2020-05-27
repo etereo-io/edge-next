@@ -6,9 +6,23 @@ import { usePermission } from '@lib/client/hooks'
 import { useState } from 'react'
 import { useMonetizationState } from 'react-web-monetization'
 import Link from 'next/link'
+
+import DropDown from '@components/generic/dropdown-menu/dropdown-menu'
 import Button from '@components/generic/button/button'
+import FollowButton from '@components/user/follow-button/follow-button'
+import AuthorBox from '@components/user/author-box/author-box'
+import SocialShare from '@components/generic/social-share/social-share'
+import { format } from 'timeago.js'
+import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
+import { useUser } from '@lib/client/hooks'
 
 export default function (props) {
+  const shareUrl =
+  typeof window !== 'undefined'
+    ? `${String(window.location)}/content/${props.type.slug}/${
+        props.content.slug
+      }`
+    : ''
   const [showComments, setShowComments] = useState(!!props.showComments)
 
   const canReadComments = usePermission([
@@ -20,6 +34,15 @@ export default function (props) {
     `content.${props.type.slug}.comments.create`,
     `content.${props.type.slug}.comments.admin`,
   ])
+
+  const { user } = useUser()
+
+  const canEditComment = usePermission( [
+    `content.${props.content.type}.admin`,
+    `content.${props.content.type}.update`,
+  ])
+
+  const isContentOwner = user && (user.id === props.content.author)
 
   // Display new comments on top of feed
   const [newComments, setNewComments] = useState([])
@@ -34,9 +57,17 @@ export default function (props) {
   const monetizedState =
     contentIsMonetized && !props.summary ? useMonetizationState() : null
 
+  const onClickComments = (ev) => {
+    if (
+      (canReadComments.available && props.content.comments) ||
+      canWriteComments.available
+    ) {
+      setShowComments(true)
+    }
+  }
   return (
     <>
-      <div>
+      <article className="edge-item-card">
         {contentIsMonetized && props.summary && (
           <div className="monetization-layer">
             <div className="monetization-layer-content">
@@ -71,14 +102,62 @@ export default function (props) {
             </div>
           )}
 
-        <ContentSummaryView
-          content={props.content}
-          summary={!!props.summary}
-          type={props.type}
-          canReadComments={canReadComments.available}
-          canWriteComments={canWriteComments.available}
-          onClickComments={() => setShowComments(!showComments)}
-        />
+          <div className="edge-item-card-header">
+            {props.content.draft && <div className="status">Draft</div>}
+
+            {!props.content.draft && (
+              <div className="author-info">
+                <AuthorBox user={props.content ? props.content.user : null} />
+              </div>
+            )}
+
+            <div className="edge-item-card-actions">
+              <div className="header-item-action">
+                <FollowButton following={true}/>
+              </div>
+              <div className="header-item-action">
+                <ReactionCounter type="like" count={10} />
+              </div>
+
+              {(canEditComment.available || isContentOwner) && (
+                <div className="header-item-action">
+                  <Button href={`/edit/${props.content.type}/${props.content.slug}`} round aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-edit.svg' /></Button>
+                </div>
+              )}
+            </div>
+          </div>
+        <div className="edge-item-card-content">
+          <ContentSummaryView
+            content={props.content}
+            summary={!!props.summary}
+            type={props.type}
+          />
+  
+        </div>
+
+        <footer className="edge-item-card-footer">
+          <ul className="edge-item-card-stats">
+            <li className="edge-item-card-stats-item">
+              <b>{format(props.content.createdAt)}</b>
+            </li>
+
+            <li className="edge-item-card-stats-item">
+              <b>
+                {props.type.comments.enabled &&
+                canReadComments.available &&
+                typeof props.content.comments !== 'undefined' ? (
+                  <span className="comment-count" onClick={onClickComments}>
+                    {props.content.comments === 0 && canWriteComments.available
+                      ? 'Add a comment'
+                      : `${props.content.comments} comments`}
+                  </span>
+                ) : null}
+              </b>
+            </li>
+          </ul>
+          
+          <SocialShare shareUrl={shareUrl} />
+        </footer>
 
         {props.type.comments.enabled &&
           canWriteComments.available &&
@@ -109,36 +188,188 @@ export default function (props) {
             content={props.content}
           />
         )}
-      </div>
+      </article>
       <style jsx>{`
-        .content-detail-wrapper {
+       
+        .edge-item-card-footer {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .edge-item-card-stats {
           display: flex;
         }
-        .content-actions {
-          padding: var(--edge-gap);
-          max-width: 200px;
+
+        .edge-item-card-stats-item {
+          font-size: 13px;
+          list-style: none;
+          margin-right: var(--edge-gap);
         }
 
-        .content-detail-content {
-          margin-bottom: var(--edge-gap-double);
+        .edge-item-card {
+          background-color: var(--edge-background);
+          border-radius: var(--edge-gap);
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          margin-bottom: var(--edge-gap);
+          padding: var(--edge-gap-medium);
           position: relative;
-          flex: 1;
+        }
+        @media all and (max-width: 720px) {
+          .edge-item-card-footer{
+            display: flex;
+            flex-flow: column;
+          }
 
-          box-shadow: var(--shadow-smallest);
-          color: var(--edge-foreground);
-          background: var(--edge-background);
-          padding: var(--edge-gap);
-          border-radius: var(--edge-radius);
-          margin: 0 auto;
+          .edge-item-card {
+            padding: var(--edge-gap);
+          }
+
+          .edge-item-card-stats-item {
+            display: flex;
+            flex-flow: column;
+            font-size: 12px;
+          }
+        }
+
+        .edge-item-card-stats-item b {
+          margin-right: var(--edge-gap-half);
+        }
+
+        .edge-item-card-header {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
           width: 100%;
         }
 
-        .label {
-          font-weight: bold;
+        @media all and (max-width: 460px) {
+          .edge-button.has-icon {
+            background-position: 50%;
+            height: $edge-gap-triple;
+            padding-left: 0;
+            text-indent: -9999px;
+            width: $edge-gap-triple;
+          }
+        }
+
+        .edge-item-card-actions {
+          align-items: center;
+          display: flex;
+        }
+
+        .edge-item-card-actions .header-item-action {
+          margin-left: 5px;
+        }
+
+        .edge-item-card-content {
+          margin: var(--edge-gap-double) 0 0;
+        }
+
+        .edge-item-card-text {
+          color: var(--accents-4);
+          font-size: 16px;
+          line-height: 1.5;
+          padding-right: var(--edge-gap);
+        }
+
+        @media all and (max-width: 720px) {
+          
+          .edge-item-card-text {
+            font-size: 14px;
+            padding-right: 0;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .contentSummaryView {
+            padding: 0;
+          }
+        }
+
+        .content-summary-content {
+          padding-right: var(--edge-gap-double);
+        }
+
+        @media all and (max-width: 720px) {
+          .content-summary-content {
+            padding-right: 0;
+          }
         }
 
         .field {
+          margin: var(--edge-gap) 0;
+        }
+
+        @media (max-width: 600px) {
+          .field {
+            //margin: var(--edge-gap-half);
+          }
+        }
+
+        .bottomActions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .main-actions {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
           margin-bottom: var(--edge-gap);
+          width: 100%;
+        }
+
+        .status {
+          background: var(--accents-2);
+          border-radius: 4px;
+          color: var(--edge-foreground);
+          display: block;
+          font-size: 10px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          padding: 4px 8px;
+          text-align: center;
+          text-transform: uppercase;
+          width: fit-content;
+        }
+
+        .action-dropdown {
+          margin-left: var(--edge-gap-half);
+        }
+
+        .meta {
+          color: var(--accents-5);
+          font-size: 13px;
+          margin-top: var(--edge-gap-half);
+        }
+
+        .meta .comment-count {
+          cursor: pointer;
+          padding-left: var(--edge-gap-half);
+        }
+
+        h1 {
+          font-size: 24px;
+        }
+        h1:first-letter {
+          text-transform: uppercase;
+        }
+        .meta {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+        }
+
+        .content-options {
+          display: flex;
+        }
+
+        .content-actions {
+          padding: var(--edge-gap);
+          max-width: 200px;
         }
 
         .comment-form-wrapper {
@@ -163,7 +394,7 @@ export default function (props) {
         .monetization-layer-content {
           width: 60%;
           margin: 0 auto;
-          padding-top: 20%;
+          padding-top: 25%;
           font-weight: bold;
           text-align: center;
         }

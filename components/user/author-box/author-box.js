@@ -13,12 +13,13 @@ export default function (props) {
   return (
     <>
       <div className="edge-avatar-user">
-        <div className="edge-avatar small has-status available">
+        <div >
           {user && (
             <Link href={`/profile/@${user.username}`}>
               <a title={`${user.username} profile`}>
-                <img
-                  className="edge-avatar-image"
+                <Avatar 
+                  width={'32px'}
+                  status='available'
                   src={
                     user.profile && user.profile.picture
                       ? user.profile.picture.path

@@ -1,11 +1,11 @@
 export default function (props) {
   const defaultSrc = '/static/demo-images/default-avatar.jpg'
   const title = props.title || 'Avatar'
-  const width = props.width || 100
+  const width = props.width || '100px'
 
   return (
     <>
-      <div className={`avatar ${props.className}`}>
+      <div className={`avatar ${props.className} ${props.status ? 'has-status': ''} ${props.status}`}>
         {!props.loading && (
           <img title={title} src={props.src || defaultSrc}></img>
         )}
@@ -16,6 +16,8 @@ export default function (props) {
         )}
       </div>
       <style jsx>{`
+
+
         img {
           border-radius: 15%;
           overflow: hidden;
@@ -33,11 +35,12 @@ export default function (props) {
         .avatar {
           border-radius: 15%;
           display: inline-block;
-          height: ${width}px;
+          height: ${width};
           max-height: 80px;
           max-width: 80px;
           vertical-align: middle;
-          width: ${width}px;
+          width: ${width};
+          position: relative;
         }
 
         .avatar img {
@@ -45,6 +48,25 @@ export default function (props) {
           object-fit: cover;
           width: 100%;
         }
+
+        .avatar.has-status:after {
+          border: 2px solid var(--edge-background);
+          border-radius: 50%;
+          box-sizing: content-box;
+          content: '';
+          height: 8px;
+          position: absolute;
+          display: block;
+          top: 0;
+          right: 0;
+          width: 8px;
+        }
+      
+    
+        .avatar.has-status.available:after {
+          background-color: var(--edge-success);
+        }
+        
       `}</style>
     </>
   )

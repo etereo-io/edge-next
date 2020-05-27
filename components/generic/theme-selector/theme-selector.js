@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import Select from '../select/select'
 
 import {
@@ -41,6 +41,10 @@ export default function (props) {
       ),
     }
   })
+
+  useEffect(() => {
+    setSelectedTheme(mode)
+  }, [mode])
 
   return (
     <>

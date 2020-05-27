@@ -37,8 +37,8 @@ export default function ({
 
         .reaction-counter {
           color: var(--accents-3);
-          margin-right: 8px;
-          font-size: 12px;
+          font-size: 13px;
+          margin-right: var(--edge-gap-half);
         }
 
         .reaction-item-wr {

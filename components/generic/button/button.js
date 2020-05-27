@@ -21,6 +21,9 @@ export default function (props) {
     success,
     padding,
     hoverable,
+    
+    round,
+    width = '32px'
   } = props
 
   const classNames = `edge-button button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${
@@ -29,7 +32,7 @@ export default function (props) {
     warning ? 'warning' : ''
   } ${secondary ? 'secondary' : ''} ${alert ? 'alert' : ''} ${
     hoverable ? 'hoverable' : ''
-  } ${className}`
+  } ${className}  ${round ? 'round': ''}`
 
   const buttonItem = (
     <>
@@ -40,7 +43,7 @@ export default function (props) {
         onClick={!loading ? onClick : null}
       >
         {!loading ? (
-          children
+          <div className="children-wrapper">{children}</div>
         ) : (
           <LoadingSpinner
             alt={alt || secondary || warning || success || alert}
@@ -133,6 +136,19 @@ export default function (props) {
             box-shadow: var(--shadow-medium);
             color: inherit;
             transform: scale(1.025);
+          }
+
+          .button.round {
+            width: ${width};
+            height: ${width};
+            border-radius: 100%;
+            padding: 0;
+          }
+  
+          .children-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         `}
       </style>

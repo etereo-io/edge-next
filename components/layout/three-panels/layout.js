@@ -66,7 +66,6 @@ const Layout = (props) => (
         }
 
         .edge-panel-user-navigation-title,
-        .edge-panel-user .edge-avatar-user-info,
         .edge-panel-user-footer {
           display: none;
         }
@@ -89,10 +88,6 @@ const Layout = (props) => (
         }
         .edge-panel-user {
           transform: none;
-        }
-        .edge-panel-user .edge-avatar-image {
-          height: 32px;
-          width: 32px;
         }
       }
 
@@ -148,7 +143,6 @@ const Layout = (props) => (
         }
 
         .edge-panels.two-panels .edge-panel-user-navigation-title,
-        .edge-panels.two-panels .edge-panel-user .edge-avatar-user-info,
         .edge-panels.two-panels .edge-panel-user-footer {
           display: none;
         }
@@ -171,11 +165,6 @@ const Layout = (props) => (
         }
         .edge-panels.two-panels .edge-panel-user {
           transform: none;
-        }
-
-        .edge-panels.two-panels .edge-panel-user .edge-avatar-image {
-          height: 32px;
-          width: 32px;
         }
       }
 

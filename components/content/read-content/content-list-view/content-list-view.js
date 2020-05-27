@@ -87,7 +87,7 @@ export default function (props) {
       const { results = [] } = data
       return results.map((item) => {
         return (
-          <article className="edge-item-card" key={item.id + item.createdAt}>
+          <div key={item.id + item.createdAt}>
             <ContentDetailView
               content={item}
               type={props.type}
@@ -95,29 +95,7 @@ export default function (props) {
               showActions={false}
               showComments={false}
             />
-
-            <style jsx>{`
-              .edge-item-card {
-                background-color: var(--edge-background);
-                border-radius: var(--edge-gap);
-                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-                margin-bottom: var(--edge-gap);
-                padding: var(--edge-gap-medium);
-                position: relative;
-              }
-              @media all and (max-width: 720px) {
-                .edge-item-card {
-                  padding: var(--edge-gap);
-                }
-
-                .edge-item-card-stats-item {
-                  display: flex;
-                  flex-flow: column;
-                  font-size: 12px;
-                }
-              }
-            `}</style>
-          </article>
+          </div>
         )
       })
     },

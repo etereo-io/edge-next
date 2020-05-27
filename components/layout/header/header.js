@@ -32,7 +32,7 @@ function UserHeader(props) {
     <div className="edge-user-actions">
       {/*Searchbox*/}
       <div className="edge-searchbox">
-        <img src="/refactor/icon-search.svg" />
+        <img src="/icons/icon-search.svg" />
         <input type="text" placeholder="Search" />
       </div>
 
@@ -40,22 +40,19 @@ function UserHeader(props) {
         <div className="edge-user-actions-logged">
           {/*User Actions Buttons*/}
           <div className="edge-user-actions-buttons">
-            <img src="/refactor/icon-configuration.svg" />
-            <img src="/refactor/icon-messages.svg" />
+            <img src="/icons/icon-configuration.svg" />
+            <img src="/icons/icon-messages.svg" />
           </div>
           <Link href={`/profile/@${user.username}`}>
             <a title="User profile">
-              {/*Avatar*/}
-              <div className="edge-avatar has-status available">
-                <img
-                  className="edge-avatar-image"
+              <Avatar
+                  width={'36px'}
                   src={
                     user && user.profile && user.profile.picture
                       ? user.profile.picture.path
                       : null
                   }
                 />
-              </div>
             </a>
           </Link>
 
@@ -153,7 +150,7 @@ function UserHeader(props) {
           height: 80px;
           position: sticky;
           top: 0;
-          z-index: 1;
+          z-index: var(--z-index-header);
         }
 
         .edge-container {
@@ -240,7 +237,7 @@ const Header = () => {
           height: 80px;
           position: sticky;
           top: 0;
-          z-index: 1;
+          z-index: var(--z-index-header);
         }
 
         .edge-container {

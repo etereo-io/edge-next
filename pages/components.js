@@ -8,6 +8,7 @@ import AuthorBox from '@components/user/author-box/author-box'
 import Avatar from '@components/user/avatar/avatar'
 import Badge from '@components/generic/badge/badge'
 import Button from '@components/generic/button/button'
+import FollowButton from '@components/user/follow-button/follow-button'
 import Card from '@components/generic/card/card'
 import ContentSummaryView from '@components/content/read-content/content-summary-view/content-summary-view'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
@@ -61,6 +62,9 @@ function Menu() {
             </li>
             <li>
               <a href="#button">Button</a>
+            </li>
+            <li>
+              <a href="#follow-button">Follow button</a>
             </li>
             <li>
               <a href="#reaction-counter">Reaction Counter</a>
@@ -502,24 +506,26 @@ const links = [{
             <h3>Avatar</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Avatar src="/static/demo-images/edge-avatar.jpg" />
-                <Avatar src="/static/demo-images/edge-avatar.jpg" width={60} />
-                <Avatar src="/static/demo-images/edge-avatar.jpg" width={30} />
+                <Avatar src="/static/demo-images/edge-avatar.jpg" status='available'/>
+                <Avatar src="/static/demo-images/edge-avatar.jpg" width={'60px'} />
+                <Avatar src="/static/demo-images/edge-avatar.jpg" width={'30px'} />
               </div>
               <div className="item-wrapper">
-                <Avatar />
-                <Avatar width={60} />
-                <Avatar width={30} />
+                <Avatar  status='available' />
+                <Avatar width={'60px'} />
+                <Avatar width={'30px'} />
               </div>
 
               <div className="item-wrapper">
-                <Avatar loading={true} />
-                <Avatar loading={true} width={60} />
-                <Avatar loading={true} width={30} />
+                <Avatar loading={true} status='available' />
+                <Avatar loading={true} width={'60px'} />
+                <Avatar loading={true} width={'30px'} />
               </div>
             </div>
             <pre>{`
 <Avatar />
+<Avatar loading={true} width={'60px'} />
+<Avatar src="/static/demo-images/edge-avatar.jpg" status='available'/>
             `}</pre>
           </div>
 
@@ -769,13 +775,11 @@ const links = [{
 
               <div className="item-wrapper">
                 <Button loading aria-label="Loading button"></Button>
-              </div>
-
-              <div className="item-wrapper">
                 <Button loading secondary aria-label="Loading button"></Button>
                 <Button loading success aria-label="Loading button"></Button>
                 <Button loading warning aria-label="Loading button"></Button>
                 <Button loading alert aria-label="Loading button"></Button>
+                <Button loading soft aria-label="Loading button"></Button>
               </div>
 
               <div className="item-wrapper">
@@ -793,10 +797,42 @@ const links = [{
               <div className="item-wrapper">
                 <Button alt loading aria-label="Alt loading button"></Button>
               </div>
+
             </div>
+
+            <div className="item-wrapper">
+                <Button round aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-edit.svg' /></Button>
+                <Button round secondary aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
+                <Button round success aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
+                <Button round warning aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
+                <Button round alert aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
+                <Button round soft aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
+              </div>
+
             <pre>{`
 <Button />
+<Button loading secondary aria-label="Loading button"></Button>
+
             `}</pre>
+          </div>
+
+          <div id="follow-button" className="component">
+            <div className="component-demo">
+                
+                <div className="item-wrapper">
+                  <FollowButton following={true} />
+                  <FollowButton following={false} />
+                </div>
+
+            </div>
+
+  
+            <pre>{`
+<FollowButton following={true} onClick={() => {}} />
+
+
+            `}</pre>
+
           </div>
 
           <div id="reaction-counter" className="component">
@@ -1276,7 +1312,7 @@ const links = [{
                       {' '}
                       <Avatar
                         src="/static/demo-images/edge-avatar.jpg"
-                        width={30}
+                        width={'30px'}
                       />
                       Rafael Ventura
                     </TableCellBody>
@@ -1291,7 +1327,7 @@ const links = [{
                       {' '}
                       <Avatar
                         src="/static/demo-images/edge-avatar.jpg"
-                        width={30}
+                        width={'30px'}
                       />
                       Hayder Al-Deen
                     </TableCellBody>
@@ -1306,7 +1342,7 @@ const links = [{
                       {' '}
                       <Avatar
                         src="/static/demo-images/edge-avatar.jpg"
-                        width={30}
+                        width={'30px'}
                       />
                       Rafael Ventura
                     </TableCellBody>
@@ -1321,7 +1357,7 @@ const links = [{
                       {' '}
                       <Avatar
                         src="/static/demo-images/edge-avatar.jpg"
-                        width={30}
+                        width={'30px'}
                       />
                       Hayder Al-Deen
                     </TableCellBody>
@@ -1336,7 +1372,7 @@ const links = [{
                       {' '}
                       <Avatar
                         src="/static/demo-images/edge-avatar.jpg"
-                        width={30}
+                        width={'30px'}
                       />
                       Rafael Ventura
                     </TableCellBody>

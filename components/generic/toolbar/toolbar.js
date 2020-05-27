@@ -12,17 +12,12 @@ export default function () {
       <aside className="edge-panel-user">
         {(!finished || user) && (
           <div className="edge-avatar-user">
-            {/*Avatar*/}
-            <div className="edge-avatar medium has-status available">
-              <img
-                className="edge-avatar-image"
-                src={
+            <Avatar width={'32px'} src={
                   user && user.profile && user.profile.picture
                     ? user.profile.picture.path
                     : null
-                }
-              />
-            </div>
+                } />
+            
             <div className="edge-avatar-user-info">
               <strong className="edge-user-name">
                 {user && (
@@ -56,7 +51,7 @@ export default function () {
               <a href="#" className="edge-panel-user-navigation-item">
                 <img
                   className="edge-panel-user-navigation-icon"
-                  src="/refactor/icon-groups.svg"
+                  src="/icons/icon-groups.svg"
                 />
                 <span className="edge-panel-user-navigation-title">
                   My Groups
@@ -67,7 +62,7 @@ export default function () {
               <a href="#" className="edge-panel-user-navigation-item">
                 <img
                   className="edge-panel-user-navigation-icon"
-                  src="/refactor/icon-rewards.svg"
+                  src="/icons/icon-rewards.svg"
                 />
                 <span className="edge-panel-user-navigation-title">
                   Rewards
@@ -78,7 +73,7 @@ export default function () {
               <a href="#" className="edge-panel-user-navigation-item">
                 <img
                   className="edge-panel-user-navigation-icon"
-                  src="/refactor/icon-courses.svg"
+                  src="/icons/icon-courses.svg"
                 />
                 <span className="edge-panel-user-navigation-title">
                   Courses
@@ -89,7 +84,7 @@ export default function () {
               <a href="#" className="edge-panel-user-navigation-item">
                 <img
                   className="edge-panel-user-navigation-icon"
-                  src="/refactor/icon-analytics.svg"
+                  src="/icons/icon-analytics.svg"
                 />
                 <span className="edge-panel-user-navigation-title">
                   Analytics
@@ -132,7 +127,7 @@ export default function () {
         <footer className="edge-panel-user-footer">
           <Link href="/p/faq">
             <a className="edge-panel-user-faqs" href="#">
-              <img src="/refactor/icon-question.svg" />
+              <img src="/icons/icon-question.svg" />
             </a>
           </Link>
 
@@ -140,7 +135,7 @@ export default function () {
         </footer>
 
         <button className="edge-panel-user-action-mobile">
-          <img src="/refactor/icon-add.svg" />
+          <img src="/icons/icon-add.svg" />
         </button>
       </aside>
       <style jsx>{`
