@@ -7,6 +7,7 @@ import { useUser, useContentTypes } from '@lib/client/hooks'
 import { useState } from 'react'
 import Progress from './progress'
 import Avatar from '@components/user/avatar/avatar'
+import { hasPermission } from '@lib/permissions'
 
 function UserHeader(props) {
   const user = props.user
@@ -72,7 +73,7 @@ function UserHeader(props) {
                     <ThemeSelector />
                   </li>
                   <li>
-                    <a href="#" className="edge-header-navigation-item">
+                    <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
                         src="/icons/icon-groups.svg"
@@ -83,7 +84,7 @@ function UserHeader(props) {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="edge-header-navigation-item">
+                    <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
                         src="/icons/icon-rewards.svg"
@@ -94,7 +95,7 @@ function UserHeader(props) {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="edge-header-navigation-item">
+                    <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
                         src="/icons/icon-courses.svg"
@@ -105,7 +106,7 @@ function UserHeader(props) {
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="edge-header-navigation-item">
+                    <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
                         src="/icons/icon-analytics.svg"
@@ -115,20 +116,28 @@ function UserHeader(props) {
                       </span>
                     </a>
                   </li>
-                </ul>
-                {/*
-                <ul>
+                
                   {contentTypes.map((type) => {
                     return (
                       <li key={type.slug}>
                         <Link href={`/create/${type.slug}`}>
-                          <a>Create {type.title}</a>
+                          <a  className="header-navigation-item">Create {type.title}</a>
                         </Link>
                       </li>
                     )
                   })}
-                </ul>*/}
 
+                {hasPermission(user, 'admin.access') && (
+                  <li>
+                    <Link href="/admin">
+                      <a className="header-navigation-item">
+                        Administration
+                      </a>
+                    </Link>
+                  </li>
+                )}
+
+                </ul>
                 <ul>
                   <li>
                     <Button fullWidth>
@@ -190,24 +199,7 @@ function UserHeader(props) {
 
         .navigation .dropdown-menu-nav ul li {
           margin-left: 0;
-        }
-
-        .edge-header {
-          align-items: center;
-          background: var(--edge-background);
-          box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
-          display: flex;
-          height: 80px;
-          position: sticky;
-          top: 0;
-          z-index: var(--z-index-header);
-        }
-
-        .edge-container {
-          align-items: center;
-          display: flex;
-          justify-content: space-between;
-        }
+        } 
 
         /*User Actions */
         .edge-user-actions {
@@ -256,7 +248,7 @@ function UserHeader(props) {
           width: 1005;
         }
 
-        .edge-header-navigation-item {
+        .header-navigation-item {
           align-items: center;
           border-radius: 4px;
           display: flex;
@@ -269,7 +261,7 @@ function UserHeader(props) {
           will-change: background-color;
         }
 
-        .edge-header-navigation-item:hover {
+        .header-navigation-item:hover {
           background-color: var(--accents-1);
         }
 
@@ -338,35 +330,6 @@ const Header = () => {
           justify-content: space-between;
         }
 
-        /*User Actions */
-        .edge-user-actions {
-          align-items: center;
-          display: flex;
-        }
-
-        /*User Actions Logged */
-        .edge-user-actions-logged {
-          align-items: center;
-          display: flex;
-        }
-
-        /*User Actions Buttons */
-        .edge-user-actions-buttons {
-          margin: 0 var(--edge-gap);
-        }
-
-        .edge-user-actions-buttons img {
-          margin-right: var(--edge-gap);
-          width: $edge-gap-triple;
-        }
-
-        .edge-user-actions-buttons img:last-of-type {
-          margin-right: 0;
-        }
-
-        .edge-header .edge-button {
-          margin-left: $edge-gap-triple;
-        }
 
         @media all and (max-width: 720px) {
           .edge-header {
@@ -377,13 +340,6 @@ const Header = () => {
         @media all and (max-width: 640px) {
           .edge-searchbox {
             display: none;
-          }
-        }
-
-        @media all and (max-width: 460px) {
-          .edge-button,
-          .user-actions-button {
-            display: none !important;
           }
         }
       `}</style>
