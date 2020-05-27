@@ -415,9 +415,12 @@ export default function (props) {
         .monetization-layer-content {
           width: 60%;
           margin: 0 auto;
-          padding-top: 25%;
           font-weight: bold;
           text-align: center;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
         }
 
         .monetization-layer-content p {

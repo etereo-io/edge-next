@@ -136,7 +136,6 @@ const Layout = (props) => (
       }
 
       .edge-panels.two-panels .edge-panel-content .edge-panel-content-inner {
-        background-color: var(--edge-background);
         margin: 0 auto;
         max-width: 890px;
       }

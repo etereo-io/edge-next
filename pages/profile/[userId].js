@@ -17,15 +17,17 @@ import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
 
 const Profile = (props) => {
-  //Profile Tabs
-  const [activeTab, setActiveTab] = useState('account')
-  const onClickTab = (name) => {
-    setActiveTab(name)
-  }
+ 
   const router = useRouter()
   const { userId } = router.query
 
   const visibleContentTypes = useContentTypes(['read', 'admin'])
+
+   //Profile Tabs
+   const [activeTab, setActiveTab] = useState('post')
+   const onClickTab = (name) => {
+     setActiveTab(name)
+   }
 
   // Check permissions to read
   const currentUser = useUser()
@@ -80,12 +82,18 @@ const Profile = (props) => {
         <div className="content-container">
           <div className="content-types">
             <ul className="navigation">
-              <li
-                onClick={() => onClickTab('posts')}
-                className={`${activeTab === 'posts' ? 'active' : ''}`}
-              >
-                <a>Posts</a>
-              </li>
+              {visibleContentTypes.map((cData) => {
+                return (
+                  <li
+                    onClick={() => onClickTab(cData.slug)}
+                    key={cData.slug}
+                    className={`${activeTab === cData.slug ? 'active' : ''}`}
+                  >
+                    <a>{cData.title}</a>
+                  </li>
+                )
+              })}
+              
               <li
                 onClick={() => onClickTab('comments')}
                 className={`${activeTab === 'comments' ? 'active' : ''}`}
@@ -99,9 +107,15 @@ const Profile = (props) => {
                 <a>Likes</a>
               </li>
             </ul>
+           
             {visibleContentTypes.map((cData) => {
               return (
-                <div className="content-block">
+                <div  className={`${
+                  activeTab === cData.slug
+                    ? 'navigation-tab active'
+                    : 'navigation-tab'
+                }`}>
+                  
                   <ContentListView
                     infiniteScroll={false}
                     type={cData}
@@ -110,6 +124,27 @@ const Profile = (props) => {
                 </div>
               )
             })}
+             <div
+              className={`${
+                activeTab === 'comments'
+                  ? 'navigation-tab active'
+                  : 'navigation-tab'
+              }`}
+            >
+
+              THE COMMENTS
+            </div>
+
+            <div
+              className={`${
+                activeTab === 'likes'
+                  ? 'navigation-tab active'
+                  : 'navigation-tab'
+              }`}
+            >
+
+              THE LIKES
+            </div>
           </div>
           {/*
           {config.activity.enabled && (
@@ -122,6 +157,12 @@ const Profile = (props) => {
       </div>
       <style jsx>
         {`
+          .profile-wrapper {
+            background: var(--edge-background);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            overflow: hidden;
+          }
           .profile-user-info {
             align-items: flex-start;
             display: flex;

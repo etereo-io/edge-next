@@ -10,8 +10,6 @@ export default function ({ user, loading = false }) {
       </div>
       <style jsx>{`
       .cover-image-wrapper {
-        border-top-left-radius: 16px;
-        border-top-right-radius: 16px;
         height: 280px;
         overflow: hidden;
       }  
