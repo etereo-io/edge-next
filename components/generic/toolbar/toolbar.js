@@ -244,7 +244,7 @@ export default function () {
         }
 
         .edge-panel-user-tag-unit:hover {
-          background-color: var(--accents-2);
+          background-color: var(--accents-1);
         }
 
         .edge-panel-user-navigation {
@@ -268,7 +268,7 @@ export default function () {
         }
 
         .edge-panel-user-navigation-item:hover {
-          background-color: var(--accents-);
+          background-color: var(--accents-1);
         }
 
         .edge-panel-user-navigation-icon {

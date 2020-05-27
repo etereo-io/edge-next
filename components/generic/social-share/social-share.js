@@ -122,6 +122,34 @@ export default function (props) {
           .edge-button-share:hover .edge-button-share-unit:nth-of-type(3) {
             transition-delay: 0.3s;
           }
+
+          .edge-button-share:hover .edge-button-share-unit:nth-of-type(4) {
+            transition-delay: 0.4s;
+          }
+
+          .edge-button-share:hover .edge-button-share-unit:nth-of-type(5) {
+            transition-delay: 0.5s;
+          }
+
+          .edge-button-share:hover .edge-button-share-unit:nth-of-type(6) {
+            transition-delay: 0.6s;
+          }
+
+          .edge-button-share:hover .edge-button-share-unit:nth-of-type(7) {
+            transition-delay: 0.7s;
+          }
+
+          .edge-button-share:hover .edge-button-share-unit:nth-of-type(8) {
+            transition-delay: 0.8s;
+          }
+
+          .edge-button-share:hover .edge-button-share-unit:nth-of-type(9) {
+            transition-delay: 0.9s;
+          }
+
+          .edge-button-share:hover .edge-button-share-unit:nth-of-type(10) {
+            transition-delay: 1s;
+          }
         `}
       </style>
     </>
