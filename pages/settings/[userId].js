@@ -83,7 +83,14 @@ const UserSettings = () => {
     <Layout title="User Settings" hasDivider={true}>
       <section className="user-profile-settings-wr">
         <div className="user-profile-view">
-          <UserProfileBox user={user} />
+          <div className="cover">{user.profile.cover && (<img src={user.profile.cover.path}/>)}</div>
+          <div className="user-profile-view-content">
+            <div className="user-profile-box-wrapper">
+              <UserProfileBox user={user} />
+
+            </div>
+
+          </div>
         </div>
 
         <div className="user-profile-configuration-wr">
@@ -175,9 +182,23 @@ const UserSettings = () => {
             background: var(--edge-background);
             border-radius: 4px;
             box-shadow: var(--shadow-small);
-            padding: var(--edge-gap-double);
+            overflow: hidden;
+            position: relative;
             width: 35%;
           }
+
+          .user-profile-view .cover {
+            
+          }
+
+          .user-profile-view .cover img {
+            max-width: 100%;
+          }
+
+          .user-profile-view-content {
+            padding: var(--edge-gap-double);
+          }
+
 
           .user-profile-configuration-wr {
             background: var(--edge-background);

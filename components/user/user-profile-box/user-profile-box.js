@@ -87,7 +87,9 @@ export default function ({ user, ...props }) {
         {`
           .general-profile {
             text-align: center;
+            position: relative;
           }
+
 
           .general-profile.horizontal {
             align-items: center;
