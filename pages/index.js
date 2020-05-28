@@ -138,7 +138,15 @@ const Landing = () => {
         }
 
         .featured-section-title {
+          animation: featured-section-title 0.5s ease-in forwards;
           font-size: 28px;
+        }
+
+        @keyframes featured-section-title {
+          from {
+            opacity: 0;
+            transform: translateY(4px);
+          }
         }
 
         .featured-section-text {
