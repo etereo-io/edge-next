@@ -66,6 +66,7 @@ export default function (props) {
           display: block;
           top: 0;
           right: 0;
+          transform: translate(1px, -1px);
           width: 8px;
         }
       

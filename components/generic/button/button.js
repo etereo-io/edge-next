@@ -7,6 +7,7 @@ export default function (props) {
     loading,
     alt,
     big,
+    medium,
     className,
     href,
     onClick,
@@ -21,18 +22,20 @@ export default function (props) {
     success,
     padding,
     hoverable,
-    
+
     round,
-    width = '32px'
+    width = '32px',
   } = props
 
-  const classNames = `edge-button button ${loading ? 'loading' : ''}  ${alt ? 'alt' : ''} ${
-    fullWidth ? 'full-width' : ''
-  } ${big ? 'big' : ''} ${soft ? 'soft' : ''} ${success ? 'success' : ''} ${
+  const classNames = `edge-button button ${loading ? 'loading' : ''}  ${
+    alt ? 'alt' : ''
+  } ${fullWidth ? 'full-width' : ''} ${big ? 'big' : ''} ${
+    medium ? 'medium' : ''
+  } ${soft ? 'soft' : ''} ${success ? 'success' : ''} ${
     warning ? 'warning' : ''
   } ${secondary ? 'secondary' : ''} ${alert ? 'alert' : ''} ${
     hoverable ? 'hoverable' : ''
-  } ${className}  ${round ? 'round': ''}`
+  } ${className}  ${round ? 'round' : ''}`
 
   const buttonItem = (
     <>
@@ -106,7 +109,7 @@ export default function (props) {
             color: var(--edge-background);
           }
 
-          .button.soft{
+          .button.soft {
             background-color: var(--edge-success-soft);
             border-color: transparent;
             color: var(--edge-success);
@@ -115,6 +118,12 @@ export default function (props) {
           .button.big {
             font-size: 16px;
             padding: 24px;
+            width: fit-content;
+          }
+
+          .button.medium {
+            font-size: 16px;
+            padding: 16px;
             width: fit-content;
           }
 
@@ -144,7 +153,7 @@ export default function (props) {
             border-radius: 100%;
             padding: 0;
           }
-  
+
           .children-wrapper {
             display: flex;
             align-items: center;
