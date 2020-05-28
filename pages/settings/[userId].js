@@ -259,6 +259,12 @@ const UserSettings = () => {
             }
           }
 
+          @media all and (max-width: 460px) {
+            .navigation-tab.active {
+              padding: var(--edge-gap) 0;
+            }
+          }
+
           .settings {
             display: none;
           }

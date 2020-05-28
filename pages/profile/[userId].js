@@ -70,7 +70,7 @@ const Profile = (props) => {
           <div className="profile-edit">
             {canEdit && (
               <div className="item">
-                <Button href={`/settings/${data ? data.id : ''}`}>
+                <Button alt href={`/settings/${data ? data.id : ''}`}>
                   Edit Profile
                 </Button>
               </div>
@@ -181,13 +181,28 @@ const Profile = (props) => {
             margin: 60px auto 0;
             max-width: 600px;
             padding: 0 var(--edge-gap-medium);
+            position: relative;
             width: 100%;
+          }
+
+          .profile-edit {
+            position: absolute;
+            top: -60px;
+            transform: translateY(-50%);
+            right: var(--edge-gap-half);
           }
 
           @media (max-width: 720px) {
             .profile-wrapper {
               border-top-left-radius: 0;
               border-top-right-radius: 0;
+            }
+
+            .profile-edit {
+              position: absolute;
+              top: var(--edge-gap-medium-negative);
+              transform: translateY(-50%);
+              right: var(--edge-gap-half);
             }
 
             .profile-user-info {

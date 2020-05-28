@@ -124,11 +124,11 @@ const Layout = (props) => (
         height: 100%;
       }
 
-      @media all and (max-width: 720px){
+      /*@media all and (max-width: 720px){
         .edge-panels .edge-panel-content {
           padding: 0;
         }
-      }
+      }*/
 
       @media all and (max-width: 460px){
         .edge-panels .edge-panel-content {
