@@ -41,7 +41,7 @@ const Landing = () => {
         }
 
         .edge-placeholder {
-          background-color: var(--accents-1);
+          background-color: var(--accents-1-medium);
           border-radius: 4px;
           height: 160px;
           margin-bottom: var(--edge-gap);
