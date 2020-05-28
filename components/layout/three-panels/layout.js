@@ -37,7 +37,7 @@ const Layout = (props) => (
         padding: var(--edge-gap-medium) 0;
         position: sticky;
         top: 80px;
-        height: calc(100vh - 80px);
+        height: calc(100vh - 112px);
         max-width: 232px;
       }
 
@@ -186,13 +186,12 @@ const Layout = (props) => (
 
       .edge-panel-ads {
         grid-area: edge-panel-ads;
-        height: fit-content;
+        height: calc(100vh - 112px);
         overflow-y: auto;
         overflow-x: hidden;
-        padding: var(--edge-gap-double) 0 var(--edge-gap-double) var(--edge-gap);
+        padding: var(--edge-gap-medium) 0 var(--edge-gap-medium) var(--edge-gap);
         position: sticky;
-        top: 80px;
-        height: calc(100vh - 80px);
+        top: 112px;
         max-width: 232px;
       }
 
