@@ -74,9 +74,10 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
               type="text"
               placeholder="Choose username"
               name="username"
-              pattern="/([a-z]+[a-z0-9_-]+)/g"
+              pattern="[a-z\d_-]+$"
               required
             ></input>
+            <div className="description">Use only numbers, lowercase letters and underscores</div>
           </div>
         )}
         <div className="input-group required">

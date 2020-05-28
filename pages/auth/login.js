@@ -1,16 +1,21 @@
+import Router, { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+
+import Card from '@components/generic/card/card'
 import Form from '@components/auth/login-register.form'
 import Layout from '@components/layout/auth/auth-layout'
-import Router from 'next/router'
 import fetch from '@lib/fetcher'
 import { mutate } from 'swr'
-import { useState } from 'react'
 import { useUser } from '@lib/client/hooks'
 
 const Login = () => {
   useUser({ redirectTo: '/', redirectIfFound: true })
+  const router = useRouter()
+  const { from } = router.query
 
   const [errorMsg, setErrorMsg] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showAlert, setShowAlert] = useState('')
 
   async function handleSubmit(e) {
     event.preventDefault()
@@ -34,16 +39,28 @@ const Login = () => {
 
       Router.push('/')
     } catch (error) {
+      const defaultMessage = 'Error while logging in, check if the email and password are correct'
+      if (error.body) {
+        const resp = await error.json()
+        setErrorMsg(resp.error || defaultMessage)
+      } else {
+        setErrorMsg(error.message || defaultMessage)
+      }
       setLoading(false)
-      console.error('An unexpected error happened occurred:', error)
-      setErrorMsg(
-        'Error while logging in, check if the email and password are correct'
-      )
     }
   }
 
+  useEffect(() => {
+    if (from && from === 'signup') {
+      setShowAlert('Please, verify your email address before login in. We have sent you an email.')
+    }
+  }, [from])
+
   return (
     <Layout title="Login" fullWidth={true}>
+      {showAlert && <Card success style={{marginBottom: '15px'}}>
+                  <h3>{showAlert}</h3>
+                </Card>}
       <div className="login">
         <Form
           isLogin
