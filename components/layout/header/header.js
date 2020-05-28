@@ -317,7 +317,7 @@ const Header = () => {
           <div className="edge-container">
             <p className="edge-topper-content">
               🚨 We are working on Edge Pro. Follow our journey on{' '}
-              <a href="https://medium.com/nucleo" target="_blank">
+              <a href="https://medium.com/@nucleo" target="_blank">
                 our blog
               </a>{' '}
               to stay tuned!
