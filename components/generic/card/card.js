@@ -1,5 +1,5 @@
-export default function (props) {
-  const { children, alt, featured, success, secondary, warning, alert } = props
+export default function ({ children, alt, featured, success, secondary, warning, alert, ...props }) {
+ 
 
   return (
     <>
@@ -9,6 +9,7 @@ export default function (props) {
         } ${secondary ? 'secondary' : ''} ${warning ? 'warning' : ''} ${
           alert ? 'alert' : ''
         }`}
+        {...props}
       >
         {children}
       </div>

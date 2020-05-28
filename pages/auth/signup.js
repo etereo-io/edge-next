@@ -22,29 +22,27 @@ const Signup = () => {
       password: e.currentTarget.password.value,
     }
 
-    if (body.password !== e.currentTarget.passwordrepeat.value) {
-      setErrorMsg(`The passwords don't match`)
-      return
-    }
-
     setLoading(true)
-    try {
-      const res = await fetch('/api/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-        .then(() => {
-          Router.push('/auth/login')
-        })
-        .catch((err) => {
-          setLoading(false)
-          throw new Error(err)
-        })
-    } catch (error) {
-      console.error('An unexpected error happened occurred:', error.message)
-      setErrorMsg(error.message)
-    }
+
+    fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+    .then(() => {
+      Router.push('/auth/login?from=signup')
+    })
+    .catch(async (err) => {
+      const defaultError = 'Email or username already taken'
+      if (err.body) {
+        const body = await err.json()
+        setErrorMsg(body.error || defaultError)
+      } else {
+        setErrorMsg(err.message || defaultError)
+      }
+      setLoading(false)
+  
+    })
   }
 
   return (
