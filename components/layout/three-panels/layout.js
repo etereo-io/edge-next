@@ -138,7 +138,7 @@ const Layout = (props) => (
 
       .edge-panels .edge-panel-content .edge-panel-content-inner {
         margin: 0 auto;
-        max-width: 600px;
+        max-width: 640px;
       }
 
       .edge-panels.two-panels .edge-panel-content .edge-panel-content-inner {

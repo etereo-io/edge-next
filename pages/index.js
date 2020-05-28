@@ -1,11 +1,7 @@
 import Layout from '@components/layout/three-panels/layout'
 import { useUser } from '@lib/client/hooks'
 import Button from '@components/generic/button/button'
-import Badge from '@components/generic/badge/badge'
-import GithubLogo from '@components/generic/icons/github-icon/github-icon'
-import NextJSLogo from '@components/generic/icons/nextjs-icon/nextjs-icon'
-import Card from '@components/generic/card/card'
-import Link from 'next/link'
+import {useState} from 'react';
 import config from '@lib/config'
 import { useContentType } from '@lib/client/hooks'
 import ToolBar from '@components/generic/toolbar/toolbar'
@@ -14,6 +10,7 @@ import ContentListView from '@components/content/read-content/content-list-view/
 const Landing = () => {
   const { contentType } = useContentType('post')
   const { user, finished } = useUser()
+  const [active, setActive] = useState(false);
 
   const panelAdsItems = (
     <>
@@ -65,7 +62,7 @@ const Landing = () => {
         panelAds={panelAdsItems}
         panelUser={<ToolBar />}
       >
-        <aside className="featured-section">
+        <aside className={active ? "featured-section hide" : "featured-section"}>
           <i className="hand-greet">👋</i>
           {user && (
             <h3 className="featured-section-title">
@@ -86,7 +83,7 @@ const Landing = () => {
             <Button success>Main documentation</Button>
             <Button soft>React Components</Button>
           </div>
-          <button className="close"></button>
+          <button className="close" onClick={() => setActive(!active)}></button>
         </aside>
         {contentType && <ContentListView type={contentType} />}
       </Layout>
@@ -102,6 +99,10 @@ const Landing = () => {
           text-align: center;
           margin-bottom: var(--edge-gap);
           width: 100%;
+        }
+
+        .featured-section.hide{
+          display: none;
         }
 
         .featured-section i {

@@ -81,8 +81,11 @@ function MyApp({ Component, pageProps }) {
         :root {
           --edge-foreground: #000;
           --edge-background: #fff;
+          --edge-background-half: rgba(255, 255, 255, 0.5);
+          --edge-background-quarter: rgba(255, 255, 255, 0.25);
           --edge-selection: var(--edge-cyan);
           --accents-1: #fafafa;
+          --accents-1-medium: #f7f7f7;
           --accents-2: #eaeaea;
           --accents-3: #999;
           --accents-4: #888;
@@ -125,6 +128,8 @@ function MyApp({ Component, pageProps }) {
         .dark-theme {
           --edge-foreground: #fff;
           --edge-background: #000;
+          --edge-background-half: rgba(0, 0, 0, 0.5);
+          --edge-background-quarter: rgba(0, 0, 0, 0.25);
           --edge-selection: var(--edge-purple);
           --accents-8: #fafafa;
           --accents-7: #eaeaea;
@@ -133,6 +138,7 @@ function MyApp({ Component, pageProps }) {
           --accents-4: #666;
           --accents-3: #444;
           --accents-2: #333;
+          --accents-1-medium: #212121;
           --accents-1: #111;
           --edge-success-light: #3291ff;
           --edge-success: #0070f3;
@@ -168,8 +174,11 @@ function MyApp({ Component, pageProps }) {
         .robot-theme {
           --edge-foreground: #33cf33;
           --edge-background: #000;
+          --edge-background-half: rgba(0, 0, 0, 0.5);
+          --edge-background-quarter: rgba(0, 0, 0, 0.25);
           --edge-selection: var(--edge-purple);
           --accents-1: #082008;
+          --accents-1-medium: #212121;
           --accents-2: #0d360d;
           --accents-3: #124712;
           --accents-4: #165816;
@@ -227,6 +236,8 @@ function MyApp({ Component, pageProps }) {
 
           --edge-foreground: white;
           --edge-background: #370e6d;
+          --edge-background-half: rgba(55, 14, 109, 0.5);
+          --edge-background-quarter: rgba(55, 14, 109, 0.25);
           --edge-selection: var(--edge-purple);
           --accents-8: #370e6d;
           --accents-7: #4b2480;
@@ -235,6 +246,7 @@ function MyApp({ Component, pageProps }) {
           --accents-4: #e7bfff;
           --accents-3: #ffc6ff;
           --accents-2: #ffceff;
+          --accents-1-medium: #212121;
           --accents-1: #ffd9ff;
           --edge-success-light: #3291ff;
           --edge-success: #0070f3;
@@ -475,8 +487,6 @@ function MyApp({ Component, pageProps }) {
           -webkit-appearance: none;
         }
 
-      
-
         /* Edge Button */
         .edge-button {
           background-color: var(--edge-success);
@@ -488,8 +498,6 @@ function MyApp({ Component, pageProps }) {
           padding: var(--edge-gap-half) var(--edge-gap);
           position: relative;
         }
-
-        
 
         .edge-tag {
           background: var(--edge-foreground);
@@ -515,14 +523,12 @@ function MyApp({ Component, pageProps }) {
         }
 
         .edge-searchbox input {
-          background-color: var(--accents-1);
+          background-color: var(--accents-1-medium);
           border: none;
           font-size: 14px;
           padding: var(--edge-gap-half);
           padding-left: var(--edge-gap-double);
         }
-
-       
 
         /* Avatar User*/
 

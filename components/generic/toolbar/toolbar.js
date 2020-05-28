@@ -297,8 +297,8 @@ export default function () {
             align-items: center;
             display: flex;
             flex-flow: column;
-            min-height: calc(100vh - 56px);
-            top: 56px;
+            /*min-height: calc(100vh - 56px);
+            top: 56px;*/
             transform: translateX(-12px);
           }
           .edge-panel-user-tags {
