@@ -17,17 +17,16 @@ import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
 
 const Profile = (props) => {
- 
   const router = useRouter()
   const { userId } = router.query
 
   const visibleContentTypes = useContentTypes(['read', 'admin'])
 
-   //Profile Tabs
-   const [activeTab, setActiveTab] = useState('post')
-   const onClickTab = (name) => {
-     setActiveTab(name)
-   }
+  //Profile Tabs
+  const [activeTab, setActiveTab] = useState('post')
+  const onClickTab = (name) => {
+    setActiveTab(name)
+  }
 
   // Check permissions to read
   const currentUser = useUser()
@@ -93,38 +92,40 @@ const Profile = (props) => {
                   </li>
                 )
               })}
-              
+
               <li
                 onClick={() => onClickTab('comments')}
                 className={`${activeTab === 'comments' ? 'active' : ''}`}
               >
                 <a>Comments</a>
               </li>
-              {config.like.enabled && <li
-                onClick={() => onClickTab('likes')}
-                className={`${activeTab === 'likes' ? 'active' : ''}`}
-              >
-                <a>Likes</a>
-              </li>}
+              {config.like.enabled && (
+                <li
+                  onClick={() => onClickTab('likes')}
+                  className={`${activeTab === 'likes' ? 'active' : ''}`}
+                >
+                  <a>Likes</a>
+                </li>
+              )}
               {config.activity.enabled && (
                 <li
-                onClick={() => onClickTab('activity')}
-                className={`${activeTab === 'activity' ? 'active' : ''}`}
-              >
-                <a>Activity</a>
-              </li>
+                  onClick={() => onClickTab('activity')}
+                  className={`${activeTab === 'activity' ? 'active' : ''}`}
+                >
+                  <a>Activity</a>
+                </li>
               )}
-             
             </ul>
-           
+
             {visibleContentTypes.map((cData) => {
               return (
-                <div  className={`${
-                  activeTab === cData.slug
-                    ? 'navigation-tab active'
-                    : 'navigation-tab'
-                }`}>
-                  
+                <div
+                  className={`${
+                    activeTab === cData.slug
+                      ? 'navigation-tab active'
+                      : 'navigation-tab'
+                  }`}
+                >
                   <ContentListView
                     infiniteScroll={false}
                     type={cData}
@@ -133,14 +134,13 @@ const Profile = (props) => {
                 </div>
               )
             })}
-             <div
+            <div
               className={`${
                 activeTab === 'comments'
                   ? 'navigation-tab active'
                   : 'navigation-tab'
               }`}
             >
-
               THE COMMENTS
             </div>
 
@@ -151,7 +151,6 @@ const Profile = (props) => {
                   : 'navigation-tab'
               }`}
             >
-
               THE LIKES
             </div>
 
@@ -162,13 +161,9 @@ const Profile = (props) => {
                   : 'navigation-tab'
               }`}
             >
-
               <UserActivity user={data} />
             </div>
-
-           
           </div>
-         
         </div>
       </div>
       <style jsx>
@@ -189,9 +184,15 @@ const Profile = (props) => {
             width: 100%;
           }
 
-          @media (max-width: 600px) {
+          @media (max-width: 720px) {
+            .profile-wrapper {
+              border-top-left-radius: 0;
+              border-top-right-radius: 0;
+            }
+
             .profile-user-info {
-              margin-bottom: var(--edge-gap-half);
+              margin: var(--edge-gap-medium) 0 var(--edge-gap-half) 0;
+              padding: 0 var(--edge-gap);
             }
           }
 
@@ -283,6 +284,13 @@ const Profile = (props) => {
             z-index: var(--z-index-minimum);
           }
 
+          @media all and (max-width: 720px) {
+            .navigation {
+              padding: var(--edge-gap);
+              padding-bottom: 0;
+            }
+          }
+
           .navigation li {
             cursor: pointer;
             height: 100%;
@@ -319,6 +327,18 @@ const Profile = (props) => {
             opacity: 1;
             padding: var(--edge-gap-double);
             transition: opacity 1s ease;
+          }
+
+          @media all and (max-width: 720px) {
+            .navigation-tab.active {
+              padding: var(--edge-gap);
+            }
+          }
+
+          @media all and (max-width: 460px) {
+            .navigation-tab.active {
+              padding: var(--edge-gap) 0;
+            }
           }
         `}
       </style>

@@ -43,6 +43,13 @@ export default function (props) {
           position: relative;
         }
 
+        @media all and (max-width: 720px){
+          .avatar{
+            max-height: 64px;
+            max-width: 64px;
+          }
+        }
+
         .avatar img {
           height: 100%;
           object-fit: cover;

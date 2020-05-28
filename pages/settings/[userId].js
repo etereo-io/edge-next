@@ -44,13 +44,11 @@ const UserSettings = () => {
       setLoading(true)
       fetch(`/api/users/` + userId)
         .then((result) => {
-          
           setUser(result)
           setLoading(false)
           setError(false)
         })
         .catch((err) => {
-          
           setUser(null)
           setLoading(false)
           setError(true)
@@ -83,13 +81,13 @@ const UserSettings = () => {
     <Layout title="User Settings" hasDivider={true}>
       <section className="user-profile-settings-wr">
         <div className="user-profile-view">
-          <div className="cover">{user.profile.cover && (<img src={user.profile.cover.path}/>)}</div>
+          <div className="cover">
+            {user.profile.cover && <img src={user.profile.cover.path} />}
+          </div>
           <div className="user-profile-view-content">
             <div className="user-profile-box-wrapper">
               <UserProfileBox user={user} />
-
             </div>
-
           </div>
         </div>
 
@@ -129,7 +127,7 @@ const UserSettings = () => {
             }`}
           >
             <EditProfilePictureForm user={user} />
-            <EditCoverImageForm user={user}/>
+            <EditCoverImageForm user={user} />
             <EditUsernameForm user={user} />
             <EditDisplayNameForm user={user} />
             <EditEmailForm user={user} />
@@ -169,7 +167,7 @@ const UserSettings = () => {
       </section>
       <style jsx>
         {`
-          .user-profile-settings-wr {
+          .user-profile-settings-wr  {
             align-items: flex-start;
             display: flex;
             justify-content: space-between;
@@ -188,7 +186,6 @@ const UserSettings = () => {
           }
 
           .user-profile-view .cover {
-            
           }
 
           .user-profile-view .cover img {
@@ -198,7 +195,6 @@ const UserSettings = () => {
           .user-profile-view-content {
             padding: var(--edge-gap-double);
           }
-
 
           .user-profile-configuration-wr {
             background: var(--edge-background);
@@ -255,6 +251,12 @@ const UserSettings = () => {
             opacity: 1;
             padding: var(--edge-gap-double);
             transition: opacity 1s ease;
+          }
+
+          @media all and (max-width: 720px) {
+            .navigation-tab.active {
+              padding: var(--edge-gap);
+            }
           }
 
           .settings {

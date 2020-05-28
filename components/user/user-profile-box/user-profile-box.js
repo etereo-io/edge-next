@@ -90,18 +90,9 @@ export default function ({ user, ...props }) {
             position: relative;
           }
 
-
           .general-profile.horizontal {
             align-items: center;
             display: flex;
-          }
-
-          /*.general-profile.small .avatar{
-            width: 48px;
-          }*/
-
-          .general-profile.basic.horizontal .profile-avatar-bio {
-            margin-right: 0;
           }
 
           .general-profile.basic .profile-bio-social {
@@ -118,19 +109,30 @@ export default function ({ user, ...props }) {
             justify-content: flex-start;
           }
 
-          .general-profile.horizontal .general-profile-user .display-name{
+          .general-profile.horizontal .general-profile-user .display-name {
             font-size: 32px;
           }
 
-          .general-profile.horizontal .general-profile-user .username a{
+          @media all and (max-width: 720px) {
+            .general-profile.horizontal .general-profile-user .display-name {
+              font-size: 24px;
+            }
+          }
+
+          .general-profile.horizontal .general-profile-user .username a {
             color: var(--accents-3);
             font-size: 18px;
+          }
+
+          @media all and (max-width: 720px) {
+            .general-profile.horizontal .general-profile-user .username a {
+              font-size: 16px;
+            }
           }
 
           .general-profile.horizontal .profile-avatar-bio {
             align-items: flex-start;
             display: flex;
-            margin-right: var(--edge-gap-double);
           }
 
           .general-profile.horizontal .profile-bio-social,

@@ -12,7 +12,8 @@ export default function ({ user, loading = false }) {
       .cover-image-wrapper {
         height: 280px;
         overflow: hidden;
-      }  
+      }
+
       .cover-image {
         background-size: cover;
         height: 100%;
@@ -23,6 +24,12 @@ export default function ({ user, loading = false }) {
             : '/static/demo-images/default-background.jpg'
         }");
       }
+
+      @media all and (max-width: 720px){
+        .cover-image-wrapper {
+          height: 210px;
+        }
+      } 
     `}</style>
     </>
   )
