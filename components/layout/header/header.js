@@ -72,7 +72,7 @@ function UserHeader(props) {
                   <li>
                     <ThemeSelector />
                   </li>
-                  <li>
+                  <li className="mobile-menu-item">
                     <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
@@ -83,7 +83,7 @@ function UserHeader(props) {
                       </span>
                     </a>
                   </li>
-                  <li>
+                  <li className="mobile-menu-item">
                     <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
@@ -94,7 +94,7 @@ function UserHeader(props) {
                       </span>
                     </a>
                   </li>
-                  <li>
+                  <li className="mobile-menu-item">
                     <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
@@ -105,7 +105,7 @@ function UserHeader(props) {
                       </span>
                     </a>
                   </li>
-                  <li>
+                  <li className="mobile-menu-item">
                     <a href="#" className="header-navigation-item">
                       <img
                         className="edge-header-navigation-icon"
@@ -116,27 +116,26 @@ function UserHeader(props) {
                       </span>
                     </a>
                   </li>
-                
+
                   {contentTypes.map((type) => {
                     return (
                       <li key={type.slug}>
                         <Link href={`/create/${type.slug}`}>
-                          <a  className="header-navigation-item">Create {type.title}</a>
+                          <a className="header-navigation-item">
+                            Create {type.title}
+                          </a>
                         </Link>
                       </li>
                     )
                   })}
 
-                {hasPermission(user, 'admin.access') && (
-                  <li>
-                    <Link href="/admin">
-                      <a className="header-navigation-item">
-                        Administration
-                      </a>
-                    </Link>
-                  </li>
-                )}
-
+                  {hasPermission(user, 'admin.access') && (
+                    <li>
+                      <Link href="/admin">
+                        <a className="header-navigation-item">Administration</a>
+                      </Link>
+                    </li>
+                  )}
                 </ul>
                 <ul>
                   <li>
@@ -199,7 +198,18 @@ function UserHeader(props) {
 
         .navigation .dropdown-menu-nav ul li {
           margin-left: 0;
-        } 
+        }
+
+        /* Mobile Items */
+        .navigation li.mobile-menu-item {
+          display: none;
+        }
+
+        @media all and (max-width: 460px) {
+          .navigation li.mobile-menu-item {
+            display: block;
+          }
+        }
 
         /*User Actions */
         .edge-user-actions {
@@ -310,7 +320,12 @@ const Header = () => {
 
           <UserHeader user={user} />
         </div>
-        <Progress color="#29D" startPosition={0.3} stopDelayMs={200} height={3} />
+        <Progress
+          color="#29D"
+          startPosition={0.3}
+          stopDelayMs={200}
+          height={3}
+        />
       </header>
       <style jsx>{`
         .edge-header {
@@ -329,7 +344,6 @@ const Header = () => {
           display: flex;
           justify-content: space-between;
         }
-
 
         @media all and (max-width: 720px) {
           .edge-header {
