@@ -329,10 +329,12 @@ describe('Integrations tests for user deletion endpoint', () => {
         author: 'userId',
       })
       expect(deleteActivity).toHaveBeenNthCalledWith(1, {
-        user: 'userId',
+        role: 'user',
+        author: 'userId',
       })
 
       expect(deleteActivity).toHaveBeenNthCalledWith(2, {
+        role: 'user',
         meta: {
           contentId: 'a content',
         },

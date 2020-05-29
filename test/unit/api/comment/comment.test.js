@@ -1,4 +1,4 @@
-import { parseCommentBody } from '../../../../pages/api/comments/[contentType]/[contentId]'
+import { parseCommentBody } from '../../../../pages/api/comments'
 
 describe('parse mentions test', () => {
   it('should return an empty mention list if there is no one', () => {
