@@ -93,12 +93,7 @@ const Profile = (props) => {
                 )
               })}
 
-              <li
-                onClick={() => onClickTab('comments')}
-                className={`${activeTab === 'comments' ? 'active' : ''}`}
-              >
-                <a>Comments</a>
-              </li>
+              
               {config.like.enabled && (
                 <li
                   onClick={() => onClickTab('likes')}
@@ -134,16 +129,7 @@ const Profile = (props) => {
                 </div>
               )
             })}
-            <div
-              className={`${
-                activeTab === 'comments'
-                  ? 'navigation-tab active'
-                  : 'navigation-tab'
-              }`}
-            >
-              THE COMMENTS
-            </div>
-
+           
             <div
               className={`${
                 activeTab === 'likes'

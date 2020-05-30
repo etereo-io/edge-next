@@ -16,7 +16,7 @@ export default function () {
               <li>
                 <span className="strong">Already have an account? </span>
                 <Link href="/auth/login">
-                  <a title="sign in">Sign-in</a>
+                  <a title="Login">Login</a>
                 </Link>
               </li>
               <li>

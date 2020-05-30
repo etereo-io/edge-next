@@ -7,7 +7,10 @@ import { useUser, useContentTypes } from '@lib/client/hooks'
 import { useState } from 'react'
 import Progress from './progress'
 import Avatar from '@components/user/avatar/avatar'
+import SiteMenu from '@components/generic/site-menu/site-menu'
+
 import { hasPermission } from '@lib/permissions'
+import config from '@lib/config'
 
 function UserHeader(props) {
   const user = props.user
@@ -32,17 +35,21 @@ function UserHeader(props) {
   return (
     <div className="edge-user-actions">
       {/*Searchbox*/}
-      <div className="edge-searchbox">
+      {config.search.enabled && <div className="edge-searchbox">
         <img src="/icons/icon-search.svg" />
         <input type="text" placeholder="Search" />
-      </div>
+      </div>}
 
       {user && (
         <div className="edge-user-actions-logged">
           {/*User Actions Buttons*/}
           <div className="edge-user-actions-buttons">
-            <img src="/icons/icon-configuration.svg" />
-            <img src="/icons/icon-messages.svg" />
+            <Link href={`/settings/@${user.id}`}>
+              <a title="Settings">
+                <img src="/icons/icon-configuration.svg" />
+              </a>
+            </Link>
+            
           </div>
           <Link href={`/profile/@${user.username}`}>
             <a title="User profile">
@@ -73,49 +80,9 @@ function UserHeader(props) {
                     <ThemeSelector />
                   </li>
                   <li className="mobile-menu-item">
-                    <a href="#" className="header-navigation-item">
-                      <img
-                        className="edge-header-navigation-icon"
-                        src="/icons/icon-groups.svg"
-                      />
-                      <span className="edge-header-navigation-title">
-                        My Groups
-                      </span>
-                    </a>
+                  <SiteMenu />
                   </li>
-                  <li className="mobile-menu-item">
-                    <a href="#" className="header-navigation-item">
-                      <img
-                        className="edge-header-navigation-icon"
-                        src="/icons/icon-rewards.svg"
-                      />
-                      <span className="edge-header-navigation-title">
-                        Rewards
-                      </span>
-                    </a>
-                  </li>
-                  <li className="mobile-menu-item">
-                    <a href="#" className="header-navigation-item">
-                      <img
-                        className="edge-header-navigation-icon"
-                        src="/icons/icon-courses.svg"
-                      />
-                      <span className="edge-header-navigation-title">
-                        Courses
-                      </span>
-                    </a>
-                  </li>
-                  <li className="mobile-menu-item">
-                    <a href="#" className="header-navigation-item">
-                      <img
-                        className="edge-header-navigation-icon"
-                        src="/icons/icon-analytics.svg"
-                      />
-                      <span className="edge-header-navigation-title">
-                        Analytics
-                      </span>
-                    </a>
-                  </li>
+                    
 
                   {contentTypes.map((type) => {
                     return (
@@ -167,8 +134,8 @@ function UserHeader(props) {
                   <ThemeSelector />
                 </li>
                 <li>
-                  <Link href="/components">
-                    <a>Components</a>
+                  <Link href="/faq">
+                    <a>FAQ</a>
                   </Link>
                 </li>
               </ul>
@@ -237,16 +204,8 @@ function UserHeader(props) {
           width: var(--edge-gap);
         }
 
-        .edge-avatar  {
-          margin-right: var(--edge-gap);
-        }
-
         .edge-user-actions-buttons img:last-of-type {
           margin-right: 0;
-        }
-
-        .edge-header .edge-button {
-          margin-left: var(--edge-gap);
         }
 
         .edge-panel-header-navigation {
@@ -296,7 +255,7 @@ function UserHeader(props) {
         }
 
         @media all and (max-width: 460px) {
-          .edge-button,
+       
           .user-actions-button {
             display: none !important;
           }

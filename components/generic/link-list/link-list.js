@@ -33,6 +33,7 @@ export default function (props) {
             color: var(--edge-link-color);
             text-decoration: none;
             display: block;
+            border-radius: var(--edge-radius);
           }
         `}
       </style>

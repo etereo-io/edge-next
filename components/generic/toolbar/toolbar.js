@@ -1,8 +1,9 @@
-import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
+import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import { useUser } from '@lib/client/hooks'
 import Button from '@components/generic/button/button'
 import Avatar from '@components/user/avatar/avatar'
-import ThemeSelector from '../../generic/theme-selector/theme-selector'
+import ThemeSelector from '@components/generic/theme-selector/theme-selector'
+import SiteMenu from '@components/generic/site-menu/site-menu'
 import Link from 'next/link'
 
 export default function () {
@@ -10,7 +11,10 @@ export default function () {
   return (
     <>
       <aside className="edge-panel-user">
-        {(!finished || user) && (
+        { !finished && <div className="edge-avatar-user">
+          <LoadingPlaceholder width='100%' height='30px'/>
+        </div> }
+        { user && (
           <div className="edge-avatar-user">
             <Avatar
               width={'32px'}
@@ -43,93 +47,36 @@ export default function () {
         )}
         {finished && !user && (
           <div className="not-logged">
-            <Button href="/auth/login">Sign in</Button>
+            <Button href="/auth/login">Login</Button>
           </div>
         )}
 
-        {/*Panel User Navigation*/}
-        <nav className="edge-panel-user-navigation">
-          <ul>
-            <li>
-              <a href="#" className="edge-panel-user-navigation-item">
-                <img
-                  className="edge-panel-user-navigation-icon"
-                  src="/icons/icon-groups.svg"
-                />
-                <span className="edge-panel-user-navigation-title">
-                  My Groups
-                </span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="edge-panel-user-navigation-item">
-                <img
-                  className="edge-panel-user-navigation-icon"
-                  src="/icons/icon-rewards.svg"
-                />
-                <span className="edge-panel-user-navigation-title">
-                  Rewards
-                </span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="edge-panel-user-navigation-item">
-                <img
-                  className="edge-panel-user-navigation-icon"
-                  src="/icons/icon-courses.svg"
-                />
-                <span className="edge-panel-user-navigation-title">
-                  Courses
-                </span>
-              </a>
-            </li>
-            <li>
-              <a href="#" className="edge-panel-user-navigation-item">
-                <img
-                  className="edge-panel-user-navigation-icon"
-                  src="/icons/icon-analytics.svg"
-                />
-                <span className="edge-panel-user-navigation-title">
-                  Analytics
-                </span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        
+        <SiteMenu mobileCollapse={true} />
 
-        {/*Panel User Tags*/}
+        
         <ul className="edge-panel-user-tags">
           <span className="edge-tag">Trending Tags</span>
           <li>
-            <a className="edge-panel-user-tag-unit" href="#">
-              Web Development
-            </a>
+            <Link href="/content/post?tags=web-development">
+              <a className="edge-panel-user-tag-unit">
+                Web Development
+              </a>
+            </Link>
           </li>
           <li>
-            <a className="edge-panel-user-tag-unit" href="#">
-              NextJS
-            </a>
+            <Link href="/content/post?tags=nextjs">
+              <a className="edge-panel-user-tag-unit">
+               NextJS
+              </a>
+            </Link>
           </li>
-          <li>
-            <a className="edge-panel-user-tag-unit" href="#">
-              New Vercel
-            </a>
-          </li>
-          <li>
-            <a className="edge-panel-user-tag-unit" href="#">
-              React
-            </a>
-          </li>
-          <li>
-            <a className="edge-panel-user-tag-unit" href="#">
-              Web Monetization
-            </a>
-          </li>
+          
         </ul>
 
         <footer className="edge-panel-user-footer">
           <Link href="/p/faq">
-            <a className="edge-panel-user-faqs" href="#">
+            <a className="edge-panel-user-faqs" >
               <img src="/icons/icon-question.svg" />
             </a>
           </Link>
@@ -160,6 +107,11 @@ export default function () {
           width: 0;
         }
 
+        .not-logged {
+          display: flex;
+          justify-content: center;
+        }
+
         @media all and (max-width: 720px) {
           .edge-panel-user {
             top: 56px;
@@ -182,7 +134,8 @@ export default function () {
         }
 
         .edge-panel-user-faqs {
-          width: $edge-gap-triple;
+          width: var(--edge-gap-double);
+          margin-right: var(--edge-gap-half);
         }
 
         .edge-panel-user-footer select {
@@ -249,40 +202,9 @@ export default function () {
           background-color: var(--accents-1-medium);
         }
 
-        .edge-panel-user-navigation {
-          padding: var(--edge-gap) 0;
-        }
-
-        .edge-panel-user-navigation ul li {
-          list-style: none;
-        }
-
-        .edge-panel-user-navigation-item {
-          align-items: center;
-          border-radius: 4px;
-          display: flex;
-          font-size: 14px;
-          font-weight: 500;
-          padding: 16px;
-          text-decoration: none;
-          transition: background-color 0.35s ease;
-          will-change: background-color;
-        }
-
-        .edge-panel-user-navigation-item:hover {
-          background-color: var(--accents-1-medium);
-        }
-
-        .edge-panel-user-navigation-icon {
-          width: 16px;
-        }
-
-        .edge-panel-user-navigation-title {
-          margin-left: var(--edge-gap-half);
-        }
+        
 
         @media all and (max-width: 720px) {
-          .edge-panel-user-navigation-title,
           .edge-panel-user .edge-avatar-user-info,
           .edge-panel-user-footer {
             display: none;
@@ -299,9 +221,7 @@ export default function () {
         }
 
         @media all and (max-width: 460px) {
-          .edge-panels.three-panels {
-            padding-left: 0;
-          }
+        
           .edge-panel-user {
             display: none;
             transform: none;

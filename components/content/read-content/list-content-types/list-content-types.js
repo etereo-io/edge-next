@@ -7,7 +7,7 @@ export default function () {
   const links = contentTypes.map((type) => {
     return {
       link: `/content/${type.slug}`,
-      title: `See all ${type.title}s`,
+      title: `See all ${type.title}`,
     }
   })
 

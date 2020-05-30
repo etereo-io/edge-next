@@ -5,11 +5,4 @@ description: "About"
 
 # About
 
-Empieza Next is a complete dynamic site with: 
-
-- Users
-- Dynamic Content API
-- Comment API
-- User's activity log
-- Log-in / Register
-- Static Pages
+Introduce here the description of your project

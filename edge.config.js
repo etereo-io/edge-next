@@ -421,5 +421,14 @@ export const getConfig = (defaultOptions) => {
       ],
       initialContent: [],
     },
+
+
+    // Features not implemented yet, but UI implemented
+    like: {
+      enabled: false
+    },
+    follow: {
+      enabled: false
+    }
   }
 }

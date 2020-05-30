@@ -5,9 +5,7 @@ import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { usePermission } from '@lib/client/hooks'
 import { useState } from 'react'
 import { useMonetizationState } from 'react-web-monetization'
-import Link from 'next/link'
-
-import DropDown from '@components/generic/dropdown-menu/dropdown-menu'
+import config from '@lib/config'
 import Button from '@components/generic/button/button'
 import FollowButton from '@components/user/follow-button/follow-button'
 import AuthorBox from '@components/user/author-box/author-box'
@@ -112,12 +110,12 @@ export default function (props) {
           )}
 
           <div className="edge-item-card-actions">
-            <div className="header-item-action follow-button">
+            {config.follow.enabled && <div className="header-item-action follow-button">
               <FollowButton following={true} />
-            </div>
-            <div className="header-item-action">
+            </div>}
+            {config.like.enabled &&<div className="header-item-action">
               <ReactionCounter type="like" count={10} />
-            </div>
+            </div>}
 
             {(canEditComment.available || isContentOwner) && (
               <div className="header-item-action">
@@ -256,13 +254,6 @@ export default function (props) {
         }
 
         @media all and (max-width: 460px) {
-          .edge-button.has-icon {
-            background-position: 50%;
-            height: $edge-gap-triple;
-            padding-left: 0;
-            text-indent: -9999px;
-            width: $edge-gap-triple;
-          }
 
           .edge-item-card {
             padding: var(--edge-gap);
@@ -287,26 +278,7 @@ export default function (props) {
         .edge-item-card-content {
           margin: var(--edge-gap-double) 0 0;
         }
-
-        .edge-item-card-text {
-          color: var(--accents-4);
-          font-size: 16px;
-          line-height: 1.5;
-          padding-right: var(--edge-gap);
-        }
-
-        @media all and (max-width: 720px) {
-          .edge-item-card-text {
-            font-size: 14px;
-            padding-right: 0;
-          }
-        }
-
-        @media (max-width: 600px) {
-          .contentSummaryView {
-            padding: 0;
-          }
-        }
+ 
 
         .content-summary-content {
           padding-right: var(--edge-gap-double);
@@ -317,31 +289,7 @@ export default function (props) {
             padding-right: 0;
           }
         }
-
-        .field {
-          margin: var(--edge-gap) 0;
-        }
-
-        @media (max-width: 600px) {
-          .field {
-            //margin: var(--edge-gap-half);
-          }
-        }
-
-        .bottomActions {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .main-actions {
-          align-items: center;
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: var(--edge-gap);
-          width: 100%;
-        }
+      
 
         .status {
           background: var(--accents-2);
@@ -357,36 +305,6 @@ export default function (props) {
           width: fit-content;
         }
 
-        .action-dropdown {
-          margin-left: var(--edge-gap-half);
-        }
-
-        .meta {
-          color: var(--accents-5);
-          font-size: 13px;
-          margin-top: var(--edge-gap-half);
-        }
-
-        .meta .comment-count {
-          cursor: pointer;
-          padding-left: var(--edge-gap-half);
-        }
-
-        h1 {
-          font-size: 24px;
-        }
-        h1:first-letter {
-          text-transform: uppercase;
-        }
-        .meta {
-          align-items: center;
-          display: flex;
-          justify-content: space-between;
-        }
-
-        .content-options {
-          display: flex;
-        }
 
         .content-actions {
           padding: var(--edge-gap);

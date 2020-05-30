@@ -80,8 +80,8 @@ const Landing = () => {
             want to learn more, take a look at:
           </p>
           <div className="featured-section-buttons">
-            <Button success>Main documentation</Button>
-            <Button soft>React Components</Button>
+            <Button success><a href="https://github.com/nucleo-org/edge-next/blob/master/DOCUMENTATION.md">Main documentation</a></Button>
+            <Button href="/components" soft>React Components</Button>
           </div>
           <button className="close" onClick={() => setActive(!active)}></button>
         </aside>
