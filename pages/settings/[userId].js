@@ -56,7 +56,7 @@ const UserSettings = () => {
     }
   }, [userId])
 
-  const isOwner = userId === 'me' || (user && user.username === userId)
+  const isOwner = userId === 'me' || (user && user.id === userId)
   const canAccess = hasPermissionsToEdit || isOwner
 
   useEffect(() => {
