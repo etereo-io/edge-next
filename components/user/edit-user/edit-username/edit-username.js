@@ -79,7 +79,7 @@ export default function ({ user, ...props }) {
               type="text"
               placeholder="Your username"
               name="username"
-              pattern="/([a-z]+[a-z0-9_-]+)/g"
+              pattern="[a-z\d_-]+$"
               onChange={(ev) => handleFieldChange('username')(ev.target.value)}
               value={fields.username}
             />
