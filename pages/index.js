@@ -140,6 +140,7 @@ const Landing = () => {
         .featured-section-title {
           animation: featured-section-title 0.5s ease-in forwards;
           font-size: 28px;
+          will-change: opacity, transform;
         }
 
         @keyframes featured-section-title {

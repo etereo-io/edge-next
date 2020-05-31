@@ -45,7 +45,7 @@ const Layout = (props) => (
 
       .edge-panels.three-panels {
         display: grid;
-        grid-template-columns: 0.25fr 1fr 0.25fr;
+        grid-template-columns: 0.25fr minmax(0, 1fr) 0.25fr;
         grid-template-rows: 0.5fr;
         gap: 0;
         grid-template-areas: 'edge-panel-user edge-panel-content edge-panel-ads';
@@ -53,7 +53,7 @@ const Layout = (props) => (
 
       @media all and (max-width: 960px) {
         .edge-panels.three-panels {
-          grid-template-columns: 0.3fr 1fr;
+          grid-template-columns: 0.3fr minmax(0, 1fr);
           grid-template-areas: 'edge-panel-user edge-panel-content';
           padding-right: 0;
         }
@@ -62,7 +62,7 @@ const Layout = (props) => (
       @media all and (max-width: 720px) {
         .edge-panels.three-panels {
           gap: 0;
-          grid-template-columns: auto 1fr;
+          grid-template-columns: auto minmax(0, 1fr);
         }
 
         .edge-panel-user-navigation-title,
@@ -95,7 +95,7 @@ const Layout = (props) => (
 
       .edge-panels.two-panels {
         display: grid;
-        grid-template-columns: 0.25fr 1.25fr;
+        grid-template-columns: 0.25fr minmax(0, 1.25fr);
         grid-template-rows: 0.5fr;
         gap: 0;
         grid-template-areas: 'edge-panel-user edge-panel-content';
@@ -103,7 +103,7 @@ const Layout = (props) => (
 
       @media all and (max-width: 960px) {
         .edge-panels.two-panels {
-          grid-template-columns: 0.3fr 1fr;
+          grid-template-columns: 0.3fr minmax(0, 1fr);
           grid-template-areas: 'edge-panel-user edge-panel-content';
           padding-right: 0;
         }
@@ -149,7 +149,7 @@ const Layout = (props) => (
       @media all and (max-width: 720px) {
         .edge-panels.two-panels {
           gap: 0;
-          grid-template-columns: auto 1fr;
+          grid-template-columns: auto minmax(0, 1fr);
         }
 
         .edge-panels.two-panels .edge-panel-user-navigation-title,
