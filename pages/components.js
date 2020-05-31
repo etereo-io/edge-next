@@ -33,112 +33,110 @@ import Upload from '@components/generic/upload/upload'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '@components/generic/video-recorder/video-recorder-wrapper'
 
-
 function Menu() {
   return (
     <>
       <div className="list-menu">
-          <ul>
-            <li>
-              <a href="#drop-menu">Dropdown menu</a>
-            </li>
-            <li>
-              <a href="#linklist">Link list</a>
-            </li>
-            <li>
-              <a href="#avatar">Avatar</a>
-            </li>
-            <li>
-              <a href="#user-profile-box">User Profile Box</a>
-            </li>
-            <li>
-              <a href="#author-box">Author Box</a>
-            </li>
-            <li>
-              <a href="#badge">Badge</a>
-            </li>
-            <li>
-              <a href="#card">Card</a>
-            </li>
-            <li>
-              <a href="#button">Button</a>
-            </li>
-            <li>
-              <a href="#follow-button">Follow button</a>
-            </li>
-            <li>
-              <a href="#reaction-counter">Reaction Counter</a>
-            </li>
-            <li>
-              <a href="#loading">Loading</a>
-            </li>
-            <li>
-              <a href="#loading-placeholder">Loading Placeholder</a>
-            </li>
-            <li>
-              <a href="#toggle">Toggle</a>
-            </li>
-            <li>
-              <a href="#socialshare">Social Share</a>
-            </li>
-            <li>
-              <a href="#themeselector">Theme selector</a>
-            </li>
+        <ul>
+          <li>
+            <a href="#drop-menu">Dropdown menu</a>
+          </li>
+          <li>
+            <a href="#linklist">Link list</a>
+          </li>
+          <li>
+            <a href="#avatar">Avatar</a>
+          </li>
+          <li>
+            <a href="#user-profile-box">User Profile Box</a>
+          </li>
+          <li>
+            <a href="#author-box">Author Box</a>
+          </li>
+          <li>
+            <a href="#badge">Badge</a>
+          </li>
+          <li>
+            <a href="#card">Card</a>
+          </li>
+          <li>
+            <a href="#button">Button</a>
+          </li>
+          <li>
+            <a href="#follow-button">Follow button</a>
+          </li>
+          <li>
+            <a href="#reaction-counter">Reaction Counter</a>
+          </li>
+          <li>
+            <a href="#loading">Loading</a>
+          </li>
+          <li>
+            <a href="#loading-placeholder">Loading Placeholder</a>
+          </li>
+          <li>
+            <a href="#toggle">Toggle</a>
+          </li>
+          <li>
+            <a href="#socialshare">Social Share</a>
+          </li>
+          <li>
+            <a href="#themeselector">Theme selector</a>
+          </li>
 
-            <li>
-              <a href="#contentsummaryview">Content Summary View</a>
-            </li>
-            <li>
-              <a href="#image">Image</a>
-            </li>
-            <li className="submenu">
-              <a href="#form-elements">Form elements</a>
-              <ul>
-                <li>
-                  <a href="#select">Select</a>
-                </li>
-                <li>
-                  <a href="#input-radio">Input Radio</a>
-                </li>
-                <li>
-                  <a href="#input-text">Input Text</a>
-                </li>
-                <li>
-                  <a href="#textarea">Textarea</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#form-elements-dynamic">Form Elements Dynamic</a>
-            </li>
-            <li>
-              <a href="#dynamic-field-view">Dynamic field view</a>
-            </li>
-            <li>
-              <a href="#tagsinput">Tags Input</a>
-            </li>
-            <li>
-              <a href="#tagsfield">Tags Field</a>
-            </li>
-            <li>
-              <a href="#passwordstrength">Password strength</a>
-            </li>
-            <li>
-              <a href="#table">Table</a>
-            </li>
-            <li>
-              <a href="#videorecorder">Video Recorder</a>
-            </li>
-            <li>
-              <a href="#upload">Upload</a>
-            </li>
-            <li>
-              <a href="#map">Map</a>
-            </li>
-          </ul>
-        </div>
-      <style jsx>{
-        `
+          <li>
+            <a href="#contentsummaryview">Content Summary View</a>
+          </li>
+          <li>
+            <a href="#image">Image</a>
+          </li>
+          <li className="submenu">
+            <a href="#form-elements">Form elements</a>
+            <ul>
+              <li>
+                <a href="#select">Select</a>
+              </li>
+              <li>
+                <a href="#input-radio">Input Radio</a>
+              </li>
+              <li>
+                <a href="#input-text">Input Text</a>
+              </li>
+              <li>
+                <a href="#textarea">Textarea</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#form-elements-dynamic">Form Elements Dynamic</a>
+          </li>
+          <li>
+            <a href="#dynamic-field-view">Dynamic field view</a>
+          </li>
+          <li>
+            <a href="#tagsinput">Tags Input</a>
+          </li>
+          <li>
+            <a href="#tagsfield">Tags Field</a>
+          </li>
+          <li>
+            <a href="#passwordstrength">Password strength</a>
+          </li>
+          <li>
+            <a href="#table">Table</a>
+          </li>
+          <li>
+            <a href="#videorecorder">Video Recorder</a>
+          </li>
+          <li>
+            <a href="#upload">Upload</a>
+          </li>
+          <li>
+            <a href="#map">Map</a>
+          </li>
+        </ul>
+      </div>
+      <style jsx>{`
         .list-menu {
           background: var(--accents-1);
           padding: var(--edge-gap-double);
@@ -148,7 +146,7 @@ function Menu() {
         .list-menu::-webkit-scrollbar {
           width: 10px;
         }
-       
+
         .list-menu .submenu a::after {
           background: transparent;
           border-bottom: 2px solid var(--accents-6);
@@ -209,9 +207,7 @@ function Menu() {
           background: var(--accents-2);
           border-radius: var(--edge-radius);
         }
-
-        `
-      }</style>
+      `}</style>
     </>
   )
 }
@@ -394,7 +390,6 @@ const Components = () => {
   return (
     <Layout title="Components showcase" fullWidth={true} panelUser={<Menu />}>
       <div className="components-layout">
-        
         <div className="components">
           <h1>Components showcase</h1>
 
@@ -506,18 +501,27 @@ const links = [{
             <h3>Avatar</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Avatar src="/static/demo-images/edge-avatar.jpg" status='available'/>
-                <Avatar src="/static/demo-images/edge-avatar.jpg" width={'60px'} />
-                <Avatar src="/static/demo-images/edge-avatar.jpg" width={'30px'} />
+                <Avatar
+                  src="/static/demo-images/edge-avatar.jpg"
+                  status="available"
+                />
+                <Avatar
+                  src="/static/demo-images/edge-avatar.jpg"
+                  width={'60px'}
+                />
+                <Avatar
+                  src="/static/demo-images/edge-avatar.jpg"
+                  width={'30px'}
+                />
               </div>
               <div className="item-wrapper">
-                <Avatar  status='available' />
+                <Avatar status="available" />
                 <Avatar width={'60px'} />
                 <Avatar width={'30px'} />
               </div>
 
               <div className="item-wrapper">
-                <Avatar loading={true} status='available' />
+                <Avatar loading={true} status="available" />
                 <Avatar loading={true} width={'60px'} />
                 <Avatar loading={true} width={'30px'} />
               </div>
@@ -797,17 +801,28 @@ const links = [{
               <div className="item-wrapper">
                 <Button alt loading aria-label="Alt loading button"></Button>
               </div>
-
             </div>
 
             <div className="item-wrapper">
-                <Button round aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-edit.svg' /></Button>
-                <Button round secondary aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
-                <Button round success aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
-                <Button round warning aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
-                <Button round alert aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
-                <Button round soft aria-label="round button"><img style={{width: '15px'}} src='/icons/icon-check.svg' /></Button>
-              </div>
+              <Button round aria-label="round button">
+                <img style={{ width: '15px' }} src="/icons/icon-edit.svg" />
+              </Button>
+              <Button round secondary aria-label="round button">
+                <img style={{ width: '15px' }} src="/icons/icon-check.svg" />
+              </Button>
+              <Button round success aria-label="round button">
+                <img style={{ width: '15px' }} src="/icons/icon-check.svg" />
+              </Button>
+              <Button round warning aria-label="round button">
+                <img style={{ width: '15px' }} src="/icons/icon-check.svg" />
+              </Button>
+              <Button round alert aria-label="round button">
+                <img style={{ width: '15px' }} src="/icons/icon-check.svg" />
+              </Button>
+              <Button round soft aria-label="round button">
+                <img style={{ width: '15px' }} src="/icons/icon-check.svg" />
+              </Button>
+            </div>
 
             <pre>{`
 <Button />
@@ -818,21 +833,17 @@ const links = [{
 
           <div id="follow-button" className="component">
             <div className="component-demo">
-                
-                <div className="item-wrapper">
-                  <FollowButton following={true} />
-                  <FollowButton following={false} />
-                </div>
-
+              <div className="item-wrapper">
+                <FollowButton following={true} />
+                <FollowButton following={false} />
+              </div>
             </div>
 
-  
             <pre>{`
 <FollowButton following={true} onClick={() => {}} />
 
 
             `}</pre>
-
           </div>
 
           <div id="reaction-counter" className="component">

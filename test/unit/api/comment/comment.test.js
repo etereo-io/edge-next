@@ -1,4 +1,4 @@
-import { parseCommentBody } from '../../../../pages/api/comments/[contentType]/[contentId]'
+import { parseCommentBody } from '../../../../pages/api/comments'
 
 describe('parse mentions test', () => {
   it('should return an empty mention list if there is no one', () => {
@@ -9,9 +9,10 @@ describe('parse mentions test', () => {
   })
 
   it('should return all the mentions, not duplicated', () => {
-    const { parsedText, mentions } = parseCommentBody('a @santi @pepe123, !@manuel, @thought-works-1234, @sa... @sa')
+    const { parsedText, mentions } = parseCommentBody(
+      'a @santi @pepe123, !@manuel, @thought-works-1234, @sa... @sa'
+    )
 
-    
     expect(mentions.length).toEqual(5)
 
     expect(mentions.indexOf('@santi')).toEqual(0)
@@ -29,15 +30,23 @@ describe('parse mentions test', () => {
   })
 
   it('should parse any image into a image', () => {
-    const { parsedText, images } = parseCommentBody('https://something.com/image.jpeg hola')
-    expect(parsedText).toEqual('![https://something.com/image.jpeg](https://something.com/image.jpeg) hola')
+    const { parsedText, images } = parseCommentBody(
+      'https://something.com/image.jpeg hola'
+    )
+    expect(parsedText).toEqual(
+      '![https://something.com/image.jpeg](https://something.com/image.jpeg) hola'
+    )
     expect(images.length).toEqual(1)
     expect(images[0]).toEqual('https://something.com/image.jpeg')
   })
 
   it('should parse images and mentions at the same time', () => {
-    const { parsedText, images, mentions } = parseCommentBody('@hayder https://something.com/image.jpeg hola')
-    expect(parsedText).toEqual('[@hayder](/profile/@hayder) ![https://something.com/image.jpeg](https://something.com/image.jpeg) hola')
+    const { parsedText, images, mentions } = parseCommentBody(
+      '@hayder https://something.com/image.jpeg hola'
+    )
+    expect(parsedText).toEqual(
+      '[@hayder](/profile/@hayder) ![https://something.com/image.jpeg](https://something.com/image.jpeg) hola'
+    )
     expect(images.length).toEqual(1)
     expect(images[0]).toEqual('https://something.com/image.jpeg')
     expect(mentions.length).toEqual(1)

@@ -9,7 +9,10 @@ import {
   deleteOneContent,
   findOneContent,
 } from '../../../../../lib/api/entities/content/content'
-import { deleteOneUser, findOneUser } from '../../../../../lib/api/entities/users/user'
+import {
+  deleteOneUser,
+  findOneUser,
+} from '../../../../../lib/api/entities/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import crypto from 'crypto'
@@ -329,10 +332,12 @@ describe('Integrations tests for user deletion endpoint', () => {
         author: 'userId',
       })
       expect(deleteActivity).toHaveBeenNthCalledWith(1, {
-        user: 'userId',
+        role: 'user',
+        author: 'userId',
       })
 
       expect(deleteActivity).toHaveBeenNthCalledWith(2, {
+        role: 'user',
         meta: {
           contentId: 'a content',
         },

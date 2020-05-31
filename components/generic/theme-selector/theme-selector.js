@@ -58,13 +58,11 @@ export default function (props) {
         </Select>
       </div>
       <style jsx>
-          {
-            `
-            .theme-selector {
-              width: 100%;
-            }
-            `
+        {`
+          .theme-selector {
+            width: 100%;
           }
+        `}
       </style>
     </>
   )

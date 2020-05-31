@@ -186,6 +186,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
         conversationId: '5ebf9dd6e1d3192ac0ae2466',
       })
       expect(deleteActivity).toHaveBeenCalledWith({
+        role: 'user',
         meta: {
           commentId: '5ebf9dd6e1d3192ac0ae2466',
         },

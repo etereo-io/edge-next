@@ -29,20 +29,19 @@ const Signup = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-    .then(() => {
-      Router.push('/auth/login?from=signup')
-    })
-    .catch(async (err) => {
-      const defaultError = 'Email or username already taken'
-      if (err.body) {
-        const body = await err.json()
-        setErrorMsg(body.error || defaultError)
-      } else {
-        setErrorMsg(err.message || defaultError)
-      }
-      setLoading(false)
-  
-    })
+      .then(() => {
+        Router.push('/auth/login?from=signup')
+      })
+      .catch(async (err) => {
+        const defaultError = 'Email or username already taken'
+        if (err.body) {
+          const body = await err.json()
+          setErrorMsg(body.error || defaultError)
+        } else {
+          setErrorMsg(err.message || defaultError)
+        }
+        setLoading(false)
+      })
   }
 
   return (

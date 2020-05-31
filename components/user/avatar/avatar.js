@@ -5,7 +5,11 @@ export default function (props) {
 
   return (
     <>
-      <div className={`avatar ${props.className} ${props.status ? 'has-status': ''} ${props.status}`}>
+      <div
+        className={`avatar ${props.className} ${
+          props.status ? 'has-status' : ''
+        } ${props.status}`}
+      >
         {!props.loading && (
           <img title={title} src={props.src || defaultSrc}></img>
         )}
@@ -16,8 +20,6 @@ export default function (props) {
         )}
       </div>
       <style jsx>{`
-
-
         img {
           border-radius: 15%;
           overflow: hidden;
@@ -43,8 +45,8 @@ export default function (props) {
           position: relative;
         }
 
-        @media all and (max-width: 720px){
-          .avatar{
+        @media all and (max-width: 720px) {
+          .avatar {
             max-height: 64px;
             max-width: 64px;
           }
@@ -69,12 +71,10 @@ export default function (props) {
           transform: translate(1px, -1px);
           width: 8px;
         }
-      
-    
+
         .avatar.has-status.available:after {
           background-color: var(--edge-success);
         }
-        
       `}</style>
     </>
   )

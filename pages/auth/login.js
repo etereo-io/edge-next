@@ -39,7 +39,8 @@ const Login = () => {
 
       Router.push('/')
     } catch (error) {
-      const defaultMessage = 'Error while logging in, check if the email and password are correct'
+      const defaultMessage =
+        'Error while logging in, check if the email and password are correct'
       if (error.body) {
         const resp = await error.json()
         setErrorMsg(resp.error || defaultMessage)
@@ -52,15 +53,19 @@ const Login = () => {
 
   useEffect(() => {
     if (from && from === 'signup') {
-      setShowAlert('Please, verify your email address before login in. We have sent you an email.')
+      setShowAlert(
+        'Please, verify your email address before login in. We have sent you an email.'
+      )
     }
   }, [from])
 
   return (
     <Layout title="Login" fullWidth={true}>
-      {showAlert && <Card success style={{marginBottom: '15px'}}>
-                  <h3>{showAlert}</h3>
-                </Card>}
+      {showAlert && (
+        <Card success style={{ marginBottom: '15px' }}>
+          <h3>{showAlert}</h3>
+        </Card>
+      )}
       <div className="login">
         <Form
           isLogin

@@ -3,22 +3,27 @@ import {
   findOneComment,
 } from '@lib/api/entities/comments/comments'
 
-import {
-  commentPermission,
-} from '@lib/permissions'
+import { commentPermission } from '@lib/permissions'
 import { connect } from '@lib/api/db'
 import { getAction } from '@lib/api/api-helpers/methods'
 import { loadUser } from '@lib/api/middlewares'
 import methods from '@lib/api/api-helpers/methods'
-import {
-  onCommentDeleted,
-} from '@lib/api/hooks/comment.hooks'
+import { onCommentDeleted } from '@lib/api/hooks/comment.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-export const hasPermissionsForComment = (contentType, item) => async (req, res, cb) => {
+export const hasPermissionsForComment = (contentType, item) => async (
+  req,
+  res,
+  cb
+) => {
   const action = getAction(req.method)
 
-  const canAccess = commentPermission(req.currentUser, contentType, action, item)
+  const canAccess = commentPermission(
+    req.currentUser,
+    contentType,
+    action,
+    item
+  )
 
   if (!canAccess) {
     cb(
@@ -77,7 +82,6 @@ const deleteComment = async (req, res) => {
   }
 }
 
-
 export default async (req, res) => {
   const {
     query: { id },
@@ -131,10 +135,10 @@ export default async (req, res) => {
     get: getComment,
     del: deleteComment,
     put: (req, res) => {
-      res.status(401).json({ error: 'Action not authorized'})
+      res.status(401).json({ error: 'Action not authorized' })
     },
     post: (req, res) => {
-      res.status(401).json({ error: 'Action not authorized'})
+      res.status(401).json({ error: 'Action not authorized' })
     },
   })
 }

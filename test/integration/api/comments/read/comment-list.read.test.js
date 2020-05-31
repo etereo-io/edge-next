@@ -12,7 +12,6 @@ jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/entities/comments/comments')
 
 jest.mock('../../../../../edge.config', () => {
- 
   const mockPostContentType = {
     title: 'Post',
 
@@ -50,7 +49,7 @@ jest.mock('../../../../../edge.config', () => {
         label: 'Title',
         title: true,
         placeholder: 'Title',
-      }
+      },
     ],
   }
 
@@ -91,7 +90,7 @@ jest.mock('../../../../../edge.config', () => {
         label: 'Title',
         title: true,
         placeholder: 'Title',
-      }
+      },
     ],
   }
 
@@ -110,21 +109,22 @@ jest.mock('../../../../../edge.config', () => {
   }
 })
 
-// Find comments by contentType + contentId, 
+// Find comments by contentType + contentId,
 // find comments by author
 // find comments by contentType
-
 
 describe('Integrations tests for comment list read endpoint', () => {
   let server
   let url
-  
+
   beforeEach(() => {
-    findComments.mockReturnValue(Promise.resolve({
-      from: 0,
-      limit: 15, 
-      results: []
-    }))
+    findComments.mockReturnValue(
+      Promise.resolve({
+        from: 0,
+        limit: 15,
+        results: [],
+      })
+    )
   })
 
   afterEach(() => {
@@ -145,7 +145,6 @@ describe('Integrations tests for comment list read endpoint', () => {
   afterAll((done) => {
     server.close(done)
   })
-
 
   test('Should return 405 if contentType does not exist', async () => {
     const urlToBeUsed = new URL(url)
@@ -216,10 +215,17 @@ describe('Integrations tests for comment list read endpoint', () => {
     const jsonResult = await response.json()
 
     expect(response.status).toBe(200)
-    expect(findComments).toHaveBeenCalledWith({
-      contentType: 'post'
-    }, {from: undefined, limit: undefined, sortBy: undefined, sortOrder: undefined})
-
+    expect(findComments).toHaveBeenCalledWith(
+      {
+        contentType: 'post',
+      },
+      {
+        from: undefined,
+        limit: undefined,
+        sortBy: undefined,
+        sortOrder: undefined,
+      }
+    )
   })
 
   test('Should allow contentId option', async () => {
@@ -245,11 +251,18 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     expect(response.status).toBe(200)
 
-    expect(findComments).toHaveBeenCalledWith({
-      contentType: 'post',
-      contentId: 'example'
-    }, {from: undefined, limit: undefined, sortBy: undefined, sortOrder: undefined})
-
+    expect(findComments).toHaveBeenCalledWith(
+      {
+        contentType: 'post',
+        contentId: 'example',
+      },
+      {
+        from: undefined,
+        limit: undefined,
+        sortBy: undefined,
+        sortOrder: undefined,
+      }
+    )
   })
 
   test('Should allow conversationId option', async () => {
@@ -271,10 +284,18 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     const response = await fetch(urlToBeUsed.href)
 
-    expect(findComments).toHaveBeenCalledWith({
-      contentType: 'post',
-      conversationId: 'conversationId'
-    }, {from: undefined, limit: undefined, sortBy: undefined, sortOrder: undefined})
+    expect(findComments).toHaveBeenCalledWith(
+      {
+        contentType: 'post',
+        conversationId: 'conversationId',
+      },
+      {
+        from: undefined,
+        limit: undefined,
+        sortBy: undefined,
+        sortOrder: undefined,
+      }
+    )
 
     expect(response.status).toBe(200)
   })
@@ -298,14 +319,21 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     const response = await fetch(urlToBeUsed.href)
 
-    expect(findComments).toHaveBeenCalledWith({
-      contentType: 'post',
-      conversationId: null
-    }, {from: undefined, limit: undefined, sortBy: undefined, sortOrder: undefined})
+    expect(findComments).toHaveBeenCalledWith(
+      {
+        contentType: 'post',
+        conversationId: null,
+      },
+      {
+        from: undefined,
+        limit: undefined,
+        sortBy: undefined,
+        sortOrder: undefined,
+      }
+    )
 
     expect(response.status).toBe(200)
   })
-
 
   test('Should allow author option', async () => {
     const urlToBeUsed = new URL(url)
@@ -326,10 +354,18 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     const response = await fetch(urlToBeUsed.href)
 
-    expect(findComments).toHaveBeenCalledWith({
-      contentType: 'post',
-      author: 'author'
-    }, {from: undefined, limit: undefined, sortBy: undefined, sortOrder: undefined})
+    expect(findComments).toHaveBeenCalledWith(
+      {
+        contentType: 'post',
+        author: 'author',
+      },
+      {
+        from: undefined,
+        limit: undefined,
+        sortBy: undefined,
+        sortOrder: undefined,
+      }
+    )
 
     expect(response.status).toBe(200)
   })
@@ -353,10 +389,18 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     const response = await fetch(urlToBeUsed.href)
 
-    expect(findComments).toHaveBeenCalledWith({
-      contentType: { '$in': ['post', 'product']},
-      author: 'author'
-    }, {from: undefined, limit: undefined, sortBy: undefined, sortOrder: undefined})
+    expect(findComments).toHaveBeenCalledWith(
+      {
+        contentType: { $in: ['post', 'product'] },
+        author: 'author',
+      },
+      {
+        from: undefined,
+        limit: undefined,
+        sortBy: undefined,
+        sortOrder: undefined,
+      }
+    )
 
     expect(response.status).toBe(200)
   })
@@ -373,12 +417,15 @@ describe('Integrations tests for comment list read endpoint', () => {
     getPermissions.mockReturnValue({
       'content.post.comments.read': ['PUBLIC'],
     })
-    
+
     const response = await fetch(urlToBeUsed.href)
 
-    expect(findComments).toHaveBeenCalledWith({
-      contentType: 'post'
-    }, {from: 10, limit: 20, sortBy: undefined, sortOrder: undefined})
+    expect(findComments).toHaveBeenCalledWith(
+      {
+        contentType: 'post',
+      },
+      { from: 10, limit: 20, sortBy: undefined, sortOrder: undefined }
+    )
 
     expect(response.status).toBe(200)
   })
@@ -399,7 +446,7 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     const response = await fetch(urlToBeUsed.href)
     const jsonResult = await response.json()
-    
+
     expect(response.status).toBe(401)
   })
 
@@ -422,13 +469,10 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     expect(response.status).toBe(200)
 
-
     expect(jsonResult).toMatchObject({
       results: [],
       from: 0,
       limit: 15,
     })
   })
-
- 
 })

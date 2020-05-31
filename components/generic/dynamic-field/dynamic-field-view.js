@@ -36,7 +36,11 @@ function Field({ field, value, contentType }) {
           return (
             <div
               data-testid={datatestId}
-              style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: '100%',
+              }}
             >
               <Image srcs={transformedValues} />
             </div>
@@ -83,18 +87,17 @@ function Field({ field, value, contentType }) {
           </div>
         ) : null
 
-      
       case FIELDS.RADIO:
         return value ? (
           <div data-testid={datatestId}>
-            { (Array.isArray(value) ? value : [value]).map(i => <span>{field.options.find(o => o.value === i).label}</span>)}
-            <style jsx>{
-            `
-            span {
-              padding-right: 5px;
-            }
-            `
-            }</style>
+            {(Array.isArray(value) ? value : [value]).map((i) => (
+              <span>{field.options.find((o) => o.value === i).label}</span>
+            ))}
+            <style jsx>{`
+              span {
+                padding-right: 5px;
+              }
+            `}</style>
           </div>
         ) : null
       default:
@@ -108,13 +111,11 @@ function Field({ field, value, contentType }) {
       {field.label && field.showLabel && <label>{field.label}</label>}
 
       {getField(field, value)}
-      <style jsx>{
-        `
+      <style jsx>{`
         label {
           font-weight: bold;
         }
-        `
-      }</style>
+      `}</style>
     </div>
   )
 }

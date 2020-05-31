@@ -56,7 +56,7 @@ const UserSettings = () => {
     }
   }, [userId])
 
-  const isOwner = userId === 'me' || (user && user.username === userId)
+  const isOwner = userId === 'me' || (user && user.id === userId)
   const canAccess = hasPermissionsToEdit || isOwner
 
   useEffect(() => {
@@ -167,7 +167,7 @@ const UserSettings = () => {
       </section>
       <style jsx>
         {`
-          .user-profile-settings-wr  {
+          .user-profile-settings-wr {
             align-items: flex-start;
             display: flex;
             justify-content: space-between;

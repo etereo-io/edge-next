@@ -36,7 +36,7 @@ export const getConfig = (defaultOptions) => {
       metadata: {
         lastLogin: null,
       },
-    }
+    },
   ]
 
   const postContentType = {
@@ -82,6 +82,7 @@ export const getConfig = (defaultOptions) => {
         placeholder: 'Title',
         minlength: 8,
         maxlength: 150,
+        required: true,
         errorMessage: 'Title must be between 8 and 150 characters',
       },
       {
@@ -90,7 +91,7 @@ export const getConfig = (defaultOptions) => {
         label: 'Description',
         placeholder: 'Description',
         minlength: 20,
-        maxlength: 2000,
+        required: true,
         description: 'Markdown supported.',
         errorMessage: 'Description must be between 20 and 2000 characters',
       },
@@ -171,17 +172,18 @@ export const getConfig = (defaultOptions) => {
         label: 'Title',
         placeholder: 'Title',
         minlength: 10,
+        required: true,
         maxlength: 200,
         errorMessage: 'Title must be between 10 and 200 characters',
       },
-      
+
       {
         name: 'description',
         type: 'markdown',
         label: 'Description',
         placeholder: 'Description',
+        required: true,
         minlength: 10,
-        maxlength: 2000,
         errorMessage: '',
       },
       {
@@ -189,16 +191,20 @@ export const getConfig = (defaultOptions) => {
         type: 'radio',
         label: 'News severity',
         showLabel: true,
-        options: [{
-          label: 'Weak',
-          value: 'weak'
-        }, {
-          label: 'Medium',
-          value: 'Medium'
-        }, {
-          label: 'High',
-          value: 'high'
-        }]
+        options: [
+          {
+            label: 'Weak',
+            value: 'weak',
+          },
+          {
+            label: 'Medium',
+            value: 'Medium',
+          },
+          {
+            label: 'High',
+            value: 'high',
+          },
+        ],
       },
 
       {
@@ -207,25 +213,30 @@ export const getConfig = (defaultOptions) => {
         multiple: true,
         label: 'Affects to systems',
         showLabel: true,
-        options: [{
-          label: 'Content Api',
-          value: 'content-api'
-        }, {
-          label: 'Users API',
-          value: 'users-api'
-        }, {
-          label: 'Auth API',
-          value: 'auth-api'
-        }, {
-          label: 'Website',
-          value: 'website'
-        }]
+        options: [
+          {
+            label: 'Content Api',
+            value: 'content-api',
+          },
+          {
+            label: 'Users API',
+            value: 'users-api',
+          },
+          {
+            label: 'Auth API',
+            value: 'auth-api',
+          },
+          {
+            label: 'Website',
+            value: 'website',
+          },
+        ],
       },
       {
         name: 'tags',
         type: 'tags',
-        label: 'Tags'
-      }
+        label: 'Tags',
+      },
     ],
   }
 
@@ -415,11 +426,16 @@ export const getConfig = (defaultOptions) => {
     // Content configuration
     content: {
       // Different content types defined
-      types: [
-        postContentType,
-        siteNewsContentType
-      ],
+      types: [postContentType, siteNewsContentType],
       initialContent: [],
+    },
+
+    // Features not implemented yet, but UI implemented
+    like: {
+      enabled: false,
+    },
+    follow: {
+      enabled: false,
     },
   }
 }

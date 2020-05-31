@@ -197,6 +197,7 @@ describe('Integrations tests for content deletion endpoint', () => {
         contentId: 'contentid',
       })
       expect(deleteActivity).toHaveBeenCalledWith({
+        role: 'user',
         meta: {
           contentId: 'contentid',
         },

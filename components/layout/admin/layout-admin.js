@@ -2,7 +2,7 @@ import Head from '../head/head'
 import Header from '../header/header'
 const Layout = (props) => (
   <>
-    <Head {...props}/>
+    <Head {...props} />
     <Header />
 
     <main>

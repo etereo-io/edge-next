@@ -11,7 +11,6 @@ export default function ({ user, ...props }) {
     cover: {},
   })
 
-  
   const request = (data) => {
     const url = `${API.users}/${user.id}/cover`
     setLoading(true)

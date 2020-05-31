@@ -1,17 +1,26 @@
 import Button from '@components/generic/button/button'
 
-
 export default ({ following }) => {
-  
   return (
     <>
-      <Button padding={'0px'} success={following ? true: false} secondary={following ? false: true}>
-        { following && <div className="button-inner"><img  src='/icons/icon-check.svg' /> <span>Following</span></div>}
-        { !following && <div className="button-inner"><img  src='/icons/icon-check.svg' /> <span>Follow</span></div>}
+      <Button
+        padding={'0px'}
+        success={following ? true : false}
+        secondary={following ? false : true}
+      >
+        {following && (
+          <div className="button-inner">
+            <img src="/icons/icon-check.svg" /> <span>Following</span>
+          </div>
+        )}
+        {!following && (
+          <div className="button-inner">
+            <img src="/icons/icon-check.svg" /> <span>Follow</span>
+          </div>
+        )}
       </Button>
       <style jsx>
-        {
-          `
+        {`
           .button-inner {
             display: flex;
             justify-content: center;
@@ -33,8 +42,7 @@ export default ({ following }) => {
               margin-right: 0;
             }
           }
-          `
-        }
+        `}
       </style>
     </>
   )

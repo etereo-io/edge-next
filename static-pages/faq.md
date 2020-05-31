@@ -5,13 +5,6 @@ description: "Frequently Asked Questions"
 
 # FAQ
 
-## Example Question 1
+## FAQ 1
 
-This is an example answer
-
-> Use markdown to add more content here
-
-
-## Example Question 2
-
-This is another answer
+Introduce here the faqs for your product

@@ -1,6 +1,13 @@
-export default function ({ children, alt, featured, success, secondary, warning, alert, ...props }) {
- 
-
+export default function ({
+  children,
+  alt,
+  featured,
+  success,
+  secondary,
+  warning,
+  alert,
+  ...props
+}) {
   return (
     <>
       <div

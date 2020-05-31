@@ -32,7 +32,7 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({ params }) => {
   const md = new MarkdownIt({
     html: true,
-    linkify: true
+    linkify: true,
   })
 
   const slug = params['static-page']

@@ -3,7 +3,7 @@
 # Edge - A dynamic site that lives on the edge
 
 - [Website](https://edge-next.now.sh/)
-- [Documentation](./static-pages/documentation.md)
+- [Documentation](./DOCUMENTATION.md)
   
 *Edge version 1.0 will be released on June/July 2020, this is a work in progress*
 

@@ -38,7 +38,8 @@ const Profile = (props) => {
   const { data, error } = useSWR(userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
-  const isOwner = userId === 'me' || (data && data.username === userId)
+  const isOwner =
+    userId === 'me' || (data && data.username === userId.replace('@', ''))
   const canAccess = hasPermissionsToRead || isOwner
   const canEdit = hasPermissionsToEdit || isOwner
 
@@ -93,12 +94,6 @@ const Profile = (props) => {
                 )
               })}
 
-              <li
-                onClick={() => onClickTab('comments')}
-                className={`${activeTab === 'comments' ? 'active' : ''}`}
-              >
-                <a>Comments</a>
-              </li>
               {config.like.enabled && (
                 <li
                   onClick={() => onClickTab('likes')}
@@ -134,15 +129,6 @@ const Profile = (props) => {
                 </div>
               )
             })}
-            <div
-              className={`${
-                activeTab === 'comments'
-                  ? 'navigation-tab active'
-                  : 'navigation-tab'
-              }`}
-            >
-              THE COMMENTS
-            </div>
 
             <div
               className={`${

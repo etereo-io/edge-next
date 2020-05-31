@@ -1,7 +1,7 @@
 import Layout from '@components/layout/three-panels/layout'
 import { useUser } from '@lib/client/hooks'
 import Button from '@components/generic/button/button'
-import {useState} from 'react';
+import { useState } from 'react'
 import config from '@lib/config'
 import { useContentType } from '@lib/client/hooks'
 import ToolBar from '@components/generic/toolbar/toolbar'
@@ -10,7 +10,7 @@ import ContentListView from '@components/content/read-content/content-list-view/
 const Landing = () => {
   const { contentType } = useContentType('post')
   const { user, finished } = useUser()
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(false)
 
   const panelAdsItems = (
     <>
@@ -62,7 +62,9 @@ const Landing = () => {
         panelAds={panelAdsItems}
         panelUser={<ToolBar />}
       >
-        <aside className={active ? "featured-section hide" : "featured-section"}>
+        <aside
+          className={active ? 'featured-section hide' : 'featured-section'}
+        >
           <i className="hand-greet">👋</i>
           {user && (
             <h3 className="featured-section-title">
@@ -80,8 +82,14 @@ const Landing = () => {
             want to learn more, take a look at:
           </p>
           <div className="featured-section-buttons">
-            <Button success>Main documentation</Button>
-            <Button soft>React Components</Button>
+            <Button success>
+              <a href="https://github.com/nucleo-org/edge-next/blob/master/DOCUMENTATION.md">
+                Main documentation
+              </a>
+            </Button>
+            <Button href="/components" soft>
+              React Components
+            </Button>
           </div>
           <button className="close" onClick={() => setActive(!active)}></button>
         </aside>
@@ -101,7 +109,7 @@ const Landing = () => {
           width: 100%;
         }
 
-        .featured-section.hide{
+        .featured-section.hide {
           display: none;
         }
 
@@ -144,7 +152,7 @@ const Landing = () => {
         }
 
         @keyframes featured-section-title {
-          from {
+          from  {
             opacity: 0;
             transform: translateY(4px);
           }

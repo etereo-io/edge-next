@@ -1,6 +1,14 @@
-import { bodyParser, hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
+import {
+  bodyParser,
+  hasPermissionsForUser,
+  loadUser,
+} from '@lib/api/middlewares'
 import { deleteFile, uploadFile } from '@lib/api/storage'
-import { deleteOneUser, findOneUser, updateOneUser } from '@lib/api/entities/users/user'
+import {
+  deleteOneUser,
+  findOneUser,
+  updateOneUser,
+} from '@lib/api/entities/users/user'
 import {
   generateSaltAndHash,
   userPasswordsMatch,

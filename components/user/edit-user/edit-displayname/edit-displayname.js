@@ -10,7 +10,6 @@ export default function ({ user, ...props }) {
 
   const [fields, setFields] = useState({})
 
-  
   const request = (data) => {
     const url = `${API.users}/${user.id}/profile`
     setLoading(true)
