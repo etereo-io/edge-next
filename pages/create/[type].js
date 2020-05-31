@@ -44,12 +44,17 @@ const CreateContent = () => {
     <>
       <Layout title="New content">
         <div className="create-page">
-
           {available && (
-            <><h1>Create new {contentType ? contentType.title : 'content'}</h1>
-            <ContentForm content={content} type={contentType} onSave={onSave} /></>
+            <>
+              <h1>Create new {contentType ? contentType.title : 'content'}</h1>
+              <ContentForm
+                content={content}
+                type={contentType}
+                onSave={onSave}
+              />
+            </>
           )}
-          { !available && (<LoadingPage />)}
+          {!available && <LoadingPage />}
         </div>
       </Layout>
       <style jsx>{`

@@ -4,7 +4,7 @@ import Footer from '../footer/footer'
 
 const Layout = (props) => (
   <>
-    <Head {...props}/>
+    <Head {...props} />
     <Header />
 
     <div
@@ -130,7 +130,7 @@ const Layout = (props) => (
         }
       }*/
 
-      @media all and (max-width: 460px){
+      @media all and (max-width: 460px) {
         .edge-panels .edge-panel-content {
           padding: var(--edge-gap-half) 0;
         }

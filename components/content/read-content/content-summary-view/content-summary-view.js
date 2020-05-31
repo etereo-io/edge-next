@@ -3,7 +3,6 @@ import { FIELDS } from '@lib/config/config-constants'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 
 export default function (props) {
- 
   // Link to detail if it's not a summary
   const links = !!props.summary
 
@@ -20,8 +19,6 @@ export default function (props) {
   return (
     <>
       <div className={`contentSummaryView ${props.className}`}>
-        
-
         <div className="">
           {props.type.fields
             .filter((f) => f.name === props.type.publishing.title)
@@ -38,22 +35,17 @@ export default function (props) {
                       <a>{props.content[field.name]}</a>
                     </Link>
                   )}
-                  {!links &&                
-                      props.content[field.name]}
-                    
+                  {!links && props.content[field.name]}
                 </h1>
               )
             })}
-
 
           {props.type.fields
             .filter((f) => !f.hidden)
             .filter((f) => f.name !== props.type.publishing.title)
             .map((field) => {
               return (
-                <div
-                  key={`${field.name}-${props.content.id}`}
-                >
+                <div key={`${field.name}-${props.content.id}`}>
                   {shouldAddLink(field) && (
                     <Link
                       href={`/content/${props.type.slug}/${props.content.slug}`}
@@ -78,30 +70,27 @@ export default function (props) {
               )
             })}
         </div>
-        
       </div>
       <style jsx>{`
-
-      .content-title {
-        font-size: 24px;
-        line-height: 1;
-        margin-bottom: var(--edge-gap);
-        padding-right: var(--edge-gap);
-      }
-
-      @media all and (max-width: 720px) {
         .content-title {
-          font-size: 21px;
-          line-height: 1.25;
-          padding-right: 0;
+          font-size: 24px;
+          line-height: 1;
+          margin-bottom: var(--edge-gap);
+          padding-right: var(--edge-gap);
         }
-      }
 
-      a {
-        text-decoration: none;
-        color: var(--edge-link-color);
-      }
-        
+        @media all and (max-width: 720px) {
+          .content-title {
+            font-size: 21px;
+            line-height: 1.25;
+            padding-right: 0;
+          }
+        }
+
+        a {
+          text-decoration: none;
+          color: var(--edge-link-color);
+        }
       `}</style>
     </>
   )

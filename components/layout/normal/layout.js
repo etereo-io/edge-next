@@ -4,7 +4,7 @@ import Footer from '../footer/footer'
 
 const Layout = (props) => (
   <>
-    <Head {...props}/>
+    <Head {...props} />
     <Header />
 
     <main
@@ -42,7 +42,7 @@ const Layout = (props) => (
         width: 100%;
       }
 
-      .container{
+      .container {
         padding: 0 32px;
         position: relative;
         margin: 0 auto;

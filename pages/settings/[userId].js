@@ -167,7 +167,7 @@ const UserSettings = () => {
       </section>
       <style jsx>
         {`
-          .user-profile-settings-wr  {
+          .user-profile-settings-wr {
             align-items: flex-start;
             display: flex;
             justify-content: space-between;

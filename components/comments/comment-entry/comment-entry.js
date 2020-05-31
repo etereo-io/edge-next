@@ -7,13 +7,11 @@ import { useState } from 'react'
 import CommentForm from '../comment-form/comment-form'
 import MarkdownRead from '@components/generic/markdown-read/markdown-read'
 
-
 import MarkdownIt from 'markdown-it'
 const md = MarkdownIt({
   html: false,
   linkify: true,
-})
-.disable(['heading', 'hr', 'table'])
+}).disable(['heading', 'hr', 'table'])
 
 export default function CommentEntry({
   contentId = '',

@@ -30,7 +30,6 @@ jest.mock('../../../../../edge.config', () => ({
     description: 'A test',
     // Users configuration
     user: {
-
       // Require email verification
       emailVerification: true,
 

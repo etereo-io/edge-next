@@ -15,17 +15,14 @@
       - [Adding items](#adding-items)
       - [Finding items](#finding-items)
       - [Updating an item](#updating-an-item)
-      - [Deleting an item](#deleting-an-item)
+      - [Deleting items](#deleting-items)
     - [In memory DB (only local)](#in-memory-db-only-local)
-    - [MongoDB](#mongodb)
+    - [MongoDB (default)](#mongodb-default)
     - [Firebase](#firebase)
   - [Authentication](#authentication)
     - [Providers](#providers)
   - [Emails](#emails)
   - [Static Pages](#static-pages)
-  - [````markdown](#predivdivpre)
-  - [description: "Example page description"](#description-example-page-description)
-- [THIS IS A TITLE](#this-is-a-title)
   - [Web monetization](#web-monetization)
   - [Other Payments](#other-payments)
 - [env.local file](#envlocal-file)
@@ -93,7 +90,7 @@ All the configuration of Edge is done in this file on the root of the folder.
 
 Here users can define content types, permissions and much more. 
 
-Example config file [here](/p/configuration-file)
+Example config file [here](/configuration-file.md)
 
 
 ## Adding a new theme
@@ -158,7 +155,7 @@ Then edit the `edge.config.js` file and add your new theme
   ```
 
 ## Content Types
-Content types may be defined in `empieza.config.js`. You can create as many content types with different definitions and permissions. The API will validate the access to the endpoints based on the permissions you defined.
+Content types may be defined in `edge.config.js`. You can create as many content types with different definitions and permissions. The API will validate the access to the endpoints based on the permissions you defined.
 
 Content types take the following structure:
 
@@ -401,13 +398,12 @@ Another useful resources:
 
 
 ## Databases
-Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory"
+Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory".  All the Databases use the same API, this way is easy to switch from one to the other. But if you don't like this approach you can change `/lib/api/database` and `/lib/api/entities/` to use your database in the way you want.
 
 **Note: The only production ready database is MongoDB**, Firebase integration is not complete.
 
 ### Database API
 
-All the Databases use the same API abstraction
 
 #### Adding items
 
@@ -420,12 +416,29 @@ db.collection('collection')
 
 ```javascript
 db.collection('collection')
-  .find({name: 'test'})
+  .find({name: 'test'}, {
+    sortBy: 'date',
+    sortOrder: 'DESC'
+  })
 ```
 
 ```javascript
 db.collection('collection')
   .findOne({name: 'test'})
+```
+
+Limit start and end positions
+
+```javascript
+db
+  .collection('col')
+  .limit(10)
+  .start(0)
+  .find(options, {
+    sortBy,
+    sortOrder,
+  })
+
 ```
 
 #### Updating an item
@@ -436,18 +449,24 @@ db.collection('collection')
   .set({name: 'test'})
 ```
 
-#### Deleting an item
+#### Deleting items
 
+Many 
 ```javascript
 db.collection('collection')
-  .doc('ID')
-  .delete()
+  .remove(options)
+```
+
+One 
+```javascript
+db.collection('collection')
+  .remove(options, true)
 ```
 
 
 ### In memory DB (only local)
 
-There is a "In memory" database for development and testing purposes. It allows you to work with Mock data easily.
+There is a "In memory" database for development and testing purposes. It allows you to work with Mock data easily. But the capabilities are limited.
 
 Set the following config (default)
 
@@ -457,7 +476,7 @@ database: {
 }
 ```
 
-### MongoDB
+### MongoDB (default)
 
 To configure mongodb you will need to set the configuration:
 
@@ -480,26 +499,26 @@ MONGODB_DATABASE=<database>
 
 If you want to use Firebase you must set the following environment variables in the `.env` file:
 
-````
+```
 FIREBASE_PROJECT_ID=XX
 FIREBASE_CLIENT_EMAIL=XX
 FIREBASE_DATABASE_URL=XX
 FIREBASE_PRIVATE_KEY=XX
-````
+```
 
 See the [example .env.build file](/.env.build)
 
 Also in the config you must set the following values:
 
-````javascript
+```javascript
 database: {
   type: 'FIREBASE'
 }
-````
+```
 
 ## Authentication 
 
-Empieza uses [Passport.js](http://www.passportjs.org) cookie based authentication with email and password.
+Edge uses [Passport.js](http://www.passportjs.org) cookie based authentication with email and password.
 
 The login cookie is httpOnly, meaning it can only be accessed by the API, and it's encrypted using [@hapi/iron](https://hapi.dev/family/iron) for more security.
 
@@ -530,14 +549,14 @@ To configure the different API keys for each provider you must edit the environm
 
 After creating your applications you will need to define the following environment variables in your `.env.local` file.
 
-````
+```
 FACEBOOK_ID=XX
 FACEBOOK_SECRET=XX
 GITHUB_ID=XX
 GITHUB_SECRET=XX
 GOOGLE_ID=XX
 GOOGLE_SECRET=XX
-````
+```
 
 In the Oauth callbacks fill in the following API urls:
 
@@ -552,7 +571,7 @@ You don't need to configure any or all of the authentication providers. You can 
 
 ## Emails
 
-Empieza uses [Sendgrid](https://sendgrid.com/) to send emails. Although this is easily editable; just edit `/lib/email/sender.js` to change the sending implementations.
+Edge uses [Sendgrid](https://sendgrid.com/) to send emails. Although this is easily editable; just edit `/lib/email/sender.js` to change the sending implementations.
 
 There are some email templates included and working:
 
@@ -564,9 +583,9 @@ Some resources:
 
 Once you have your sendgrid API key you will need to include it on the environment file:
 
-````
+```
 SENDGRID_KEY=XX
-````
+```
 
 ## Static Pages
 
@@ -574,17 +593,18 @@ SSG (Static Site Generation) is implemented.
 In the folder `static-pages` you can find the different markdown pages that are prerendered for fast loading.
 The pages include common use cases like **About**, **Privacy Policy**, **Terms and conditions**.
 
-````markdown
+```markdown
 ---
 title: Example page
 description: "Example page description"
 ---
 
+
 # THIS IS A TITLE
 
 Hello, this is a static page, automatically rendered.
 
-````
+```
 
 ## Web monetization
 
@@ -647,9 +667,13 @@ Depending on what you want to seel (if you want the users to be able to sell, or
 
 ## Deploy your own
 
-To deploy your site with all the functionalities you need to configure the different environment variables.
+To deploy your site with all the functionalities you need to follow the next steps:
 
-All the environment variables are defined inside the `.env.build` example file
+1. Get all the environment variables needed
+2. Configure the environment variables in Vercel dashboard (or your service of choice)
+3. Done
+
+All the environment variables you need to configure are defined inside the `.env.build`  file
 
 ```
 AUTH_TOKEN_SECRET=secret-token-to-generate-sessions
@@ -685,9 +709,10 @@ NEXT_PUBLIC_GA_TRACKING_ID=xx
 - **Email**: Configure `SENDGRID_KEY`
 - **Google Maps**: Configure `NEXT_PUBLIC_GMAPS_API_KEY`
 
+
 ### Deploying on Vercel
 
-Deploy Empieza using [Vercel](https://vercel.com):
+Deploy Edge using [Vercel](https://vercel.com):
 
 
 If you want your deployment in Vercel to recognize the `ENVIRONMENT` values, you will need to add the secrets to your deployment. 

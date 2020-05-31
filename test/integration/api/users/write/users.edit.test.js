@@ -1,7 +1,10 @@
 import * as handlerUser from '../../../../../pages/api/users/[...slug]'
 
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
-import { findOneUser, updateOneUser } from '../../../../../lib/api/entities/users/user'
+import {
+  findOneUser,
+  updateOneUser,
+} from '../../../../../lib/api/entities/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
@@ -24,7 +27,6 @@ jest.mock('../../../../../edge.config', () => ({
     description: 'A test',
     // Users configuration
     user: {
-
       // Require email verification
       emailVerification: true,
 

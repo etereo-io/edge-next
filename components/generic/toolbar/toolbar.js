@@ -11,10 +11,12 @@ export default function () {
   return (
     <>
       <aside className="edge-panel-user">
-        { !finished && <div className="edge-avatar-user">
-          <LoadingPlaceholder width='100%' height='30px'/>
-        </div> }
-        { user && (
+        {!finished && (
+          <div className="edge-avatar-user">
+            <LoadingPlaceholder width="100%" height="30px" />
+          </div>
+        )}
+        {user && (
           <div className="edge-avatar-user">
             <Avatar
               width={'32px'}
@@ -51,32 +53,25 @@ export default function () {
           </div>
         )}
 
-        
         <SiteMenu mobileCollapse={true} />
 
-        
         <ul className="edge-panel-user-tags">
           <span className="edge-tag">Trending Tags</span>
           <li>
             <Link href="/content/post?tags=web-development">
-              <a className="edge-panel-user-tag-unit">
-                Web Development
-              </a>
+              <a className="edge-panel-user-tag-unit">Web Development</a>
             </Link>
           </li>
           <li>
             <Link href="/content/post?tags=nextjs">
-              <a className="edge-panel-user-tag-unit">
-               NextJS
-              </a>
+              <a className="edge-panel-user-tag-unit">NextJS</a>
             </Link>
           </li>
-          
         </ul>
 
         <footer className="edge-panel-user-footer">
           <Link href="/p/faq">
-            <a className="edge-panel-user-faqs" >
+            <a className="edge-panel-user-faqs">
               <img src="/icons/icon-question.svg" />
             </a>
           </Link>
@@ -97,7 +92,8 @@ export default function () {
           max-width: 232px;
           overflow-y: auto;
           overflow-x: hidden;
-          padding: var(--edge-gap-medium) var(--edge-gap) var(--edge-gap-medium) 0;
+          padding: var(--edge-gap-medium) var(--edge-gap) var(--edge-gap-medium)
+            0;
           position: sticky;
           top: 112px;
           height: calc(100vh - 112px);
@@ -202,8 +198,6 @@ export default function () {
           background-color: var(--accents-1-medium);
         }
 
-        
-
         @media all and (max-width: 720px) {
           .edge-panel-user .edge-avatar-user-info,
           .edge-panel-user-footer {
@@ -221,7 +215,6 @@ export default function () {
         }
 
         @media all and (max-width: 460px) {
-        
           .edge-panel-user {
             display: none;
             transform: none;

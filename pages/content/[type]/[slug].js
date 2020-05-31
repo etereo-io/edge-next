@@ -71,7 +71,11 @@ export async function getServerSideProps({ req, res, query }) {
 
 const ContentPage = (props) => {
   return (
-    <Layout title={props.pageTitle} monetization={props.monetizationMeta} panelUser={<ToolBar/>}>
+    <Layout
+      title={props.pageTitle}
+      monetization={props.monetizationMeta}
+      panelUser={<ToolBar />}
+    >
       {props.canAccess && props.data && (
         <ContentDetailView
           type={props.contentType}

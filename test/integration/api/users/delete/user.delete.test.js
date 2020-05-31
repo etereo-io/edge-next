@@ -9,7 +9,10 @@ import {
   deleteOneContent,
   findOneContent,
 } from '../../../../../lib/api/entities/content/content'
-import { deleteOneUser, findOneUser } from '../../../../../lib/api/entities/users/user'
+import {
+  deleteOneUser,
+  findOneUser,
+} from '../../../../../lib/api/entities/users/user'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import crypto from 'crypto'

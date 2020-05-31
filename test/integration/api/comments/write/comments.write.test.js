@@ -170,7 +170,7 @@ describe('Integrations tests for comment creation endpoint', () => {
       roles: ['USER'],
       id: 'test-id',
     })
-    
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -178,10 +178,9 @@ describe('Integrations tests for comment creation endpoint', () => {
       },
       body: JSON.stringify({}),
     })
-    
+
     expect(response.status).toBe(405)
   })
-
 
   test('Should return 405 if contentId is missing', async () => {
     const urlToBeUsed = new URL(url)

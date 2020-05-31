@@ -4,9 +4,7 @@ import { commentPermission } from '@lib/permissions'
 import { commentValidations } from '@lib/validations/comment'
 import config from '@lib/config'
 import { connect } from '@lib/api/db'
-import {
-  isValidContentType,
-} from '@lib/api/middlewares'
+import { isValidContentType } from '@lib/api/middlewares'
 import { loadUser } from '@lib/api/middlewares'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentAdded } from '@lib/api/hooks/comment.hooks'
@@ -14,23 +12,25 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import slugify from 'slugify'
 
 export const parseCommentBody = (text) => {
-
-  const mentions = (text.match(/@([A-Za-z]+[A-Za-z0-9_-]+)/g)) || []
-  const images = (text.match(/(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|jfif|webp)/g)) || []
+  const mentions = text.match(/@([A-Za-z]+[A-Za-z0-9_-]+)/g) || []
+  const images =
+    text.match(
+      /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png|jfif|webp)/g
+    ) || []
   let parsedText = text
 
-  mentions.forEach(m  => {
+  mentions.forEach((m) => {
     parsedText = parsedText.replace(m, `[${m}](/profile/${m})`)
   })
 
-  images.forEach(m  => {
+  images.forEach((m) => {
     parsedText = parsedText.replace(m, `![${m}](${m})`)
   })
 
   return {
     parsedText,
     mentions: [...new Set(mentions)],
-    images: [...new Set(images)]
+    images: [...new Set(images)],
   }
 }
 
@@ -47,11 +47,7 @@ function contentTypeAllowsCommentsMiddleware(req, res, cb) {
   }
 }
 
-const getComments = (
-  req,
-  res
-) => {
-
+const getComments = (req, res) => {
   const {
     query: {
       contentType,
@@ -73,7 +69,7 @@ const getComments = (
     filterParams.contentId = contentId
   }
 
-  // If we dont specify a conversation ID we get the ones that have it to null 
+  // If we dont specify a conversation ID we get the ones that have it to null
   if (conversationId && conversationId !== 'false') {
     filterParams.conversationId = conversationId
   } else if (conversationId === 'false') {
@@ -88,35 +84,34 @@ const getComments = (
   const paginationParams = {
     sortBy,
     sortOrder,
-    from: typeof from !== 'undefined' ? parseInt(from, 10): from,
-    limit: typeof limit !== 'undefined' ? parseInt(limit, 10): limit,
+    from: typeof from !== 'undefined' ? parseInt(from, 10) : from,
+    limit: typeof limit !== 'undefined' ? parseInt(limit, 10) : limit,
   }
-  
 
   if (!filterParams.contentType) {
     // If no content type is specified, bring in all that the user can read
-    const allowedContentTypes = config.content.types.filter(type => commentPermission(req.currentUser, type.slug, 'read')).map(t => t.slug)
+    const allowedContentTypes = config.content.types
+      .filter((type) => commentPermission(req.currentUser, type.slug, 'read'))
+      .map((t) => t.slug)
 
     // If there are no allowed content types with comments that the user can read, reject
     if (allowedContentTypes.length === 0) {
       return res.status(401).json({
-        message: 'User not allowed to read comments'
+        message: 'User not allowed to read comments',
       })
     }
 
     filterParams.contentType = {
-      $in: allowedContentTypes
+      $in: allowedContentTypes,
     }
   } else {
-
     // There was a specified content type check if it has permissions
     if (!commentPermission(req.currentUser, filterParams.contentType, 'read')) {
       return res.status(401).json({
         message: 'User not allowed to read comments',
-      })  
+      })
     }
   }
-
 
   findComments(filterParams, paginationParams)
     .then((data) => {
@@ -136,8 +131,7 @@ export function fillCommentWithDefaultData(
   user
 ) {
   try {
-
-    const { parsedText , mentions, images } = parseCommentBody(comment.message)
+    const { parsedText, mentions, images } = parseCommentBody(comment.message)
 
     // Best way to store mentions https://stackoverflow.com/questions/31821751/best-way-to-store-comments-with-mentions-firstname-in-database
     // Fill in the mandatory data like author, date, type
@@ -171,26 +165,24 @@ const createComment = (req, res) => {
   const type = req.contentType
   const contentId = req.query.contentId
 
-
   if (!contentId) {
     return res.status(405).json({
-      error: 'Missing contentId'
+      error: 'Missing contentId',
     })
   }
 
   if (!type) {
     return res.status(400).json({
-      error: 'Missing contentType'
+      error: 'Missing contentType',
     })
   }
 
-    
   if (!commentPermission(req.currentUser, req.query.contentType, 'create')) {
     return res.status(401).json({
       message: 'User not allowed to create comments',
     })
   }
-  
+
   const comment = req.body
 
   commentValidations(comment)
@@ -226,9 +218,7 @@ const createComment = (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: {
-      contentType,
-    },
+    query: { contentType },
   } = req
 
   if (contentType) {
@@ -239,7 +229,7 @@ export default async (req, res) => {
         message: e.message,
       })
     }
-  
+
     try {
       await runMiddleware(req, res, contentTypeAllowsCommentsMiddleware)
     } catch (e) {
@@ -248,7 +238,6 @@ export default async (req, res) => {
       })
     }
   }
-
 
   try {
     // Connect to database

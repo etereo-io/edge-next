@@ -35,10 +35,12 @@ function UserHeader(props) {
   return (
     <div className="edge-user-actions">
       {/*Searchbox*/}
-      {config.search.enabled && <div className="edge-searchbox">
-        <img src="/icons/icon-search.svg" />
-        <input type="text" placeholder="Search" />
-      </div>}
+      {config.search.enabled && (
+        <div className="edge-searchbox">
+          <img src="/icons/icon-search.svg" />
+          <input type="text" placeholder="Search" />
+        </div>
+      )}
 
       {user && (
         <div className="edge-user-actions-logged">
@@ -49,7 +51,6 @@ function UserHeader(props) {
                 <img src="/icons/icon-configuration.svg" />
               </a>
             </Link>
-            
           </div>
           <Link href={`/profile/@${user.username}`}>
             <a title="User profile">
@@ -80,9 +81,8 @@ function UserHeader(props) {
                     <ThemeSelector />
                   </li>
                   <li className="mobile-menu-item">
-                  <SiteMenu />
+                    <SiteMenu />
                   </li>
-                    
 
                   {contentTypes.map((type) => {
                     return (
@@ -255,7 +255,6 @@ function UserHeader(props) {
         }
 
         @media all and (max-width: 460px) {
-       
           .user-actions-button {
             display: none !important;
           }

@@ -12,14 +12,13 @@ export default function ({ user, ...props }) {
     picture: {},
   })
 
-  
   const request = (data) => {
     const url = `${API.users}/${user.id}/picture`
-    
+
     setLoading(true)
     setSuccess(false)
     setError(false)
-    
+
     fetch(url, {
       method: 'PUT',
       body: data,

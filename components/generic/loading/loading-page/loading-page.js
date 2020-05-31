@@ -1,24 +1,19 @@
 import Spinner from '../loading-spinner/loading-spinner'
-export default function() {
+export default function () {
   return (
     <>
       <div className="page-loading">
-      <div className="loader">
-        <Spinner width='100px'/>
-      </div>
+        <div className="loader">
+          <Spinner width="100px" />
+        </div>
       </div>
       <style jsx>
-        {
-          `
-
+        {`
           .page-loading {
             position: relative;
             height: 600px;
           }
-          
 
-      
-          
           .loader {
             width: 120px;
             height: 120px;
@@ -29,10 +24,7 @@ export default function() {
             top: 0;
             bottom: 0;
           }
-          
-        
-          `
-        }
+        `}
       </style>
     </>
   )

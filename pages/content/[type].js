@@ -31,9 +31,9 @@ export async function getServerSideProps({ req, res, query }) {
   }
 
   const filterOptions = {}
-  
+
   // If the content type allows draft, filter them out on the public list
-  if ( contentTypeDefinition.publishing.draftMode ) {
+  if (contentTypeDefinition.publishing.draftMode) {
     filterOptions.draft = false
   }
 
@@ -63,7 +63,7 @@ export async function getServerSideProps({ req, res, query }) {
 
 const ContentPage = (props) => {
   return (
-    <Layout title="Content" panelUser={<ToolBar/>}>
+    <Layout title="Content" panelUser={<ToolBar />}>
       <div>
         <ListContentTypes />
 

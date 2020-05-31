@@ -71,10 +71,14 @@ export default function ({
   }
 
   const loadItems = async () => {
-    const apiUrl = `${
-      API.comments
-    }?contentType=${type.slug}&contentId=${contentId}&limit=${itemsPerPage}${from ? '&from=' + from : ''}${
-      conversationId ? `&conversationId=${conversationId}` : '&conversationId=false'
+    const apiUrl = `${API.comments}?contentType=${
+      type.slug
+    }&contentId=${contentId}&limit=${itemsPerPage}${
+      from ? '&from=' + from : ''
+    }${
+      conversationId
+        ? `&conversationId=${conversationId}`
+        : '&conversationId=false'
     }`
 
     try {

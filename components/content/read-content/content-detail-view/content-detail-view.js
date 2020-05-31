@@ -110,12 +110,16 @@ export default function (props) {
           )}
 
           <div className="edge-item-card-actions">
-            {config.follow.enabled && <div className="header-item-action follow-button">
-              <FollowButton following={true} />
-            </div>}
-            {config.like.enabled &&<div className="header-item-action">
-              <ReactionCounter type="like" count={10} />
-            </div>}
+            {config.follow.enabled && (
+              <div className="header-item-action follow-button">
+                <FollowButton following={true} />
+              </div>
+            )}
+            {config.like.enabled && (
+              <div className="header-item-action">
+                <ReactionCounter type="like" count={10} />
+              </div>
+            )}
 
             {(canEditComment.available || isContentOwner) && (
               <div className="header-item-action">
@@ -254,7 +258,6 @@ export default function (props) {
         }
 
         @media all and (max-width: 460px) {
-
           .edge-item-card {
             padding: var(--edge-gap);
           }
@@ -278,7 +281,6 @@ export default function (props) {
         .edge-item-card-content {
           margin: var(--edge-gap-double) 0 0;
         }
- 
 
         .content-summary-content {
           padding-right: var(--edge-gap-double);
@@ -289,7 +291,6 @@ export default function (props) {
             padding-right: 0;
           }
         }
-      
 
         .status {
           background: var(--accents-2);
@@ -304,7 +305,6 @@ export default function (props) {
           text-transform: uppercase;
           width: fit-content;
         }
-
 
         .content-actions {
           padding: var(--edge-gap);

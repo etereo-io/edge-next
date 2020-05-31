@@ -90,9 +90,9 @@ export default function ({
   const itemsPerPage = 10
 
   const loadReplies = async () => {
-    const apiUrl = `${
-      API.comments
-    }?contentType=${type.slug}&contentId=${contentId}&limit=${itemsPerPage}${
+    const apiUrl = `${API.comments}?contentType=${
+      type.slug
+    }&contentId=${contentId}&limit=${itemsPerPage}${
       from ? '&from=' + from : ''
     }&conversationId=${conversationId}`
 

@@ -9,7 +9,6 @@ import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 
-
 const EditContent = () => {
   const router = useRouter()
   const {
