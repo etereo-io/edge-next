@@ -31,7 +31,11 @@ export async function getServerSideProps({ req, res, query }) {
   }
 
   const filterOptions = {}
-  contentTypeDefinition.publishing.draftMode = filterOptions.draft = false
+  
+  // If the content type allows draft, filter them out on the public list
+  if ( contentTypeDefinition.publishing.draftMode ) {
+    filterOptions.draft = false
+  }
 
   if (query.tags) {
     filterOptions['tags.slug'] = query.tags
