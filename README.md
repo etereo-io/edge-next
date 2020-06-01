@@ -34,7 +34,7 @@ The main features of Edge are:
 - Web monetization
 - Easy to deploy
 
-If you want to read about all the features you can check the [documentation](./static-pages/documentation.md) or check the [Website Demo](https://edge-next.now.sh/).
+If you want to read about all the features you can check the [Documentation](./DOCUMENTATION.md) or check the [Website Demo](https://edge-next.now.sh/).
 
 You can login using one of the different social providers, or register a new account.
 
