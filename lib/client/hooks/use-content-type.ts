@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react'
 
-import { getContentTypeDefinition } from '../../config'
+import { ContentType } from '@lib/types'
+import { getContentTypeDefinition } from '@lib/config'
+
+declare type UseContentTypeResponse = {
+  contentType: ContentType;
+  error: boolean;
+}
 
 // Client side hook for getting the
-export default function useContentType(slug) {
+export default function useContentType(slug): UseContentTypeResponse {
   const [contentType, setContentType] = useState(null)
   const [error, setError] = useState(false)
 
