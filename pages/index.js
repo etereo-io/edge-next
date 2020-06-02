@@ -58,7 +58,7 @@ const Landing = () => {
     <>
       <Layout
         title={`${config.title} - ${config.slogan}`}
-        description={config.slogan}
+        description={config.description}
         panelAds={panelAdsItems}
         panelUser={<ToolBar />}
       >
