@@ -100,6 +100,11 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - profile react re-renders
 
+### Refactor List
+
+- use `use export * from package` instead of double naming variables.
+- try to unify groups and content types logic somehow
+
 ### After Version 1: Additional features
 
 - Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552

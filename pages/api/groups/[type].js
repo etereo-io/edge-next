@@ -1,39 +1,32 @@
 import { addContent, fillContentWithDefaultData, findContent } from '@lib/api/entities/content/content'
 import {
-  hasPermissionsForContent,
-  isValidContentType,
+  hasPermissionsForGroup,
+  isValidGroupType,
   loadUser,
 } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
 import methods from '@lib/api/api-helpers/methods'
-import { onContentAdded } from '@lib/api/hooks/content.hooks'
+import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const getContent = (filterParams, searchParams, paginationParams) => (
+const getGroups = (filterParams, paginationParams, member) => (
   req,
   res
 ) => {
-  const type = req.contentType
+  const type = req.groupType
 
   const increasedFilters = {
     ...filterParams,
   }
 
-  const isAdmin =
-    req.currentUser && req.currentUser.roles.indexOf('ADMIN') !== -1
-  const isOwner =
-    req.currentUser &&
-    filterParams.author &&
-    req.currentUser.id === filterParams.author
-
-  if (type.publishing.draftMode && !isAdmin && !isOwner) {
-    // Filter by draft, except for admins and owners
-    increasedFilters.draft = false
+  if (member) {
+    // Filter by member
+    increasedFilters.members = { $elemMatch : { id : member }}
   }
 
-  findContent(type.slug, increasedFilters, searchParams, paginationParams)
+  findContent(type.slug, increasedFilters, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })
@@ -45,8 +38,8 @@ const getContent = (filterParams, searchParams, paginationParams) => (
 }
 
 
-const createContent = async (req, res) => {
-  const type = req.contentType
+const createGroup = async (req, res) => {
+  const type = req.groupType
   const content = req.body
 
   contentValidations(type, content)
@@ -55,21 +48,27 @@ const createContent = async (req, res) => {
       // Add default value to missing fields
       const newContent = fillContentWithDefaultData(
         type,
-        content,
+        {
+          ...content,
+          members: [{
+            id: user.id,
+            role: 'GROUP_ADMIN'
+          }],
+        },
         req.currentUser
       )
 
       addContent(type.slug, newContent)
         .then((data) => {
           // Trigger on content added hook
-          onContentAdded(data, req.currentUser)
+          onGroupAdded(data, req.currentUser)
 
           // Respond
           res.status(200).json(data)
         })
         .catch((err) => {
           res.status(500).json({
-            error: 'Error while saving content ' + err.message,
+            error: 'Error while saving group ' + err.message,
           })
         })
     })
@@ -82,22 +81,13 @@ const createContent = async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, from, limit, author, tags },
+    query: { type, sortBy, sortOrder, from, limit, author, member },
   } = req
 
   const filterParams = {}
 
   if (author) {
     filterParams.author = author
-  }
-
-  if (tags) {
-    // TODO: Make tags filter generic
-    filterParams['tags.slug'] = tags
-  }
-
-  const searchParams = {
-    search,
   }
 
   const paginationParams = {
@@ -108,7 +98,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, isValidContentType(type))
+    await runMiddleware(req, res, isValidGroupType(type))
   } catch (e) {
     // console.log(e)
     return res.status(405).json({
@@ -135,7 +125,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForContent(type))
+    await runMiddleware(req, res, hasPermissionsForGroup(type))
   } catch (e) {
     return res.status(401).json({
       message: e.message,
@@ -143,7 +133,7 @@ export default async (req, res) => {
   }
 
   methods(req, res, {
-    get: getContent(filterParams, searchParams, paginationParams),
-    post: createContent,
+    get: getGroups(filterParams, paginationParams, member),
+    post: createGroup,
   })
 }

@@ -1,4 +1,4 @@
-import { fillContentWithDefaultData } from '../../../../pages/api/content/[type]'
+import { fillContentWithDefaultData } from '../../../../lib/api/entities/content/content'
 
 test('Should create the default data for new content', () => {
   const contentType = {
@@ -23,7 +23,7 @@ test('Should create the default data for new content', () => {
   const newContent = fillContentWithDefaultData(contentType, content, user)
   expect(newContent).toMatchObject({
     createdAt: expect.any(Number),
-    author: expect.any(String),
+    author: 'test-user',
     type: contentType.slug,
     slug: 'xyz-the-title',
     img: 'xyz',
