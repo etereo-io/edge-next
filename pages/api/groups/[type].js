@@ -26,6 +26,19 @@ const getGroups = (filterParams, paginationParams, member) => (
     increasedFilters.members = { $elemMatch : { id : member }}
   }
 
+  const isAdmin =
+    req.currentUser && req.currentUser.roles.indexOf('ADMIN') !== -1
+  
+  const isOwner =
+    req.currentUser &&
+    filterParams.author &&
+    req.currentUser.id === filterParams.author
+
+  if (type.publishing.draftMode && !isAdmin && !isOwner) {
+    // Filter by draft, except for admins and owners
+    increasedFilters.draft = false
+  }
+
   findContent(type.slug, increasedFilters, paginationParams)
     .then((data) => {
       res.status(200).json(data)
