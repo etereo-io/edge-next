@@ -30,7 +30,7 @@ const UserSettings = () => {
 
   // Check permissions to read
   const currentUser = useUser()
-  const hasPermissionsToEdit = userPermission(currentUser.user, 'update')
+  const hasPermissionsToEdit = userPermission(currentUser.user, 'update', userId)
 
   // Load profile data
   const [user, setUser] = useState(null)
@@ -39,7 +39,6 @@ const UserSettings = () => {
 
   // Load user, just one time when accesing.
   useEffect(() => {
-    console.log('use effect', userId)
     if (userId) {
       setLoading(true)
       fetch(`/api/users/` + userId)
@@ -56,8 +55,7 @@ const UserSettings = () => {
     }
   }, [userId])
 
-  const isOwner = userId === 'me' || (user && user.id === userId)
-  const canAccess = hasPermissionsToEdit || isOwner
+  const canAccess = hasPermissionsToEdit 
 
   useEffect(() => {
     if (!loading && currentUser.finished && (user || error)) {

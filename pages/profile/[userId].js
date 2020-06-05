@@ -31,17 +31,15 @@ const Profile = (props) => {
   // Check permissions to read
   const currentUser = useUser()
 
-  const hasPermissionsToRead = userPermission(currentUser.user, 'read')
-  const hasPermissionsToEdit = userPermission(currentUser.user, 'update')
+  const hasPermissionsToRead = userPermission(currentUser.user, 'read', userId)
+  const hasPermissionsToEdit = userPermission(currentUser.user, 'update', userId)
 
   // Load profile data
   const { data, error } = useSWR(userId ? `/api/users/` + userId : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
-  const isOwner =
-    userId === 'me' || (data && data.username === userId.replace('@', ''))
-  const canAccess = hasPermissionsToRead || isOwner
-  const canEdit = hasPermissionsToEdit || isOwner
+  const canAccess = hasPermissionsToRead 
+  const canEdit = hasPermissionsToEdit 
 
   useEffect(() => {
     if (finished && currentUser.finished) {

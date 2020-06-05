@@ -15,13 +15,11 @@ import {
 } from '@lib/api/entities/users/user.utils'
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
 
-import { FIELDS } from '@lib/config/config-constants'
 import { connect } from '@lib/api/db'
 import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
-import merge from 'deepmerge'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
@@ -114,39 +112,13 @@ const delUser = (req, res) => {
 }
 
 async function updateProfile(userId, profile, req) {
-  const newData = await uploadFiles(
+  const newContent = await uploadFiles(
     edgeConfig.user.profile.fields,
     req.files,
     'profile',
-    req.item.profile
+    req.item.profile,
+    profile
   )
-  const newContent = merge(profile, newData)
-
-  // Check if there are any missing file fields and delete them from storage
-  const itemsToDelete = []
-  for (const field of edgeConfig.user.profile.fields) {
-    if (field.type === FIELDS.IMAGE || field.type === FIELDS.FILE) {
-      // Go through all the items and see if in the new content there is any difference
-      const previousValue = req.item.profile[field.name] || []
-      previousValue.forEach((f) => {
-        if (profile[field.name]) {
-          // Only delete if the field is set
-          if (!profile[field.name].find((item) => item.path === f.path)) {
-            itemsToDelete.push(f)
-          }
-        }
-      })
-    }
-  }
-
-  // Delete old items from storage
-  for (let i = 0; i < itemsToDelete.length; i++) {
-    try {
-      await deleteFile(itemsToDelete[i].path)
-    } catch (err) {
-      // Error deleting file, ignore ite
-    }
-  }
 
   return updateOneUser(userId, {
     profile: {

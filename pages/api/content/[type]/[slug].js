@@ -15,11 +15,8 @@ import {
   onContentUpdated,
 } from '@lib/api/hooks/content.hooks'
 
-import { FIELDS } from '@lib/config/config-constants'
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
-import { deleteFile } from '@lib/api/storage'
-import merge from 'deepmerge'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
@@ -83,6 +80,8 @@ const deleteContent = (req, res) => {
 }
 
 const updateContent = async (req, res) => {
+  const type = req.contentType
+  
   try {
     await runMiddleware(req, res, bodyParser)
   } catch (e) {
@@ -91,8 +90,6 @@ const updateContent = async (req, res) => {
     })
   }
 
-  const type = req.contentType
-
   const content = {
     ...req.body,
   }
@@ -100,40 +97,13 @@ const updateContent = async (req, res) => {
   contentValidations(type, content)
     .then(async () => {
       // Content is valid
-      // Upload all the files
-      const newData = await uploadFiles(
+      const newContent = await uploadFiles(
         type.fields,
         req.files,
         type.slug,
-        req.item
+        req.item,
+        content
       )
-      const newContent = merge(content, newData)
-
-      // Check if there are any missing file fields and delete them from storage
-      const itemsToDelete = []
-      for (const field of type.fields) {
-        if (field.type === FIELDS.IMAGE || field.type === FIELDS.FILE) {
-          // Go through all the items and see if in the new content there is any difference
-          const previousValue = req.item[field.name] || []
-          previousValue.forEach((f) => {
-            if (content[field.name]) {
-              // Only delete if the field is set
-              if (!content[field.name].find((item) => item.path === f.path)) {
-                itemsToDelete.push(f)
-              }
-            }
-          })
-        }
-      }
-
-      // Delete old items from storage
-      for (let i = 0; i < itemsToDelete.length; i++) {
-        try {
-          await deleteFile(itemsToDelete[i].path)
-        } catch (err) {
-          // Error deleting file, ignore ite
-        }
-      }
 
       if (Object.keys(newContent).length === 0) {
         // It is an empty request, no file was uploaded, no file was deleted)

@@ -3,8 +3,6 @@ import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/comments'
-// See discussion https://github.com/zeit/next.js/discussions/11784
-// See example
 import http from 'http'
 import listen from 'test-listen'
 

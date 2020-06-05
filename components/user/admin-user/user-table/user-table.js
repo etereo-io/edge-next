@@ -69,7 +69,7 @@ const ListItem = (props) => {
 
       deleteRequest()
         .then((result) => {
-          console.log(result)
+    
           setLoading(false)
           setSuccess(true)
           setError(false)

@@ -1,16 +1,3 @@
-// TEST SIGN UP
-
-// Test already used email
-
-// Test already used username
-
-// Test that signup returns cookie
-
-// Test that login is possible after signup
-
-// See discussion https://github.com/zeit/next.js/discussions/11784
-// See example
-
 import * as handler from '../../../../../pages/api/users'
 
 import { apiResolver } from 'next/dist/next-server/server/api-utils'

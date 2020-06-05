@@ -1,6 +1,3 @@
-// See discussion https://github.com/zeit/next.js/discussions/11784
-// See example
-
 import * as handler from '../../../../../pages/api/content/[type]'
 
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
@@ -20,10 +17,7 @@ jest.mock('../../../../../edge.config', () => {
   const mockInitialPosts = []
 
   const mockPostContentType = {
-    title: {
-      en: 'Post',
-      es: 'Artículo',
-    },
+    title: 'Post',
 
     slug: 'post',
 

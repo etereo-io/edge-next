@@ -64,7 +64,7 @@ const createGroup = async (req, res) => {
         {
           ...content,
           members: [{
-            id: user.id,
+            id: req.currentUser.id,
             role: 'GROUP_ADMIN'
           }],
         },
