@@ -1,6 +1,7 @@
 import { generateSaltAndHash, userPasswordsMatch } from './user.utils'
 
 import { NewUserSchema } from './user.schema'
+import { UserType } from '../../../types/user'
 import config from '../../../config'
 import { getDB } from '../../db'
 import { v4 as uuidv4 } from 'uuid'
@@ -28,7 +29,7 @@ export async function createUser({
   google = null,
   github = null,
   profile = {},
-}) {
+}): Promise<UserType> {
   // Here you should create the user and save the salt and hashed password (some dbs may have
   // authentication methods that will do it for you so you don't have to worry about it):
   const { salt, hash } = generateSaltAndHash(password)
@@ -65,7 +66,7 @@ export async function createUser({
     })
 }
 
-export async function findUserWithPassword({ email, password }) {
+export async function findUserWithPassword({ email, password }) : Promise<UserType>{
   // Here you should lookup for the user in your DB and compare the password:
   const user = await findOneUser({
     email,
@@ -106,11 +107,11 @@ export function findUsers(options, searchOptions, paginationOptions) {
     })
 }
 
-export function findOneUser(options) {
+export function findOneUser(options): Promise<UserType> {
   return getDB().collection('users').findOne(options)
 }
 
-export function updateOneUser(id, data) {
+export function updateOneUser(id, data): Promise<UserType> {
   return getDB().collection('users').doc(id).set(data)
 }
 

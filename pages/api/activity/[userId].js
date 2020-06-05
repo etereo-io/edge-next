@@ -9,7 +9,7 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 const hasPermissionForActivity = async (req, res, cb) => {
   const session = await getSession(req)
 
-  const permission = [`activity.content.created`, `activity.comments.created`]
+  const permission = [`activity.read`, `activity.admin`]
 
   // If there is a item we need to check also if the content owner is the current user
   const isOwner = session && req.userId === session.id

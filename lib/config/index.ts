@@ -1,10 +1,12 @@
+import { ConfigType, ContentType } from '@lib/types'
+
 import load from './load-config'
 
-const config = load()
+const config: ConfigType = load()
 
 export default config
 
-export const getContentTypeDefinition = (slug) => {
+export const getContentTypeDefinition: ContentType | undefined = (slug) => {
   return config.content.types.find((item) => item.slug === slug)
 }
 
