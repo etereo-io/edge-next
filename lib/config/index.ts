@@ -6,7 +6,7 @@ const config: ConfigType = load()
 
 export default config
 
-export const getContentTypeDefinition: ContentType | undefined = (slug) => {
+export const getContentTypeDefinition = (slug): ContentType | undefined  => {
   return config.content.types.find((item) => item.slug === slug)
 }
 

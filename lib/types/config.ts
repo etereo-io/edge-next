@@ -51,8 +51,12 @@ export declare type ConfigType = {
     initialUsers: UserType[];
   },
   content: {
-    types: ContentType[],
+    types: ContentType[];
     initialContent: any[]; // TODO: Add type
   },
+
+  groups: {
+    types: ContentType[];
+  }
   permissions: object;
 }
