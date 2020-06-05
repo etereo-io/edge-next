@@ -344,6 +344,9 @@ export const getConfig = (defaultOptions) => {
         facebook: true,
       },
 
+      // New user roles
+      roles: [userRole], 
+
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {
         fields: [

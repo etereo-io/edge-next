@@ -1,6 +1,7 @@
 import { hasPermissionsForContent, loadUser } from '@lib/api/middlewares'
 
 import ContentDetailView from '@components/content/read-content/content-detail-view/content-detail-view'
+import { GetServerSideProps } from 'next'
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
@@ -9,7 +10,7 @@ import { getContentTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 // Get serversideProps is important for SEO, and only available at the pages level
-export async function getServerSideProps({ req, res, query }) {
+export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
   const contentTypeDefinition = getContentTypeDefinition(query.type)
 
   if (!contentTypeDefinition) {
