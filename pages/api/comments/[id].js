@@ -7,6 +7,7 @@ import { commentPermission } from '@lib/permissions'
 import { connect } from '@lib/api/db'
 import { getAction } from '@lib/api/api-helpers/methods'
 import { loadUser } from '@lib/api/middlewares'
+import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentDeleted } from '@lib/api/hooks/comment.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
@@ -97,7 +98,7 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    // console.log(e)
+    logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
       message: e.message,
     })

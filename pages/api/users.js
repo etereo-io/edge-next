@@ -9,6 +9,7 @@ import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
+import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
@@ -97,7 +98,7 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    console.log(e)
+    logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
       message: e.message,
     })

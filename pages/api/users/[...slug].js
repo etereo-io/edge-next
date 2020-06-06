@@ -20,6 +20,7 @@ import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
+import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
@@ -106,7 +107,7 @@ const delUser = (req, res) => {
       res.status(200).json({ done: true })
     })
     .catch((err) => {
-      console.log('Error deleting user', err)
+      logger('ERROR', 'Error deleting user', err)
       res.status(500).json({ error: err.message })
     })
 }
@@ -190,7 +191,7 @@ function updateProfilePicture(user, profilePicture) {
       try {
         await deleteFile(user.profile.picture.path)
       } catch (err) {
-        console.log('Error deleting previous picture')
+        logger('ERROR', 'Error deleting previous picture')
       }
     }
 
@@ -231,7 +232,7 @@ function updateProfileCover(user, profileCover) {
       try {
         await deleteFile(user.profile.cover.path)
       } catch (err) {
-        console.log('Error deleting previous cover')
+        logger('ERROR', 'Error deleting previous cover')
       }
     }
 
@@ -322,7 +323,7 @@ const updateUser = (slug) => async (req, res) => {
       })
     })
     .catch((err) => {
-      console.log(err)
+      logger('ERROR', err)
       res.status(400).send({
         error: err.message ? err.message : err,
       })
@@ -340,7 +341,6 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    // console.log(e)
     return res.status(500).json({
       message: e.message,
     })
@@ -365,7 +365,6 @@ export default async (req, res) => {
   try {
     await runMiddleware(req, res, userExist(userId))
   } catch (e) {
-    // console.log(e)
     return res.status(404).json({
       message: e.message,
     })

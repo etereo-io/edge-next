@@ -11,7 +11,12 @@ export declare type UserType = {
   emailVerified?: boolean;
   emailVerificationToken?: string;
   createdAt: number;
-  profile: object;
+  profile: {
+    displayName: string;
+    picture: {
+      path: string;
+    }
+  };
   tokens: object;
   metadata: {
     lastLogin?: number;

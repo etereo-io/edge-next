@@ -13,6 +13,7 @@ import { connect } from '@lib/api/db'
 import { encryptSession } from '@lib/api/auth/iron'
 import express from 'express'
 import { generateSaltAndHash } from '@lib/api/entities/users/user.utils'
+import logger from '@lib/logger'
 import passport from 'passport'
 import { sendResetPassworEmail } from '@lib/email'
 import { v4 as uuidv4 } from 'uuid'
@@ -55,7 +56,7 @@ app.use(async (req, res, next) => {
     await connect()
     next()
   } catch (e) {
-    console.log(e)
+    logger('ERROR', 'Can not connect to db', e)
     next(e)
   }
 })

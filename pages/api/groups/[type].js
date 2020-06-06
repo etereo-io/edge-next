@@ -113,7 +113,6 @@ export default async (req, res) => {
   try {
     await runMiddleware(req, res, isValidGroupType(type))
   } catch (e) {
-    // console.log(e)
     return res.status(405).json({
       message: e.message,
     })
@@ -123,7 +122,6 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    // console.log(e)
     return res.status(500).json({
       message: e.message,
     })

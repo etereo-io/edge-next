@@ -20,6 +20,9 @@ export declare type ConfigType = {
       sizeLimit: string;
     }
   };
+  logger: {
+    level: string;
+  }
   storage: {
     type: string;
   };
@@ -50,6 +53,7 @@ export declare type ConfigType = {
     permissions: PermissionsType[];
     initialUsers: UserType[];
   },
+
   content: {
     types: ContentType[];
     initialContent: any[]; // TODO: Add type

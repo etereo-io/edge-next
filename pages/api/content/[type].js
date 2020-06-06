@@ -7,6 +7,7 @@ import {
 
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
+import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onContentAdded } from '@lib/api/hooks/content.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
@@ -110,7 +111,6 @@ export default async (req, res) => {
   try {
     await runMiddleware(req, res, isValidContentType(type))
   } catch (e) {
-    // console.log(e)
     return res.status(405).json({
       message: e.message,
     })
@@ -120,7 +120,7 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    // console.log(e)
+    logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
       message: e.message,
     })

@@ -3,6 +3,7 @@ import { findActivity } from '@lib/api/entities/activity/activity'
 import { findOneUser } from '@lib/api/entities/users/user'
 import { getSession } from '@lib/api/auth/iron'
 import { hasPermission } from '@lib/permissions'
+import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
@@ -71,7 +72,7 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    // console.log(e)
+    logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
       message: e.message,
     })
@@ -80,7 +81,7 @@ export default async (req, res) => {
   try {
     await runMiddleware(req, res, userExist(userId))
   } catch (e) {
-    // console.log(e)
+    
     return res.status(404).json({
       message: e.message,
     })

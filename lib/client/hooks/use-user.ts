@@ -11,7 +11,7 @@ declare type UseUserResponse = {
 /*
   Loads current user, redirects if there is no user
 */
-export default function useUser({ redirectTo, redirectIfFound } = {}): UseUserResponse{
+export default function useUser({ redirectTo = '', redirectIfFound = false} = {}): UseUserResponse{
   const userState = useUserState()
 
   useEffect(() => {

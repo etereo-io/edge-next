@@ -274,9 +274,6 @@ describe('Integrations tests for Groups creation endpoint', () => {
       body: JSON.stringify(newGroup),
     })
 
-    const json = await response.json()
-    console.log('PACOOO', json)
-
     expect(response.status).toBe(401)
   })
 
