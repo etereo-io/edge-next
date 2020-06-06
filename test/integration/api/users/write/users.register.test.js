@@ -134,8 +134,8 @@ describe('Integrations tests for users creation endpoint', () => {
   let url
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -153,7 +153,7 @@ describe('Integrations tests for users creation endpoint', () => {
 
   describe('PUBLIC users can register', () => {
     beforeEach(() => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.create': ['PUBLIC'],
       })
 

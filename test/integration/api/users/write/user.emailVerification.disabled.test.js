@@ -47,7 +47,7 @@ describe('Integration tests for email verification with emailVerification disabl
   })
 
   afterEach(() => {
-    findUserWithPassword.mockClear()
+    findUserWithPassword.mockReset()
   })
 
   test('Login Should return 200 for a non verified user when email verification is disabled', async () => {

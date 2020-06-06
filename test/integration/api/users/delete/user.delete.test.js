@@ -252,16 +252,16 @@ describe('Integrations tests for user deletion endpoint', () => {
   })
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
-    findOneContent.mockClear()
-    deleteComment.mockClear()
-    deleteActivity.mockClear()
-    deleteOneContent.mockClear()
-    deleteOneUser.mockClear()
-    findOneUser.mockClear()
-    findOneComment.mockClear()
-    deleteOneComment.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
+    findOneContent.mockReset()
+    deleteComment.mockReset()
+    deleteActivity.mockReset()
+    deleteOneContent.mockReset()
+    deleteOneUser.mockReset()
+    findOneUser.mockReset()
+    findOneComment.mockReset()
+    deleteOneComment.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -283,7 +283,7 @@ describe('Integrations tests for user deletion endpoint', () => {
     urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
     urlToBeUsed.searchParams.append('password', '123')
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'user.delete': ['ADMIN'],
       'user.admin': ['ADMIN'],
     })
@@ -308,7 +308,7 @@ describe('Integrations tests for user deletion endpoint', () => {
       urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
       urlToBeUsed.searchParams.append('password', 'thepassword')
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.delete': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -358,7 +358,7 @@ describe('Integrations tests for user deletion endpoint', () => {
       urlToBeUsed.searchParams.append('slug', 'userId')
       urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.delete': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -385,7 +385,7 @@ describe('Integrations tests for user deletion endpoint', () => {
       urlToBeUsed.searchParams.append('slug', 'userId')
       urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.delete': ['USER'],
         'user.admin': ['ADMIN'],
       })
@@ -407,7 +407,7 @@ describe('Integrations tests for user deletion endpoint', () => {
       urlToBeUsed.searchParams.append('slug', 'userId')
       urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.delete': ['ADMIN'],
         'user.admin': ['USER'],
       })
@@ -430,7 +430,7 @@ describe('Integrations tests for user deletion endpoint', () => {
     urlToBeUsed.searchParams.append('slug', 'userId')
     urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'user.delete': ['ADMIN'],
       'user.admin': ['ADMIN'],
     })
@@ -451,7 +451,7 @@ describe('Integrations tests for user deletion endpoint', () => {
     urlToBeUsed.searchParams.append('slug', 'userId')
     urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'user.delete': ['ADMIN'],
       'user.admin': ['ADMIN'],
     })

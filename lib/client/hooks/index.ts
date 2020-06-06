@@ -9,3 +9,4 @@ export const usePermission = permission
 export const useOnScreen = onScreen
 export const useContentType = contentType
 export const useContentTypes = contentTypes
+export * from './use-group-types'

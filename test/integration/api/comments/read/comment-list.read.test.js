@@ -128,9 +128,9 @@ describe('Integrations tests for comment list read endpoint', () => {
   })
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
-    findComments.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
+    findComments.mockReset()
   })
 
   beforeAll(async (done) => {

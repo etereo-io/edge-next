@@ -127,8 +127,8 @@ describe('Integrations tests for content endpoint', () => {
   let url
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -157,7 +157,7 @@ describe('Integrations tests for content endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['PUBLIC'],
       'content.post.admin': ['ADMIN'],
     })
@@ -177,7 +177,7 @@ describe('Integrations tests for content endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['PUBLIC'],
       'content.post.admin': ['ADMIN'],
     })
@@ -199,7 +199,7 @@ describe('Integrations tests for content endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -221,7 +221,7 @@ describe('Integrations tests for content endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -243,7 +243,7 @@ describe('Integrations tests for content endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -270,7 +270,7 @@ describe('Integrations tests for content endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.read': ['PUBLIC'],
         'content.post.admin': ['ADMIN'],
       })
@@ -304,7 +304,7 @@ describe('Integrations tests for content endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.read': ['PUBLIC'],
         'content.post.admin': ['ADMIN'],
       })
@@ -340,7 +340,7 @@ describe('Integrations tests for content endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.read': ['PUBLIC'],
         'content.post.admin': ['ADMIN'],
       })
@@ -369,7 +369,7 @@ describe('Integrations tests for content endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.read': ['PUBLIC'],
         'content.post.admin': ['ADMIN'],
       })
@@ -391,7 +391,7 @@ describe('Integrations tests for content endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.read': ['PUBLIC'],
         'content.post.admin': ['ADMIN'],
       })
@@ -423,7 +423,7 @@ describe('Integrations tests for content endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.read': ['PUBLIC'],
         'content.post.admin': ['ADMIN'],
       })

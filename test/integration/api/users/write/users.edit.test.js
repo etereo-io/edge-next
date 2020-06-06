@@ -152,7 +152,7 @@ jest.mock('../../../../../edge.config', () => ({
   }),
 }))
 
-describe('Integrations tests for login', () => {
+describe('Integrations tests for user edition', () => {
   let server
   let url
 
@@ -171,11 +171,11 @@ describe('Integrations tests for login', () => {
 
   describe('User edition', () => {
     afterEach(() => {
-      findOneUser.mockClear()
-      updateOneUser.mockClear()
-      getPermissions.mockClear()
-      getSession.mockClear()
-      sendVerifyEmail.mockClear()
+      findOneUser.mockReset()
+      updateOneUser.mockReset()
+      getPermissions.mockReset()
+      getSession.mockReset()
+      sendVerifyEmail.mockReset()
     })
 
     test('a PUBLIC user should not be able to edit a profile', async () => {
@@ -187,7 +187,7 @@ describe('Integrations tests for login', () => {
       )
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -223,7 +223,7 @@ describe('Integrations tests for login', () => {
       urlToBeUsed.searchParams.append('slug', 'profile')
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -274,7 +274,7 @@ describe('Integrations tests for login', () => {
       urlToBeUsed.searchParams.append('slug', 'email')
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -330,7 +330,7 @@ describe('Integrations tests for login', () => {
       urlToBeUsed.searchParams.append('slug', 'email')
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -405,13 +405,13 @@ describe('Integrations tests for login', () => {
       urlToBeUsed.searchParams.append('slug', 'profile')
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
 
       // Current user is logged
-      getSession.mockReturnValueOnce({
+      getSession.mockReturnValue({
         roles: ['USER'],
         id: '1',
       })
@@ -431,6 +431,8 @@ describe('Integrations tests for login', () => {
           },
         })
       )
+
+      updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
 
       const newData = {
         images: [],

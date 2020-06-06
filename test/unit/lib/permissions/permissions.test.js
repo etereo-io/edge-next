@@ -6,12 +6,12 @@ jest.mock('../../../../lib/permissions/get-permissions')
 
 describe('Entities permissions test', () => {
   afterEach(() => {
-    getPermissions.mockClear()
+    getPermissions.mockReset()
   })
 
   describe('Content permissions', () => {
     test('Public user has no permissions', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.project.read': ['USER']
       })
   
@@ -19,7 +19,7 @@ describe('Entities permissions test', () => {
     })
 
     test('Public user has permissions', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.project.read': ['PUBLIC']
       })
   
@@ -27,7 +27,7 @@ describe('Entities permissions test', () => {
     })
 
     test('User can not edit another content from other user', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.project.update': ['ADMIN']
       })
 
@@ -44,7 +44,7 @@ describe('Entities permissions test', () => {
     })
 
     test('User can edit own content', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.project.update': ['ADMIN']
       })
 
@@ -61,7 +61,7 @@ describe('Entities permissions test', () => {
     })
 
     test('Admin can edit any content', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.project.update': ['ADMIN']
       })
 
@@ -80,7 +80,7 @@ describe('Entities permissions test', () => {
 
   describe('Group permissions', () => {
     test('Public user has no permissions', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['USER']
       })
   
@@ -88,7 +88,7 @@ describe('Entities permissions test', () => {
     })
 
     test('Public user has permissions', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['PUBLIC']
       })
   
@@ -96,7 +96,7 @@ describe('Entities permissions test', () => {
     })
 
     test('User can not edit another group from other user', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.update': ['ADMIN']
       })
 
@@ -106,14 +106,15 @@ describe('Entities permissions test', () => {
       }
 
       const group = {
-        author: 'another'
+        author: 'another',
+        members: []
       }
   
       expect(groupPermission(user, 'project', 'update', group)).toEqual(false)
     })
 
     test('User can edit own group', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.update': ['ADMIN']
       })
 
@@ -123,14 +124,36 @@ describe('Entities permissions test', () => {
       }
 
       const group = {
-        author: 'myid'
+        author: 'myid',
+        members: []
+      }
+  
+      expect(groupPermission(user, 'project', 'update', group)).toEqual(true)
+    })
+
+    test('Group admin can edit group', async () => {
+      getPermissions.mockReturnValue({
+        'group.project.update': ['ADMIN', 'GROUP_ADMIN']
+      })
+
+      const user = {
+        roles: ['USER'],
+        id: 'myid'
+      }
+
+      const group = {
+        author: 'another user',
+        members: [{
+          id: 'myid',
+          roles: ['GROUP_ADMIN']
+        }]
       }
   
       expect(groupPermission(user, 'project', 'update', group)).toEqual(true)
     })
 
     test('Admin can edit any group', async () => {
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.update': ['ADMIN']
       })
 
@@ -140,7 +163,8 @@ describe('Entities permissions test', () => {
       }
 
       const group = {
-        author: 'another'
+        author: 'another',
+        members: []
       }
   
       expect(groupPermission(user, 'project', 'update', group)).toEqual(true)

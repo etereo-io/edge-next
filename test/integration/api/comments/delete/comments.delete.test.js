@@ -127,12 +127,12 @@ describe('Integrations tests for comment deletion endpoint', () => {
   })
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
-    findOneComment.mockClear()
-    deleteComment.mockClear()
-    deleteActivity.mockClear()
-    deleteOneComment.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
+    findOneComment.mockReset()
+    deleteComment.mockReset()
+    deleteActivity.mockReset()
+    deleteOneComment.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -166,7 +166,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.comments.delete': ['ADMIN'],
         'content.post.comments.admin': ['ADMIN'],
       })
@@ -211,7 +211,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.comments.delete': ['ADMIN'],
         'content.post.comments.admin': ['ADMIN'],
       })
@@ -245,7 +245,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.comments.delete': ['USER'],
         'content.post.comments.admin': ['ADMIN'],
       })
@@ -274,7 +274,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.comments.delete': ['ADMIN'],
         'content.post.comments.admin': ['USER'],
       })
@@ -300,7 +300,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.comments.delete': ['ADMIN'],
       'content.post.comments.admin': ['ADMIN'],
     })
@@ -328,7 +328,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.comments.delete': ['ADMIN'],
       'content.post.comments.admin': ['ADMIN'],
     })

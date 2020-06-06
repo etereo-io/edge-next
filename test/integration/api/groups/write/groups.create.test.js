@@ -54,6 +54,12 @@ jest.mock('../../../../../edge.config', () => {
         placeholder: 'Image',
       }
     ],
+
+    user : {
+      permissions: {
+        
+      }
+    }
   }
 
   return {
@@ -98,7 +104,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
 
   test('Should return 405 if required query string is missing', async () => {
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.create': ['USER'],
       'group.project.admin': ['ADMIN'],
     })
@@ -133,7 +139,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.create': ['USER'],
       'group.project.admin': ['ADMIN'],
     })
@@ -168,7 +174,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.create': ['USER'],
       'group.project.admin': ['ADMIN'],
     })
@@ -208,7 +214,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.create': ['USER'],
       'group.project.admin': ['ADMIN'],
     })
@@ -237,7 +243,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
 
   
   test('Should return 401 if it does not have permissions to create group', async () => {
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.create': ['ANOTHER_ROLE', 'OTHER_STUFF'],
       'group.project.admin': ['ADMIN'],
     })
@@ -283,7 +289,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.create': ['ADMIN'],
       'group.project.admin': ['ADMIN'],
     })

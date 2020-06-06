@@ -5,11 +5,11 @@ jest.mock('../../../../lib/permissions/get-permissions')
 
 describe('Has Permission test', () => {
   afterEach(() => {
-    getPermissions.mockClear()
+    getPermissions.mockReset()
   })
 
   test('Public user has no permissions', async () => {
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.project.read': ['USER']
     })
 
@@ -18,7 +18,7 @@ describe('Has Permission test', () => {
 
   
   test('Public user has  permissions', async () => {
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.project.read': ['PUBLIC']
     })
 
@@ -26,7 +26,7 @@ describe('Has Permission test', () => {
   })
 
   test('Logged user has no permissions', async () => {
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.project.read': ['ADMIN']
     })
 
@@ -34,7 +34,7 @@ describe('Has Permission test', () => {
   })
 
   test('Logged user has permissions', async () => {
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.project.read': ['USER']
     })
 

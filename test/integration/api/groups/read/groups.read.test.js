@@ -53,6 +53,12 @@ jest.mock('../../../../../edge.config', () => {
         placeholder: 'Image',
       }
     ],
+
+    user : {
+      permissions: {
+        admin: ['GROUP_ADMIN', 'ADMIN']
+      }
+    }
   }
 
   return {
@@ -81,9 +87,9 @@ describe('Integrations tests for Groups endpoint', () => {
   })
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
-    findContent.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
+    findContent.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -124,7 +130,7 @@ describe('Integrations tests for Groups endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.read': ['PUBLIC'],
       'group.project.admin': ['ADMIN'],
     })
@@ -144,7 +150,7 @@ describe('Integrations tests for Groups endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'project' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.read': ['PUBLIC'],
       'group.project.admin': ['ADMIN'],
     })
@@ -166,7 +172,7 @@ describe('Integrations tests for Groups endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'project' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.read': ['USER'],
       'group.project.admin': ['ADMIN'],
     })
@@ -188,7 +194,7 @@ describe('Integrations tests for Groups endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'project' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.read': ['USER'],
       'group.project.admin': ['ADMIN'],
     })
@@ -210,7 +216,7 @@ describe('Integrations tests for Groups endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'project' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.read': ['USER'],
       'group.project.admin': ['ADMIN'],
     })
@@ -237,7 +243,7 @@ describe('Integrations tests for Groups endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['PUBLIC'],
         'group.project.admin': ['ADMIN'],
       })
@@ -273,7 +279,7 @@ describe('Integrations tests for Groups endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['PUBLIC'],
         'group.project.admin': ['ADMIN'],
       })
@@ -310,7 +316,7 @@ describe('Integrations tests for Groups endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['PUBLIC'],
         'group.project.admin': ['ADMIN'],
       })
@@ -345,7 +351,7 @@ describe('Integrations tests for Groups endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['PUBLIC'],
         'group.project.admin': ['ADMIN'],
       })
@@ -375,7 +381,7 @@ describe('Integrations tests for Groups endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['PUBLIC'],
         'group.project.admin': ['ADMIN'],
       })
@@ -411,7 +417,7 @@ describe('Integrations tests for Groups endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.read': ['PUBLIC'],
         'group.project.admin': ['ADMIN'],
       })

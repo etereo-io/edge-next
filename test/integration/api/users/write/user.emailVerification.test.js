@@ -54,9 +54,9 @@ describe('Integration tests for email verification with emailVerification enable
   })
 
   afterEach(() => {
-    findOneUser.mockClear()
-    findUserWithPassword.mockClear()
-    updateOneUser.mockClear()
+    findOneUser.mockReset()
+    findUserWithPassword.mockReset()
+    updateOneUser.mockReset()
   })
 
   test('Should return 401 for login a user with unverified email if configuration for verification is enabled', async () => {

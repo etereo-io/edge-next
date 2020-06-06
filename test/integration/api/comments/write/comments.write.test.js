@@ -141,8 +141,8 @@ describe('Integrations tests for comment creation endpoint', () => {
   let url
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
   })
 
   beforeAll(async (done) => {

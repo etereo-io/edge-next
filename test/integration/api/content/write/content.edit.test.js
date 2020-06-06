@@ -146,8 +146,8 @@ describe('Integrations tests for content edition endpoint', () => {
   let url
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -177,7 +177,7 @@ describe('Integrations tests for content edition endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
@@ -217,7 +217,7 @@ describe('Integrations tests for content edition endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
@@ -275,7 +275,7 @@ describe('Integrations tests for content edition endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
@@ -315,7 +315,7 @@ describe('Integrations tests for content edition endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.update': ['USER'],
         'content.post.admin': ['ADMIN'],
       })
@@ -371,7 +371,7 @@ describe('Integrations tests for content edition endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['USER'],
       })
@@ -424,7 +424,7 @@ describe('Integrations tests for content edition endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post', slug: 'example-post-0' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.update': ['ADMIN'],
       'content.post.admin': ['ADMIN'],
     })
@@ -458,7 +458,7 @@ describe('Integrations tests for content edition endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post', slug: 'example-post-0' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.update': ['ADMIN'],
       'content.post.admin': ['ADMIN'],
     })
@@ -493,7 +493,7 @@ describe('Integrations tests for content edition endpoint', () => {
       const urlToBeUsed = new URL(url)
       const params = { type: 'post', slug: 'example-post-1' }
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })

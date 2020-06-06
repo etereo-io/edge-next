@@ -14,6 +14,6 @@ export const getPermissions = () => {
   return config.permissions
 }
 
-export const getGroupTypeDefinition  = (slug) => {
+export const getGroupTypeDefinition  = (slug): ContentType | undefined => {
   return config.groups.types.find((item) => item.slug === slug)
 }

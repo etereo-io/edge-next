@@ -257,6 +257,10 @@ export const getConfig = (defaultOptions) => {
       },
     },
 
+    logger: {
+      level: 'ERROR'
+    },
+
     // Storages: GOOGLE, AWS, FIREBASE
     storage: {
       type: 'GOOGLE',

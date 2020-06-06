@@ -141,12 +141,12 @@ describe('Integrations tests for content deletion endpoint', () => {
   })
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
-    findOneContent.mockClear()
-    deleteComment.mockClear()
-    deleteActivity.mockClear()
-    deleteOneContent.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
+    findOneContent.mockReset()
+    deleteComment.mockReset()
+    deleteActivity.mockReset()
+    deleteOneContent.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -176,7 +176,7 @@ describe('Integrations tests for content deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.delete': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
@@ -217,7 +217,7 @@ describe('Integrations tests for content deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.delete': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
@@ -247,7 +247,7 @@ describe('Integrations tests for content deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.delete': ['USER'],
         'content.post.admin': ['ADMIN'],
       })
@@ -272,7 +272,7 @@ describe('Integrations tests for content deletion endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.delete': ['ADMIN'],
         'content.post.admin': ['USER'],
       })
@@ -294,7 +294,7 @@ describe('Integrations tests for content deletion endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post', slug: 'example-post-0' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.delete': ['ADMIN'],
       'content.post.admin': ['ADMIN'],
     })
@@ -318,7 +318,7 @@ describe('Integrations tests for content deletion endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post', slug: 'example-post-0' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.delete': ['ADMIN'],
       'content.post.admin': ['ADMIN'],
     })

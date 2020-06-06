@@ -62,6 +62,12 @@ jest.mock('../../../../../edge.config', () => {
         placeholder: 'Image',
       }
     ],
+
+    user : {
+      permissions: {
+        admin: ['GROUP_ADMIN', 'ADMIN']
+      }
+    }
   }
 
   return {
@@ -115,11 +121,12 @@ describe('Integrations tests for group edition', () => {
     )
 
     findOneContent.mockReturnValueOnce(Promise.resolve({
-      author: 'abc'
+      author: 'abc',
+      members: []
     }))
 
     // Mock permissions
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.update': ['ADMIN'],
       'group.project.admin': ['ADMIN'],
     })
@@ -157,11 +164,12 @@ describe('Integrations tests for group edition', () => {
 
     findOneContent.mockReturnValueOnce(Promise.resolve({
       author: 'abc',
-      id: 'something'
+      id: 'something',
+      members: []
     }))
 
     // Mock permissions
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'group.project.update': ['ADMIN'],
       'group.project.admin': ['ADMIN'],
     })
@@ -190,6 +198,52 @@ describe('Integrations tests for group edition', () => {
     })
   })
 
+  test('a USER user should  be able to edit a group if its listed in the members group with a privileged role', async () => {
+    const urlToBeUsed = new URL(url)
+    const params = { type: 'project', gid: '1' }
+
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
+
+    findOneContent.mockReturnValueOnce(Promise.resolve({
+      author: 'a person',
+      id: 'something',
+      members: [{
+        id: 'abc',
+        roles: ['GROUP_ADMIN']
+      }]
+    }))
+
+    // Mock permissions
+    getPermissions.mockReturnValue({
+      'group.project.update': ['ADMIN','GROUP_ADMIN'],
+      'group.project.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      id: 'abc',
+      roles: ['USER']
+    })
+
+    const newData = {
+      title: 'test'
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    })
+   
+    expect(response.status).toBe(200)
+
+    expect(updateOneContent).toHaveBeenCalledWith('project', 'something', {
+      title: 'test'
+    })
+  })
  
 
   describe('Files', () => {
@@ -200,7 +254,7 @@ describe('Integrations tests for group edition', () => {
       urlToBeUsed.searchParams.append('slug', 'profile')
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'group.project.update': ['ADMIN'],
         'group.project.admin': ['ADMIN'],
       })
@@ -220,6 +274,7 @@ describe('Integrations tests for group edition', () => {
               path: 'abc.test',
             },
           ],
+          members: []
         })
       )
 

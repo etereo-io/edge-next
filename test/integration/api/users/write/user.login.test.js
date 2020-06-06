@@ -46,7 +46,7 @@ describe('Integrations tests for login', () => {
     }
 
     afterEach(() => {
-      findUserWithPassword.mockClear()
+      findUserWithPassword.mockReset()
     })
 
     test('should not allow to login if user does not exist', async () => {

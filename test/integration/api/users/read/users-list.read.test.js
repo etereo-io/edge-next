@@ -55,9 +55,9 @@ describe('Integrations tests for user list read', () => {
 
   describe('User reading', () => {
     afterEach(() => {
-      findUsers.mockClear()
-      getPermissions.mockClear()
-      getSession.mockClear()
+      findUsers.mockReset()
+      getPermissions.mockReset()
+      getSession.mockReset()
     })
 
     test('a PUBLIC user should be able to read user lilst', async () => {

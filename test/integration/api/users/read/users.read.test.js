@@ -55,9 +55,9 @@ describe('Integrations tests for user read', () => {
 
   describe('User reading', () => {
     afterEach(() => {
-      findOneUser.mockClear()
-      getPermissions.mockClear()
-      getSession.mockClear()
+      findOneUser.mockReset()
+      getPermissions.mockReset()
+      getSession.mockReset()
     })
 
     test('a PUBLIC user should be able to read a profile', async () => {

@@ -102,8 +102,8 @@ describe('Integrations tests for content creation endpoint', () => {
   let url
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
   })
 
   beforeAll(async (done) => {
@@ -132,7 +132,7 @@ describe('Integrations tests for content creation endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -172,7 +172,7 @@ describe('Integrations tests for content creation endpoint', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -234,7 +234,7 @@ describe('Integrations tests for content creation endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -268,7 +268,7 @@ describe('Integrations tests for content creation endpoint', () => {
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -306,7 +306,7 @@ describe('Integrations tests for content creation endpoint', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
 
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.create': ['PUBLIC'],
       })
 
