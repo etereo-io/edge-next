@@ -240,6 +240,72 @@ export const getConfig = (defaultOptions) => {
     ],
   }
 
+  const publishingGroupType = {
+    title: 'Publishing Group',
+
+    slug: 'publishing-group',
+
+    slugGeneration: ['title', 'createdAt'],
+
+    permissions: {
+      read: [publicRole],
+      create: [adminRole, userRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
+    },
+
+    publishing: {
+      draftMode: true,
+      title: 'title',
+    },
+
+
+    user: {
+      permissions: {
+        read: ['GROUP_MEMBER'],
+        create: ['GROUP_ADMIN', adminRole],
+        update: ['GROUP_ADMIN',adminRole],
+        delete: ['GROUP_ADMIN',adminRole],
+        admin: ['GROUP_ADMIN',adminRole],
+      },
+    },
+
+    contentTypes: [{
+      slug: 'post',
+      permissions: {
+        read: [publicRole],
+        create: ['GROUP_MEMBER'],
+        update: ['GROUP_ADMIN'],
+        delete: ['GROUP_ADMIN'],
+        admin: ['GROUP_ADMIN']
+      }
+    }],
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        placeholder: 'Title',
+        minlength: 8,
+        maxlength: 150,
+        required: true,
+        errorMessage: 'Title must be between 8 and 150 characters',
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        label: 'Description',
+        placeholder: 'Description',
+        minlength: 1,
+        maxlength: 200,
+        required: true,
+        description: 'Tell the world something about this publication group (max 200 characters)'
+      }
+    ],
+  }
+
   return {
     // Title for the site
     title: 'Nucleo - Edge',
@@ -435,6 +501,11 @@ export const getConfig = (defaultOptions) => {
       // Different content types defined
       types: [postContentType, siteNewsContentType],
       initialContent: [],
+    },
+
+    // Groups definitions
+    groups: {
+      types: [publishingGroupType]
     },
 
     // Features not implemented yet, but UI implemented

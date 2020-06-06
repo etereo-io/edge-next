@@ -6,6 +6,8 @@
   - [edge.config.js](#edgeconfigjs)
   - [Adding a new theme](#adding-a-new-theme)
   - [Content Types](#content-types)
+  - [Groups](#groups)
+    - [How groups work?](#how-groups-work)
   - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
   - [Storage](#storage)
@@ -246,6 +248,113 @@ const contentType = {
 }
 ```
 
+## Groups
+
+Groups are a conjunction of rules that applies to content and users. Groups can help to model different functionalities like:
+- Projects (with members and tasks)
+- Publishing groups (similar to medium publishing groups)
+- Meetup groups 
+
+### How groups work?
+
+When a group is created, the author is asigned the role of `GROUP_ADMIN`, after that she may add new users manually. Group permissions are not dynamic for each group, they are configured in `edge.config.js`. This is a caveat and it doesn't allow to create private and public groups of the same group type. 
+
+Let's see the group definition to make it more clear.
+
+In an example site we want to create a group called `Project` with the following characteristics: 
+- Projects are public for registered users. Any user may find projects.
+- The content inside the project is private for the users on that project. 
+- Users can only be added by a `GROUP_ADMIN` or a `GROUP_MEMBER` not anyone can join freely.
+- Inside the project members may create tasks. Tasks are a content type defined in the content type definitions as seen previously.
+
+```javascript
+const projectGroupType = {
+    title: 'Project',
+
+    // Identificator type for API and website calls /api/groups/project /groups/project
+    slug: 'project',
+
+    permissions: {
+      // Any user may list projects
+      read: ['USER'],
+
+      // Any user may create projects
+      create: ['USER'],
+
+      // Only admins may update, delete or administer ANY project on the platform. 
+      update: ['ADMIN'],
+      delete: ['ADMIN'],
+      admin: ['ADMIN'],
+    },
+
+    // Allow keep projects as draft while creating them
+    publishing: {
+      draftMode: true,
+      title: 'title',
+    },
+
+    // Group user permissions
+    user: {
+      permissions: {
+        // Who can see the other members of the group
+        read: ['GROUP_MEMBER'],
+
+        // Who can invite or add group members
+        create: ['GROUP_ADMIN', 'ADMIN'],
+
+        // Who can change group member roles
+        update: ['GROUP_ADMIN','ADMIN'],
+
+        // Who can remove users from the group
+        delete: ['GROUP_ADMIN','ADMIN'],
+
+        // Who can do all the above
+        admin: ['GROUP_ADMIN','ADMIN'],
+      },
+    },
+
+    // Differnt content types may be defined in a group
+    contentTypes: [{
+      slug: 'task',
+      permissions: {
+        // Who can see the tasks of this project
+        read: ['GROUP_MEMBER'],
+        // Who can add tasks in this project
+        create: ['GROUP_MEMBER'],
+        // Who can update tasks in this project
+        update: ['GROUP_ADMIN'],
+        // Who can delete tasks in this project
+        delete: ['GROUP_ADMIN'],
+        // Who can administer tasks in this project
+        admin: ['GROUP_ADMIN']
+      }
+    }],
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        placeholder: 'Title',
+        minlength: 8,
+        maxlength: 150,
+        required: true,
+        errorMessage: 'Title must be between 8 and 150 characters',
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        label: 'Description',
+        placeholder: 'Description',
+        minlength: 1,
+        maxlength: 200,
+        required: true,
+        description: 'Tell the world something about this publication group (max 200 characters)'
+      }
+    ],
+  }
+
+```
 
 ## Fields
 
