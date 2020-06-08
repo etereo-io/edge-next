@@ -1,4 +1,4 @@
-import { addContent, fillContentWithDefaultData, findContent } from '@lib/api/entities/content/content'
+import { addContent, findContent } from '@lib/api/entities/content/content'
 import {
   hasPermissionsForGroup,
   isValidGroupType,
@@ -7,6 +7,7 @@ import {
 
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
+import { fillContentWithDefaultData } from '@lib/api/entities/content/content.utils'
 import methods from '@lib/api/api-helpers/methods'
 import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
@@ -114,7 +115,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, isValidGroupType(type))
   } catch (e) {
     return res.status(405).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -123,7 +124,7 @@ export default async (req, res) => {
     await connect()
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -131,7 +132,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadUser)
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -139,7 +140,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, hasPermissionsForGroup(type))
   } catch (e) {
     return res.status(401).json({
-      message: e.message,
+      error: e.message,
     })
   }
 

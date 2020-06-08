@@ -74,7 +74,7 @@ export default async (req, res) => {
   } catch (e) {
     logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -83,7 +83,7 @@ export default async (req, res) => {
   } catch (e) {
     
     return res.status(404).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -91,7 +91,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, hasPermissionForActivity)
   } catch (e) {
     return res.status(401).json({
-      message: e.message,
+      error: e.message,
     })
   }
 

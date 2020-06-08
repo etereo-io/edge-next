@@ -235,7 +235,7 @@ describe('Integrations tests for content deletion endpoint', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message: 'User not authorized to perform operation on content post',
+        error: 'User not authorized to perform operation on content post',
       })
     })
 

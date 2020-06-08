@@ -1,6 +1,7 @@
 import {
   bodyParser,
   hasPermissionsForContent,
+  hasPermissionsForGroupContent,
   hasQueryParameters,
   isValidContentType,
   loadUser,
@@ -81,21 +82,23 @@ const deleteContent = (req, res) => {
 
 const updateContent = async (req, res) => {
   const type = req.contentType
-  
+
   try {
     await runMiddleware(req, res, bodyParser)
   } catch (e) {
     return res.status(400).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
-  const content = {
-    ...req.body,
-  }
+
+
+  // Extract the groupId, groupType. Since we don't want anybody being able to change those.
+  const { groupId, groupType, ...content } = req.body
 
   contentValidations(type, content)
     .then(async () => {
+
       // Content is valid
       const newContent = await uploadFiles(
         type.fields,
@@ -134,14 +137,14 @@ const updateContent = async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type },
+    query: { type, groupId, groupType },
   } = req
 
   try {
     await runMiddleware(req, res, isValidContentType(type))
   } catch (e) {
     return res.status(405).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -149,7 +152,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, hasQueryParameters(['slug']))
   } catch (e) {
     return res.status(405).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -158,7 +161,7 @@ export default async (req, res) => {
     await connect()
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -166,7 +169,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadContentItemMiddleware)
   } catch (e) {
     return res.status(404).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -174,17 +177,41 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadUser)
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForContent(type, req.item))
+    if (groupId) {
+      const group  = await findOneContent({
+        id: groupId, 
+        type: groupType
+      })
+
+      if (!group) {
+        return res.status(404).json({
+          error: 'Not found'
+        })
+      }
+
+      if (group.id !== req.item.groupId) {
+        // Somebody is trying to hijack security
+        return res.status(401).json({
+          error: 'Operation not allowed'
+        })
+      }
+      
+      await runMiddleware(req, res, hasPermissionsForGroupContent(groupType, type, group))
+    } else {
+      await runMiddleware(req, res, hasPermissionsForContent(type, req.item))
+    }
   } catch (e) {
+
     return res.status(401).json({
-      message: e.message,
+      error: e.message,
     })
   }
+
 
   methods(req, res, {
     get: getContent,

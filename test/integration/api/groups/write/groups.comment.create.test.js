@@ -1,22 +1,27 @@
-import { findContent, findOneContent } from '../../../../../lib/api/entities/content/content'
+import { addContent, findOneContent } from '../../../../../lib/api/entities/content/content'
 
+import {addComment} from '../../../../../lib/api/entities/comments/comments'
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
+import { fillContentWithDefaultData } from '../../../../../lib/api/entities/content/content.utils'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import handler from '../../../../../pages/api/content/[type]'
+import handler from '../../../../../pages/api/comments'
 import http from 'http'
 import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/content/content.utils')
 
 /*
   Scenario: 
-    We have a content type that is private in the general platform, and only admin can operate.
-    This content type is available for group members. 
-    - Check that a group member can access this content type only if the GID of the content type is the group one
+    We have a content type that is public or private in the general platform
+    Comments are disabled for this content type. 
+    This content type has comments available when posted inside a group 
+    - Check that a group member can create comments only if the GID of the content type is the group one
     - Give group based permissions and check that they apply with the GID
-    - Check that a normal user can not get this content type if it's not in the group
+    - Check that a normal user can not comment if it's not in the group
+    - Give content based permissions disallowing comments on a certain content
 */
 
 jest.mock('../../../../../edge.config', () => {
@@ -40,7 +45,7 @@ jest.mock('../../../../../edge.config', () => {
     },
 
     comments: {
-      enabled: true,
+      enabled: false,
       permissions: {
         read: ['PUBLIC'],
         create: ['USER', 'ADMIN'],
@@ -112,8 +117,14 @@ jest.mock('../../../../../edge.config', () => {
 
     contentTypes: [{
       slug: 'post',
+      comments: {
+        enabled: true,
+        permissions: {
+          create: ['GROUP_MEMBER']
+        }
+      },
       permissions: {
-        read: ['GROUP_MEMBER', 'GROUP_ADMIN'],
+        create: ['GROUP_MEMBER', 'GROUP_ADMIN'],
         admin: ['GROUP_ADMIN']
       }
     }]
@@ -136,21 +147,18 @@ jest.mock('../../../../../edge.config', () => {
   }
 })
 
-describe('Integrations tests for content retrieval in a group', () => {
+describe('Integrations tests for comment creation in a group content', () => {
   let server
   let url
 
   beforeEach(() => {
-    findContent.mockReturnValue(Promise.resolve({
-      results: []
-    }))
+    addComment.mockReturnValue(Promise.resolve({ id: 'abc'}))
   })
- 
 
   afterEach(() => {
     getSession.mockReset()
+    addComment.mockReset()
     findOneContent.mockReset()
-    findContent.mockReset()
   })
   
   beforeAll(async (done) => {
@@ -165,22 +173,34 @@ describe('Integrations tests for content retrieval in a group', () => {
   afterAll((done) => {
     server.close(done)
   })
-
-  test('Should not allow to fetch posts for a normal user', async () => {
+  
+  // TODO: COntinue here
+  test('Should not allow to create a comment without a groupId and groupType', async () => {
 
     getSession.mockReturnValueOnce({
       roles: ['USER'],
       id: 'test-id-initial-user',
     })
-
+    
     const urlToBeUsed = new URL(url)
     const params = { type: 'post' }
-
+    
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])
     )
+    
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
 
-    const response = await fetch(urlToBeUsed.href)
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    })
 
     expect(response.status).toEqual(401)
   })
@@ -200,12 +220,23 @@ describe('Integrations tests for content retrieval in a group', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    const response = await fetch(urlToBeUsed.href)
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    })
 
     expect(response.status).toEqual(404)
   })
 
-  test('Should not allow a non member to retrieve content ', async () => {
+  test('Should not allow a non member to create content ', async () => {
     findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
       members: [{
         id: 'user1',
@@ -225,12 +256,23 @@ describe('Integrations tests for content retrieval in a group', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    const response = await fetch(urlToBeUsed.href)
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
+    
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    })
 
     expect(response.status).toEqual(401)
   })
 
-  test('Should allow a member to retrieve content ', async () => {
+  test('Should allow a member to create content ', async () => {
     findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
       members: [{
         id: 'user1',
@@ -250,13 +292,25 @@ describe('Integrations tests for content retrieval in a group', () => {
       urlToBeUsed.searchParams.append(key, params[key])
     )
 
-    const response = await fetch(urlToBeUsed.href)
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
+    
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    })
 
     expect(response.status).toEqual(200)
-    expect(findContent).toHaveBeenCalledWith("post", 
-      {"draft": false, "groupId": "agroup", "groupType": "project"}, 
-      {"search": undefined}, 
-      {"from": undefined, "limit": undefined, "sortBy": undefined, "sortOrder": undefined})
+    expect(addContent).toHaveBeenCalledWith("post", {
+      groupId: 'agroup',
+      groupType: 'project',
+      title: 'test',
+    })
   })
 
 
@@ -268,7 +322,7 @@ describe('Integrations tests for content retrieval in a group', () => {
           roles: ['ANOTHER_ROLE']
         }],
         permissions: {
-          'group.project.content.post.read' : ['ANOTHER_ROLE']
+          'group.project.content.post.create' : ['ANOTHER_ROLE']
         }
       }))
   
@@ -284,14 +338,22 @@ describe('Integrations tests for content retrieval in a group', () => {
         urlToBeUsed.searchParams.append(key, params[key])
       )
   
-      const response = await fetch(urlToBeUsed.href)
-  
+      const newPost = {
+        title: 'test'
+      }
+      
+      const response = await fetch(urlToBeUsed.href, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newPost),
+      })
+        
       expect(response.status).toEqual(200)
-      expect(findContent).toHaveBeenCalledWith("post", 
-        {"draft": false, "groupId": "agroup", "groupType": "project"}, 
-        {"search": undefined}, 
-        {"from": undefined, "limit": undefined, "sortBy": undefined, "sortOrder": undefined})
+     
     })
   })
+
  
 })

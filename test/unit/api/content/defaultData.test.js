@@ -1,4 +1,4 @@
-import { fillContentWithDefaultData } from '../../../../lib/api/entities/content/content'
+import { fillContentWithDefaultData } from '../../../../lib/api/entities/content/content.utils'
 
 test('Should create the default data for new content', () => {
   const contentType = {

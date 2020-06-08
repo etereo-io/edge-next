@@ -71,4 +71,13 @@ describe('Has Permission test', () => {
 
     
   })
+
+  test('Custom permissions', () => {
+    expect(hasPermission({ roles: ['ABC']}, 'something', { 'something': ['ABC']})).toEqual(true)
+
+    expect(hasPermission({ roles: ['AXXXBC']}, 'something', { 'something': ['ABC']})).toEqual(false)
+
+
+    expect(hasPermission({ roles: ['ABC', 'SOME']}, 'something.read.update', { 'something.read.update': ['SOME', 'OTHER']})).toEqual(true)
+  })
 })

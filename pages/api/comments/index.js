@@ -98,7 +98,7 @@ const getComments = (req, res) => {
     // If there are no allowed content types with comments that the user can read, reject
     if (allowedContentTypes.length === 0) {
       return res.status(401).json({
-        message: 'User not allowed to read comments',
+        error: 'User not allowed to read comments',
       })
     }
 
@@ -109,7 +109,7 @@ const getComments = (req, res) => {
     // There was a specified content type check if it has permissions
     if (!commentPermission(req.currentUser, filterParams.contentType, 'read')) {
       return res.status(401).json({
-        message: 'User not allowed to read comments',
+        error: 'User not allowed to read comments',
       })
     }
   }
@@ -180,7 +180,7 @@ const createComment = (req, res) => {
 
   if (!commentPermission(req.currentUser, req.query.contentType, 'create')) {
     return res.status(401).json({
-      message: 'User not allowed to create comments',
+      error: 'User not allowed to create comments',
     })
   }
 
@@ -227,7 +227,7 @@ export default async (req, res) => {
       await runMiddleware(req, res, isValidContentType(contentType))
     } catch (e) {
       return res.status(405).json({
-        message: e.message,
+        error: e.message,
       })
     }
 
@@ -235,7 +235,7 @@ export default async (req, res) => {
       await runMiddleware(req, res, contentTypeAllowsCommentsMiddleware)
     } catch (e) {
       return res.status(401).json({
-        message: e.message,
+        error: e.message,
       })
     }
   }
@@ -246,7 +246,7 @@ export default async (req, res) => {
   } catch (e) {
     logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -254,7 +254,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadUser)
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 

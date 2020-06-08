@@ -1,12 +1,14 @@
-import { addContent, fillContentWithDefaultData, findContent } from '@lib/api/entities/content/content'
+import { addContent, findContent, findOneContent } from '@lib/api/entities/content/content'
 import {
   hasPermissionsForContent,
+  hasPermissionsForGroupContent,
   isValidContentType,
   loadUser,
 } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
+import { fillContentWithDefaultData } from '@lib/api/entities/content/content.utils'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onContentAdded } from '@lib/api/hooks/content.hooks'
@@ -48,7 +50,10 @@ const getContent = (filterParams, searchParams, paginationParams) => (
 
 const createContent = async (req, res) => {
   const type = req.contentType
-  const content = req.body
+
+  const content = {
+    ...req.body
+  }
 
   contentValidations(type, content)
     .then(async () => {
@@ -56,10 +61,14 @@ const createContent = async (req, res) => {
       // Add default value to missing fields
       const newContent = fillContentWithDefaultData(
         type,
-        content,
+        {
+          ...content,
+          groupId: req.query.groupId ? req.query.groupId : null,
+          groupType: req.query.groupType ? req.query.groupType: null,
+        },
         req.currentUser
       )
-
+    
       addContent(type.slug, newContent)
         .then((data) => {
           // Trigger on content added hook
@@ -83,10 +92,15 @@ const createContent = async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, from, limit, author, tags },
+    query: { type, search, sortBy, sortOrder, from, limit, author, tags, groupId, groupType },
   } = req
 
-  const filterParams = {}
+
+  // Group filtering if not set marks it to null
+  const filterParams = {
+    groupId: groupId ? groupId: null,
+    groupType: groupType ? groupType: null,
+  }
 
   if (author) {
     filterParams.author = author
@@ -112,7 +126,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, isValidContentType(type))
   } catch (e) {
     return res.status(405).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -122,7 +136,7 @@ export default async (req, res) => {
   } catch (e) {
     logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -130,15 +144,31 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadUser)
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
   try {
-    await runMiddleware(req, res, hasPermissionsForContent(type))
+    if (groupId) {
+      const group = await findOneContent({
+        id: groupId, 
+        type: groupType
+      })
+
+      if (!group) {
+        return res.status(404).json({
+          error: 'Not found'
+        })
+      }
+      
+      await runMiddleware(req, res, hasPermissionsForGroupContent(groupType, type, group))
+    } else {
+      await runMiddleware(req, res, hasPermissionsForContent(type))
+    }
   } catch (e) {
+    console.log(e)
     return res.status(401).json({
-      message: e.message,
+      error: e.message,
     })
   }
 

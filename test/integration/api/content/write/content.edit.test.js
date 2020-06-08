@@ -303,7 +303,7 @@ describe('Integrations tests for content edition endpoint', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message: 'User not authorized to perform operation on content post',
+        error: 'User not authorized to perform operation on content post',
       })
     })
 

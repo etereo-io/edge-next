@@ -212,7 +212,7 @@ describe('Integrations tests for user edition', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message: 'User not authorized to perform operation on user 1',
+        error: 'User not authorized to perform operation on user 1',
       })
     })
 

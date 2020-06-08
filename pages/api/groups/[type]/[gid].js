@@ -76,7 +76,7 @@ const updateGroup = async (req, res) => {
     await runMiddleware(req, res, bodyParser)
   } catch (e) {
     return res.status(400).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -134,7 +134,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, isValidGroupType(type))
   } catch (e) {
     return res.status(405).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -144,7 +144,7 @@ export default async (req, res) => {
     await connect()
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -152,7 +152,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadGroupItemMiddleware)
   } catch (e) {
     return res.status(404).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -160,7 +160,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadUser)
   } catch (e) {
     return res.status(500).json({
-      message: e.message,
+      error: e.message,
     })
   }
 
@@ -168,7 +168,7 @@ export default async (req, res) => {
     await runMiddleware(req, res, hasPermissionsForGroup(type, req.item))
   } catch (e) {
     return res.status(401).json({
-      message: e.message,
+      error: e.message,
     })
   }
 

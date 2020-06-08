@@ -229,7 +229,7 @@ describe('Integrations tests for comment deletion endpoint', () => {
 
       expect(response.status).toBe(401)
       expect(jsonResult).toMatchObject({
-        message: 'User not authorized to perform operation on comment post',
+        error: 'User not authorized to perform operation on comment post',
       })
     })
 
