@@ -201,7 +201,7 @@ export default async (req, res) => {
         })
       }
       
-      await runMiddleware(req, res, hasPermissionsForGroupContent(groupType, type, group))
+      await runMiddleware(req, res, hasPermissionsForGroupContent(groupType, type, group, req.item))
     } else {
       await runMiddleware(req, res, hasPermissionsForContent(type, req.item))
     }

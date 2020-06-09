@@ -1,11 +1,11 @@
 import { addComment, findComments } from '@lib/api/entities/comments/comments'
+import { commentPermission, groupCommentPermission } from '@lib/permissions'
+import { isValidContentType, loadUser } from '@lib/api/middlewares'
 
-import { commentPermission } from '@lib/permissions'
 import { commentValidations } from '@lib/validations/comment'
 import config from '@lib/config'
 import { connect } from '@lib/api/db'
-import { isValidContentType } from '@lib/api/middlewares'
-import { loadUser } from '@lib/api/middlewares'
+import { findOneContent } from '@lib/api/entities/content/content'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentAdded } from '@lib/api/hooks/comment.hooks'
@@ -35,24 +35,14 @@ export const parseCommentBody = (text) => {
   }
 }
 
-// Check that the comments are allowed for this content type
-function contentTypeAllowsCommentsMiddleware(req, res, cb) {
-  if (!req.contentType.comments.enabled) {
-    cb(
-      new Error(
-        'Content type ' + req.contentType.slug + ' does not allow comments'
-      )
-    )
-  } else {
-    cb()
-  }
-}
 
-const getComments = (req, res) => {
+const getComments = async (req, res) => {
   const {
     query: {
       contentType,
       contentId,
+      groupId, 
+      groupType,
       sortBy,
       sortOrder,
       from,
@@ -64,6 +54,8 @@ const getComments = (req, res) => {
 
   const filterParams = {
     contentType,
+    groupId: groupId? groupId : null,
+    groupType: groupType? groupType : null,
   }
 
   if (contentId) {
@@ -104,15 +96,32 @@ const getComments = (req, res) => {
 
     filterParams.contentType = {
       $in: allowedContentTypes,
-    }
+    } 
+
+    // We dont' allow to retrieve comments from groups, (this could be improved with fine grained permissions checking for admins)
+    filterParams.groupId = null
   } else {
-    // There was a specified content type check if it has permissions
-    if (!commentPermission(req.currentUser, filterParams.contentType, 'read')) {
-      return res.status(401).json({
-        error: 'User not allowed to read comments',
+
+    // Content is inside the group, check the group permissions
+    if (groupId) {
+      const group = await findOneContent(groupType, {
+        id: groupId
       })
+  
+      if (!groupCommentPermission(req.currentUser, group.type, contentType, 'read', group)) {
+        return res.status(401).json({
+          error: 'User not allowed to read comments on group content',
+        })
+      }
+    } else {
+      if (!commentPermission(req.currentUser, filterParams.contentType, 'read')) {
+        return res.status(401).json({
+          error: 'User not allowed to read comments',
+        })
+      }
     }
   }
+    
 
   findComments(filterParams, paginationParams)
     .then((data) => {
@@ -129,7 +138,9 @@ export function fillCommentWithDefaultData(
   contentType,
   contentId,
   comment,
-  user
+  user,
+  groupId, 
+  groupType
 ) {
   try {
     const { parsedText, mentions, images } = parseCommentBody(comment.message)
@@ -142,6 +153,8 @@ export function fillCommentWithDefaultData(
       contentType: contentType.slug,
       contentId: contentId,
       message: parsedText,
+      groupId,
+      groupType,
       mentions,
       images,
       conversationId: comment.conversationId || null,
@@ -162,27 +175,59 @@ export function fillCommentWithDefaultData(
   }
 }
 
-const createComment = (req, res) => {
-  const type = req.contentType
-  const contentId = req.query.contentId
+const createComment = async (req, res) => {
+
+  const {
+    contentId,
+    contentType
+  } = req.query
+
+  try {
+    await runMiddleware(req, res, isValidContentType(contentType))
+  } catch (e) {
+    return res.status(405).json({
+      error: e.message,
+    })
+  }
+
 
   if (!contentId) {
     return res.status(405).json({
       error: 'Missing contentId',
     })
   }
-
-  if (!type) {
-    return res.status(400).json({
-      error: 'Missing contentType',
+  
+  const item = await findOneContent(contentType, {
+    id: contentId
+  })
+  
+  // Check that the content exists
+  if (!item) {
+    return res.status(404).json({
+      error: 'Content not found'
     })
   }
 
-  if (!commentPermission(req.currentUser, req.query.contentType, 'create')) {
-    return res.status(401).json({
-      error: 'User not allowed to create comments',
+  // Content is inside the group, check the group permissions
+  if (item.groupId) {
+    const group = await findOneContent(item.groupType, {
+      id: item.groupId
     })
+
+    if (!groupCommentPermission(req.currentUser, group.type, contentType, 'create', group)) {
+      return res.status(401).json({
+        error: 'User not allowed to create comments on group content',
+      })
+    }
+
+  } else {
+    if (!commentPermission(req.currentUser, contentType, 'create')) {
+      return res.status(401).json({
+        error: 'User not allowed to create comments',
+      })
+    }
   }
+  
 
   const comment = req.body
 
@@ -190,10 +235,12 @@ const createComment = (req, res) => {
     .then(() => {
       // Add default value to missing fields
       const newComment = fillCommentWithDefaultData(
-        type,
+        req.contentType,
         contentId,
         comment,
-        req.currentUser
+        req.currentUser,
+        item.groupId,
+        item.groupType,
       )
 
       addComment(newComment)
@@ -218,28 +265,7 @@ const createComment = (req, res) => {
 }
 
 export default async (req, res) => {
-  const {
-    query: { contentType },
-  } = req
-
-  if (contentType) {
-    try {
-      await runMiddleware(req, res, isValidContentType(contentType))
-    } catch (e) {
-      return res.status(405).json({
-        error: e.message,
-      })
-    }
-
-    try {
-      await runMiddleware(req, res, contentTypeAllowsCommentsMiddleware)
-    } catch (e) {
-      return res.status(401).json({
-        error: e.message,
-      })
-    }
-  }
-
+  
   try {
     // Connect to database
     await connect()
