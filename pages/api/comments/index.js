@@ -221,6 +221,12 @@ const createComment = async (req, res) => {
     }
 
   } else {
+    if (!req.contentType.comments.enabled) {
+      return res.status(401).json({
+        error: 'Comments are disabled'
+      })
+    }
+    
     if (!commentPermission(req.currentUser, contentType, 'create')) {
       return res.status(401).json({
         error: 'User not allowed to create comments',

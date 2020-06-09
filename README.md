@@ -104,6 +104,10 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - use `use export * from package` instead of double naming variables.
 - try to unify groups and content types logic somehow
+- Test:
+  - Group delete test
+  - Delete comment in group test
+  - Group user test (list , create , edit , delete )
 
 ### After Version 1: Additional features
 

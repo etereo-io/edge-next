@@ -2,40 +2,17 @@ import {
   deleteOneComment,
   findOneComment,
 } from '@lib/api/entities/comments/comments'
+import {
+  hasPermissionsForComment,
+  hasPermissionsForGroupComment,
+  loadUser,
+} from '@lib/api/middlewares'
 
-import { commentPermission } from '@lib/permissions'
 import { connect } from '@lib/api/db'
-import { getAction } from '@lib/api/api-helpers/methods'
-import { loadUser } from '@lib/api/middlewares'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentDeleted } from '@lib/api/hooks/comment.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
-
-export const hasPermissionsForComment = (contentType, item) => async (
-  req,
-  res,
-  cb
-) => {
-  const action = getAction(req.method)
-
-  const canAccess = commentPermission(
-    req.currentUser,
-    contentType,
-    action,
-    item
-  )
-
-  if (!canAccess) {
-    cb(
-      new Error(
-        'User not authorized to perform operation on comment ' + contentType
-      )
-    )
-  } else {
-    cb()
-  }
-}
 
 const loadCommentItemMiddleware = async (req, res, cb) => {
   const searchOptions = {}
@@ -121,16 +98,30 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(
-      req,
-      res,
-      hasPermissionsForComment(req.item.contentType, req.item)
-    )
+    if (req.item.groupId) {
+      // Check permissions in the group 
+      const group  = await findOneContent({
+        id: req.item.groupId, 
+        type: req.item.groupType
+      })
+
+      if (!group) {
+        return res.status(404).json({
+          error: 'Not found'
+        })
+      }
+      
+      await runMiddleware(req, res, hasPermissionsForGroupComment(groupType, type, group, req.item))
+    } else {
+      await runMiddleware(req, res, hasPermissionsForComment(req.item.contentType, req.item))
+    }
   } catch (e) {
+
     return res.status(401).json({
       error: e.message,
     })
   }
+
 
   methods(req, res, {
     get: getComment,

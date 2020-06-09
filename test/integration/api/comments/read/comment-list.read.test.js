@@ -146,7 +146,7 @@ describe('Integrations tests for comment list read endpoint', () => {
     server.close(done)
   })
 
-  test('Should return 405 if contentType does not exist', async () => {
+  test('Should return 401 if contentType does not exist', async () => {
     const urlToBeUsed = new URL(url)
     const params = { contentType: 'something' }
 
@@ -166,7 +166,7 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     expect(findComments).not.toHaveBeenCalled()
 
-    expect(response.status).toBe(405)
+    expect(response.status).toBe(401)
   })
 
   test('Should return 401 if contentType does not allow comments', async () => {
@@ -183,7 +183,7 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     getPermissions.mockReturnValue({
       'content.post.comments.read': ['PUBLIC'],
-      'content.product.comments.read': ['PUBLIC'],
+      'content.product.comments.read': [],
     })
 
     const response = await fetch(urlToBeUsed.href)
@@ -212,12 +212,12 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     const response = await fetch(urlToBeUsed.href)
 
-    const jsonResult = await response.json()
-
     expect(response.status).toBe(200)
     expect(findComments).toHaveBeenCalledWith(
       {
         contentType: 'post',
+        groupId: null,
+        groupType: null
       },
       {
         from: undefined,
@@ -255,6 +255,8 @@ describe('Integrations tests for comment list read endpoint', () => {
       {
         contentType: 'post',
         contentId: 'example',
+        groupId: null,
+        groupType: null
       },
       {
         from: undefined,
@@ -288,6 +290,8 @@ describe('Integrations tests for comment list read endpoint', () => {
       {
         contentType: 'post',
         conversationId: 'conversationId',
+        groupId: null,
+        groupType: null
       },
       {
         from: undefined,
@@ -323,6 +327,8 @@ describe('Integrations tests for comment list read endpoint', () => {
       {
         contentType: 'post',
         conversationId: null,
+        groupId: null,
+        groupType: null
       },
       {
         from: undefined,
@@ -358,6 +364,8 @@ describe('Integrations tests for comment list read endpoint', () => {
       {
         contentType: 'post',
         author: 'author',
+        groupId: null,
+        groupType: null
       },
       {
         from: undefined,
@@ -393,6 +401,8 @@ describe('Integrations tests for comment list read endpoint', () => {
       {
         contentType: { $in: ['post', 'product'] },
         author: 'author',
+        groupId: null,
+        groupType: null
       },
       {
         from: undefined,
@@ -405,7 +415,7 @@ describe('Integrations tests for comment list read endpoint', () => {
     expect(response.status).toBe(200)
   })
 
-  test('Should accept pagination options exist', async () => {
+  test('Should accept pagination options', async () => {
     const urlToBeUsed = new URL(url)
     const params = { contentType: 'post', from: 10, limit: 20 }
 
@@ -423,6 +433,8 @@ describe('Integrations tests for comment list read endpoint', () => {
     expect(findComments).toHaveBeenCalledWith(
       {
         contentType: 'post',
+        groupId: null,
+        groupType: null
       },
       { from: 10, limit: 20, sortBy: undefined, sortOrder: undefined }
     )
@@ -445,7 +457,6 @@ describe('Integrations tests for comment list read endpoint', () => {
     })
 
     const response = await fetch(urlToBeUsed.href)
-    const jsonResult = await response.json()
 
     expect(response.status).toBe(401)
   })

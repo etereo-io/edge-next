@@ -1,9 +1,7 @@
-import { addContent, findOneContent } from '../../../../../lib/api/entities/content/content'
-
 import {addComment} from '../../../../../lib/api/entities/comments/comments'
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
-import { fillContentWithDefaultData } from '../../../../../lib/api/entities/content/content.utils'
+import { findOneContent } from '../../../../../lib/api/entities/content/content'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/comments'
 import http from 'http'
@@ -11,7 +9,7 @@ import listen from 'test-listen'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/content/content.utils')
+jest.mock('../../../../../lib/api/entities/comments/comments')
 
 /*
   Scenario: 
@@ -174,186 +172,189 @@ describe('Integrations tests for comment creation in a group content', () => {
     server.close(done)
   })
   
-  // TODO: COntinue here
-  test('Should not allow to create a comment without a groupId and groupType', async () => {
 
-    getSession.mockReturnValueOnce({
-      roles: ['USER'],
-      id: 'test-id-initial-user',
-    })
-    
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
-    
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-    
-    const newComment = {
-      message: 'abc abc',
-      conversationId: null
-    }
-
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
-    })
-
-    expect(response.status).toEqual(401)
-  })
-
-  test('Should return 404 if the group is not found ', async () => {
-    findOneContent.mockReturnValue(Promise.resolve(null))
-
-    getSession.mockReturnValueOnce({
-      roles: ['USER'],
-      id: 'test-id-initial-user',
-    })
-
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', groupId: 'agroup', groupType: 'a nother'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    const newComment = {
-      message: 'abc abc',
-      conversationId: null
-    }
-
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
-    })
-
-    expect(response.status).toEqual(404)
-  })
-
-  test('Should not allow a non member to create content ', async () => {
-    findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
-      members: [{
-        id: 'user1',
-        roles: ['GROUP_MEMBER']
-      }]
-    }))
-
-    getSession.mockReturnValueOnce({
-      roles: ['USER'],
-      id: 'test-id-initial-user',
-    })
-
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    const newComment = {
-      message: 'abc abc',
-      conversationId: null
-    }
-    
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
-    })
-
-    expect(response.status).toEqual(401)
-  })
-
-  test('Should allow a member to create content ', async () => {
-    findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
-      members: [{
-        id: 'user1',
-        roles: ['GROUP_MEMBER']
-      }]
-    }))
-
-    getSession.mockReturnValueOnce({
-      roles: ['USER'],
-      id: 'user1',
-    })
-
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    const newComment = {
-      message: 'abc abc',
-      conversationId: null
-    }
-    
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
-    })
-
-    expect(response.status).toEqual(200)
-    expect(addContent).toHaveBeenCalledWith("post", {
-      groupId: 'agroup',
-      groupType: 'project',
-      title: 'test',
-    })
-  })
-
-
-  describe('Group based permissions', () => {
-    test('Should allow a user with group based permissions to access the content ', async () => {
-      findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
+  test('Should not allow to create a comment in a content that does not have a group', async () => {
+    findOneContent.mockReturnValue(Promise.resolve({}))
+      .mockReturnValueOnce(Promise.resolve({
+        id: 'some-post',
+      }))
+      .mockReturnValueOnce(Promise.resolve({ 
+        id: 'agroup',
+        type: 'project',
         members: [{
           id: 'user1',
           roles: ['ANOTHER_ROLE']
         }],
         permissions: {
-          'group.project.content.post.create' : ['ANOTHER_ROLE']
+          'group.project.content.post.update' : ['ANOTHER_ROLE']
         }
       }))
-  
-      getSession.mockReturnValueOnce({
-        roles: ['USER'],
-        id: 'user1',
-      })
-  
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
-  
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-  
-      const newPost = {
-        title: 'test'
-      }
-      
-      const response = await fetch(urlToBeUsed.href, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newPost),
-      })
-        
-      expect(response.status).toEqual(200)
-     
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER'],
+      id: 'test-id-initial-user',
     })
+    
+    const urlToBeUsed = new URL(url)
+    const params = { contentType: 'post', contentId: 'abc' }
+    
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
+    
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newComment),
+    })
+
+    expect(response.status).toEqual(401)
   })
+
+  test('Should return 404 if the content is not found', async () => {
+    findOneContent.mockReturnValue(Promise.resolve({}))
+      .mockReturnValueOnce(Promise.resolve(null))
+      .mockReturnValueOnce(Promise.resolve({ 
+        id: 'agroup',
+        type: 'project',
+        members: [{
+          id: 'user1',
+          roles: ['ANOTHER_ROLE']
+        }],
+        permissions: {
+          'group.project.content.post.update' : ['ANOTHER_ROLE']
+        }
+      }))
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER'],
+      id: 'test-id-initial-user',
+    })
+    
+    const urlToBeUsed = new URL(url)
+    const params = { contentType: 'post', contentId: 'abc' }
+    
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
+    
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newComment),
+    })
+
+    expect(response.status).toEqual(404)
+  })
+
+  test('Should not allow a non member to create a coment', async () => {
+    findOneContent.mockReturnValue(Promise.resolve({}))
+      .mockReturnValueOnce(Promise.resolve({
+        id: 'some-post',
+        groupId: 'agroup',
+        groupType: 'project'
+      }))
+      .mockReturnValueOnce(Promise.resolve({ 
+        id: 'agroup',
+        type: 'project',
+        members: [{
+          id: 'user1',
+          roles: ['ANOTHER_ROLE']
+        }],
+        permissions: {
+          'group.project.content.post.comments.create' : ['ANOTHER_ROLE']
+        }
+      }))
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER'],
+      id: 'test-id-initial-user',
+    })
+    
+    const urlToBeUsed = new URL(url)
+    const params = { contentType: 'post', contentId: 'abc' }
+    
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
+    
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newComment),
+    })
+
+    expect(response.status).toEqual(401)
+  })
+
+  test('Should allow a  member to create a coment', async () => {
+    findOneContent.mockReturnValue(Promise.resolve({}))
+      .mockReturnValueOnce(Promise.resolve({
+        id: 'some-post',
+        groupId: 'agroup',
+        groupType: 'project'
+      }))
+      .mockReturnValueOnce(Promise.resolve({ 
+        id: 'agroup',
+        type: 'project',
+        members: [{
+          id: 'user1',
+          roles: ['ANOTHER_ROLE']
+        }],
+        permissions: {
+          'group.project.content.post.comments.create' : ['ANOTHER_ROLE']
+        }
+      }))
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER'],
+      id: 'user1', // The right role
+    })
+    
+    const urlToBeUsed = new URL(url)
+    const params = { contentType: 'post', contentId: 'abc' }
+    
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
+    
+    const newComment = {
+      message: 'abc abc',
+      conversationId: null
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newComment),
+    })
+
+    expect(response.status).toEqual(200)
+  })
+ 
 
  
 })

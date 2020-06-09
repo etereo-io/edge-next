@@ -33,7 +33,7 @@ jest.mock('../../../../../edge.config', () => {
     },
     {
       type: 'post',
-      id: 1,
+      id: '1',
       author: '2',
       title: 'Example post',
       slug: 'example-post-1',
@@ -211,7 +211,7 @@ describe('Integrations tests for comment creation endpoint', () => {
 
   test('Should return comment details given a valid request', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: 'abc' }
+    const params = { contentType: 'post', contentId: '1' }
 
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])
@@ -245,7 +245,7 @@ describe('Integrations tests for comment creation endpoint', () => {
     expect(response.status).toBe(200)
     expect(jsonResult).toMatchObject({
       contentType: 'post',
-      contentId: 'abc',
+      contentId: '1',
       slug: expect.any(String),
       message: 'test [@anotheruser](/profile/@anotheruser) test',
       author: 'test-id',
