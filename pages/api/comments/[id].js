@@ -9,6 +9,9 @@ import {
 } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
+import {
+  findOneContent,
+} from '@lib/api/entities/content/content'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentDeleted } from '@lib/api/hooks/comment.hooks'
@@ -104,14 +107,12 @@ export default async (req, res) => {
         id: req.item.groupId, 
         type: req.item.groupType
       })
-
       if (!group) {
-        return res.status(404).json({
-          error: 'Not found'
-        })
+        await runMiddleware(req, res, hasPermissionsForComment(req.item.contentType, req.item))
+      } else {
+        await runMiddleware(req, res, hasPermissionsForGroupComment(group.type, req.item.contentType, group, req.item))
       }
       
-      await runMiddleware(req, res, hasPermissionsForGroupComment(groupType, type, group, req.item))
     } else {
       await runMiddleware(req, res, hasPermissionsForComment(req.item.contentType, req.item))
     }
