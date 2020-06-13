@@ -3,7 +3,7 @@ import DropdownMenu from '../../generic/dropdown-menu/dropdown-menu'
 import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import ThemeSelector from '../../generic/theme-selector/theme-selector'
-import { useUser, useContentTypes } from '@lib/client/hooks'
+import { useUser, useContentTypes, useGroupTypes } from '@lib/client/hooks'
 import { useState } from 'react'
 import Progress from './progress'
 import Avatar from '@components/user/avatar/avatar'
@@ -15,6 +15,8 @@ import config from '@lib/config'
 function UserHeader(props) {
   const user = props.user
   const contentTypes = useContentTypes(['create', 'admin'])
+  const groupTypes = useGroupTypes(['create', 'admin'])
+
   const [loading, setLoading] = useState(false)
 
   const onClickLogout = async () => {
@@ -66,7 +68,7 @@ function UserHeader(props) {
           </Link>
 
           <div className="user-actions-button">
-            <Link href={`/create/post`}>
+            <Link href={`/create/content/post`}>
               <a>
                 <Button success>Write a post</Button>
               </a>
@@ -87,7 +89,19 @@ function UserHeader(props) {
                   {contentTypes.map((type) => {
                     return (
                       <li key={type.slug}>
-                        <Link href={`/create/${type.slug}`}>
+                        <Link href={`/create/content/${type.slug}`}>
+                          <a className="header-navigation-item">
+                            Create {type.title}
+                          </a>
+                        </Link>
+                      </li>
+                    )
+                  })}
+
+                  {groupTypes.map((type) => {
+                    return (
+                      <li key={type.slug}>
+                        <Link href={`/create/group/${type.slug}`}>
                           <a className="header-navigation-item">
                             Create {type.title}
                           </a>

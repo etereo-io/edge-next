@@ -1,5 +1,7 @@
-import { useUser, useContentType } from '@lib/client/hooks'
+import { useUser } from '@lib/client/hooks'
 import { contentPermission } from '@lib/permissions'
+import { getContentTypeDefinition } from '@lib/config'
+
 
 import API from '@lib/api/api-endpoints'
 import ContentForm from '@components/content/write-content/content-form/content-form'
@@ -15,7 +17,7 @@ const EditContent = () => {
     query: { slug, type },
   } = router
 
-  const { contentType } = useContentType(type)
+  const contentType = getContentTypeDefinition(type)
   const [content, setContent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)

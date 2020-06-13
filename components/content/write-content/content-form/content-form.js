@@ -10,7 +10,6 @@ import ContentSummaryView from '../../read-content/content-summary-view/content-
 import Link from 'next/link'
 
 export default function (props) {
-  const [preview, setPreview] = useState(false)
 
   // Saving states
   const [loading, setLoading] = useState(false)

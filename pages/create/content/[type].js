@@ -1,7 +1,9 @@
 import ContentForm from '@components/content/write-content/content-form/content-form'
 import Layout from '@components/layout/normal/layout'
-import { usePermission, useContentType } from '@lib/client/hooks'
+import { usePermission } from '@lib/client/hooks'
 import { useRouter } from 'next/router'
+import { getContentTypeDefinition } from '@lib/config'
+
 import { useState, useEffect } from 'react'
 import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 
@@ -14,7 +16,7 @@ const CreateContent = () => {
     '/'
   )
 
-  const { contentType } = useContentType(type)
+  const contentType = getContentTypeDefinition(type)
 
   const [content, setContent] = useState(null)
 

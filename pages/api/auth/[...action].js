@@ -95,7 +95,7 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     // Block login if configured to require email verifiation
-    if (user && !user.emailVerified && config.user.emailVerification) {
+    if (user && !user.emailVerified && config.user.emailVerification && !user.tokens.length > 0) {
       res.status(401).json({
         error: 'Email not verified',
       })

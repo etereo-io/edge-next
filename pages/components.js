@@ -422,7 +422,7 @@ const Components = () => {
                     </li>
 
                     <li>
-                      <Link href="/create/post">
+                      <Link href="/create/content/post">
                         <a title="New Post">New Post</a>
                       </Link>
                     </li>
