@@ -9,7 +9,7 @@ const md = MarkdownIt({
   linkify: true,
 })
 
-function Field({ field, value, contentType }) {
+function Field({ field, value, typeDefinition }) {
   const getField = (field, value) => {
     const datatestId = `${field.type}-${field.name}`
 
@@ -76,7 +76,7 @@ function Field({ field, value, contentType }) {
       case FIELDS.TAGS:
         return (
           <div data-testid={datatestId}>
-            <TagsField tags={value} type={contentType} />
+            <TagsField tags={value} type={typeDefinition} />
           </div>
         )
 

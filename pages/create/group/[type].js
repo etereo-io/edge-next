@@ -1,4 +1,4 @@
-import ContentForm from '@components/content/write-content/content-form/content-form'
+import GroupForm from '@components/groups/write/group-form/group-form'
 import Layout from '@components/layout/normal/layout'
 import { usePermission } from '@lib/client/hooks'
 import { useRouter } from 'next/router'
@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 import { getGroupTypeDefinition } from '@lib/config'
 
-const CreateContent = () => {
+const CreateGroup = () => {
   const router = useRouter()
   const { type } = router.query
 
@@ -17,15 +17,15 @@ const CreateContent = () => {
 
   const groupType = getGroupTypeDefinition(type)
 
-  const [content, setContent] = useState(null)
+  const [group, setGroup] = useState(null)
 
   const onSave = (newItem) => {
-    setContent(newItem)
+    setGroup(newItem)
     // router.push(`/edit/${newItem.type}/${newItem.slug}`)
   }
 
   useEffect(() => {
-    if (groupType && !content) {
+    if (groupType && !group) {
       const defaultState = {
         draft: false,
       }
@@ -33,23 +33,23 @@ const CreateContent = () => {
       groupType.fields.forEach((field) => {
         // Default field value
         const fieldValue = field.value || field.defaultValue
-        // Content value
+        // group value
         defaultState[field.name] = fieldValue
       })
 
-      setContent(defaultState)
+      setGroup(defaultState)
     }
   }, [groupType])
 
   return (
     <>
-      <Layout title="New content">
+      <Layout title="New group">
         <div className="create-page">
           {available && (
             <>
-              <h1>Create new {groupType ? groupType.title : 'content'}</h1>
-              <ContentForm
-                content={content}
+              <h1>Create new {groupType ? groupType.title : 'group'}</h1>
+              <GroupForm
+                group={group}
                 type={groupType}
                 onSave={onSave}
               />
@@ -70,4 +70,4 @@ const CreateContent = () => {
   )
 }
 
-export default CreateContent
+export default CreateGroup

@@ -46,6 +46,13 @@ export const getConfig = (defaultOptions) => {
 
     slugGeneration: ['title', 'createdAt'],
 
+    methods: {
+      get: true,
+      post: true,
+      delete: true,
+      put: true
+    },
+
     permissions: {
       read: [publicRole],
       create: [adminRole, userRole],

@@ -63,6 +63,7 @@ describe('Integration tests for email verification with emailVerification enable
     findUserWithPassword.mockReturnValueOnce(
       Promise.resolve({
         ...newUser,
+        tokens: [],
         emailVerified: false,
       })
     )
@@ -84,6 +85,31 @@ describe('Integration tests for email verification with emailVerification enable
     expect(jsonResult).toMatchObject({
       error: 'Email not verified',
     })
+  })
+
+  test('Should return 200 for login a user with unverified email if user has tokens from an OAUTH login', async () => {
+    findUserWithPassword.mockReturnValueOnce(
+      Promise.resolve({
+        ...newUser,
+        tokens: [{
+          something: 'something'
+        }],
+        emailVerified: false,
+      })
+    )
+
+    const response = await fetch(urlLogin, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: newUser.email,
+        password: newUser.password,
+      }),
+    })
+
+    expect(response.status).toBe(200)
   })
 
   test('Should return 200 for login a user with verified email if configuration for verification is enabled', async () => {

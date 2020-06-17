@@ -18,7 +18,7 @@ export default function (props) {
 
   return (
     <>
-      <div className={`contentSummaryView ${props.className}`}>
+      <div className={`group-summary-view ${props.className}`}>
         <div className="">
           {props.type.fields
             .filter((f) => f.name === props.type.publishing.title)
@@ -26,16 +26,16 @@ export default function (props) {
               return (
                 <h1
                   className="content-title"
-                  key={`${field.name}-${props.content.id}`}
+                  key={`${field.name}-${props.group.id}`}
                 >
                   {links && (
                     <Link
-                      href={`/content/${props.type.slug}/${props.content.slug}`}
+                      href={`/group/${props.type.slug}/${props.group.slug}`}
                     >
-                      <a>{props.content[field.name]}</a>
+                      <a>{props.group[field.name]}</a>
                     </Link>
                   )}
-                  {!links && props.content[field.name]}
+                  {!links && props.group[field.name]}
                 </h1>
               )
             })}
@@ -45,15 +45,15 @@ export default function (props) {
             .filter((f) => f.name !== props.type.publishing.title)
             .map((field) => {
               return (
-                <div key={`${field.name}-${props.content.id}`}>
+                <div key={`${field.name}-${props.group.id}`}>
                   {shouldAddLink(field) && (
                     <Link
-                      href={`/content/${props.type.slug}/${props.content.slug}`}
+                      href={`/group/${props.type.slug}/${props.group.slug}`}
                     >
-                      <a title="Go to content detail">
+                      <a title="Go to item detail">
                         <DynamicFieldView
                           field={field}
-                          value={props.content[field.name]}
+                          value={props.group[field.name]}
                           typeDefinition={props.type}
                         />
                       </a>
@@ -62,7 +62,7 @@ export default function (props) {
                   {!shouldAddLink(field) && (
                     <DynamicFieldView
                       field={field}
-                      value={props.content[field.name]}
+                      value={props.group[field.name]}
                       typeDefinition={props.type}
                     />
                   )}

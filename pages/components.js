@@ -1226,7 +1226,7 @@ const links = [{
                       <DynamicFieldView
                         field={item.field}
                         value={item.value}
-                        contentType={{ slug: 'test' }}
+                        typeDefinition={{ slug: 'test' }}
                       />
                     )
                   })}
@@ -1236,7 +1236,7 @@ const links = [{
             <pre>{`
 {dynamicValues.map(item => {
   return (
-    <DynamicFieldView field={item.field} value={item.value} contentType={{slug: 'test'}} />
+    <DynamicFieldView field={item.field} value={item.value} typeDefinition={{slug: 'test'}} />
   )
 })}
             `}</pre>
