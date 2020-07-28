@@ -26,7 +26,7 @@ export default function (props) {
       const filteredData = {}
       // We filter the data that comes from the API into the state, because we don't want to send to the PUT and POST request
       // additional information
-      const allowedKeys = props.type.fields.map((f) => f.name).concat('draft')
+      const allowedKeys = props.type.fields.map((f) => f.name).concat('draft', 'members')
 
       allowedKeys.map((k) => {
         filteredData[k] = props.group[k]
@@ -54,7 +54,11 @@ export default function (props) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(jsonData),
+      body: JSON.stringify({
+        ...jsonData,
+        // Clean the members data that we are storing to only send the id and group role
+        members: jsonData.members ? jsonData.members.map(member => ({ id: member.id, roles: member.roles})) : []
+      }),
     }).then((result) => {
       // Files are always updated as a PUT
       return fetch(
@@ -73,6 +77,7 @@ export default function (props) {
     const formData = new FormData()
     const jsonData = {}
 
+    // Build the JSON data object and the formdata for the files.
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
       const fieldDefinition = props.type.fields.find((t) => t.name === key)
@@ -87,8 +92,11 @@ export default function (props) {
 
           fieldValue.forEach((item) => {
             if (item.isFile) {
+              // Append each new file to the formData to be uploaded
               formData.append(key, item.file)
             } else {
+
+              // If it is a file that is already uploaded before, keep it on the json data
               jsonData[key] = jsonData[key] ? [...jsonData[key], item] : [item]
             }
           })

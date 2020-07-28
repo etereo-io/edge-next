@@ -346,7 +346,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
       description:
         'test test  test test test test test test test test test test test test test test ',
       members: [{
-        role: 'GROUP_OTHER_STUFF',
+        roles: ['GROUP_OTHER_STUFF'],
         id: 'abc'
       }]
     }
@@ -385,7 +385,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
       description:
         'test test  test test test test test test test test test test test test test test ',
       members: [{
-        role: 'GROUP_MEMBER',
+        roles: ['GROUP_MEMBER'],
         id: 'abc'
       }]
     }

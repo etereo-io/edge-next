@@ -14,14 +14,14 @@ import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const getUsers = (filterParams, searchParams, paginationParams) => (
+const getUsers = (filterParams, paginationParams) => (
   req,
   res
 ) => {
   const permission = [`user.admin`]
   const showPrivateFields = hasPermission(req.currentUser, permission)
 
-  findUsers(filterParams, searchParams, paginationParams)
+  findUsers(filterParams, paginationParams)
     .then((data) => {
       res.status(200).json({
         ...data,
@@ -83,9 +83,10 @@ export default async (req, res) => {
 
   const filterParams = {}
 
-  const searchParams = {
-    search,
+  if (search) {
+    filterParams['$or'] = [{email: { $regex:  search } }, { username: { $regex: search }}]
   }
+ 
 
   const paginationParams = {
     sortBy,
@@ -121,7 +122,7 @@ export default async (req, res) => {
   }
 
   methods(req, res, {
-    get: getUsers(filterParams, searchParams, paginationParams),
+    get: getUsers(filterParams, paginationParams),
     post: addUser(req.body),
   })
 }

@@ -17,7 +17,10 @@ export default function({ users = [], onChange, roles = []}) {
   const addUser = (u) => {
     const newItems = [
       ...items,
-      u
+      {
+        ...u,
+        roles: [roles[0].value]
+      }
     ]
 
     setItems(newItems)
@@ -33,16 +36,33 @@ export default function({ users = [], onChange, roles = []}) {
     onChange(newItems)
   }
 
+  const setUserRole = (user, role) => {
+    const newItems = items.map(i => {
+      if (i.id !== user.id) {
+        return i
+      } else {
+        return {
+          ...i,
+          roles: [role]
+        }
+      }
+    })
+
+    setItems(newItems)
+    onChange(newItems)
+  }
+
+
   const headerCells = [
     (<TableCellHeader>
       User
     </TableCellHeader>),
-      (<TableCellHeader>
-        Role
-      </TableCellHeader>),
-        (<TableCellHeader>
-          Actions
-        </TableCellHeader>),
+    (<TableCellHeader>
+      Role
+    </TableCellHeader>),
+    (<TableCellHeader>
+      Actions
+    </TableCellHeader>),
   ]
 
   return (
@@ -57,13 +77,13 @@ export default function({ users = [], onChange, roles = []}) {
               return (
               
                 <TableRowBody>
-                  <TableCellBody>{u.email}</TableCellBody>
+                  <TableCellBody>{u.username || u.email}</TableCellBody>
                   <TableCellBody>
-                    <select value={u.role}>
-                  { roles.map(groupRole => {
-                    return (<option vlaue={groupRole.value}>{groupRole.label}</option>)
-                  })}
-                </select>
+                    <select className="select-role" value={u.roles[0]} onChange={(ev) => setUserRole(u, ev.target.value)}>
+                      { roles.map(groupRole => {
+                        return (<option value={groupRole.value}>{groupRole.label}</option>)
+                      })}
+                  </select>
                 </TableCellBody>
                 <TableCellBody><Button onClick={() => removeUser(u)}>Remove</Button></TableCellBody>
                
@@ -76,7 +96,11 @@ export default function({ users = [], onChange, roles = []}) {
       <style jsx>{
         `
         .user-permissions-top{
-          margin-bottom: var(--edge-gap);
+          margin-bottom: var(--edge-gap); 
+        }
+
+        .select-role {
+          min-width: 200px;
         }
         `
       }</style>

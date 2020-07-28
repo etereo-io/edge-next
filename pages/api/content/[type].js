@@ -14,7 +14,7 @@ import methods from '@lib/api/api-helpers/methods'
 import { onContentAdded } from '@lib/api/hooks/content.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const getContent = (filterParams, searchParams, paginationParams) => (
+const getContent = (filterParams, paginationParams) => (
   req,
   res
 ) => {
@@ -36,7 +36,7 @@ const getContent = (filterParams, searchParams, paginationParams) => (
     increasedFilters.draft = false
   }
 
-  findContent(type.slug, increasedFilters, searchParams, paginationParams)
+  findContent(type.slug, increasedFilters, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })
@@ -92,7 +92,7 @@ const createContent = async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, search, sortBy, sortOrder, from, limit, author, tags, groupId, groupType },
+    query: { type, sortBy, sortOrder, from, limit, author, tags, groupId, groupType },
   } = req
 
 
@@ -109,10 +109,6 @@ export default async (req, res) => {
   if (tags) {
     // TODO: Make tags filter generic
     filterParams['tags.slug'] = tags
-  }
-
-  const searchParams = {
-    search,
   }
 
   const paginationParams = {
@@ -173,7 +169,7 @@ export default async (req, res) => {
   }
 
   methods(req, res, {
-    get: getContent(filterParams, searchParams, paginationParams),
+    get: getContent(filterParams, paginationParams),
     post: createContent,
   })
 }

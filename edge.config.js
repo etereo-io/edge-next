@@ -257,8 +257,8 @@ export const getConfig = (defaultOptions) => {
     permissions: {
       read: [publicRole],
       create: [adminRole, userRole],
-      update: [adminRole],
-      delete: [adminRole],
+      update: ['GROUP_ADMIN', adminRole],
+      delete: ['GROUP_ADMIN', adminRole],
       admin: [adminRole],
     },
 

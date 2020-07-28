@@ -45,8 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   const response = await findContent(
     query.type,
     filterOptions,
-    { sortBy: 'createdAt', sortOrder: 'DESC' },
-    { limit: 10 }
+    { sortBy: 'createdAt', sortOrder: 'DESC', limit: 10 },
   )
 
   return {

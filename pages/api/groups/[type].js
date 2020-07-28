@@ -67,8 +67,11 @@ const createGroup = async (req, res) => {
           ...content,
           members: [{
             id: req.currentUser.id,
-            role: 'GROUP_ADMIN'
-          }, ...(content.members || [])],
+            roles: ['GROUP_ADMIN']
+          }, ...(content.members ? content.members.map(member => ({
+            id: member.id,
+            roles: member.roles
+          })) : [])],
         },
         req.currentUser
       )

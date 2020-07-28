@@ -71,7 +71,7 @@ export default function (props) {
 
     const formData = new FormData()
     const jsonData = {}
-
+    // Separate JsonDATA for normal data and formData for files
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
       const fieldDefinition = props.type.fields.find((t) => t.name === key)
@@ -86,8 +86,11 @@ export default function (props) {
 
           fieldValue.forEach((item) => {
             if (item.isFile) {
+              // Append each new file to the formData to be uploaded
               formData.append(key, item.file)
             } else {
+
+              // If it is a file that is already uploaded before, keep it on the json data
               jsonData[key] = jsonData[key] ? [...jsonData[key], item] : [item]
             }
           })

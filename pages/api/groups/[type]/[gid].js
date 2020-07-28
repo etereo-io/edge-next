@@ -6,6 +6,7 @@ import {
 } from '@lib/api/middlewares'
 import {
   deleteOneContent,
+  fillContent,
   findOneContent,
   updateOneContent,
 } from '@lib/api/entities/content/content'
@@ -100,7 +101,8 @@ const updateGroup = async (req, res) => {
       
       if (Object.keys(newContent).length === 0) {
         // It is an empty request, no file was uploaded, no file was deleted)
-        res.status(200).json(req.item)
+        const filled = await fillContent(req.item)
+        res.status(200).json(filled)
         return
       }
 

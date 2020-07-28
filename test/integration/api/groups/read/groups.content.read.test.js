@@ -255,7 +255,6 @@ describe('Integrations tests for content retrieval in a group', () => {
     expect(response.status).toEqual(200)
     expect(findContent).toHaveBeenCalledWith("post", 
       {"draft": false, "groupId": "agroup", "groupType": "project"}, 
-      {"search": undefined}, 
       {"from": undefined, "limit": undefined, "sortBy": undefined, "sortOrder": undefined})
   })
 
@@ -289,7 +288,6 @@ describe('Integrations tests for content retrieval in a group', () => {
       expect(response.status).toEqual(200)
       expect(findContent).toHaveBeenCalledWith("post", 
         {"draft": false, "groupId": "agroup", "groupType": "project"}, 
-        {"search": undefined}, 
         {"from": undefined, "limit": undefined, "sortBy": undefined, "sortOrder": undefined})
     })
   })

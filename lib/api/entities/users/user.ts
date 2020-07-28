@@ -88,7 +88,7 @@ export async function findUserWithPassword({ email, password }) : Promise<UserTy
   }
 }
 
-export function findUsers(options, searchOptions, paginationOptions) {
+export function findUsers(options, paginationOptions) {
   const { from = 0, limit = 15, sortBy, sortOrder = 'DESC' } = paginationOptions
   return getDB()
     .collection('users')
@@ -96,7 +96,7 @@ export function findUsers(options, searchOptions, paginationOptions) {
     .start(from)
     .find(options, {
       sortBy,
-      sortOrder,
+      sortOrder
     })
     .then((data) => {
       return {
