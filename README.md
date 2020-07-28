@@ -111,6 +111,11 @@ Check our roadmap if you want to add more cool things into Edge.
 
 ### After Version 1: Additional features
 
+- Groups
+  - Test that group creation and edition allows to update the members list
+  - Test that group retrieval returns the group members data fulfilled from DB
+  
+
 - Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552
 
 - Field options

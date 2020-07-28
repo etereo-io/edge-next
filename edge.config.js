@@ -262,6 +262,14 @@ export const getConfig = (defaultOptions) => {
       admin: [adminRole],
     },
 
+    roles: [{
+      label: 'Group Member',
+      value: 'GROUP_MEMBER'
+    }, {
+      label: 'Group admin',
+      value: 'GROUP_ADMIN'
+    }],
+
     publishing: {
       draftMode: true,
       title: 'title',
@@ -272,9 +280,9 @@ export const getConfig = (defaultOptions) => {
       permissions: {
         read: ['GROUP_MEMBER'],
         create: ['GROUP_ADMIN', adminRole],
-        update: ['GROUP_ADMIN',adminRole],
-        delete: ['GROUP_ADMIN',adminRole],
-        admin: ['GROUP_ADMIN',adminRole],
+        update: ['GROUP_ADMIN', adminRole],
+        delete: ['GROUP_ADMIN', adminRole],
+        admin: ['GROUP_ADMIN', adminRole],
       },
     },
 

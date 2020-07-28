@@ -15,7 +15,7 @@ import {
 } from '@lib/api/hooks/group.hooks'
 
 import { connect } from '@lib/api/db'
-import { contentValidations } from '@lib/validations/content'
+import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
@@ -86,7 +86,7 @@ const updateGroup = async (req, res) => {
     ...req.body,
   }
 
-  contentValidations(type, content)
+  groupValidations(type, content)
     .then(async () => {
       // Content is valid
 

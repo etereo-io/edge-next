@@ -6,8 +6,8 @@ import {
 } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
-import { contentValidations } from '@lib/validations/content'
 import { fillContentWithDefaultData } from '@lib/api/entities/content/content.utils'
+import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
@@ -56,8 +56,9 @@ const createGroup = async (req, res) => {
   const type = req.groupType
   const content = req.body
 
-  contentValidations(type, content)
+  groupValidations(type, content)
     .then(async () => {
+
       // Content is valid
       // Add default value to missing fields
       const newContent = fillContentWithDefaultData(
@@ -67,7 +68,7 @@ const createGroup = async (req, res) => {
           members: [{
             id: req.currentUser.id,
             role: 'GROUP_ADMIN'
-          }],
+          }, ...(content.members || [])],
         },
         req.currentUser
       )

@@ -17,6 +17,7 @@ function InputText(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      disabled={props.disabled}
       data-testid={props['data-testid']}
       required={!!props.field.required}
       minLength={
@@ -49,6 +50,7 @@ function InputTel(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      disabled={props.disabled}
       data-testid={props['data-testid']}
       required={!!props.field.required}
       pattern={props.pattern || null}
@@ -71,6 +73,7 @@ function InputDate(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      disabled={props.disabled}
       data-testid={props['data-testid']}
       required={!!props.field.required}
       min={typeof props.field.min !== 'undefined' ? props.field.min : null}
@@ -94,6 +97,7 @@ function InputUrl(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      disabled={props.disabled}
       data-testid={props['data-testid']}
       required={!!props.field.required}
       minLength={
@@ -126,6 +130,7 @@ function InputNumber(props) {
       name={props.field.name}
       placeholder={props.field.placeholder}
       defaultValue={props.value}
+      disabled={props.disabled}
       required={!!props.field.required}
       data-testid={props['data-testid']}
       min={typeof props.field.min !== 'undefined' ? props.field.min : null}
@@ -148,6 +153,7 @@ function Select(props) {
       <select
         data-testid={props['data-testid']}
         name={props.field.name}
+        disabled={props.disabled}
         className={`${touched ? 'touched' : ''}`}
         onChange={onChange}
         value={props.value}
@@ -199,6 +205,7 @@ function Radio(props) {
               id={props['data-testid'] + o.value}
               key={props['data-testid'] + o.value}
               value={o.value}
+              disabled={props.disabled}
               checked={
                 props.field.multiple
                   ? value.indexOf(o.value) !== -1
@@ -232,6 +239,7 @@ function InputImage(props) {
         name={props.field.name}
         required={!!props.field.required}
         multiple={!!props.field.multiple}
+        disabled={props.disabled}
         data-testid={props['data-testid']}
         className={`${touched ? 'touched' : ''}`}
         value={props.value}
@@ -259,6 +267,7 @@ function InputFile(props) {
       name={props.field.name}
       required={!!props.field.required}
       multiple={!!props.field.multiple}
+      disabled={props.disabled}
       capture={props.field.capture ? props.field.capture : null}
       data-testid={props['data-testid']}
       className={`${touched ? 'touched' : ''}`}
@@ -279,6 +288,7 @@ function InputTags(props) {
       placeholder={props.field.placeholder}
       name={props.field.name}
       value={props.value}
+      disabled={props.disabled}
       data-testid={props['data-testid']}
       onChange={(val) => props.onChange(val)}
     />
@@ -299,6 +309,7 @@ function TextArea(props) {
       defaultValue={props.value}
       data-testid={props['data-testid']}
       required={!!props.field.required}
+      disabled={props.disabled}
       minLength={
         typeof props.field.minlength !== 'undefined'
           ? props.field.minlength
@@ -335,6 +346,7 @@ function Field(props) {
           <TextArea
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -345,6 +357,7 @@ function Field(props) {
           <TextArea
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -355,6 +368,7 @@ function Field(props) {
           <InputImage
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -365,6 +379,7 @@ function Field(props) {
           <InputNumber
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -375,6 +390,7 @@ function Field(props) {
           <InputTel
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -385,6 +401,7 @@ function Field(props) {
           <InputUrl
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -395,6 +412,7 @@ function Field(props) {
           <InputDate
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -404,6 +422,7 @@ function Field(props) {
         return (
           <Toggle
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -414,6 +433,7 @@ function Field(props) {
           <InputFile
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -424,6 +444,7 @@ function Field(props) {
           <InputTags
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -434,6 +455,7 @@ function Field(props) {
           <Select
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -444,6 +466,7 @@ function Field(props) {
           <Radio
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
           />
@@ -454,6 +477,7 @@ function Field(props) {
           <InputText
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
             pattern={'https?://.+'}
@@ -465,6 +489,7 @@ function Field(props) {
           <textarea
             name={field.name}
             onChange={onChange}
+            disabled={props.disabled}
             value={JSON.stringify(props.value)}
             data-testid={datatestId}
           ></textarea>
@@ -475,6 +500,7 @@ function Field(props) {
           <InputText
             field={field}
             value={props.value}
+            disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
             pattern={field.pattern ? field.pattern : null}
