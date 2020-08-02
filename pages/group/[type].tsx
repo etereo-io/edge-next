@@ -1,7 +1,7 @@
 import { hasPermissionsForGroup, loadUser } from '@lib/api/middlewares'
 
-import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import { GetServerSideProps } from 'next'
+import GroupListView from '@components/groups/read/group-list-view/group-list-view'
 import Layout from '@components/layout/three-panels/layout'
 import LinkList from '@components/generic/link-list/link-list'
 import ToolBar from '@components/generic/toolbar/toolbar'
@@ -81,7 +81,7 @@ const ContentPage = (props) => {
         </div>
 
 
-        <ContentListView
+        <GroupListView
           initialData={props.data}
           type={props.groupType}
           infiniteScroll={true}

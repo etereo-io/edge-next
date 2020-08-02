@@ -26,7 +26,6 @@ export default function({ users = [], onChange, roles = []}) {
     setItems(newItems)
 
     onChange(newItems)
-    console.log(newItems)
   }
 
   const removeUser = u => {

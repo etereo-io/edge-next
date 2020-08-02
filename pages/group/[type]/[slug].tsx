@@ -1,7 +1,7 @@
 import { hasPermissionsForGroup, loadUser } from '@lib/api/middlewares'
 
-import ContentDetailView from '@components/content/read-content/content-detail-view/content-detail-view'
 import { GetServerSideProps } from 'next'
+import GroupDetailView from '@components/groups/read/group-detail-view/group-detail-view'
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
@@ -21,9 +21,13 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 
   await connect()
 
-  const searchOptions = {
-    id: query.gid
-  }
+  const searchOptions =  query.field && query.field === 'id'
+    ? {
+        id: query.slug,
+      }
+    : {
+        slug: query.slug,
+      }
 
   const item = await findOneContent(query.type, searchOptions)
 
@@ -69,9 +73,9 @@ const ContentPage = (props) => {
       panelUser={<ToolBar />}
     >
       {props.canAccess && props.data && (
-        <ContentDetailView
+        <GroupDetailView
           type={props.groupType}
-          content={props.data}
+          group={props.data}
           showComments={true}
         />
       )}
