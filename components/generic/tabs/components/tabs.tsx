@@ -11,11 +11,11 @@ export interface Props {
 }
 
 const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
-  const show = tabs.find((tab) => tab.id === value && tab.show !== false)
+  const showTabs = tabs.find((tab) => tab.id === value && tab.show !== false)
 
   return (
     <>
-      {show && (
+      {showTabs && (
         <>
           <ul className={cx('navigation', className)}>
             {tabs.map(

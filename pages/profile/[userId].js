@@ -48,9 +48,8 @@ const Profile = () => {
     }
   }, [data, canAccess, finished, currentUser])
 
-  const cantSeeContent = useMemo(
-    () =>
-      !finished || !currentUser.finished || !canAccess || (finished && !data),
+  const canSeeContent = useMemo(
+    () => finished && currentUser.finished && canAccess && data,
     [finished, currentUser, canEdit, data]
   )
 
@@ -61,7 +60,7 @@ const Profile = () => {
       ...visibleContentTypes.map((record) => ({
         id: record.slug,
         label: record.title,
-        show: !cantSeeContent,
+        show: canSeeContent,
         content: (
           <ContentListView
             infiniteScroll={false}
@@ -83,20 +82,11 @@ const Profile = () => {
         content: <UserActivity user={data} />,
       },
     ]
-  }, [visibleContentTypes, cantSeeContent, config, data])
-
-  // Loading
-  if (!finished || !currentUser.finished || !canAccess || (finished && !data)) {
-    return (
-      <Layout title="Profile" panelUser={<ToolBar />}>
-        <LoadingPage />
-      </Layout>
-    )
-  }
+  }, [visibleContentTypes, canSeeContent, config, data])
 
   return (
     <Layout title="Profile" panelUser={<ToolBar />}>
-      {cantSeeContent ? (
+      {!canSeeContent ? (
         <LoadingPage />
       ) : (
         <div className="profile-wrapper">

@@ -55,10 +55,12 @@ const UserSettings = () => {
   }, [userId])
 
   const canAccess = hasPermissionsToEdit
-  const cantSeeContent = useMemo(
-    () => loading || !currentUser.finished || !canAccess || !user,
+
+  const canSeeContent = useMemo(
+    () => !loading && currentUser.finished && canAccess && user,
     [loading, currentUser, canAccess, user]
   )
+
   const { value: tab, onChange: handleTabChange } = useTab('account')
 
   const tabs = useMemo(
@@ -66,7 +68,7 @@ const UserSettings = () => {
       {
         id: 'account',
         label: 'Account',
-        show: !cantSeeContent,
+        show: canSeeContent,
         content: (
           <>
             <EditProfilePictureForm user={user} />
@@ -81,23 +83,23 @@ const UserSettings = () => {
       {
         id: 'profile',
         label: 'Profile',
-        show: !cantSeeContent,
+        show: canSeeContent,
         content: <EditProfileForm user={user} />,
       },
       {
         id: 'password',
         label: 'Password',
-        show: !cantSeeContent,
+        show: canSeeContent,
         content: <EditPasswordForm user={user} />,
       },
       {
         id: 'activity',
         label: 'Activity',
-        show: !cantSeeContent,
+        show: canSeeContent,
         content: <UserActivity user={user} />,
       },
     ],
-    [user, cantSeeContent]
+    [user, canSeeContent]
   )
 
   useEffect(() => {
@@ -111,7 +113,7 @@ const UserSettings = () => {
 
   return (
     <Layout title="User Settings" hasDivider={true}>
-      {cantSeeContent ? (
+      {!canSeeContent ? (
         <LoadingPage />
       ) : (
         <section className="user-profile-settings-wr">
