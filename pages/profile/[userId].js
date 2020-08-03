@@ -1,10 +1,9 @@
 import { useContentTypes, useUser } from '@lib/client/hooks'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import Button from '@components/generic/button/button'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import CoverImage from '@components/user/cover-image/cover-image'
-import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import Layout from '@components/layout/three-panels/layout'
 import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 import ToolBar from '@components/generic/toolbar/toolbar'
@@ -15,31 +14,30 @@ import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
+import { Tabs, useTab } from '@components/generic/tabs'
 
-const Profile = (props) => {
+const Profile = () => {
   const router = useRouter()
   const { userId } = router.query
 
   const visibleContentTypes = useContentTypes(['read', 'admin'])
 
-  //Profile Tabs
-  const [activeTab, setActiveTab] = useState('post')
-  const onClickTab = (name) => {
-    setActiveTab(name)
-  }
-
   // Check permissions to read
   const currentUser = useUser()
 
   const hasPermissionsToRead = userPermission(currentUser.user, 'read', userId)
-  const hasPermissionsToEdit = userPermission(currentUser.user, 'update', userId)
+  const hasPermissionsToEdit = userPermission(
+    currentUser.user,
+    'update',
+    userId
+  )
 
   // Load profile data
-  const { data, error } = useSWR(userId ? `/api/users/` + userId : null, fetch)
+  const { data, error } = useSWR(userId ? `/api/users/${userId}` : null, fetch)
   const finished = Boolean(data) || Boolean(error)
 
-  const canAccess = hasPermissionsToRead 
-  const canEdit = hasPermissionsToEdit 
+  const canAccess = hasPermissionsToRead
+  const canEdit = hasPermissionsToEdit
 
   useEffect(() => {
     if (finished && currentUser.finished) {
@@ -50,106 +48,71 @@ const Profile = (props) => {
     }
   }, [data, canAccess, finished, currentUser])
 
-  // Loading
-  if (!finished || !currentUser.finished || !canAccess || (finished && !data)) {
-    return (
-      <Layout title="Profile" panelUser={<ToolBar />}>
-        <LoadingPage />
-      </Layout>
-    )
-  }
+  const canSeeContent = useMemo(
+    () => finished && currentUser.finished && canAccess && data,
+    [finished, currentUser, canEdit, data]
+  )
+
+  const { value: tab, onChange: handleTabChange } = useTab('post')
+
+  const tabs = useMemo(() => {
+    return [
+      ...visibleContentTypes.map((record) => ({
+        id: record.slug,
+        label: record.title,
+        show: canSeeContent,
+        content: (
+          <ContentListView
+            infiniteScroll={false}
+            type={record}
+            query={`author=${data?.id || null}`}
+          />
+        ),
+      })),
+      {
+        id: 'likes',
+        label: 'Likes',
+        show: config?.like?.enabled,
+        content: 'The likes',
+      },
+      {
+        id: 'activity',
+        label: 'Activity',
+        show: config?.activity.enabled,
+        content: <UserActivity user={data} />,
+      },
+    ]
+  }, [visibleContentTypes, canSeeContent, config, data])
 
   return (
     <Layout title="Profile" panelUser={<ToolBar />}>
-      <div className="profile-wrapper">
-        <CoverImage user={data} />
-        <div className="profile-user-info">
-          <UserProfileBox user={data} horizontal={true} />
+      {!canSeeContent ? (
+        <LoadingPage />
+      ) : (
+        <div className="profile-wrapper">
+          <CoverImage user={data} />
+          <div className="profile-user-info">
+            <UserProfileBox user={data} horizontal={true} />
 
-          <div className="profile-edit">
-            {canEdit && (
-              <div className="item">
-                <Button alt href={`/settings/${data ? data.id : ''}`}>
-                  Edit Profile
-                </Button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="content-container">
-          <div className="content-types">
-            <ul className="navigation">
-              {visibleContentTypes.map((cData) => {
-                return (
-                  <li
-                    onClick={() => onClickTab(cData.slug)}
-                    key={cData.slug}
-                    className={`${activeTab === cData.slug ? 'active' : ''}`}
-                  >
-                    <a>{cData.title}</a>
-                  </li>
-                )
-              })}
-
-              {config.like.enabled && (
-                <li
-                  onClick={() => onClickTab('likes')}
-                  className={`${activeTab === 'likes' ? 'active' : ''}`}
-                >
-                  <a>Likes</a>
-                </li>
-              )}
-              {config.activity.enabled && (
-                <li
-                  onClick={() => onClickTab('activity')}
-                  className={`${activeTab === 'activity' ? 'active' : ''}`}
-                >
-                  <a>Activity</a>
-                </li>
-              )}
-            </ul>
-
-            {visibleContentTypes.map((cData) => {
-              return (
-                <div
-                  className={`${
-                    activeTab === cData.slug
-                      ? 'navigation-tab active'
-                      : 'navigation-tab'
-                  }`}
-                >
-                  <ContentListView
-                    infiniteScroll={false}
-                    type={cData}
-                    query={`author=${data ? data.id : null}`}
-                  />
+            <div className="profile-edit">
+              {canEdit && (
+                <div className="item">
+                  <Button alt href={`/settings/${data?.id || ''}`}>
+                    Edit Profile
+                  </Button>
                 </div>
-              )
-            })}
-
-            <div
-              className={`${
-                activeTab === 'likes'
-                  ? 'navigation-tab active'
-                  : 'navigation-tab'
-              }`}
-            >
-              THE LIKES
+              )}
             </div>
+          </div>
 
-            <div
-              className={`${
-                activeTab === 'activity'
-                  ? 'navigation-tab active'
-                  : 'navigation-tab'
-              }`}
-            >
-              <UserActivity user={data} />
+          <div className="content-container">
+            <div className="content-types">
+              <Tabs tabs={tabs} onChange={handleTabChange} value={tab} />
             </div>
           </div>
         </div>
-      </div>
+      )}
+
       <style jsx>
         {`
           .profile-wrapper {
@@ -269,75 +232,6 @@ const Profile = (props) => {
             padding: var(--edge-gap);
             border-radius: var(--edge-radius);
             background: var(--edge-foreground);
-          }
-
-          .navigation {
-            background: var(--edge-background);
-            border-bottom: 1px solid var(--accents-2);
-            display: flex;
-            justify-content: space-between;
-            padding: var(--edge-gap-double);
-            padding-bottom: 0;
-            position: sticky;
-            top: 80px;
-            z-index: var(--z-index-minimum);
-          }
-
-          @media all and (max-width: 720px) {
-            .navigation {
-              padding: var(--edge-gap);
-              padding-bottom: 0;
-            }
-          }
-
-          .navigation li {
-            cursor: pointer;
-            height: 100%;
-            list-style: none;
-            padding-bottom: var(--edge-gap-half);
-          }
-
-          .navigation li a {
-            color: var(--accents-3);
-            font-size: 12px;
-            font-weight: 500;
-            text-decoration: none;
-            text-transform: uppercase;
-          }
-
-          .navigation li.active {
-            border-bottom: 2px solid var(--edge-foreground);
-          }
-
-          .navigation li.active a {
-            color: var(--edge-foreground);
-          }
-
-          .navigation-tab {
-            height: 0;
-            opacity: 0;
-            overflow: hidden;
-            padding: 0;
-            transition: opacity 0.65s ease;
-          }
-
-          .navigation-tab.active {
-            height: auto;
-            opacity: 1;
-            padding: var(--edge-gap-double);
-            transition: opacity 1s ease;
-          }
-
-          @media all and (max-width: 720px) {
-            .navigation-tab.active {
-              padding: var(--edge-gap);
-            }
-          }
-
-          @media all and (max-width: 460px) {
-            .navigation-tab.active {
-              padding: var(--edge-gap) 0;
-            }
           }
         `}
       </style>
