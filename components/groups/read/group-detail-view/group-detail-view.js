@@ -7,6 +7,7 @@ import Button from '@components/generic/button/button'
 import { format } from 'timeago.js'
 import { useUser } from '@lib/client/hooks'
 import GroupActions from '../../group-actions/group-actions'
+import GroupContentMenu from '../../group-content-menu/group-content-menu'
 
 export default function (props) {
 
@@ -41,6 +42,8 @@ export default function (props) {
             group={props.group}
           />
         )}
+
+        <GroupContentMenu group={props.group} />
       </article>
       <style jsx>{`
         .edge-item-card-footer {
