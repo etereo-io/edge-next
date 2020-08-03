@@ -15,7 +15,7 @@ export default function (props) {
   return (
     <div className={`content-actions ${props.className}`}>
       {canEdit && (
-        <Button href={`/edit/${props.content.type}/${props.content.slug}`}>
+        <Button href={`/edit/content/${props.content.type}/${props.content.slug}`}>
           Edit
         </Button>
       )}

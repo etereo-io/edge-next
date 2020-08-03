@@ -86,7 +86,7 @@ const ListItem = (props) => {
       <TableCellBody>0 times</TableCellBody>
       <TableCellBody>
         {!success && (
-          <Button href={`/edit/${props.type.slug}/${props.item.slug}`}>
+          <Button href={`/edit/content/${props.type.slug}/${props.item.slug}`}>
             Edit
           </Button>
         )}

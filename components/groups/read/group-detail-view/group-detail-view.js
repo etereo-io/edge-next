@@ -6,6 +6,7 @@ import config from '@lib/config'
 import Button from '@components/generic/button/button'
 import { format } from 'timeago.js'
 import { useUser } from '@lib/client/hooks'
+import GroupActions from '../../group-actions/group-actions'
 
 export default function (props) {
 
@@ -35,7 +36,11 @@ export default function (props) {
 
           </ul> 
         </footer>
-
+        {props.showActions && (
+          <GroupActions
+            group={props.group}
+          />
+        )}
       </article>
       <style jsx>{`
         .edge-item-card-footer {

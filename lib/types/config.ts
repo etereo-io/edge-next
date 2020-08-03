@@ -1,5 +1,6 @@
-import { ContentType } from './contentType'
+import { ContentTypeDefinition } from './contentTypeDefinition'
 import { FieldType } from './fields'
+import { GroupTypeDefinition } from './groupTypeDefinition'
 import { PermissionsType } from './permissions'
 import { UserType } from './user'
 
@@ -55,12 +56,12 @@ export declare type ConfigType = {
   },
 
   content: {
-    types: ContentType[];
+    types: ContentTypeDefinition[];
     initialContent: any[]; // TODO: Add type
   },
 
   groups: {
-    types: ContentType[];
+    types: GroupTypeDefinition[];
   }
   permissions: object;
 }

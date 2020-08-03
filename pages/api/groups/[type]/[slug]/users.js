@@ -17,8 +17,13 @@ import {
 const loadGroupItemMiddleware = async (req, res, cb) => {
   const type = req.groupType
 
-  const searchOptions = {
-    id: req.query.gid
+  // Allow to accept ID in the api call
+  // by default the API wors like /api/group/grouptype/the-group-slug but it can accept and ID if specified
+  // /api/group/grouptype/ID?field=id
+  if (req.query.field === 'id') {
+    searchOptions['id'] = req.query.slug
+  } else {
+    searchOptions['slug'] = req.query.slug
   }
 
   findOneContent(type.slug, searchOptions)

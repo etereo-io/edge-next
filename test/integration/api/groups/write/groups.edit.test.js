@@ -1,4 +1,4 @@
-import * as handler from '../../../../../pages/api/groups/[type]/[gid]'
+import * as handler from '../../../../../pages/api/groups/[type]/[slug]'
 
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
 import {
@@ -114,7 +114,7 @@ describe('Integrations tests for group edition', () => {
 
   test('a PUBLIC user should not be able to edit a group if its not allowed', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { type: 'project', gid: '1' }
+    const params = { type: 'project', slug: '1' }
 
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])
@@ -156,7 +156,7 @@ describe('Integrations tests for group edition', () => {
 
   test('a USER user should  be able to edit a group if its the author', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { type: 'project', gid: '1' }
+    const params = { type: 'project', slug: '1' }
 
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])
@@ -200,7 +200,7 @@ describe('Integrations tests for group edition', () => {
 
   test('a USER user should  be able to edit a group if its listed in the members group with a privileged role', async () => {
     const urlToBeUsed = new URL(url)
-    const params = { type: 'project', gid: '1' }
+    const params = { type: 'project', slug: '1' }
 
     Object.keys(params).forEach((key) =>
       urlToBeUsed.searchParams.append(key, params[key])

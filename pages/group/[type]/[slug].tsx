@@ -76,7 +76,7 @@ const ContentPage = (props) => {
         <GroupDetailView
           type={props.groupType}
           group={props.data}
-          showComments={true}
+          showActions={true}
         />
       )}
     </Layout>

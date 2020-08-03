@@ -124,7 +124,7 @@ export default function (props) {
             {(canEditComment.available || isContentOwner) && (
               <div className="header-item-action">
                 <Button
-                  href={`/edit/${props.content.type}/${props.content.slug}`}
+                  href={`/edit/content/${props.content.type}/${props.content.slug}`}
                   round
                   aria-label="round button"
                 >
