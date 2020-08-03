@@ -1,19 +1,25 @@
-export default function (props) {
-  const defaultSrc = '/static/demo-images/default-avatar.jpg'
-  const title = props.title || 'Avatar'
-  const width = props.width || '100px'
+const defaultSrc = '/static/demo-images/default-avatar.jpg'
+
+export default function ({
+  src = defaultSrc,
+  title = 'Avatar',
+  status = '',
+  width = '100px',
+  className = '',
+  loading = false
+}) {
 
   return (
     <>
       <div
-        className={`avatar ${props.className} ${
-          props.status ? 'has-status' : ''
-        } ${props.status}`}
+        className={`avatar ${className} ${
+          status ? 'has-status' : ''
+        } ${status}`}
       >
-        {!props.loading && (
-          <img title={title} src={props.src || defaultSrc}></img>
+        {!loading && (
+          <img title={title} src={src}></img>
         )}
-        {props.loading && (
+        {loading && (
           <div className="empty-avatar">
             <img src="/static/demo-images/loading-avatar.gif" />
           </div>
