@@ -23,7 +23,6 @@ import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/
 import Map from '@components/generic/map/map'
 import PasswordStrength from '@components/generic/password-strength/password-strength'
 import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
-import Select from '@components/generic/select/select'
 import SocialShare from '@components/generic/social-share/social-share'
 import TagsField from '@components/generic/tags-field/tags-field'
 import TagsInput from '@components/generic/tags-input/tags-input'
@@ -32,6 +31,8 @@ import Toggle from '@components/generic/toggle/toggle'
 import Upload from '@components/generic/upload/upload'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '@components/generic/video-recorder/video-recorder-wrapper'
+import { Tabs, useTab } from '@components/generic/tabs'
+import { useMemo } from 'react'
 
 function Menu() {
   return (
@@ -124,6 +125,9 @@ function Menu() {
           </li>
           <li>
             <a href="#table">Table</a>
+          </li>
+          <li>
+            <a href="#tabs">Tabs</a>
           </li>
           <li>
             <a href="#videorecorder">Video Recorder</a>
@@ -386,6 +390,37 @@ const Components = () => {
       value: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     },
   ]
+
+  const { value: tab, onChange: handleTabChange } = useTab('account')
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: 'account',
+        label: 'Account',
+        content: 'Account tab',
+      },
+      {
+        id: 'likes',
+        label: 'likes',
+        counter: 5,
+        content: 'Tab with counter',
+      },
+      {
+        id: 'profile',
+        label: 'Profile',
+        disabled: true,
+        content: 'You can see tab label but cannot see content'
+      },
+      {
+        id: 'private',
+        label: 'Private tab',
+        show: false,
+        content: 'This tab will not be shown because of "show" property',
+      },
+    ],
+    []
+  )
 
   return (
     <Layout title="Components showcase" fullWidth={true} panelUser={<Menu />}>
@@ -1423,6 +1458,46 @@ const links = [{
   </TableRowBody>
 </Table>
   `}</pre>
+          </div>
+          <div id="tabs" className="component">
+            <h3>Tabs</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Tabs tabs={tabs} value={tab} onChange={handleTabChange} />
+              </div>
+            </div>
+            <pre>{`
+  const { value: tab, onChange: handleTabChange } = useTab('account')
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: 'account',
+        label: 'Account',
+        content: 'Account tab',
+      },
+      {
+        id: 'likes',
+        label: 'likes',
+        counter: 5,
+        content: 'Tab with counter',
+      },
+      {
+        id: 'profile',
+        label: 'Profile',
+        disabled: true,
+        content: 'You can see tab label but cannot see content'
+      },
+      {
+        id: 'private',
+        label: 'Private tab',
+        show: false,
+        content: 'This tab will not be shown because of "show" property',
+      },
+    ],
+    []
+  )
+                  `}</pre>
           </div>
 
           <div id="videorecorder" className="component">
