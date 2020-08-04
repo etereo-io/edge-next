@@ -45,7 +45,7 @@ export default function(props) {
   }
 
   const submitRequest = (data, jsonData) => {
-    const groupParamsString = `groupId=${props.group.id}&groupType=${props.group.type}`;
+    const groupParamsString = props.group ? `groupId=${props.group.id}&groupType=${props.group.type}` : '';
     const url = `${API.content[props.type.slug]}${
       props.content.id
         ? `/${props.content.id}?field=id&${groupParamsString}`

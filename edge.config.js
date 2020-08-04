@@ -289,7 +289,7 @@ export const getConfig = (defaultOptions) => {
     contentTypes: [{
       slug: 'post',
       permissions: {
-        read: [publicRole],
+        read: ['GROUP_MEMBER'],
         create: ['GROUP_MEMBER'],
         update: ['GROUP_ADMIN'],
         delete: ['GROUP_ADMIN'],
