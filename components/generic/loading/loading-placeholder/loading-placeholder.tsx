@@ -1,14 +1,12 @@
-export default function ({ width, height, borderRadius }) {
+export default function ({ width = '200px', height = '20px', borderRadius = 'var(--edge-radius)' }) {
   return (
     <>
       <div className="loading-placeholder"></div>
       <style jsx>{`
         .loading-placeholder {
-          width: ${width || '200px'};
-          height: ${height || '20px'};
-          border-radius: ${typeof borderRadius !== 'undefined'
-            ? borderRadius
-            : 'var(--edge-radius)'};
+          width: ${width};
+          height: ${height};
+          border-radius: ${borderRadius};
           background: linear-gradient(
             -45deg,
             var(--accents-1),

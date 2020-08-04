@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react'
 import useSWR, { useSWRPages } from 'swr'
-import Link from 'next/link'
+
 import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
-import GroupDetailView from '../group-detail-view/group-detail-view'
+import Card from '@components/generic/card/card'
+import GroupSummaryView from '../group-summary-view/group-summary-view'
+import Link from 'next/link'
+import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 import fetch from '@lib/fetcher'
 import { useOnScreen } from '@lib/client/hooks'
-import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 
 function LoadingItems() {
   return (
@@ -58,7 +60,7 @@ function EmptyComponent() {
         <h3>Nothing found</h3>
         <div className="empty-image">
           <img
-            title="Empty content"
+            title="No groups found"
             src="/static/demo-images/confused-travolta.gif"
           />
         </div>
@@ -94,7 +96,7 @@ export default function (props) {
   } = useSWRPages(
     identificator,
     ({ offset, withSWR }) => {
-      const apiUrl = `${API.content[props.type.slug]}?limit=10${
+      const apiUrl = `${API.groups[props.type.slug]}?limit=10${
         offset ? '&from=' + offset : ''
       }${query ? `&${query}` : ''}`
 
@@ -112,11 +114,13 @@ export default function (props) {
       return results.map((item) => {
         return (
           <div key={item.id + item.createdAt}>
-            <GroupDetailView
-              group={item}
-              type={props.type}
-              summary={true}
-            />
+            <Card>
+              <GroupSummaryView
+                group={item}
+                linkToDetail={true}
+                type={props.type}
+              />
+            </Card>
           </div>
         )
       })
@@ -142,7 +146,7 @@ export default function (props) {
 
   return (
     <>
-      <div className="contentListView">
+      <div className="group-list-view">
         {pages}
         {isLoadingMore && <LoadingItems />}
         {isEmpty && <EmptyComponent />}
@@ -161,12 +165,7 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-        .content-summary-wrapper {
-          margin-bottom: var(--edge-gap-double);
-          border-bottom: var(--light-border);
-          padding-bottom: var(--edge-gap-double);
-        }
-
+        
         .load-more {
           display: flex;
           justify-content: center;

@@ -1,18 +1,16 @@
-
-import GroupSummaryView from '../group-summary-view/group-summary-view'
-import { usePermission } from '@lib/client/hooks'
-import { useState } from 'react'
-import config from '@lib/config'
 import Button from '@components/generic/button/button'
-import { format } from 'timeago.js'
-import { useUser } from '@lib/client/hooks'
 import GroupActions from '../../group-actions/group-actions'
 import GroupContentMenu from '../../group-content-menu/group-content-menu'
+import GroupSummaryView from '../group-summary-view/group-summary-view'
+import config from '@lib/config'
+import { format } from 'timeago.js'
+import { usePermission } from '@lib/client/hooks'
+import { useState } from 'react'
+import { useUser } from '@lib/client/hooks'
 
 export default function (props) {
 
   const { user } = useUser()
-
   
   return (
     <>
@@ -24,7 +22,7 @@ export default function (props) {
         <div className="edge-item-card-content">
           <GroupSummaryView
             group={props.group}
-            summary={!!props.summary}
+            linkToDetail={false}
             type={props.type}
           />
         </div>
@@ -70,6 +68,7 @@ export default function (props) {
           padding: var(--edge-gap-medium);
           position: relative;
         }
+        
         @media all and (max-width: 720px) {
           .edge-item-card-footer {
             display: flex;

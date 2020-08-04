@@ -178,7 +178,7 @@ export default function (props) {
         </form>
 
         <div className="preview">
-          <GroupSummaryView group={state} type={props.type} />
+          <GroupSummaryView group={state} type={props.type} linkToDetail={false}/>
         </div>
       </div>
       <style jsx>

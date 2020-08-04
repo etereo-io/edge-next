@@ -1,8 +1,10 @@
-import { useContentTypes, useUser } from '@lib/client/hooks'
+import { useContentTypes, useGroupTypes, useUser } from '@lib/client/hooks'
 import { useEffect, useMemo } from 'react'
 
 import Button from '@components/generic/button/button'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
+import GroupListView from '@components/groups/read/group-list-view/group-list-view'
+
 import CoverImage from '@components/user/cover-image/cover-image'
 import Layout from '@components/layout/three-panels/layout'
 import LoadingPage from '@components/generic/loading/loading-page/loading-page'
@@ -21,6 +23,8 @@ const Profile = () => {
   const { userId } = router.query
 
   const visibleContentTypes = useContentTypes(['read', 'admin'])
+
+  const visibleGroupTypes = useGroupTypes(['read', 'admin'])
 
   // Check permissions to read
   const currentUser = useUser()
@@ -70,15 +74,31 @@ const Profile = () => {
         ),
       })),
       {
+        id: 'groups',
+        label: 'Groups',
+        show: canSeeContent,
+        content: (visibleGroupTypes.map(groupType => {
+          return (
+            <GroupListView
+            infiniteScroll={false}
+            type={groupType}
+            query={`member=${data?.id || null}`}
+          />
+          )
+        })
+          
+        ),
+      }, 
+      {
         id: 'likes',
         label: 'Likes',
-        show: config?.like?.enabled,
+        show: canSeeContent && config?.like?.enabled,
         content: 'The likes',
       },
       {
         id: 'activity',
         label: 'Activity',
-        show: config?.activity.enabled,
+        show: canSeeContent && config?.activity.enabled,
         content: <UserActivity user={data} />,
       },
     ]

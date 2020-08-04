@@ -4,12 +4,10 @@ import { FIELDS } from '@lib/config/config-constants'
 import Link from 'next/link'
 
 export default function (props) {
-  // Link to detail if it's not a summary
-  const links = !!props.summary
 
   const shouldAddLink = (field) => {
     return (
-      links &&
+      props.linkToDetail &&
       field.type !== FIELDS.IMAGE &&
       field.type !== FIELDS.FILE &&
       field.type !== FIELDS.TAGS &&
@@ -31,19 +29,19 @@ export default function (props) {
                     className="content-title"
                     key={`${field.name}-${props.group.id}`}
                   >
-                    {links && (
+                    {props.linkToDetail && (
                       <Link
                         href={`/group/${props.type.slug}/${props.group.slug}`}
                       >
                         <a>{props.group[field.name]}</a>
                       </Link>
                     )}
-                    {!links && props.group[field.name]}
+                    {!props.linkToDetail && props.group[field.name]}
                   </h1>
                 )
               })}
 
-            <div className="members-wrapper">
+            { props.group.members && <div className="members-wrapper">
               <div className="members-title">Members</div>
               <div className="members-list">
                 { props.group.members.map(member => {
@@ -52,7 +50,7 @@ export default function (props) {
                     )
                   }) }  
               </div>
-            </div>
+            </div>}
           </div>
 
           {props.type.fields

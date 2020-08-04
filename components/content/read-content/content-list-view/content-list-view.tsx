@@ -163,12 +163,6 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-        .content-summary-wrapper {
-          margin-bottom: var(--edge-gap-double);
-          border-bottom: var(--light-border);
-          padding-bottom: var(--edge-gap-double);
-        }
-
         .load-more {
           display: flex;
           justify-content: center;

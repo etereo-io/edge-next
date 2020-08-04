@@ -1,11 +1,11 @@
 export default function ({
-  children,
-  alt,
-  featured,
-  success,
-  secondary,
-  warning,
-  alert,
+  children = null,
+  alt = false,
+  featured = false,
+  success = false,
+  secondary = false,
+  warning = false,
+  alert  = false,
   ...props
 }) {
   return (
