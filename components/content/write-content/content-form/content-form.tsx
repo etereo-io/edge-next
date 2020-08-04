@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
+import Card from '@components/generic/card/card'
+import ContentSummaryView from '../../read-content/content-summary-view/content-summary-view'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
+import { FIELDS } from '@lib/config/config-constants'
+import GroupSummaryView from '@components/groups/read/group-summary-view/group-summary-view'
+import Link from 'next/link'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
-import { FIELDS } from '@lib/config/config-constants'
-import ContentSummaryView from '../../read-content/content-summary-view/content-summary-view'
-import Link from 'next/link'
 
 export default function (props) {
 
@@ -130,7 +132,7 @@ export default function (props) {
 
   return (
     <>
-      { props.group && <h2>Group {props.group.id}</h2>}
+     
       <div className="contentForm">
         <form name="content-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
@@ -167,9 +169,21 @@ export default function (props) {
           )}
           {error && <div className="error-message">Error saving </div>}
         </form>
+        
+        <div className="preview-wrapper">
+          <div className="preview">
+            <ContentSummaryView content={state} type={props.type} />
 
-        <div className="preview">
-          <ContentSummaryView content={state} type={props.type} />
+          </div>
+          { props.group && (
+            <Card>
+              <GroupSummaryView
+                group={props.group}
+                linkToDetail={true}
+                type={props.groupType}
+              />
+            </Card>
+          )}
         </div>
       </div>
       <style jsx>
@@ -187,13 +201,18 @@ export default function (props) {
             width: 50%;
           }
 
+          .preview-wrapper {
+
+            position: sticky;
+            top: 72px;
+            width: 40%;
+          }
+
           .preview {
             border-radius: 4px;
             box-shadow: var(--shadow-large);
             padding: var(--edge-gap);
-            position: sticky;
-            top: 72px;
-            width: 40%;
+            margin-bottom: var(--edge-gap);
           }
 
           .actions {
