@@ -9,7 +9,7 @@ export default function ({ mobileCollapse = false }) {
       <nav className={`site-menu ${mobileCollapse ? 'collapse' : ''}`}>
         <ul>
           {user && <li>
-            <Link href={`/profile/@${user.username}?tab=groups`}>
+            <Link href={`/profile/@${user.username}?selectedTab=groups`}>
               <a title="My groups" className="site-menu-item">
                 <img className="site-menu-icon" src="/icons/icon-groups.svg" />
                 <span className="site-menu-title">My Groups</span>

@@ -8,6 +8,7 @@ export default function useTab(initialValue: string | number) {
 
   return {
     value,
+    setValue,
     onChange,
     isActive,
   }
