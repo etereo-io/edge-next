@@ -31,7 +31,7 @@ const UserSettings = () => {
     userId
   )
 
-  // Load profile data
+  // TODO: need to change user object after form was being submitted. We can do it via passing an event to each component.
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
