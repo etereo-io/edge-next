@@ -130,6 +130,7 @@ export default function (props) {
 
   return (
     <>
+      { props.group && <h2>Group {props.group.id}</h2>}
       <div className="contentForm">
         <form name="content-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
