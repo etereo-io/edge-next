@@ -12,7 +12,7 @@ export default function GroupMembers({ members = [], visible = 3}) {
             <div className="members-list">
               { membersVisible.map(member => {
                   return (
-                    <div className="member-item"><Avatar radius={'100%'} width={'50px'} src={member.profile.picture?.path} /></div>
+                    <div className="member-item"><Avatar radius={'100%'} width={'50px'} user={member} /></div>
                   )
                 }) } 
               { extraMembers !== 0 && <div className="member-item"><div className="extra-members">+ {extraMembers}</div></div>} 

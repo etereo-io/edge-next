@@ -20,11 +20,7 @@ export default function () {
           <div className="edge-avatar-user">
             <Avatar
               width={'32px'}
-              src={
-                user && user.profile && user.profile.picture
-                  ? user.profile.picture.path
-                  : null
-              }
+              user={user}
             />
 
             <div className="edge-avatar-user-info">

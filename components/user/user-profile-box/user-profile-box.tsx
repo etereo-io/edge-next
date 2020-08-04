@@ -16,10 +16,7 @@ export default function ({ user, ...props }) {
               <Link href={`/profile/@${user.username}`}>
                 <a title={`${user.username} profile`}>
                   <Avatar
-                    src={
-                      user.profile.picture ? user.profile.picture.path : null
-                    }
-                    title={`${user.username} avatar`}
+                    user={user}
                   />
                 </a>
               </Link>

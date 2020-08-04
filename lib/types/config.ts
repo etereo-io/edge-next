@@ -47,6 +47,9 @@ export declare type ConfigType = {
   like: {
     enabled: boolean;
   },
+  follow: {
+    enabled: boolean;
+  },
   user: {
     roles: string[];
     emailVerification: boolean;
