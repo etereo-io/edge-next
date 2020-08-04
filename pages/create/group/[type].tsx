@@ -1,7 +1,7 @@
 import GroupForm from '@components/groups/write/group-form/group-form'
 import { groupPermission } from '@lib/permissions'
 import Layout from '@components/layout/normal/layout'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { GetServerSideProps } from 'next'
 import { connect } from '@lib/api/db'
 import { getGroupTypeDefinition } from '@lib/config'
@@ -53,14 +53,18 @@ const CreateGroup = ({ groupType }) => {
     groupType.fields.forEach(({ name, value, defaultValue }) => {
       state[name] = value || defaultValue
     })
-  }, [])
+
+    return state
+  }, [groupType])
 
   const [group, setGroup] = useState(defaultState)
 
-  const onSave = (newItem) => {
-    setGroup(newItem)
-    // router.push(`/edit/${newItem.type}/${newItem.slug}`)
-  }
+  const onSave = useCallback(
+    (newItem) => {
+      setGroup(newItem)
+    },
+    [setGroup]
+  )
 
   return (
     <>
