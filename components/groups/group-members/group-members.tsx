@@ -1,4 +1,5 @@
 import Avatar from '@components/user/avatar/avatar'
+import { UserType } from '@lib/types'
 
 export default function GroupMembers({ members = [], visible = 3}) {
   const membersVisible = members.slice(0, visible)
@@ -10,9 +11,9 @@ export default function GroupMembers({ members = [], visible = 3}) {
           <div className="members-wrapper">
             <div className="members-title">Members</div>
             <div className="members-list">
-              { membersVisible.map(member => {
+              { membersVisible.map((member, index ) => {
                   return (
-                    <div className="member-item"><Avatar radius={'100%'} width={'50px'} user={member} /></div>
+                    <div className="member-item" key={`${member.id}-${index}`}><Avatar radius={'100%'} width={'50px'} user={member as UserType} /></div>
                   )
                 }) } 
               { extraMembers !== 0 && <div className="member-item"><div className="extra-members">+ {extraMembers}</div></div>} 

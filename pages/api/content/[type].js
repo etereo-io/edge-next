@@ -1,4 +1,8 @@
-import { addContent, findContent, findOneContent } from '@lib/api/entities/content/content'
+import {
+  addContent,
+  findContent,
+  findOneContent,
+} from '@lib/api/entities/content/content'
 import {
   hasPermissionsForContent,
   hasPermissionsForGroupContent,
@@ -14,10 +18,7 @@ import methods from '@lib/api/api-helpers/methods'
 import { onContentAdded } from '@lib/api/hooks/content.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const getContent = (filterParams, paginationParams) => (
-  req,
-  res
-) => {
+const getContent = (filterParams, paginationParams) => (req, res) => {
   const type = req.contentType
 
   const increasedFilters = {
@@ -47,12 +48,11 @@ const getContent = (filterParams, paginationParams) => (
     })
 }
 
-
 const createContent = async (req, res) => {
   const type = req.contentType
 
   const content = {
-    ...req.body
+    ...req.body,
   }
 
   contentValidations(type, content)
@@ -64,11 +64,11 @@ const createContent = async (req, res) => {
         {
           ...content,
           groupId: req.query.groupId ? req.query.groupId : null,
-          groupType: req.query.groupType ? req.query.groupType: null,
+          groupType: req.query.groupType ? req.query.groupType : null,
         },
         req.currentUser
       )
-    
+
       addContent(type.slug, newContent)
         .then((data) => {
           // Trigger on content added hook
@@ -92,14 +92,23 @@ const createContent = async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, sortBy, sortOrder, from, limit, author, tags, groupId, groupType },
+    query: {
+      type,
+      sortBy,
+      sortOrder,
+      from,
+      limit,
+      author,
+      tags,
+      groupId,
+      groupType,
+    },
   } = req
-
 
   // Group filtering if not set marks it to null
   const filterParams = {
-    groupId: groupId ? groupId: null,
-    groupType: groupType ? groupType: null,
+    groupId: groupId ? groupId : null,
+    groupType: groupType ? groupType : null,
   }
 
   if (author) {
@@ -146,18 +155,21 @@ export default async (req, res) => {
 
   try {
     if (groupId) {
-      const group = await findOneContent({
-        id: groupId, 
-        type: groupType
+      const group = await findOneContent(groupType, {
+        id: groupId,
       })
 
       if (!group) {
         return res.status(404).json({
-          error: 'Not found'
+          error: 'Not found',
         })
       }
-      
-      await runMiddleware(req, res, hasPermissionsForGroupContent(groupType, type, group))
+
+      await runMiddleware(
+        req,
+        res,
+        hasPermissionsForGroupContent(groupType, type, group)
+      )
     } else {
       await runMiddleware(req, res, hasPermissionsForContent(type))
     }

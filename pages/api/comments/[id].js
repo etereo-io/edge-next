@@ -9,9 +9,7 @@ import {
 } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
-import {
-  findOneContent,
-} from '@lib/api/entities/content/content'
+import { findOneContent } from '@lib/api/entities/content/content'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentDeleted } from '@lib/api/hooks/comment.hooks'
@@ -102,27 +100,40 @@ export default async (req, res) => {
 
   try {
     if (req.item.groupId) {
-      // Check permissions in the group 
-      const group  = await findOneContent({
-        id: req.item.groupId, 
-        type: req.item.groupType
+      // Check permissions in the group
+      const group = await findOneContent(req.item.groupType, {
+        id: req.item.groupId,
       })
       if (!group) {
-        await runMiddleware(req, res, hasPermissionsForComment(req.item.contentType, req.item))
+        await runMiddleware(
+          req,
+          res,
+          hasPermissionsForComment(req.item.contentType, req.item)
+        )
       } else {
-        await runMiddleware(req, res, hasPermissionsForGroupComment(group.type, req.item.contentType, group, req.item))
+        await runMiddleware(
+          req,
+          res,
+          hasPermissionsForGroupComment(
+            group.type,
+            req.item.contentType,
+            group,
+            req.item
+          )
+        )
       }
-      
     } else {
-      await runMiddleware(req, res, hasPermissionsForComment(req.item.contentType, req.item))
+      await runMiddleware(
+        req,
+        res,
+        hasPermissionsForComment(req.item.contentType, req.item)
+      )
     }
   } catch (e) {
-
     return res.status(401).json({
       error: e.message,
     })
   }
-
 
   methods(req, res, {
     get: getComment,

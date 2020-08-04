@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react'
 
+import ContentForm from '@components/content/write-content/content-form/content-form'
 import { GetServerSideProps } from 'next'
-import GroupForm from '@components/groups/write/group-form/group-form'
 import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
+import { contentPermission } from '@lib/permissions'
 import { findOneContent } from '@lib/api/entities/content/content'
-import { getGroupTypeDefinition } from '@lib/config'
+import { getContentTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
-import { groupPermission } from '@lib/permissions'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })
@@ -21,26 +21,26 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const { type, slug } = query
 
-  const groupTypeDefinition = getGroupTypeDefinition(type)
+  const contentTypeDefinition = getContentTypeDefinition(type)
 
-  // check if group is not in groups mapping
-  if (!groupTypeDefinition || !slug || !type) {
+  // check if content is not in groups mapping
+  if (!contentTypeDefinition || !slug || !type) {
     notFound(res)
     return
   }
 
   await connect()
 
-  let group = null
+  let content = null
 
   try {
     const searchOptions = {
       slug,
     }
 
-    group = await findOneContent(type, searchOptions)
+    content = await findOneContent(type, searchOptions)
 
-    if (!group) {
+    if (!content) {
       notFound(res)
       return
     }
@@ -51,8 +51,13 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   const currentUser = await getSession(req)
 
-  // check if current user can update a group
-  const canAccess = groupPermission(currentUser, type, 'update', group)
+  // check if current user can update a content
+  const canAccess = contentPermission(
+    currentUser,
+    contentTypeDefinition.slug,
+    'update',
+    content
+  )
 
   if (!canAccess) {
     notFound(res)
@@ -61,28 +66,28 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      groupType: groupTypeDefinition,
-      groupObject: group,
+      contentType: contentTypeDefinition,
+      contentObject: content,
     },
   }
 }
 
-const EditGroup = ({ groupType, groupObject }) => {
-  const [group, setGroup] = useState(groupObject)
+const EditContent = ({ contentType, contentObject }) => {
+  const [content, setContent] = useState(contentObject)
 
   const onSave = useCallback(
     (newItem) => {
-      setGroup(newItem)
+      setContent(newItem)
     },
-    [setGroup]
+    [setContent]
   )
 
   return (
     <>
-      <Layout title="Edit group">
+      <Layout title="Edit content">
         <div className="edit-page">
-          <h1>Editing: {group ? group.title : null}</h1>
-          <GroupForm type={groupType} onSave={onSave} group={group} />
+          <h1>Editing: {content ? content.title : null}</h1>
+          <ContentForm type={contentType} onSave={onSave} content={content} />
         </div>
       </Layout>
 
@@ -98,4 +103,4 @@ const EditGroup = ({ groupType, groupObject }) => {
   )
 }
 
-export default EditGroup
+export default EditContent

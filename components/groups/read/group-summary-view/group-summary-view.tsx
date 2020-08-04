@@ -3,8 +3,7 @@ import { FIELDS } from '@lib/config/config-constants'
 import GroupMembers from '@components/groups/group-members/group-members'
 import Link from 'next/link'
 
-export default function (props) {
-
+export default function(props) {
   const shouldAddLink = (field) => {
     return (
       props.linkToDetail &&
@@ -20,7 +19,6 @@ export default function (props) {
       <div className={`group-summary-view ${props.className}`}>
         <div className="">
           <div className="group-top-section">
-
             {props.type.fields
               .filter((f) => f.name === props.type.publishing.title)
               .map((field) => {
@@ -76,7 +74,6 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-
         .group-top-section {
           display: flex;
           flex-wrap: wrap;
@@ -84,7 +81,7 @@ export default function (props) {
           justify-content: space-between;
           align-items: center;
         }
-        
+
         .content-title {
           font-size: 24px;
           line-height: 1;
