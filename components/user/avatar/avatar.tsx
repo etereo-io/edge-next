@@ -6,6 +6,7 @@ export default function ({
   status = '',
   width = '100px',
   className = '',
+  radius = '15%',
   loading = false
 }) {
 
@@ -27,7 +28,7 @@ export default function ({
       </div>
       <style jsx>{`
         img {
-          border-radius: 15%;
+          border-radius: ${radius};
           overflow: hidden;
           width: 100%;
         }
@@ -41,7 +42,7 @@ export default function ({
         }
 
         .avatar {
-          border-radius: 15%;
+          border-radius: ${radius};
           display: inline-block;
           height: ${width};
           max-height: 80px;

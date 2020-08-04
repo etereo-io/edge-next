@@ -1,6 +1,6 @@
-import Avatar from '@components/user/avatar/avatar'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import { FIELDS } from '@lib/config/config-constants'
+import GroupMembers from '@components/groups/group-members/group-members'
 import Link from 'next/link'
 
 export default function (props) {
@@ -41,16 +41,7 @@ export default function (props) {
                 )
               })}
 
-            { props.group.members && <div className="members-wrapper">
-              <div className="members-title">Members</div>
-              <div className="members-list">
-                { props.group.members.map(member => {
-                    return (
-                      <div className="member-item"><Avatar width={'50px'} src={member.profile.picture?.path} /></div>
-                    )
-                  }) }  
-              </div>
-            </div>}
+            { props.group.members && <GroupMembers members={props.group.members} visible={3} />}
           </div>
 
           {props.type.fields
@@ -113,20 +104,7 @@ export default function (props) {
           color: var(--edge-link-color);
         }
 
-        .members-list {
-          display: flex;
-        }
-
-        .member-item {
-          border-radius: 100%;
-          overflow: hidden;
-        }
-
-        .member-item:not(:first-child) {
-          margin-left: -25px;
-          -webkit-mask:radial-gradient(circle 25px at 5px 50%,transparent 99%,#fff 100%);
-                  mask:radial-gradient(circle 25px at 5px 50%,transparent 99%,#fff 100%);
-        }
+        
       `}</style>
     </>
   )
