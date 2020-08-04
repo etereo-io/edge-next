@@ -1,4 +1,6 @@
-import { useEffect, useState, useMemo } from 'react'
+import { Tabs, useTab } from '@components/generic/tabs'
+import { useEffect, useMemo } from 'react'
+import useSWR, { mutate } from 'swr'
 
 import DeleteAccountForm from '@components/user/edit-user/delete-account/delete-account'
 import EditCoverImageForm from '@components/user/edit-user/edit-profile-picture/edit-cover-image'
@@ -16,7 +18,6 @@ import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import { useUser } from '@lib/client/hooks'
 import { userPermission } from '@lib/permissions'
-import { Tabs, useTab } from '@components/generic/tabs'
 
 const UserSettings = () => {
   // Check if the logged in user can access to this resource
@@ -31,37 +32,23 @@ const UserSettings = () => {
     userId
   )
 
-  // TODO: need to change user object after form was being submitted. We can do it via passing an event to each component.
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(false)
-
-  // Load user, just one time when accesing.
-  useEffect(() => {
-    if (userId) {
-      setLoading(true)
-      fetch(`/api/users/${userId}`)
-        .then((result) => {
-          setUser(result)
-          setLoading(false)
-          setError(false)
-        })
-        .catch((err) => {
-          setUser(null)
-          setLoading(false)
-          setError(true)
-        })
-    }
-  }, [userId])
+  const { data: user, error } = useSWR(
+    userId ? `/api/users/${userId}` : null,
+    fetch
+  )
 
   const canAccess = hasPermissionsToEdit
 
   const canSeeContent = useMemo(
-    () => !loading && currentUser.finished && canAccess && user,
-    [loading, currentUser, canAccess, user]
+    () => currentUser.finished && canAccess && user,
+    [ currentUser, canAccess, user]
   )
 
   const { value: tab, onChange: handleTabChange } = useTab('account')
+
+  const mutateUser = () => {
+    mutate( `/api/users/${userId}`)
+  }
 
   const tabs = useMemo(
     () => [
@@ -71,12 +58,12 @@ const UserSettings = () => {
         show: canSeeContent,
         content: (
           <>
-            <EditProfilePictureForm user={user} />
-            <EditCoverImageForm user={user} />
-            <EditUsernameForm user={user} />
-            <EditDisplayNameForm user={user} />
-            <EditEmailForm user={user} />
-            <DeleteAccountForm user={user} />
+            <EditProfilePictureForm user={user} onChange={mutateUser} />
+            <EditCoverImageForm user={user} onChange={mutateUser} />
+            <EditUsernameForm user={user} onChange={mutateUser} />
+            <EditDisplayNameForm user={user} onChange={mutateUser}/>
+            <EditEmailForm user={user} onChange={mutateUser} />
+            <DeleteAccountForm user={user}/>
           </>
         ),
       },
@@ -84,7 +71,7 @@ const UserSettings = () => {
         id: 'profile',
         label: 'Profile',
         show: canSeeContent,
-        content: <EditProfileForm user={user} />,
+        content: <EditProfileForm user={user} onChange={mutateUser} />,
       },
       {
         id: 'password',
@@ -103,13 +90,13 @@ const UserSettings = () => {
   )
 
   useEffect(() => {
-    if (!loading && currentUser.finished && (user || error)) {
+    if ( currentUser.finished && (user || error)) {
       if (error || !canAccess) {
         // Redirect to 404 if the user is not found
         router.push('/404')
       }
     }
-  }, [user, canAccess, loading, error, currentUser])
+  }, [user, canAccess, error, currentUser])
 
   return (
     <Layout title="User Settings" hasDivider={true}>
@@ -169,10 +156,6 @@ const UserSettings = () => {
             border-radius: 4px;
             box-shadow: var(--shadow-small);
             width: 60%;
-          }
-
-          .settings {
-            display: none;
           }
 
           @media all and (max-width: 820px) {

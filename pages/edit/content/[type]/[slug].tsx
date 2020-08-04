@@ -1,15 +1,12 @@
-import { contentPermission } from '@lib/permissions'
-import { getContentTypeDefinition } from '@lib/config'
+import { useCallback, useState } from 'react'
 
-import API from '@lib/api/api-endpoints'
 import ContentForm from '@components/content/write-content/content-form/content-form'
-import Layout from '@components/layout/normal/layout'
-import fetch from '@lib/fetcher'
-import LoadingPage from '@components/generic/loading/loading-page/loading-page'
-import { useCallback, useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
-import { findOneContent } from '@lib/api/entities/content/content'
+import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
+import { contentPermission } from '@lib/permissions'
+import { findOneContent } from '@lib/api/entities/content/content'
+import { getContentTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 
 function notFound(res) {

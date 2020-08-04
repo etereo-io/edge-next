@@ -1,16 +1,13 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
-import API from '@lib/api/api-endpoints'
+import { GetServerSideProps } from 'next'
 import GroupForm from '@components/groups/write/group-form/group-form'
 import Layout from '@components/layout/normal/layout'
-import LoadingPage from '@components/generic/loading/loading-page/loading-page'
-import fetch from '@lib/fetcher'
-import { getGroupTypeDefinition } from '@lib/config'
-import { groupPermission } from '@lib/permissions'
-import { GetServerSideProps } from 'next'
-import { getSession } from '@lib/api/auth/iron'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content/content'
+import { getGroupTypeDefinition } from '@lib/config'
+import { getSession } from '@lib/api/auth/iron'
+import { groupPermission } from '@lib/permissions'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })

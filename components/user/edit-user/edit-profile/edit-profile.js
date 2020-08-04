@@ -6,7 +6,7 @@ import config from '@lib/config'
 import { FIELDS } from '@lib/config/config-constants'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 
-export default function ({ user, ...props }) {
+export default function ({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -37,6 +37,7 @@ export default function ({ user, ...props }) {
         setLoading(false)
         setSuccess(true)
         setError(false)
+        onChange()
       })
       .catch((err) => {
         setLoading(false)

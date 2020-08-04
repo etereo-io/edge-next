@@ -1,23 +1,52 @@
 const defaultSrc = '/static/demo-images/default-avatar.jpg'
 
+import { UserType } from '@lib/types'
+
+type PropTypes = {
+  user?: UserType,
+  title?: string,
+  status?: string,
+  width?: string,
+  className?: string,
+  radius?: string,
+  loading?: boolean,
+  src?: string
+}
+
 export default function ({
-  src = defaultSrc,
-  title = 'Avatar',
-  status = '',
+  user = {
+    profile: {
+      picture: {
+        path: defaultSrc
+      }
+    }
+  } as UserType,
+  title,
+  status,
   width = '100px',
   className = '',
+  radius = '15%',
+  src = '',
   loading = false
-}) {
+} : PropTypes) {
+
+  const computedTitle = title ? title : `${user?.username} avatar`
+  const recentlyActive = user && user.metadata && user.metadata.lastLogin
+    ? (Date.now() - user.metadata.lastLogin < (10 * 60 * 1000))
+    : false
+
+  const computedStatus = status ? status : (recentlyActive ? 'active' : '')
+  const computedSrc = src ? src : user.profile?.picture?.path
 
   return (
     <>
       <div
         className={`avatar ${className} ${
           status ? 'has-status' : ''
-        } ${status}`}
+        } ${computedStatus}`}
       >
         {!loading && (
-          <img title={title} src={src}></img>
+          <img title={computedTitle} src={computedSrc}></img>
         )}
         {loading && (
           <div className="empty-avatar">
@@ -27,7 +56,7 @@ export default function ({
       </div>
       <style jsx>{`
         img {
-          border-radius: 15%;
+          border-radius: ${radius};
           overflow: hidden;
           width: 100%;
         }
@@ -41,7 +70,7 @@ export default function ({
         }
 
         .avatar {
-          border-radius: 15%;
+          border-radius: ${radius};
           display: inline-block;
           height: ${width};
           max-height: 80px;

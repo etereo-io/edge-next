@@ -114,14 +114,24 @@ export default function (props) {
       return results.map((item) => {
         return (
           <div key={item.id + item.createdAt}>
-            <Card>
-              <GroupSummaryView
-                group={item}
-                linkToDetail={true}
-                type={props.type}
-              />
-            </Card>
+            <div className="list-item">
+              <Card>
+                <GroupSummaryView
+                  group={item}
+                  linkToDetail={true}
+                  type={props.type}
+                />
+              </Card>
+            </div>
+            <style jsx>{
+              `
+              .list-item {
+                margin-bottom: var(--edge-gap);
+              }
+              `
+            }</style>
           </div>
+
         )
       })
     },
@@ -165,7 +175,7 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-        
+       
         .load-more {
           display: flex;
           justify-content: center;

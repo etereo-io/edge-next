@@ -19,12 +19,7 @@ export default function (props) {
               <a title={`${user.username} profile`}>
                 <Avatar
                   width={'32px'}
-                  status="available"
-                  src={
-                    user.profile && user.profile.picture
-                      ? user.profile.picture.path
-                      : null
-                  }
+                  user={user}
                 />
               </a>
             </Link>

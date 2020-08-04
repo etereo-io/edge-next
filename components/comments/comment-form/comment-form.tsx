@@ -1,17 +1,29 @@
-import Button from '../../generic/button/button'
-import { useState, useEffect } from 'react'
+import { CommentType, ContentTypeDefinition } from '@lib/types'
+import { useEffect, useState } from 'react'
+
 import API from '@lib/api/api-endpoints'
+import Button from '../../generic/button/button'
 import fetch from '@lib/fetcher'
+
+type PropTypes = {
+  comment?: CommentType,
+  contentId?: string,
+  onChange?: (val: any) => void,
+  onSave?: (val: any) => void,
+  onCancel?: () => void,
+  type: ContentTypeDefinition,
+  conversationId?: string
+}
 
 export default function ({
   contentId = '',
-  comment = {},
-  onChange = () => {},
-  onSave = () => {},
+  comment = {} as CommentType,
+  onChange = (val: any) => {},
+  onSave = (val: any) => {},
   onCancel = () => {},
-  type = {},
+  type = {} as ContentTypeDefinition,
   conversationId = '',
-}) {
+}: PropTypes) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [message, setMessage] = useState('')

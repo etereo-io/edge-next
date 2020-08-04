@@ -53,13 +53,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       : `${groupTypeDefinition.title} detail`
 
 
-
   return {
     props: {
       data: item || null,
       type: query.type,
       slug: query.slug,
-      canAccess: true,
       pageTitle: contentTitle,
       groupType: groupTypeDefinition,
     },
@@ -72,7 +70,7 @@ const ContentPage = (props) => {
       title={props.pageTitle}
       panelUser={<ToolBar />}
     >
-      {props.canAccess && props.data && (
+      {props.data && (
         <GroupDetailView
           type={props.groupType}
           group={props.data}

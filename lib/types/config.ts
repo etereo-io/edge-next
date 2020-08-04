@@ -44,6 +44,12 @@ export declare type ConfigType = {
     permissions: PermissionsType[];
     initialActivity: any[]; // TODO: Add type
   },
+  like: {
+    enabled: boolean;
+  },
+  follow: {
+    enabled: boolean;
+  },
   user: {
     roles: string[];
     emailVerification: boolean;

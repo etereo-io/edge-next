@@ -32,15 +32,15 @@ export default function ({
             will-change: box-shadow, transform;
           }
 
-          @media all and (max-width: 860px) {
-            .card:hover {
-              transform: scale(1.05) !important;
-            }
-          }
-
           .card:hover {
             box-shadow: var(--shadow-medium);
-            transform: scale(1.1);
+            transform: scale(1.01);
+          }
+
+          @media all and (max-width: 860px) {
+            .card:hover {
+              transform: scale(1.05);
+            }
           }
 
           .card.alt {

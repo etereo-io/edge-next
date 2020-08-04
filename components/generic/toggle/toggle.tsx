@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function toggle({
   value = false,
-  onChange = () => {},
+  onChange = (value: any) => {},
   ...props
 }) {
   const [enabled, setEnabled] = useState(!!value)

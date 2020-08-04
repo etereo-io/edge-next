@@ -58,11 +58,7 @@ function UserHeader(props) {
             <a title="User profile">
               <Avatar
                 width={'36px'}
-                src={
-                  user && user.profile && user.profile.picture
-                    ? user.profile.picture.path
-                    : null
-                }
+                user={user}
               />
             </a>
           </Link>

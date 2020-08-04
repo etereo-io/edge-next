@@ -1,11 +1,11 @@
+import { Tabs, useTab } from '@components/generic/tabs'
 import { useContentTypes, useGroupTypes, useUser } from '@lib/client/hooks'
 import { useEffect, useMemo } from 'react'
 
 import Button from '@components/generic/button/button'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
-import GroupListView from '@components/groups/read/group-list-view/group-list-view'
-
 import CoverImage from '@components/user/cover-image/cover-image'
+import GroupListView from '@components/groups/read/group-list-view/group-list-view'
 import Layout from '@components/layout/three-panels/layout'
 import LoadingPage from '@components/generic/loading/loading-page/loading-page'
 import ToolBar from '@components/generic/toolbar/toolbar'
@@ -13,14 +13,14 @@ import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import config from '@lib/config'
 import fetch from '@lib/fetcher'
+import select from '@components/generic/select/select'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
-import { Tabs, useTab } from '@components/generic/tabs'
 
 const Profile = () => {
   const router = useRouter()
-  const { userId } = router.query
+  const { userId, selectedTab = 'post' } = router.query
 
   const visibleContentTypes = useContentTypes(['read', 'admin'])
 
@@ -52,12 +52,18 @@ const Profile = () => {
     }
   }, [data, canAccess, finished, currentUser])
 
+  
+
   const canSeeContent = useMemo(
     () => finished && currentUser.finished && canAccess && data,
     [finished, currentUser, canEdit, data]
   )
 
-  const { value: tab, onChange: handleTabChange } = useTab('post')
+  const { value: tab, setValue: setTab, onChange: handleTabChange } = useTab(selectedTab as string)
+  
+  useEffect(() => {
+    setTab(selectedTab as string)
+  }, [selectedTab])
 
   const tabs = useMemo(() => {
     return [
