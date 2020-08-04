@@ -3,7 +3,7 @@ import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Avatar from '@components/user/avatar/avatar'
 
-export default function ({ user, ...props }) {
+export default function ({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -27,6 +27,7 @@ export default function ({ user, ...props }) {
         setLoading(false)
         setSuccess(true)
         setError(false)
+        onChange()
       })
       .catch((err) => {
         setLoading(false)
