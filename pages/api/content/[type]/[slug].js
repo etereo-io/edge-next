@@ -91,14 +91,11 @@ const updateContent = async (req, res) => {
     })
   }
 
-
-
   // Extract the groupId, groupType. Since we don't want anybody being able to change those.
   const { groupId, groupType, ...content } = req.body
 
   contentValidations(type, content)
     .then(async () => {
-
       // Content is valid
       const newContent = await uploadFiles(
         type.fields,
@@ -183,35 +180,36 @@ export default async (req, res) => {
 
   try {
     if (groupId) {
-      const group  = await findOneContent({
-        id: groupId, 
-        type: groupType
+      const group = await findOneContent(groupType, {
+        id: groupId,
       })
 
       if (!group) {
         return res.status(404).json({
-          error: 'Not found'
+          error: 'Not found',
         })
       }
 
       if (group.id !== req.item.groupId) {
         // Somebody is trying to hijack security
         return res.status(401).json({
-          error: 'Operation not allowed'
+          error: 'Operation not allowed',
         })
       }
-      
-      await runMiddleware(req, res, hasPermissionsForGroupContent(groupType, type, group, req.item))
+
+      await runMiddleware(
+        req,
+        res,
+        hasPermissionsForGroupContent(groupType, type, group, req.item)
+      )
     } else {
       await runMiddleware(req, res, hasPermissionsForContent(type, req.item))
     }
   } catch (e) {
-
     return res.status(401).json({
       error: e.message,
     })
   }
-
 
   methods(req, res, {
     get: getContent,

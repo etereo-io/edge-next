@@ -52,8 +52,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     return
   }
 
-  await connect()
-
   const currentUser = await getSession(req)
 
   // check if current user can update a content
@@ -72,28 +70,13 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       contentType: contentTypeDefinition,
-      slug,
-      type,
+      contentObject: content,
     },
   }
 }
 
-const EditContent = ({ slug, type, contentType }) => {
-  const [content, setContent] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    fetch(API.content[type] + '/' + slug)
-      .then((data) => {
-        setContent(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(true)
-        setLoading(false)
-      })
-  }, [slug, type])
+const EditContent = ({ contentType, contentObject }) => {
+  const [content, setContent] = useState(contentObject)
 
   const onSave = useCallback(
     (newItem) => {
@@ -102,27 +85,13 @@ const EditContent = ({ slug, type, contentType }) => {
     [setContent]
   )
 
-  if (loading || error) {
-    return (
-      <Layout title="Edit content">
-        <LoadingPage />
-      </Layout>
-    )
-  }
-
   return (
     <>
       <Layout title="Edit content">
-        {loading ? (
-          <LoadingPage />
-        ) : error ? (
-          'Something went wrong'
-        ) : (
-          <div className="edit-page">
-            <h1>Editing: {content ? content.title : null}</h1>
-            <ContentForm type={contentType} onSave={onSave} content={content} />
-          </div>
-        )}
+        <div className="edit-page">
+          <h1>Editing: {content ? content.title : null}</h1>
+          <ContentForm type={contentType} onSave={onSave} content={content} />
+        </div>
       </Layout>
 
       <style jsx>{`

@@ -32,6 +32,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     return
   }
 
+  await connect()
+
   let group = null
 
   try {
@@ -50,8 +52,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     return
   }
 
-  await connect()
-
   const currentUser = await getSession(req)
 
   // check if current user can update a group
@@ -65,29 +65,13 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       groupType: groupTypeDefinition,
-      currentUser,
-      type,
-      slug,
+      groupObject: group,
     },
   }
 }
 
-const EditGroup = ({ groupType, type, slug }) => {
-  const [group, setGroup] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-
-  useEffect(() => {
-    fetch(API.groups[type] + '/' + slug)
-      .then((data) => {
-        setGroup(data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        setError(true)
-        setLoading(false)
-      })
-  }, [type, slug])
+const EditGroup = ({ groupType, groupObject }) => {
+  const [group, setGroup] = useState(groupObject)
 
   const onSave = useCallback(
     (newItem) => {
@@ -99,16 +83,10 @@ const EditGroup = ({ groupType, type, slug }) => {
   return (
     <>
       <Layout title="Edit group">
-        {loading ? (
-          <LoadingPage />
-        ) : error ? (
-          'Something went wrong'
-        ) : (
-          <div className="edit-page">
-            <h1>Editing: {group ? group.title : null}</h1>
-            <GroupForm type={groupType} onSave={onSave} group={group} />
-          </div>
-        )}
+        <div className="edit-page">
+          <h1>Editing: {group ? group.title : null}</h1>
+          <GroupForm type={groupType} onSave={onSave} group={group} />
+        </div>
       </Layout>
 
       <style jsx>{`

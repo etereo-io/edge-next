@@ -3,8 +3,7 @@ import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-vi
 import { FIELDS } from '@lib/config/config-constants'
 import Link from 'next/link'
 
-export default function (props) {
-
+export default function(props) {
   const shouldAddLink = (field) => {
     return (
       props.linkToDetail &&
@@ -20,7 +19,6 @@ export default function (props) {
       <div className={`group-summary-view ${props.className}`}>
         <div className="">
           <div className="group-top-section">
-
             {props.type.fields
               .filter((f) => f.name === props.type.publishing.title)
               .map((field) => {
@@ -41,16 +39,26 @@ export default function (props) {
                 )
               })}
 
-            { props.group.members && <div className="members-wrapper">
-              <div className="members-title">Members</div>
-              <div className="members-list">
-                { props.group.members.map(member => {
+            {props.group.members && (
+              <div className="members-wrapper">
+                <div className="members-title">Members</div>
+                <div className="members-list">
+                  {props.group.members.map((member, index) => {
                     return (
-                      <div className="member-item"><Avatar width={'50px'} src={member.profile.picture?.path} /></div>
+                      <div
+                        key={`${member.id}-${index}`}
+                        className="member-item"
+                      >
+                        <Avatar
+                          width={'50px'}
+                          src={member.profile.picture?.path}
+                        />
+                      </div>
                     )
-                  }) }  
+                  })}
+                </div>
               </div>
-            </div>}
+            )}
           </div>
 
           {props.type.fields
@@ -85,7 +93,6 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-
         .group-top-section {
           display: flex;
           flex-wrap: wrap;
@@ -93,7 +100,7 @@ export default function (props) {
           justify-content: space-between;
           align-items: center;
         }
-        
+
         .content-title {
           font-size: 24px;
           line-height: 1;
@@ -124,8 +131,16 @@ export default function (props) {
 
         .member-item:not(:first-child) {
           margin-left: -25px;
-          -webkit-mask:radial-gradient(circle 25px at 5px 50%,transparent 99%,#fff 100%);
-                  mask:radial-gradient(circle 25px at 5px 50%,transparent 99%,#fff 100%);
+          -webkit-mask: radial-gradient(
+            circle 25px at 5px 50%,
+            transparent 99%,
+            #fff 100%
+          );
+          mask: radial-gradient(
+            circle 25px at 5px 50%,
+            transparent 99%,
+            #fff 100%
+          );
         }
       `}</style>
     </>

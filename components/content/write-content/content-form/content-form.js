@@ -9,8 +9,7 @@ import { FIELDS } from '@lib/config/config-constants'
 import ContentSummaryView from '../../read-content/content-summary-view/content-summary-view'
 import Link from 'next/link'
 
-export default function (props) {
-
+export default function(props) {
   // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -44,8 +43,11 @@ export default function (props) {
   }
 
   const submitRequest = (data, jsonData) => {
+    const groupParamsString = `groupId=${props.group.id}&groupType=${props.group.type}`;
     const url = `${API.content[props.type.slug]}${
-      props.content.id ? '/' + props.content.id + '?field=id' : ''
+      props.content.id
+        ? `/${props.content.id}?field=id&${groupParamsString}`
+        : `?${groupParamsString}`
     }`
 
     return fetch(url, {
@@ -89,7 +91,6 @@ export default function (props) {
               // Append each new file to the formData to be uploaded
               formData.append(key, item.file)
             } else {
-
               // If it is a file that is already uploaded before, keep it on the json data
               jsonData[key] = jsonData[key] ? [...jsonData[key], item] : [item]
             }
@@ -130,7 +131,7 @@ export default function (props) {
 
   return (
     <>
-      { props.group && <h2>Group {props.group.id}</h2>}
+      {props.group && <h2>Group {props.group.id}</h2>}
       <div className="contentForm">
         <form name="content-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
