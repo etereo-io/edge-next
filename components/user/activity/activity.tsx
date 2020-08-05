@@ -1,0 +1,184 @@
+import useSWR from 'swr'
+import { format } from 'timeago.js'
+import Link from 'next/link'
+
+import fetch from '@lib/fetcher'
+import API from '@lib/api/api-endpoints'
+import { UserType } from '@lib/types/user'
+import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
+
+import Avatar from '../avatar/avatar'
+import { ACTIVITY_TYPES } from './constants'
+
+interface Props {
+  user?: UserType
+}
+
+function getMessage({ meta, type }) {
+  switch (type as ACTIVITY_TYPES) {
+    case ACTIVITY_TYPES.CONTENT_UPDATED:
+      return (
+        <span>
+          updated{' '}
+          <Link
+            href={`/content/${meta.contentType}/${meta.contentId}?field=id`}
+          >
+            <a title="updated content">a content</a>
+          </Link>
+        </span>
+      )
+    case ACTIVITY_TYPES.CONTENT_ADDED:
+      return (
+        <span>
+          created{' '}
+          <Link
+            href={`/content/${meta.contentType}/${meta.contentId}?field=id`}
+          >
+            <a title="new content">a content</a>
+          </Link>
+        </span>
+      )
+
+    case ACTIVITY_TYPES.USER_UPDATED:
+      return <span>updated the profile information</span>
+
+    case ACTIVITY_TYPES.USER_LOGGED:
+      return <span>logged in</span>
+
+    case ACTIVITY_TYPES.COMMENT_ADDED:
+      return (
+        <span>
+          added{' '}
+          <Link
+            href={`/content/${meta.contentType}/${meta.contentId}?field=id`}
+          >
+            <a title="new comment">a comment</a>
+          </Link>
+        </span>
+      )
+
+    case ACTIVITY_TYPES.GROUP_ADDED: {
+      const { groupType, groupSlug } = meta
+
+      return (
+        <span>
+          created{' '}
+          <Link href={`/group/${groupType}/${groupSlug}`}>
+            <a title="new group">a group</a>
+          </Link>
+        </span>
+      )
+    }
+
+    case ACTIVITY_TYPES.GROUP_UPDATED: {
+      const { groupType, groupSlug } = meta
+
+      return (
+        <span>
+          updated{' '}
+          <Link href={`/group/${groupType}/${groupSlug}`}>
+            <a title="updated group">a group</a>
+          </Link>
+        </span>
+      )
+    }
+
+    default:
+      return <span>{type}</span>
+  }
+}
+
+const array = Array.from(Array(4))
+
+export default function({ user }: Props) {
+  const { data, error } = useSWR(
+    user ? `${API.activity}/${user.id}` : null,
+    fetch
+  )
+
+  return (
+    <>
+      <div className="activity-stream">
+        {!data && (
+          <>
+            {array.map((_, index) => (
+              <div key={index} className="activity-item">
+                <div className="avatar">
+                  <Avatar width={60} loading={true} />
+                </div>
+                <LoadingPlaceholder height={'10px'} width={'60%'} />
+              </div>
+            ))}
+          </>
+        )}
+        {error && <div className="error">Error while loading activity</div>}
+        {data &&
+          data.results.map((activity) => (
+            <div key={activity.id} className="activity-item">
+              <div className="avatar">
+                <Avatar
+                  width={40}
+                  src={
+                    user && user.profile.picture
+                      ? user.profile.picture.path
+                      : null
+                  }
+                />
+              </div>
+              <div className="message">
+                <strong>{user.profile.displayName || user.username} </strong>{' '}
+                <p>
+                  {getMessage(activity)} {format(activity.createdAt)}
+                </p>
+              </div>
+            </div>
+          ))}
+      </div>
+      <style jsx>{`
+        .avatar {
+          margin-right: var(--edge-gap-half);
+        }
+
+        .activity-item {
+          align-items: center;
+          border-bottom: 1px solid var(--accents-2);
+          display: flex;
+          color: var(--edge-secondary);
+          padding: var(--edge-gap) 0;
+        }
+
+        .activity-item:first-of-type {
+          padding-top: 0;
+        }
+
+        .activity-item:last-of-type {
+          border-bottom: 0;
+          padding-bottom: 0;
+        }
+
+        .message {
+          font-size: 14px;
+        }
+
+        .message strong {
+          color: var(--edge-foreground);
+          display: inline-block;
+        }
+
+        .message p {
+          color: var(--accents-5);
+          display: inline-block;
+        }
+
+        .message p span a {
+          color: var(--edge-foreground);
+          display: inline-block;
+        }
+
+        .error {
+          padding: var(--edge-gap);
+        }
+      `}</style>
+    </>
+  )
+}
