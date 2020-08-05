@@ -52,15 +52,15 @@ const Profile = () => {
     }
   }, [data, canAccess, finished, currentUser])
 
-  
-
   const canSeeContent = useMemo(
     () => finished && currentUser.finished && canAccess && data,
     [finished, currentUser, canEdit, data]
   )
 
-  const { value: tab, setValue: setTab, onChange: handleTabChange } = useTab(selectedTab as string)
-  
+  const { value: tab, setValue: setTab, onChange: handleTabChange } = useTab(
+    selectedTab as string
+  )
+
   useEffect(() => {
     setTab(selectedTab as string)
   }, [selectedTab])
@@ -83,18 +83,16 @@ const Profile = () => {
         id: 'groups',
         label: 'Groups',
         show: canSeeContent,
-        content: (visibleGroupTypes.map(groupType => {
+        content: visibleGroupTypes.map((groupType) => {
           return (
             <GroupListView
-            infiniteScroll={false}
-            type={groupType}
-            query={`member=${data?.id || null}`}
-          />
+              infiniteScroll={false}
+              type={groupType}
+              query={`member=${data?.id || null}`}
+            />
           )
-        })
-          
-        ),
-      }, 
+        }),
+      },
       {
         id: 'likes',
         label: 'Likes',

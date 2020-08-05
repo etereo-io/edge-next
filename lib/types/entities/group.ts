@@ -10,4 +10,5 @@ export declare type GroupEntityType = {
   members: MemberType[];
   draft: boolean;
   author: string;
+  createdAt: string;
 }

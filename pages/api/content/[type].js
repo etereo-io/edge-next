@@ -25,6 +25,8 @@ const getContent = (filterParams, paginationParams) => (req, res) => {
     ...filterParams,
   }
 
+  console.log(filterParams, type.slug)
+
   const isAdmin =
     req.currentUser && req.currentUser.roles.indexOf('ADMIN') !== -1
   const isOwner =
@@ -63,8 +65,8 @@ const createContent = async (req, res) => {
         type,
         {
           ...content,
-          groupId: req.query.groupId ? req.query.groupId : null,
-          groupType: req.query.groupType ? req.query.groupType : null,
+          ...(req.query.groupId ? { groupId: req.query.groupId } : {}),
+          ...(req.query.groupType ? { groupType: req.query.groupType } : {}),
         },
         req.currentUser
       )
@@ -107,17 +109,10 @@ export default async (req, res) => {
 
   // Group filtering if not set marks it to null
   const filterParams = {
-    groupId: groupId ? groupId : null,
-    groupType: groupType ? groupType : null,
-  }
-
-  if (author) {
-    filterParams.author = author
-  }
-
-  if (tags) {
-    // TODO: Make tags filter generic
-    filterParams['tags.slug'] = tags
+    ...(groupId ? { groupId } : {}),
+    ...(groupType ? { groupType } : {}),
+    ...(author ? { author } : {}),
+    ...(tags ? { 'tags.slug': tags } : {}),
   }
 
   const paginationParams = {
