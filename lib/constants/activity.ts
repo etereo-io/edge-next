@@ -3,6 +3,7 @@ export enum ACTIVITY_TYPES {
   CONTENT_ADDED = 'content_added',
   CONTENT_DELETED = 'content_deleted',
   USER_ADDED = 'user_added',
+  USER_ADDED_MANUALLY = 'user_added_manually',
   USER_UPDATED = 'user_updated',
   USER_LOGGED = 'user_logged',
   USER_DELETED = 'user_deleted',

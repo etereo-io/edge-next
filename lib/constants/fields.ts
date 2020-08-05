@@ -1,4 +1,3 @@
-
 export const FIELDS = {
   TEXT: 'text',
   TEXTAREA: 'textarea',
@@ -15,4 +14,5 @@ export const FIELDS = {
   URL: 'url',
   TEL: 'tel',
   DATE: 'date',
+  PASSWORD: 'password',
 }
