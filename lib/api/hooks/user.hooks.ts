@@ -48,6 +48,20 @@ export async function onUserAdded(user) {
   }
 }
 
+export async function onUserAddedManually(user, currentUser) {
+  if (config.activity.enabled) {
+    addActivity({
+      role: 'user',
+      author: currentUser.id,
+      type: ACTIVITY_TYPES.USER_ADDED_MANUALLY,
+      meta: {
+        userId: user.id,
+        username: user.username,
+      },
+    })
+  }
+}
+
 export async function onUserUpdated(user, updateFields) {
   if (config.activity.enabled) {
     addActivity({

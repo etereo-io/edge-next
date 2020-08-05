@@ -50,7 +50,7 @@ export const getConfig = (defaultOptions) => {
       get: true,
       post: true,
       delete: true,
-      put: true
+      put: true,
     },
 
     permissions: {
@@ -262,19 +262,21 @@ export const getConfig = (defaultOptions) => {
       admin: [adminRole],
     },
 
-    roles: [{
-      label: 'Group Member',
-      value: 'GROUP_MEMBER'
-    }, {
-      label: 'Group admin',
-      value: 'GROUP_ADMIN'
-    }],
+    roles: [
+      {
+        label: 'Group Member',
+        value: 'GROUP_MEMBER',
+      },
+      {
+        label: 'Group admin',
+        value: 'GROUP_ADMIN',
+      },
+    ],
 
     publishing: {
       draftMode: true,
       title: 'title',
     },
-
 
     user: {
       permissions: {
@@ -325,8 +327,9 @@ export const getConfig = (defaultOptions) => {
         minlength: 1,
         maxlength: 200,
         required: true,
-        description: 'Tell the world something about this publication group (max 200 characters)'
-      }
+        description:
+          'Tell the world something about this publication group (max 200 characters)',
+      },
     ],
   }
 
@@ -348,7 +351,7 @@ export const getConfig = (defaultOptions) => {
     },
 
     logger: {
-      level: 'ERROR'
+      level: 'ERROR',
     },
 
     // Storages: GOOGLE, AWS, FIREBASE
@@ -439,7 +442,7 @@ export const getConfig = (defaultOptions) => {
       },
 
       // New user roles
-      roles: [userRole], 
+      roles: [userRole],
 
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {
@@ -529,7 +532,7 @@ export const getConfig = (defaultOptions) => {
 
     // Groups definitions
     groups: {
-      types: [publishingGroupType]
+      types: [publishingGroupType],
     },
 
     // Features not implemented yet, but UI implemented
