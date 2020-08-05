@@ -6,10 +6,10 @@ import {
   deleteOneContent,
   findOneContent,
 } from '@lib/api/entities/content/content'
-
-import { FIELDS } from '../../config/config-constants'
-import config from '../../config'
-import { deleteFile } from '../storage'
+import { ACTIVITY_TYPES } from '@lib/constants'
+import { FIELDS } from '@lib/config/config-constants'
+import config from '@lib/config'
+import { deleteFile } from '@lib/api/storage'
 import logger from '@lib/logger'
 
 export function onGroupAdded(group, user) {
@@ -17,7 +17,7 @@ export function onGroupAdded(group, user) {
     addActivity({
       author: user.id,
       role: 'user',
-      type: 'group_added',
+      type: ACTIVITY_TYPES.GROUP_ADDED,
       meta: {
         groupId: group.id,
         groupSlug: group.slug,
@@ -33,7 +33,7 @@ export function onGroupUpdated(group, user) {
     addActivity({
       author: user.id,
       role: 'user',
-      type: 'group_updated',
+      type: ACTIVITY_TYPES.GROUP_UPDATED,
       meta: {
         groupId: group.id,
         groupSlug: group.slug,
@@ -84,7 +84,8 @@ export async function onGroupDeleted(group, user, groupType) {
           id: content.id,
         })
 
-        await onContentDeleted(content, user, type)
+        // TODO: we dont have such hook for now
+        // await onContentDeleted(content, user, type)
         content = await findOneContent(type.slug, {
           gid: group.id,
         })
@@ -94,12 +95,11 @@ export async function onGroupDeleted(group, user, groupType) {
     logger('ERROR', 'Error deleting content for group', err)
   }
 
-
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
       author: user.id,
-      type: 'group_deleted',
+      type: ACTIVITY_TYPES.GROUP_DELETED,
       meta: {
         groupId: group.id,
         groupType: group.type,

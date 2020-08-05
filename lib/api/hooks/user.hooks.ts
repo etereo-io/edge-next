@@ -11,21 +11,21 @@ import {
   deleteOneContent,
   findOneContent,
 } from '@lib/api/entities/content/content'
-
-import { FIELDS } from '../../config/config-constants'
-import config from '../../config'
+import { ACTIVITY_TYPES } from '@lib/constants'
+import { FIELDS } from '@lib/config/config-constants'
+import config from '@lib/config'
 import { deleteFile } from '../storage'
 import logger from '@lib/logger'
 import { onCommentDeleted } from './comment.hooks'
 import { onContentDeleted } from './content.hooks'
-import { sendVerifyEmail } from '../../email'
+import { sendVerifyEmail } from '@lib/email'
 
 export async function onUserAdded(user) {
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
       author: user.id,
-      type: 'user_added',
+      type: ACTIVITY_TYPES.USER_ADDED,
       meta: {
         userId: user.id,
         username: user.username,
@@ -38,7 +38,7 @@ export async function onUserAdded(user) {
     addActivity({
       role: 'system',
       author: user.id,
-      type: 'email_sent',
+      type: ACTIVITY_TYPES.EMAIL_SENT,
       meta: {
         userId: user.id,
         username: user.username,
@@ -53,7 +53,7 @@ export async function onUserUpdated(user, updateFields) {
     addActivity({
       role: 'user',
       author: user.id,
-      type: 'user_updated',
+      type: ACTIVITY_TYPES.USER_UPDATED,
       meta: {
         userId: user.id,
         username: user.username,
@@ -67,7 +67,7 @@ export async function onUserUpdated(user, updateFields) {
     addActivity({
       role: 'system',
       author: user.id,
-      type: 'email_sent',
+      type: ACTIVITY_TYPES.EMAIL_SENT,
       meta: {
         userId: user.id,
         username: user.username,
@@ -163,7 +163,7 @@ export async function onUserDeleted(user) {
   if (config.activity.enabled) {
     addActivity({
       role: 'system',
-      type: 'user_deleted',
+      type: ACTIVITY_TYPES.USER_DELETED,
       author: user.id,
       meta: {
         userId: user.id,
@@ -178,7 +178,7 @@ export async function onUserLogged(user) {
     addActivity({
       role: 'user',
       author: user.id,
-      type: 'user_logged',
+      type: ACTIVITY_TYPES.USER_LOGGED,
       meta: {
         userId: user.id,
         username: user.username,
@@ -192,7 +192,7 @@ export async function onEmailVerified(user) {
     addActivity({
       author: user.id,
       role: 'system',
-      type: 'email_verified',
+      type: ACTIVITY_TYPES.EMAIL_VERIFIED,
       meta: {
         userId: user.id,
         email: user.email,

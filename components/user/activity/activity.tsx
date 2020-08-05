@@ -5,10 +5,10 @@ import Link from 'next/link'
 import fetch from '@lib/fetcher'
 import API from '@lib/api/api-endpoints'
 import { UserType } from '@lib/types/user'
+import { ACTIVITY_TYPES } from '@lib/constants'
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 
 import Avatar from '../avatar/avatar'
-import { ACTIVITY_TYPES } from './constants'
 
 interface Props {
   user?: UserType
