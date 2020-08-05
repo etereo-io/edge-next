@@ -62,21 +62,6 @@ export default function ({ user, onChange = () => {}, ...props }) {
 
     let valid = true
 
-    // TODO: is this even needed?
-    /*config.user.profile.fields.forEach((f) => {
-      if (f.required && !d[f.name]) {
-        valid = false
-      }
-
-      if (f.minlength && d[f.name].length < f.minlength) {
-        valid = false
-      }
-
-      if (f.maxlength && d[f.name].length > f.maxlength) {
-        valid = false
-      }
-    })*/
-
     if (!valid) {
       setError('Please check that the data is correct')
       return
