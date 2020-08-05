@@ -1,13 +1,12 @@
 import React, { memo, useMemo } from 'react'
 
 import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
+import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import { groupContentPermission } from '@lib/permissions'
 import { GroupEntityType } from '@lib/types/entities/group'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import { useUser } from '@lib/client/hooks'
 import { Tabs, useTab } from '@components/generic/tabs'
-
-import Tab from './tab'
 
 interface Props {
   id: string
@@ -41,7 +40,9 @@ function GroupContentTabs({ id, group }: Props) {
     return firstElement
   }, [contentTypes])
 
-  const { value: tab, onChange: handleTabChange } = useTab(contentType?.slug || 'post')
+  const { value: tab, onChange: handleTabChange } = useTab(
+    contentType?.slug || 'post'
+  )
 
   const currentContentType = useMemo(
     () => contentTypes.find(({ slug }) => slug === tab),
@@ -54,11 +55,11 @@ function GroupContentTabs({ id, group }: Props) {
         label: type.title,
         id: type.slug,
         content: (
-          <Tab
-            currentContentType={currentContentType}
+          <ContentListView
             contentType={tab}
-            id={id}
-            groupType={group.type}
+            type={currentContentType}
+            query={`groupId=${id}&groupType=${group.type}`}
+            addComments={false}
           />
         ),
       })),
