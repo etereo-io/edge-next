@@ -6,7 +6,7 @@ type PropTypes = {
   user?: UserType,
   title?: string,
   status?: string,
-  width?: number | string,
+  width?: string,
   className?: string,
   radius?: string,
   loading?: boolean,

@@ -1,14 +1,12 @@
-import useSWR from 'swr'
-import { format } from 'timeago.js'
-import Link from 'next/link'
-
-import fetch from '@lib/fetcher'
-import API from '@lib/api/api-endpoints'
-import { UserType } from '@lib/types/user'
 import { ACTIVITY_TYPES } from '@lib/constants'
-import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
-
+import API from '@lib/api/api-endpoints'
 import Avatar from '../avatar/avatar'
+import Link from 'next/link'
+import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
+import { UserType } from '@lib/types/user'
+import fetch from '@lib/fetcher'
+import { format } from 'timeago.js'
+import useSWR from 'swr'
 
 interface Props {
   user?: UserType
@@ -104,7 +102,7 @@ export default function({ user }: Props) {
             {array.map((_, index) => (
               <div key={index} className="activity-item">
                 <div className="avatar">
-                  <Avatar width={60} loading={true} />
+                  <Avatar width={'40px'} loading={true} />
                 </div>
                 <LoadingPlaceholder height={'10px'} width={'60%'} />
               </div>
@@ -117,7 +115,7 @@ export default function({ user }: Props) {
             <div key={activity.id} className="activity-item">
               <div className="avatar">
                 <Avatar
-                  width={40}
+                  width={'40px'}
                   src={
                     user && user.profile.picture
                       ? user.profile.picture.path
