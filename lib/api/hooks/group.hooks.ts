@@ -6,8 +6,9 @@ import {
   deleteOneContent,
   findOneContent,
 } from '@lib/api/entities/content/content'
+
 import { ACTIVITY_TYPES } from '@lib/constants'
-import { FIELDS } from '@lib/config/config-constants'
+import { FIELDS } from '@lib/constants'
 import config from '@lib/config'
 import { deleteFile } from '@lib/api/storage'
 import logger from '@lib/logger'

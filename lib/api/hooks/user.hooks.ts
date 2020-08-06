@@ -1,3 +1,4 @@
+import { ACTIVITY_TYPES, FIELDS } from '@lib/constants'
 import {
   addActivity,
   deleteActivity,
@@ -11,8 +12,7 @@ import {
   deleteOneContent,
   findOneContent,
 } from '@lib/api/entities/content/content'
-import { ACTIVITY_TYPES } from '@lib/constants'
-import { FIELDS } from '@lib/config/config-constants'
+
 import config from '@lib/config'
 import { deleteFile } from '../storage'
 import logger from '@lib/logger'

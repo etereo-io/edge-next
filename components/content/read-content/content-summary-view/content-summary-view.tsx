@@ -1,6 +1,6 @@
-import Link from 'next/link'
-import { FIELDS } from '@lib/config/config-constants'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
+import { FIELDS } from '@lib/constants'
+import Link from 'next/link'
 
 export default function (props) {
   // Link to detail if it's not a summary

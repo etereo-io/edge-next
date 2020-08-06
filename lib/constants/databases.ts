@@ -1,0 +1,6 @@
+export const DATABASES = {
+  IN_MEMORY: 'IN_MEMORY',
+  FIREBASE: 'FIREBASE',
+  MONGO: 'MONGO',
+}
+
