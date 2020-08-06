@@ -1,6 +1,5 @@
 import {
   createUser,
-  createUserManually,
   findOneUser,
   findUsers,
   validateNewUser,
@@ -138,6 +137,6 @@ export default async (req, res) => {
 
   methods(req, res, {
     get: getUsers(filterParams, paginationParams),
-    post: addUser(req.body),
+    post: addUser(req.body, fromAdminPanel),
   })
 }

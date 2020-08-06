@@ -20,6 +20,20 @@ export function validateNewUser(user) {
   }
 }
 
+export function validateNewUserFromAdminPanel(user) {
+  try {
+    return NewUserFromAdminPanelSchema.validateSync(user, {
+      abortEarly: false,
+    })
+  } catch (e) {
+    if (e.name === 'ValidationError') {
+      throw new Error('Invalid user: ' + e.errors.join(', '))
+    } else {
+      throw e
+    }
+  }
+}
+
 export async function createUser({
   username,
   email,
