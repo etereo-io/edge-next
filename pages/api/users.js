@@ -137,6 +137,6 @@ export default async (req, res) => {
 
   methods(req, res, {
     get: getUsers(filterParams, paginationParams),
-    post: addUser(req.body, fromAdminPanel),
+    post: addUser(req.body),
   })
 }

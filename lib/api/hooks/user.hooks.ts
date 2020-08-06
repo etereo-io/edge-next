@@ -24,7 +24,7 @@ export async function onUserAdded(user, currentUser) {
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
-      author: currentUser.id,
+      author: currentUser ? currentUser.id : user.id,
       // If is currentUser  it means the user has been created in the administration
       type: currentUser ? ACTIVITY_TYPES.USER_ADDED_MANUALLY : ACTIVITY_TYPES.USER_ADDED,
       meta: {
