@@ -4,17 +4,16 @@ import {
   findOneUser,
   findUsers,
   validateNewUser,
-  validateNewUserFromAdminPanel,
 } from '@lib/api/entities/users/user'
 import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
-import { ROLES } from '@lib/constants'
+import { onUserAdded, onUserAddedManually } from '@lib/api/hooks/user.hooks'
 
+import { ROLES } from '@lib/constants'
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
-import { onUserAdded, onUserAddedManually } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 const getUsers = (filterParams, paginationParams) => (req, res) => {
@@ -37,28 +36,29 @@ const getUsers = (filterParams, paginationParams) => (req, res) => {
     })
 }
 
-const addUser = (user, fromAdminPanel = false) => async (
+const addUser = (user) => async (
   { currentUser },
   res
 ) => {
   let parsedUser = null
 
-  if (fromAdminPanel) {
-    try {
-      parsedUser = validateNewUserFromAdminPanel(user)
-    } catch (err) {
-      return res.status(400).json({
-        error: err.message,
+  const currentUserHasAdministrationRights = hasPermission(req.currentUser,  [`user.admin`, `user.update`])
+
+  if (user.roles || user.profile) {
+    // Is a user being created manually, not a signup. People who signup can not chose their own roles or add profile information
+    if (!currentUserHasAdministrationRights) {
+      return res.status(401).json({
+        error: 'Unauthorized to create users with roles or profile information.'
       })
     }
-  } else {
-    try {
-      parsedUser = validateNewUser(user)
-    } catch (err) {
-      return res.status(400).json({
-        error: err.message,
-      })
-    }
+  }
+
+  try {
+    parsedUser = validateNewUser(user)
+  } catch (err) {
+    return res.status(400).json({
+      error: err.message,
+    })
   }
 
   const userWithSameEmail = await findOneUser({ email: parsedUser.email })
@@ -79,19 +79,10 @@ const addUser = (user, fromAdminPanel = false) => async (
   }
 
   try {
-    let added = null
+    const added = await createUser(parsedUser, currentUserHasAdministrationRights)
+    onUserAdded(added, currentUser)
 
-    if (fromAdminPanel && currentUser.roles.includes(ROLES.ADMIN)) {
-      added = await createUserManually(parsedUser)
-
-      onUserAddedManually(parsedUser, currentUser)
-    } else {
-      added = await createUser(parsedUser)
-
-      onUserAdded(added)
-    }
-
-    res.status(200).send(added)
+    res.status(200).send(hidePrivateUserFields(added))
   } catch (err) {
     res.status(500).json({
       error: err.message,
@@ -101,7 +92,7 @@ const addUser = (user, fromAdminPanel = false) => async (
 
 export default async (req, res) => {
   const {
-    query: { search, sortBy, sortOrder, from, limit, fromAdminPanel = false },
+    query: { search, sortBy, sortOrder, from, limit},
   } = req
 
   const filterParams = {}
@@ -148,6 +139,6 @@ export default async (req, res) => {
 
   methods(req, res, {
     get: getUsers(filterParams, paginationParams),
-    post: addUser(req.body, fromAdminPanel),
+    post: addUser(req.body),
   })
 }

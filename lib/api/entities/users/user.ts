@@ -1,6 +1,6 @@
 import { generateSaltAndHash, userPasswordsMatch } from './user.utils'
 
-import { NewUserSchema, NewUserFromAdminPanelSchema } from './user.schema'
+import { NewUserSchema } from './user.schema'
 import { UserType } from '@lib/types/user'
 import config from '@lib/config'
 import { getDB } from '../../db'
@@ -9,20 +9,6 @@ import { v4 as uuidv4 } from 'uuid'
 export function validateNewUser(user) {
   try {
     return NewUserSchema.validateSync(user, {
-      abortEarly: false,
-    })
-  } catch (e) {
-    if (e.name === 'ValidationError') {
-      throw new Error('Invalid user: ' + e.errors.join(', '))
-    } else {
-      throw e
-    }
-  }
-}
-
-export function validateNewUserFromAdminPanel(user) {
-  try {
-    return NewUserFromAdminPanelSchema.validateSync(user, {
       abortEarly: false,
     })
   } catch (e) {
@@ -44,8 +30,7 @@ export async function createUser({
   github = null,
   profile = {},
 }): Promise<UserType> {
-  // Here you should create the user and save the salt and hashed password (some dbs may have
-  // authentication methods that will do it for you so you don't have to worry about it):
+
   const { salt, hash } = generateSaltAndHash(password)
 
   const profileFields = {}
@@ -66,7 +51,7 @@ export async function createUser({
       github,
       emailVerified: config.user.emailVerification ? false : true,
       emailVerificationToken: config.user.emailVerification ? uuidv4() : null,
-      roles: config.user.roles, // New user roles
+      roles: config.user.newUserRoles, // New user roles
       createdAt: Date.now(),
       profile: {
         ...profileFields,
@@ -80,15 +65,15 @@ export async function createUser({
     })
 }
 
+// This function is used only if the creator of the user is an administration 
 export async function createUserManually({
   username,
   email,
   password,
-  role,
+  roles,
   ...profile
 }): Promise<UserType> {
-  // Here you should create the user and save the salt and hashed password (some dbs may have
-  // authentication methods that will do it for you so you don't have to worry about it):
+  
   const { salt, hash } = generateSaltAndHash(password)
 
   const profileFields = {}
@@ -97,7 +82,7 @@ export async function createUserManually({
     profileFields[f.name] = f.defaultValue || null
   })
 
-  const user = await getDB()
+  return getDB()
     .collection('users')
     .add({
       username,
@@ -106,7 +91,7 @@ export async function createUserManually({
       email,
       emailVerified: true,
       emailVerificationToken: null,
-      roles: [role],
+      roles,
       createdAt: Date.now(),
       profile: {
         ...profileFields,
@@ -117,10 +102,6 @@ export async function createUserManually({
         lastLogin: null,
       },
     })
-
-  const { salt: s, hash: h, ...userInfo } = user
-
-  return userInfo
 }
 
 export async function findUserWithPassword({

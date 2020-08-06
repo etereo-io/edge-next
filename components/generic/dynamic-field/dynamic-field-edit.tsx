@@ -1,29 +1,30 @@
-import { FIELDS } from '@lib/constants'
-import Toggle from '../toggle/toggle'
-import { ChangeEvent, useState, memo, useCallback } from 'react'
-
 import {
+  InputDate,
+  InputEntity,
+  InputFile,
+  InputImage,
+  InputNumber,
+  InputTags,
+  InputTel,
+  InputText,
+  InputUrl,
+  Radio,
   Select,
   TextArea,
-  Radio,
-  InputUrl,
-  InputText,
-  InputTags,
-  InputNumber,
-  InputImage,
-  InputFile,
-  InputDate,
-  InputTel,
 } from './fields'
+import { memo, useCallback, useState } from 'react'
+
+import { FIELDS } from '@lib/constants'
+import Toggle from '../toggle/toggle'
 
 function Field(props) {
   const [error, setError] = useState(false)
   const { onChange: onChangeHandler } = props
 
   const onChange = useCallback(
-    (value: any, ev?: ChangeEvent<HTMLInputElement>) => {
-      if (ev) {
-        const valid = ev.target.checkValidity()
+    (value: any, isValid?: Function) => {
+      if (isValid) {
+        const valid = isValid()
         setError(!valid)
       }
 
@@ -186,6 +187,18 @@ function Field(props) {
             disabled={props.disabled}
             value={JSON.stringify(props.value)}
             data-testid={datatestId}
+          />
+        )
+
+      
+      case FIELDS.ENTITY_SEARCH:
+        return (
+          <InputEntity
+            field={field}
+            value={props.value}
+            disabled={props.disabled}
+            data-testid={datatestId}
+            onChange={onChange}
           />
         )
 

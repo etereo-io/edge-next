@@ -1,12 +1,12 @@
 import React, { memo, useCallback, useState } from 'react'
 
-import config from '@lib/config'
-import { FIELDS, ROLES_LIST } from '@lib/constants'
-import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
-import Button from '@components/generic/button/button'
-import { FieldType } from '@lib/types/fields'
-import fetch from '@lib/fetcher'
 import API from '@lib/api/api-endpoints'
+import Button from '@components/generic/button/button'
+import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
+import { FIELDS } from '@lib/constants'
+import { FieldType } from '@lib/types/fields'
+import config from '@lib/config'
+import fetch from '@lib/fetcher'
 
 const allField: FieldType[] = [
   {
@@ -38,7 +38,7 @@ const allField: FieldType[] = [
     type: 'select',
     label: 'role',
     required: true,
-    options: Object.values(ROLES_LIST),
+    options: config.user.roles,
   },
 ]
 
@@ -60,7 +60,7 @@ function UserForm() {
     e.preventDefault()
     setLoading(true)
 
-    fetch(`${API.users}?fromAdminPanel=true`, {
+    fetch(`${API.users}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

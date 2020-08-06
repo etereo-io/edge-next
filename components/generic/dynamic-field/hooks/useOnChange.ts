@@ -24,7 +24,7 @@ export default function({ onChangeHandler }: Props): Result {
   const onChange = useCallback(
     (event) => {
       setTouched(true)
-      onChangeHandler(event.target.value, event)
+      onChangeHandler(event.target.value, event.target.checkValidity)
     },
     [onChangeHandler, setTouched]
   )

@@ -1,4 +1,4 @@
-import { useState, memo } from 'react'
+import { memo, useState } from 'react'
 
 function Radio(props) {
   const [touched, setTouched] = useState(false)
@@ -21,13 +21,13 @@ function Radio(props) {
       newValues = itemValue
     }
 
-    props.onChange(newValues, ev)
+    props.onChange(newValues, ev.target.checkValidity)
   }
 
   return (
     <div
       data-testid={props['data-testid']}
-      className={`${touched ? 'touched' : ''}`}
+      className={`input-radio-group ${touched ? 'touched' : ''}`}
     >
       {props.field.options.map((o) => {
         return (

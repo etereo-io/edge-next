@@ -15,4 +15,6 @@ export const FIELDS = {
   TEL: 'tel',
   DATE: 'date',
   PASSWORD: 'password',
+  ENTITY_SEARCH: 'entity_search'
 }
+

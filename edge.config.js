@@ -7,10 +7,24 @@ function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
   )
 }
 
-export const getConfig = (defaultOptions) => {
-  const userRole = defaultOptions.roles.user.value
-  const adminRole = defaultOptions.roles.admin.value
-  const publicRole = defaultOptions.roles.public.value
+export const getConfig = () => {
+
+  const userRole = 'USER'
+  const adminRole = 'ADMIN'
+  const publicRole = 'PUBLIC'
+
+  const roles = [{
+    label: 'Administrator',
+    value: adminRole
+  }, {
+    label: 'User',
+    value: userRole
+  }, {
+    label: 'Public',
+    value: publicRole
+  }]
+
+  
 
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto
@@ -440,9 +454,12 @@ export const getConfig = (defaultOptions) => {
         google: true,
         facebook: true,
       },
+      
+      // General roles
+      roles: roles,
 
       // New user roles
-      roles: [userRole],
+      newUserRoles: [userRole],
 
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {
