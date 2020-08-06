@@ -13,7 +13,6 @@ import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import config from '@lib/config'
 import fetch from '@lib/fetcher'
-import select from '@components/generic/select/select'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
@@ -67,14 +66,14 @@ const Profile = () => {
 
   const tabs = useMemo(() => {
     return [
-      ...visibleContentTypes.map((record) => ({
-        id: record.slug,
-        label: record.title,
+      ...visibleContentTypes.map((contentType) => ({
+        id: contentType.slug,
+        label: contentType.title,
         show: canSeeContent,
         content: (
           <ContentListView
             infiniteScroll={false}
-            type={record}
+            type={contentType}
             query={`author=${data?.id || null}`}
           />
         ),

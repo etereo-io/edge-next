@@ -1,33 +1,31 @@
 import { useEffect, useRef } from 'react'
 import useSWR, { useSWRPages } from 'swr'
+
 import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import ContentDetailView from '../content-detail-view/content-detail-view'
-import fetch from '@lib/fetcher'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
-import { useOnScreen } from '@lib/client/hooks'
-import LoadingItems from '@components/generic/loading/loading-items'
 import EmptyList from '@components/generic/empty-list'
+import LoadingItems from '@components/generic/loading/loading-items'
+import fetch from '@lib/fetcher'
+import { useOnScreen } from '@lib/client/hooks'
 
 interface Props {
   infiniteScroll?: boolean
   addComments?: boolean
   query: string
   initialData?: any
-  contentType: string | number
   type: ContentTypeDefinition
 }
 
 export default function({
-  query,
+  query = '',
   addComments,
-  contentType,
-  infiniteScroll,
-  initialData,
   type,
+  infiniteScroll = false,
+  initialData = null
 }: Props) {
   const identificator = `content-list-${type.slug}-${query}`
-  const tab = contentType || type.slug
 
   // Fetch content type page by page
   const {
@@ -39,7 +37,7 @@ export default function({
   } = useSWRPages(
     identificator,
     ({ offset, withSWR }) => {
-      const apiUrl = `${API.content[tab]}?limit=10${
+      const apiUrl = `${API.content[type.slug]}?limit=10${
         offset ? '&from=' + offset : ''
       }${query ? `&${query}` : ''}`
 

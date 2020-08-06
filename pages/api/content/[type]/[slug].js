@@ -134,7 +134,7 @@ const updateContent = async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { type, groupId, groupType },
+    query: { type },
   } = req
 
   try {
@@ -179,9 +179,9 @@ export default async (req, res) => {
   }
 
   try {
-    if (groupId) {
-      const group = await findOneContent(groupType, {
-        id: groupId,
+    if (req.item.groupId) {
+      const group = await findOneContent(req.item.groupType, {
+        id: req.item.groupId,
       })
 
       if (!group) {
@@ -190,17 +190,10 @@ export default async (req, res) => {
         })
       }
 
-      if (group.id !== req.item.groupId) {
-        // Somebody is trying to hijack security
-        return res.status(401).json({
-          error: 'Operation not allowed',
-        })
-      }
-
       await runMiddleware(
         req,
         res,
-        hasPermissionsForGroupContent(groupType, type, group, req.item)
+        hasPermissionsForGroupContent(req.item.groupType, type, group, req.item)
       )
     } else {
       await runMiddleware(req, res, hasPermissionsForContent(type, req.item))

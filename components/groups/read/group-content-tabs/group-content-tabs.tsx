@@ -1,12 +1,12 @@
 import React, { memo, useMemo } from 'react'
-
-import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
-import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
-import { groupContentPermission } from '@lib/permissions'
-import { GroupEntityType } from '@lib/types/entities/group'
-import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
-import { useUser } from '@lib/client/hooks'
 import { Tabs, useTab } from '@components/generic/tabs'
+import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
+
+import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
+import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
+import { GroupEntityType } from '@lib/types/entities/group'
+import { groupContentPermission } from '@lib/permissions'
+import { useUser } from '@lib/client/hooks'
 
 interface Props {
   id: string
@@ -44,10 +44,7 @@ function GroupContentTabs({ id, group }: Props) {
     contentType?.slug || 'post'
   )
 
-  const currentContentType = useMemo(
-    () => contentTypes.find(({ slug }) => slug === tab),
-    [tab, contentTypes]
-  )
+
 
   const tabs = useMemo(
     () =>
@@ -56,14 +53,13 @@ function GroupContentTabs({ id, group }: Props) {
         id: type.slug,
         content: (
           <ContentListView
-            contentType={tab}
-            type={currentContentType}
+            type={type}
             query={`groupId=${id}&groupType=${group.type}`}
             addComments={false}
           />
         ),
       })),
-    [tab, contentTypes, currentContentType, group.type, id]
+    [tab, contentTypes, group.type, id]
   )
 
   return (
