@@ -472,7 +472,6 @@ export const getConfig = () => {
       roles: roles,
 
       // New user roles
-<<<<<<< HEAD
       newUserRoles: [userRole],
 
       permissions: {
@@ -482,9 +481,6 @@ export const getConfig = () => {
         delete: [adminRole],
         admin: [adminRole],
       },
-=======
-      roles: [userRole],
->>>>>>> b1ab48ec6c0c8680be675e0b414556df7eb605e9
 
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {
