@@ -13,7 +13,7 @@ import { useOnScreen } from '@lib/client/hooks'
 interface Props {
   infiniteScroll?: boolean
   addComments?: boolean
-  query: string
+  query?: string
   initialData?: any
   type: ContentTypeDefinition
 }

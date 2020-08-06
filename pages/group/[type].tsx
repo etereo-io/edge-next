@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     return
   }
 
-  const filterOptions = {}
+  const filterOptions = {} as any
 
   // If the content type allows draft, filter them out on the public list
   if (groupTypeDefinition.publishing.draftMode) {

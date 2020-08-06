@@ -16,7 +16,6 @@ export declare type ConfigType = {
   description: string;
   slogan?: string;
   url: string;
-  follow: {enabled: boolean};
   api: {
     bodyParser: {
       sizeLimit: string;
