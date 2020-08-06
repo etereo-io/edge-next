@@ -1,47 +1,38 @@
-import Button from '@components/generic/button/button'
 import GroupActions from '../../group-actions/group-actions'
 import GroupContentMenu from '../../group-content-menu/group-content-menu'
 import GroupSummaryView from '../group-summary-view/group-summary-view'
-import config from '@lib/config'
 import { format } from 'timeago.js'
-import { usePermission } from '@lib/client/hooks'
-import { useState } from 'react'
-import { useUser } from '@lib/client/hooks'
+import { GroupEntityType } from '@lib/types/entities/group'
+import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
+import { GroupContentTabs } from '@components/groups/read/group-content-tabs'
 
-export default function (props) {
+interface Props {
+  showActions: boolean
+  group: GroupEntityType
+  type: GroupTypeDefinition
+}
 
-  const { user } = useUser()
-  
+export default function({ group, type, showActions }: Props) {
   return (
     <>
       <article className="edge-item-card">
-
         <div className="edge-item-card-header">
-          {props.group.draft && <div className="status">Draft</div>}
+          {group.draft && <div className="status">Draft</div>}
         </div>
         <div className="edge-item-card-content">
-          <GroupSummaryView
-            group={props.group}
-            linkToDetail={false}
-            type={props.type}
-          />
+          <GroupSummaryView group={group} linkToDetail={false} type={type} />
         </div>
 
         <footer className="edge-item-card-footer">
           <ul className="edge-item-card-stats">
             <li className="edge-item-card-stats-item">
-              <b>{format(props.group.createdAt)}</b>
+              <b>{format(group.createdAt)}</b>
             </li>
-
-          </ul> 
+          </ul>
         </footer>
-        {props.showActions && (
-          <GroupActions
-            group={props.group}
-          />
-        )}
-
-        <GroupContentMenu group={props.group} />
+        {showActions && <GroupActions group={group} />}
+        <GroupContentMenu group={group} />
+        <GroupContentTabs id={group.id} group={group} />
       </article>
       <style jsx>{`
         .edge-item-card-footer {
@@ -68,7 +59,7 @@ export default function (props) {
           padding: var(--edge-gap-medium);
           position: relative;
         }
-        
+
         @media all and (max-width: 720px) {
           .edge-item-card-footer {
             display: flex;
@@ -138,7 +129,6 @@ export default function (props) {
           text-transform: uppercase;
           width: fit-content;
         }
-
       `}</style>
     </>
   )

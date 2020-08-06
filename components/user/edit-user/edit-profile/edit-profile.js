@@ -3,7 +3,7 @@ import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 import config from '@lib/config'
-import { FIELDS } from '@lib/config/config-constants'
+import { FIELDS } from '@lib/constants'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 
 export default function ({ user, onChange = () => {}, ...props }) {

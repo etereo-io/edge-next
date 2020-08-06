@@ -1,20 +1,33 @@
+import React, { useState } from 'react'
+
+import AuthorBox from '@components/user/author-box/author-box'
+import Button from '@components/generic/button/button'
 import CommentForm from '../../../comments/comment-form/comment-form'
 import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import ContentActions from '../../content-actions/content-actions'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
-import { usePermission } from '@lib/client/hooks'
-import { useState } from 'react'
-import { useMonetizationState } from 'react-web-monetization'
-import config from '@lib/config'
-import Button from '@components/generic/button/button'
+import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import FollowButton from '@components/user/follow-button/follow-button'
-import AuthorBox from '@components/user/author-box/author-box'
-import SocialShare from '@components/generic/social-share/social-share'
-import { format } from 'timeago.js'
 import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
+import SocialShare from '@components/generic/social-share/social-share'
+import config from '@lib/config'
+import { format } from 'timeago.js'
+import { useMonetizationState } from 'react-web-monetization'
+import { usePermission } from '@lib/client/hooks'
 import { useUser } from '@lib/client/hooks'
 
-export default function (props) {
+interface Props {
+  content: any
+  type: ContentTypeDefinition
+  summary?: boolean
+  showActions?: boolean
+  showComments?: boolean
+  addComments?: boolean
+}
+
+export default function(props: Props) {
+  const { addComments = true } = props
+
   const shareUrl =
     typeof window !== 'undefined'
       ? `${String(window.location)}/content/${props.type.slug}/${
@@ -152,7 +165,7 @@ export default function (props) {
               <b>
                 {props.type.comments.enabled &&
                 canReadComments.available &&
-                typeof props.content.comments !== 'undefined' ? (
+                typeof props.content.comments !== 'undefined' && addComments? (
                   <span className="comment-count" onClick={onClickComments}>
                     {props.content.comments === 0 && canWriteComments.available
                       ? 'Add a comment'

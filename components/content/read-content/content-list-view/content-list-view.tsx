@@ -1,88 +1,31 @@
 import { useEffect, useRef } from 'react'
 import useSWR, { useSWRPages } from 'swr'
-import Link from 'next/link'
+
 import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import ContentDetailView from '../content-detail-view/content-detail-view'
+import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
+import EmptyList from '@components/generic/empty-list'
+import LoadingItems from '@components/generic/loading/loading-items'
 import fetch from '@lib/fetcher'
 import { useOnScreen } from '@lib/client/hooks'
-import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 
-function LoadingItems() {
-  return (
-    <>
-      <div className="placeholders">
-        <div className="p">
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-        </div>
-        <div className="p">
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .p {
-          background: var(--edge-background);
-          padding: var(--edge-gap);
-          margin-bottom: var(--edge-gap);
-          border-radius: var(--edge-radius);
-        }
-        .r {
-          margin-bottom: var(--edge-gap);
-        }
-      `}</style>
-    </>
-  )
+interface Props {
+  infiniteScroll?: boolean
+  addComments?: boolean
+  query?: string
+  initialData?: any
+  type: ContentTypeDefinition
 }
 
-function EmptyComponent() {
-  return (
-    <>
-      <div className="empty">
-        <h3>Nothing found</h3>
-        <div className="empty-image">
-          <img
-            title="Empty content"
-            src="/static/demo-images/confused-travolta.gif"
-          />
-        </div>
-      </div>
-      <style jsx>{`
-        h3 {
-          text-align: center;
-        }
-        .empty-image {
-          width: 200px;
-          margin: 0 auto;
-        }
-        img {
-          max-width: 100%;
-        }
-      `}</style>
-    </>
-  )
-}
-
-export default function (props) {
-  const infiniteScroll = props.infiniteScroll
-  const query = props.query
-  const identificator = 'content-list-' + props.type.slug + '-' + query
+export default function({
+  query = '',
+  addComments,
+  type,
+  infiniteScroll = false,
+  initialData = null
+}: Props) {
+  const identificator = `content-list-${type.slug}-${query}`
 
   // Fetch content type page by page
   const {
@@ -94,30 +37,28 @@ export default function (props) {
   } = useSWRPages(
     identificator,
     ({ offset, withSWR }) => {
-      const apiUrl = `${API.content[props.type.slug]}?limit=10${
+      const apiUrl = `${API.content[type.slug]}?limit=10${
         offset ? '&from=' + offset : ''
       }${query ? `&${query}` : ''}`
 
       const { data } = withSWR(
-        useSWR(
-          apiUrl,
-          fetch,
-          !offset ? { initialData: props.initialData } : null
-        )
+        useSWR(apiUrl, fetch, !offset ? { initialData } : null)
       )
 
       if (!data) return <LoadingItems />
 
       const { results = [] } = data
+
       return results.map((item) => {
         return (
           <div key={item.id + item.createdAt}>
             <ContentDetailView
               content={item}
-              type={props.type}
+              type={type}
               summary={true}
               showActions={false}
               showComments={false}
+              addComments={addComments}
             />
           </div>
         )
@@ -147,7 +88,7 @@ export default function (props) {
       <div className="contentListView">
         {pages}
         {isLoadingMore && <LoadingItems />}
-        {isEmpty && <EmptyComponent />}
+        {isEmpty && <EmptyList />}
         <div className="load-more">
           {isReachingEnd ? null : (
             <Button

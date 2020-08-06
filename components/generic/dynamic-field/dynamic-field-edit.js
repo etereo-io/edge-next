@@ -1,4 +1,4 @@
-import { FIELDS } from '@lib/config/config-constants'
+import { FIELDS } from '@lib/constants'
 import TagsInput from '../tags-input/tags-input'
 import EntitySearch from '../entity-search/entity-search'
 import Toggle from '../toggle/toggle'

@@ -1,4 +1,4 @@
-import { FIELDS } from '@lib/config/config-constants'
+import { FIELDS } from '@lib/constants'
 import Image from '../image/image'
 import MarkdownIt from 'markdown-it'
 import MarkdownRead from '../markdown-read/markdown-read'

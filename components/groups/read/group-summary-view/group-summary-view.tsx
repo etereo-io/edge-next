@@ -1,5 +1,5 @@
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
-import { FIELDS } from '@lib/config/config-constants'
+import { FIELDS } from '@lib/constants'
 import GroupMembers from '@components/groups/group-members/group-members'
 import Link from 'next/link'
 
