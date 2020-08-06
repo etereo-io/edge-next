@@ -1,4 +1,5 @@
 import API from '@lib/api/api-endpoints'
+import { ENTITY_TYPES } from '@lib/constants'
 import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
 import fetch from '@lib/fetcher'
 import { useState } from 'react'
@@ -38,13 +39,21 @@ function ResultItem({ item, onClick = (item) => {}, entityName = (item) => item.
   )
 }
 
+type PropTypes = {
+  onChange: (val) => void,
+  entity: string,
+  entityType?: string,
+  placeholder?: string,
+  entityName?: (val) => string
+}
+
 export default function({ 
   onChange = (val) => {}, 
   entity, 
   entityType = '',
   placeholder = 'Search',
   entityName = (item) => item.id
-}) {
+}: PropTypes) {
 
   const [resultsOpened, setResultsOpened] = useState(false)
   const [results, setResults] = useState([])
@@ -59,13 +68,13 @@ export default function({
     let apiRoute = ''
 
     switch(entity) {
-      case 'user':
+      case ENTITY_TYPES.USER:
         apiRoute = `${API.users}?search=${val}`
         break;
-      case 'content':
+      case ENTITY_TYPES.CONTENT:
         apiRoute = `${API.content[entityType]}?search=${val}`
         break;
-      case 'group':
+      case ENTITY_TYPES.GROUP:
         apiRoute = `${API.groups[entityType]}?search=${val}`
         break;
       

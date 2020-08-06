@@ -1,16 +1,11 @@
 import { FIELDS } from '@lib/constants'
 import TagsInput from '../tags-input/tags-input'
-import EntitySearch from '../entity-search/entity-search'
 import Toggle from '../toggle/toggle'
 import Upload from '../upload/upload'
-import Table, {
-  TableCellBody,
-  TableCellHeader,
-  TableRowBody,
-} from '@components/generic/table/table'
-import Button from '@components/generic/button/button'
+import InputEntity from './inputs/input-entity'
+import InputRadio from './inputs/input-radio'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 function InputText(props) {
   const [touched, setTouched] = useState(false)
@@ -176,60 +171,6 @@ function Select(props) {
   )
 }
 
-function Radio(props) {
-  const [touched, setTouched] = useState(false)
-  const value = props.field.multiple ? props.value || [] : props.value
-
-  const onChange = (ev) => {
-    setTouched(true)
-    const isChecked = ev.target.checked
-    const itemValue = ev.target.value
-    let newValues = value
-
-    if (props.field.multiple) {
-      if (isChecked) {
-        newValues = [...newValues, itemValue]
-      } else {
-        newValues = [...newValues.filter((i) => i !== itemValue)]
-      }
-    } else {
-      newValues = itemValue
-    }
-
-    props.onChange(newValues, ev)
-  }
-
-  return (
-    <div
-      className="input-radio-group"
-      data-testid={props['data-testid']}
-      className={`${touched ? 'touched' : ''}`}
-    >
-      {props.field.options.map((o) => {
-        return (
-          <div className="input-radio" key={o.label}>
-            <input
-              type={props.field.multiple ? 'checkbox' : 'radio'}
-              id={props['data-testid'] + o.value}
-              key={props['data-testid'] + o.value}
-              value={o.value}
-              disabled={props.disabled}
-              checked={
-                props.field.multiple
-                  ? value.indexOf(o.value) !== -1
-                  : value === o.value
-              }
-              name={props.field.name}
-              onChange={onChange}
-            ></input>
-            <label for={props['data-testid'] + o.value}>{o.label}</label>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 function InputImage(props) {
   const [touched, setTouched] = useState(false)
 
@@ -286,81 +227,6 @@ function InputFile(props) {
           : 'Upload a single file'
       }
       onChange={onChange}
-    />
-  )
-}
-
-
-function InputEntity(props) {
-  const [val, setVal] = useState(props.value || [])
-
-  const validate = (value) => () => {
-    return props.field.required && value.length === 0 ? false : true
-  }
-
-  const onChange = item => {
-    const newVal = props.field.multiple ? [item, ...val] : [item]
-    
-    setVal(newVal)
-    props.onChange(newVal, validate)
-  }
-
-  const removeItem = item => {
-    const newVal = val.filter(i => i.id !== item.id)
-    setVal(newVal)
-    props.onChange(newVal, validate)
-  }
-
-  useEffect(() => {
-    setVal(val)
-  }, [props.value])
-
-  const headerCells = [
-    (<TableCellHeader key={`${props.field.name}-header-title`}>
-      Item
-    </TableCellHeader>),
-    (<TableCellHeader key={`${props.field.name}-header-actions`}>
-      Actions
-    </TableCellHeader>),
-  ]
-
-  return (
-    <div className="input-entity" data-testid={props['data-testid']} >
-      <EntitySearch placeholder={props.field.placeholder} entity={props.field.entity} entityType={props.field.entityType} entityName={props.field.entityName} onChange={onChange} />
-
-      <div className="results">
-      
-          <Table headerCells={headerCells}>
-            {val.length > 0 ? val.map(item => {
-              return (
-                <TableRowBody key={`${props.field.name}-${item.id}`}>
-                  <TableCellBody>{props.field.entityName(item)}</TableCellBody>
-                  <TableCellBody><Button onClick={() => removeItem(item)}>Remove</Button></TableCellBody>
-              </TableRowBody>)
-            }) : (
-              <TableRowBody>
-                  <TableCellBody>No items found</TableCellBody>
-                  <TableCellBody>-</TableCellBody>
-              </TableRowBody>
-            )}
-            
-
-          </Table>
-        
-      </div>
-    </div>
-  )
-}
-
-function InputTags(props) {
-  return (
-    <TagsInput
-      placeholder={props.field.placeholder}
-      name={props.field.name}
-      value={props.value}
-      disabled={props.disabled}
-      data-testid={props['data-testid']}
-      onChange={(val) => props.onChange(val)}
     />
   )
 }
@@ -523,8 +389,9 @@ function Field(props) {
 
       case FIELDS.TAGS:
         return (
-          <InputTags
-            field={field}
+          <TagsInput
+            placeholder={props.field.placeholder}
+            name={props.field.name}
             value={props.value}
             disabled={props.disabled}
             data-testid={datatestId}
@@ -545,7 +412,7 @@ function Field(props) {
 
       case FIELDS.RADIO:
         return (
-          <Radio
+          <InputRadio
             field={field}
             value={props.value}
             disabled={props.disabled}

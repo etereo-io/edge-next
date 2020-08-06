@@ -17,3 +17,4 @@ export const FIELDS = {
   DATE: 'date',
   ENTITY_SEARCH: 'entity_search'
 }
+
