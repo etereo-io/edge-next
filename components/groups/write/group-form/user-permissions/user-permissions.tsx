@@ -1,11 +1,12 @@
-import UserSearcher from '@components/user/search-users/search-users'
-import Button from '@components/generic/button/button'
-import { useState, useEffect } from 'react'
 import Table, {
   TableCellBody,
   TableCellHeader,
   TableRowBody,
 } from '@components/generic/table/table'
+import { useEffect, useState } from 'react'
+
+import Button from '@components/generic/button/button'
+import EntitySearch from '@components/generic/entity-search/entity-search'
 
 export default function({ users = [], onChange, roles = []}) {
   const [items, setItems ] = useState([])
@@ -68,7 +69,7 @@ export default function({ users = [], onChange, roles = []}) {
     <>
       <div className="user-permissions">
         <div className="user-permissions-top">
-          <UserSearcher onSelect={(user) => addUser(user)} />
+          <EntitySearch placeholder='Search users...' entity={'user'} onChange={(user) => addUser(user)} entityName={(u) => `${u.username} | ${u.email}`}/>
         </div>
         <div className="user-list">
           <Table headerCells={headerCells}>

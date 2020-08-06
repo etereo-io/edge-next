@@ -15,4 +15,6 @@ export const FIELDS = {
   URL: 'url',
   TEL: 'tel',
   DATE: 'date',
+  ENTITY_SEARCH: 'entity_search'
 }
+

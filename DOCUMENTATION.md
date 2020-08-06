@@ -472,7 +472,18 @@ const contentType = {
     - options
       - ```[{label: 'a', value: 'a'}] ```
     - defaultValue
- 
+- entity_search
+  - It will show a text input for searching and linking one or multiple entities from the database. 
+    - The stored field will have the id and text representation of the entity
+  - Available options:
+    - entity
+      - `user`, `content`, `group`
+    - entityType
+      - a group type or a content type
+    - multiple
+      - allow to select multiple items
+    - entityName 
+      - A function to extract the text representation of the entity selected. for example: (user) => u.username, this value will be stored in the database.
 
 
 You can see the example configuration file for more details about content types and fields.

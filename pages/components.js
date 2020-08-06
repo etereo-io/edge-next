@@ -32,7 +32,7 @@ import Upload from '@components/generic/upload/upload'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '@components/generic/video-recorder/video-recorder-wrapper'
 import { Tabs, useTab } from '@components/generic/tabs'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 function Menu() {
   return (
@@ -217,6 +217,8 @@ function Menu() {
 }
 
 const Components = () => {
+  const [state, setState] = useState({})
+
   const demoContent = {
     title: 'This is an example content',
     textarea:
@@ -362,6 +364,24 @@ const Components = () => {
       name: 'video',
       label: 'Video URL field',
     },
+    {
+      type: 'entity_search',
+      name: 'user',
+      entity: 'user',
+      label: 'Search user',
+      placeholder: 'Search user...',
+      multiple: true,
+      entityName: (u) => u.username
+    },
+    {
+      type: 'entity_search',
+      name: 'post',
+      entity: 'content',
+      entityType: 'post',
+      label: 'Search posts',
+      placeholder: 'Search posts...',
+      entityName: (p) => p.title
+    }
   ]
 
   const dynamicValues = [
@@ -1235,8 +1255,8 @@ const links = [{
                     return (
                       <DynamicField
                         field={f}
-                        value={null}
-                        onChange={() => {}}
+                        value={state[f.name]}
+                        onChange={(val) => { setState({...state, [f.name]: val})}}
                       />
                     )
                   })}
@@ -1244,8 +1264,14 @@ const links = [{
               </div>
             </div>
             <pre>{`
-{dynamicFields.map(f => {
-  return <DynamicField field={f} value={null} onChange={() => {}} />
+{dynamicFields.map((f) => {
+  return (
+    <DynamicField
+      field={f}
+      value={state[f.name]}
+      onChange={(val) => { setState({...state, [f.name]: val})}}
+    />
+  )
 })}
             `}</pre>
           </div>

@@ -2,6 +2,9 @@ import { FIELDS } from '@lib/constants'
 import TagsInput from '../tags-input/tags-input'
 import Toggle from '../toggle/toggle'
 import Upload from '../upload/upload'
+import InputEntity from './inputs/input-entity'
+import InputRadio from './inputs/input-radio'
+
 import { useState } from 'react'
 
 function InputText(props) {
@@ -168,60 +171,6 @@ function Select(props) {
   )
 }
 
-function Radio(props) {
-  const [touched, setTouched] = useState(false)
-  const value = props.field.multiple ? props.value || [] : props.value
-
-  const onChange = (ev) => {
-    setTouched(true)
-    const isChecked = ev.target.checked
-    const itemValue = ev.target.value
-    let newValues = value
-
-    if (props.field.multiple) {
-      if (isChecked) {
-        newValues = [...newValues, itemValue]
-      } else {
-        newValues = [...newValues.filter((i) => i !== itemValue)]
-      }
-    } else {
-      newValues = itemValue
-    }
-
-    props.onChange(newValues, ev)
-  }
-
-  return (
-    <div
-      className="input-radio-group"
-      data-testid={props['data-testid']}
-      className={`${touched ? 'touched' : ''}`}
-    >
-      {props.field.options.map((o) => {
-        return (
-          <div className="input-radio" key={o.label}>
-            <input
-              type={props.field.multiple ? 'checkbox' : 'radio'}
-              id={props['data-testid'] + o.value}
-              key={props['data-testid'] + o.value}
-              value={o.value}
-              disabled={props.disabled}
-              checked={
-                props.field.multiple
-                  ? value.indexOf(o.value) !== -1
-                  : value === o.value
-              }
-              name={props.field.name}
-              onChange={onChange}
-            ></input>
-            <label for={props['data-testid'] + o.value}>{o.label}</label>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 function InputImage(props) {
   const [touched, setTouched] = useState(false)
 
@@ -282,19 +231,6 @@ function InputFile(props) {
   )
 }
 
-function InputTags(props) {
-  return (
-    <TagsInput
-      placeholder={props.field.placeholder}
-      name={props.field.name}
-      value={props.value}
-      disabled={props.disabled}
-      data-testid={props['data-testid']}
-      onChange={(val) => props.onChange(val)}
-    />
-  )
-}
-
 function TextArea(props) {
   const [touched, setTouched] = useState(false)
   const onChange = (ev) => {
@@ -331,7 +267,7 @@ function Field(props) {
 
   const onChange = (value, ev) => {
     if (ev) {
-      const valid = ev.target.checkValidity()
+      const valid = ev.target ? ev.target.checkValidity() : ev()
       setError(!valid)
     }
 
@@ -439,10 +375,23 @@ function Field(props) {
           />
         )
 
+      case FIELDS.ENTITY_SEARCH:
+          return (
+            <InputEntity
+              field={field}
+              value={props.value}
+              disabled={props.disabled}
+              data-testid={datatestId}
+              onChange={onChange}
+            />
+          )
+  
+
       case FIELDS.TAGS:
         return (
-          <InputTags
-            field={field}
+          <TagsInput
+            placeholder={props.field.placeholder}
+            name={props.field.name}
             value={props.value}
             disabled={props.disabled}
             data-testid={datatestId}
@@ -463,7 +412,7 @@ function Field(props) {
 
       case FIELDS.RADIO:
         return (
-          <Radio
+          <InputRadio
             field={field}
             value={props.value}
             disabled={props.disabled}
