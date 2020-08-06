@@ -437,9 +437,22 @@ export const getConfig = () => {
           deleted: [adminRole],
           edited: [adminRole],
         },
+        read: [publicRole],
+        create: [adminRole],
+        update: [adminRole],
+        delete: [adminRole],
+        admin: [adminRole],
       },
       initialActivity: [],
     },
+
+    admin: {
+      permissions: {
+        access: [adminRole],
+        stats: [adminRole],
+      },
+    },
+  
 
     // Users configuration
     user: {
@@ -460,6 +473,14 @@ export const getConfig = () => {
 
       // New user roles
       newUserRoles: [userRole],
+
+      permissions: {
+        read: [publicRole],
+        create: [publicRole],
+        update: [adminRole],
+        delete: [adminRole],
+        admin: [adminRole],
+      },
 
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {

@@ -21,7 +21,7 @@ function Radio(props) {
       newValues = itemValue
     }
 
-    props.onChange(newValues, ev.target.checkValidity)
+    props.onChange(newValues, ev.target.checkValidity())
   }
 
   return (

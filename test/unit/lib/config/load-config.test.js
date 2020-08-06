@@ -23,6 +23,10 @@ describe('Load configuration file', () => {
     getConfig.mockReturnValueOnce({
       title: 'A valid config',
       description: 'This is the description',
+      user: {
+        roles: [{ label : 'user', value: 'USER'}],
+        newUserRoles: ['USER'],
+      }
     })
 
     expect(() => {

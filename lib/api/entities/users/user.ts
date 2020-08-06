@@ -29,7 +29,8 @@ export async function createUser({
   google = null,
   github = null,
   profile = {},
-}): Promise<UserType> {
+  roles = config.user.newUserRoles
+}, verified = false): Promise<UserType> {
 
   const { salt, hash } = generateSaltAndHash(password)
 
@@ -49,9 +50,9 @@ export async function createUser({
       facebook,
       google,
       github,
-      emailVerified: config.user.emailVerification ? false : true,
-      emailVerificationToken: config.user.emailVerification ? uuidv4() : null,
-      roles: config.user.newUserRoles, // New user roles
+      emailVerified: verified || !config.user.emailVerification ? true : false,
+      emailVerificationToken: verified || !config.user.emailVerification ? null : uuidv4(),
+      roles: verified ? roles : config.user.newUserRoles,
       createdAt: Date.now(),
       profile: {
         ...profileFields,
@@ -65,44 +66,6 @@ export async function createUser({
     })
 }
 
-// This function is used only if the creator of the user is an administration 
-export async function createUserManually({
-  username,
-  email,
-  password,
-  roles,
-  ...profile
-}): Promise<UserType> {
-  
-  const { salt, hash } = generateSaltAndHash(password)
-
-  const profileFields = {}
-
-  config.user.profile.fields.forEach((f) => {
-    profileFields[f.name] = f.defaultValue || null
-  })
-
-  return getDB()
-    .collection('users')
-    .add({
-      username,
-      salt,
-      hash,
-      email,
-      emailVerified: true,
-      emailVerificationToken: null,
-      roles,
-      createdAt: Date.now(),
-      profile: {
-        ...profileFields,
-        ...profile,
-      },
-      metadata: {
-        reported: 0,
-        lastLogin: null,
-      },
-    })
-}
 
 export async function findUserWithPassword({
   email,

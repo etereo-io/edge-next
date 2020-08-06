@@ -32,30 +32,26 @@ const allField: FieldType[] = [
     minlength: 6,
     maxlength: 48,
   },
-  ...config.user.profile.fields.filter(({ name }) => name !== 'profile-images'),
+  ...config.user.profile.fields.filter(({ type }) => type !== FIELDS.IMAGE && type !== FIELDS.FILE),
   {
-    name: 'role',
-    type: 'select',
-    label: 'role',
+    name: 'roles',
+    type: 'radio',
+    label: 'roles',
     required: true,
+    multiple: true,
+    defaultValue: [config.user.roles[0].value],
     options: config.user.roles,
   },
 ]
+
 
 function UserForm() {
   const [error, setError] = useState<string>('')
   const [success, setSuccess] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const [fields, setFields] = useState(
-    allField.reduce((acc, value) => {
-      if (value.type === FIELDS.SELECT) {
-        acc[value.name] = value.options[0].value
-      }
+  const [fields, setFields] = useState({})
 
-      return acc
-    }, {})
-  )
   const onSubmit = (e) => {
     e.preventDefault()
     setLoading(true)
@@ -75,9 +71,8 @@ function UserForm() {
       .catch((e) => {
         setLoading(false)
         setSuccess(false)
-        e.json().then(({ error }) => {
-          setError(error || 'Something went wrong')
-        })
+        setError(e.message || 'Something went wrong')
+        
       })
   }
   const handleFieldChange = useCallback(

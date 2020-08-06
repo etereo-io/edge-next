@@ -22,10 +22,9 @@ function Field(props) {
   const { onChange: onChangeHandler } = props
 
   const onChange = useCallback(
-    (value: any, isValid?: Function) => {
-      if (isValid) {
-        const valid = isValid()
-        setError(!valid)
+    (value: any, isValid?: boolean) => {
+      if (typeof isValid !== 'undefined') {
+        setError(!isValid)
       }
 
       onChangeHandler(value)

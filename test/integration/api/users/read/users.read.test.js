@@ -16,6 +16,10 @@ jest.mock('../../../../../edge.config', () => ({
   getConfig: jest.fn().mockReturnValue({
     title: 'A test',
     description: 'A test',
+    user : {
+      roles: [{ label : 'user', value: 'USER'}],
+      newUserRoles: ['USER']
+    }
   }),
 }))
 

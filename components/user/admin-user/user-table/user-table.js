@@ -91,6 +91,7 @@ const ListItem = (props) => {
         </Link>
       </TableCellBody>
       <TableCellBody>{props.item.email}</TableCellBody>
+      <TableCellBody>{(props.item.roles || []).join(',')}</TableCellBody>
       <TableCellBody>{props.item.metadata.reported}</TableCellBody>
       <TableCellBody>
         {props.item.metadata.lastLogin
@@ -214,6 +215,7 @@ export default function (props) {
     >
       Email
     </TableCellHeader>,
+    <TableCellHeader>Roles</TableCellHeader>,
     <TableCellHeader>Reported</TableCellHeader>,
     <TableCellHeader
       onClick={() => {

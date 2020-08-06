@@ -6,14 +6,13 @@ import {
   validateNewUser,
 } from '@lib/api/entities/users/user'
 import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
-import { onUserAdded, onUserAddedManually } from '@lib/api/hooks/user.hooks'
 
-import { ROLES } from '@lib/constants'
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
+import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 const getUsers = (filterParams, paginationParams) => (req, res) => {
@@ -42,7 +41,7 @@ const addUser = (user) => async (
 ) => {
   let parsedUser = null
 
-  const currentUserHasAdministrationRights = hasPermission(req.currentUser,  [`user.admin`, `user.update`])
+  const currentUserHasAdministrationRights = hasPermission(currentUser,  [`user.admin`, `user.update`])
 
   if (user.roles || user.profile) {
     // Is a user being created manually, not a signup. People who signup can not chose their own roles or add profile information

@@ -107,7 +107,10 @@ jest.mock('../../../../../edge.config', () => {
     user : {
       permissions: {
         
-      }
+      },
+
+      roles: [{ label : 'user', value: 'USER'}],
+      newUserRoles: ['USER'],
     },
 
     contentTypes: [{

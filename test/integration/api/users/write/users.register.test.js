@@ -20,6 +20,9 @@ jest.mock('../../../../../edge.config', () => ({
       // Require email verification
       emailVerification: true,
 
+      roles: [{ label : 'user', value: 'USER'}],
+      newUserRoles: ['USER'],
+
       providers: {
         github: false,
         google: false,
