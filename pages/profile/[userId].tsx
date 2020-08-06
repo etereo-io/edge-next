@@ -13,7 +13,6 @@ import UserActivity from '@components/user/activity/activity'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import config from '@lib/config'
 import fetch from '@lib/fetcher'
-import select from '@components/generic/select/select'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
 import { userPermission } from '@lib/permissions'
@@ -52,29 +51,29 @@ const Profile = () => {
     }
   }, [data, canAccess, finished, currentUser])
 
-  
-
   const canSeeContent = useMemo(
     () => finished && currentUser.finished && canAccess && data,
     [finished, currentUser, canEdit, data]
   )
 
-  const { value: tab, setValue: setTab, onChange: handleTabChange } = useTab(selectedTab as string)
-  
+  const { value: tab, setValue: setTab, onChange: handleTabChange } = useTab(
+    selectedTab as string
+  )
+
   useEffect(() => {
     setTab(selectedTab as string)
   }, [selectedTab])
 
   const tabs = useMemo(() => {
     return [
-      ...visibleContentTypes.map((record) => ({
-        id: record.slug,
-        label: record.title,
+      ...visibleContentTypes.map((contentType) => ({
+        id: contentType.slug,
+        label: contentType.title,
         show: canSeeContent,
         content: (
           <ContentListView
             infiniteScroll={false}
-            type={record}
+            type={contentType}
             query={`author=${data?.id || null}`}
           />
         ),
@@ -83,18 +82,16 @@ const Profile = () => {
         id: 'groups',
         label: 'Groups',
         show: canSeeContent,
-        content: (visibleGroupTypes.map(groupType => {
+        content: visibleGroupTypes.map((groupType) => {
           return (
             <GroupListView
-            infiniteScroll={false}
-            type={groupType}
-            query={`member=${data?.id || null}`}
-          />
+              infiniteScroll={false}
+              type={groupType}
+              query={`member=${data?.id || null}`}
+            />
           )
-        })
-          
-        ),
-      }, 
+        }),
+      },
       {
         id: 'likes',
         label: 'Likes',
