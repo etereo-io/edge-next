@@ -5,83 +5,12 @@ import API from '@lib/api/api-endpoints'
 import Button from '../../../generic/button/button'
 import Card from '@components/generic/card/card'
 import GroupSummaryView from '../group-summary-view/group-summary-view'
-import Link from 'next/link'
-import Placeholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
 import fetch from '@lib/fetcher'
 import { useOnScreen } from '@lib/client/hooks'
+import LoadingItems from '@components/generic/loading/loading-items'
+import EmptyList from '@components/generic/empty-list'
 
-function LoadingItems() {
-  return (
-    <>
-      <div className="placeholders">
-        <div className="p">
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-        </div>
-        <div className="p">
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-          <div className="r">
-            <Placeholder width={'100%'} />
-          </div>
-        </div>
-      </div>
-
-      <style jsx>{`
-        .p {
-          background: var(--edge-background);
-          padding: var(--edge-gap);
-          margin-bottom: var(--edge-gap);
-          border-radius: var(--edge-radius);
-        }
-        .r {
-          margin-bottom: var(--edge-gap);
-        }
-      `}</style>
-    </>
-  )
-}
-
-function EmptyComponent() {
-  return (
-    <>
-      <div className="empty">
-        <h3>Nothing found</h3>
-        <div className="empty-image">
-          <img
-            title="No groups found"
-            src="/static/demo-images/confused-travolta.gif"
-          />
-        </div>
-      </div>
-      <style jsx>{`
-        h3 {
-          text-align: center;
-        }
-        .empty-image {
-          width: 200px;
-          margin: 0 auto;
-        }
-        img {
-          max-width: 100%;
-        }
-      `}</style>
-    </>
-  )
-}
-
-export default function (props) {
+export default function(props) {
   const infiniteScroll = props.infiniteScroll
   const query = props.query
   const identificator = 'content-list-' + props.type.slug + '-' + query
@@ -123,15 +52,12 @@ export default function (props) {
                 />
               </Card>
             </div>
-            <style jsx>{
-              `
+            <style jsx>{`
               .list-item {
                 margin-bottom: var(--edge-gap);
               }
-              `
-            }</style>
+            `}</style>
           </div>
-
         )
       })
     },
@@ -159,7 +85,7 @@ export default function (props) {
       <div className="group-list-view">
         {pages}
         {isLoadingMore && <LoadingItems />}
-        {isEmpty && <EmptyComponent />}
+        {isEmpty && <EmptyList imageTitle="No groups found" />}
         <div className="load-more">
           {isReachingEnd ? null : (
             <Button
@@ -175,7 +101,6 @@ export default function (props) {
         </div>
       </div>
       <style jsx>{`
-       
         .load-more {
           display: flex;
           justify-content: center;

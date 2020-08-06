@@ -295,6 +295,15 @@ export const getConfig = (defaultOptions) => {
         delete: ['GROUP_ADMIN'],
         admin: ['GROUP_ADMIN']
       }
+    }, {
+      slug: 'site-news',
+      permissions: {
+        read: ['GROUP_MEMBER'],
+        create: ['GROUP_MEMBER'],
+        update: ['GROUP_ADMIN'],
+        delete: ['GROUP_ADMIN'],
+        admin: ['GROUP_ADMIN']
+      }
     }],
 
     fields: [
