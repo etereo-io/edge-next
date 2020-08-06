@@ -85,6 +85,7 @@ const Profile = () => {
         content: visibleGroupTypes.map((groupType) => {
           return (
             <GroupListView
+              key={groupType.slug}
               infiniteScroll={false}
               type={groupType}
               query={`member=${data?.id || null}`}
