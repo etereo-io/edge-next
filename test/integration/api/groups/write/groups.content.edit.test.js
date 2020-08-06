@@ -202,9 +202,10 @@ describe('Integrations tests for content edition in a group', () => {
   test('Should return 404 if the group is not found ', async () => {
     // Find post
     findOneContent.mockReturnValueOnce(Promise.resolve({
-      id: 'some-post'
+      id: 'some-post',
+      groupId: 'abc'
     }))
-
+ 
     // Find the group
     findOneContent.mockReturnValueOnce(Promise.resolve(null))
 
@@ -214,6 +215,7 @@ describe('Integrations tests for content edition in a group', () => {
     })
 
     const urlToBeUsed = new URL(url)
+
     const params = { type: 'post', slug: 'a-post-slug', groupId: 'agroup', groupType: 'a nother'}
 
     Object.keys(params).forEach((key) =>
@@ -252,49 +254,6 @@ describe('Integrations tests for content edition in a group', () => {
     getSession.mockReturnValueOnce({
       roles: ['USER'],
       id: 'test-id-initial-user',
-    })
-
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'a-post-slug', groupId: 'agroup', groupType: 'project'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    const newPost = {
-      title: 'test'
-    }
-    
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newPost),
-    })
-
-    expect(response.status).toEqual(401)
-  })
-
-  test('Should reject updating a content if the groupId is different than the content groupId ', async () => {
-    // Find post
-    findOneContent
-    .mockReturnValue(Promise.resolve({}))
-    .mockReturnValueOnce(Promise.resolve({
-      id: 'some-post',
-      groupId: 'anothergroup',
-      groupType: 'project'
-    })).mockReturnValueOnce(Promise.resolve({ id: 'agroup',
-      groupType: 'project',
-      members: [{
-        id: 'user1',
-        roles: ['GROUP_MEMBER']
-      }]
-    }))
-
-    getSession.mockReturnValueOnce({
-      roles: ['USER'],
-      id: 'user1',
     })
 
     const urlToBeUsed = new URL(url)

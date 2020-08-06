@@ -3,7 +3,7 @@ import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import ContentActions from '../../content-actions/content-actions'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { usePermission } from '@lib/client/hooks'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useMonetizationState } from 'react-web-monetization'
 import config from '@lib/config'
 import Button from '@components/generic/button/button'
@@ -13,8 +13,20 @@ import SocialShare from '@components/generic/social-share/social-share'
 import { format } from 'timeago.js'
 import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
 import { useUser } from '@lib/client/hooks'
+import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 
-export default function (props) {
+interface Props {
+  content: any
+  type: ContentTypeDefinition
+  summary: boolean
+  showActions: boolean
+  showComments: boolean
+  addComments: boolean
+}
+
+export default function(props: Props) {
+  const { addComments = true } = props
+
   const shareUrl =
     typeof window !== 'undefined'
       ? `${String(window.location)}/content/${props.type.slug}/${
@@ -152,7 +164,7 @@ export default function (props) {
               <b>
                 {props.type.comments.enabled &&
                 canReadComments.available &&
-                typeof props.content.comments !== 'undefined' ? (
+                typeof props.content.comments !== 'undefined' && addComments? (
                   <span className="comment-count" onClick={onClickComments}>
                     {props.content.comments === 0 && canWriteComments.available
                       ? 'Add a comment'
