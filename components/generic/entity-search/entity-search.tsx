@@ -1,8 +1,9 @@
-import fetch from '@lib/fetcher'
+import API from '@lib/api/api-endpoints'
 import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
+import fetch from '@lib/fetcher'
 import { useState } from 'react'
 
-function ResultItem({ item, onClick = () => {} }) {
+function ResultItem({ item, onClick = (item) => {}, entityName = (item) => item.id }) {
   const [active, setActive] = useState(false)
 
   const onMouseEnter = () => {
@@ -16,7 +17,7 @@ function ResultItem({ item, onClick = () => {} }) {
   return (
     <>
       <div onClick={() => onClick(item)} className={`result-item ${active ? 'active' : ''}`} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-        {item.email} - {item.username}
+        {entityName(item)}
       </div>
       <style jsx> 
         {
@@ -37,7 +38,14 @@ function ResultItem({ item, onClick = () => {} }) {
   )
 }
 
-export default function({ onSelect = () => {}}) {
+export default function({ 
+  onChange = (val) => {}, 
+  entity, 
+  entityType = '',
+  placeholder = 'Search',
+  entityName = (item) => item.id
+}) {
+
   const [resultsOpened, setResultsOpened] = useState(false)
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
@@ -48,8 +56,30 @@ export default function({ onSelect = () => {}}) {
     setLoading(true)
     setError(false) 
 
+    let apiRoute = ''
 
-    fetch('/api/users?search=' + val)
+    switch(entity) {
+      case 'user':
+        apiRoute = `${API.users}?search=${val}`
+        break;
+      case 'content':
+        apiRoute = `${API.content[entityType]}?search=${val}`
+        break;
+      case 'group':
+        apiRoute = `${API.groups[entityType]}?search=${val}`
+        break;
+      
+      default: 
+        break;
+    }
+
+    if (!apiRoute) {
+      setError(true)
+      return
+    }
+
+
+    fetch(apiRoute)
       .then(found => {
         setLoading(false)
         setResults(found.results)
@@ -70,26 +100,28 @@ export default function({ onSelect = () => {}}) {
 
   const onSelectItem = (item) => {
     setResultsOpened(false)
-    onSelect(item)
+    onChange(item)
     setSearch('')
   }
 
+
   return (
     <>
-      <div className="user-searcher">
+      <div className="entity-searcher">
         <div className="input-wrapper">
-          <input type="text" placeholder="Search user..." onChange={onChangeSearch} value={search}></input>
+          <input type="text" placeholder={placeholder} onChange={onChangeSearch} value={search}></input>
           { loading && <LoadingSpinner />}
 
         </div>
         {resultsOpened && <div className="results">
           {results.map(result => {
             return (
-              <ResultItem item={result} onClick={onSelectItem}/>
+              
+              <ResultItem key={`${entity}-result-item-${result.id}`} item={result} onClick={onSelectItem} entityName={entityName}/>
             )
           })}
         </div>}
-        { error && <div className="error-message">Error loading users </div>}
+        { error && <div className="error-message">Error loading items </div>}
       </div>
       <style jsx>{
         `

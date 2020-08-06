@@ -1,8 +1,16 @@
 import { FIELDS } from '@lib/config/config-constants'
 import TagsInput from '../tags-input/tags-input'
+import EntitySearch from '../entity-search/entity-search'
 import Toggle from '../toggle/toggle'
 import Upload from '../upload/upload'
-import { useState } from 'react'
+import Table, {
+  TableCellBody,
+  TableCellHeader,
+  TableRowBody,
+} from '@components/generic/table/table'
+import Button from '@components/generic/button/button'
+
+import { useState, useEffect } from 'react'
 
 function InputText(props) {
   const [touched, setTouched] = useState(false)
@@ -282,6 +290,68 @@ function InputFile(props) {
   )
 }
 
+
+function InputEntity(props) {
+  const [val, setVal] = useState(props.value || [])
+
+  const validate = (value) => () => {
+    return props.field.required && value.length === 0 ? false : true
+  }
+
+  const onChange = item => {
+    const newVal = props.field.multiple ? [item, ...val] : [item]
+    
+    setVal(newVal)
+    props.onChange(newVal, validate)
+  }
+
+  const removeItem = item => {
+    const newVal = val.filter(i => i.id !== item.id)
+    setVal(newVal)
+    props.onChange(newVal, validate)
+  }
+
+  useEffect(() => {
+    setVal(val)
+  }, [props.value])
+
+  const headerCells = [
+    (<TableCellHeader key={`${props.field.name}-header-title`}>
+      Item
+    </TableCellHeader>),
+    (<TableCellHeader key={`${props.field.name}-header-actions`}>
+      Actions
+    </TableCellHeader>),
+  ]
+
+  return (
+    <div className="input-entity" data-testid={props['data-testid']} >
+      <EntitySearch placeholder={props.field.placeholder} entity={props.field.entity} entityType={props.field.entityType} entityName={props.field.entityName} onChange={onChange} />
+
+      <div className="results">
+      
+          <Table headerCells={headerCells}>
+            {val.length > 0 ? val.map(item => {
+              return (
+                <TableRowBody key={`${props.field.name}-${item.id}`}>
+                  <TableCellBody>{props.field.entityName(item)}</TableCellBody>
+                  <TableCellBody><Button onClick={() => removeItem(item)}>Remove</Button></TableCellBody>
+              </TableRowBody>)
+            }) : (
+              <TableRowBody>
+                  <TableCellBody>No items found</TableCellBody>
+                  <TableCellBody>-</TableCellBody>
+              </TableRowBody>
+            )}
+            
+
+          </Table>
+        
+      </div>
+    </div>
+  )
+}
+
 function InputTags(props) {
   return (
     <TagsInput
@@ -331,7 +401,7 @@ function Field(props) {
 
   const onChange = (value, ev) => {
     if (ev) {
-      const valid = ev.target.checkValidity()
+      const valid = ev.target ? ev.target.checkValidity() : ev()
       setError(!valid)
     }
 
@@ -438,6 +508,18 @@ function Field(props) {
             onChange={onChange}
           />
         )
+
+      case FIELDS.ENTITY_SEARCH:
+          return (
+            <InputEntity
+              field={field}
+              value={props.value}
+              disabled={props.disabled}
+              data-testid={datatestId}
+              onChange={onChange}
+            />
+          )
+  
 
       case FIELDS.TAGS:
         return (
