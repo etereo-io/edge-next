@@ -54,13 +54,13 @@ export default function({ users = [], onChange, roles = []}) {
 
 
   const headerCells = [
-    (<TableCellHeader>
+    (<TableCellHeader key="user">
       User
     </TableCellHeader>),
-    (<TableCellHeader>
+    (<TableCellHeader key={"role"}>
       Role
     </TableCellHeader>),
-    (<TableCellHeader>
+    (<TableCellHeader key="actions">
       Actions
     </TableCellHeader>),
   ]
