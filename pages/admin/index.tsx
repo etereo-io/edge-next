@@ -1,8 +1,11 @@
-import { useContentTypes, usePermission, useUser } from '@lib/client/hooks'
-
+import {
+  useContentTypes,
+  usePermission,
+  useUser,
+  useGroupTypes,
+} from '@lib/client/hooks'
 import Layout from '@components/layout/admin/layout-admin'
 import LinkList from '@components/generic/link-list/link-list'
-import config from '@lib/config'
 import { hasPermission } from '@lib/permissions'
 
 const AdminPage = () => {
@@ -11,6 +14,7 @@ const AdminPage = () => {
   const { available } = usePermission(['admin.access'], '/')
 
   const contentTypes = useContentTypes(['admin'])
+  const groupTypes = useGroupTypes(['admin'])
 
   const links = []
 
@@ -35,11 +39,16 @@ const AdminPage = () => {
     }
   })
 
+  const groupLinks = groupTypes.map(({ slug, title }) => ({
+    link: `/admin/groups/${slug}`,
+    title: `Administer ${title}`,
+  }))
+
   return (
     available && (
       <Layout title="Administration area">
         <h1>Administration</h1>
-        <LinkList links={[...links, ...contentLinks]} />
+        <LinkList links={[...links, ...contentLinks, ...groupLinks]} />
       </Layout>
     )
   )
