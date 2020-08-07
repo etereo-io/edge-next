@@ -316,7 +316,7 @@ const updateUser = (slug) => async (req, res) => {
   promiseChange
     .then((newUser) => {
       // Invoke the hook
-      onUserUpdated(newUser, updateData)
+      onUserUpdated(newUser, updateData, req.currentUser)
 
       res.status(200).send({
         updated: true,

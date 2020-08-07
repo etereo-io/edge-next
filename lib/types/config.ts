@@ -1,5 +1,6 @@
+import { FieldOptionType, FieldType } from './fields'
+
 import { ContentTypeDefinition } from './contentTypeDefinition'
-import { FieldType } from './fields'
 import { GroupTypeDefinition } from './groupTypeDefinition'
 import { PermissionsType } from './permissions'
 import { UserType } from './user'
@@ -38,7 +39,6 @@ export declare type ConfigType = {
     default: string;
     themes: ThemeType[];
   },
-  roles: object,
   activity: {
     enabled: boolean;
     permissions: PermissionsType[];
@@ -51,7 +51,8 @@ export declare type ConfigType = {
     enabled: boolean;
   },
   user: {
-    roles: string[];
+    roles: FieldOptionType[];
+    newUserRoles: string[];
     emailVerification: boolean;
     providers: object;
     profile: {

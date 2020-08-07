@@ -20,12 +20,13 @@ import { onCommentDeleted } from './comment.hooks'
 import { onContentDeleted } from './content.hooks'
 import { sendVerifyEmail } from '@lib/email'
 
-export async function onUserAdded(user) {
+export async function onUserAdded(user, currentUser) {
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
-      author: user.id,
-      type: ACTIVITY_TYPES.USER_ADDED,
+      author: currentUser ? currentUser.id : user.id,
+      // If is currentUser  it means the user has been created in the administration
+      type: currentUser ? ACTIVITY_TYPES.USER_ADDED_MANUALLY : ACTIVITY_TYPES.USER_ADDED,
       meta: {
         userId: user.id,
         username: user.username,
@@ -33,7 +34,7 @@ export async function onUserAdded(user) {
     })
   }
 
-  if (config.user.emailVerification) {
+  if (config.user.emailVerification && !currentUser) {
     await sendVerifyEmail(user.email, user.emailVerificationToken)
     addActivity({
       role: 'system',
@@ -48,11 +49,12 @@ export async function onUserAdded(user) {
   }
 }
 
-export async function onUserUpdated(user, updateFields) {
+
+export async function onUserUpdated(user, updateFields, currentUser) {
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
-      author: user.id,
+      author: currentUser.id,
       type: ACTIVITY_TYPES.USER_UPDATED,
       meta: {
         userId: user.id,

@@ -78,6 +78,11 @@ jest.mock('../../../../../edge.config', () => {
   
       groups: {
         types: [mockGroupType]
+      },
+
+      user : {
+        roles: [{ label : 'user', value: 'USER'}],
+        newUserRoles: ['USER'],
       }
     }),
   }

@@ -22,6 +22,8 @@ jest.mock('../../../../../edge.config', () => ({
     description: 'A test',
     user: {
       emailVerification: true,
+      roles: [{ label : 'user', value: 'USER'}],
+      newUserRoles: ['USER'],
     },
   }),
 }))

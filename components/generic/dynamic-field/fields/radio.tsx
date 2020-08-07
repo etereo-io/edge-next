@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
-export default function Radio(props) {
+function Radio(props) {
   const [touched, setTouched] = useState(false)
   const value = props.field.multiple ? props.value || [] : props.value
 
   const onChange = (ev) => {
     setTouched(true)
+
     const isChecked = ev.target.checked
     const itemValue = ev.target.value
     let newValues = value
@@ -20,7 +21,7 @@ export default function Radio(props) {
       newValues = itemValue
     }
 
-    props.onChange(newValues, ev)
+    props.onChange(newValues, ev.target.checkValidity())
   }
 
   return (
@@ -39,12 +40,12 @@ export default function Radio(props) {
               disabled={props.disabled}
               checked={
                 props.field.multiple
-                  ? value.indexOf(o.value) !== -1
+                  ? value.includes(o.value)
                   : value === o.value
               }
               name={props.field.name}
               onChange={onChange}
-            ></input>
+            />
             <label htmlFor={props['data-testid'] + o.value}>{o.label}</label>
           </div>
         )
@@ -52,3 +53,5 @@ export default function Radio(props) {
     </div>
   )
 }
+
+export default memo(Radio)

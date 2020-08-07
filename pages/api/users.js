@@ -14,10 +14,7 @@ import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const getUsers = (filterParams, paginationParams) => (
-  req,
-  res
-) => {
+const getUsers = (filterParams, paginationParams) => (req, res) => {
   const permission = [`user.admin`]
   const showPrivateFields = hasPermission(req.currentUser, permission)
 
@@ -37,8 +34,22 @@ const getUsers = (filterParams, paginationParams) => (
     })
 }
 
-const addUser = (user) => async (req, res) => {
+const addUser = (user) => async (
+  { currentUser },
+  res
+) => {
   let parsedUser = null
+
+  const currentUserHasAdministrationRights = hasPermission(currentUser,  [`user.admin`, `user.update`])
+
+  if (user.roles || user.profile) {
+    // Is a user being created manually, not a signup. People who signup can not chose their own roles or add profile information
+    if (!currentUserHasAdministrationRights) {
+      return res.status(401).json({
+        error: 'Unauthorized to create users with roles or profile information.'
+      })
+    }
+  }
 
   try {
     parsedUser = validateNewUser(user)
@@ -56,7 +67,9 @@ const addUser = (user) => async (req, res) => {
     })
   }
 
-  const userWithUserName = await findOneUser({ username: parsedUser.username })
+  const userWithUserName = await findOneUser({
+    username: parsedUser.username,
+  })
   if (userWithUserName) {
     return res.status(400).json({
       error: 'Username already taken',
@@ -64,11 +77,10 @@ const addUser = (user) => async (req, res) => {
   }
 
   try {
-    const added = await createUser(parsedUser)
+    const added = await createUser(parsedUser, currentUserHasAdministrationRights)
+    onUserAdded(added, currentUser)
 
-    onUserAdded(added)
-
-    res.status(200).send(added)
+    res.status(200).send(hidePrivateUserFields(added))
   } catch (err) {
     res.status(500).json({
       error: err.message,
@@ -78,15 +90,17 @@ const addUser = (user) => async (req, res) => {
 
 export default async (req, res) => {
   const {
-    query: { search, sortBy, sortOrder, from, limit },
+    query: { search, sortBy, sortOrder, from, limit},
   } = req
 
   const filterParams = {}
 
   if (search) {
-    filterParams['$or'] = [{email: { $regex:  search } }, { username: { $regex: search }}]
+    filterParams['$or'] = [
+      { email: { $regex: search } },
+      { username: { $regex: search } },
+    ]
   }
- 
 
   const paginationParams = {
     sortBy,

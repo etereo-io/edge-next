@@ -7,10 +7,24 @@ function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
   )
 }
 
-export const getConfig = (defaultOptions) => {
-  const userRole = defaultOptions.roles.user.value
-  const adminRole = defaultOptions.roles.admin.value
-  const publicRole = defaultOptions.roles.public.value
+export const getConfig = () => {
+
+  const userRole = 'USER'
+  const adminRole = 'ADMIN'
+  const publicRole = 'PUBLIC'
+
+  const roles = [{
+    label: 'Administrator',
+    value: adminRole
+  }, {
+    label: 'User',
+    value: userRole
+  }, {
+    label: 'Public',
+    value: publicRole
+  }]
+
+  
 
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto
@@ -50,7 +64,7 @@ export const getConfig = (defaultOptions) => {
       get: true,
       post: true,
       delete: true,
-      put: true
+      put: true,
     },
 
     permissions: {
@@ -262,19 +276,21 @@ export const getConfig = (defaultOptions) => {
       admin: [adminRole],
     },
 
-    roles: [{
-      label: 'Group Member',
-      value: 'GROUP_MEMBER'
-    }, {
-      label: 'Group admin',
-      value: 'GROUP_ADMIN'
-    }],
+    roles: [
+      {
+        label: 'Group Member',
+        value: 'GROUP_MEMBER',
+      },
+      {
+        label: 'Group admin',
+        value: 'GROUP_ADMIN',
+      },
+    ],
 
     publishing: {
       draftMode: true,
       title: 'title',
     },
-
 
     user: {
       permissions: {
@@ -325,8 +341,9 @@ export const getConfig = (defaultOptions) => {
         minlength: 1,
         maxlength: 200,
         required: true,
-        description: 'Tell the world something about this publication group (max 200 characters)'
-      }
+        description:
+          'Tell the world something about this publication group (max 200 characters)',
+      },
     ],
   }
 
@@ -348,7 +365,7 @@ export const getConfig = (defaultOptions) => {
     },
 
     logger: {
-      level: 'ERROR'
+      level: 'ERROR',
     },
 
     // Storages: GOOGLE, AWS, FIREBASE
@@ -420,9 +437,22 @@ export const getConfig = (defaultOptions) => {
           deleted: [adminRole],
           edited: [adminRole],
         },
+        read: [publicRole],
+        create: [adminRole],
+        update: [adminRole],
+        delete: [adminRole],
+        admin: [adminRole],
       },
       initialActivity: [],
     },
+
+    admin: {
+      permissions: {
+        access: [adminRole],
+        stats: [adminRole],
+      },
+    },
+  
 
     // Users configuration
     user: {
@@ -437,9 +467,20 @@ export const getConfig = (defaultOptions) => {
         google: true,
         facebook: true,
       },
+      
+      // General roles
+      roles: roles,
 
       // New user roles
-      roles: [userRole], 
+      newUserRoles: [userRole],
+
+      permissions: {
+        read: [publicRole],
+        create: [publicRole],
+        update: [adminRole],
+        delete: [adminRole],
+        admin: [adminRole],
+      },
 
       // Fields for the users profiles (in addition to picture and displayName)
       profile: {
@@ -529,7 +570,7 @@ export const getConfig = (defaultOptions) => {
 
     // Groups definitions
     groups: {
-      types: [publishingGroupType]
+      types: [publishingGroupType],
     },
 
     // Features not implemented yet, but UI implemented

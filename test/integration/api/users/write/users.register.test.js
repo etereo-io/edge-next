@@ -20,6 +20,9 @@ jest.mock('../../../../../edge.config', () => ({
       // Require email verification
       emailVerification: true,
 
+      roles: [{ label : 'user', value: 'USER'}],
+      newUserRoles: ['USER'],
+
       providers: {
         github: false,
         google: false,
@@ -297,8 +300,13 @@ describe('Integrations tests for users creation endpoint', () => {
 
       expect(response.status).toBe(200)
       expect(jsonResult).toMatchObject({
-        emailVerified: false,
-        emailVerificationToken: expect.any(String),
+        id: expect.any(String),
+        metadata: expect.any(Object),
+        profile: {
+          description: null,
+          gender: null
+        },
+        username: 'emilio'
       })
     })
 

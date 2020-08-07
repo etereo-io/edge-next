@@ -178,6 +178,8 @@ jest.mock('../../../../../edge.config', () => {
       },
 
       user: {
+        roles: [{ label : 'user', value: 'USER'}],
+        newUserRoles: ['USER'],
         profile: {
           fields: [
             {

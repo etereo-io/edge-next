@@ -11,7 +11,7 @@ import EntitySearch from '@components/generic/entity-search/entity-search'
 export default function InputEntity(props) {
   const [val, setVal] = useState(props.value || [])
 
-  const validate = (value) => () => {
+  const validate = (value) => {
     return props.field.required && value.length === 0 ? false : true
   }
 
@@ -19,13 +19,13 @@ export default function InputEntity(props) {
     const newVal = props.field.multiple ? [item, ...val] : [item]
     
     setVal(newVal)
-    props.onChange(newVal, validate)
+    props.onChange(newVal, validate(newVal))
   }
 
   const removeItem = item => {
     const newVal = val.filter(i => i.id !== item.id)
     setVal(newVal)
-    props.onChange(newVal, validate)
+    props.onChange(newVal, validate(newVal))
   }
 
   useEffect(() => {

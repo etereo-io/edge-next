@@ -132,6 +132,11 @@ jest.mock('../../../../../edge.config', () => {
         types: [mockPostContentType],
         initialContent: mockInitialPosts,
       },
+
+      user: {
+        roles: [{ label : 'user', value: 'USER'}],
+        newUserRoles: ['USER'],
+      }
     }),
   }
 })

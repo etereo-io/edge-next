@@ -98,7 +98,7 @@ export default function ({
       <div className="">
         <form onSubmit={onSubmit} className="form">
           <div className="input-group">
-            <label>Add a new comment</label>
+            <label htmlFor="your-comment">Add a new comment</label>
             <textarea
               value={message}
               placeholder="Your comment"
