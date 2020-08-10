@@ -99,7 +99,7 @@ async function addUsers(req, res) {
       })
     }
 
-    return res.status(500).json({
+    return res.status(401).json({
       error: "You don't have permissions for adding users to this group",
     })
   }
@@ -108,7 +108,7 @@ async function addUsers(req, res) {
     const canJoin = groupUserPermission(currentUser, type, 'join', item)
 
     if (!canJoin) {
-      res.status(500).json({
+      res.status(401).json({
         error: 'You do not have permission to join this group',
       })
     } else {
@@ -171,14 +171,6 @@ export default async (req, res) => {
     await runMiddleware(req, res, loadUser)
   } catch (e) {
     return res.status(500).json({
-      error: e.message,
-    })
-  }
-
-  try {
-    await runMiddleware(req, res, hasPermissionsForGroupUser(type, req.item))
-  } catch (e) {
-    return res.status(401).json({
       error: e.message,
     })
   }
