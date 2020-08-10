@@ -8,6 +8,7 @@ export declare type GroupEntityType = {
   slug: string;
   type: string;
   members: MemberType[];
+  pendingMembers: MemberType[];
   draft: boolean;
   author: string;
   createdAt: string;

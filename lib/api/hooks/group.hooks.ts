@@ -12,6 +12,7 @@ import { FIELDS } from '@lib/constants'
 import config from '@lib/config'
 import { deleteFile } from '@lib/api/storage'
 import logger from '@lib/logger'
+import { sendRequestToJoinToGroupEmail } from '@lib/email'
 
 export function onGroupAdded(group, user) {
   if (config.activity.enabled && group) {
@@ -43,6 +44,25 @@ export function onGroupUpdated(group, user) {
       },
     })
   }
+}
+
+export function onPendingActivity(group, user, groupAuthorEmail, groupType) {
+  if (config.activity.enabled && group) {
+    addActivity({
+      author: user.id,
+      role: 'user',
+      type: ACTIVITY_TYPES.GROUP_MEMBER_JOIN_REQUEST,
+      meta: {
+        groupId: group.id,
+        groupSlug: group.slug,
+        groupTitle: group.title,
+        groupType: group.type,
+        pendingMembers: group.pendingMembers,
+      },
+    })
+  }
+
+  sendRequestToJoinToGroupEmail(groupAuthorEmail, groupType, group)
 }
 
 export async function onGroupDeleted(group, user, groupType) {

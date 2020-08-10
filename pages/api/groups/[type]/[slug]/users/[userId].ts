@@ -10,23 +10,24 @@ import {
 
 import { connect } from '@lib/api/db'
 import methods from '@lib/api/api-helpers/methods'
-import {
-  onGroupUpdated,
-} from '@lib/api/hooks/group.hooks'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import { onGroupUpdated } from '@lib/api/hooks/group.hooks'
 
 const loadGroupItemMiddleware = async (req, res, cb) => {
-  const type = req.groupType
+  const {
+    groupType,
+    query: { field, slug },
+  } = req
 
-  // Allow to accept ID in the api call
-  // by default the API wors like /api/group/grouptype/the-group-slug but it can accept and ID if specified
-  // /api/group/grouptype/ID?field=id
-  if (req.query.field === 'id') {
-    searchOptions['id'] = req.query.slug
+  const searchOptions = {}
+
+  if (field === 'id') {
+    searchOptions['id'] = slug
   } else {
-    searchOptions['slug'] = req.query.slug
+    searchOptions['slug'] = slug
   }
 
-  findOneContent(type.slug, searchOptions)
+  findOneContent(groupType.slug, searchOptions)
     .then((data) => {
       if (!data) {
         cb(new Error('group not found'))
@@ -40,21 +41,22 @@ const loadGroupItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getUsers = async (req, res) => {
-  res.status(200).json(req.item.members)
-}
-
 const addMember = async (req, res) => {
+  const {
+    query: {
+      type: { slug },
+      body,
+      item: { id },
+      currentUser,
+    },
+  } = req
 
-  updateOneContent(type.slug, req.item.id, {
-    members: [
-      ...req.item.members,
-      req.body
-    ]
+  updateOneContent(slug, id, {
+    members: [...req.item.members, body],
   })
     .then((data) => {
       // Trigger on updated hook
-      onGroupUpdated(data, req.currentUser)
+      onGroupUpdated(data, currentUser)
 
       // Respond
       res.status(200).json(data)
@@ -65,6 +67,8 @@ const addMember = async (req, res) => {
       })
     })
 }
+
+async function updateMember() {}
 
 export default async (req, res) => {
   const {
@@ -113,7 +117,7 @@ export default async (req, res) => {
   }
 
   methods(req, res, {
-    get: getUsers,
     post: addMember,
+    put: updateMember,
   })
 }

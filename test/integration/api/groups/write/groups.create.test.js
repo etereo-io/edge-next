@@ -406,5 +406,44 @@ describe('Integrations tests for Groups creation endpoint', () => {
     expect(response.status).toBe(200)
   })
 
+  test('Should return 400 if the member role is invalid', async () => {
+    const urlToBeUsed = new URL(url)
+    const params = { type: 'project' }
+
+    Object.keys(params).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, params[key])
+    )
+
+    getPermissions.mockReturnValue({
+      'group.project.create': ['ADMIN'],
+      'group.project.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['ADMIN'],
+      id: 'test-id',
+    })
+
+    const newGroup = {
+      title: 'tes',
+      description:
+        'test test  test test test test test test test test test test test test test test ',
+      members: [{
+        roles: ['GROUP_MEMBERSSSS'],
+        id: 'abc'
+      }]
+    }
+
+    const response = await fetch(urlToBeUsed.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newGroup),
+    })
+
+    expect(response.status).toBe(400)
+  })
+
  
 })
