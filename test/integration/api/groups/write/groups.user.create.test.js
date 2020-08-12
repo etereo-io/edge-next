@@ -200,7 +200,7 @@ describe('Integrations tests for joining to the group', () => {
 
     expect(response.status).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
-      pendingMembers: [{ id: 'user4' }, { id: 'user5' }, { id: 'user1' }],
+      pendingMembers: [{ id: 'user1' }, { id: 'user4' }, { id: 'user5' }],
     })
   })
 
@@ -252,7 +252,7 @@ describe('Integrations tests for joining to the group', () => {
       Promise.resolve({
         slug: groupSlug,
         id: groupSlug,
-        members: [{ id: 'user2' }, { id: 'user3' }],
+        members: [{ id: 'user6' }],
       })
     )
 
@@ -269,7 +269,7 @@ describe('Integrations tests for joining to the group', () => {
 
     expect(response.status).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
-      members: [{ id: 'user2' }, { id: 'user3' }, { id: 'user6' }],
+      members: [{ id: 'user6' }],
     })
   })
 
@@ -278,7 +278,7 @@ describe('Integrations tests for joining to the group', () => {
       Promise.resolve({
         slug: groupSlug,
         id: groupSlug,
-        members: [{ id: 'user2' }, { id: 'user3' }],
+        members: [{ id: 'user6' }, { id: 'user7' }],
       })
     )
 
@@ -293,12 +293,7 @@ describe('Integrations tests for joining to the group', () => {
 
     expect(response.status).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
-      members: [
-        { id: 'user2' },
-        { id: 'user3' },
-        { id: 'user6' },
-        { id: 'user7' },
-      ],
+      members: [{ id: 'user6' }, { id: 'user7' }],
     })
   })
 })

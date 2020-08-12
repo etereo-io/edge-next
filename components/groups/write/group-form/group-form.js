@@ -8,7 +8,6 @@ import fetch from '@lib/fetcher'
 import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
 import Link from 'next/link'
-import UserPermissions from './user-permissions/user-permissions'
 
 export default function (props) {
 
@@ -158,8 +157,6 @@ export default function (props) {
           ))}
 
           <h2>User permissions</h2>
-
-          <UserPermissions onChange={handleFieldChange('members')} users={state.members || []} roles={props.type.roles} />
 
           <div className="actions">
             <Button loading={loading} alt={true} type="submit">

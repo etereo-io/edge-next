@@ -1,11 +1,8 @@
+import { updateOneContent } from '@lib/api/entities/content/content'
 import {
-  findOneContent,
-  updateOneContent,
-} from '@lib/api/entities/content/content'
-import {
-  hasPermissionsForGroupUser,
   isValidGroupType,
   loadUser,
+  loadGroupItemMiddleware,
 } from '@lib/api/middlewares'
 import { connect } from '@lib/api/db'
 import methods from '@lib/api/api-helpers/methods'
@@ -15,31 +12,7 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { groupUserPermission } from '@lib/permissions'
 import { findOneUser } from '@lib/api/entities/users/user'
 import uniqBy from '@lib/uniqBy'
-
-const loadGroupItemMiddleware = async (req, res, cb) => {
-  const type = req.groupType
-
-  const searchOptions = {}
-
-  if (req.query.field === 'id') {
-    searchOptions['id'] = req.query.slug
-  } else {
-    searchOptions['slug'] = req.query.slug
-  }
-
-  findOneContent(type.slug, searchOptions)
-    .then((data) => {
-      if (!data) {
-        cb(new Error('group not found'))
-      } else {
-        req.item = data
-        cb()
-      }
-    })
-    .catch((err) => {
-      cb(new Error('Error while loading group ' + err.message))
-    })
-}
+import { getPermittedFields } from '@lib/validations/group/users'
 
 const getUsers = async ({ item: { members } }, res) => {
   res.status(200).json(members)
@@ -58,7 +31,12 @@ function saveGroupUsers({ type, id, data, thenCallback, res }) {
 async function addUsers(req, res) {
   const {
     query: { type },
-    item: { id, author, members, pendingMembers = [] },
+    item: {
+      id,
+      author,
+      members: oldMembers,
+      pendingMembers: oldPendingMembers = [],
+    },
     item,
     currentUser,
     body,
@@ -66,15 +44,17 @@ async function addUsers(req, res) {
 
   const {
     user: { requireApproval },
+    roles,
   } = getGroupTypeDefinition(type)
+  const [role] = roles
 
   const membersCallback = (data) => {
-    onGroupUpdated(data, currentUser)
+    onGroupUpdated({ ...data, oldMembers }, currentUser)
 
     res.status(200).json(data)
   }
   const pendingMembersCallback = async (data) => {
-    onGroupUpdated(data, currentUser)
+    onGroupUpdated({ ...data, oldPendingMembers }, currentUser)
 
     const { email } = await findOneUser({ id: author })
 
@@ -83,58 +63,46 @@ async function addUsers(req, res) {
     res.status(200).json(data)
   }
 
-  if (Array.isArray(body) || body.id !== currentUser.id) {
-    const canUpdate = groupUserPermission(currentUser, type, 'update', item)
-    const usersToAdd = [...(Array.isArray(body) ? body : [body])]
+  // Has permissions to update members
+  const canUpdate =
+    (body.id !== currentUser.id || Array.isArray(body)) &&
+    groupUserPermission(currentUser, type, 'update', item)
 
-    if (canUpdate) {
-      return saveGroupUsers({
-        type,
-        id,
-        data: {
-          members: uniqBy([...members, ...usersToAdd]),
-        },
-        res,
-        thenCallback: membersCallback,
-      })
-    }
+  // Has permissions to join the group and is trying to add itself
+  const canJoin =
+    body.id === currentUser.id &&
+    groupUserPermission(currentUser, type, 'join', item)
 
+  if (!canJoin && !canUpdate) {
     return res.status(401).json({
-      error: "You don't have permissions for adding users to this group",
+      error: 'Not authorized',
     })
   }
 
-  if (body.id === currentUser.id) {
-    const canJoin = groupUserPermission(currentUser, type, 'join', item)
+  // Used to determine if the user goes to pending users
+  const membersRequireApproval = requireApproval && !canUpdate
+  const usersToAdd = [...(Array.isArray(body) ? body : [body])].map((item) => {
+    // set default role
+    item.roles = [role.value]
 
-    if (!canJoin) {
-      res.status(401).json({
-        error: 'You do not have permission to join this group',
-      })
-    } else {
-      if (requireApproval) {
-        return saveGroupUsers({
-          type,
-          id,
-          data: {
-            pendingMembers: uniqBy([...pendingMembers, body]),
-          },
-          res,
-          thenCallback: pendingMembersCallback,
-        })
-      } else {
-        return saveGroupUsers({
-          type,
-          id,
-          data: {
-            members: uniqBy([...members, body]),
-          },
-          res,
-          thenCallback: membersCallback,
-        })
-      }
-    }
-  }
+    return item
+  })
+
+  const pendingMembers = uniqBy(
+    [...usersToAdd, ...oldPendingMembers].map(getPermittedFields)
+  )
+  const members = uniqBy(usersToAdd.map(getPermittedFields))
+  const data = membersRequireApproval ? { pendingMembers } : { members }
+
+  return saveGroupUsers({
+    type,
+    id,
+    data,
+    res,
+    thenCallback: membersRequireApproval
+      ? pendingMembersCallback
+      : membersCallback,
+  })
 }
 
 export default async (req, res) => {

@@ -12,13 +12,18 @@ import GroupMembers from '@components/groups/group-members/group-members'
 import Button from '@components/generic/button/button'
 
 interface Props {
-  linkToDetail: boolean
+  linkToDetail?: boolean
   group: GroupEntityType
-  className: string
+  className?: string
   type: GroupTypeDefinition
 }
 
-function SummaryView({ linkToDetail, group, className, type }: Props) {
+function SummaryView({
+  linkToDetail = false,
+  className = '',
+  group,
+  type,
+}: Props) {
   const [clicked, setClicked] = useState<boolean>(false)
   const [error, setError] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -63,6 +68,7 @@ function SummaryView({ linkToDetail, group, className, type }: Props) {
 
   const handleJoinRequest = useCallback(() => {
     setIsLoading(true)
+
     fetch(`${API.groups[group.type]}/${group.slug}/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

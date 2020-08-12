@@ -1,6 +1,8 @@
-type MemberType = {
+export type MemberType = {
   id: string;
   roles: string[]
+  email: string[]
+  username: string[]
 }
 
 export declare type GroupEntityType = {

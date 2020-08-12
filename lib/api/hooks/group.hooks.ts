@@ -30,17 +30,37 @@ export function onGroupAdded(group, user) {
   }
 }
 
-export function onGroupUpdated(group, user) {
-  if (config.activity.enabled && group) {
+export function onGroupUpdated(data, user) {
+  if (config.activity.enabled && data) {
     addActivity({
       author: user.id,
       role: 'user',
       type: ACTIVITY_TYPES.GROUP_UPDATED,
       meta: {
-        groupId: group.id,
-        groupSlug: group.slug,
-        groupTitle: group.title, // This will not work with dynamic fields
-        groupType: group.type,
+        oldPendingMembers: data.oldPendingMembers,
+        oldMembers: data.oldMembers,
+        groupId: data.id,
+        groupSlug: data.slug,
+        groupTitle: data.title, // This will not work with dynamic fields
+        groupType: data.type,
+      },
+    })
+  }
+}
+
+export function onGroupJoinDisapprove(data, user) {
+  if (config.activity.enabled && data) {
+    addActivity({
+      author: user.id,
+      role: 'user',
+      type: ACTIVITY_TYPES.GROUP_MEMBER_JOIN_DISAPPROVE,
+      meta: {
+        oldPendingMembers: data.oldPendingMembers,
+        oldMembers: data.oldMembers,
+        groupId: data.id,
+        groupSlug: data.slug,
+        groupTitle: data.title, // This will not work with dynamic fields
+        groupType: data.type,
       },
     })
   }

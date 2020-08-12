@@ -1,6 +1,7 @@
-import { hasPermissionsForGroup, loadUser } from '@lib/api/middlewares'
-
+import React, { useState, useCallback } from 'react'
 import { GetServerSideProps } from 'next'
+
+import { hasPermissionsForGroup, loadUser } from '@lib/api/middlewares'
 import GroupDetailView from '@components/groups/read/group-detail-view/group-detail-view'
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
@@ -8,9 +9,13 @@ import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content/content'
 import { getGroupTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import GroupContext from '@components/groups/context/group-context'
 
-// Get serversideProps is important for SEO, and only available at the pages level
-export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  query,
+}) => {
   const groupTypeDefinition = getGroupTypeDefinition(query.type)
 
   if (!groupTypeDefinition) {
@@ -21,13 +26,14 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 
   await connect()
 
-  const searchOptions =  query.field && query.field === 'id'
-    ? {
-        id: query.slug,
-      }
-    : {
-        slug: query.slug,
-      }
+  const searchOptions =
+    query.field && query.field === 'id'
+      ? {
+          id: query.slug,
+        }
+      : {
+          slug: query.slug,
+        }
 
   const item = await findOneContent(query.type, searchOptions)
 
@@ -52,31 +58,29 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
       ? item[groupTypeDefinition.publishing.title]
       : `${groupTypeDefinition.title} detail`
 
-
   return {
     props: {
       data: item || null,
-      type: query.type,
-      slug: query.slug,
       pageTitle: contentTitle,
       groupType: groupTypeDefinition,
     },
   }
 }
 
-const ContentPage = (props) => {
+const ContentPage = ({ data, groupType, pageTitle }) => {
+  const [group, setGroup] = useState(data)
+
+  const onSubmitEvent = useCallback((data) => {
+    setGroup(data)
+  }, [setGroup])
+
   return (
-    <Layout
-      title={props.pageTitle}
-      panelUser={<ToolBar />}
-    >
-      {props.data && (
-        <GroupDetailView
-          type={props.groupType}
-          group={props.data}
-          showActions={true}
-        />
-      )}
+    <Layout title={pageTitle} panelUser={<ToolBar />}>
+      <GroupContext.Provider value={{ onSubmitEvent }}>
+        {group && (
+          <GroupDetailView type={groupType} group={group} showActions={true} />
+        )}
+      </GroupContext.Provider>
     </Layout>
   )
 }
