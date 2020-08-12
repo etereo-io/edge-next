@@ -8,7 +8,7 @@ import { findOneUser } from '../../../../../lib/api/entities/users/user'
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import handler from '../../../../../pages/api/groups/[type]/[slug]/users'
+import handler from '../../../../../pages/api/groups/[type]/[slug]/users/[userId]'
 import http from 'http'
 import listen from 'test-listen'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
@@ -105,7 +105,7 @@ jest.mock('../../../../../edge.config', () => {
   }
 })
 
-describe('Integrations tests for joining to the group', () => {
+describe('Integrations tests for group user update', () => {
   const groupType = 'project'
   const groupSlug = 'group-1'
   let urlToBeUsed = ''
@@ -118,13 +118,6 @@ describe('Integrations tests for joining to the group', () => {
     )
     url = await listen(server)
 
-    urlToBeUsed = new URL(url)
-    const params = { type: groupType, slug: groupSlug }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
     done()
   })
 
@@ -133,12 +126,22 @@ describe('Integrations tests for joining to the group', () => {
   })
 
   beforeEach(() => {
+    urlToBeUsed = new URL(url)
+    const userParams = { type: groupType, slug: groupSlug }
+
+    Object.keys(userParams).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, userParams[key])
+    )
+
     // group to user has to be added to
     findOneContent.mockReturnValue(
       Promise.resolve({
         slug: groupSlug,
         id: groupSlug,
-        members: [{ id: 'user2' }, { id: 'user3' }],
+        members: [
+          { id: 'user2', roles: ['GROUP_MEMBER'] },
+          { id: 'user3', roles: ['GROUP_ADMIN'] },
+        ],
         pendingMembers: [
           { id: 'user4', roles: ['GROUP_MEMBER'] },
           { id: 'user5', roles: ['GROUP_MEMBER'] },
@@ -168,9 +171,15 @@ describe('Integrations tests for joining to the group', () => {
     findOneUser.mockReset()
   })
 
-  async function fetchQuery(body) {
+  async function fetchQuery(body, userId, action = '') {
+    const userParams = { userId, action }
+
+    Object.keys(userParams).forEach((key) =>
+      urlToBeUsed.searchParams.append(key, userParams[key])
+    )
+
     return fetch(urlToBeUsed.href, {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -178,91 +187,97 @@ describe('Integrations tests for joining to the group', () => {
     })
   }
 
-  test('User with the same id as in the body has to be added to the pending members list', async () => {
+  test('User with group admin role approves member 4', async () => {
     updateOneContent.mockReturnValue(
       Promise.resolve({
         slug: groupSlug,
         id: groupSlug,
-        pendingMembers: [
-          { id: 'user1', roles: ['GROUP_MEMBER'] },
-          { id: 'user4', roles: ['GROUP_MEMBER'] },
-          { id: 'user5', roles: ['GROUP_MEMBER'] },
-        ],
+        pendingMembers: [{ id: 'user5', roles: ['GROUP_MEMBER'] }],
       })
     )
 
     getSession.mockReturnValueOnce({
-      roles: ['USER'],
+      roles: ['GROUP_ADMIN'],
       id: 'user1',
     })
 
     const memberBody = {
-      id: 'user1',
+      id: 'user4',
+      roles: ['GROUP_MEMBER'],
     }
 
-    const response = await fetchQuery(memberBody)
+    const response = await fetchQuery(memberBody, 'user4', 'approve')
 
     expect(response.status).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
-      pendingMembers: [
-        { id: 'user1', roles: ['GROUP_MEMBER'] },
+      pendingMembers: [{ id: 'user5', roles: ['GROUP_MEMBER'] }],
+      members: [
         { id: 'user4', roles: ['GROUP_MEMBER'] },
-        { id: 'user5', roles: ['GROUP_MEMBER'] },
+        { id: 'user2', roles: ['GROUP_MEMBER'] },
+        { id: 'user3', roles: ['GROUP_ADMIN'] },
       ],
     })
   })
 
-  test('User with the same id as in the body but without permitted role cant be added to the pending members list', async () => {
+  test('User with group admin role approves member 5', async () => {
+    updateOneContent.mockReturnValue(
+      Promise.resolve({
+        slug: groupSlug,
+        id: groupSlug,
+        pendingMembers: [{ id: 'user4', roles: ['GROUP_MEMBER'] }],
+      })
+    )
+
     getSession.mockReturnValueOnce({
-      roles: ['SOME_OTHER_ROLE'],
-      id: 'user4',
+      roles: ['GROUP_ADMIN'],
+      id: 'user1',
+    })
+
+    const memberBody = {
+      id: 'user5',
+      roles: ['GROUP_ADMIN'],
+    }
+
+    const response = await fetchQuery(memberBody, 'user5', 'approve')
+
+    expect(response.status).toEqual(200)
+    expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
+      pendingMembers: [{ id: 'user4', roles: ['GROUP_MEMBER'] }],
+      members: [
+        { id: 'user5', roles: ['GROUP_ADMIN'] },
+        { id: 'user2', roles: ['GROUP_MEMBER'] },
+        { id: 'user3', roles: ['GROUP_ADMIN'] },
+      ],
+    })
+  })
+
+  test('User without permitted role cant approve member', async () => {
+    getSession.mockReturnValueOnce({
+      roles: ['PUBLIC'],
+      id: 'user1',
     })
 
     const memberBody = {
       id: 'user4',
+      roles: ['GROUP_MEMBER'],
     }
 
-    const response = await fetchQuery(memberBody)
+    const response = await fetchQuery(memberBody, 'user4', 'approve')
 
     expect(response.status).toEqual(401)
     expect(updateOneContent).not.toHaveBeenCalled()
   })
 
-  test('User with the same id as in the body has to be added to the pending members list if user isnt already in the pending list', async () => {
+  test('User with group admin role add member', async () => {
     updateOneContent.mockReturnValue(
       Promise.resolve({
         slug: groupSlug,
         id: groupSlug,
-        pendingMembers: [{ id: 'user4' }, { id: 'user5' }],
-      })
-    )
-
-    getSession.mockReturnValueOnce({
-      roles: ['USER'],
-      id: 'user4',
-    })
-
-    const memberBody = {
-      id: 'user4',
-    }
-
-    const response = await fetchQuery(memberBody)
-
-    expect(response.status).toEqual(200)
-    expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
-      pendingMembers: [
-        { id: 'user4', roles: ['GROUP_MEMBER'] },
-        { id: 'user5', roles: ['GROUP_MEMBER'] },
-      ],
-    })
-  })
-
-  test('User with update permission can add users straight to the members list', async () => {
-    updateOneContent.mockReturnValue(
-      Promise.resolve({
-        slug: groupSlug,
-        id: groupSlug,
-        members: [{ id: 'user6' }],
+        members: [
+          { id: 'user2', roles: ['GROUP_MEMBER'] },
+          { id: 'user3', roles: ['GROUP_ADMIN'] },
+          { id: 'user6', roles: ['GROUP_ADMIN'] },
+        ],
       })
     )
 
@@ -273,37 +288,18 @@ describe('Integrations tests for joining to the group', () => {
 
     const memberBody = {
       id: 'user6',
+      roles: ['GROUP_ADMIN'],
     }
 
-    const response = await fetchQuery(memberBody)
+    const response = await fetchQuery(memberBody, 'user6')
 
     expect(response.status).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
-      members: [{ id: 'user6' }],
-    })
-  })
-
-  test('User with update permission can add a lot of users straight to the members list by passing array', async () => {
-    updateOneContent.mockReturnValue(
-      Promise.resolve({
-        slug: groupSlug,
-        id: groupSlug,
-        members: [{ id: 'user6' }, { id: 'user7' }],
-      })
-    )
-
-    getSession.mockReturnValueOnce({
-      roles: ['GROUP_ADMIN'],
-      id: 'user1',
-    })
-
-    const memberBody = [{ id: 'user6' }, { id: 'user7' }]
-
-    const response = await fetchQuery(memberBody)
-
-    expect(response.status).toEqual(200)
-    expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
-      members: [{ id: 'user6' }, { id: 'user7' }],
+      members: [
+        { id: 'user6', roles: ['GROUP_ADMIN'] },
+        { id: 'user2', roles: ['GROUP_MEMBER'] },
+        { id: 'user3', roles: ['GROUP_ADMIN'] },
+      ],
     })
   })
 })

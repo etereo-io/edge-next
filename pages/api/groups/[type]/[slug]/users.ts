@@ -81,15 +81,17 @@ async function addUsers(req, res) {
 
   // Used to determine if the user goes to pending users
   const membersRequireApproval = requireApproval && !canUpdate
-  const usersToAdd = [...(Array.isArray(body) ? body : [body])].map((item) => {
-    // set default role
-    item.roles = [role.value]
-
-    return item
-  })
+  const usersToAdd = [...(Array.isArray(body) ? body : [body])]
 
   const pendingMembers = uniqBy(
-    [...usersToAdd, ...oldPendingMembers].map(getPermittedFields)
+    [...usersToAdd, ...oldPendingMembers]
+      .map(getPermittedFields)
+      .map((item) => {
+        // set default role
+        item.roles = [role.value]
+
+        return item
+      })
   )
   const members = uniqBy(usersToAdd.map(getPermittedFields))
   const data = membersRequireApproval ? { pendingMembers } : { members }
