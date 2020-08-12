@@ -1,5 +1,7 @@
 const defaultSrc = '/static/demo-images/default-avatar.jpg'
 
+import { useEffect, useState } from 'react'
+
 import { UserType } from '@lib/types'
 
 type PropTypes = {
@@ -36,7 +38,20 @@ export default function ({
     : false
 
   const computedStatus = status ? status : (recentlyActive ? 'active' : '')
-  const computedSrc = src ? src : user.profile?.picture?.path
+  const [computedSrc, setComputedSrc] = useState(defaultSrc)
+
+  const onImageError = () => {
+    setComputedSrc(defaultSrc)
+  }
+
+  useEffect(() => {
+    if (user && user.profile?.picture?.path) {
+      setComputedSrc(user.profile.picture.path)
+    } else if (src) {
+      setComputedSrc(src)
+    }
+    
+  }, [user, src])
 
   return (
     <>
@@ -46,7 +61,7 @@ export default function ({
         } ${computedStatus}`}
       >
         {!loading && (
-          <img title={computedTitle} src={computedSrc}></img>
+          <img onError={onImageError} title={computedTitle} src={computedSrc}></img>
         )}
         {loading && (
           <div className="empty-avatar">
