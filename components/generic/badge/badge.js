@@ -1,4 +1,4 @@
-export default function (props) {
+export default function Named(props) {
   const { children, featured, success, secondary, warning, alert } = props
 
   return (

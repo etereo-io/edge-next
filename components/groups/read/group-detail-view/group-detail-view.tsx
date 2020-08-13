@@ -12,7 +12,7 @@ interface Props {
   type: GroupTypeDefinition
 }
 
-export default function({ group, type, showActions }: Props) {
+export default function Named({ group, type, showActions }: Props) {
   return (
     <>
       <article className="edge-item-card">

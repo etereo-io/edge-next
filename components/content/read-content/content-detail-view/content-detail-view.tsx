@@ -25,7 +25,7 @@ interface Props {
   addComments?: boolean
 }
 
-export default function(props: Props) {
+export default function Named(props: Props) {
   const { addComments = true } = props
 
   const shareUrl =

@@ -10,7 +10,7 @@ import { useOnScreen } from '@lib/client/hooks'
 import LoadingItems from '@components/generic/loading/loading-items'
 import EmptyList from '@components/generic/empty-list'
 
-export default function(props) {
+export default function Named(props) {
   const infiniteScroll = props.infiniteScroll
   const query = props.query
   const identificator = 'content-list-' + props.type.slug + '-' + query

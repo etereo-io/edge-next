@@ -1,4 +1,4 @@
-export default function ({ alt = false, width = '1.5em' }) {
+export default function Named({ alt = false, width = '1.5em' }) {
   return (
     <>
       <div className={`loading-spinner ${alt ? 'alt' : ''}`}>

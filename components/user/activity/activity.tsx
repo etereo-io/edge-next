@@ -88,7 +88,7 @@ function getMessage({ meta, type }) {
 
 const array = Array.from(Array(4))
 
-export default function({ user }: Props) {
+export default function Named({ user }: Props) {
   const { data, error } = useSWR(
     user ? `${API.activity}/${user.id}` : null,
     fetch

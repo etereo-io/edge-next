@@ -10,7 +10,7 @@ import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
 import Link from 'next/link'
 import UserPermissions from './user-permissions/user-permissions'
 
-export default function (props) {
+export default function Named(props) {
 
   // Saving states
   const [loading, setLoading] = useState(false)

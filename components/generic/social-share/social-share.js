@@ -10,7 +10,7 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 
-export default function (props) {
+export default function Named(props) {
   const shareUrl = props.shareUrl
     ? props.shareUrl
     : typeof window !== 'undefined'

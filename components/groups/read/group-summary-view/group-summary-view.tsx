@@ -3,7 +3,7 @@ import { FIELDS } from '@lib/constants'
 import GroupMembers from '@components/groups/group-members/group-members'
 import Link from 'next/link'
 
-export default function(props) {
+export default function Named(props) {
   const shouldAddLink = (field) => {
     return (
       props.linkToDetail &&

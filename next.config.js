@@ -4,6 +4,7 @@ const path = require('path')
 module.exports = withPWA({
   pwa: {
     dest: 'public',
+    disable: process.env.NODE_ENV === 'development',
   },
   env: {
     NEXT_PUBLIC_GMAPS_API_KEY: process.env.NEXT_PUBLIC_GMAPS_API_KEY,

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-export default function (props) {
+export default function Named(props) {
   const [open, setOpened] = useState(props.open || false)
   const align = props.align || 'left'
   const toggleMenu = () => {

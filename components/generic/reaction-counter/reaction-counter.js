@@ -1,4 +1,4 @@
-export default function ({
+export default function Named({
   count = 0,
   type = 'like',
   onClick = () => {},

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function (props) {
+export default function Named(props) {
   const { name, children, prefixes = [] } = props
 
   const [selectedValue, setSelectedValue] = useState(props.value)

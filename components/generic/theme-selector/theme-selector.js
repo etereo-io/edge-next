@@ -24,7 +24,7 @@ function ColorBubble(props) {
   )
 }
 
-export default function (props) {
+export default function Named(props) {
   const { mode, switchMode } = useContext(EdgeThemeContext)
 
   const [selectedTheme, setSelectedTheme] = useState(mode || defaultTheme)

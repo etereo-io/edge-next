@@ -47,7 +47,7 @@ type PropTypes = {
   entityName?: (val) => string
 }
 
-export default function({ 
+export default function Named({
   onChange = (val) => {}, 
   entity, 
   entityType = '',

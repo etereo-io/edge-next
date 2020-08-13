@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import Button from '@components/generic/button/button'
 import EntitySearch from '@components/generic/entity-search/entity-search'
 
-export default function({ users = [], onChange, roles = []}) {
+export default function Named({ users = [], onChange, roles = []}) {
   const [items, setItems ] = useState([])
 
   useEffect(() => {
