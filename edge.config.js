@@ -8,23 +8,24 @@ function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
 }
 
 export const getConfig = () => {
-
   const userRole = 'USER'
   const adminRole = 'ADMIN'
   const publicRole = 'PUBLIC'
 
-  const roles = [{
-    label: 'Administrator',
-    value: adminRole
-  }, {
-    label: 'User',
-    value: userRole
-  }, {
-    label: 'Public',
-    value: publicRole
-  }]
-
-  
+  const roles = [
+    {
+      label: 'Administrator',
+      value: adminRole,
+    },
+    {
+      label: 'User',
+      value: userRole,
+    },
+    {
+      label: 'Public',
+      value: publicRole,
+    },
+  ]
 
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto
@@ -151,6 +152,14 @@ export const getConfig = () => {
         hidden: true,
         description:
           'Add your web monetization payment pointer to make this content private, and only accesible by web monetization',
+      },
+      {
+        name: 'markdown',
+        type: 'rich-text',
+        label: 'Markdown',
+        placeholder: 'Markdown',
+        required: true,
+        errorMessage: 'Text is required',
       },
     ],
   }
@@ -302,25 +311,28 @@ export const getConfig = () => {
       },
     },
 
-    contentTypes: [{
-      slug: 'post',
-      permissions: {
-        read: ['GROUP_MEMBER'],
-        create: ['GROUP_MEMBER'],
-        update: ['GROUP_ADMIN'],
-        delete: ['GROUP_ADMIN'],
-        admin: ['GROUP_ADMIN']
-      }
-    }, {
-      slug: 'site-news',
-      permissions: {
-        read: ['GROUP_MEMBER'],
-        create: ['GROUP_MEMBER'],
-        update: ['GROUP_ADMIN'],
-        delete: ['GROUP_ADMIN'],
-        admin: ['GROUP_ADMIN']
-      }
-    }],
+    contentTypes: [
+      {
+        slug: 'post',
+        permissions: {
+          read: ['GROUP_MEMBER'],
+          create: ['GROUP_MEMBER'],
+          update: ['GROUP_ADMIN'],
+          delete: ['GROUP_ADMIN'],
+          admin: ['GROUP_ADMIN'],
+        },
+      },
+      {
+        slug: 'site-news',
+        permissions: {
+          read: ['GROUP_MEMBER'],
+          create: ['GROUP_MEMBER'],
+          update: ['GROUP_ADMIN'],
+          delete: ['GROUP_ADMIN'],
+          admin: ['GROUP_ADMIN'],
+        },
+      },
+    ],
 
     fields: [
       {
@@ -452,7 +464,6 @@ export const getConfig = () => {
         stats: [adminRole],
       },
     },
-  
 
     // Users configuration
     user: {
@@ -467,7 +478,7 @@ export const getConfig = () => {
         google: true,
         facebook: true,
       },
-      
+
       // General roles
       roles: roles,
 

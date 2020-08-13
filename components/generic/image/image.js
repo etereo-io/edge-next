@@ -51,10 +51,11 @@ export default function ({ srcs = [], width = '100%', height = '100%' }) {
             width: `${srcs.length * 100}%`,
           }}
         >
-          {srcs.map((s) => {
+          {srcs.map((s, index) => {
             const onlySrc = typeof s === 'string'
             return (
               <div
+                key={index}
                 className={`image-item ${
                   !onlySrc && s.quote ? 'with-quote' : ''
                 }`}

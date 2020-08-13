@@ -405,6 +405,12 @@ const contentType = {
     - required
     - placeholder
     - defaultValue
+- password
+  - Available options:
+    - min
+    - max
+    - required
+    - placeholder
 - select
   - Available options:
     - required
@@ -484,6 +490,11 @@ const contentType = {
       - allow to select multiple items
     - entityName 
       - A function to extract the text representation of the entity selected. for example: (user) => u.username, this value will be stored in the database.
+- rich_text
+  - Available options:
+    - required
+    - placeholder
+    - defaultValue
 
 
 You can see the example configuration file for more details about content types and fields.
