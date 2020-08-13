@@ -9,7 +9,7 @@ import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
 import Link from 'next/link'
 
-export default function (props) {
+export default function Named(props) {
 
   // Saving states
   const [loading, setLoading] = useState(false)

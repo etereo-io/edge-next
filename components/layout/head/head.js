@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import config from '@lib/config'
 
-export default function (props) {
+export default function Named(props) {
   return (
     <Head>
       <title>

@@ -2,7 +2,7 @@ import Avatar from '../avatar/avatar'
 import Link from 'next/link'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 
-export default function ({ user, ...props }) {
+export default function Named({ user, ...props }) {
   return (
     <>
       <div

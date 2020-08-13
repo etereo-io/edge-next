@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import LoadingSpinner from '../loading/loading-spinner/loading-spinner'
 
-export default function (props) {
+export default function Named(props) {
   const {
     children,
     loading,

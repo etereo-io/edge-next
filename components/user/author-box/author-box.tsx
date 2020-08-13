@@ -3,7 +3,7 @@ import Link from 'next/link'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 import { useEffect, useState } from 'react'
 
-export default function (props) {
+export default function Named(props) {
   const [user, setUser] = useState(props.user)
 
   useEffect(() => {

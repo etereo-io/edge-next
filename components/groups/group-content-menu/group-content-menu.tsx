@@ -9,7 +9,7 @@ interface Props {
   group: GroupEntityType
 }
 
-export default function(props: Props) {
+export default function Named(props: Props) {
   const { group = {} as GroupEntityType } = props
   // Check permissions to edit
   const currentUser = useUser()

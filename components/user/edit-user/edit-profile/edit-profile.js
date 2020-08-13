@@ -6,7 +6,7 @@ import config from '@lib/config'
 import { FIELDS } from '@lib/constants'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 
-export default function ({ user, onChange = () => {}, ...props }) {
+export default function Named({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)

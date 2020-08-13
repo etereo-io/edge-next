@@ -6,7 +6,7 @@ import ThemeSelector from '@components/generic/theme-selector/theme-selector'
 import SiteMenu from '@components/generic/site-menu/site-menu'
 import Link from 'next/link'
 
-export default function () {
+export default function Named() {
   const { user, finished } = useUser()
   return (
     <>

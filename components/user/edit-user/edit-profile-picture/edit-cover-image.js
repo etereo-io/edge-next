@@ -2,7 +2,7 @@ import { useState, createRef, useEffect } from 'react'
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 
-export default function ({ user, onChange = () => {}, ...props }) {
+export default function Named({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
