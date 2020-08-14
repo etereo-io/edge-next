@@ -1,12 +1,15 @@
+import React, { memo } from 'react'
+import { format } from 'timeago.js'
+import useSWR from 'swr'
+import Link from 'next/link'
+
 import { ACTIVITY_TYPES } from '@lib/constants'
 import API from '@lib/api/api-endpoints'
-import Avatar from '../avatar/avatar'
-import Link from 'next/link'
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import { UserType } from '@lib/types/user'
 import fetch from '@lib/fetcher'
-import { format } from 'timeago.js'
-import useSWR from 'swr'
+
+import Avatar from '../avatar/avatar'
 
 interface Props {
   user?: UserType
@@ -81,6 +84,87 @@ function getMessage({ meta, type }) {
       )
     }
 
+    case ACTIVITY_TYPES.COMMENT_DELETED: {
+      const { commentId } = meta
+
+      return <span>comment #{commentId} was deleted</span>
+    }
+
+    case ACTIVITY_TYPES.COMMENT_UPDATED: {
+      const { commentId } = meta
+
+      return <span>comment #{commentId} was updated</span>
+    }
+
+    case ACTIVITY_TYPES.CONTENT_DELETED: {
+      const { contentId } = meta
+
+      return <span>content #{contentId} was deleted</span>
+    }
+
+    case ACTIVITY_TYPES.USER_DELETED: {
+      const { userId, username } = meta
+
+      return (
+        <span>
+          user {username}({userId}) was deleted
+        </span>
+      )
+    }
+
+    case ACTIVITY_TYPES.GROUP_DELETED: {
+      const { groupId } = meta
+
+      return <span>group {groupId} was deleted</span>
+    }
+
+    case ACTIVITY_TYPES.EMAIL_SENT: {
+      const { userId, username } = meta
+
+      return (
+        <span>
+          email to {username}({userId}) was sent
+        </span>
+      )
+    }
+
+    case ACTIVITY_TYPES.EMAIL_VERIFIED: {
+      const { email } = meta
+
+      return <span>email {email} was verified</span>
+    }
+
+    case ACTIVITY_TYPES.GROUP_MEMBER_JOIN_DISAPPROVE: {
+      const { groupTitle, groupType, groupSlug } = meta
+
+      return (
+        <span>
+          Administrator rejected joining to the{' '}
+          <Link href={`/group/${groupType}/${groupSlug}`}>{groupTitle}</Link>
+        </span>
+      )
+    }
+
+    case ACTIVITY_TYPES.GROUP_MEMBER_JOIN_REQUEST: {
+      const { groupTitle, groupType, groupSlug } = meta
+
+      return (
+        <span>
+          Request for joining to
+          <Link href={`/group/${groupType}/${groupSlug}`}>
+            {groupTitle}
+          </Link>{' '}
+          was sent
+        </span>
+      )
+    }
+
+    case ACTIVITY_TYPES.USER_ADDED:
+      return <span>user was created</span>
+
+    case ACTIVITY_TYPES.USER_ADDED_MANUALLY:
+      return <span>user was created by admin</span>
+
     default:
       return <span>{type}</span>
   }
@@ -88,7 +172,7 @@ function getMessage({ meta, type }) {
 
 const array = Array.from(Array(4))
 
-export default function({ user }: Props) {
+function Activities({ user }: Props) {
   const { data, error } = useSWR(
     user ? `${API.activity}/${user.id}` : null,
     fetch
@@ -180,3 +264,5 @@ export default function({ user }: Props) {
     </>
   )
 }
+
+export default memo(Activities)
