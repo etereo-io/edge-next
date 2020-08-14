@@ -19,10 +19,10 @@ if (!storage) {
   throw new Error('Storage is not implemented')
 }
 
-export function uploadFile(file, folder) {
+export function uploadFile(file, folder: string): Promise<string> {
   return storage.uploadFile(file.path, file.name, file.type, folder)
 }
 
-export function deleteFile(file) {
+export function deleteFile(file: string): Promise<boolean> {
   return storage.deleteFile(file)
 }

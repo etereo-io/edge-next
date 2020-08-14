@@ -1,7 +1,9 @@
 import { createBlobService, BlobService } from 'azure-storage'
 import slugify from 'slugify'
 
-class AzureStorage {
+import AbstractStorage from './abstract-storage'
+
+class AzureStorage implements AbstractStorage {
   blobService: BlobService
 
   constructor(
@@ -20,10 +22,16 @@ class AzureStorage {
     return `${this.publicPath}${name}`
   }
 
-  async uploadFile(filePath, name, type, folder): Promise<string> {
+  async uploadFile(
+    filePath: string,
+    name: string,
+    type: string,
+    folder: string
+  ): Promise<string> {
     const destination = `${folder}/${slugify(Date.now() + ' ' + name)}`
 
-    return new Promise((resolve, reject) => {
+    // because upload isn't an async function
+    return new Promise<string>((resolve, reject) => {
       this.blobService.createBlockBlobFromLocalFile(
         this.container,
         destination,
@@ -40,8 +48,9 @@ class AzureStorage {
     })
   }
 
-  async deleteFile(file): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+  async deleteFile(file: string): Promise<boolean> {
+    // because deleteBlob isn't an async function
+    return new Promise<boolean>((resolve, reject) => {
       this.blobService.deleteBlob(
         this.container,
         file.replace(this.publicPath, ''),
