@@ -141,7 +141,7 @@ export default function Named(props: Props) {
                   round
                   aria-label="round button"
                 >
-                  <img style={{ width: '15px' }} src="/icons/icon-edit.svg" />
+                  <img style={{ width: '15px' }} src="/icons/icon-edit.svg" alt="edit" />
                 </Button>
               </div>
             )}

@@ -106,7 +106,7 @@ const UserSettings = () => {
         <section className="user-profile-settings-wr">
           <div className="user-profile-view">
             <div className="cover">
-              {user.profile.cover && <img src={user.profile.cover.path} />}
+              {user.profile.cover && <img src={user.profile.cover.path} alt="cover"/>}
             </div>
             <div className="user-profile-view-content">
               <div className="user-profile-box-wrapper">

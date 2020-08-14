@@ -11,7 +11,7 @@ export default function Named({ mobileCollapse = false }) {
           {user && <li>
             <Link href={`/profile/@${user.username}?selectedTab=groups`}>
               <a title="My groups" className="site-menu-item">
-                <img className="site-menu-icon" src="/icons/icon-groups.svg" />
+                <img className="site-menu-icon" src="/icons/icon-groups.svg" alt="groups"/>
                 <span className="site-menu-title">My Groups</span>
               </a>
             </Link>

@@ -62,7 +62,9 @@ export const connect = async () => {
       }
       default: {
         logger('INFO', 'Using in memory database')
+
         db = connectInMemoryDB()
+        await setUpMongoDB()
       }
     }
   } else {
