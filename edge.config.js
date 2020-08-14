@@ -382,9 +382,9 @@ export const getConfig = () => {
       level: 'ERROR',
     },
 
-    // Storages: GOOGLE, AWS, FIREBASE
+    // Storages: GOOGLE, AWS, FIREBASE, AZURE
     storage: {
-      type: 'GOOGLE',
+      type: 'AZURE',
     },
 
     // Choose from MONGO, IN_MEMORY

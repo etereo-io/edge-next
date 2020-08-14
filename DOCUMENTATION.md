@@ -12,6 +12,7 @@
     - [Options for each field type](#options-for-each-field-type)
   - [Storage](#storage)
     - [Google](#google)
+    - [Azure](#azure)
   - [Databases](#databases)
     - [Database API](#database-api)
       - [Adding items](#adding-items)
@@ -79,7 +80,7 @@
 1) Clone the [repo](https://github.com/nucleo-org/edge-next)
 2) Edit `edge.config.js` to define your *Content Types* and permissions
 3) Create the different accounts:
-   - Google storage
+   - Google storage/Azure Blob Storage
    - Social provider apps for sign-in/sign-up (github, facebook, google)
    - Mongo db database
 4) Configure the environment variables in the `.env.local` file.
@@ -505,7 +506,7 @@ In the [components page](/components) you will find more implemented dynamic fie
 
 To upload images and other files you will need to configure a storage. 
 
-Different options are: AWS, GOOGLE or FIREBASE.
+Different options are: AWS, GOOGLE, Azure or FIREBASE.
 
 ### Google
 
@@ -526,6 +527,22 @@ Another useful resources:
 - [Create a Google cloud bucket](https://cloud.google.com/storage/docs/creating-buckets) 
 - [Making files public in google bucket](https://cloud.google.com/storage/docs/access-control/making-data-public)
 - [Another way to import Google Application Credentials](https://dev.to/parondeau/gcp-credentials-next-js-3a0d)
+
+### Azure
+
+To configure Azure Blob Storage you will need to follow the steps described [there](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-nodejs). You have to create a service account and a container with public visibility.
+
+The environment variables you need to configure are :
+
+````
+AZURE_STORAGE_ACCOUNT=XXX
+AZURE_STORAGE_CONTAINER=XXX
+AZURE_STORAGE_CONNECTION_STRING=XXX
+````
+
+Another useful resources:
+- [Blobs managing](https://www.npmjs.com/package/azure-storage) 
+- [Service information for NodeJS applications](https://www.infragistics.com/community/blogs/b/mihail_mateev/posts/how-to-manage-microsoft-azure-blob-storage-with-node-js) 
 
 
 ## Databases

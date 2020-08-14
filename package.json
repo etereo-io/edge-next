@@ -12,6 +12,7 @@
   "dependencies": {
     "@hapi/iron": "6.0.0",
     "@sendgrid/mail": "^7.1.0",
+    "azure-storage": "2.10.3",
     "content-type": "^1.0.4",
     "cookie": "0.4.0",
     "deepmerge": "^4.2.2",
