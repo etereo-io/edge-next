@@ -1,9 +1,9 @@
 import { DATABASES } from '@lib/constants'
 import config from '../../config'
-import { connect as connectFirebase } from './firestoreDB'
 import { connect as connectInMemoryDB } from './inMemoryDB'
 import { connect as connectMongoDB } from './mongoDB'
 import logger from '@lib/logger'
+
 let seeded = null
 let db = null
 
@@ -11,7 +11,7 @@ export const getDB = () => {
   return db
 }
 
-export const setUpDB = async () => {
+export const setUpMongoDB = async () => {
   const hasBeenSeeded = await db.collection('config').findOne({
     seed: true,
   })
@@ -51,19 +51,21 @@ export const setUpDB = async () => {
 
 export const connect = async () => {
   if (!db) {
-    if (config.database.type === DATABASES.FIREBASE) {
-       logger('INFO', 'Connecting to firebase database')
-      db = await connectFirebase()
-    } else if (config.database.type === DATABASES.MONGO) {
-       logger('INFO', 'Connecting to Mongo Database')
-      db = await connectMongoDB()
-    } else {
-      logger('INFO', 'Using in memory database')
-      db = connectInMemoryDB()
-    }
+    switch (config.database.type) {
+      case DATABASES.MONGO: {
+        logger('INFO', 'Connecting to Mongo Database')
 
-    await setUpDB()
+        db = await connectMongoDB()
+        await setUpMongoDB()
+
+        break
+      }
+      default: {
+        logger('INFO', 'Using in memory database')
+        db = connectInMemoryDB()
+      }
+    }
   } else {
-     logger('INFO', 'Reusing cached db')
+    logger('INFO', 'Reusing cached db')
   }
 }

@@ -1,36 +1,40 @@
-import { MongoClient, ObjectID } from 'mongodb'
+import { MongoClient, ObjectID, Db } from 'mongodb'
 
-import Database from './Database'
 import logger from '@lib/logger'
+import Database from './Database'
 
-const url = process.env.MONGODB_URI
-const dbName = process.env.MONGODB_DATABASE
+class MongoDB extends Database {
+  col: string
+  limitIndex: number
+  startIndex: number
+  db: Db
+  isConnected: boolean
 
-const client = new MongoClient(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-
-let mongoDbInstance = null
-
-export async function setUpDb(db) {
-  await db
-    .collection('tokens')
-    .createIndex('expireAt', { expireAfterSeconds: 0 })
-}
-
-class db extends Database {
-  constructor() {
+  constructor(private readonly client: MongoClient) {
     super()
-    this.db = mongoDbInstance
     this.limitIndex = 0
     this.startIndex = 0
+    this.isConnected = false
     this.col = ''
   }
 
-  add(item) {
+  async connect() {
+    if (!this.isConnected) {
+      await this.client.connect()
+
+      this.db = client.db(dbName)
+    }
+  }
+
+  async setUpDb() {
+    await this.db
+      .collection('tokens')
+      .createIndex('expireAt', { expireAfterSeconds: 0 })
+  }
+
+  async add(item) {
     const newItem = {
-      _id: ObjectID(),
+      _id: new ObjectID(),
       ...item,
       createdAt: item.createdAt || Date.now(),
     }
@@ -50,7 +54,7 @@ class db extends Database {
     })
   }
 
-  count(options) {
+  async count(options) {
     return new Promise((resolve, reject) => {
       this.db
         .collection(this.col)
@@ -65,7 +69,7 @@ class db extends Database {
     })
   }
 
-  find(
+  async find(
     { id, ...options },
     sortOptions = { sortBy: 'createdAt', sortOrder: 'DESC' }
   ) {
@@ -94,20 +98,17 @@ class db extends Database {
             reject(err)
           } else {
             resolve(
-              result.map((item) => {
-                const { _id, ...rest } = item
-                return {
-                  ...rest,
-                  id: _id.toString(),
-                }
-              })
+              result.map(({ _id, ...rest }) => ({
+                ...rest,
+                id: _id.toString(),
+              }))
             )
           }
         })
     })
   }
 
-  findOne({ id, ...options }) {
+  async findOne({ id, ...options }) {
     logger('DEBUG', 'DB - findOne', this.col, options)
 
     return new Promise((resolve, reject) => {
@@ -145,7 +146,7 @@ class db extends Database {
     return this
   }
 
-  doc(id) {
+  async doc(id) {
     return {
       set: (newItemData) => {
         return new Promise((resolve, reject) => {
@@ -201,6 +202,7 @@ class db extends Database {
 
   limit(num) {
     this.limitIndex = num * 1
+
     return this
   }
 
@@ -210,7 +212,7 @@ class db extends Database {
     return this
   }
 
-  remove({ id, ...options }, onlyOne = false) {
+  async remove({ id, ...options }, onlyOne = false) {
     if (!id && Object.keys(options).length === 0) {
       return Promise.reject('Can not delete entire collection')
     }
@@ -218,30 +220,39 @@ class db extends Database {
       options._id = new ObjectID(id)
     }
     return new Promise((resolve, reject) => {
-      this.db.collection(this.col).remove(options, onlyOne, (err, result) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(result)
-        }
-      })
+      this.db
+        .collection(this.col)
+        .remove(options, { single: onlyOne }, (err, result) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(result)
+          }
+        })
     })
   }
 }
 
+const dbName = process.env.MONGODB_DATABASE
+
+const client = new MongoClient(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+
+const instance = new MongoDB(client)
+
 export const connect = async () => {
-  if (!client.isConnected()) {
+  if (!instance.isConnected) {
     try {
-      await client.connect()
+      await instance.connect()
+      await instance.setUpDb()
+
       logger('DEBUG', 'Connected correctly to server', dbName)
-      mongoDbInstance = client.db(dbName)
-      await setUpDb(mongoDbInstance)
-      return new db()
     } catch (err) {
       logger('ERROR', err.stack)
     }
-  } else {
-    logger('DEBUG', 'Using cached mongo')
-    return new db()
   }
+
+  return instance
 }

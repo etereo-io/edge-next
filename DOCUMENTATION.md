@@ -21,7 +21,6 @@
       - [Deleting items](#deleting-items)
     - [In memory DB (only local)](#in-memory-db-only-local)
     - [MongoDB (default)](#mongodb-default)
-    - [Firebase](#firebase)
   - [Authentication](#authentication)
     - [Providers](#providers)
   - [Emails](#emails)
@@ -546,9 +545,9 @@ Another useful resources:
 
 
 ## Databases
-Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory".  All the Databases use the same API, this way is easy to switch from one to the other. But if you don't like this approach you can change `/lib/api/database` and `/lib/api/entities/` to use your database in the way you want.
+Different databases can be configured, MongoDB and "In Memory".  All the Databases use the same API, this way is easy to switch from one to the other. But if you don't like this approach you can change `/lib/api/database` and `/lib/api/entities/` to use your database in the way you want.
 
-**Note: The only production ready database is MongoDB**, Firebase integration is not complete.
+**Note: The only production ready database is MongoDB**.
 
 ### Database API
 
@@ -639,29 +638,6 @@ The environment variables you need to configure are documented in the Deployment
 ```
 MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
 MONGODB_DATABASE=<database>
-```
-
-### Firebase 
-
-**Note: Firebase is not totally implemented**
-
-If you want to use Firebase you must set the following environment variables in the `.env` file:
-
-```
-FIREBASE_PROJECT_ID=XX
-FIREBASE_CLIENT_EMAIL=XX
-FIREBASE_DATABASE_URL=XX
-FIREBASE_PRIVATE_KEY=XX
-```
-
-See the [example .env.build file](/.env.build)
-
-Also in the config you must set the following values:
-
-```javascript
-database: {
-  type: 'FIREBASE'
-}
 ```
 
 ## Authentication 
