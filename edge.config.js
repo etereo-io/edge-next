@@ -155,7 +155,7 @@ export const getConfig = () => {
       },
       {
         name: 'markdown',
-        type: 'rich-text',
+        type: 'rich_text',
         label: 'Markdown',
         placeholder: 'Markdown',
         required: true,

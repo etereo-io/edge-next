@@ -56,6 +56,8 @@ function Editor({
     [setTouched]
   )
 
+  console.log('qqq')
+
   return (
     <div className={className}>
       {label ? (
