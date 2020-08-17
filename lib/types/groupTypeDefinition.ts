@@ -21,6 +21,7 @@ export declare type GroupTypeDefinition = {
   fields: FieldType[];
   roles: RoleType[];
   user: {
+    requireApproval: boolean;
     permissions: PermissionsType;
   }
 

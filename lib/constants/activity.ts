@@ -12,6 +12,8 @@ export enum ACTIVITY_TYPES {
   COMMENT_DELETED = 'comment_deleted',
   GROUP_ADDED = 'group_added',
   GROUP_UPDATED = 'group_updated',
+  GROUP_MEMBER_JOIN_REQUEST = 'group_member_join_request',
+  GROUP_MEMBER_JOIN_DISAPPROVE = 'group_member_join_disapprove',
   GROUP_DELETED = 'group_deleted',
   EMAIL_SENT = 'email_sent',
   EMAIL_VERIFIED = 'email_verified',

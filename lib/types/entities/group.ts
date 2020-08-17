@@ -1,6 +1,8 @@
-type MemberType = {
+export type MemberType = {
   id: string;
   roles: string[]
+  email: string[]
+  username: string[]
 }
 
 export declare type GroupEntityType = {
@@ -8,6 +10,7 @@ export declare type GroupEntityType = {
   slug: string;
   type: string;
   members: MemberType[];
+  pendingMembers: MemberType[];
   draft: boolean;
   author: string;
   createdAt: string;

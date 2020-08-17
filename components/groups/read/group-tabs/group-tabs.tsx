@@ -1,19 +1,22 @@
 import React, { memo, useMemo } from 'react'
+
 import { Tabs, useTab } from '@components/generic/tabs'
 import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
-
-import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import { GroupEntityType } from '@lib/types/entities/group'
-import { groupContentPermission } from '@lib/permissions'
+import { groupContentPermission, groupUserPermission } from '@lib/permissions'
 import { useUser } from '@lib/client/hooks'
+import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
+
+import MembersTab from './members-tab'
+import PendingMembersTab from './pending-members-tab'
 
 interface Props {
   id: string
   group: GroupEntityType
 }
 
-function GroupContentTabs({ id, group }: Props) {
+function GroupTabs({ id, group }: Props) {
   const groupType = getGroupTypeDefinition(group.type)
   const currentUser = useUser()
   const contentTypes: ContentTypeDefinition[] = useMemo(
@@ -40,15 +43,20 @@ function GroupContentTabs({ id, group }: Props) {
     return firstElement
   }, [contentTypes])
 
+  const canUpdate = groupUserPermission(
+    currentUser.user,
+    groupType,
+    'update',
+    group
+  )
+
   const { value: tab, onChange: handleTabChange } = useTab(
     contentType?.slug || 'post'
   )
 
-
-
   const tabs = useMemo(
-    () =>
-      contentTypes.map((type) => ({
+    () => [
+      ...contentTypes.map((type) => ({
         label: type.title,
         id: type.slug,
         content: (
@@ -59,6 +67,33 @@ function GroupContentTabs({ id, group }: Props) {
           />
         ),
       })),
+      {
+        label: 'Members',
+        id: 'members',
+        show: canUpdate,
+        content: (
+          <MembersTab
+            groupId={id}
+            groupType={group.type}
+            roles={groupType.roles}
+            users={group.members}
+          />
+        ),
+      },
+      {
+        label: 'Pending members',
+        id: 'pending-members',
+        show: canUpdate,
+        content: (
+          <PendingMembersTab
+            groupId={id}
+            groupType={group.type}
+            roles={groupType.roles}
+            users={group.pendingMembers}
+          />
+        ),
+      },
+    ],
     [tab, contentTypes, group.type, id]
   )
 
@@ -69,4 +104,4 @@ function GroupContentTabs({ id, group }: Props) {
   )
 }
 
-export default memo(GroupContentTabs)
+export default memo(GroupTabs)

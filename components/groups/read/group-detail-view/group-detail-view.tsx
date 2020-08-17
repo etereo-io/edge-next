@@ -1,10 +1,13 @@
+import React, { memo } from 'react'
+import { format } from 'timeago.js'
+
+import { GroupEntityType } from '@lib/types/entities/group'
+import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
+import { GroupTabs } from '@components/groups/read/group-tabs'
+
 import GroupActions from '../../group-actions/group-actions'
 import GroupContentMenu from '../../group-content-menu/group-content-menu'
 import GroupSummaryView from '../group-summary-view/group-summary-view'
-import { format } from 'timeago.js'
-import { GroupEntityType } from '@lib/types/entities/group'
-import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
-import { GroupContentTabs } from '@components/groups/read/group-content-tabs'
 
 interface Props {
   showActions: boolean
@@ -12,7 +15,7 @@ interface Props {
   type: GroupTypeDefinition
 }
 
-export default function({ group, type, showActions }: Props) {
+function DetailView({ group, type, showActions }: Props) {
   return (
     <>
       <article className="edge-item-card">
@@ -32,7 +35,7 @@ export default function({ group, type, showActions }: Props) {
         </footer>
         {showActions && <GroupActions group={group} />}
         <GroupContentMenu group={group} />
-        <GroupContentTabs id={group.id} group={group} />
+        <GroupTabs id={group.id} group={group} />
       </article>
       <style jsx>{`
         .edge-item-card-footer {
@@ -133,3 +136,5 @@ export default function({ group, type, showActions }: Props) {
     </>
   )
 }
+
+export default memo(DetailView)

@@ -12,6 +12,7 @@ import { FIELDS } from '@lib/constants'
 import config from '@lib/config'
 import { deleteFile } from '@lib/api/storage'
 import logger from '@lib/logger'
+import { sendRequestToJoinToGroupEmail } from '@lib/email'
 
 export function onGroupAdded(group, user) {
   if (config.activity.enabled && group) {
@@ -29,20 +30,56 @@ export function onGroupAdded(group, user) {
   }
 }
 
-export function onGroupUpdated(group, user) {
-  if (config.activity.enabled && group) {
+export function onGroupUpdated(data, user) {
+  if (config.activity.enabled && data) {
     addActivity({
       author: user.id,
       role: 'user',
       type: ACTIVITY_TYPES.GROUP_UPDATED,
       meta: {
-        groupId: group.id,
-        groupSlug: group.slug,
-        groupTitle: group.title, // This will not work with dynamic fields
-        groupType: group.type,
+        groupId: data.id,
+        groupSlug: data.slug,
+        groupTitle: data.title, // This will not work with dynamic fields
+        groupType: data.type,
       },
     })
   }
+}
+
+export function onGroupJoinDisapprove(data, user) {
+  if (config.activity.enabled && data) {
+    addActivity({
+      author: user.id,
+      role: 'user',
+      type: ACTIVITY_TYPES.GROUP_MEMBER_JOIN_DISAPPROVE,
+      meta: {
+        userId: data.userId,
+        groupId: data.id,
+        groupSlug: data.slug,
+        groupTitle: data.title, // This will not work with dynamic fields
+        groupType: data.type,
+      },
+    })
+  }
+}
+
+export function onGroupJoinRequest(group, user, groupAuthorEmail, groupType) {
+  if (config.activity.enabled && group) {
+    addActivity({
+      author: user.id,
+      role: 'user',
+      type: ACTIVITY_TYPES.GROUP_MEMBER_JOIN_REQUEST,
+      meta: {
+        groupId: group.id,
+        groupSlug: group.slug,
+        groupTitle: group.title,
+        groupType: group.type,
+        userId: user.id,
+      },
+    })
+  }
+
+  sendRequestToJoinToGroupEmail(groupAuthorEmail, groupType, group)
 }
 
 export async function onGroupDeleted(group, user, groupType) {
