@@ -1,15 +1,14 @@
 import React, { memo } from 'react'
-import { format } from 'timeago.js'
-import useSWR from 'swr'
-import Link from 'next/link'
 
 import { ACTIVITY_TYPES } from '@lib/constants'
 import API from '@lib/api/api-endpoints'
+import Avatar from '../avatar/avatar'
+import Link from 'next/link'
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import { UserType } from '@lib/types/user'
 import fetch from '@lib/fetcher'
-
-import Avatar from '../avatar/avatar'
+import { format } from 'timeago.js'
+import useSWR from 'swr'
 
 interface Props {
   user?: UserType
@@ -150,11 +149,10 @@ function getMessage({ meta, type }) {
 
       return (
         <span>
-          Request for joining to
+          requested to join {' '}
           <Link href={`/group/${groupType}/${groupSlug}`}>
             {groupTitle}
-          </Link>{' '}
-          was sent
+          </Link>
         </span>
       )
     }

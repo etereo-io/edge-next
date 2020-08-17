@@ -156,7 +156,6 @@ export default function (props) {
             />
           ))}
 
-          <h2>User permissions</h2>
 
           <div className="actions">
             <Button loading={loading} alt={true} type="submit">

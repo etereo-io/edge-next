@@ -1,18 +1,19 @@
-import { updateOneContent } from '@lib/api/entities/content/content'
 import {
   isValidGroupType,
-  loadUser,
   loadGroupItemMiddleware,
+  loadUser,
 } from '@lib/api/middlewares'
+import { onGroupJoinRequest, onGroupUpdated } from '@lib/api/hooks/group.hooks'
+
 import { connect } from '@lib/api/db'
-import methods from '@lib/api/api-helpers/methods'
-import { onGroupUpdated, onPendingActivity } from '@lib/api/hooks/group.hooks'
-import { getGroupTypeDefinition } from '@lib/config'
-import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import { groupUserPermission } from '@lib/permissions'
 import { findOneUser } from '@lib/api/entities/users/user'
-import uniqBy from '@lib/uniqBy'
+import { getGroupTypeDefinition } from '@lib/config'
 import { getPermittedFields } from '@lib/validations/group/users'
+import { groupUserPermission } from '@lib/permissions'
+import methods from '@lib/api/api-helpers/methods'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import uniqBy from '@lib/uniqBy'
+import { updateOneContent } from '@lib/api/entities/content/content'
 
 const getUsers = async ({ item: { members } }, res) => {
   res.status(200).json(members)
@@ -49,16 +50,14 @@ async function addUsers(req, res) {
   const [role] = roles
 
   const membersCallback = (data) => {
-    onGroupUpdated({ ...data, oldMembers }, currentUser)
+    onGroupUpdated(data, currentUser)
 
     res.status(200).json(data)
   }
   const pendingMembersCallback = async (data) => {
-    onGroupUpdated({ ...data, oldPendingMembers }, currentUser)
-
     const { email } = await findOneUser({ id: author })
 
-    onPendingActivity(data, currentUser, email, type)
+    onGroupJoinRequest(data, currentUser, email, type)
 
     res.status(200).json(data)
   }

@@ -3,15 +3,14 @@ import {
   updateOneContent,
 } from '../../../../../lib/api/entities/content/content'
 
-import { findOneUser } from '../../../../../lib/api/entities/users/user'
-
 import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import fetch from 'isomorphic-unfetch'
+import { findOneUser } from '../../../../../lib/api/entities/users/user'
+import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/groups/[type]/[slug]/users/[userId]'
 import http from 'http'
 import listen from 'test-listen'
-import getPermissions from '../../../../../lib/permissions/get-permissions'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -139,6 +138,7 @@ describe('Integrations tests for group user removing', () => {
         slug: groupSlug,
         id: groupSlug,
         members: [
+          { id: 'user1', roles: ['GROUP_ADMIN'] },
           { id: 'user2', roles: ['GROUP_MEMBER'] },
           { id: 'user3', roles: ['GROUP_ADMIN'] },
         ],
@@ -188,12 +188,12 @@ describe('Integrations tests for group user removing', () => {
           { id: 'user4', roles: ['GROUP_MEMBER'] },
           { id: 'user5', roles: ['GROUP_MEMBER'] },
         ],
-        members: [{ id: 'user3', roles: ['GROUP_ADMIN'] }],
+        members: [{ id: 'user1', roles: ['GROUP_ADMIN'] }, { id: 'user3', roles: ['GROUP_ADMIN']}],
       })
     )
 
     getSession.mockReturnValueOnce({
-      roles: ['GROUP_ADMIN'],
+      roles: ['USER'],
       id: 'user1',
     })
 
@@ -205,7 +205,7 @@ describe('Integrations tests for group user removing', () => {
         { id: 'user4', roles: ['GROUP_MEMBER'] },
         { id: 'user5', roles: ['GROUP_MEMBER'] },
       ],
-      members: [{ id: 'user3', roles: ['GROUP_ADMIN'] }],
+      members: [{ id: 'user1', roles: ['GROUP_ADMIN'] }, { id: 'user3', roles: ['GROUP_ADMIN']}],
     })
   })
 
@@ -216,6 +216,7 @@ describe('Integrations tests for group user removing', () => {
         id: groupSlug,
         pendingMembers: [{ id: 'user5', roles: ['GROUP_MEMBER'] }],
         members: [
+          { id: 'user1', roles: ['GROUP_ADMIN'] },
           { id: 'user2', roles: ['GROUP_MEMBER'] },
           { id: 'user3', roles: ['GROUP_ADMIN'] },
         ],
@@ -223,7 +224,7 @@ describe('Integrations tests for group user removing', () => {
     )
 
     getSession.mockReturnValueOnce({
-      roles: ['GROUP_ADMIN'],
+      roles: ['USER'],
       id: 'user1',
     })
 
@@ -233,6 +234,7 @@ describe('Integrations tests for group user removing', () => {
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       pendingMembers: [{ id: 'user5', roles: ['GROUP_MEMBER'] }],
       members: [
+        { id: 'user1', roles: ['GROUP_ADMIN']},
         { id: 'user2', roles: ['GROUP_MEMBER'] },
         { id: 'user3', roles: ['GROUP_ADMIN'] },
       ],
@@ -242,7 +244,7 @@ describe('Integrations tests for group user removing', () => {
   test('User without permitted role cannot remove member 4', async () => {
     getSession.mockReturnValueOnce({
       roles: ['USER'],
-      id: 'user1',
+      id: 'user2',
     })
 
     const response = await fetchQuery('user4')

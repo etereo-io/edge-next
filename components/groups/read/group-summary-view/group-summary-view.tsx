@@ -1,15 +1,15 @@
-import React, { memo, useCallback, useEffect, useState } from 'react'
-import Link from 'next/link'
-
-import { FIELDS } from '@lib/constants'
-import fetch from '@lib/fetcher'
-import { useUser } from '@lib/client/hooks'
-import { groupUserPermission } from '@lib/permissions'
-import API from '@lib/api/api-endpoints'
 import { GroupEntityType, GroupTypeDefinition } from '@lib/types'
-import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
-import GroupMembers from '@components/groups/group-members/group-members'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+
+import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
+import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
+import { FIELDS } from '@lib/constants'
+import GroupMembers from '@components/groups/group-members/group-members'
+import Link from 'next/link'
+import fetch from '@lib/fetcher'
+import { groupUserPermission } from '@lib/permissions'
+import { useUser } from '@lib/client/hooks'
 
 interface Props {
   linkToDetail?: boolean
@@ -140,7 +140,7 @@ function SummaryView({
           <div className="join-to-group-section">
             {(inPendingMembersList || clicked) && (
               <Button warning restProps={{ disabled: true }}>
-                Request to join is in Pending status
+                Pending
               </Button>
             )}
             {canJoin && !inPendingMembersList && !inMembersList && !clicked && (
@@ -148,7 +148,7 @@ function SummaryView({
                 Join
               </Button>
             )}
-            {error && <div>Something went wrong.</div>}
+            {error && <div className="error-message">Something went wrong.</div>}
           </div>
         </div>
       </div>

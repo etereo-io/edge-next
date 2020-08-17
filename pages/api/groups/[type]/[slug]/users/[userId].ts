@@ -1,20 +1,21 @@
-import { updateOneContent } from '@lib/api/entities/content/content'
 import {
   isValidGroupType,
-  loadUser,
   loadGroupItemMiddleware,
+  loadUser,
 } from '@lib/api/middlewares'
-import { connect } from '@lib/api/db'
-import methods from '@lib/api/api-helpers/methods'
 import {
-  onGroupUpdated,
   onGroupJoinDisapprove,
+  onGroupUpdated,
 } from '@lib/api/hooks/group.hooks'
-import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import { groupUserPermission } from '@lib/permissions'
-import uniqBy from '@lib/uniqBy'
-import { getPermittedFields } from '@lib/validations/group/users'
+
 import { UPDATE_GROUP_USER_ACTIONS } from '@lib/constants'
+import { connect } from '@lib/api/db'
+import { getPermittedFields } from '@lib/validations/group/users'
+import { groupUserPermission } from '@lib/permissions'
+import methods from '@lib/api/api-helpers/methods'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import uniqBy from '@lib/uniqBy'
+import { updateOneContent } from '@lib/api/entities/content/content'
 
 function updateUsers({ type, id, data, callback, res }) {
   updateOneContent(type, id, data)
@@ -45,7 +46,7 @@ function removeUser(req, res) {
     id,
     callback: (data) => {
       onGroupJoinDisapprove(
-        { ...data, oldMembers, oldPendingMembers },
+        { ...data, userId },
         currentUser
       )
 
