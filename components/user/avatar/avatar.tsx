@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react'
 import { UserType } from '@lib/types'
 
 type PropTypes = {
-  user?: UserType,
-  title?: string,
-  status?: string,
-  width?: string,
-  className?: string,
-  radius?: string,
-  loading?: boolean,
+  user?: UserType
+  title?: string
+  status?: string
+  width?: string
+  className?: string
+  radius?: string
+  loading?: boolean
   src?: string
 }
 
@@ -19,9 +19,9 @@ export default function Named({
   user = {
     profile: {
       picture: {
-        path: ''
-      }
-    }
+        path: defaultSrc,
+      },
+    },
   } as UserType,
   title,
   status,
@@ -29,15 +29,15 @@ export default function Named({
   className = '',
   radius = '15%',
   src = '',
-  loading = false
-} : PropTypes) {
-
+  loading = false,
+}: PropTypes) {
   const computedTitle = title ? title : `${user?.username} avatar`
-  const recentlyActive = user && user.metadata && user.metadata.lastLogin
-    ? (Date.now() - user.metadata.lastLogin < (10 * 60 * 1000))
-    : false
+  const recentlyActive =
+    user && user.metadata && user.metadata.lastLogin
+      ? Date.now() - user.metadata.lastLogin < 10 * 60 * 1000
+      : false
 
-  const computedStatus = status ? status : (recentlyActive ? 'active' : '')
+  const computedStatus = status ? status : recentlyActive ? 'active' : ''
   const [computedSrc, setComputedSrc] = useState(defaultSrc)
 
   const onImageError = () => {
@@ -54,7 +54,7 @@ export default function Named({
     if (user && user.profile?.picture?.path) {
       setComputedSrc(user.profile.picture.path)
     }
-  }, [user])
+  }, [user, src])
 
   return (
     <>
@@ -64,11 +64,16 @@ export default function Named({
         } ${computedStatus}`}
       >
         {!loading && (
-          <img onError={onImageError} title={computedTitle} src={computedSrc}></img>
+          <img
+            onError={onImageError}
+            title={computedTitle}
+            src={computedSrc}
+            alt="avatar"
+          />
         )}
         {loading && (
           <div className="empty-avatar">
-            <img src="/static/demo-images/loading-avatar.gif" />
+            <img src="/static/demo-images/loading-avatar.webp" alt="avatar" />
           </div>
         )}
       </div>

@@ -16,7 +16,8 @@ function EmptyList({
         <div className="empty-image">
           <img
             title={imageTitle}
-            src="/static/demo-images/confused-travolta.gif"
+            src="/static/demo-images/confused-travolta.webp"
+            alt="empty list"
           />
         </div>
       </div>

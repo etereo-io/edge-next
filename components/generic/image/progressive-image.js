@@ -21,11 +21,12 @@ export default class ProgressiveImage extends Component {
             this.highResImage = img
           }}
           src={this.props.src}
+          alt="image"
         />
         <div
           className={`loading-overlay`}
           style={{ opacity: highResImageLoaded ? '0' : '1' }}
-        ></div>
+        />
         <style jsx>{`
           .loading-overlay {
             position: absolute;
