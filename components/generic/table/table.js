@@ -13,6 +13,10 @@ export function TableCellHeader({ children, ...props }) {
           text-align: left;
           top: 0;
         }
+        
+        .center {
+          text-align: center
+        }
       `}</style>
     </>
   )

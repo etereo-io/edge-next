@@ -97,25 +97,37 @@ const ListItem = (props) => {
       <TableCellBody>{format(props.item.createdAt)}</TableCellBody>
       <TableCellBody>{props.item.blocked ? 'Blocked' : '-'}</TableCellBody>
       <TableCellBody>
-        {!success && <Button href={`/settings/${props.item.id}`}>Edit</Button>}
-        {!success && (
-          <Button loading={loading} alt={true} onClick={onClickDelete}>
-            Delete
+        <span className="table-actions">
+          {!success && (
+            <Button href={`/settings/${props.item.id}`}>Edit</Button>
+          )}
+          {!success && (
+            <Button loading={loading} alt={true} onClick={onClickDelete}>
+              Delete
+            </Button>
+          )}
+
+          <Button
+            loading={loading}
+            warning={!props.item.blocked}
+            secondary={props.item.blocked}
+            onClick={onClickBlockUser}
+          >
+            {props.item.blocked ? 'Unblock' : 'Block'}
           </Button>
-        )}
 
-        <Button
-          loading={loading}
-          warning={!props.item.blocked}
-          secondary={props.item.blocked}
-          onClick={onClickBlockUser}
-        >
-          {props.item.blocked ? 'Unblock' : 'Block'}
-        </Button>
-
-        {error && <div className="error">Error deleting item</div>}
-        {success && <div className="success">Item deleted</div>}
+          {error && <div className="error">Error deleting item</div>}
+          {success && <div className="success">Item deleted</div>}
+        </span>
       </TableCellBody>
+      <style jsx>
+        {`
+          .table-actions {
+            display: flex;
+            justify-content: space-evenly;
+          }
+        `}
+      </style>
     </TableRowBody>
   )
 }
@@ -180,7 +192,7 @@ function UserTable(props) {
     >
       Blocked
     </TableCellHeader>,
-    <TableCellHeader>Actions</TableCellHeader>,
+    <TableCellHeader className="center">Actions</TableCellHeader>,
   ]
 
   return (
@@ -194,7 +206,7 @@ function UserTable(props) {
           {isEmpty && <div className="empty">Sorry, no items found.</div>}
         </Table>
       </div>
-      <div id="load-more">
+      <div className="load-more">
         {isReachingEnd ? null : (
           <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
             Load More
@@ -209,6 +221,11 @@ function UserTable(props) {
         .load-more {
           display: flex;
           justify-content: center;
+          margin-top: 10px;
+        }
+
+        .content-list {
+          margin-top: 10px;
         }
       `}</style>
     </div>

@@ -17,9 +17,30 @@ const AdminPage = () => {
   return (
     available && (
       <Layout title="User administration">
-        <Button onClick={createUser}>Create user</Button>
-        <h1>User adminsitration</h1>
-        <UserTable />
+        <div className="user-administration">
+          <h1>User adminsitration</h1>
+          <div className="create-button">
+            <Button onClick={createUser}>
+              Create user
+            </Button>
+          </div>
+
+          <UserTable />
+        </div>
+        <style jsx>
+          {`
+            .user-administration {
+              margin: 1%;
+              display: flex;
+              flex-direction: column
+            }
+
+            .create-button {
+              display: flex;
+              justify-content: flex-end;
+            }
+          `}
+        </style>
       </Layout>
     )
   )

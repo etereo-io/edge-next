@@ -48,7 +48,19 @@ const AdminPage = () => {
     available && (
       <Layout title="Administration area">
         <h1>Administration</h1>
-        <LinkList links={[...links, ...contentLinks, ...groupLinks]} />
+        <div className="links">
+          <LinkList links={[...links, ...contentLinks, ...groupLinks]} className="space-evenly"/>
+        </div>
+
+        <style jsx>
+          {
+            `
+              .links {
+                margin-top: 5%;
+              }
+            `
+          }
+        </style>
       </Layout>
     )
   )
