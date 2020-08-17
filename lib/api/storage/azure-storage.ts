@@ -1,7 +1,7 @@
-import { createBlobService, BlobService } from 'azure-storage'
-import slugify from 'slugify'
+import { BlobService, createBlobService } from 'azure-storage'
 
 import AbstractStorage from './abstract-storage'
+import slugify from 'slugify'
 
 class AzureStorage implements AbstractStorage {
   blobService: BlobService
@@ -68,10 +68,13 @@ class AzureStorage implements AbstractStorage {
   }
 }
 
-const instance = new AzureStorage(
-  process.env.AZURE_STORAGE_CONNECTION_STRING,
-  process.env.AZURE_STORAGE_ACCOUNT,
-  process.env.AZURE_STORAGE_CONTAINER
-)
 
-export default instance
+export default function Initialize() {
+  const instance = new AzureStorage(
+    process.env.AZURE_STORAGE_CONNECTION_STRING,
+    process.env.AZURE_STORAGE_ACCOUNT,
+    process.env.AZURE_STORAGE_CONTAINER
+  )
+  
+  return instance
+}

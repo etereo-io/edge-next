@@ -15,11 +15,11 @@ type PropTypes = {
   src?: string
 }
 
-export default function Named({
+export default function Avatar({
   user = {
     profile: {
       picture: {
-        path: defaultSrc,
+        path: '',
       },
     },
   } as UserType,
@@ -54,7 +54,7 @@ export default function Named({
     if (user && user.profile?.picture?.path) {
       setComputedSrc(user.profile.picture.path)
     }
-  }, [user, src])
+  }, [user])
 
   return (
     <>

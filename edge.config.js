@@ -384,7 +384,7 @@ export const getConfig = () => {
 
     // Storages: GOOGLE, AWS, FIREBASE, AZURE
     storage: {
-      type: 'AZURE',
+      type: 'GOOGLE',
     },
 
     // Choose from MONGO, IN_MEMORY

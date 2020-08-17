@@ -1,7 +1,7 @@
-import { MongoClient, ObjectID, Db } from 'mongodb'
+import { Db, MongoClient, ObjectID } from 'mongodb'
 
-import logger from '@lib/logger'
 import Database from './Database'
+import logger from '@lib/logger'
 
 class MongoDB extends Database {
   col: string
@@ -32,7 +32,7 @@ class MongoDB extends Database {
       .createIndex('expireAt', { expireAfterSeconds: 0 })
   }
 
-  async add(item) {
+  add(item) {
     const newItem = {
       _id: new ObjectID(),
       ...item,
@@ -54,7 +54,7 @@ class MongoDB extends Database {
     })
   }
 
-  async count(options) {
+  count(options) {
     return new Promise((resolve, reject) => {
       this.db
         .collection(this.col)
@@ -69,7 +69,7 @@ class MongoDB extends Database {
     })
   }
 
-  async find(
+  find(
     { id, ...options },
     sortOptions = { sortBy: 'createdAt', sortOrder: 'DESC' }
   ) {
@@ -108,7 +108,7 @@ class MongoDB extends Database {
     })
   }
 
-  async findOne({ id, ...options }) {
+  findOne({ id, ...options }) {
     logger('DEBUG', 'DB - findOne', this.col, options)
 
     return new Promise((resolve, reject) => {
@@ -146,9 +146,11 @@ class MongoDB extends Database {
     return this
   }
 
-  async doc(id) {
+  doc(id) {
     return {
       set: (newItemData) => {
+        logger('DEBUG', 'DB - set', this.col, id)
+
         return new Promise((resolve, reject) => {
           this.db.collection(this.col).findOneAndUpdate(
             { _id: new ObjectID(id) },
@@ -177,6 +179,8 @@ class MongoDB extends Database {
         })
       },
       get: () => {
+        logger('DEBUG', 'DB - findOne', this.col, id)
+
         return new Promise((resolve, reject) => {
           this.db
             .collection(this.col)
