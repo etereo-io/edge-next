@@ -22,9 +22,17 @@ function Field({ field, value, typeDefinition }) {
         )
       case FIELDS.MARKDOWN:
         const htmlString = md.render(value || '')
+
         return (
           <div data-testid={datatestId} style={{ wordBreak: 'break-all' }}>
             <MarkdownRead htmlString={htmlString} />
+          </div>
+        )
+
+      case FIELDS.RICH_TEXT:
+        return (
+          <div data-testid={datatestId} style={{ wordBreak: 'break-all' }}>
+            <MarkdownRead htmlString={value || ''} />
           </div>
         )
       case FIELDS.IMAGE:

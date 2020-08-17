@@ -11,6 +11,7 @@ import {
   Radio,
   Select,
   TextArea,
+  RichEditor,
 } from './fields'
 import { memo, useCallback, useState } from 'react'
 
@@ -189,7 +190,6 @@ function Field(props) {
           />
         )
 
-      
       case FIELDS.ENTITY_SEARCH:
         return (
           <InputEntity
@@ -199,6 +199,11 @@ function Field(props) {
             data-testid={datatestId}
             onChange={onChange}
           />
+        )
+
+      case FIELDS.RICH_TEXT:
+        return (
+          <RichEditor field={field} value={props.value} onChange={onChange} />
         )
 
       default:
@@ -236,6 +241,18 @@ function Field(props) {
           {props.field.errorMessage || props.errorMessage}
         </div>
       )}
+
+      <style global jsx>
+        {`
+          .error .quill .ql-toolbar {
+            border: 1px solid red;
+          }
+
+          .error .quill .ql-container {
+            border: 1px solid red;
+          }
+        `}
+      </style>
     </div>
   )
 }

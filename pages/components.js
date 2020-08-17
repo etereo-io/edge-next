@@ -1,9 +1,11 @@
+import { useMemo, useState } from 'react'
+import Link from 'next/link'
+
 import Table, {
   TableCellBody,
   TableCellHeader,
   TableRowBody,
 } from '@components/generic/table/table'
-
 import AuthorBox from '@components/user/author-box/author-box'
 import Avatar from '@components/user/avatar/avatar'
 import Badge from '@components/generic/badge/badge'
@@ -16,7 +18,6 @@ import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import Image from '@components/generic/image/image'
 import Layout from '@components/layout/three-panels/layout'
-import Link from 'next/link'
 import LinkList from '@components/generic/link-list/link-list'
 import Loading from '@components/generic/loading/loading-spinner/loading-spinner'
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
@@ -32,7 +33,7 @@ import Upload from '@components/generic/upload/upload'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '@components/generic/video-recorder/video-recorder-wrapper'
 import { Tabs, useTab } from '@components/generic/tabs'
-import { useMemo, useState } from 'react'
+import { Editor } from '@components/generic/rich-text-editor'
 
 function Menu() {
   return (
@@ -128,6 +129,9 @@ function Menu() {
           </li>
           <li>
             <a href="#tabs">Tabs</a>
+          </li>
+          <li>
+            <a href="#rich-text-editor">Rich text editor</a>
           </li>
           <li>
             <a href="#videorecorder">Video Recorder</a>
@@ -371,7 +375,7 @@ const Components = () => {
       label: 'Search user',
       placeholder: 'Search user...',
       multiple: true,
-      entityName: (u) => u.username
+      entityName: (u) => u.username,
     },
     {
       type: 'entity_search',
@@ -380,8 +384,8 @@ const Components = () => {
       entityType: 'post',
       label: 'Search posts',
       placeholder: 'Search posts...',
-      entityName: (p) => p.title
-    }
+      entityName: (p) => p.title,
+    },
   ]
 
   const dynamicValues = [
@@ -430,7 +434,7 @@ const Components = () => {
         id: 'profile',
         label: 'Profile',
         disabled: true,
-        content: 'You can see tab label but cannot see content'
+        content: 'You can see tab label but cannot see content',
       },
       {
         id: 'private',
@@ -1256,7 +1260,9 @@ const links = [{
                       <DynamicField
                         field={f}
                         value={state[f.name]}
-                        onChange={(val) => { setState({...state, [f.name]: val})}}
+                        onChange={(val) => {
+                          setState({ ...state, [f.name]: val })
+                        }}
                       />
                     )
                   })}
@@ -1524,6 +1530,16 @@ const links = [{
     []
   )
                   `}</pre>
+          </div>
+
+          <div id="rich-text-editor" className="component">
+            <h3>Rich text editor</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Editor defaultValue="Some default value" label="Rich text editor"/>
+              </div>
+            </div>
+            <pre>{`<Editor defaultValue="Some default value" label="Rich text editor"/>`}</pre>
           </div>
 
           <div id="videorecorder" className="component">

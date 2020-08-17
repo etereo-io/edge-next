@@ -153,6 +153,14 @@ export const getConfig = () => {
         description:
           'Add your web monetization payment pointer to make this content private, and only accesible by web monetization',
       },
+      {
+        name: 'markdown',
+        type: 'rich-text',
+        label: 'Markdown',
+        placeholder: 'Markdown',
+        required: true,
+        errorMessage: 'Text is required',
+      },
     ],
   }
 
