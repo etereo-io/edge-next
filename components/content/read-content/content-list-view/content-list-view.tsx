@@ -1,14 +1,13 @@
-import { useEffect, useRef } from 'react'
-import useSWR, { useSWRPages } from 'swr'
+import { useEffect, useRef, memo, Fragment } from 'react'
 
 import API from '@lib/api/api-endpoints'
-import Button from '../../../generic/button/button'
+import Button from '@components/generic/button/button'
 import ContentDetailView from '../content-detail-view/content-detail-view'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import EmptyList from '@components/generic/empty-list'
 import LoadingItems from '@components/generic/loading/loading-items'
-import fetch from '@lib/fetcher'
-import { useOnScreen } from '@lib/client/hooks'
+import { useInfinityList, useOnScreen } from '@lib/client/hooks'
+import { GroupEntityType } from '@lib/types'
 
 interface Props {
   infiniteScroll?: boolean
@@ -18,40 +17,40 @@ interface Props {
   type: ContentTypeDefinition
 }
 
-export default function Named({
+function ContentListView({
   query = '',
   addComments,
   type,
   infiniteScroll = false,
-  initialData = null
+  initialData = null,
 }: Props) {
-  const identificator = `content-list-${type.slug}-${query}`
-
-  // Fetch content type page by page
   const {
-    pages,
-    isLoadingMore,
-    loadMore,
-    isEmpty,
+    data,
+    loadNewItems,
     isReachingEnd,
-  } = useSWRPages(
-    identificator,
-    ({ offset, withSWR }) => {
-      const apiUrl = `${API.content[type.slug]}?limit=10${
-        offset ? '&from=' + offset : ''
-      }${query ? `&${query}` : ''}`
+    isEmpty,
+    isLoadingMore,
+  } = useInfinityList<GroupEntityType>({
+    url: `${API.content[type.slug]}`,
+    limit: 10,
+    query,
+    config: { initialData },
+  })
 
-      const { data } = withSWR(
-        useSWR(apiUrl, fetch, !offset ? { initialData } : null)
-      )
+  const $loadMoreButton = useRef(null)
+  const isOnScreen = useOnScreen($loadMoreButton, '200px')
 
-      if (!data) return <LoadingItems />
+  useEffect(() => {
+    if (isOnScreen && infiniteScroll) {
+      loadNewItems()
+    }
+  }, [isOnScreen, infiniteScroll])
 
-      const { results = [] } = data
-
-      return results.map((item) => {
-        return (
-          <div key={item.id + item.createdAt}>
+  return (
+    <>
+      <div className="contentListView">
+        {data.map((item) => (
+          <Fragment key={`${item.id}${item.createdAt}`}>
             <ContentDetailView
               content={item}
               type={type}
@@ -60,33 +59,8 @@ export default function Named({
               showComments={false}
               addComments={addComments}
             />
-          </div>
-        )
-      })
-    },
-    (SWR) => {
-      // Calculates the next page offset
-      const nextOffset =
-        SWR.data && SWR.data.results && SWR.data.results.length >= 10
-          ? SWR.data.from * 1 + SWR.data.limit * 1
-          : null
-
-      return nextOffset
-    },
-    []
-  )
-
-  const $loadMoreButton = useRef(null)
-  const isOnScreen = useOnScreen($loadMoreButton, '200px')
-
-  useEffect(() => {
-    if (isOnScreen && infiniteScroll && !isLoadingMore) loadMore()
-  }, [isOnScreen])
-
-  return (
-    <>
-      <div className="contentListView">
-        {pages}
+          </Fragment>
+        ))}
         {isLoadingMore && <LoadingItems />}
         {isEmpty && <EmptyList />}
         <div className="load-more">
@@ -96,7 +70,7 @@ export default function Named({
               loading={isLoadingMore}
               big={true}
               fullWidth={true}
-              onClick={loadMore}
+              onClick={loadNewItems}
             >
               Load More
             </Button>
@@ -112,3 +86,5 @@ export default function Named({
     </>
   )
 }
+
+export default memo(ContentListView)
