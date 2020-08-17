@@ -4,7 +4,7 @@ import PasswordStrength from '@components/generic/password-strength/password-str
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 
-export default function ({ user, ...props }) {
+export default function Named({ user, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)

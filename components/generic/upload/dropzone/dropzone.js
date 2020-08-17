@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function (props) {
+export default function Named(props) {
   const fileInputRef = React.createRef()
   const [highlighted, setHighlighted] = useState(false)
 

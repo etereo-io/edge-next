@@ -11,7 +11,7 @@ import Link from 'next/link'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 
-export default function(props) {
+export default function Named(props) {
   // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)

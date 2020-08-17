@@ -14,7 +14,7 @@ const RecordedVideo = (props) => {
   )
 }
 
-export default function (props) {
+export default function Named(props) {
   const [videos, setVideos] = useState([])
 
   const handleVideoRecordingComplete = (blob) => {

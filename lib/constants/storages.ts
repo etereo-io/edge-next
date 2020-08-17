@@ -1,6 +1,6 @@
-
-export const STORAGES = {
-  AWS: 'AWS',
-  FIREBASE: 'FIREBASE',
-  GOOGLE: 'GOOGLE',
+export enum STORAGE {
+  AWS = 'AWS',
+  FIREBASE = 'FIREBASE',
+  GOOGLE = 'GOOGLE',
+  AZURE = 'AZURE',
 }

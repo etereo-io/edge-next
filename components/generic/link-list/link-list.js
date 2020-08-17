@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export default function (props) {
+export default function Named(props) {
   return (
     <>
       <div>

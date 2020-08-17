@@ -1,7 +1,7 @@
 import { useUser } from '@lib/client/hooks'
 import Link from 'next/link'
 
-export default function ({ mobileCollapse = false }) {
+export default function Named({ mobileCollapse = false }) {
   const { user } = useUser()
 
   return (

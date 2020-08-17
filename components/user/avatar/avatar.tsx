@@ -15,7 +15,7 @@ type PropTypes = {
   src?: string
 }
 
-export default function ({
+export default function Named({
   user = {
     profile: {
       picture: {

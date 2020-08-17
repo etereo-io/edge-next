@@ -45,7 +45,7 @@ function LoadingItems() {
   )
 }
 
-export default function ({
+export default function Named({
   contentId = '',
   type = {},
   comment = {},

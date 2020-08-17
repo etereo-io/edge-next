@@ -49,7 +49,7 @@ function EmptyComponent() {
   return <div className="empty"></div>
 }
 
-export default function ({
+export default function Named({
   contentId = null,
   type = {},
   newComments = [],

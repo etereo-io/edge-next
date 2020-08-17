@@ -64,7 +64,7 @@ function Tag(props) {
   )
 }
 
-export default function (props) {
+export default function Named(props) {
   const defaultTags = props.defaultValue || []
 
   const [tags, setTags] = useState(defaultTags)

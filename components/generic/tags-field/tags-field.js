@@ -26,7 +26,7 @@ function Tag(props) {
   )
 }
 
-export default function ({ tags = [], type = {} }) {
+export default function Named({ tags = [], type = {} }) {
   return (
     <>
       <div className="tags-field">

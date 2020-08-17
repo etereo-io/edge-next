@@ -2,7 +2,7 @@ import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-vi
 import { FIELDS } from '@lib/constants'
 import Link from 'next/link'
 
-export default function (props) {
+export default function Named(props) {
   // Link to detail if it's not a summary
   const links = !!props.summary
 

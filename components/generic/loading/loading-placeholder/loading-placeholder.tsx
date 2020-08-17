@@ -1,4 +1,4 @@
-export default function ({ width = '200px', height = '20px', borderRadius = 'var(--edge-radius)' }) {
+export default function Named({ width = '200px', height = '20px', borderRadius = 'var(--edge-radius)' }) {
   return (
     <>
       <div className="loading-placeholder"></div>

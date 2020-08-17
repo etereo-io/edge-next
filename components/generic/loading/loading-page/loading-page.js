@@ -1,5 +1,5 @@
 import Spinner from '../loading-spinner/loading-spinner'
-export default function () {
+export default function Named() {
   return (
     <>
       <div className="page-loading">

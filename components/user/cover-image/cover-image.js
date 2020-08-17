@@ -1,7 +1,7 @@
 import Placeholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import loadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 
-export default function ({ user, loading = false }) {
+export default function Named({ user, loading = false }) {
   return (
     <>
       <div className="cover-image-wrapper">

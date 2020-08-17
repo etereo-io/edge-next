@@ -56,7 +56,7 @@ export function TableRowBody({ children, ...props }) {
   )
 }
 
-export default function (props) {
+export default function Named(props) {
   return (
     <>
       <table className="table">

@@ -1,4 +1,4 @@
-export default function (props) {
+export default function Named(props) {
   return (
     <>
       <div className="progress-bar">

@@ -1,7 +1,7 @@
 import LinkList from '../../../generic/link-list/link-list'
 import { useContentTypes } from '@lib/client/hooks'
 
-export default function () {
+export default function Named() {
   const contentTypes = useContentTypes(['read', 'admin'])
 
   const links = contentTypes.map((type) => {

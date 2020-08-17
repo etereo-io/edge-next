@@ -15,7 +15,7 @@ type PropTypes = {
   conversationId?: string
 }
 
-export default function ({
+export default function Named({
   contentId = '',
   comment = {} as CommentType,
   onChange = (val: any) => {},

@@ -2,7 +2,7 @@ import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import config from '@lib/config'
 
-export default function () {
+export default function Named() {
   return (
     <>
       <footer className="footer">

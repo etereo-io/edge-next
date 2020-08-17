@@ -1,4 +1,4 @@
-export default function ({ password = '' }) {
+export default function Named({ password = '' }) {
   const special = new RegExp('[$@$!%*#?&]').test(password)
   const uppercase = new RegExp('[A-Z]').test(password)
   const numbers = new RegExp('[0-9]').test(password)

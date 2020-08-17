@@ -18,7 +18,7 @@ interface Props {
   type: ContentTypeDefinition
 }
 
-export default function({
+export default function Named({
   query = '',
   addComments,
   type,

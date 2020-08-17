@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 import Dropzone from './dropzone/dropzone'
 
-export default function ({ accept, name, required, multiple, ...props }) {
+export default function Named({ accept, name, required, multiple, ...props }) {
   const inputProps = { accept, name, required, multiple }
   const [files, setFiles] = useState([])
   const [loading, setLoading] = useState(false)
