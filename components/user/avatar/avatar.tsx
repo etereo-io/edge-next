@@ -19,7 +19,7 @@ export default function ({
   user = {
     profile: {
       picture: {
-        path: defaultSrc
+        path: ''
       }
     }
   } as UserType,
@@ -45,13 +45,16 @@ export default function ({
   }
 
   useEffect(() => {
-    if (user && user.profile?.picture?.path) {
-      setComputedSrc(user.profile.picture.path)
-    } else if (src) {
+    if(src) {
       setComputedSrc(src)
     }
-    
-  }, [user, src])
+  }, [src])
+
+  useEffect(() => {
+    if (user && user.profile?.picture?.path) {
+      setComputedSrc(user.profile.picture.path)
+    }
+  }, [user])
 
   return (
     <>

@@ -86,7 +86,7 @@ export default function ({ user, onChange = () => {}, ...props }) {
           <label>Profile Picture</label>
           <p>Click on the image to change it</p>
           <div className="field" onClick={openFileDialog}>
-            <Avatar src={fields.picture.path} />
+            <Avatar src={fields.picture.path} title={`${user ? user.username: ''} avatar`}/>
           </div>
 
           <input
