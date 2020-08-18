@@ -33,7 +33,7 @@ const getKey = ({
     sortBy ? '&sortBy=' + sortBy : ''
   }
   ${sortOrder ? '&sortOrder=' + sortOrder : ''}${
-    query ? '&query=' + query : ''
+    query ? '&' + query : ''
   }`
 }
 
@@ -90,6 +90,8 @@ function useInfinityList<Item>({
     config
   )
   const [isLoading, setIsLoading] = useState(false)
+
+  console.log(response)
 
   const data = response
     ? [].concat(...response.map(({ results }) => results))

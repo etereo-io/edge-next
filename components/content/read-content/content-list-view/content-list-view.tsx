@@ -24,6 +24,16 @@ function ContentListView({
   infiniteScroll = false,
   initialData = null,
 }: Props) {
+
+  let initData = null
+
+  if (initialData) {
+    if (Array.isArray(initialData)) {
+      initData = initialData
+    } else {
+      initData = [initialData]
+    }
+  }
   const {
     data,
     loadNewItems,
@@ -35,7 +45,7 @@ function ContentListView({
     limit: 10,
     query,
     config: {
-      initialData: Array.isArray(initialData) ? initialData : [initialData],
+      initialData: initData,
     },
   })
 

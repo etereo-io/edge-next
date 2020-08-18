@@ -10,6 +10,16 @@ import { GroupEntityType } from '@lib/types'
 import Item from './item'
 
 function GroupListView({ infiniteScroll, query, type, initialData }) {
+  let initData = null
+
+  if (initialData) {
+    if (Array.isArray(initialData)) {
+      initData = initialData
+    } else {
+      initData = [initialData]
+    }
+  }
+
   const {
     data,
     loadNewItems,
@@ -20,7 +30,7 @@ function GroupListView({ infiniteScroll, query, type, initialData }) {
     url: `${API.groups[type.slug]}`,
     limit: 10,
     query,
-    config: { initialData: Array.isArray(initialData)? initialData: [initialData] },
+    config: { initialData: initData },
   })
 
   const $loadMoreButton = useRef(null)
