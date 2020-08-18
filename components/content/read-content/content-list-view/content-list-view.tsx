@@ -34,7 +34,9 @@ function ContentListView({
     url: `${API.content[type.slug]}`,
     limit: 10,
     query,
-    config: { initialData },
+    config: {
+      initialData: Array.isArray(initialData) ? initialData : [initialData],
+    },
   })
 
   const $loadMoreButton = useRef(null)

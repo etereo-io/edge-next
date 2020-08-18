@@ -20,7 +20,7 @@ function GroupListView({ infiniteScroll, query, type, initialData }) {
     url: `${API.groups[type.slug]}`,
     limit: 10,
     query,
-    config: { initialData },
+    config: { initialData: Array.isArray(initialData)? initialData: [initialData] },
   })
 
   const $loadMoreButton = useRef(null)
