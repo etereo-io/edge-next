@@ -29,7 +29,6 @@
   - [Other Payments](#other-payments)
 - [env.local file](#envlocal-file)
   - [Deploy your own](#deploy-your-own)
-    - [Deploying on Vercel](#deploying-on-vercel)
   - [API](#api)
     - [Auth](#auth)
     - [Users](#users)
@@ -791,59 +790,7 @@ Depending on what you want to seel (if you want the users to be able to sell, or
 
 ## Deploy your own
 
-To deploy your site with all the functionalities you need to follow the next steps:
-
-1. Get all the environment variables needed
-2. Configure the environment variables in Vercel dashboard (or your service of choice)
-3. Done
-
-All the environment variables you need to configure are defined inside the `.env.build`  file
-
-```
-AUTH_TOKEN_SECRET=secret-token-to-generate-sessions
-
-BASE_URL=http://localhost:3000
-
-MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
-MONGODB_DATABASE=<database>
-
-SENDGRID_KEY=XXX
-
-GOOGLE_CLIENT_EMAIL=XX
-GOOGLE_PRIVATE_KEY=XX
-GOOGLE_PROJECTID=XX
-GOOGLE_BUCKET_NAME=edge-next
-
-FACEBOOK_ID=XX
-FACEBOOK_SECRET=XX
-GITHUB_ID=XX
-GITHUB_SECRET=XX
-GOOGLE_ID=XX
-GOOGLE_SECRET=XX
-
-NEXT_PUBLIC_GMAPS_API_KEY=XXXX
-
-NEXT_PUBLIC_GA_TRACKING_ID=xx
-```
-
-- **Base url**: Used to redirect oauth enpoints. Set `BASE_URL` to the url of your deployment
-- **Google Analytics**: Set `NEXT_PUBLIC_GA_TRACKING_ID` to the Tracking Id from Google Analytics
-- **Social Providers**: Set `FACEBOOK_ID`, `FACEBOOK_SECRET`, `GOOGLE_ID`, `GOOGLE_SECRET`, and `GITHUB_ID`, `GITHUB_SECRET`
-- **Storage**: For google cloud storage configure `GOOGLE_CLIENT_EMAIL`, `GOOGLE_PRIVATE_KEY`, `GOOGLE_PROJECTID` and `GOOGLE_BUCKET_NAME` from your credentials file.
-- **Email**: Configure `SENDGRID_KEY`
-- **Google Maps**: Configure `NEXT_PUBLIC_GMAPS_API_KEY`
-
-
-### Deploying on Vercel
-
-Deploy Edge using [Vercel](https://vercel.com):
-
-
-If you want your deployment in Vercel to recognize the `ENVIRONMENT` values, you will need to add the secrets to your deployment. 
-
-You can add them through the command line or through the administration dashboard in Vercel.com
-
-![](/static/docs/env-variables-vercel-2.png)
+Please follow the [deployments documentation](./doc/DEPLOYMENTS.md) 
 
 
 ## API
