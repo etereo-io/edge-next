@@ -1,10 +1,9 @@
-import { STORAGE } from '@lib/constants'
-import config from '@lib/config'
-
 import AWSStorage from './aws-storage'
 import AzureStorage from './azure-storage'
 import FirebaseStorage from './firestore-storage'
 import GoogleStorage from './google-storage'
+import { STORAGE } from '@lib/constants'
+import config from '@lib/config'
 
 const MAPPING = {
   [STORAGE.GOOGLE]: GoogleStorage,
@@ -13,7 +12,7 @@ const MAPPING = {
   [STORAGE.AZURE]: AzureStorage,
 }
 
-const storage = MAPPING[config.storage.type]
+const storage = MAPPING[config.storage.type]()
 
 if (!storage) {
   throw new Error('Storage is not implemented')

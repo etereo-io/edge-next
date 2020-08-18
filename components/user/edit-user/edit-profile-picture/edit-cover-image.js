@@ -86,7 +86,7 @@ export default function Named({ user, onChange = () => {}, ...props }) {
           <div className="field" onClick={openFileDialog}>
             <img
               style={{ height: '200px', cursor: 'pointer' }}
-              src={fields.cover.path || '/static/demo-images/cover/clouds.jfif'}
+              src={fields.cover.path || '/static/demo-images/default-background.jpg'}
             />
           </div>
 

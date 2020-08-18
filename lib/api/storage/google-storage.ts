@@ -1,7 +1,6 @@
+import AbstractStorage from './abstract-storage'
 import { Storage } from '@google-cloud/storage'
 import slugify from 'slugify'
-
-import AbstractStorage from './abstract-storage'
 
 class GoogleStorage implements AbstractStorage {
   constructor(
@@ -73,14 +72,17 @@ class GoogleStorage implements AbstractStorage {
   }
 }
 
-const storage = new Storage({
-  credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
-  },
-  projectId: process.env.GOOGLE_PROJECTID,
-})
 
-const instance = new GoogleStorage(storage, process.env.GOOGLE_BUCKET_NAME)
-
-export default instance
+export default function Initialize() {
+  const storage = new Storage({
+    credentials: {
+      client_email: process.env.GOOGLE_CLIENT_EMAIL,
+      private_key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+    },
+    projectId: process.env.GOOGLE_PROJECTID,
+  })
+  
+  const instance = new GoogleStorage(storage, process.env.GOOGLE_BUCKET_NAME)
+  
+  return instance
+}
