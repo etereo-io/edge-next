@@ -1,89 +1,55 @@
-import { useEffect, useRef } from 'react'
-import useSWR, { useSWRPages } from 'swr'
+import { useEffect, useRef, memo, Fragment } from 'react'
 
 import API from '@lib/api/api-endpoints'
-import Button from '../../../generic/button/button'
-import Card from '@components/generic/card/card'
-import GroupSummaryView from '../group-summary-view/group-summary-view'
-import fetch from '@lib/fetcher'
-import { useOnScreen } from '@lib/client/hooks'
+import Button from '@components/generic/button/button'
+import { useOnScreen, useInfinityList } from '@lib/client/hooks'
 import LoadingItems from '@components/generic/loading/loading-items'
 import EmptyList from '@components/generic/empty-list'
+import { GroupEntityType } from '@lib/types'
 
-export default function Named(props) {
-  const infiniteScroll = props.infiniteScroll
-  const query = props.query
-  const identificator = 'content-list-' + props.type.slug + '-' + query
+import Item from './item'
 
-  // Fetch content type page by page
+function GroupListView({ infiniteScroll, query, type, initialData }) {
+  let initData = null
+
+  if (initialData) {
+    if (Array.isArray(initialData)) {
+      initData = initialData
+    } else {
+      initData = [initialData]
+    }
+  }
+
   const {
-    pages,
-    isLoadingMore,
-    loadMore,
-    isEmpty,
+    data,
+    loadNewItems,
     isReachingEnd,
-  } = useSWRPages(
-    identificator,
-    ({ offset, withSWR }) => {
-      const apiUrl = `${API.groups[props.type.slug]}?limit=10${
-        offset ? '&from=' + offset : ''
-      }${query ? `&${query}` : ''}`
-
-      const { data } = withSWR(
-        useSWR(
-          apiUrl,
-          fetch,
-          !offset ? { initialData: props.initialData } : null
-        )
-      )
-
-      if (!data) return <LoadingItems />
-
-      const { results = [] } = data
-      return results.map((item) => {
-        return (
-          <div key={item.id + item.createdAt}>
-            <div className="list-item">
-              <Card>
-                <GroupSummaryView
-                  group={item}
-                  linkToDetail={true}
-                  type={props.type}
-                />
-              </Card>
-            </div>
-            <style jsx>{`
-              .list-item {
-                margin-bottom: var(--edge-gap);
-              }
-            `}</style>
-          </div>
-        )
-      })
-    },
-    (SWR) => {
-      // Calculates the next page offset
-      const nextOffset =
-        SWR.data && SWR.data.results && SWR.data.results.length >= 10
-          ? SWR.data.from * 1 + SWR.data.limit * 1
-          : null
-
-      return nextOffset
-    },
-    []
-  )
+    isEmpty,
+    isLoadingMore,
+  } = useInfinityList<GroupEntityType>({
+    url: `${API.groups[type.slug]}`,
+    limit: 10,
+    query,
+    config: { initialData: initData },
+  })
 
   const $loadMoreButton = useRef(null)
   const isOnScreen = useOnScreen($loadMoreButton, '200px')
 
   useEffect(() => {
-    if (isOnScreen && infiniteScroll && !isLoadingMore) loadMore()
-  }, [isOnScreen])
+    if (isOnScreen && infiniteScroll) {
+      loadNewItems()
+    }
+  }, [isOnScreen, infiniteScroll])
 
   return (
     <>
       <div className="group-list-view">
-        {pages}
+        {data.map((item) => (
+          <Fragment key={`${item.id}${item.createdAt}`}>
+            <Item item={item} type={type} />
+          </Fragment>
+        ))}
         {isLoadingMore && <LoadingItems />}
         {isEmpty && <EmptyList imageTitle="No groups found" />}
         <div className="load-more">
@@ -93,7 +59,7 @@ export default function Named(props) {
               loading={isLoadingMore}
               big={true}
               fullWidth={true}
-              onClick={loadMore}
+              onClick={loadNewItems}
             >
               Load More
             </Button>
@@ -109,3 +75,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(GroupListView)

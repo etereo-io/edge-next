@@ -1,25 +1,22 @@
+import { useState, memo } from 'react'
+import Link from 'next/link'
+import { format } from 'timeago.js'
+
 import Table, {
   TableCellBody,
   TableCellHeader,
   TableRowBody,
-} from '../../../generic/table/table'
-
-import LoadingPlaceholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
-import useSWR, { useSWRPages } from 'swr'
-
+} from '@components/generic/table/table'
 import API from '@lib/api/api-endpoints'
-import Button from '../../../generic/button/button'
-import Link from 'next/link'
-import fetch from '@lib/fetcher'
-import { useState } from 'react'
-import { format } from 'timeago.js'
+import Button from '@components/generic/button/button'
+import { useInfinityList } from '@lib/client/hooks'
+import { UserType } from '@lib/types'
+import Placeholder from '@components/generic/loading/table-loading'
 
 const ListItem = (props) => {
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
-
-  // const [item, setItem] = useState(props.item)
 
   const blockRequest = (blockedStatus) => {
     const url = `${API.users}/${props.item.id}/block?field=id`
@@ -69,7 +66,6 @@ const ListItem = (props) => {
 
       deleteRequest()
         .then((result) => {
-    
           setLoading(false)
           setSuccess(true)
           setError(false)
@@ -124,79 +120,22 @@ const ListItem = (props) => {
   )
 }
 
-function Placeholder() {
-  return (
-    <>
-      <TableRowBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-      </TableRowBody>
-      <TableRowBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-      </TableRowBody>
-    </>
-  )
-}
-
-function EmptyComponent() {
-  return <div className="empty">Sorry, no items found.</div>
-}
-
-export default function Named(props) {
+function UserTable(props) {
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('DESC')
 
-  // Fetch user page by page
   const {
-    pages,
-    isLoadingMore,
-    loadMore,
-    isEmpty,
+    data,
+    loadNewItems,
     isReachingEnd,
-  } = useSWRPages(
-    `admin-users-list`,
-    ({ offset, withSWR }) => {
-      const apiUrl = `${API.users}?limit=10${
-        offset ? '&from=' + offset : ''
-      }&sortBy=${sortBy}&sortOrder=${sortOrder}`
-      const { data } = withSWR(useSWR(apiUrl, fetch))
-
-      if (!data) return <Placeholder />
-
-      const { results } = data
-      return results.map((item) => {
-        return <ListItem key={item.id} type={props.type} item={item} />
-      })
-    },
-    (SWR) => {
-      // Calculates the next page offset
-      return SWR.data && SWR.data.results && SWR.data.results.length >= 10
-        ? SWR.data.from * 1 + SWR.data.limit * 1
-        : null
-    },
-    [sortOrder]
-  )
+    isEmpty,
+    isLoadingMore,
+  } = useInfinityList<UserType>({
+    url: `${API.users}`,
+    limit: 10,
+    sortBy,
+    sortOrder,
+  })
 
   const headerCells = [
     <TableCellHeader
@@ -248,13 +187,16 @@ export default function Named(props) {
     <div className="content-list">
       <div className="table-wrapper">
         <Table headerCells={headerCells}>
-          {pages}
-          {isEmpty && <EmptyComponent />}
+          {data.map((item) => (
+            <ListItem key={item.id} type={props.type} item={item} />
+          ))}
+          {isLoadingMore && <Placeholder />}
+          {isEmpty && <div className="empty">Sorry, no items found.</div>}
         </Table>
       </div>
       <div id="load-more">
         {isReachingEnd ? null : (
-          <Button loading={isLoadingMore} big={true} onClick={loadMore}>
+          <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
             Load More
           </Button>
         )}
@@ -272,3 +214,5 @@ export default function Named(props) {
     </div>
   )
 }
+
+export default memo(UserTable)

@@ -1,19 +1,17 @@
+import { format } from 'timeago.js'
+import { useState, memo } from 'react'
+import Link from 'next/link'
+
 import Table, {
   TableCellBody,
   TableCellHeader,
   TableRowBody,
-} from '../../../generic/table/table'
-
-import LoadingPlaceholder from '../../../generic/loading/loading-placeholder/loading-placeholder'
-
-import useSWR, { useSWRPages } from 'swr'
-
+} from '@components/generic/table/table'
+import Placeholder from '@components/generic/loading/table-loading'
 import API from '@lib/api/api-endpoints'
-import Button from '../../../generic/button/button'
-import Link from 'next/link'
-import fetch from '@lib/fetcher'
-import { format } from 'timeago.js'
-import { useState } from 'react'
+import Button from '@components/generic/button/button'
+import { useInfinityList } from '@lib/client/hooks'
+import { GroupEntityType } from '@lib/types'
 
 const ListItem = (props) => {
   const [loading, setLoading] = useState(false)
@@ -102,79 +100,22 @@ const ListItem = (props) => {
   )
 }
 
-function Placeholder() {
-  return (
-    <>
-      <TableRowBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-      </TableRowBody>
-      <TableRowBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-        <TableCellBody>
-          <LoadingPlaceholder />
-        </TableCellBody>
-      </TableRowBody>
-    </>
-  )
-}
-
-function EmptyComponent() {
-  return <div className="empty">Sorry, no items found.</div>
-}
-
-export default function Named(props) {
+function ContentTable(props) {
   const [sortBy, setSortBy] = useState('createdAt')
   const [sortOrder, setSortOrder] = useState('DESC')
 
-  // Fetch content type page by page
   const {
-    pages,
-    isLoadingMore,
-    loadMore,
-    isEmpty,
+    data,
+    loadNewItems,
     isReachingEnd,
-  } = useSWRPages(
-    `admin-content-${props.type.slug}-list`,
-    ({ offset, withSWR }) => {
-      const apiUrl = `${API.content[props.type.slug]}?limit=10${
-        offset ? '&from=' + offset : ''
-      }&sortBy=${sortBy}&sortOrder=${sortOrder}`
-      const { data } = withSWR(useSWR(apiUrl, fetch))
-
-      if (!data) return <Placeholder />
-
-      const { results } = data
-      return results.map((item) => {
-        return <ListItem key={item.id} type={props.type} item={item} />
-      })
-    },
-    (SWR) => {
-      // Calculates the next page offset
-      return SWR.data && SWR.data.results && SWR.data.results.length >= 10
-        ? SWR.data.from * 1 + SWR.data.limit * 1
-        : null
-    },
-    [sortOrder]
-  )
+    isEmpty,
+    isLoadingMore,
+  } = useInfinityList<GroupEntityType>({
+    url: `${API.content[props.type.slug]}`,
+    limit: 10,
+    sortBy,
+    sortOrder,
+  })
 
   const headerCells = props.type.fields.map((field) => {
     return (
@@ -225,14 +166,17 @@ export default function Named(props) {
     <div className="content-list">
       <div className="table-wrapper">
         <Table headerCells={headerCells}>
-          {pages}
-          {isEmpty && <EmptyComponent />}
+          {data.map((item) => (
+            <ListItem key={item.id} type={props.type} item={item} />
+          ))}
+          {isLoadingMore && <Placeholder />}
+          {isEmpty && <div className="empty">Sorry, no items found.</div>}
         </Table>
       </div>
 
       <div className="load-more">
         {isReachingEnd ? null : (
-          <Button loading={isLoadingMore} big={true} onClick={loadMore}>
+          <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
             Load More
           </Button>
         )}
@@ -251,3 +195,5 @@ export default function Named(props) {
     </div>
   )
 }
+
+export default memo(ContentTable)

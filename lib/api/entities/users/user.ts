@@ -93,8 +93,11 @@ export async function findUserWithPassword({
   }
 }
 
-export function findUsers(options, paginationOptions) {
+export async function findUsers(options, paginationOptions) {
   const { from = 0, limit = 15, sortBy, sortOrder = 'DESC' } = paginationOptions
+
+  const total = await getDB().collection('users').count(options);
+
   return getDB()
     .collection('users')
     .limit(limit)
@@ -108,6 +111,7 @@ export function findUsers(options, paginationOptions) {
         results: data,
         from,
         limit,
+        total
       }
     })
 }
