@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 import { useSWRInfinite } from 'swr'
 import { ConfigInterface } from 'swr/dist/types'
+import { usePrevious } from 'react-use'
 
 import fetch from '@lib/fetcher'
 
@@ -31,10 +32,7 @@ const getKey = ({
 
   return `${url}?limit=${limit}${from ? '&from=' + from : ''}${
     sortBy ? '&sortBy=' + sortBy : ''
-  }
-  ${sortOrder ? '&sortOrder=' + sortOrder : ''}${
-    query ? '&' + query : ''
-  }`
+  }${sortOrder ? '&sortOrder=' + sortOrder : ''}${query ? '&' + query : ''}`
 }
 
 type DefaultListResponse<Data = any> = {
@@ -91,16 +89,20 @@ function useInfinityList<Item>({
   )
   const [isLoading, setIsLoading] = useState(false)
 
-  console.log(response)
+  const prevSorting = usePrevious({ sortBy, sortOrder })
 
-  const data = response
+  let data = response
     ? [].concat(...response.map(({ results }) => results))
     : []
+  const prevData = usePrevious(data)
 
+  if (JSON.stringify(prevSorting) !== JSON.stringify({ sortBy, sortOrder }) && !response && prevData) {
+    data = prevData
+  }
   let total = 0
 
   if (response) {
-    ([{total}] = response)
+    ([{ total }] = response)
   }
 
   const isLoadingInitialData = !response && !error

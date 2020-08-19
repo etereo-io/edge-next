@@ -8,6 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+    "downlevelIteration": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
@@ -19,9 +20,13 @@
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {
-      "@lib/*": ["lib/*"],
-      "@components/*": ["components/*"]
-    }
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ]
+    },
   },
   "exclude": [
     "node_modules"

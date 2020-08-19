@@ -1,93 +1,151 @@
-import React, { useState, memo } from 'react'
+import React, { useState, memo, useMemo, useCallback } from 'react'
+import { format } from 'timeago.js'
 
-import Table, { TableCellHeader } from '@components/generic/table/table'
 import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import { useInfinityList } from '@lib/client/hooks'
 import { GroupEntityType } from '@lib/types/entities/group'
-import Placeholder from '@components/generic/loading/table-loading'
+import {
+  Table as ReactTable,
+  ExtendedColumn,
+} from '@components/generic/react-table'
+import ActionsCell from './actions-cell'
 
-import ListItem from './list-item'
+import Link from 'next/link'
+import fetch from '@lib/fetcher'
 
 interface Props {
   type: GroupTypeDefinition
 }
 
+const limit = 3
+
 function GroupsTable({ type }: Props) {
-  const [sortBy, setSortBy] = useState<string>('createdAt')
-  const [sortOrder, setSortOrder] = useState<string>('DESC')
+  const [{ sortBy, sortOrder }, setOrdering] = useState({
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+  })
 
   const {
     data,
     loadNewItems,
     isReachingEnd,
-    isEmpty,
     isLoadingMore,
+    isEmpty,
   } = useInfinityList<GroupEntityType>({
     url: `${API.groups[type.slug]}`,
     sortBy,
     sortOrder,
-    limit: 10,
+    limit,
+    config: { revalidateOnFocus: false },
   })
 
-  const headerCells = type.fields.map((field) => (
-    <TableCellHeader
-      key={field.name}
-      onClick={() => {
-        setSortBy(field.name)
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      {field.name}
-    </TableCellHeader>
-  ))
+  const changeOrdering = useCallback(
+    (options: Array<{ field: string; order: string }>) => {
+      if (options.length) {
+        const [{ field, order }] = options
 
-  headerCells.push(
-    <TableCellHeader
-      key="created_at"
-      onClick={() => {
-        setSortBy('createdAt')
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      Created at
-    </TableCellHeader>
+        setOrdering({ sortBy: field, sortOrder: order })
+      } else {
+        setOrdering({ sortBy: '', sortOrder: '' })
+      }
+    },
+    [setOrdering]
   )
 
-  if (type.publishing.draftMode) {
-    headerCells.push(
-      <TableCellHeader
-        key="draft"
-        onClick={() => {
-          setSortBy('draft')
-          setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-        }}
-      >
-        Draft
-      </TableCellHeader>
+  const deleteRequest = useCallback((slug, id) => {
+    const url = `${API.groups[slug]}/${id}?field=id`
+
+    return fetch(url, {
+      method: 'delete',
+    })
+  }, [])
+
+  const columns = useMemo(() => {
+    const result: ExtendedColumn<GroupEntityType>[] = type.fields.map(
+      ({ name }, index) => ({
+        Header: name,
+        id: name,
+        sortable: true,
+        minWidth: 250,
+        Cell: ({ row: { original: item } }) => {
+          const value =
+            typeof item[name] === 'string'
+              ? item[name]
+              : JSON.stringify(item[name])
+
+          if (index === 0) {
+            return (
+              <Link href={`/group/${type.slug}/${item.slug}`}>
+                <a>{value}</a>
+              </Link>
+            )
+          }
+
+          return value
+        },
+      })
     )
-  }
 
-  headerCells.push(
-    <TableCellHeader key="reported">Reported</TableCellHeader>,
-    <TableCellHeader key="actions">Actions</TableCellHeader>
-  )
+    result.push({
+      Header: 'Created at',
+      id: 'createdAt',
+      accessor: 'createdAt',
+      Cell: ({ value }) => format(value),
+      sortable: true,
+    })
+
+    if (type.publishing.draftMode) {
+      result.push({
+        Header: 'Draft',
+        id: 'draft',
+        Cell: ({ value }) => value || '-',
+        sortable: true,
+        justifyContent: 'center',
+      })
+    }
+
+    result.push(
+      {
+        Header: 'Reported',
+        id: 'reported',
+        Cell: ({ value }) => `${value || 0} times`,
+      },
+      {
+        Header: 'Actions',
+        Cell: ({ row: { original } }) => (
+          <ActionsCell
+            item={original}
+            slug={type.slug}
+            deleteRequest={deleteRequest}
+          />
+        ),
+        minWidth: 150,
+        headerAlign: 'center',
+        justifyContent: 'space-evenly',
+      }
+    )
+
+    return result
+  }, [])
 
   return (
     <div className="content-list">
       <div className="table-wrapper">
-        <Table headerCells={headerCells}>
-          {data.map((item) => (
-            <ListItem key={item.id} type={type} item={item} />
-          ))}
-          {isLoadingMore && <Placeholder />}
-          {isEmpty && <div className="empty">Sorry, no items found.</div>}
-        </Table>
+        <ReactTable
+          columns={columns as ExtendedColumn<object>[]}
+          data={data}
+          limit={limit}
+          isEmpty={isEmpty}
+          loading={isLoadingMore}
+          initialState={{ sortBy: [{ id: 'createdAt', desc: true }] }}
+          fetchData={changeOrdering}
+        />
       </div>
 
       <div className="load-more">
-        {isReachingEnd ? null : (
+        {!isReachingEnd && (
           <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
             Load More
           </Button>
@@ -95,7 +153,9 @@ function GroupsTable({ type }: Props) {
       </div>
       <style jsx>{`
         .table-wrapper {
-          overflow-x: scroll;
+          padding: 1rem;
+          display: block;
+          overflow: auto;
         }
 
         .load-more {
