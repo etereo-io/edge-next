@@ -1,7 +1,8 @@
+import { UserType } from '@lib/types'
 import getPermissions from './get-permissions'
 
 // Given a user object and a list of pe
-export default function hasPermission(user, permission, customPermissions) {
+export default function hasPermission(user : UserType, permission: string | Array<string>, customPermissions?: object) {
   const roles =
     user && user.roles && user.roles.length > 0 ? user.roles : ['PUBLIC']
 
