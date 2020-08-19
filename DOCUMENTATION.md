@@ -921,7 +921,7 @@ The Content API is defined on your set of rules in the configuration file, the o
 ### Interactions
 
 - `GET /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?author=USER_ID&entityId=id`
-  - Return all the interactions of a certain type, accepts filter by author and pagination
+  - Return all the interactions of a certain type, accepts filter by author, entityId and pagination options 
 - `POST /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE` 
   - Create an interaction on a entity
   - `author` id will be extracted from the current user
