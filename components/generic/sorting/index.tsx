@@ -10,12 +10,7 @@ const svgStyles = {
   cursor: 'pointer',
 }
 
-const options = [
-  { label: 'Most recent', value: 'createdAt' },
-  { label: 'Title', value: 'title' },
-]
-
-type SortingValue = {
+export type SortingValue = {
   sortBy: string
   sortOrder: string
 }
@@ -23,6 +18,7 @@ type SortingValue = {
 type Props = {
   value: SortingValue
   onChange: (value: SortingValue) => void
+  options: Array<{ label: string; value: string | number }>
 }
 
 const sortOrderMapping = {
@@ -30,7 +26,7 @@ const sortOrderMapping = {
   ASC: 'DESC',
 }
 
-function Sorting({ onChange, value }: Props) {
+function Sorting({ onChange, value, options }: Props) {
   const handleChangeSortBy = useCallback(
     (event) => {
       const sortBy = event.target.value
@@ -66,9 +62,9 @@ function Sorting({ onChange, value }: Props) {
         <div className="vl" />
         <div className="sortOrder" onClick={handleChangeSortOrder}>
           {sortOrder === 'DESC' ? (
-            <ArrowDown style={svgStyles} />
-          ) : (
             <ArrowUp style={svgStyles} />
+          ) : (
+            <ArrowDown style={svgStyles} />
           )}
         </div>
       </span>

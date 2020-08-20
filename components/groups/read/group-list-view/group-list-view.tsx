@@ -7,9 +7,14 @@ import LoadingItems from '@components/generic/loading/loading-items'
 import EmptyList from '@components/generic/empty-list'
 import { GroupEntityType } from '@lib/types'
 import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
+import Sorting, { SortingValue } from '@components/generic/sorting'
 
 import Item from './item'
-import Sorting from '@components/content/read-content/content-list-view/sorting'
+
+const sortingOptions = [
+  { label: 'Most recent', value: 'createdAt' },
+  { label: 'Title', value: 'title' },
+]
 
 interface Props {
   type: GroupTypeDefinition
@@ -26,10 +31,7 @@ function GroupListView({
   initialData,
   withSorting = true,
 }: Props) {
-  const [sorting, setSorting] = useState<{
-    sortBy: string
-    sortOrder: string
-  }>({
+  const [sorting, setSorting] = useState<SortingValue>({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
   })
@@ -71,7 +73,13 @@ function GroupListView({
   return (
     <>
       <div className="group-list-view">
-        {withSorting && <Sorting value={sorting} onChange={setSorting} />}
+        {withSorting && (
+          <Sorting
+            value={sorting}
+            onChange={setSorting}
+            options={sortingOptions}
+          />
+        )}
         {data.map((item) => (
           <Fragment key={`${item.id}${item.createdAt}`}>
             <Item item={item} type={type} />

@@ -8,8 +8,12 @@ import EmptyList from '@components/generic/empty-list'
 import LoadingItems from '@components/generic/loading/loading-items'
 import { useInfinityList, useOnScreen } from '@lib/client/hooks'
 import { GroupEntityType } from '@lib/types'
+import Sorting, { SortingValue } from '@components/generic/sorting'
 
-import Sorting from './sorting'
+const sortingOptions = [
+  { label: 'Most recent', value: 'createdAt' },
+  { label: 'Title', value: 'title' },
+]
 
 interface Props {
   infiniteScroll?: boolean
@@ -29,10 +33,7 @@ function ContentListView({
   withSorting = true,
 }: Props) {
   let initData = null
-  const [sorting, setSorting] = useState<{
-    sortBy: string
-    sortOrder: string
-  }>({
+  const [sorting, setSorting] = useState<SortingValue>({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
   })
@@ -75,7 +76,13 @@ function ContentListView({
   return (
     <>
       <div className="contentListView">
-        {withSorting && <Sorting value={sorting} onChange={setSorting} />}
+        {withSorting && (
+          <Sorting
+            value={sorting}
+            onChange={setSorting}
+            options={sortingOptions}
+          />
+        )}
         {data.map((item) => (
           <Fragment key={`${item.id}${item.createdAt}`}>
             <ContentDetailView
