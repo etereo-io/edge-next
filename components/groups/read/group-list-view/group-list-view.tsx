@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo, Fragment } from 'react'
+import { useEffect, useRef, memo, Fragment, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -6,10 +6,34 @@ import { useOnScreen, useInfinityList } from '@lib/client/hooks'
 import LoadingItems from '@components/generic/loading/loading-items'
 import EmptyList from '@components/generic/empty-list'
 import { GroupEntityType } from '@lib/types'
+import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
 
 import Item from './item'
+import Sorting from '@components/content/read-content/content-list-view/sorting'
 
-function GroupListView({ infiniteScroll, query, type, initialData }) {
+interface Props {
+  type: GroupTypeDefinition
+  infiniteScroll?: boolean
+  query?: string
+  initialData?: object | object[]
+  withSorting?: boolean
+}
+
+function GroupListView({
+  infiniteScroll,
+  query,
+  type,
+  initialData,
+  withSorting = true,
+}: Props) {
+  const [sorting, setSorting] = useState<{
+    sortBy: string
+    sortOrder: string
+  }>({
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+  })
+  const { sortBy, sortOrder } = sorting
   let initData = null
 
   if (initialData) {
@@ -30,7 +54,9 @@ function GroupListView({ infiniteScroll, query, type, initialData }) {
     url: `${API.groups[type.slug]}`,
     limit: 10,
     query,
-    config: { initialData: initData },
+    sortBy,
+    sortOrder,
+    config: { initialData: initData, revalidateOnFocus: false },
   })
 
   const $loadMoreButton = useRef(null)
@@ -45,6 +71,7 @@ function GroupListView({ infiniteScroll, query, type, initialData }) {
   return (
     <>
       <div className="group-list-view">
+        {withSorting && <Sorting value={sorting} onChange={setSorting} />}
         {data.map((item) => (
           <Fragment key={`${item.id}${item.createdAt}`}>
             <Item item={item} type={type} />
