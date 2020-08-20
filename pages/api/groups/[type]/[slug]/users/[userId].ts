@@ -12,7 +12,7 @@ import { UPDATE_GROUP_USER_ACTIONS } from '@lib/constants'
 import { connect } from '@lib/api/db'
 import { getPermittedFields } from '@lib/validations/group/users'
 import { groupUserPermission } from '@lib/permissions'
-import methods from '@lib/api/api-helpers/methods'
+import methods, { getAction } from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content/content'
@@ -45,10 +45,7 @@ function removeUser(req, res) {
     res,
     id,
     callback: (data) => {
-      onGroupJoinDisapprove(
-        { ...data, userId },
-        currentUser
-      )
+      onGroupJoinDisapprove({ ...data, userId }, currentUser)
 
       res.status(200).json(data)
     },
@@ -113,6 +110,7 @@ function getMovedToMembersList({
 export default async (req, res) => {
   const {
     query: { type, userId },
+    method,
   } = req
 
   try {
@@ -150,10 +148,10 @@ export default async (req, res) => {
 
   const { item, currentUser } = req
 
-  // Has permissions to update members
+  // Has permissions to update/delete members
   const canUpdate =
     userId !== currentUser.id &&
-    groupUserPermission(currentUser, type, 'update', item)
+    groupUserPermission(currentUser, type, getAction(method), item)
 
   if (!canUpdate) {
     return res.status(401).json({

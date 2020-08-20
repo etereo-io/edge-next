@@ -863,26 +863,36 @@ The Content API is defined on your set of rules in the configuration file, the o
   - Access limited to own user or users with permission `user.admin` and `user.delete`. For the current user is also required to send a `password` query parameter.
 
 ### Groups 
-- `GEt /api/groups/[GROUP_TYPE]`
-    - Access limited to users with permission `group.TYPE.read` or `group.TYPE.admin`
+- `GET /api/groups/[GROUP_TYPE]`
+  - Access limited to users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Retrieving a list of all groups based on the group type
 - `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` | `GET /api/content/[GROUP_TYPE]/[GROUP_ID]?field=id`
   - Access limited to own user or users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Retrieving a specific group base on group type and group slug/id
 - `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users`
-  - Access limited to own user or users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Access limited to own user or users with permission `group.TYPE.user.read`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Retrieving a list of all group members bases on group type and group slug
 - `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]`
-  - Access limited to own user or users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Access limited to own user or users with permission `group.TYPE.user.read`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Retrieving a specific group member info based on group type and group slug
 - `POST /api/groups/[GROUP_TYPE]`
   - Access limited to `group.TYPE.admin`, or `group.TYPE.create`
+  - Creation of a group with specific type
 - `POST /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users`
-  - Access limited to `group.TYPE.admin`, or `group.TYPE.create`, or `group.TYPE.join`
+  - Access limited to `group.TYPE.user.admin`, `group.TYPE.user.create`, `group.TYPE.user.join`, `group.TYPE.admin` or `user.admin`
+  - Adding users to members list or to pending members list if group requires approval. You can't add anybody else to pending list but yourself
 - `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` | `POST /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` |  `PUT /api/groups/[GROUP_TYPE]/[GROUP_ID]?field=id` |  `POST /api/groups/[GROUP_TYPE]/[GROUP_ID]?field=id`
   - Access limited to own user or users with permission `group.TYPE.admin` or `group.TYPE.update`
+  - Updating group based on group type and group slug
 - `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]` | `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]?action=approve`
-  - Access limited to `group.TYPE.admin`, or `group.TYPE.update`
+  - Access limited to `group.TYPE.user.admin`, `group.TYPE.user.update`, `group.TYPE.admin` or `user.admin`
+  - Updating a specific user based on group type, group slug and user id. It's possible to update the particular user in the members list or move user from pending members list to members list
 - `DELETE /api/content/[GROUP_TYPE]/[GROUP_SLUG]` | `DELETE /api/content/[GROUP_TYPE]/[GROUP_ID]?field=id`
   - Access limited to own user or users with permission `group.TYPE.admin` or `group.TYPE.delete`
+  - Removing a group from the system based on group type and group slug/id
 - `DELETE /api/content/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]`
-  - Access limited to own user or users with permission `group.TYPE.admin` or `group.TYPE.delete`
+  - Access limited to own user or users with permission `group.TYPE.user.delete`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Removing a member from the group based on group type, group slug and user id
 
 ### Content
 - `GET /api/content/[TYPE]`
