@@ -318,13 +318,13 @@ const updateUser = (slug) => async (req, res) => {
       // Invoke the hook
       onUserUpdated(newUser, updateData, req.currentUser)
 
-      res.status(200).send({
+      res.status(200).json({
         updated: true,
       })
     })
     .catch((err) => {
       logger('ERROR', err)
-      res.status(400).send({
+      res.status(400).json({
         error: err.message ? err.message : err,
       })
     })

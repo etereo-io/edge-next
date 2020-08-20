@@ -4,6 +4,7 @@ import FirebaseStorage from './firestore-storage'
 import GoogleStorage from './google-storage'
 import { STORAGE } from '@lib/constants'
 import config from '@lib/config'
+import logger from '@lib/logger'
 
 const MAPPING = {
   [STORAGE.GOOGLE]: GoogleStorage,
@@ -12,16 +13,20 @@ const MAPPING = {
   [STORAGE.AZURE]: AzureStorage,
 }
 
-const storage = MAPPING[config.storage.type]()
-
-if (!storage) {
-  throw new Error('Storage is not implemented')
-}
+const storage = MAPPING[config.storage.type] ? MAPPING[config.storage.type]() : null
 
 export function uploadFile(file, folder: string): Promise<string> {
+  if (!storage) {
+    logger('ERROR', 'Storage not implemented')
+    return Promise.resolve('')
+  }
   return storage.uploadFile(file.path, file.name, file.type, folder)
 }
 
 export function deleteFile(file: string): Promise<boolean> {
+  if (!storage) {
+    logger('ERROR', 'Storage not implemented')
+    return Promise.resolve(false)
+  }
   return storage.deleteFile(file)
 }

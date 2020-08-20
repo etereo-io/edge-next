@@ -1,13 +1,9 @@
-import * as handler from '../../../../../pages/api/content/[type]'
-
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import  handler from '../../../../../pages/api/content/[type]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/storage')
 jest.mock('../../../../../lib/api/auth/iron')
@@ -103,39 +99,25 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for content creation endpoint', () => {
-  let server
-  let url
-
   afterEach(() => {
     getPermissions.mockReset()
     getSession.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
-
   test('Should return 405 if required query string is missing', async () => {
-    const response = await fetch(url)
-    expect(response.status).toBe(405)
+    const res = await request(handler, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: {}
+    });
+
+
+    expect(res.statusCode).toBe(405)
   })
 
   test('Should return 400 if content validation fails', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
@@ -153,29 +135,23 @@ describe('Integrations tests for content creation endpoint', () => {
         'test test  test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  { type: 'post' },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
+      body: newPost
+    });
 
-    const jsonResult = await response.json()
 
-    expect(response.status).toBe(400)
-    expect(jsonResult).toMatchObject({
+    expect(res.statusCode).toBe(400)
+    expect(res.body).toMatchObject({
       error: 'Invalid data: title length is less than 8',
     })
   })
 
   test('Should return content details given a valid request', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
@@ -203,18 +179,19 @@ describe('Integrations tests for content creation endpoint', () => {
       ],
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  { type: 'post' },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
+      body: newPost
+    });
 
-    const jsonResult = await response.json()
 
-    expect(response.status).toBe(200)
-    expect(jsonResult).toMatchObject({
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body).toMatchObject({
       title: newPost.title,
       type: 'post',
       slug: expect.any(String),
@@ -236,9 +213,7 @@ describe('Integrations tests for content creation endpoint', () => {
   })
 
   test('Should return 401 for a role that is PUBLIC', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
-
+      
     getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
@@ -248,31 +223,27 @@ describe('Integrations tests for content creation endpoint', () => {
       roles: ['PUBLIC'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
     const newPost = {
       title: 'test',
       description:
         'test test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  { type: 'post' },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
+      body: newPost
+    });
 
-    expect(response.status).toBe(401)
+
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 for ADMIN', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
-
+      
     getPermissions.mockReturnValue({
       'content.post.create': ['USER'],
       'content.post.admin': ['ADMIN'],
@@ -282,30 +253,28 @@ describe('Integrations tests for content creation endpoint', () => {
       roles: ['ADMIN'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
     const newPost = {
       title: 'test test test test test test test test test ',
       description:
         'test test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  { type: 'post' },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
+      body: newPost
+    });
 
-    expect(response.status).toBe(200)
+
+    expect(res.statusCode).toBe(200)
   })
 
   /*describe('form data', () => {
     test('should allow to send data as a form', async () => {
-      const urlToBeUsed = new URL(url)
+        
       const params = { type: 'post' }
       Object.keys(params).forEach((key) =>
         urlToBeUsed.searchParams.append(key, params[key])
@@ -323,7 +292,7 @@ describe('Integrations tests for content creation endpoint', () => {
       const data = new FormData()
       data.append('title', 'the title test  test  test  test  test  test ')
       data.append('description', ' test  test  test  test  test  test  test  test  test  test  test ')
-      // data.append('tags', JSON.stringify([{ label: 'Hello', slug: 'hello'}, { label: 'World', slug: 'world'}]))
+      // data.append('tags', [{ label: 'Hello', slug: 'hello'}, { label: 'World', slug: 'world'}]
 
       const response = await fetch(urlToBeUsed.href, {
         method: 'POST',
@@ -333,11 +302,10 @@ describe('Integrations tests for content creation endpoint', () => {
         body: data,
       })
 
-      const jsonResult = await response.json()
-      console.log(jsonResult)
-      expect(response.status).toBe(200)
+        console.log(res.body)
+      expect(res.statusCode).toBe(200)
 
-      expect(jsonResult).toMatchObject({
+      expect(res.body).toMatchObject({
         title: expect.any(String),
         type: 'post',
         slug: expect.any(String),

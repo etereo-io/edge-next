@@ -62,6 +62,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.2.7",
     "jest-css-modules-transform": "^4.0.0",
+    "node-mocks-http": "^1.8.1",
     "test-listen": "^1.1.0",
     "typescript": "^3.9.3"
   }

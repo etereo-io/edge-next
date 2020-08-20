@@ -82,7 +82,6 @@ const deleteContent = (req, res) => {
 
 const updateContent = async (req, res) => {
   const type = req.contentType
-
   try {
     await runMiddleware(req, res, bodyParser)
   } catch (e) {
@@ -93,8 +92,8 @@ const updateContent = async (req, res) => {
 
   // Extract the groupId, groupType. Since we don't want anybody being able to change those.
   const { groupId, groupType, ...content } = req.body
-
-  contentValidations(type, content)
+  
+  await contentValidations(type, content)
     .then(async () => {
       // Content is valid
       const newContent = await uploadFiles(
@@ -126,6 +125,7 @@ const updateContent = async (req, res) => {
         })
     })
     .catch((err) => {
+      console.log('Invalid content')
       res.status(400).json({
         error: 'Invalid data: ' + err.message,
       })
@@ -136,6 +136,7 @@ export default async (req, res) => {
   const {
     query: { type },
   } = req
+
 
   try {
     await runMiddleware(req, res, isValidContentType(type))
