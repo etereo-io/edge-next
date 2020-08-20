@@ -1,0 +1,22 @@
+name: Edge - Development
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: npm install
+      - run: npm run test:ci
+        env:
+          CI: true
