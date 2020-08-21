@@ -233,7 +233,6 @@ const createComment = async (req, res) => {
       })
     }
   }
-  
 
   const comment = req.body
 

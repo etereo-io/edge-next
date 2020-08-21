@@ -1,17 +1,13 @@
-import * as handler from '../../../../../pages/api/groups/[type]/[slug]'
-
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
 import {
   findOneContent,
   updateOneContent,
 } from '../../../../../lib/api/entities/content/content'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import  handler from '../../../../../pages/api/groups/[type]/[slug]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -93,21 +89,6 @@ jest.mock('../../../../../edge.config', () => {
 })  
 
 describe('Integrations tests for group edition', () => {
-  let server
-  let url
-
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   beforeEach(() => {
     updateOneContent.mockReturnValue(Promise.resolve({ something: 'something '}))
@@ -122,12 +103,8 @@ describe('Integrations tests for group edition', () => {
 
 
   test('a PUBLIC user should not be able to edit a group if its not allowed', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project', slug: '1' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneContent.mockReturnValueOnce(Promise.resolve({
       author: 'abc',
@@ -147,29 +124,26 @@ describe('Integrations tests for group edition', () => {
       title: 'test'
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query:params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData),
-    })
+      body: JSON.stringify(newData)
+    });
 
-    const jsonResult = await response.json()
 
-    expect(response.status).toBe(401)
-    expect(jsonResult).toMatchObject({
+    expect(res.statusCode).toBe(401)
+    expect(res.body).toMatchObject({
       error: 'User not authorized to perform operation on group project',
     })
   })
 
   test('a USER user should  be able to edit a group if its the author', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project', slug: '1' }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneContent.mockReturnValueOnce(Promise.resolve({
       author: 'abc',
@@ -192,15 +166,17 @@ describe('Integrations tests for group edition', () => {
       title: 'test'
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData),
-    })
+      body: JSON.stringify(newData)
+    });
+
    
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
 
     expect(updateOneContent).toHaveBeenCalledWith('project', 'something', {
       title: 'test'
@@ -208,12 +184,9 @@ describe('Integrations tests for group edition', () => {
   })
 
   test('a USER user should  be able to edit a group if its listed in the members group with a privileged role', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project', slug: '1' }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneContent.mockReturnValueOnce(Promise.resolve({
       author: 'a person',
@@ -239,15 +212,17 @@ describe('Integrations tests for group edition', () => {
       title: 'test'
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData),
-    })
+      body: JSON.stringify(newData)
+    });
+
    
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
 
     expect(updateOneContent).toHaveBeenCalledWith('project', 'something', {
       title: 'test'
@@ -257,10 +232,8 @@ describe('Integrations tests for group edition', () => {
 
   describe('Files', () => {
     it('should call the delete file for an update removing a file', async () => {
-      const urlToBeUsed = new URL(url)
-
-      urlToBeUsed.searchParams.append('type', 'project')
-      urlToBeUsed.searchParams.append('slug', 'profile')
+        
+      const params = { type: 'project', slug: 'profile' }
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -291,15 +264,17 @@ describe('Integrations tests for group edition', () => {
         images: [],
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: params,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newData),
-      })
+        body: JSON.stringify(newData)
+      });
+  
 
-      expect(response.status).toBe(200)
+      expect(res.statusCode).toBe(200)
 
       expect(deleteFile).toHaveBeenCalledWith('abc.test')
     })

@@ -1,11 +1,12 @@
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import { findOneUser } from '../../../../../lib/api/entities/users/user'
+import {
+  findOneUser,
+} from '../../../../../lib/api/entities/users/user'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
-import handlerUser from '../../../../../pages/api/users/[...slug]'
-import http from 'http'
-import listen from 'test-listen'
+import {
+  getSession,
+} from '../../../../../lib/api/auth/iron'
+import handler from '../../../../../pages/api/users/[...slug]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -16,8 +17,11 @@ jest.mock('../../../../../edge.config', () => ({
   getConfig: jest.fn().mockReturnValue({
     title: 'A test',
     description: 'A test',
-    user : {
-      roles: [{ label : 'user', value: 'USER'}],
+    user: {
+      roles: [{
+        label: 'user',
+        value: 'USER'
+      }],
       newUserRoles: ['USER']
     }
   }),
@@ -33,7 +37,9 @@ const demoUser = {
   email: 'email@email.com',
   facebook: 'abc',
   github: 'abc',
-  tokens: [{ github: 'abc' }],
+  tokens: [{
+    github: 'abc'
+  }],
   profile: {
     displayName: 'A test user',
     picture: {},
@@ -41,23 +47,14 @@ const demoUser = {
 }
 
 describe('Integrations tests for user read', () => {
-  let server
-  let url
-
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handlerUser)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   describe('User reading', () => {
+
+    beforeEach(() => {
+      // The user it finds
+      findOneUser.mockReturnValue(Promise.resolve(demoUser))
+    })
+
     afterEach(() => {
       findOneUser.mockReset()
       getPermissions.mockReset()
@@ -65,9 +62,6 @@ describe('Integrations tests for user read', () => {
     })
 
     test('a PUBLIC user should be able to read a profile', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', 'userId')
-      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -78,29 +72,31 @@ describe('Integrations tests for user read', () => {
       // Current user is PUBLIC
       getSession.mockReturnValue(null)
 
-      // The user it finds
-      findOneUser.mockReturnValue(Promise.resolve(demoUser))
+    
+      const params = {
+        slug: ['userId', 'e']
+      }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'GET',
-      })
+        query: params,
 
-      const jsonResult = await response.json()
+      });
 
-      expect(response.status).toBe(200)
+      expect(res.statusCode).toBe(200)
 
-      expect(jsonResult).toMatchObject({
+      expect(res.body).toMatchObject({
         username: demoUser.username,
         profile: demoUser.profile,
       })
 
       // Private fields
-      expect(jsonResult.email).toBeUndefined()
-      expect(jsonResult.hash).toBeUndefined()
-      expect(jsonResult.salt).toBeUndefined()
-      expect(jsonResult.facebook).toBeUndefined()
-      expect(jsonResult.github).toBeUndefined()
-      expect(jsonResult.tokens).toBeUndefined()
+      expect(res.body.email).toBeUndefined()
+      expect(res.body.hash).toBeUndefined()
+      expect(res.body.salt).toBeUndefined()
+      expect(res.body.facebook).toBeUndefined()
+      expect(res.body.github).toBeUndefined()
+      expect(res.body.tokens).toBeUndefined()
 
       expect(findOneUser).toHaveBeenCalledWith({
         id: 'userId',
@@ -108,9 +104,6 @@ describe('Integrations tests for user read', () => {
     })
 
     test('a PUBLIC user should not be able to read "me"', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', 'me')
-      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -120,22 +113,21 @@ describe('Integrations tests for user read', () => {
       // Current user is PUBLIC
       getSession.mockReturnValue()
 
-      // The user it finds
-      findOneUser.mockReturnValue(Promise.resolve(demoUser))
+      const params = {
+        slug: ['me', 'a'],
+      }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'GET',
-      })
-
-      expect(response.status).toBe(404)
+        query: params,
+        
+      });
+      expect(res.statusCode).toBe(404)
 
       expect(findOneUser).not.toHaveBeenCalled()
     })
 
     test('should return 401 if the access is restricted to logged in users', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', 'me')
-      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -145,22 +137,22 @@ describe('Integrations tests for user read', () => {
       // Current user is PUBLIC
       getSession.mockReturnValue()
 
-      // The user it finds
-      findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
-      const response = await fetch(urlToBeUsed.href, {
+      const params = {
+        slug: ['me', 'a'],
+      }
+
+      const res = await request(handler, {
         method: 'GET',
-      })
-
-      expect(response.status).toBe(401)
+        query: params,
+        
+      });
+      expect(res.statusCode).toBe(401)
 
       expect(findOneUser).not.toHaveBeenCalled()
     })
 
     test('a logged user should be able to read "me"', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', 'me')
-      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -173,33 +165,33 @@ describe('Integrations tests for user read', () => {
         roles: ['USER'],
       })
 
-      // The user it finds
-      findOneUser.mockReturnValue(Promise.resolve(demoUser))
 
-      const response = await fetch(urlToBeUsed.href, {
+      const params = {
+        slug: ['me', 'a'],
+      }
+
+      const res = await request(handler, {
         method: 'GET',
-      })
-
-      expect(response.status).toBe(200)
+        query: params,
+        
+      });
+      expect(res.statusCode).toBe(200)
 
       expect(findOneUser).toHaveBeenCalledWith({
         id: '1',
       })
 
-      const jsonResult = await response.json()
       // Private fields
-      expect(jsonResult.email).not.toBeUndefined()
-      expect(jsonResult.hash).not.toBeUndefined()
-      expect(jsonResult.salt).not.toBeUndefined()
-      expect(jsonResult.facebook).not.toBeUndefined()
-      expect(jsonResult.github).not.toBeUndefined()
-      expect(jsonResult.tokens).not.toBeUndefined()
+      expect(res.body.email).not.toBeUndefined()
+      expect(res.body.hash).not.toBeUndefined()
+      expect(res.body.salt).not.toBeUndefined()
+      expect(res.body.facebook).not.toBeUndefined()
+      expect(res.body.github).not.toBeUndefined()
+      expect(res.body.tokens).not.toBeUndefined()
     })
 
     test('it should be possible to search by @username', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', '@username')
-      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
+
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -209,33 +201,32 @@ describe('Integrations tests for user read', () => {
       // Current user is PUBLIC
       getSession.mockReturnValue()
 
-      // The user it finds
-      findOneUser.mockReturnValue(Promise.resolve(demoUser))
+      const params = {
+        slug: ['@username', 'a'],
+      }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'GET',
-      })
-
-      expect(response.status).toBe(200)
+        query: params,
+        
+      });
+      expect(res.statusCode).toBe(200)
 
       expect(findOneUser).toHaveBeenCalledWith({
         username: 'username',
       })
 
-      const jsonResult = await response.json()
       // Private fields
-      expect(jsonResult.email).toBeUndefined()
-      expect(jsonResult.hash).toBeUndefined()
-      expect(jsonResult.salt).toBeUndefined()
-      expect(jsonResult.facebook).toBeUndefined()
-      expect(jsonResult.github).toBeUndefined()
-      expect(jsonResult.tokens).toBeUndefined()
+      expect(res.body.email).toBeUndefined()
+      expect(res.body.hash).toBeUndefined()
+      expect(res.body.salt).toBeUndefined()
+      expect(res.body.facebook).toBeUndefined()
+      expect(res.body.github).toBeUndefined()
+      expect(res.body.tokens).toBeUndefined()
     })
 
     test('an admin should see private fields', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', '@username')
-      urlToBeUsed.searchParams.append('slug', 'anotherparameter') // We need to add 2 parameters so the api resolver detects slug as an array
+
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -249,27 +240,28 @@ describe('Integrations tests for user read', () => {
         id: 'abc',
       })
 
-      // The user it finds
-      findOneUser.mockReturnValue(Promise.resolve(demoUser))
+      const params = {
+        slug: ['@username', 'a'],
+      }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'GET',
-      })
-
-      expect(response.status).toBe(200)
+        query: params,
+        
+      });
+      expect(res.statusCode).toBe(200)
 
       expect(findOneUser).toHaveBeenCalledWith({
         username: 'username',
       })
 
-      const jsonResult = await response.json()
       // Private fields
-      expect(jsonResult.email).not.toBeUndefined()
-      expect(jsonResult.hash).not.toBeUndefined()
-      expect(jsonResult.salt).not.toBeUndefined()
-      expect(jsonResult.facebook).not.toBeUndefined()
-      expect(jsonResult.github).not.toBeUndefined()
-      expect(jsonResult.tokens).not.toBeUndefined()
+      expect(res.body.email).not.toBeUndefined()
+      expect(res.body.hash).not.toBeUndefined()
+      expect(res.body.salt).not.toBeUndefined()
+      expect(res.body.facebook).not.toBeUndefined()
+      expect(res.body.github).not.toBeUndefined()
+      expect(res.body.tokens).not.toBeUndefined()
     })
   })
 })
