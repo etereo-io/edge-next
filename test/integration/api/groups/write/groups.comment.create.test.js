@@ -159,7 +159,6 @@ jest.mock('../../../../../edge.config', () => {
 
 describe('Integrations tests for comment creation in a group content', () => {
 
-
   beforeEach(() => {
     addComment.mockReturnValue(Promise.resolve({
       id: 'abc'
@@ -171,7 +170,6 @@ describe('Integrations tests for comment creation in a group content', () => {
     addComment.mockReset()
     findOneContent.mockReset()
   })
-
 
   test('Should not allow to create a comment in a content that does not have a group', async () => {
     findOneContent.mockReturnValue(Promise.resolve({}))
@@ -239,7 +237,6 @@ describe('Integrations tests for comment creation in a group content', () => {
       id: 'test-id-initial-user',
     })
 
-
     const params = {
       contentType: 'post',
       contentId: 'abc'
@@ -284,7 +281,6 @@ describe('Integrations tests for comment creation in a group content', () => {
       roles: ['USER'],
       id: 'test-id-initial-user',
     })
-
 
     const params = {
       contentType: 'post',
@@ -338,7 +334,6 @@ describe('Integrations tests for comment creation in a group content', () => {
       contentId: 'abc'
     }
 
-
     const newComment = {
       message: 'abc abc',
       conversationId: null
@@ -355,7 +350,5 @@ describe('Integrations tests for comment creation in a group content', () => {
 
     expect(res.statusCode).toEqual(200)
   })
-
-
 
 })

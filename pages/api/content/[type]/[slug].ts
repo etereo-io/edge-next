@@ -125,7 +125,6 @@ const updateContent = async (req, res) => {
         })
     })
     .catch((err) => {
-      console.log('Invalid content')
       res.status(400).json({
         error: 'Invalid data: ' + err.message,
       })

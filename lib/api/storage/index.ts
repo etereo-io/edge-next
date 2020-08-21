@@ -18,7 +18,7 @@ const storage = MAPPING[config.storage.type] ? MAPPING[config.storage.type]() : 
 export function uploadFile(file, folder: string): Promise<string> {
   if (!storage) {
     logger('ERROR', 'Storage not implemented')
-    return Promise.resolve('')
+    throw new Error('Storage missing')
   }
   return storage.uploadFile(file.path, file.name, file.type, folder)
 }
@@ -26,7 +26,7 @@ export function uploadFile(file, folder: string): Promise<string> {
 export function deleteFile(file: string): Promise<boolean> {
   if (!storage) {
     logger('ERROR', 'Storage not implemented')
-    return Promise.resolve(false)
+    throw new Error('Storage missing')
   }
   return storage.deleteFile(file)
 }

@@ -84,12 +84,14 @@ describe('Integrations tests for user list read', () => {
       })
 
       // Private fields
-      expect(res.body.results[0].email).toBeUndefined()
-      expect(res.body.results[0].hash).toBeUndefined()
-      expect(res.body.results[0].salt).toBeUndefined()
-      expect(res.body.results[0].facebook).toBeUndefined()
-      expect(res.body.results[0].github).toBeUndefined()
-      expect(res.body.results[0].tokens).toBeUndefined()
+      const user = res.body.results[0]
+      
+      expect(user.email).toBeUndefined()
+      expect(user.hash).toBeUndefined()
+      expect(user.salt).toBeUndefined()
+      expect(user.facebook).toBeUndefined()
+      expect(user.github).toBeUndefined()
+      expect(user.tokens).toBeUndefined()
     })
 
     test('should return 401 if the access is restricted to logged in users', async () => {
@@ -143,12 +145,14 @@ describe('Integrations tests for user list read', () => {
 
       expect(res.statusCode).toBe(200)
       // Private fields
-      expect(res.body.results[0].email).not.toBeUndefined()
-      expect(res.body.results[0].hash).not.toBeUndefined()
-      expect(res.body.results[0].salt).not.toBeUndefined()
-      expect(res.body.results[0].facebook).not.toBeUndefined()
-      expect(res.body.results[0].github).not.toBeUndefined()
-      expect(res.body.results[0].tokens).not.toBeUndefined()
+      const user = res.body.results[0]
+      
+      expect(user.email).not.toBeUndefined()
+      expect(user.hash).not.toBeUndefined()
+      expect(user.salt).not.toBeUndefined()
+      expect(user.facebook).not.toBeUndefined()
+      expect(user.github).not.toBeUndefined()
+      expect(user.tokens).not.toBeUndefined()
     })
   })
 })
