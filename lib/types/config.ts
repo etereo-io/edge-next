@@ -71,4 +71,9 @@ export declare type ConfigType = {
     types: GroupTypeDefinition[];
   }
   permissions: object;
+  superSearch: {
+    enabled: boolean
+    permissions: PermissionsType;
+    entities: Array<{name: string; fields: string[]; permissions: PermissionsType}>
+  }
 }

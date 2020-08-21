@@ -1,10 +1,15 @@
 import { memo } from 'react'
 
-function LoadingSpinner({ alt = false, width = '1.5em' }) {
+interface Props {
+  alt?: boolean
+  width?: string | number
+}
+
+function LoadingSpinner({ alt = false, width = '1.5em' }: Props) {
   return (
     <>
       <div className={`loading-spinner ${alt ? 'alt' : ''}`}>
-        <div className="ring"></div>
+        <div className="ring" />
       </div>
       <style jsx>{`
         .loading-spinner .ring:after {

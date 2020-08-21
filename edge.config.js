@@ -593,5 +593,28 @@ export const getConfig = () => {
     follow: {
       enabled: false,
     },
+
+    // super search configuration
+    superSearch: {
+      enabled: true,
+      permissions: { read: [publicRole] }, // who can use search
+      entities: [
+        {
+          name: publishingGroupType, // a collection by which the search will be run
+          fields: ['title', 'description'], // fields by which the search will be run
+          permissions: publishingGroupType.permissions, // permissions for check before search
+        },
+        {
+          name: postContentType, // a collection by which the search will be run
+          fields: ['title', 'description'], // fields by which the search will be run
+          permissions: postContentType.permissions, // permissions for check before search
+        },
+        {
+          name: siteNewsContentType, // a collection by which the search will be run
+          fields: ['title', 'description'], // fields by which the search will be run
+          permissions: siteNewsContentType.permissions, // permissions for check before search
+        },
+      ],
+    },
   }
 }

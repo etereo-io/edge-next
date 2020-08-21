@@ -519,22 +519,6 @@ function MyApp({ Component, pageProps }) {
           position: relative;
         }
 
-        .edge-searchbox img {
-          left: 16px;
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 16px;
-        }
-
-        .edge-searchbox input {
-          background-color: var(--accents-1-medium);
-          border: none;
-          font-size: 14px;
-          padding: var(--edge-gap-half);
-          padding-left: var(--edge-gap-double);
-        }
-
         /* Avatar User*/
 
         .edge-avatar-user {
