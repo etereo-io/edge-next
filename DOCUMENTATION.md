@@ -522,7 +522,7 @@ In the [components page](/components) you will find more implemented dynamic fie
 
 To upload images and other files you will need to configure a storage. 
 
-Different options are: GOOGLE or Azure.
+Different options are: GOOGLE or AZURE.
 
 ### Google
 
