@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo, Fragment } from 'react'
+import { useEffect, useRef, memo, Fragment, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -8,13 +8,20 @@ import EmptyList from '@components/generic/empty-list'
 import LoadingItems from '@components/generic/loading/loading-items'
 import { useInfinityList, useOnScreen } from '@lib/client/hooks'
 import { GroupEntityType } from '@lib/types'
+import Sorting, { SortingValue } from '@components/generic/sorting'
+
+const sortingOptions = [
+  { label: 'Most recent', value: 'createdAt' },
+  { label: 'Title', value: 'title' },
+]
 
 interface Props {
   infiniteScroll?: boolean
   addComments?: boolean
   query?: string
-  initialData?: any
+  initialData?: object | object[]
   type: ContentTypeDefinition
+  withSorting?: boolean
 }
 
 function ContentListView({
@@ -23,9 +30,14 @@ function ContentListView({
   type,
   infiniteScroll = false,
   initialData = null,
+  withSorting = true,
 }: Props) {
-
   let initData = null
+  const [sorting, setSorting] = useState<SortingValue>({
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+  })
+  const { sortBy, sortOrder } = sorting
 
   if (initialData) {
     if (Array.isArray(initialData)) {
@@ -44,8 +56,11 @@ function ContentListView({
     url: `${API.content[type.slug]}`,
     limit: 10,
     query,
+    sortBy,
+    sortOrder,
     config: {
       initialData: initData,
+      revalidateOnFocus: false,
     },
   })
 
@@ -61,6 +76,13 @@ function ContentListView({
   return (
     <>
       <div className="contentListView">
+        {withSorting && (
+          <Sorting
+            value={sorting}
+            onChange={setSorting}
+            options={sortingOptions}
+          />
+        )}
         {data.map((item) => (
           <Fragment key={`${item.id}${item.createdAt}`}>
             <ContentDetailView

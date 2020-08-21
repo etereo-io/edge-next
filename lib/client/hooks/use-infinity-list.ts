@@ -31,10 +31,7 @@ const getKey = ({
 
   return `${url}?limit=${limit}${from ? '&from=' + from : ''}${
     sortBy ? '&sortBy=' + sortBy : ''
-  }
-  ${sortOrder ? '&sortOrder=' + sortOrder : ''}${
-    query ? '&' + query : ''
-  }`
+  }${sortOrder ? '&sortOrder=' + sortOrder : ''}${query ? '&' + query : ''}`
 }
 
 type DefaultListResponse<Data = any> = {
@@ -90,8 +87,6 @@ function useInfinityList<Item>({
     config
   )
   const [isLoading, setIsLoading] = useState(false)
-
-  console.log(response)
 
   const data = response
     ? [].concat(...response.map(({ results }) => results))
