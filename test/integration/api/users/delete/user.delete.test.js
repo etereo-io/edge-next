@@ -1,5 +1,3 @@
-import * as handler from '../../../../../pages/api/users/[...slug]'
-
 import {
   deleteComment,
   deleteOneComment,
@@ -14,15 +12,19 @@ import {
   findOneUser,
 } from '../../../../../lib/api/entities/users/user'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
 import crypto from 'crypto'
-import { deleteActivity } from '../../../../../lib/api/entities/activity/activity'
-import { deleteFile } from '../../../../../lib/api/storage'
-import fetch from 'isomorphic-unfetch'
+import {
+  deleteActivity,
+} from '../../../../../lib/api/entities/activity/activity'
+import {
+  deleteFile,
+} from '../../../../../lib/api/storage'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import {
+  getSession,
+} from '../../../../../lib/api/auth/iron'
+import handler from '../../../../../pages/api/users/[...slug]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -63,8 +65,7 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
+    fields: [{
         name: 'title',
         type: 'text',
         label: 'Title',
@@ -129,8 +130,7 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
+    fields: [{
         name: 'title',
         type: 'text',
         label: 'Title',
@@ -178,17 +178,18 @@ jest.mock('../../../../../edge.config', () => {
       },
 
       user: {
-        roles: [{ label : 'user', value: 'USER'}],
+        roles: [{
+          label: 'user',
+          value: 'USER'
+        }],
         newUserRoles: ['USER'],
         profile: {
-          fields: [
-            {
-              label: 'image',
-              type: 'img',
-              name: 'image',
-              multiple: true,
-            },
-          ],
+          fields: [{
+            label: 'image',
+            type: 'img',
+            name: 'image',
+            multiple: true,
+          }, ],
         },
       },
     }),
@@ -196,8 +197,7 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for user deletion endpoint', () => {
-  let server
-  let url
+
 
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto
@@ -214,11 +214,9 @@ describe('Integrations tests for user deletion endpoint', () => {
       Promise.resolve({
         id: 'a content',
         author: 'userId',
-        file: [
-          {
-            path: 'content.file',
-          },
-        ],
+        file: [{
+          path: 'content.file',
+        }, ],
       })
     )
 
@@ -241,11 +239,9 @@ describe('Integrations tests for user deletion endpoint', () => {
             source: 'internal',
             path: 'abc.test',
           },
-          image: [
-            {
-              path: 'otherimage.test',
-            },
-          ],
+          image: [{
+            path: 'otherimage.test',
+          }, ],
         },
         hash,
         salt,
@@ -266,24 +262,10 @@ describe('Integrations tests for user deletion endpoint', () => {
     deleteOneComment.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
 
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   test('should return 401 if the password do not match', async () => {
-    const urlToBeUsed = new URL(url)
-    urlToBeUsed.searchParams.append('slug', 'userId')
-    urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
-    urlToBeUsed.searchParams.append('password', '123')
+
 
     getPermissions.mockReturnValue({
       'user.delete': ['ADMIN'],
@@ -295,20 +277,25 @@ describe('Integrations tests for user deletion endpoint', () => {
       id: 'userId',
     })
 
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE',
-    })
+    const params = {
+      slug: ['userId', 'a'],
+      password: '123'
+    }
 
-    expect(response.status).toBe(401)
+    const res = await request(handler, {
+      method: 'DELETE',
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    expect(res.statusCode).toBe(401)
   })
 
   describe('Correct delete', () => {
     test('Should delete content, comments, files and activity if a user is deleted', async () => {
-      const urlToBeUsed = new URL(url)
 
-      urlToBeUsed.searchParams.append('slug', 'userId')
-      urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
-      urlToBeUsed.searchParams.append('password', 'thepassword')
 
       getPermissions.mockReturnValue({
         'user.delete': ['ADMIN'],
@@ -320,11 +307,20 @@ describe('Integrations tests for user deletion endpoint', () => {
         id: 'userId',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE',
-      })
+      const params = {
+        slug: ['userId', 'a'],
+        password: 'thepassword'
+      }
 
-      expect(response.status).toBe(200)
+      const res = await request(handler, {
+        method: 'DELETE',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      expect(res.statusCode).toBe(200)
 
       expect(deleteFile).toHaveBeenNthCalledWith(1, 'abc.test')
       expect(deleteFile).toHaveBeenNthCalledWith(2, 'otherimage.test')
@@ -356,9 +352,6 @@ describe('Integrations tests for user deletion endpoint', () => {
 
   describe('Other accounts', () => {
     test('Should return 401 when deleting other person account without the user.delete permission', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', 'userId')
-      urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
       getPermissions.mockReturnValue({
         'user.delete': ['ADMIN'],
@@ -370,22 +363,27 @@ describe('Integrations tests for user deletion endpoint', () => {
         id: 'i am another user',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const params = {
+        slug: ['userId', 'a'],
+      }
+
+      const res = await request(handler, {
         method: 'DELETE',
-      })
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(401)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(401)
+      expect(res.body).toMatchObject({
         error: 'User not authorized to perform operation on user userId',
       })
     })
 
     test('Should return 200 when deleting other person account with the user.delete permission', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', 'userId')
-      urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
+
 
       getPermissions.mockReturnValue({
         'user.delete': ['USER'],
@@ -397,17 +395,22 @@ describe('Integrations tests for user deletion endpoint', () => {
         id: 'i am another user',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE',
-      })
+      const params = {
+        slug: ['userId', 'a'],
+      }
 
-      expect(response.status).toBe(200)
+      const res = await request(handler, {
+        method: 'DELETE',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      expect(res.statusCode).toBe(200)
     })
 
     test('Should return 200 when deleting other person content with the user.admin permission', async () => {
-      const urlToBeUsed = new URL(url)
-      urlToBeUsed.searchParams.append('slug', 'userId')
-      urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
       getPermissions.mockReturnValue({
         'user.delete': ['ADMIN'],
@@ -419,18 +422,23 @@ describe('Integrations tests for user deletion endpoint', () => {
         id: 'definetely not me',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE',
-      })
+      const params = {
+        slug: ['userId', 'a'],
+      }
 
-      expect(response.status).toBe(200)
+      const res = await request(handler, {
+        method: 'DELETE',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      expect(res.statusCode).toBe(200)
     })
   })
 
   test('Should return 401 for a role that is PUBLIC', async () => {
-    const urlToBeUsed = new URL(url)
-    urlToBeUsed.searchParams.append('slug', 'userId')
-    urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
     getPermissions.mockReturnValue({
       'user.delete': ['ADMIN'],
@@ -441,17 +449,22 @@ describe('Integrations tests for user deletion endpoint', () => {
       roles: ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE',
-    })
+    const params = {
+      slug: ['userId', 'a'],
+    }
 
-    expect(response.status).toBe(401)
+    const res = await request(handler, {
+      method: 'DELETE',
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 for ADMIN', async () => {
-    const urlToBeUsed = new URL(url)
-    urlToBeUsed.searchParams.append('slug', 'userId')
-    urlToBeUsed.searchParams.append('slug', 'e') // Random value for API to detect slug as an array
 
     getPermissions.mockReturnValue({
       'user.delete': ['ADMIN'],
@@ -462,10 +475,18 @@ describe('Integrations tests for user deletion endpoint', () => {
       roles: ['ADMIN'],
     })
 
-    const response = await fetch(urlToBeUsed.href, {
-      method: 'DELETE',
-    })
+    const params = {
+      slug: ['userId', 'a'],
+    }
 
-    expect(response.status).toBe(200)
+    const res = await request(handler, {
+      method: 'DELETE',
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    expect(res.statusCode).toBe(200)
   })
 })

@@ -40,6 +40,7 @@ const addUser = (user) => async (
 ) => {
   let parsedUser = null
 
+
   const currentUserHasAdministrationRights = hasPermission(currentUser,  [`user.admin`, `user.update`])
 
   if (user.roles || user.profile) {
@@ -78,9 +79,11 @@ const addUser = (user) => async (
 
   try {
     const added = await createUser(parsedUser, currentUserHasAdministrationRights)
+  
     onUserAdded(added, currentUser)
-
-    res.status(200).send(hidePrivateUserFields(added))
+  
+  
+    res.status(200).json(hidePrivateUserFields(added))
   } catch (err) {
     res.status(500).json({
       error: err.message,

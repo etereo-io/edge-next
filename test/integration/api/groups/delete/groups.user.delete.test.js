@@ -3,14 +3,11 @@ import {
   updateOneContent,
 } from '../../../../../lib/api/entities/content/content'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import { findOneUser } from '../../../../../lib/api/entities/users/user'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/groups/[type]/[slug]/users/[userId]'
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -107,30 +104,10 @@ jest.mock('../../../../../edge.config', () => {
 describe('Integrations tests for group user removing', () => {
   const groupType = 'project'
   const groupSlug = 'group-1'
-  let urlToBeUsed = ''
-  let server
-  let url
-
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
+    
+  const params = { type: groupType, slug: groupSlug }
 
   beforeEach(() => {
-    urlToBeUsed = new URL(url)
-    const params = { type: groupType, slug: groupSlug }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     // group to user has to be added to
     findOneContent.mockReturnValue(
@@ -172,11 +149,18 @@ describe('Integrations tests for group user removing', () => {
   })
 
   async function fetchQuery(userId) {
-    urlToBeUsed.searchParams.append('userId', userId)
-
-    return fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
+      query:  {
+        ...params,
+        userId
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
+
+    return res
   }
 
   test('User with group admin role remove member 2', async () => {
@@ -197,9 +181,9 @@ describe('Integrations tests for group user removing', () => {
       id: 'user1',
     })
 
-    const response = await fetchQuery('user2')
+    const res = await fetchQuery('user2')
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       pendingMembers: [
         { id: 'user4', roles: ['GROUP_MEMBER'] },
@@ -228,9 +212,9 @@ describe('Integrations tests for group user removing', () => {
       id: 'user1',
     })
 
-    const response = await fetchQuery('user4')
+    const res = await fetchQuery('user4')
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       pendingMembers: [{ id: 'user5', roles: ['GROUP_MEMBER'] }],
       members: [
@@ -247,9 +231,9 @@ describe('Integrations tests for group user removing', () => {
       id: 'user2',
     })
 
-    const response = await fetchQuery('user4')
+    const res = await fetchQuery('user4')
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
     expect(updateOneContent).not.toHaveBeenCalled()
   })
 })

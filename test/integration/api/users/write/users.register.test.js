@@ -1,11 +1,7 @@
-import * as handler from '../../../../../pages/api/users'
-
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import handler from '../../../../../pages/api/users'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -133,26 +129,13 @@ jest.mock('../../../../../edge.config', () => ({
 }))
 
 describe('Integrations tests for users creation endpoint', () => {
-  let server
-  let url
+ 
 
   afterEach(() => {
     getPermissions.mockReset()
     getSession.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   describe('PUBLIC users can register', () => {
     beforeEach(() => {
@@ -171,18 +154,17 @@ describe('Integrations tests for users creation endpoint', () => {
         password: '',
       }
 
-      const response = await fetch(url, {
+      const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error:
           'Invalid user: Username is required, Username minimum length is 3, Email is required, password is required, password minimum length is 6',
       })
@@ -195,18 +177,17 @@ describe('Integrations tests for users creation endpoint', () => {
         password: '',
       }
 
-      const response = await fetch(url, {
+      const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error:
           'Invalid user: Email is required, password is required, password minimum length is 6',
       })
@@ -219,18 +200,16 @@ describe('Integrations tests for users creation endpoint', () => {
         password: 'test',
       }
 
-      const response = await fetch(url, {
+     const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error: 'Invalid user: password minimum length is 6',
       })
     })
@@ -242,18 +221,16 @@ describe('Integrations tests for users creation endpoint', () => {
         password: 'test123123',
       }
 
-      const response = await fetch(url, {
+     const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error: 'Invalid user: Username minimum length is 3',
       })
     })
@@ -265,18 +242,16 @@ describe('Integrations tests for users creation endpoint', () => {
         password: 'test123123',
       }
 
-      const response = await fetch(url, {
+     const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error: 'Invalid user: email must be a valid email',
       })
     })
@@ -288,18 +263,17 @@ describe('Integrations tests for users creation endpoint', () => {
         password: 'test123123',
       }
 
-      const response = await fetch(url, {
+      const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
+      console.log('COMPLETED', res)
+      expect(res.statusCode).toBe(200)
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(200)
-      expect(jsonResult).toMatchObject({
+      expect(res.body).toMatchObject({
         id: expect.any(String),
         metadata: expect.any(Object),
         profile: {
@@ -317,18 +291,16 @@ describe('Integrations tests for users creation endpoint', () => {
         password: 'test123123',
       }
 
-      const response = await fetch(url, {
+     const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error: 'Email already taken',
       })
     })
@@ -340,18 +312,16 @@ describe('Integrations tests for users creation endpoint', () => {
         password: 'test123123',
       }
 
-      const response = await fetch(url, {
+     const res = await request(handler, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
-      })
+        body: newUser
+      });
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error: 'Username already taken',
       })
     })
