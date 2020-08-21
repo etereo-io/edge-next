@@ -602,14 +602,14 @@ export const getConfig = () => {
       entities: [
         {
           name: 'users', // a collection by which the search will be run
-          type: 'users', // used for separation purposes
+          type: 'user', // used for separation purposes
           fields: ['username'], // fields by which the search will be run
           fieldsForShow: ['username', 'id'], // fields that will be retrieved from the db
           permissions: user.permissions.read, // permissions for check before search
         },
         {
           name: publishingGroupType.slug, // a collection by which the search will be run
-          type: 'groups', // used for separation purposes
+          type: 'group', // used for separation purposes
           fields: ['title', 'description'], // fields by which the search will be run
           fieldsForShow: ['title', 'id', 'description', 'slug'], // fields that will be retrieved from the db
           permissions: publishingGroupType.permissions.read, // permissions for check before search
