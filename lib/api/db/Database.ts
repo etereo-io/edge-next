@@ -12,7 +12,7 @@ export default class Database {
     logger('ERROR', 'Add not implemented')
   }
 
-  find(options: ANY_OBJECT, orderOptions: ANY_OBJECT) {
+  find(options: ANY_OBJECT, otherOptions: ANY_OBJECT) {
     logger('ERROR', 'Find not implemented')
   }
   findOne(options: ANY_OBJECT) {

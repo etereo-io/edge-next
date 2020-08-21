@@ -73,7 +73,7 @@ export declare type ConfigType = {
   permissions: object;
   superSearch: {
     enabled: boolean
-    permissions: PermissionsType;
-    entities: Array<{name: string; fields: string[]; permissions: PermissionsType}>
+    permissions: string[];
+    entities: Array<{name: string; fields: string[]; permissions: string[], type: string, fieldsForShow: string[]}>
   }
 }

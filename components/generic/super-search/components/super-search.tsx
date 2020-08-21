@@ -71,6 +71,7 @@ function SuperSearch({ user }: Props) {
           {isFocus && <List data={data} />}
         </div>
       )}
+
       <style jsx>
         {`
           @media all and (max-width: 640px) {
@@ -87,12 +88,8 @@ function SuperSearch({ user }: Props) {
             width: 16px;
           }
 
-          edge-searchbox .icon-box img {
+          .edge-searchbox .icon-box img {
             left: 16px;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
           }
 
           .edge-searchbox input {
