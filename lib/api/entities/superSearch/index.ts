@@ -1,6 +1,6 @@
 import config from '@lib/config'
 import { getDB } from '@lib/api/db'
-import { ContentTypeDefinition, GroupEntityType, UserType } from '@lib/types'
+import { SuperSearchResponse } from '@lib/types'
 
 type PaginationOptions = {
   from?: number
@@ -14,12 +14,6 @@ type FindAllProps = {
   type: string
   paginationOptions?: PaginationOptions
   options: object
-}
-
-export type Result = {
-  data: GroupEntityType[] | ContentTypeDefinition[] | UserType[]
-  type: string
-  name: string
 }
 
 const {
@@ -36,8 +30,10 @@ function getFieldsForShow(entityName: string): object {
   }, {})
 }
 
-export async function findAll(entities: FindAllProps[]): Promise<Result[]> {
-  const promises: Result[] = []
+export async function findAll(
+  entities: FindAllProps[]
+): Promise<SuperSearchResponse[]> {
+  const promises: SuperSearchResponse[] = []
 
   entities.forEach(({ type, name, paginationOptions = {}, options = {} }) => {
     const {

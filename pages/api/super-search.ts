@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { loadUser } from '@lib/api/middlewares'
-import { Request } from '@lib/types'
+import { Request, SuperSearchResponse } from '@lib/types'
 import { connect } from '@lib/api/db'
-import { findAll, Result } from '@lib/api/entities/superSearch'
+import { findAll } from '@lib/api/entities/superSearch'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import hasPermission from '@lib/permissions/has-permission'
@@ -16,7 +16,7 @@ const {
 
 export default async (
   request: NextApiRequest,
-  response: NextApiResponse<{ data: Result[] } | { error: string }>
+  response: NextApiResponse<{ data: SuperSearchResponse[] } | { error: string }>
 ) => {
   try {
     // Connect to database
@@ -50,7 +50,7 @@ export default async (
 
 async function getEntities(
   request: Request & { query: { query: string } },
-  response: NextApiResponse<{ data: Result[] }>
+  response: NextApiResponse<{ data: SuperSearchResponse[] }>
 ): Promise<void> {
   const {
     query: { query },

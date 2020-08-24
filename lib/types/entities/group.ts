@@ -9,6 +9,8 @@ export declare type GroupEntityType = {
   id: string;
   slug: string;
   type: string;
+  title: string;
+  description: string;
   members: MemberType[];
   pendingMembers: MemberType[];
   draft: boolean;

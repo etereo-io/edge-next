@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react'
+import React, { memo, useCallback, useState, useRef } from 'react'
 import useSWR from 'swr'
 
 import { UserType } from '@lib/types'
@@ -8,8 +8,9 @@ import fetcher from '@lib/fetcher'
 import { hasPermission } from '@lib/permissions'
 import { useDebounce } from '@lib/client/hooks'
 import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
+import { SuperSearchResponse } from '@lib/types'
+import { useClickAwayListener } from '@lib/client/hooks'
 
-import { Data } from '../types'
 import List from './list'
 
 const { superSearch: searchConfig } = config
@@ -20,11 +21,14 @@ interface Props {
 
 function SuperSearch({ user }: Props) {
   const [url, setUrl] = useState<string | null>(null)
+  const ref = useRef()
   const [isFocus, setIsFocus] = useState<boolean>(false)
   const debouncedSearch = useDebounce<string>(url, 1000) // to prevent requests from being sent for every letter
   const canSee = hasPermission(user, 'superSearch.read')
 
-  const { data, isValidating } = useSWR<Data>(
+  useClickAwayListener(ref, () => setIsFocus(false))
+
+  const { data, isValidating } = useSWR<{ data: SuperSearchResponse[] }>(
     debouncedSearch || null,
     fetcher,
     {
@@ -38,22 +42,19 @@ function SuperSearch({ user }: Props) {
       const url = value ? `${API.superSearch}?query=${value}` : null
 
       setUrl(url)
+      setIsFocus(true)
     },
     [setUrl]
   )
 
-  const handleBlur = useCallback(() => {
-    setIsFocus(false)
-  }, [setIsFocus])
-
-  const handleFocus = useCallback(() => {
+  const handleOnFocus = useCallback(() => {
     setIsFocus(true)
   }, [setIsFocus])
 
   return (
     <>
       {searchConfig.enabled && canSee && (
-        <div className="edge-searchbox">
+        <div className="edge-searchbox" ref={ref}>
           <span className="icon-box">
             {isValidating ? (
               <LoadingSpinner />
@@ -63,12 +64,11 @@ function SuperSearch({ user }: Props) {
           </span>
           <input
             onChange={handleInputChange}
+            onFocus={handleOnFocus}
             type="text"
-            onBlur={handleBlur}
-            onFocus={handleFocus}
             placeholder="Search"
           />
-          {isFocus && <List data={data} />}
+          {isFocus && <List data={data?.data || []} />}
         </div>
       )}
 

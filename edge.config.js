@@ -611,21 +611,21 @@ export const getConfig = () => {
           name: publishingGroupType.slug, // a collection by which the search will be run
           type: 'group', // used for separation purposes
           fields: ['title', 'description'], // fields by which the search will be run
-          fieldsForShow: ['title', 'id', 'description', 'slug'], // fields that will be retrieved from the db
+          fieldsForShow: ['title', 'description', 'slug', 'type'], // fields that will be retrieved from the db
           permissions: publishingGroupType.permissions.read, // permissions for check before search
         },
         {
           name: postContentType.slug, // a collection by which the search will be run
           type: 'content', // used for separation purposes
           fields: ['title', 'description'], // fields by which the search will be run
-          fieldsForShow: ['title', 'id', 'description', 'groupId', 'groupType'], // fields that will be retrieved from the db
+          fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
           permissions: postContentType.permissions.read, // permissions for check before search
         },
         {
           name: siteNewsContentType.slug, // a collection by which the search will be run
           type: 'content', // used for separation purposes
           fields: ['title', 'description'], // fields by which the search will be run
-          fieldsForShow: ['title', 'id', 'description', 'groupId', 'groupType'], // fields that will be retrieved from the db
+          fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
           permissions: siteNewsContentType.permissions.read, // permissions for check before search
         },
       ],
