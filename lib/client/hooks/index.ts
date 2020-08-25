@@ -10,3 +10,4 @@ export const useContentTypes = contentTypes
 export * from './use-group-types'
 
 export { default as useInfinityList } from './use-infinity-list'
+export { default as usePrevious } from './use-previous'

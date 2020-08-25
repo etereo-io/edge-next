@@ -63,12 +63,11 @@ function GroupsTable({ type }: Props) {
   }, [])
 
   const columns = useMemo(() => {
-    const result: ExtendedColumn<GroupEntityType>[] = type.fields.map(
+    const columnsConfig: ExtendedColumn<GroupEntityType>[] = type.fields.map(
       ({ name }, index) => ({
         Header: name,
         id: name,
         sortable: true,
-        minWidth: 250,
         Cell: ({ row: { original: item } }) => {
           const value =
             typeof item[name] === 'string'
@@ -88,7 +87,7 @@ function GroupsTable({ type }: Props) {
       })
     )
 
-    result.push({
+    columnsConfig.push({
       Header: 'Created at',
       id: 'createdAt',
       accessor: 'createdAt',
@@ -97,7 +96,7 @@ function GroupsTable({ type }: Props) {
     })
 
     if (type.publishing.draftMode) {
-      result.push({
+      columnsConfig.push({
         Header: 'Draft',
         id: 'draft',
         Cell: ({ value }) => value || '-',
@@ -106,7 +105,7 @@ function GroupsTable({ type }: Props) {
       })
     }
 
-    result.push(
+    columnsConfig.push(
       {
         Header: 'Reported',
         id: 'reported',
@@ -127,7 +126,7 @@ function GroupsTable({ type }: Props) {
       }
     )
 
-    return result
+    return columnsConfig
   }, [])
 
   return (

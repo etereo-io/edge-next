@@ -1,7 +1,6 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useSWRInfinite } from 'swr'
 import { ConfigInterface } from 'swr/dist/types'
-import { usePrevious } from 'react-use'
 
 import fetch from '@lib/fetcher'
 
@@ -87,18 +86,11 @@ function useInfinityList<Item>({
     fetch,
     config
   )
-  const [isLoading, setIsLoading] = useState(false)
-
-  const prevSorting = usePrevious({ sortBy, sortOrder })
 
   let data = response
     ? [].concat(...response.map(({ results }) => results))
     : []
-  const prevData = usePrevious(data)
 
-  if (JSON.stringify(prevSorting) !== JSON.stringify({ sortBy, sortOrder }) && !response && prevData) {
-    data = prevData
-  }
   let total = 0
 
   if (response) {
@@ -106,15 +98,12 @@ function useInfinityList<Item>({
   }
 
   const isLoadingInitialData = !response && !error
-  const isLoadingMore = isLoadingInitialData || isLoading
+  const isLoadingMore = isLoadingInitialData || isValidating
   const isEmpty = response?.[0]?.results.length === 0
   const isReachingEnd = isEmpty || limit * size >= total
   const isRefreshing = isValidating && response && response.length === size
   const loadNewItems = useCallback(() => {
-    setIsLoading(true)
-    setSize(size + 1).then((res) => {
-      setIsLoading(false)
-    })
+    setSize(size + 1)
   }, [setSize, size])
 
   return {

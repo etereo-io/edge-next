@@ -7,10 +7,9 @@ import {
   Column,
   HeaderGroup,
 } from 'react-table'
-import { usePrevious } from 'react-use'
 
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
-import { doc } from 'prettier'
+import { usePrevious } from '@lib/client/hooks'
 
 interface TableSortObject {
   id: string
@@ -49,7 +48,11 @@ const headerProps = (props, { column }) =>
 const cellProps = (props, { cell }) =>
   getStyles(props, cell.column.justifyContent)
 
-const getStyles = (props, justifyContent = 'flex-start', textAlign = 'left') => [
+const getStyles = (
+  props,
+  justifyContent = 'flex-start',
+  textAlign = 'left'
+) => [
   props,
   {
     style: {
@@ -86,7 +89,7 @@ function ReactTable<T extends object = {}>({
   const records = []
 
   if (loading && prevData) {
-    records.push(...prevData)
+    records.push(...Array.isArray(prevData)? prevData: [])
   } else {
     records.push(...data)
   }
@@ -143,12 +146,6 @@ function ReactTable<T extends object = {}>({
                     >
                       {column.render('Header')}
                     </div>
-                    <div
-                      {...column.getResizerProps()}
-                      className={`resizer ${
-                        column.isResizing ? 'isResizing' : ''
-                      }`}
-                    />
                     <span>
                       {column.isSorted
                         ? column.isSortedDesc
@@ -156,6 +153,12 @@ function ReactTable<T extends object = {}>({
                           : ' ↑'
                         : ''}
                     </span>
+                    <div
+                      {...column.getResizerProps()}
+                      className={`resizer ${
+                        column.isResizing ? 'isResizing' : ''
+                      }`}
+                    />
                   </div>
                 </>
               ))}
@@ -229,6 +232,7 @@ function ReactTable<T extends object = {}>({
 
           .resizer {
             display: inline-block;
+            word-wrap: break-word;
             background: black;
             width: 3px;
             height: 100%;
