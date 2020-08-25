@@ -1,6 +1,6 @@
-import { CommentType, ContentTypeDefinition } from '@lib/types'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 
+import { CommentType, ContentTypeDefinition } from '@lib/types'
 import API from '@lib/api/api-endpoints'
 import Button from '../../generic/button/button'
 import fetch from '@lib/fetcher'
@@ -15,7 +15,7 @@ type PropTypes = {
   conversationId?: string
 }
 
-export default function Named({
+function CommentForm({
   contentId = '',
   comment = {} as CommentType,
   onChange = (val: any) => {},
@@ -324,3 +324,5 @@ export default function Named({
     </>
   )
 }
+
+export default memo(CommentForm)

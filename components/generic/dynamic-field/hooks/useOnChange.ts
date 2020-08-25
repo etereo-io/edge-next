@@ -18,7 +18,7 @@ interface Result {
   ) => void
 }
 
-export default function Named({ onChangeHandler }: Props): Result {
+export default function useOnChange({ onChangeHandler }: Props): Result {
   const [touched, setTouched] = useState(false)
 
   const onChange = useCallback(

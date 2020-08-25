@@ -1,7 +1,9 @@
-import { useUser } from '@lib/client/hooks'
 import Link from 'next/link'
+import { memo } from 'react'
 
-export default function Named({ mobileCollapse = false }) {
+import { useUser } from '@lib/client/hooks'
+
+function SiteMenu({ mobileCollapse = false }) {
   const { user } = useUser()
 
   return (
@@ -60,3 +62,5 @@ export default function Named({ mobileCollapse = false }) {
     </>
   )
 }
+
+export default memo(SiteMenu)

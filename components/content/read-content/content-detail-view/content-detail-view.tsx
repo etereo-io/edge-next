@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 
 import AuthorBox from '@components/user/author-box/author-box'
 import Button from '@components/generic/button/button'
@@ -25,7 +25,7 @@ interface Props {
   addComments?: boolean
 }
 
-export default function Named(props: Props) {
+function ContentDetailView(props: Props) {
   const { addComments = true } = props
 
   const shareUrl =
@@ -141,7 +141,11 @@ export default function Named(props: Props) {
                   round
                   aria-label="round button"
                 >
-                  <img style={{ width: '15px' }} src="/icons/icon-edit.svg" alt="edit" />
+                  <img
+                    style={{ width: '15px' }}
+                    src="/icons/icon-edit.svg"
+                    alt="edit"
+                  />
                 </Button>
               </div>
             )}
@@ -165,7 +169,8 @@ export default function Named(props: Props) {
               <b>
                 {props.type.comments.enabled &&
                 canReadComments.available &&
-                typeof props.content.comments !== 'undefined' && addComments? (
+                typeof props.content.comments !== 'undefined' &&
+                addComments ? (
                   <span className="comment-count" onClick={onClickComments}>
                     {props.content.comments === 0 && canWriteComments.available
                       ? 'Add a comment'
@@ -361,3 +366,5 @@ export default function Named(props: Props) {
     </>
   )
 }
+
+export default memo(ContentDetailView)

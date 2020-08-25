@@ -1,8 +1,9 @@
-import { useState, createRef, useEffect } from 'react'
+import { useState, createRef, useEffect, memo } from 'react'
+
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 
-export default function Named({ user, onChange = () => {}, ...props }) {
+function EditCoverImage({ user, onChange = () => {} }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -102,7 +103,7 @@ export default function Named({ user, onChange = () => {}, ...props }) {
             {loading && <div className="loading-message">Loading...</div>}
             {success && (
               <div className="success-message">
-                Cover image successfuly updated
+                Cover image successfully updated
               </div>
             )}
           </div>
@@ -128,3 +129,5 @@ export default function Named({ user, onChange = () => {}, ...props }) {
     </>
   )
 }
+
+export default memo(EditCoverImage)

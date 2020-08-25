@@ -1,9 +1,10 @@
-import Avatar from '../avatar/avatar'
+import { useEffect, useState, memo } from 'react'
 import Link from 'next/link'
-import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
-import { useEffect, useState } from 'react'
 
-export default function Named(props) {
+import Avatar from '../avatar/avatar'
+import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
+
+function AuthorBox(props) {
   const [user, setUser] = useState(props.user)
 
   useEffect(() => {
@@ -17,10 +18,7 @@ export default function Named(props) {
           {user && (
             <Link href={`/profile/@${user.username}`}>
               <a title={`${user.username} profile`}>
-                <Avatar
-                  width={'32px'}
-                  user={user}
-                />
+                <Avatar width={'32px'} user={user} />
               </a>
             </Link>
           )}
@@ -102,3 +100,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(AuthorBox)

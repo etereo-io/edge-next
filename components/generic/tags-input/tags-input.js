@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import slugify from 'slugify'
 
 const makeNewTag = (val) => {
@@ -64,7 +64,7 @@ function Tag(props) {
   )
 }
 
-export default function Named(props) {
+function TagsInput(props) {
   const defaultTags = props.defaultValue || []
 
   const [tags, setTags] = useState(defaultTags)
@@ -158,3 +158,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(TagsInput)

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
@@ -6,7 +6,7 @@ import config from '@lib/config'
 import { FIELDS } from '@lib/constants'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 
-export default function Named({ user, onChange = () => {}, ...props }) {
+function EditProfile({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -156,3 +156,5 @@ export default function Named({ user, onChange = () => {}, ...props }) {
     </>
   )
 }
+
+export default memo(EditProfile)

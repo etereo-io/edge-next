@@ -1,4 +1,6 @@
-export default function Named({ alt = false, width = '1.5em' }) {
+import { memo } from 'react'
+
+function LoadingSpinner({ alt = false, width = '1.5em' }) {
   return (
     <>
       <div className={`loading-spinner ${alt ? 'alt' : ''}`}>
@@ -34,3 +36,5 @@ export default function Named({ alt = false, width = '1.5em' }) {
     </>
   )
 }
+
+export default memo(LoadingSpinner)

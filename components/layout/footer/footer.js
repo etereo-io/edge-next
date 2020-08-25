@@ -1,8 +1,10 @@
-import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
+import { memo } from 'react'
 import Link from 'next/link'
-import config from '@lib/config'
 
-export default function Named() {
+import config from '@lib/config'
+import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
+
+function Footer() {
   return (
     <>
       <footer className="footer">
@@ -115,3 +117,5 @@ export default function Named() {
     </>
   )
 }
+
+export default memo(Footer)

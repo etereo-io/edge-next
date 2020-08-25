@@ -1,12 +1,14 @@
+import { memo } from 'react';
+import Link from 'next/link'
+
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import { useUser } from '@lib/client/hooks'
 import Button from '@components/generic/button/button'
 import Avatar from '@components/user/avatar/avatar'
 import ThemeSelector from '@components/generic/theme-selector/theme-selector'
 import SiteMenu from '@components/generic/site-menu/site-menu'
-import Link from 'next/link'
 
-export default function Named() {
+function ToolBar() {
   const { user, finished } = useUser()
   return (
     <>
@@ -224,3 +226,5 @@ export default function Named() {
     </>
   )
 }
+
+export default memo(ToolBar)

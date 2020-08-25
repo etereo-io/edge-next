@@ -1,7 +1,9 @@
+import { memo } from 'react'
 import Head from 'next/head'
+
 import config from '@lib/config'
 
-export default function Named(props) {
+function Head(props) {
   return (
     <Head>
       <title>
@@ -17,3 +19,5 @@ export default function Named(props) {
     </Head>
   )
 }
+
+export default memo(Head)

@@ -1,16 +1,14 @@
+import { memo } from 'react'
 import {
   FacebookIcon,
   FacebookShareButton,
-  LinkedinShareButton,
   PinterestIcon,
   PinterestShareButton,
-  TelegramShareButton,
-  TwitterShareButton,
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share'
 
-export default function Named(props) {
+function SocialShare(props) {
   const shareUrl = props.shareUrl
     ? props.shareUrl
     : typeof window !== 'undefined'
@@ -155,3 +153,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(SocialShare)

@@ -1,4 +1,6 @@
-export default function Named({
+import { memo } from 'react'
+
+function ReactionCounter({
   count = 0,
   type = 'like',
   onClick = () => {},
@@ -112,3 +114,5 @@ export default function Named({
     </>
   )
 }
+
+export default memo(ReactionCounter)

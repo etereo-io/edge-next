@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
+
 import ProgressiveImage from './progressive-image'
-export default function Named({ srcs = [], width = '100%', height = '100%' }) {
+
+function Image({ srcs = [], width = '100%', height = '100%' }) {
   const isMultiple = srcs.length > 1
   const [position, setPosition] = useState(0)
 
@@ -158,3 +160,5 @@ export default function Named({ srcs = [], width = '100%', height = '100%' }) {
     </>
   )
 }
+
+export default memo(Image)

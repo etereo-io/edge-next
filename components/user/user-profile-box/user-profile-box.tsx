@@ -1,8 +1,10 @@
-import Avatar from '../avatar/avatar'
+import {memo} from 'react'
 import Link from 'next/link'
+
+import Avatar from '../avatar/avatar'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 
-export default function Named({ user, ...props }) {
+function UserProfileBox({ user, ...props }) {
   return (
     <>
       <div
@@ -190,3 +192,5 @@ export default function Named({ user, ...props }) {
     </>
   )
 }
+
+export default memo(UserProfileBox)

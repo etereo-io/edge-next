@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -9,7 +9,7 @@ import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
 import Link from 'next/link'
 
-export default function Named(props) {
+function GroupForm(props) {
 
   // Saving states
   const [loading, setLoading] = useState(false)
@@ -209,3 +209,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(GroupForm);

@@ -1,5 +1,6 @@
-import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
+import { memo } from 'react'
 
+import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
 import Button from '@components/generic/button/button'
 import { GroupEntityType } from '@lib/types'
 import { groupContentPermission } from '@lib/permissions'
@@ -9,7 +10,7 @@ interface Props {
   group: GroupEntityType
 }
 
-export default function Named(props: Props) {
+function GroupContentMenu(props: Props) {
   const { group = {} as GroupEntityType } = props
   // Check permissions to edit
   const currentUser = useUser()
@@ -43,3 +44,5 @@ export default function Named(props: Props) {
 
   return <div className={`content-actions`}>{contentTypes}</div>
 }
+
+export default memo(GroupContentMenu)
