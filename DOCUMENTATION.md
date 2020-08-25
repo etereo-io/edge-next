@@ -27,6 +27,7 @@
   - [Static Pages](#static-pages)
   - [Web monetization](#web-monetization)
   - [Other Payments](#other-payments)
+- [Super search](#super-search)
 - [env.local file](#envlocal-file)
   - [Deploy your own](#deploy-your-own)
   - [API](#api)
@@ -118,6 +119,7 @@ Theme variables are defined in the following way:
   --edge-success-dark: #0366d6;
   --edge-error-light: #f33;
   --edge-error: red;
+}
 ```
 
 Then edit the `edge.config.js` file and add your new theme
@@ -758,7 +760,7 @@ To enable web monetization, first, enable web monetization on a content type. Se
 ```javascript
   monetization: {
     web: true // Enable web monetization for a content type
-  },
+  }
 ```
 
 Also you will need to add a field named `paymentPointer` into the fields list of that content type.
@@ -807,6 +809,54 @@ Depending on what you want to seel (if you want the users to be able to sell, or
 
 [Stripe DOCS](https://stripe.com/docs/)
 [Getting Charges](https://stripe.com/docs/connect/charges)
+
+## Super search 
+
+It's possible to use super search module for the application. You can configure this functionality via `edge.config.js` file. 
+For example: 
+
+```javascript
+superSearch: {
+  enabled: true,
+  permissions: { 
+    // who can use search
+    read: [publicRole]
+  }, 
+  // entities that will participate in the search
+  entities: [
+    {
+      name: 'users', // a collection by which the search will be run
+      type: 'user', // used for separation purposes
+      fields: ['username'], // fields by which the search will be run
+      fieldsForShow: ['username', 'id'], // fields that will be retrieved from the db
+      permissions: user.permissions.read, // permissions for check before search
+    },
+    {
+      name: publishingGroupType.slug, // a collection by which the search will be run
+      type: 'group', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'description', 'slug', 'type'], // fields that will be retrieved from the db
+      permissions: publishingGroupType.permissions.read, // permissions for check before search
+    },
+    {
+      name: postContentType.slug, // a collection by which the search will be run
+      type: 'content', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+      permissions: postContentType.permissions.read, // permissions for check before search
+    },
+    {
+      name: siteNewsContentType.slug, // a collection by which the search will be run
+      type: 'content', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+      permissions: siteNewsContentType.permissions.read, // permissions for check before search
+    },
+  ]
+}
+```
+With this functionality you can run "full text" search by entities/fields you mentioned.
+
 
 ## Deploy your own
 
@@ -923,5 +973,9 @@ The Content API is defined on your set of rules in the configuration file, the o
 ### Activity
 
 - `GET /api/activity/[USER_ID]`
-  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin`
+  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin` 
+  
+### Full Text
+- `GET /api/super-search?query=XXX`
+- Returns a list of all entities which have phrase mentioned in `query` but limited by permissions described in the `edge.config.js` 
 
