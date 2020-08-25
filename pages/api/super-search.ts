@@ -37,7 +37,10 @@ export default async (
 
   const { currentUser } = request as Request
 
-  if (!hasPermission(currentUser, 'superSearch.read') || !enabled) {
+  if (
+    !hasPermission(currentUser, ['superSearch.read', 'user.admin']) ||
+    !enabled
+  ) {
     return response.status(401).json({
       error: 'Access forbidden.',
     })
@@ -56,6 +59,10 @@ async function getEntities(
     query: { query },
     currentUser,
   } = request
+
+  if (!query) {
+    return response.json({ data: [] })
+  }
 
   const filteredEntities = []
 
