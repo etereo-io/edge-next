@@ -1,4 +1,5 @@
 import React, { memo, useCallback } from 'react'
+import Link from 'next/link'
 
 import { TableCellBody, TableRowBody } from '@components/generic/table/table'
 import Button from '@components/generic/button/button'
@@ -43,7 +44,9 @@ function ListItem({
 
   return (
     <TableRowBody>
-      <TableCellBody>{username || email}</TableCellBody>
+      <TableCellBody>
+        <Link href={`/profile/${id}`}>{username || email}</Link>
+      </TableCellBody>
       <TableCellBody>
         <select
           className="select-role"

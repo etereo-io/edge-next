@@ -1,11 +1,13 @@
-import { findContent, findOneContent } from '../../../../../lib/api/entities/content/content'
+import {
+  findContent,
+  findOneContent,
+} from '../../../../../lib/api/entities/content/content'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import { getSession } from '../../../../../lib/api/auth/iron'
+import {
+  getSession,
+} from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/content/[type]'
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/api/entities/content/content')
@@ -50,18 +52,16 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-        minlength: 1,
-        placeholder: 'Title',
-      }
-    ],
+    fields: [{
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      minlength: 1,
+      placeholder: 'Title',
+    }],
   }
 
-  
+
   const mockGroupType = {
     title: 'Project',
 
@@ -81,8 +81,7 @@ jest.mock('../../../../../edge.config', () => {
       admin: ['ADMIN'],
     },
 
-    fields: [
-      {
+    fields: [{
         name: 'title',
         type: 'text',
         label: 'Title',
@@ -104,9 +103,9 @@ jest.mock('../../../../../edge.config', () => {
       }
     ],
 
-    user : {
+    user: {
       permissions: {
-        
+
       },
     },
 
@@ -124,17 +123,20 @@ jest.mock('../../../../../edge.config', () => {
     getConfig: jest.fn().mockReturnValue({
       title: 'A test',
       description: 'A test',
-  
+
       groups: {
         types: [mockGroupType]
       },
 
       content: {
         types: [mockPostContentType]
-      }, 
+      },
 
       user: {
-        roles: [{ label : 'user', value: 'USER'}],
+        roles: [{
+          label: 'user',
+          value: 'USER'
+        }],
         newUserRoles: ['USER'],
       }
     }),
@@ -142,34 +144,20 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for content retrieval in a group', () => {
-  let server
-  let url
+
 
   beforeEach(() => {
     findContent.mockReturnValue(Promise.resolve({
       results: []
     }))
   })
- 
 
   afterEach(() => {
     getSession.mockReset()
     findOneContent.mockReset()
     findContent.mockReset()
   })
-  
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
 
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   test('Should not allow to fetch posts for a normal user', async () => {
 
@@ -178,16 +166,19 @@ describe('Integrations tests for content retrieval in a group', () => {
       id: 'test-id-initial-user',
     })
 
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
+    const params = {
+      type: 'post'
+    }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+    const res = await request(handler, {
+      method: 'GET',
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should return 404 if the group is not found ', async () => {
@@ -198,20 +189,27 @@ describe('Integrations tests for content retrieval in a group', () => {
       id: 'test-id-initial-user',
     })
 
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', groupId: 'agroup', groupType: 'a nother'}
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+    const params = {
+      type: 'post',
+      groupId: 'agroup',
+      groupType: 'a nother'
+    }
 
-    const response = await fetch(urlToBeUsed.href)
+    const res = await request(handler, {
+      method: 'GET',
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
 
-    expect(response.status).toEqual(404)
+    expect(res.statusCode).toEqual(404)
   })
 
   test('Should not allow a non member to retrieve content ', async () => {
-    findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
+    findOneContent.mockReturnValue(Promise.resolve({
+      id: 'abc',
       members: [{
         id: 'user1',
         roles: ['GROUP_MEMBER']
@@ -223,20 +221,27 @@ describe('Integrations tests for content retrieval in a group', () => {
       id: 'test-id-initial-user',
     })
 
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+    const params = {
+      type: 'post',
+      groupId: 'agroup',
+      groupType: 'project'
+    }
 
-    const response = await fetch(urlToBeUsed.href)
+    const res = await request(handler, {
+      method: 'GET',
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should allow a member to retrieve content ', async () => {
-    findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
+    findOneContent.mockReturnValue(Promise.resolve({
+      id: 'abc',
       members: [{
         id: 'user1',
         roles: ['GROUP_MEMBER']
@@ -248,53 +253,80 @@ describe('Integrations tests for content retrieval in a group', () => {
       id: 'user1',
     })
 
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+    const params = {
+      type: 'post',
+      groupId: 'agroup',
+      groupType: 'project'
+    }
 
-    const response = await fetch(urlToBeUsed.href)
+    const res = await request(handler, {
+      method: 'GET',
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
 
-    expect(response.status).toEqual(200)
-    expect(findContent).toHaveBeenCalledWith("post", 
-      {"draft": false, "groupId": "agroup", "groupType": "project"}, 
-      {"from": undefined, "limit": undefined, "sortBy": undefined, "sortOrder": undefined})
+    expect(res.statusCode).toEqual(200)
+    expect(findContent).toHaveBeenCalledWith("post", {
+      "draft": false,
+      "groupId": "agroup",
+      "groupType": "project"
+    }, {
+      "from": undefined,
+      "limit": undefined,
+      "sortBy": undefined,
+      "sortOrder": undefined
+    })
   })
 
 
   describe('Group based permissions', () => {
     test('Should allow a user with group based permissions to access the content ', async () => {
-      findOneContent.mockReturnValue(Promise.resolve({ id: 'abc',
+      findOneContent.mockReturnValue(Promise.resolve({
+        id: 'abc',
         members: [{
           id: 'user1',
           roles: ['ANOTHER_ROLE']
         }],
         permissions: {
-          'group.project.content.post.read' : ['ANOTHER_ROLE']
+          'group.project.content.post.read': ['ANOTHER_ROLE']
         }
       }))
-  
+
       getSession.mockReturnValueOnce({
         roles: ['USER'],
         id: 'user1',
       })
-  
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
-  
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-  
-      const response = await fetch(urlToBeUsed.href)
-  
-      expect(response.status).toEqual(200)
-      expect(findContent).toHaveBeenCalledWith("post", 
-        {"draft": false, "groupId": "agroup", "groupType": "project"}, 
-        {"from": undefined, "limit": undefined, "sortBy": undefined, "sortOrder": undefined})
+
+
+      const params = {
+        type: 'post',
+        groupId: 'agroup',
+        groupType: 'project'
+      }
+
+      const res = await request(handler, {
+        method: 'GET',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+
+      expect(res.statusCode).toEqual(200)
+      expect(findContent).toHaveBeenCalledWith("post", {
+        "draft": false,
+        "groupId": "agroup",
+        "groupType": "project"
+      }, {
+        "from": undefined,
+        "limit": undefined,
+        "sortBy": undefined,
+        "sortOrder": undefined
+      })
     })
   })
- 
+
 })

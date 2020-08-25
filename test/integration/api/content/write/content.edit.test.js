@@ -1,21 +1,21 @@
-import * as handler from '../../../../../pages/api/content/[type]/[slug]'
+import {
+  deleteFile,
+  uploadFile,
+} from '../../../../../lib/api/storage'
 
-import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
-
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import {
+  getSession,
+} from '../../../../../lib/api/auth/iron'
+import handler from '../../../../../pages/api/content/[type]/[slug]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => {
-  const mockInitialPosts = [
-    {
+  const mockInitialPosts = [{
       type: 'post',
       id: 0,
       author: '1',
@@ -24,8 +24,7 @@ jest.mock('../../../../../edge.config', () => {
       image: [],
       description: 'This is an example description',
       draft: false,
-      tags: [
-        {
+      tags: [{
           slug: 'software',
           label: 'SOFTWARE',
         },
@@ -41,15 +40,12 @@ jest.mock('../../../../../edge.config', () => {
       author: '2',
       title: 'Example post',
       slug: 'example-post-1',
-      image: [
-        {
-          path: 'https://image.com',
-        },
-      ],
+      image: [{
+        path: 'https://image.com',
+      }, ],
       description: 'This is an example description',
       draft: true,
-      tags: [
-        {
+      tags: [{
           slug: 'software',
           label: 'SOFTWARE',
         },
@@ -91,8 +87,7 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
+    fields: [{
         name: 'title',
         type: 'text',
         label: 'Title',
@@ -138,12 +133,15 @@ jest.mock('../../../../../edge.config', () => {
         initialContent: mockInitialPosts,
       },
 
-      user : {
+      user: {
         permissions: {
-          
+
         },
-  
-        roles: [{ label : 'user', value: 'USER'}],
+
+        roles: [{
+          label: 'user',
+          value: 'USER'
+        }],
         newUserRoles: ['USER'],
       },
     }),
@@ -151,40 +149,25 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for content edition endpoint', () => {
-  let server
-  let url
 
   afterEach(() => {
     getPermissions.mockReset()
     getSession.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
-
   test('Should return 405 if required query string is missing', async () => {
-    const response = await fetch(url)
-    expect(response.status).toBe(405)
+
+    const res = await request(handler, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    expect(res.statusCode).toBe(405)
   })
 
   describe('Content owner', () => {
     test('Should return 400 if content validation fails', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
@@ -198,33 +181,29 @@ describe('Integrations tests for content edition endpoint', () => {
 
       const newPost = {
         title: 'tes',
-        description:
-          'test test  test test test test test test test test test test test test test test ',
+        description: 'test test  test test test test test test test test test test test test test test ',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: {
+          type: 'post',
+          slug: 'example-post-0'
+        },
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newPost),
       })
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error: 'Invalid data: title length is less than 8',
       })
+
     })
 
     test('Should return new content details given a valid request', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
@@ -238,28 +217,30 @@ describe('Integrations tests for content edition endpoint', () => {
 
       const newPost = {
         title: 'test test test test test test ',
-        description:
-          'test test  test test test test test test test test test test test test test test ',
+        description: 'test test  test test test test test test test test test test test test test test ',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: {
+          type: 'post',
+          slug: 'example-post-0'
+        },
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newPost),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(200)
-      expect(jsonResult).toMatchObject({
+
+      expect(res.statusCode).toBe(200)
+      expect(res.body).toMatchObject({
         title: newPost.title,
         type: 'post',
         slug: expect.any(String),
         description: newPost.description,
-        tags: [
-          {
+        tags: [{
             slug: 'software',
             label: 'SOFTWARE',
           },
@@ -277,12 +258,6 @@ describe('Integrations tests for content edition endpoint', () => {
 
   describe('Other people content', () => {
     test('Should return 401 when updating other person content without the content.post.update permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
@@ -296,33 +271,30 @@ describe('Integrations tests for content edition endpoint', () => {
 
       const newPost = {
         title: 'test test test test test test ',
-        description:
-          'test test  test test test test test test test test test test test test test test ',
+        description: 'test test  test test test test test test test test test test test test test test ',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: {
+          type: 'post',
+          slug: 'example-post-0'
+        },
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newPost),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(401)
-      expect(jsonResult).toMatchObject({
+
+      expect(res.statusCode).toBe(401)
+      expect(res.body).toMatchObject({
         error: 'User not authorized to perform operation on content post',
       })
     })
 
     test('Should return 200 when updating other person content with the content.post.update permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.update': ['USER'],
@@ -336,28 +308,30 @@ describe('Integrations tests for content edition endpoint', () => {
 
       const newPost = {
         title: 'test test test test test test ',
-        description:
-          'test test  test test test test test test test test test test test test test test ',
+        description: 'test test  test test test test test test test test test test test test test test ',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: {
+          type: 'post',
+          slug: 'example-post-0'
+        },
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newPost),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(200)
-      expect(jsonResult).toMatchObject({
+
+      expect(res.statusCode).toBe(200)
+      expect(res.body).toMatchObject({
         title: newPost.title,
         type: 'post',
         slug: expect.any(String),
         description: newPost.description,
-        tags: [
-          {
+        tags: [{
             slug: 'software',
             label: 'SOFTWARE',
           },
@@ -373,12 +347,6 @@ describe('Integrations tests for content edition endpoint', () => {
     })
 
     test('Should return 200 when updating other person content with the content.post.admin permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
@@ -392,28 +360,30 @@ describe('Integrations tests for content edition endpoint', () => {
 
       const newPost = {
         title: 'test test test test test test ',
-        description:
-          'test test  test test test test test test test test test test test test test test ',
+        description: 'test test  test test test test test test test test test test test test test test ',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: {
+          type: 'post',
+          slug: 'example-post-0'
+        },
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newPost),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(200)
-      expect(jsonResult).toMatchObject({
+
+      expect(res.statusCode).toBe(200)
+      expect(res.body).toMatchObject({
         title: newPost.title,
         type: 'post',
         slug: expect.any(String),
         description: newPost.description,
-        tags: [
-          {
+        tags: [{
             slug: 'software',
             label: 'SOFTWARE',
           },
@@ -430,8 +400,6 @@ describe('Integrations tests for content edition endpoint', () => {
   })
 
   test('Should return 401 for a role that is PUBLIC', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
 
     getPermissions.mockReturnValue({
       'content.post.update': ['ADMIN'],
@@ -442,30 +410,29 @@ describe('Integrations tests for content edition endpoint', () => {
       roles: ['PUBLIC'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
     const newPost = {
       title: 'test',
-      description:
-        'test test test test test test test test test test test test test test test ',
+      description: 'test test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: {
+        type: 'post',
+        slug: 'example-post-0'
+      },
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newPost),
-    })
+    });
 
-    expect(response.status).toBe(401)
+
+
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 for ADMIN', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
 
     getPermissions.mockReturnValue({
       'content.post.update': ['ADMIN'],
@@ -476,31 +443,30 @@ describe('Integrations tests for content edition endpoint', () => {
       roles: ['ADMIN'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
     const newPost = {
       title: 'test test test test test test test test test ',
-      description:
-        'test test test test test test test test test test test test test test test ',
+      description: 'test test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: {
+        type: 'post',
+        slug: 'example-post-0'
+      },
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(newPost),
-    })
+    });
 
-    expect(response.status).toBe(200)
+
+
+    expect(res.statusCode).toBe(200)
   })
 
   describe('Files', () => {
     it('should call the delete file for an update removing a file', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-1' }
 
       getPermissions.mockReturnValue({
         'content.post.update': ['ADMIN'],
@@ -511,35 +477,33 @@ describe('Integrations tests for content edition endpoint', () => {
         roles: ['ADMIN'],
       })
 
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-
       const newPost = {
         title: 'test test test test test test test test test ',
-        description:
-          'test test test test test test test test test test test test test test test ',
+        description: 'test test test test test test test test test test test test test test test ',
         image: [],
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: {
+          type: 'post',
+          slug: 'example-post-1'
+        },
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newPost),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(200)
-      expect(jsonResult).toMatchObject({
+
+      expect(res.statusCode).toBe(200)
+      expect(res.body).toMatchObject({
         title: newPost.title,
         type: 'post',
         slug: expect.any(String),
         description: newPost.description,
-        tags: [
-          {
+        tags: [{
             slug: 'software',
             label: 'SOFTWARE',
           },

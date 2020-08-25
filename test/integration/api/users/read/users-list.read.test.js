@@ -1,11 +1,8 @@
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import { findUsers } from '../../../../../lib/api/entities/users/user'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import handlerUser from '../../../../../pages/api/users'
-import http from 'http'
-import listen from 'test-listen'
+import handler from '../../../../../pages/api/users'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -45,22 +42,7 @@ const demoUser = {
 }
 
 describe('Integrations tests for user list read', () => {
-  let server
-  let url
-
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handlerUser)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
-
+ 
   describe('User reading', () => {
     afterEach(() => {
       findUsers.mockReset()
@@ -69,8 +51,7 @@ describe('Integrations tests for user list read', () => {
     })
 
     test('a PUBLIC user should be able to read user lilst', async () => {
-      const urlToBeUsed = new URL(url)
-
+        
       // Mock permissions
       getPermissions.mockReturnValue({
         'user.read': ['PUBLIC'],
@@ -85,15 +66,13 @@ describe('Integrations tests for user list read', () => {
         Promise.resolve({ results: [demoUser], from: 0, to: 15 })
       )
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'GET',
-      })
+      });
 
-      const jsonResult = await response.json()
+      expect(res.statusCode).toBe(200)
 
-      expect(response.status).toBe(200)
-
-      expect(jsonResult).toMatchObject({
+      expect(res.body).toMatchObject({
         results: [
           {
             username: demoUser.username,
@@ -105,16 +84,18 @@ describe('Integrations tests for user list read', () => {
       })
 
       // Private fields
-      expect(jsonResult.results[0].email).toBeUndefined()
-      expect(jsonResult.results[0].hash).toBeUndefined()
-      expect(jsonResult.results[0].salt).toBeUndefined()
-      expect(jsonResult.results[0].facebook).toBeUndefined()
-      expect(jsonResult.results[0].github).toBeUndefined()
-      expect(jsonResult.results[0].tokens).toBeUndefined()
+      const user = res.body.results[0]
+      
+      expect(user.email).toBeUndefined()
+      expect(user.hash).toBeUndefined()
+      expect(user.salt).toBeUndefined()
+      expect(user.facebook).toBeUndefined()
+      expect(user.github).toBeUndefined()
+      expect(user.tokens).toBeUndefined()
     })
 
     test('should return 401 if the access is restricted to logged in users', async () => {
-      const urlToBeUsed = new URL(url)
+        
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -129,17 +110,17 @@ describe('Integrations tests for user list read', () => {
         Promise.resolve({ results: [demoUser], from: 0, to: 15 })
       )
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'GET',
-      })
+      });
 
-      expect(response.status).toBe(401)
+      expect(res.statusCode).toBe(401)
 
       expect(findUsers).not.toHaveBeenCalled()
     })
 
     test('an admin should see private fields', async () => {
-      const urlToBeUsed = new URL(url)
+        
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -158,20 +139,20 @@ describe('Integrations tests for user list read', () => {
         Promise.resolve({ results: [demoUser], from: 0, to: 15 })
       )
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'GET',
-      })
+      });
 
-      expect(response.status).toBe(200)
-
-      const jsonResult = await response.json()
+      expect(res.statusCode).toBe(200)
       // Private fields
-      expect(jsonResult.results[0].email).not.toBeUndefined()
-      expect(jsonResult.results[0].hash).not.toBeUndefined()
-      expect(jsonResult.results[0].salt).not.toBeUndefined()
-      expect(jsonResult.results[0].facebook).not.toBeUndefined()
-      expect(jsonResult.results[0].github).not.toBeUndefined()
-      expect(jsonResult.results[0].tokens).not.toBeUndefined()
+      const user = res.body.results[0]
+      
+      expect(user.email).not.toBeUndefined()
+      expect(user.hash).not.toBeUndefined()
+      expect(user.salt).not.toBeUndefined()
+      expect(user.facebook).not.toBeUndefined()
+      expect(user.github).not.toBeUndefined()
+      expect(user.tokens).not.toBeUndefined()
     })
   })
 })

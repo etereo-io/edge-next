@@ -35,7 +35,6 @@ async function addUsers(req, res) {
     item: {
       id,
       author,
-      members: oldMembers,
       pendingMembers: oldPendingMembers = [],
     },
     item,

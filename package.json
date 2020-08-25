@@ -53,6 +53,7 @@
   "license": "ISC",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.3.0",
+    "@svgr/webpack": "^5.4.0",
     "@testing-library/react": "^10.0.2",
     "@types/mongodb": "^3.5.25",
     "@types/quill": "2.0.3",
@@ -62,6 +63,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^25.2.7",
     "jest-css-modules-transform": "^4.0.0",
+    "node-mocks-http": "^1.8.1",
     "test-listen": "^1.1.0",
     "typescript": "^3.9.3"
   }

@@ -1,10 +1,7 @@
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/comments'
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -142,26 +139,14 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for comment creation endpoint', () => {
-  let server
-  let url
+ 
 
   afterEach(() => {
     getPermissions.mockReset()
     getSession.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
+   
 
   test('Should return 405 if required query string is missing', async () => {
     getPermissions.mockReturnValue({
@@ -174,24 +159,21 @@ describe('Integrations tests for comment creation endpoint', () => {
       id: 'test-id',
     })
 
-    const response = await fetch(url, {
+    const res = await request(handler, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({}),
-    })
+      body: {}
+    });
 
-    expect(response.status).toBe(405)
+
+    
+    expect(res.statusCode).toBe(405)
   })
 
   test('Should return 405 if contentId is missing', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+    
 
     getPermissions.mockReturnValue({
       'content.post.comments.create': ['USER'],
@@ -203,25 +185,21 @@ describe('Integrations tests for comment creation endpoint', () => {
       id: 'test-id',
     })
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  { contentType: 'post' },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({}),
-    })
+      body: {}
+    });
 
-    expect(response.status).toBe(405)
+
+    expect(res.statusCode).toBe(405)
   })
 
   test('Should return comment details given a valid request', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: '1' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
+      
     getPermissions.mockReturnValue({
       'content.post.comments.create': ['USER'],
       'content.post.comments.admin': ['ADMIN'],
@@ -237,18 +215,18 @@ describe('Integrations tests for comment creation endpoint', () => {
       conversationId: null,
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  { contentType: 'post', contentId: '1' },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newComment),
-    })
+      body: newComment,
+    });
 
-    const jsonResult = await response.json()
 
-    expect(response.status).toBe(200)
-    expect(jsonResult).toMatchObject({
+    expect(res.statusCode).toBe(200)
+    expect(res.body).toMatchObject({
       contentType: 'post',
       contentId: '1',
       slug: expect.any(String),

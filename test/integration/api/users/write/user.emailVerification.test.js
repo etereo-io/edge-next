@@ -1,16 +1,12 @@
-import * as handlerAuth from '../../../../../pages/api/auth/[...action]'
-
 import {
   findOneUser,
   findUserWithPassword,
   updateOneUser,
 } from '../../../../../lib/api/entities/users/user'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import http from 'http'
-import listen from 'test-listen'
+import handler from '../../../../../pages/api/auth/[...action]'
 import { onUserAdded } from '../../../../../lib/api/hooks/user.hooks'
+import request from '../../requestHandler'
 import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
@@ -35,26 +31,7 @@ const newUser = {
 }
 
 describe('Integration tests for email verification with emailVerification enabled', () => {
-  let serverAuth
-  let urlAuth
-  let urlLogin
-  let urlVerify
-
-  beforeAll(async (done) => {
-    serverAuth = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handlerAuth)
-    )
-
-    urlAuth = await listen(serverAuth)
-    urlLogin = urlAuth + '/api/auth/login'
-    urlVerify = urlAuth + '/api/auth/verify'
-    done()
-  })
-
-  afterAll((done) => {
-    serverAuth.close(done)
-  })
-
+ 
   afterEach(() => {
     findOneUser.mockReset()
     findUserWithPassword.mockReset()
@@ -70,21 +47,23 @@ describe('Integration tests for email verification with emailVerification enable
       })
     )
 
-    const response = await fetch(urlLogin, {
+
+    const res = await request(handler, {
       method: 'POST',
+      url: '/api/auth/login',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: {
         email: newUser.email,
         password: newUser.password,
-      }),
-    })
+      },
+    });
 
-    expect(response.status).toBe(401)
-    const jsonResult = await response.json()
 
-    expect(jsonResult).toMatchObject({
+    expect(res.statusCode).toBe(401)
+
+    expect(res.body).toMatchObject({
       error: 'Email not verified',
     })
   })
@@ -100,18 +79,20 @@ describe('Integration tests for email verification with emailVerification enable
       })
     )
 
-    const response = await fetch(urlLogin, {
+
+    const res = await request(handler, {
       method: 'POST',
+      url: '/api/auth/login',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: {
         email: newUser.email,
         password: newUser.password,
-      }),
-    })
+      },
+    });
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should return 200 for login a user with verified email if configuration for verification is enabled', async () => {
@@ -122,18 +103,20 @@ describe('Integration tests for email verification with emailVerification enable
       })
     )
 
-    const response = await fetch(urlLogin, {
+    
+    const res = await request(handler, {
       method: 'POST',
+      url: '/api/auth/login',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      body: {
         email: newUser.email,
         password: newUser.password,
-      }),
-    })
+      },
+    });
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
   test('Calling to email verification should change the status to verified', async () => {
@@ -145,17 +128,26 @@ describe('Integration tests for email verification with emailVerification enable
       })
     )
 
-    const response = await fetch(
-      urlVerify + '?email=test@test.com&token=1234',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
+        email: 'test@test.com',
+        token: '1234'
+      },
+      url: '/api/auth/verify',
+      headers: { 
+        'Content-Type': 'application/json',
+      },
+      body: {
+        email: newUser.email,
+        password: newUser.password,
+      },
+    });
 
-    expect(response.status).toBe(200)
+
+
+    expect(res.statusCode).toBe(200)
 
     expect(updateOneUser).toHaveBeenCalledWith('theid', {
       emailVerified: true,
