@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import React, { memo } from 'react'
 
-function Links({ links, className }) {
+function Links({ links, className = '' }) {
   return (
     <>
       <div className={className}>
