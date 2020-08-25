@@ -33,6 +33,7 @@
   - [API](#api)
     - [Auth](#auth)
     - [Users](#users)
+    - [Groups](#groups-1)
     - [Content](#content)
     - [Comments](#comments)
     - [Activity](#activity)
@@ -989,5 +990,5 @@ The Content API is defined on your set of rules in the configuration file, the o
     }
   }
   ```
-- `DELETE /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?entityId=xxxx`
-  - It will delete the interactions for the current user with a certain entity ID
+- `DELETE /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?id=xxxx`
+  - It will delete the interaction sent as an id
