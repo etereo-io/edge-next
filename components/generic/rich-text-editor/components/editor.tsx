@@ -21,7 +21,7 @@ if (typeof window !== 'undefined') {
 }
 
 function Editor({
-  onChange,
+  onChange = () => {},
   label,
   className,
   placeholder,

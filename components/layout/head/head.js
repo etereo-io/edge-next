@@ -3,7 +3,7 @@ import Head from 'next/head'
 
 import config from '@lib/config'
 
-function Head(props) {
+function HeadComponent(props) {
   return (
     <Head>
       <title>
@@ -20,4 +20,4 @@ function Head(props) {
   )
 }
 
-export default memo(Head)
+export default memo(HeadComponent)
