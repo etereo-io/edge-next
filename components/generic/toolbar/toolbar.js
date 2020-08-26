@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo } from 'react'
 import Link from 'next/link'
 
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
@@ -20,18 +20,13 @@ function ToolBar() {
         )}
         {user && (
           <div className="edge-avatar-user">
-            <Avatar
-              width={'32px'}
-              user={user}
-            />
+            <Avatar width={'32px'} user={user} />
 
             <div className="edge-avatar-user-info">
               <strong className="edge-user-name">
                 {user && (
                   <a title={`${user.username} profile`}>
-                    {user.profile && user.profile.displayName
-                      ? user.profile.displayName
-                      : user.username}
+                    {user?.profile?.displayName || user.username}
                   </a>
                 )}
               </strong>

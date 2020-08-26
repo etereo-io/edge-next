@@ -1,11 +1,12 @@
+import { useState } from 'react'
+
+import config from '@lib/config'
+import { getContentTypeDefinition } from '@lib/config'
+import { useUser } from '@lib/client/hooks'
 import Button from '@components/generic/button/button'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
-import config from '@lib/config'
-import { getContentTypeDefinition } from '@lib/config'
-import { useState } from 'react'
-import { useUser } from '@lib/client/hooks'
 
 const Landing = () => {
   const contentType = getContentTypeDefinition('post')
