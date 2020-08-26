@@ -41,5 +41,6 @@ module.exports = {
     '@components(.*)$': '<rootDir>/components/$1',
     '@pages(.*)$': '<rootDir>/pages/$1',
     '@rootFolder(.*)$': '<rootDir>/$1',
+    '\\.svg': '<rootDir>/test/unit/__mocks__/fileMock.tsx'
   },
 }
