@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 
-import ArrowUp from 'public/icons/arrow-up.svg'
-import ArrowDown from 'public/icons/arrow-down.svg'
+import ArrowUp from '@icons/arrow-up.svg'
+import ArrowDown from '@icons/arrow-down.svg'
 
 const svgStyles = {
   fill: 'var(--edge-foreground)',

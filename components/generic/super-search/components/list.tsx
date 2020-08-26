@@ -7,7 +7,7 @@ import {
   UserType,
 } from '@lib/types'
 import { useOnScreen } from '@lib/client/hooks'
-import ArrowDown from 'public/icons/arrow-down.svg'
+import ArrowDown from '@icons/arrow-down.svg'
 
 import UserItem from './user-item'
 import ContentItems from './content-items'

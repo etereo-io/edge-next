@@ -11,7 +11,7 @@ import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-
 import { SuperSearchResponse } from '@lib/types'
 import { useClickAwayListener } from '@lib/client/hooks'
 
-import SearchIcon from 'public/icons/icon-search.svg'
+import SearchIcon from '@icons/icon-search.svg'
 
 import List from './list'
 
