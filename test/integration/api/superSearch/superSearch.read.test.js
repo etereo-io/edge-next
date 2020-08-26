@@ -46,7 +46,7 @@ jest.mock('@rootFolder/edge.config', () => {
     }
 
     const user = {
-      permissions: { read: ['PUBLIC'] },
+      permissions: { read: ['PUBLIC'], admin: ['ADMIN'] },
 
       roles: [
         {
@@ -145,11 +145,26 @@ describe('Integrations tests for SuperSearch', () => {
     })
   }
 
+  const commonPermissions = {
+    'content.post.read': ['USER'],
+    'content.post2.read': ['ADMIN'],
+    'group.project.read': ['ADMIN'],
+    'user.read': ['USER'],
+    'user.admin': ['ADMIN'],
+  }
+
+  const publicPermissions = {
+    ...commonPermissions,
+    'superSearch.read': ['PUBLIC'],
+  }
+
+  const userPermissions = {
+    ...commonPermissions,
+    'superSearch.read': ['USER'],
+  }
+
   test('User has a correct role', async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['USER'],
-      [`user.admin`]: ['ADMIN'],
-    })
+    getPermissions.mockReturnValue(userPermissions)
     getSession.mockReturnValue(Promise.resolve({ id: 1, roles: ['USER'] }))
 
     const res = await fetchQuery()
@@ -158,10 +173,7 @@ describe('Integrations tests for SuperSearch', () => {
   })
 
   test("User doesn't have a correct role", async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['USER'],
-      [`user.admin`]: ['ADMIN'],
-    })
+    getPermissions.mockReturnValue(userPermissions)
     getSession.mockReturnValue(Promise.resolve({ id: 1, roles: ['PUBLIC'] }))
 
     const res = await fetchQuery()
@@ -170,10 +182,7 @@ describe('Integrations tests for SuperSearch', () => {
   })
 
   test('User has an admin role', async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['USER'],
-      [`user.admin`]: ['ADMIN'],
-    })
+    getPermissions.mockReturnValue(userPermissions)
     getSession.mockReturnValue(Promise.resolve({ id: 1, roles: ['ADMIN'] }))
 
     const res = await fetchQuery()
@@ -182,9 +191,7 @@ describe('Integrations tests for SuperSearch', () => {
   })
 
   test('Empty string is restricted', async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['PUBLIC'],
-    })
+    getPermissions.mockReturnValue(publicPermissions)
     getSession.mockReturnValue()
 
     const res = await fetchQuery()
@@ -194,9 +201,7 @@ describe('Integrations tests for SuperSearch', () => {
   })
 
   test("User isn't authorized. Only public entities should be retrieved", async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['PUBLIC'],
-    })
+    getPermissions.mockReturnValue(publicPermissions)
     getSession.mockReturnValue()
 
     const res = await fetchQuery('q')
@@ -208,9 +213,7 @@ describe('Integrations tests for SuperSearch', () => {
   })
 
   test('User#1 has an user role', async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['PUBLIC'],
-    })
+    getPermissions.mockReturnValue(publicPermissions)
     getSession.mockReturnValue(Promise.resolve({ id: 1, roles: ['USER'] }))
 
     const res = await fetchQuery('q')
@@ -235,9 +238,7 @@ describe('Integrations tests for SuperSearch', () => {
   })
 
   test('User#2 has an user role', async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['PUBLIC'],
-    })
+    getPermissions.mockReturnValue(publicPermissions)
     getSession.mockReturnValue(
       Promise.resolve({ id: 'someID', roles: ['USER'] })
     )
@@ -270,9 +271,7 @@ describe('Integrations tests for SuperSearch', () => {
   })
 
   test('User#3 has an admin role', async () => {
-    getPermissions.mockReturnValue({
-      [`superSearch.read`]: ['PUBLIC'],
-    })
+    getPermissions.mockReturnValue(publicPermissions)
     getSession.mockReturnValue(
       Promise.resolve({ id: 'adminID', roles: ['ADMIN'] })
     )

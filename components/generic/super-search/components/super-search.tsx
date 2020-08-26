@@ -11,6 +11,8 @@ import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-
 import { SuperSearchResponse } from '@lib/types'
 import { useClickAwayListener } from '@lib/client/hooks'
 
+import SearchIcon from 'public/icons/icon-search.svg'
+
 import List from './list'
 
 const { superSearch: searchConfig } = config
@@ -56,11 +58,7 @@ function SuperSearch({ user }: Props) {
       {searchConfig.enabled && canSee && (
         <div className="edge-searchbox" ref={ref}>
           <span className="icon-box">
-            {isValidating ? (
-              <LoadingSpinner />
-            ) : (
-              <img src="/icons/icon-search.svg" />
-            )}
+            {isValidating ? <LoadingSpinner /> : <SearchIcon />}
           </span>
           <input
             onChange={handleInputChange}
@@ -68,7 +66,9 @@ function SuperSearch({ user }: Props) {
             type="text"
             placeholder="Search"
           />
-          {isFocus && <List data={data?.data || []} />}
+          {isFocus && debouncedSearch && (
+            <List data={data?.data || []} isLoading={isValidating} />
+          )}
         </div>
       )}
 

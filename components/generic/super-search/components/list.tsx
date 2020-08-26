@@ -15,9 +15,10 @@ import GroupItem from './group-item'
 
 interface Props {
   data: SuperSearchResponse[]
+  isLoading: boolean
 }
 
-function List({ data }: Props) {
+function List({ data, isLoading }: Props) {
   const users = useMemo(
     () =>
       data
@@ -46,12 +47,10 @@ function List({ data }: Props) {
 
   const isOnScreen = useOnScreen(endOfListRef, '0px')
 
-  console.log(isOnScreen)
-
   return (
     <div className="list-container">
       <div className="list">
-        {isEmptyContent && isEmptyGroups && !users.length && (
+        {isEmptyContent && isEmptyGroups && !users.length && !isLoading && (
           <div>Nothing found</div>
         )}
         {!!users.length && (

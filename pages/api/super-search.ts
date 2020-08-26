@@ -67,18 +67,15 @@ async function getEntities(
   const filteredEntities = []
 
   if (currentUser) {
-    const { roles: userRoles } = currentUser
-    // TODO: maybe it can be done in the better way
     filteredEntities.push(
       ...entities.reduce((acc, entity) => {
-        const { permissions: roles, type } = entity
+        const { type, name } = entity
 
-        const canSee = roles.some(
-          (role) =>
-            userRoles.includes(role) ||
-            role === ROLES.PUBLIC ||
-            userRoles.includes(ROLES.ADMIN)
-        )
+        const canSee = hasPermission(currentUser, [
+          `${type}.${name}.read`,
+          'user.admin',
+          `${type}.read`,
+        ])
 
         if (canSee) {
           acc.push(entity)
