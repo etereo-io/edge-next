@@ -1,17 +1,20 @@
 import { InteractionType } from '@lib/types/entities/interaction'
 import { getDB } from '../../db'
 
-export async function createInteraction(interaction: InteractionType): Promise<InteractionType> {
+export async function createInteraction(
+  interaction: InteractionType
+): Promise<InteractionType> {
   return getDB()
     .collection('interactions')
     .add(interaction)
 }
 
-
 export async function findInteractions(options, paginationOptions) {
   const { from = 0, limit = 15, sortBy, sortOrder = 'DESC' } = paginationOptions
 
-  const total = await getDB().collection('interactions').count(options);
+  const total = await getDB()
+    .collection('interactions')
+    .count(options)
 
   return getDB()
     .collection('interactions')
@@ -26,7 +29,7 @@ export async function findInteractions(options, paginationOptions) {
         results: data,
         from,
         limit,
-        total
+        total,
       }
     })
 }

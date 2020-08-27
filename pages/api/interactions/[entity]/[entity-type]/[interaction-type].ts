@@ -14,17 +14,31 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 const getInteractions = (paginationParams) => (req, res) => {
-  const hasRights = interactionPermission(req.currentUser, req.query.entity, req.query['entity-type'], req.query['interaction-type'], 'read')
+  const hasRights = interactionPermission(
+    req.currentUser,
+    req.query.entity,
+    req.query['entity-type'],
+    req.query['interaction-type'],
+    'read'
+  )
 
   if (!hasRights) {
     return res.status(401).json({
-      error: 'Not authorized'
+      error: 'Not authorized',
     })
   }
-  const filterParams = <{ entity?: string, entityType?: string, type: string, author?: string, entityId?: string}>{
+  const filterParams = <
+    {
+      entity?: string
+      entityType?: string
+      type: string
+      author?: string
+      entityId?: string
+    }
+  >{
     entity: req.query['entity'],
     entityType: req.query['entity-type'],
-    type: req.query['interaction-type']
+    type: req.query['interaction-type'],
   }
 
   if (req.query.author) {
@@ -51,16 +65,22 @@ const addInteraction = (interaction: InteractionType) => async (
   res
 ) => {
   // Check if user has rights
-  const hasRights = interactionPermission(currentUser, interaction.entity, interaction.entityType, interaction.type, 'create')
+  const hasRights = interactionPermission(
+    currentUser,
+    interaction.entity,
+    interaction.entityType,
+    interaction.type,
+    'create'
+  )
   if (!hasRights) {
     return res.status(401).json({
-      error: 'Not authorized'
+      error: 'Not authorized',
     })
   }
 
   // Make sure we include the author
   const newInteraction = { ...interaction, author: currentUser.id }
-  
+
   // Interactions are unique
   const interactionForSameEntity = await findOneInteraction(newInteraction)
   if (interactionForSameEntity) {
@@ -71,10 +91,10 @@ const addInteraction = (interaction: InteractionType) => async (
 
   try {
     const added = await createInteraction(newInteraction)
-  
-    res.status(200).json(added)
+
+    return res.status(200).json(added)
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       error: err.message,
     })
   }
@@ -85,38 +105,47 @@ const deleteInteraction = async (req, res) => {
 
   if (!interactionId) {
     return res.status(400).json({
-      error: 'Missing interaction id'
+      error: 'Missing interaction id',
     })
   }
 
-  const hasRights = interactionPermission(req.currentUser, req.query.entity, req.query['entity-type'], req.query['interaction-type'], 'delete')
-  
+  const hasRights = interactionPermission(
+    req.currentUser,
+    req.query.entity,
+    req.query['entity-type'],
+    req.query['interaction-type'],
+    'delete'
+  )
+
   const existingInteraction = await findOneInteraction({
-    id: interactionId
+    id: interactionId,
   })
 
   if (!existingInteraction) {
     return res.status(404).json({
-      error: 'Non existing interaction'
+      error: 'Non existing interaction',
     })
   }
 
   if (hasRights || existingInteraction.author === req.currentUser.id) {
     try {
       await deleteOneInteraction({
-        id: interactionId
+        id: interactionId,
       })
-  
-      res.status(200).json({
-        deleted: true
+
+      return res.status(200).json({
+        deleted: true,
       })
-    } catch(err) {
-      res.status(500).json({
-        error: err.message
+    } catch (err) {
+      return res.status(500).json({
+        error: err.message,
       })
     }
-    
   }
+
+  return res.status(401).json({
+    error: 'Not authorized',
+  })
 }
 
 export default async (req, res) => {
@@ -152,6 +181,6 @@ export default async (req, res) => {
   methods(req, res, {
     get: getInteractions(paginationParams),
     post: addInteraction(req.body),
-    delete: deleteInteraction
+    del: deleteInteraction,
   })
 }

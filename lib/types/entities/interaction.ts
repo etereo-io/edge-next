@@ -1,4 +1,4 @@
-export declare type InteractionType = {
+export type InteractionType = {
   id: string;
   type: string;
   entity: string;

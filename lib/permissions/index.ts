@@ -221,14 +221,11 @@ export const groupCommentPermission = (user: UserType = publicUser , entityType,
 
 
 export const interactionPermission = (user: UserType = publicUser , entity: string, entityType: string, interactionType: string, action) => {
-
   const permission = [
     `${entity}.${entityType}.interactions.${interactionType}.${action}`,
     `${entity}.${entityType}.interactions.${interactionType}.admin`,
     `${entity}.${entityType}.admin`,
   ]
 
-  const canAccess = hasPerm(user, permission)
-
-  return canAccess
+  return  hasPerm(user, permission)
 }
