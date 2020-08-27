@@ -4,13 +4,13 @@ import {
   findInteractions,
   findOneInteraction,
 } from '@lib/api/entities/interactions'
-
+import { isValidInteractionType } from '@lib/api/middlewares'
 import { InteractionType } from '@lib/types/entities/interaction'
 import { connect } from '@lib/api/db'
 import { interactionPermission } from '@lib/permissions'
 import { loadUser } from '@lib/api/middlewares'
 import logger from '@lib/logger'
-import methods from '@lib/api/api-helpers/methods'
+import methods, { getAction } from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 const getInteractions = (paginationParams) => (req, res) => {
@@ -151,6 +151,8 @@ const deleteInteraction = async (req, res) => {
 export default async (req, res) => {
   const {
     query: { sortBy, sortOrder, from, limit },
+    method,
+    body,
   } = req
 
   const paginationParams = {
@@ -178,9 +180,41 @@ export default async (req, res) => {
     })
   }
 
+  try {
+    let entity
+    let entityType
+    let interactionType
+    switch (getAction(method)) {
+      case 'create': {
+        entity = body.entity
+        entityType = body.entityType
+        interactionType = body.type
+
+        break
+      }
+      case 'delete': {
+        entity = req.query.entity
+        entityType = req.query['entity-type']
+        interactionType = req.query['interaction-type']
+
+        break
+      }
+    }
+
+    await runMiddleware(
+      req,
+      res,
+      isValidInteractionType(entity, entityType, interactionType)
+    )
+  } catch (e) {
+    return res.status(400).json({
+      error: e.message,
+    })
+  }
+
   methods(req, res, {
     get: getInteractions(paginationParams),
-    post: addInteraction(req.body),
+    post: addInteraction(body),
     del: deleteInteraction,
   })
 }

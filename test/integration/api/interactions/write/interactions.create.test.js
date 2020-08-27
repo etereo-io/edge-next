@@ -234,6 +234,34 @@ describe('Integrations tests for Interaction creation process', () => {
     })
   })
 
+  test("User can't create interaction that not in the config", async () => {
+    const userId = 2
+    const user = { id: userId, roles: ['ADMIN'] }
+    const body = {
+      entityId: 2,
+      entity: contentEntity,
+      entityType: content2Type,
+      type: likeType,
+    }
+
+    findOneInteraction.mockReturnValue(Promise.resolve(false))
+    createInteraction.mockReturnValue(
+      Promise.resolve({
+        entityId: 2,
+        entity: contentEntity,
+        entityType: content2Type,
+        type: likeType,
+        createdAt: new Date(),
+      })
+    )
+    getSession.mockReturnValue(Promise.resolve(user))
+
+    const res = await fetchQuery(body)
+
+    expect(res.statusCode).toEqual(400)
+    expect(createInteraction).not.toBeCalled()
+  })
+
   test('User doesnt have permissions to like the content #2', async () => {
     const userId = 3
     const user = { id: userId, roles: ['PUBLIC'] }
