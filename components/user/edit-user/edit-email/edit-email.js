@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 
-export default function Named({ user,  onChange = () => {}, ...props }) {
+function EditEmail({ user,  onChange = () => {} }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -114,3 +114,5 @@ export default function Named({ user,  onChange = () => {}, ...props }) {
     </>
   )
 }
+
+export default memo(EditEmail)

@@ -149,11 +149,11 @@ export default async (req, res) => {
   const { item, currentUser } = req
 
   // Has permissions to update/delete members
-  const canUpdate =
+  const hasAccess =
     userId !== currentUser.id &&
     groupUserPermission(currentUser, type, getAction(method), item)
 
-  if (!canUpdate) {
+  if (!hasAccess) {
     return res.status(401).json({
       error: 'Not authorized',
     })

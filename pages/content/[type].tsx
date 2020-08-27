@@ -9,9 +9,14 @@ import { connect } from '@lib/api/db'
 import { findContent } from '@lib/api/entities/content/content'
 import { getContentTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import { getSession } from '@lib/api/auth/iron'
 
 // Get serversideProps is important for SEO, and only available at the pages level
-export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  query,
+}) => {
   const contentTypeDefinition = getContentTypeDefinition(query.type)
 
   if (!contentTypeDefinition) {
@@ -33,8 +38,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 
   const filterOptions = {} as any
 
+  const currentUser = await getSession(req)
+  const isAdmin = currentUser && currentUser.roles.indexOf('ADMIN') !== -1
+
   // If the content type allows draft, filter them out on the public list
-  if (contentTypeDefinition.publishing.draftMode) {
+  if (contentTypeDefinition.publishing.draftMode && !isAdmin) {
     filterOptions.draft = false
   }
 
@@ -42,21 +50,23 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     filterOptions['tags.slug'] = query.tags
   }
 
-  const response = await findContent(
-    query.type,
-    filterOptions,
-    { sortBy: 'createdAt', sortOrder: 'DESC', limit: 10 },
-  )
+  const response = await findContent(query.type, filterOptions, {
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+    limit: 10,
+  })
 
   return {
     props: {
       data: response,
       type: query.type,
       canAccess: true,
-      query: `&sortBy=createdAt&sortOrder=DESC${
-        query.tags ? `&tags=${query.tags}` : ''
-      }`,
+      query: query.tags ? `tags=${query.tags}` : '',
       contentType: contentTypeDefinition,
+      sortOptions: {
+        sortBy: 'createdAt',
+        sortOrder: 'DESC',
+      },
     },
   }
 }
@@ -72,6 +82,7 @@ const ContentPage = (props) => {
           type={props.contentType}
           infiniteScroll={true}
           query={props.query}
+          defaultSortOptions={props.sortOptions}
         />
       </div>
     </Layout>

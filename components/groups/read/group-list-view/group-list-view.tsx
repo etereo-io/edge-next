@@ -20,6 +20,7 @@ interface Props {
   type: GroupTypeDefinition
   infiniteScroll?: boolean
   query?: string
+  defaultSortOptions?: SortingValue
   initialData?: object | object[]
   withSorting?: boolean
 }
@@ -30,11 +31,9 @@ function GroupListView({
   type,
   initialData,
   withSorting = true,
+  defaultSortOptions = { sortBy: 'createdAt', sortOrder: 'DESC' },
 }: Props) {
-  const [sorting, setSorting] = useState<SortingValue>({
-    sortBy: 'createdAt',
-    sortOrder: 'DESC',
-  })
+  const [sorting, setSorting] = useState<SortingValue>(defaultSortOptions)
   const { sortBy, sortOrder } = sorting
   let initData = null
 

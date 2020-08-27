@@ -77,6 +77,7 @@ jest.mock('../../../../../edge.config', () => {
         join: ['USER'],
         update: ['ADMIN'],
         create: ['ADMIN'],
+        delete: ['GROUP_ADMIN', 'GROUP_ADMIN'],
       },
     },
   }
@@ -136,6 +137,7 @@ describe('Integrations tests for group user removing', () => {
     getPermissions.mockReturnValue({
       [`group.${groupType}.user.join`]: ['USER'],
       [`group.${groupType}.user.update`]: ['GROUP_ADMIN'],
+      [`group.${groupType}.user.delete`]: ['ADMIN', 'GROUP_ADMIN'],
       [`group.${groupType}.admin`]: ['ADMIN'],
     })
   })

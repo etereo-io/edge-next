@@ -1,4 +1,10 @@
-export default function Named({ width = '200px', height = '20px', borderRadius = 'var(--edge-radius)' }) {
+import { memo } from 'react'
+
+function LoadingPlaceholder({
+  width = '200px',
+  height = '20px',
+  borderRadius = 'var(--edge-radius)',
+}) {
   return (
     <>
       <div className="loading-placeholder"></div>
@@ -33,3 +39,5 @@ export default function Named({ width = '200px', height = '20px', borderRadius =
     </>
   )
 }
+
+export default memo(LoadingPlaceholder)

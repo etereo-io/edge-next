@@ -1,6 +1,6 @@
-export default function Named(props) {
-  const { children, featured, success, secondary, warning, alert } = props
+import { memo } from 'react'
 
+function Badge({ children, featured, success, secondary, warning, alert }) {
   return (
     <>
       <div
@@ -110,3 +110,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(Badge)

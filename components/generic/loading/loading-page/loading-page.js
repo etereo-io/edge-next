@@ -1,5 +1,8 @@
+import {memo} from 'react'
+
 import Spinner from '../loading-spinner/loading-spinner'
-export default function Named() {
+
+function LoadingPage() {
   return (
     <>
       <div className="page-loading">
@@ -29,3 +32,5 @@ export default function Named() {
     </>
   )
 }
+
+export default memo(LoadingPage)

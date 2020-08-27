@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -11,7 +11,7 @@ import Link from 'next/link'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 
-export default function Named(props) {
+function ContentForm(props) {
   // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -133,7 +133,7 @@ export default function Named(props) {
 
   return (
     <>
-     
+
       <div className="contentForm">
         <form name="content-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
@@ -170,7 +170,7 @@ export default function Named(props) {
           )}
           {error && <div className="error-message">Error saving </div>}
         </form>
-        
+
         <div className="preview-wrapper">
           <div className="preview">
             <ContentSummaryView content={state} type={props.type} />
@@ -224,3 +224,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(ContentForm)

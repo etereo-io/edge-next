@@ -1,7 +1,8 @@
-import Placeholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
+import { memo } from 'react'
+
 import loadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 
-export default function Named({ user, loading = false }) {
+function CoverImage({ user, loading = false }) {
   return (
     <>
       <div className="cover-image-wrapper">
@@ -34,3 +35,5 @@ export default function Named({ user, loading = false }) {
     </>
   )
 }
+
+export default memo(CoverImage)

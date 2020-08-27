@@ -11,6 +11,7 @@ export declare type CommentsType = {
 export declare type ContentTypeDefinition = {
   title: string;
   slug: string;
+  type: string;
   slugGeneration: string[];
   permissions: PermissionsType;
   publishing: PublishingType;

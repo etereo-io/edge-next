@@ -1,11 +1,13 @@
-export default function Named({
+import { memo } from 'react'
+
+function Card({
   children = null,
   alt = false,
   featured = false,
   success = false,
   secondary = false,
   warning = false,
-  alert  = false,
+  alert = false,
   ...props
 }) {
   return (
@@ -72,3 +74,5 @@ export default function Named({
     </>
   )
 }
+
+export default memo(Card)

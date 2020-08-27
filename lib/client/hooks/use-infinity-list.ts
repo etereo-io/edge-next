@@ -1,8 +1,9 @@
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useSWRInfinite } from 'swr'
 import { ConfigInterface } from 'swr/dist/types'
 
 import fetch from '@lib/fetcher'
+import { useUpdateEffect } from '@lib/client/hooks'
 
 type getKeyProps = {
   url: string
@@ -29,9 +30,9 @@ const getKey = ({
 
   const from = pageIndex * limit
 
-  return `${url}?limit=${limit}${from ? '&from=' + from : ''}${
-    sortBy ? '&sortBy=' + sortBy : ''
-  }${sortOrder ? '&sortOrder=' + sortOrder : ''}${query ? '&' + query : ''}`
+  return `${url}?limit=${limit}${from ? `&from=${from}` : ''}${
+    sortBy ? `&sortBy=${sortBy}` : ''
+  }${sortOrder ? `&sortOrder=${sortOrder}` : ''}${query ? `&${query}` : ''}`
 }
 
 type DefaultListResponse<Data = any> = {
@@ -80,13 +81,17 @@ function useInfinityList<Item>({
     setSize,
     error,
     isValidating,
+    revalidate,
     ...rest
   } = useSWRInfinite<DefaultListResponse<Item>>(
     getKey({ url, sortBy, sortOrder, limit, query }),
     fetch,
     config
   )
-  const [isLoading, setIsLoading] = useState(false)
+
+  useUpdateEffect(() => {
+    revalidate()
+  }, [sortBy, sortOrder])
 
   const data = response
     ? [].concat(...response.map(({ results }) => results))
@@ -99,15 +104,12 @@ function useInfinityList<Item>({
   }
 
   const isLoadingInitialData = !response && !error
-  const isLoadingMore = isLoadingInitialData || isLoading
+  const isLoadingMore = isLoadingInitialData || isValidating
   const isEmpty = response?.[0]?.results.length === 0
   const isReachingEnd = isEmpty || limit * size >= total
   const isRefreshing = isValidating && response && response.length === size
   const loadNewItems = useCallback(() => {
-    setIsLoading(true)
-    setSize(size + 1).then((res) => {
-      setIsLoading(false)
-    })
+    setSize(size + 1)
   }, [setSize, size])
 
   return {

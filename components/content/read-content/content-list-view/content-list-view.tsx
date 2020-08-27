@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo, Fragment, useState } from 'react'
+import { useEffect, useRef, memo, Fragment, useState, useCallback } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -19,6 +19,7 @@ interface Props {
   infiniteScroll?: boolean
   addComments?: boolean
   query?: string
+  defaultSortOptions?: SortingValue
   initialData?: object | object[]
   type: ContentTypeDefinition
   withSorting?: boolean
@@ -31,12 +32,10 @@ function ContentListView({
   infiniteScroll = false,
   initialData = null,
   withSorting = true,
+  defaultSortOptions = { sortBy: 'createdAt', sortOrder: 'DESC' },
 }: Props) {
   let initData = null
-  const [sorting, setSorting] = useState<SortingValue>({
-    sortBy: 'createdAt',
-    sortOrder: 'DESC',
-  })
+  const [sorting, setSorting] = useState<SortingValue>(defaultSortOptions)
   const { sortBy, sortOrder } = sorting
 
   if (initialData) {
@@ -46,6 +45,7 @@ function ContentListView({
       initData = [initialData]
     }
   }
+
   const {
     data,
     loadNewItems,
