@@ -184,6 +184,7 @@ export default async (req, res) => {
     let entity
     let entityType
     let interactionType
+
     switch (getAction(method)) {
       case 'create': {
         entity = body.entity

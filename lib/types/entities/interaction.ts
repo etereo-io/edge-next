@@ -1,9 +1,19 @@
+import { INTERACTION_TYPES } from '@lib/constants'
+import { UserType } from '@lib/types'
+
 export type InteractionType = {
-  id: string;
-  type: string;
-  entity: string;
-  entityType: string;
-  entityId: string;
-  author?: string;
-  createdAt?: number;
+  id: string
+  type: INTERACTION_TYPES
+  entity: string
+  entityType: string
+  entityId: string
+  author?: string
+  createdAt?: number
+}
+
+export type InteractionEntity = {
+  [name in INTERACTION_TYPES]: {
+    result: number | UserType[]
+    interaction: null | InteractionType
+  }
 }

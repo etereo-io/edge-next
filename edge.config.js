@@ -96,6 +96,26 @@ export const getConfig = () => {
       },
     },
 
+    entityInteractions: [
+      {
+        type: 'like',
+        aggregation: 'count',
+        permissions: {
+          read: ['USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+      {
+        type: 'follow',
+        permissions: {
+          read: ['USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+    ],
+
     fields: [
       {
         name: 'title',
@@ -332,6 +352,18 @@ export const getConfig = () => {
           update: ['GROUP_ADMIN'],
           delete: ['GROUP_ADMIN'],
           admin: ['GROUP_ADMIN'],
+        },
+      },
+    ],
+
+    entityInteractions: [
+      {
+        type: 'like',
+        aggregation: 'count',
+        permissions: {
+          read: ['USER'],
+          create: ['ADMIN'],
+          delete: ['USER'],
         },
       },
     ],

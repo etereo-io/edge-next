@@ -8,6 +8,7 @@ import { GroupTabs } from '@components/groups/read/group-tabs'
 import GroupActions from '../../group-actions/group-actions'
 import GroupContentMenu from '../../group-content-menu/group-content-menu'
 import GroupSummaryView from '../group-summary-view/group-summary-view'
+import { InteractionsList } from '@components/generic/interactions'
 
 interface Props {
   showActions: boolean
@@ -25,7 +26,11 @@ function DetailView({ group, type, showActions }: Props) {
         <div className="edge-item-card-content">
           <GroupSummaryView group={group} linkToDetail={false} type={type} />
         </div>
-
+        <InteractionsList
+          interactions={group.interactions}
+          entity="group"
+          entityType={type.slug}
+        />
         <footer className="edge-item-card-footer">
           <ul className="edge-item-card-stats">
             <li className="edge-item-card-stats-item">

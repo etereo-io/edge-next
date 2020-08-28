@@ -20,7 +20,7 @@ export const contentPermission = (user: UserType = publicUser , entityType, acti
   const canAccess = hasPerm(user, permission)
 
   if (content) {
-    const isOwner = user && content.author === user.id
+    const isOwner = user && content.author === user?.id
     const isAdmin = hasPerm(user, `content.${entityType}.admin`)
 
     // Draft check
@@ -55,7 +55,7 @@ export const groupContentPermission = (user: UserType = publicUser , entityType,
     return canAccess
   }
 
-  const groupMember = group.members ? group.members.find(i => i.id === user.id): null
+  const groupMember = group.members ? group.members.find(i => i.id === user?.id): null
 
   if (group.permissions) {
     // Group based permissions
@@ -68,7 +68,7 @@ export const groupContentPermission = (user: UserType = publicUser , entityType,
 
   // Owner should be able to edit or delete content
   if (content) {
-    const isOwner = user && content.author === user.id
+    const isOwner = user && content.author === user?.id
     return canAccess || isOwner
   }
 
@@ -83,13 +83,13 @@ export const groupPermission = (user: UserType = publicUser , entityType, action
     `group.${entityType}.admin`,
   ]
 
-  const groupMember = group ? group.members.find(i => i.id === user.id) : null
+  const groupMember = group ? group.members.find(i => i.id === user?.id) : null
 
   // If there is a group we need to check also if the content owner is the current user
   const canAccess = hasPerm(user, permission) || hasPerm(groupMember, permission)
 
   if (group) {
-    const isOwner = user && group.author === user.id
+    const isOwner = user && group.author === user?.id
     const isAdmin = hasPerm(user, `group.${entityType}.admin`) || hasPerm(user, `group.${entityType}.admin`)
 
     // Draft check
@@ -119,7 +119,7 @@ export const userPermission = function (user: UserType, action, userId) {
         user &&
         (isUsername
           ? user.username === userId.replace('@', '')
-          : user.id === userId)) ||
+          : user?.id === userId)) ||
       (user && userId === 'me')
 
     return canAccess || isOwner
@@ -149,7 +149,7 @@ export const groupUserPermission = (user: UserType = publicUser , entityType, ac
     return canAccess
   }
 
-  const groupMember = group ? (group.members || []).find(i => i.id === user.id) : null
+  const groupMember = group ? (group.members || []).find(i => i.id === user?.id) : null
 
   if (group.permissions) {
     // Group based permissions
@@ -173,7 +173,7 @@ export const commentPermission = function (user: UserType = publicUser, contentT
   const canAccess = hasPerm(user, permission)
 
   if (comment) {
-    const isOwner = comment.author === user.id
+    const isOwner = comment.author === user?.id
     return canAccess || isOwner
   }
 
@@ -200,7 +200,7 @@ export const groupCommentPermission = (user: UserType = publicUser , entityType,
     return canAccess
   }
 
-  const groupMember = group.members ? group.members.find(i => i.id === user.id): null
+  const groupMember = group.members ? group.members.find(i => i.id === user?.id): null
 
   if (group.permissions) {
     // Group based permissions
@@ -212,7 +212,7 @@ export const groupCommentPermission = (user: UserType = publicUser , entityType,
 
   // Comment owner has the rights to delete or edit a comment
   if (comment) {
-    const isOwner = user && comment.author === user.id
+    const isOwner = user && comment.author === user?.id
     return canAccess || isOwner
   }
 

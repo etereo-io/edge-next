@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react'
+import React, { useState, memo, useMemo } from 'react'
 
 import AuthorBox from '@components/user/author-box/author-box'
 import Button from '@components/generic/button/button'
@@ -15,6 +15,7 @@ import { format } from 'timeago.js'
 import { useMonetizationState } from 'react-web-monetization'
 import { usePermission } from '@lib/client/hooks'
 import { useUser } from '@lib/client/hooks'
+import { InteractionsList } from '@components/generic/interactions'
 
 interface Props {
   content: any
@@ -196,7 +197,11 @@ function ContentDetailView(props: Props) {
               />
             </div>
           )}
-
+        <InteractionsList
+          interactions={props.content.interactions}
+          entity="content"
+          entityType={props.type.slug}
+        />
         {props.type.comments.enabled &&
           canReadComments.available &&
           showComments && (
