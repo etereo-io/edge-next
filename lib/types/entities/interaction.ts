@@ -3,6 +3,8 @@ import { UserType } from '@lib/types'
 
 export type InteractionType = {
   id: string
+  // property is only present in raw DB data
+  _id?: string
   type: INTERACTION_TYPES
   entity: string
   entityType: string

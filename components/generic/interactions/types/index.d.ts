@@ -8,6 +8,7 @@ export type InteractionItem = {
   canCreate: boolean
   canRemove: boolean
   interaction: null | InteractionType
+  result: null | number | InteractionEntity[]
 }
 
 export type Action = 'read' | 'create' | 'delete'

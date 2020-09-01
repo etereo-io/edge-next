@@ -11,6 +11,7 @@ import { getGroupTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { useGroupTypes } from '@lib/client/hooks'
 import { getSession } from '@lib/api/auth/iron'
+import { appendInteractions } from '@lib/api/api-helpers/interactions'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({
@@ -55,6 +56,20 @@ export const getServerSideProps: GetServerSideProps = async ({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
     limit: 10,
+  }).then(async (data) => {
+    if (data.total) {
+      const results = await appendInteractions({
+        data: data.results,
+        interactionsConfig: groupTypeDefinition.entityInteractions,
+        entity: 'group',
+        entityType: query.type as string,
+        currentUser,
+      })
+
+      return { ...data, results }
+    }
+
+    return data
   })
 
   return {
@@ -77,7 +92,7 @@ const ContentPage = (props) => {
 
   const links = groupTypes.map((type) => {
     return {
-      link: `/groups/${type.slug}`,
+      link: `/group/${type.slug}`,
       title: `See all ${type.title}`,
     }
   })

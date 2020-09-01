@@ -24,15 +24,18 @@ function getResult({
   const isArray = !needAggregationTypes.includes(type)
 
   if (isArray) {
-    return (values as InteractionType[]).filter(
-      (interaction) => interaction[field] === id
-    )
+    return (values as InteractionType[])
+      .filter((interaction) => interaction[field] === id)
+      .map(({ _id, ...rest }) => ({
+        ...rest,
+        id: _id.toString(),
+      }))
   } else {
     const result = (values as SingleResult[]).find(
       (interaction) => interaction[field] === id
     )
 
-    return result?.agg || null
+    return result?.agg || 0
   }
 }
 
@@ -105,7 +108,7 @@ async function getResultInteractions(
             user:
               item.user && item.user.length
                 ? hidePrivateUserFields(item.user[0])
-                : undefined,
+                : null,
           }))
         }
 
@@ -134,15 +137,15 @@ function formResult(
 
     like.interaction = userInteractions.find(
       ({ type, entityId }) => entityId === id && type === INTERACTION_TYPES.LIKE
-    )
+    )|| null
     follow.interaction = userInteractions.find(
       ({ type, entityId }) =>
         entityId === id && type === INTERACTION_TYPES.FOLLOW
-    )
+    ) || null
     favorite.interaction = userInteractions.find(
       ({ type, entityId }) =>
         entityId === id && type === INTERACTION_TYPES.FAVORITE
-    )
+    )|| null
 
     resultInteractions.forEach((item) => {
       Object.entries<SingleResult[]>(item).forEach(([type, values]) => {

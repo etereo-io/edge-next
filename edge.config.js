@@ -359,7 +359,7 @@ export const getConfig = () => {
     entityInteractions: [
       {
         type: 'like',
-        aggregation: 'count',
+        aggregation: 'sum',
         permissions: {
           read: ['USER'],
           create: ['ADMIN'],

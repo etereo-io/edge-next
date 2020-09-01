@@ -36,7 +36,7 @@ function getTitle(type: INTERACTION_TYPES, isActive: boolean) {
 }
 
 function Item({
-  item: { type, canCreate, canRemove, interaction: defaultInteraction },
+  item: { type, canCreate, canRemove, interaction: defaultInteraction, result },
   entity,
   entityType,
   entityId,

@@ -21,6 +21,9 @@ import { contentValidations } from '@lib/validations/content'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
+import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { getContentTypeDefinition } from '@lib/config'
+
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -57,8 +60,22 @@ const loadContentItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getContent = async (req, res) => {
-  res.status(200).json(req.item)
+const getContent = async ({ item, currentUser }, res) => {
+  if(item) {
+    const contentTypeDefinition = getContentTypeDefinition(item.type)
+
+    const data = await appendInteractions({
+      data: [item],
+      interactionsConfig: contentTypeDefinition.entityInteractions,
+      entity: 'content',
+      entityType: item.type,
+      currentUser,
+    })
+
+    return res.status(200).json(data[0])
+  }
+
+  return res.status(200).json(item)
 }
 
 const deleteContent = (req, res) => {

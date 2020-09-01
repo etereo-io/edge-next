@@ -8,9 +8,15 @@ import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content/content'
 import { getContentTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { getSession } from '@lib/api/auth/iron'
 
 // Get serversideProps is important for SEO, and only available at the pages level
-export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  query,
+}) => {
   const contentTypeDefinition = getContentTypeDefinition(query.type)
 
   if (!contentTypeDefinition) {
@@ -56,10 +62,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   const hasWebMonetization =
     contentTypeDefinition.monetization && contentTypeDefinition.monetization.web
   const monetizationMeta = hasWebMonetization ? item.paymentPointer : null
+  const currentUser = await getSession(req)
+
+  const data = await appendInteractions({
+    data: [item],
+    interactionsConfig: contentTypeDefinition.entityInteractions,
+    entity: 'content',
+    entityType: item.type,
+    currentUser,
+  })
 
   return {
     props: {
-      data: item || null,
+      data: data[0],
       type: query.type,
       slug: query.slug,
       canAccess: true,

@@ -10,6 +10,7 @@ import Link from 'next/link'
 import fetch from '@lib/fetcher'
 import { groupUserPermission } from '@lib/permissions'
 import { useUser } from '@lib/client/hooks'
+import { InteractionsList } from '@components/generic/interactions'
 
 interface Props {
   linkToDetail?: boolean
@@ -150,6 +151,12 @@ function SummaryView({
             )}
             {error && <div className="error-message">Something went wrong.</div>}
           </div>
+          <InteractionsList
+            interactions={group.interactions}
+            entity="group"
+            entityType={type.slug}
+            entityId={group.id}
+          />
         </div>
       </div>
       <style jsx>{`

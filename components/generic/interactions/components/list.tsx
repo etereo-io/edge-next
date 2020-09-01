@@ -23,6 +23,8 @@ function List({ interactions, entity, entityType, entityId }: Props) {
         ) => {
           const interaction =
             interactions && interactions[type] && interactions[type].interaction
+          const result =
+            interactions && interactions[type] && interactions[type].result
 
           if (canSee || !!interaction) {
             acc.push({
@@ -30,6 +32,7 @@ function List({ interactions, entity, entityType, entityId }: Props) {
               canCreate,
               canRemove,
               interaction,
+              result,
             })
           }
 

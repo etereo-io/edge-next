@@ -10,6 +10,8 @@ import { findContent } from '@lib/api/entities/content/content'
 import { getContentTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { getSession } from '@lib/api/auth/iron'
+import { appendInteractions } from '@lib/api/api-helpers/interactions'
+
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({
@@ -54,6 +56,20 @@ export const getServerSideProps: GetServerSideProps = async ({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
     limit: 10,
+  }).then(async (data) => {
+    if (data.total) {
+      const results = await appendInteractions({
+        data: data.results,
+        interactionsConfig: contentTypeDefinition.entityInteractions,
+        entity: 'content',
+        entityType: query.type as string,
+        currentUser,
+      })
+
+      return { ...data, results }
+    }
+
+    return data
   })
 
   return {
