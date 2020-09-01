@@ -1,7 +1,7 @@
 import { generateSaltAndHash, userPasswordsMatch } from './user.utils'
 
 import { NewUserSchema } from './user.schema'
-import { UserType } from '@lib/types/user'
+import { UserType } from '@lib/types/entities/user'
 import config from '@lib/config'
 import { getDB } from '../../db'
 import { v4 as uuidv4 } from 'uuid'

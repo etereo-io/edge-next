@@ -89,8 +89,8 @@ async function getResultInteractions(
             {
               $lookup: {
                 from: 'users',
-                localField: 'author',
-                foreignField: 'id',
+                localField: 'authorId',
+                foreignField: '_id',
                 as: 'user',
               },
             },
@@ -103,13 +103,23 @@ async function getResultInteractions(
 
         // $lookup returns array
         if (acc[type] && acc[type].length) {
-          acc[type] = acc[type].map((item) => ({
-            ...item,
-            user:
-              item.user && item.user.length
-                ? hidePrivateUserFields(item.user[0])
-                : null,
-          }))
+          acc[type] = acc[type].map((item) => {
+            const interactionObject = {
+              ...item,
+            }
+
+            if (item.user && item.user.length) {
+              const user = item.user[0]
+              user.id = user._id.toString()
+              interactionObject.user = hidePrivateUserFields(user)
+            } else {
+              delete interactionObject.user
+            }
+
+            delete interactionObject.authorId
+
+            return interactionObject
+          })
         }
 
         return acc
@@ -135,17 +145,21 @@ function formResult(
     const follow = { interaction: null, result: null }
     const favorite = { interaction: null, result: null }
 
-    like.interaction = userInteractions.find(
-      ({ type, entityId }) => entityId === id && type === INTERACTION_TYPES.LIKE
-    )|| null
-    follow.interaction = userInteractions.find(
-      ({ type, entityId }) =>
-        entityId === id && type === INTERACTION_TYPES.FOLLOW
-    ) || null
-    favorite.interaction = userInteractions.find(
-      ({ type, entityId }) =>
-        entityId === id && type === INTERACTION_TYPES.FAVORITE
-    )|| null
+    like.interaction =
+      userInteractions.find(
+        ({ type, entityId }) =>
+          entityId === id && type === INTERACTION_TYPES.LIKE
+      ) || null
+    follow.interaction =
+      userInteractions.find(
+        ({ type, entityId }) =>
+          entityId === id && type === INTERACTION_TYPES.FOLLOW
+      ) || null
+    favorite.interaction =
+      userInteractions.find(
+        ({ type, entityId }) =>
+          entityId === id && type === INTERACTION_TYPES.FAVORITE
+      ) || null
 
     resultInteractions.forEach((item) => {
       Object.entries<SingleResult[]>(item).forEach(([type, values]) => {
@@ -243,16 +257,22 @@ export async function appendInteractions({
   )
 
   try {
-    const userInteractions = await getDB()
-      .collection('interactions')
-      .find(
-        {
-          entityId: { $in: ids },
-          type: { $in: permittedTypes },
-          author: currentUser.id,
-        },
-        { limit: 1000 }
-      )
+    const userInteractions = (
+      await getDB()
+        .collection('interactions')
+        .find(
+          {
+            entityId: { $in: ids },
+            type: { $in: permittedTypes },
+            author: currentUser.id,
+          },
+          { limit: 1000 }
+        )
+    ).map((interactionItem) => {
+      const { authorId, ...interaction } = interactionItem
+
+      return interaction
+    })
 
     const resultInteractions = await getResultInteractions(
       ids,

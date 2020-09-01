@@ -1,3 +1,5 @@
+import { ObjectID } from 'mongodb'
+
 import { InteractionType } from '@lib/types/entities/interaction'
 import { getDB } from '../../db'
 
@@ -6,7 +8,7 @@ export async function createInteraction(
 ): Promise<InteractionType> {
   return getDB()
     .collection('interactions')
-    .add(interaction)
+    .add({ ...interaction, authorId: new ObjectID(interaction.author) })
 }
 
 export async function findInteractions(options, paginationOptions) {

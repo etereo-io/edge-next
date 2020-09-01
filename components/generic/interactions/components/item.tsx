@@ -2,8 +2,6 @@ import React, { memo, useMemo, useCallback, useState } from 'react'
 
 import { INTERACTION_TYPES } from '@lib/constants'
 import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
-
-import fetcher from '@lib/fetcher'
 import API from '@lib/api/api-endpoints'
 import Like from '@icons/like.svg'
 import Favorite from '@icons/favorite.svg'
@@ -16,6 +14,13 @@ interface Props {
   entity: string
   entityType: string
   entityId: string
+  create: (
+    url: string,
+    body: object,
+    isNumber: boolean,
+    type: string
+  ) => Promise<any>
+  remove: (url: string, isNumber: boolean, type: string) => Promise<any>
 }
 
 const ICONS_MAPPING = {
@@ -36,38 +41,65 @@ function getTitle(type: INTERACTION_TYPES, isActive: boolean) {
 }
 
 function Item({
-  item: { type, canCreate, canRemove, interaction: defaultInteraction, result },
+  item: {
+    type,
+    canCreate,
+    canRemove,
+    interaction: defaultInteraction,
+    count,
+    isNumber,
+  },
   entity,
   entityType,
   entityId,
+  create,
+  remove,
 }: Props) {
   const Icon = ICONS_MAPPING[type]
   const [interaction, setInteraction] = useState(defaultInteraction)
-  const [isActive, setIsActive] = useState(!!interaction)
-  const [isLoading, setLoading] = useState(false)
-
+  const [isActive, setIsActive] = useState<boolean>(!!interaction)
+  const [isLoading, setLoading] = useState<boolean>(false)
+  const [counter, setCounter] = useState<number>(count)
   const title = getTitle(type, isActive)
 
   const handleCreation = useCallback(() => {
     if (canCreate) {
       setLoading(true)
 
-      fetcher(`${API.interactions}/${entity}/${entityType}/${type}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ entity, entityType, type, entityId }),
-      })
+      create(
+        `${API.interactions}/${entity}/${entityType}/${type}`,
+        {
+          entity,
+          entityType,
+          type,
+          entityId,
+        },
+        isNumber,
+        type
+      )
         .then(
           (result) => {
             setIsActive(true)
             setInteraction(result)
+
+            if (isNumber) {
+              setCounter((prevState) => prevState + 1)
+            }
           },
           //TODO: handle somehow
           (err) => console.log('Something went wrong')
         )
         .finally(() => setLoading(false))
     }
-  }, [canCreate, setIsActive, type, setInteraction, entityId])
+  }, [
+    canCreate,
+    setIsActive,
+    type,
+    setInteraction,
+    entityId,
+    setCounter,
+    isNumber,
+  ])
 
   const handleRemoving = useCallback(() => {
     if (canRemove && isActive) {
@@ -75,18 +107,25 @@ function Item({
 
       setLoading(true)
 
-      fetcher(`${API.interactions}/${entity}/${entityType}/${type}?id=${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-      })
+      remove(
+        `${API.interactions}/${entity}/${entityType}/${type}?id=${id}`,
+        isNumber,
+        type
+      )
         .then(
-          () => setIsActive(false),
+          () => {
+            setIsActive(false)
+
+            if (isNumber) {
+              setCounter((prevState) => prevState - 1)
+            }
+          },
           //TODO: handle somehow
           (err) => console.log('Something went wrong')
         )
         .finally(() => setLoading(false))
     }
-  }, [canRemove, interaction, isActive, setIsActive])
+  }, [canRemove, interaction, isActive, setIsActive, isNumber])
 
   const disabled = useMemo(() => {
     if (isActive && !canRemove) {
@@ -102,19 +141,30 @@ function Item({
 
   return (
     <>
-      <button
-        title={title}
-        className={`interaction ${type} ${isActive ? 'active' : ''} ${
-          disabled ? 'disabled' : ''
-        }`}
-        onClick={isActive ? handleRemoving : handleCreation}
-        disabled={disabled}
-      >
-        {isLoading ? <LoadingSpinner /> : <Icon />}
-      </button>
+      <div className="interaction-block">
+        <button
+          title={title}
+          className={`interaction ${type} ${isActive ? 'active' : ''} ${
+            disabled ? 'disabled' : ''
+          }`}
+          onClick={isActive ? handleRemoving : handleCreation}
+          disabled={disabled}
+        >
+          {isLoading ? <LoadingSpinner /> : <Icon />}
+        </button>
+        {counter}
+      </div>
 
       <style jsx>
         {`
+          .interaction-block {
+            display: inline-flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            margin-right: 20px;
+          }
+
           .interaction {
             cursor: pointer;
             width: 30px;

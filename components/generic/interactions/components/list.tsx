@@ -1,8 +1,13 @@
-import React, { memo, useMemo } from 'react'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 
 import { InteractionEntity, InteractionItem } from '../types'
 import useInteractionPermissions from '../hooks/useInteractionPermissions'
 import Item from './item'
+import InteractionUsers from '@components/generic/interactions/components/interaction-users'
+import fetcher from '@lib/fetcher'
+import { useUser } from '@lib/client/hooks'
+import { UserType } from '@lib/types'
+import { INTERACTION_TYPES } from '@lib/constants'
 
 interface Props {
   interactions: InteractionEntity[]
@@ -11,10 +16,31 @@ interface Props {
   entityId: string
 }
 
-function List({ interactions, entity, entityType, entityId }: Props) {
-  const permissions = useInteractionPermissions(entity, entityType)
+type Users = { [key in INTERACTION_TYPES]: UserType[] }
 
-  const items: InteractionItem[] = useMemo(
+function List({ interactions, entity, entityType, entityId }: Props) {
+  const [isRemovedUser, setIsRemovedUser] = useState({})
+  const [isNewUser, setIsNewUser] = useState({})
+  const permissions = useInteractionPermissions(entity, entityType)
+  const { user } = useUser()
+  const permittedUsersByType = useMemo<Users>(
+    () =>
+      Object.entries(permissions).reduce((acc, [type, { read: canSee }]) => {
+        const users =
+          interactions &&
+          interactions[type] &&
+          Array.isArray(interactions[type].result) &&
+          interactions[type].result.map(({ user }) => user).filter(Boolean)
+
+        if (canSee && Array.isArray(users)) {
+          acc[type] = users
+        }
+
+        return acc
+      }, {} as Users),
+    [permissions, interactions]
+  )
+  const items = useMemo<InteractionItem[]>(
     () =>
       Object.entries(permissions).reduce(
         (
@@ -23,8 +49,11 @@ function List({ interactions, entity, entityType, entityId }: Props) {
         ) => {
           const interaction =
             interactions && interactions[type] && interactions[type].interaction
-          const result =
-            interactions && interactions[type] && interactions[type].result
+          const isNumber =
+            interactions &&
+            interactions[type] &&
+            typeof interactions[type].result === 'number'
+          const count = isNumber && interactions[type].result
 
           if (canSee || !!interaction) {
             acc.push({
@@ -32,7 +61,8 @@ function List({ interactions, entity, entityType, entityId }: Props) {
               canCreate,
               canRemove,
               interaction,
-              result,
+              count,
+              isNumber,
             })
           }
 
@@ -43,8 +73,85 @@ function List({ interactions, entity, entityType, entityId }: Props) {
     [interactions, permissions]
   )
 
+  const handleCreation = useCallback(
+    (url, body, isNumber, type) =>
+      fetcher(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      }).then((result) => {
+        if (!isNumber) {
+          setIsNewUser((prevState) => ({ ...prevState, [type]: true }))
+          setIsRemovedUser((prevState) => ({ ...prevState, [type]: false }))
+        }
+
+        return result
+      }),
+    [setIsNewUser, setIsRemovedUser]
+  )
+
+  const handleRemoving = useCallback(
+    (url, isNumber, type) =>
+      fetcher(url, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      }).then((result) => {
+        if (!isNumber) {
+          setIsNewUser((prevState) => ({ ...prevState, [type]: false }))
+          setIsRemovedUser((prevState) => ({ ...prevState, [type]: true }))
+        }
+
+        return result
+      }),
+
+    [setIsNewUser, setIsRemovedUser]
+  )
+
+  const users = useMemo<Users>(() => {
+    if (
+      (!Object.keys(permittedUsersByType).length ||
+        !Object.values(permittedUsersByType).some(
+          (interactionUsers) => interactionUsers.length
+        )) &&
+      Object.keys(isNewUser).length
+    ) {
+      return Object.entries(isNewUser).reduce((acc, [type, isNew]) => {
+        if (isNew) {
+          acc[type] = [user]
+        }
+
+        return acc
+      }, {} as Users)
+    }
+
+    return Object.entries(permittedUsersByType).reduce(
+      (acc, [type, interactionUsers]) => {
+        acc[type] = interactionUsers
+
+        if (isRemovedUser[type]) {
+          acc[type] = interactionUsers.filter(({ id }) => id !== user.id)
+        }
+
+        if (isNewUser[type] && !acc[type].some(({ id }) => id === user.id)) {
+          acc[type] = [...interactionUsers, user]
+        }
+
+        return acc
+      },
+      {} as Users
+    )
+  }, [permittedUsersByType, isNewUser, isRemovedUser, user])
+
   return (
     <>
+      {Object.entries(users).map(([type, users]) => (
+        <InteractionUsers
+          key={type}
+          users={users.filter(Boolean)}
+          title={type}
+        />
+      ))}
+      {!!Object.keys(users).length && <hr />}
       {items.map((item) => (
         <Item
           key={item.type}
@@ -52,6 +159,8 @@ function List({ interactions, entity, entityType, entityId }: Props) {
           entityId={entityId}
           entity={entity}
           entityType={entityType}
+          create={handleCreation}
+          remove={handleRemoving}
         />
       ))}
     </>
