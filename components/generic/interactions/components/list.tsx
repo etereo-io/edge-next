@@ -8,9 +8,10 @@ interface Props {
   interactions: InteractionEntity[]
   entity: string
   entityType: string
+  entityId: string
 }
 
-function List({ interactions, entity, entityType }: Props) {
+function List({ interactions, entity, entityType, entityId }: Props) {
   const permissions = useInteractionPermissions(entity, entityType)
 
   const items: InteractionItem[] = useMemo(
@@ -45,6 +46,7 @@ function List({ interactions, entity, entityType }: Props) {
         <Item
           key={item.type}
           item={item}
+          entityId={entityId}
           entity={entity}
           entityType={entityType}
         />

@@ -201,6 +201,7 @@ function ContentDetailView(props: Props) {
           interactions={props.content.interactions}
           entity="content"
           entityType={props.type.slug}
+          entityId={props.content.id}
         />
         {props.type.comments.enabled &&
           canReadComments.available &&

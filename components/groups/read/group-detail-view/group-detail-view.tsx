@@ -30,6 +30,7 @@ function DetailView({ group, type, showActions }: Props) {
           interactions={group.interactions}
           entity="group"
           entityType={type.slug}
+          entityId={group.id}
         />
         <footer className="edge-item-card-footer">
           <ul className="edge-item-card-stats">

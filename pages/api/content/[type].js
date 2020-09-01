@@ -9,7 +9,7 @@ import {
   isValidContentType,
   loadUser,
 } from '@lib/api/middlewares'
-
+import { getContentTypeDefinition } from '@lib/config'
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
 import { fillContentWithDefaultData } from '@lib/api/entities/content/content.utils'
@@ -17,6 +17,7 @@ import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onContentAdded } from '@lib/api/hooks/content.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import { appendInteractions } from '@lib/api/api-helpers/interactions'
 
 const getContent = (filterParams, paginationParams) => (req, res) => {
   const type = req.contentType
@@ -38,11 +39,25 @@ const getContent = (filterParams, paginationParams) => (req, res) => {
   }
 
   findContent(type.slug, increasedFilters, paginationParams)
-    .then((data) => {
-      res.status(200).json(data)
+    .then(async (data) => {
+      const contentTypeDefinition = getContentTypeDefinition(type.slug)
+
+      if (data.total) {
+        const results = await appendInteractions({
+          data: data.results,
+          interactionsConfig: contentTypeDefinition.entityInteractions,
+          entity: 'content',
+          entityType: type.slug,
+          currentUser: req.currentUser,
+        })
+
+        return res.status(200).json({ ...data, results })
+      }
+
+      return res.status(200).json(data)
     })
     .catch((err) => {
-      res.status(500).json({
+      return res.status(500).json({
         error: 'Error while loading content ' + err.message,
       })
     })

@@ -39,8 +39,10 @@ export default class Database {
   count(options: ANY_OBJECT) {
     logger('ERROR', 'Count not implemented')
   }
-
   remove(options: ANY_OBJECT, onlyOne: boolean) {
     logger('ERROR', 'Remove not implemented')
+  }
+  aggregation(options: ANY_OBJECT) {
+    logger('ERROR', 'Aggregation not implemented')
   }
 }
