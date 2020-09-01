@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react'
+import { useEffect, useState, memo, useCallback } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -36,12 +36,12 @@ function GroupForm(props) {
   }, [props.group, props.type])
 
   // Store the fields
-  const handleFieldChange = (name) => (value) => {
-    setState({
-      ...state,
-      [name]: value,
-    })
-  }
+  const handleFieldChange = useCallback(
+    (name) => (value) => {
+      setState((prevState) => ({ ...prevState, [name]: value }))
+    },
+    [setState]
+  )
 
   const submitRequest = (data, jsonData) => {
     const url = `${API.groups[props.type.slug]}${
