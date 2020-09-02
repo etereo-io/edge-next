@@ -2,7 +2,7 @@ import {
   addContent,
   findContent,
   findOneContent,
-} from '@lib/api/entities/content/content'
+} from '@lib/api/entities/content'
 import {
   hasPermissionsForContent,
   hasPermissionsForGroupContent,

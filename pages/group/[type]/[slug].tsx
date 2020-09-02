@@ -6,7 +6,7 @@ import GroupDetailView from '@components/groups/read/group-detail-view/group-det
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
-import { findOneContent } from '@lib/api/entities/content/content'
+import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import GroupContext from '@components/groups/context/group-context'

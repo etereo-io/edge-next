@@ -1,11 +1,11 @@
 import {
   addActivity,
   deleteActivity,
-} from '@lib/api/entities/activity/activity'
+} from '@lib/api/entities/activity'
 
 import { ACTIVITY_TYPES } from '@lib/constants'
 import config from '@lib/config'
-import { deleteComment } from '@lib/api/entities/comments/comments'
+import { deleteComment } from '@lib/api/entities/comments'
 
 export function onCommentAdded(comment, user) {
   if (config.activity.enabled) {

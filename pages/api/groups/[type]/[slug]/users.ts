@@ -6,14 +6,14 @@ import {
 import { onGroupJoinRequest, onGroupUpdated } from '@lib/api/hooks/group.hooks'
 
 import { connect } from '@lib/api/db'
-import { findOneUser } from '@lib/api/entities/users/user'
+import { findOneUser } from '@lib/api/entities/users'
 import { getGroupTypeDefinition } from '@lib/config'
 import { getPermittedFields } from '@lib/validations/group/users'
 import { groupUserPermission } from '@lib/permissions'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
-import { updateOneContent } from '@lib/api/entities/content/content'
+import { updateOneContent } from '@lib/api/entities/content'
 
 const getUsers = async ({ item: { members } }, res) => {
   res.status(200).json(members)

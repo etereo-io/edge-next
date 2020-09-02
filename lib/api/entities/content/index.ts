@@ -1,6 +1,7 @@
-import { findOneUser } from '../users/user'
-import { getDB } from '../../db'
-import { hidePrivateUserFields } from '../users/user.utils'
+import { findOneUser } from '@lib/api/entities/users'
+import { getDB } from '@lib/api/db'
+import { ANY_OBJECT } from '@lib/types'
+import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 
 export function findOneContent(type, options) {
   console.log('find', type, options)
@@ -53,7 +54,7 @@ export async function fillContent(item) {
 export async function findContent(
   type,
   options = {},
-  paginationOptions = {}
+  paginationOptions: ANY_OBJECT = {}
 ) {
   const { from = 0, limit = 15, sortBy, sortOrder = 'DESC' } = paginationOptions
 

@@ -2,16 +2,16 @@ import { ACTIVITY_TYPES, FIELDS } from '@lib/constants'
 import {
   addActivity,
   deleteActivity,
-} from '@lib/api/entities/activity/activity'
+} from '@lib/api/entities/activity'
 import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '@lib/api/entities/comments/comments'
+} from '@lib/api/entities/comments'
 import {
   deleteOneContent,
   findOneContent,
-} from '@lib/api/entities/content/content'
+} from '@lib/api/entities/content'
 
 import config from '@lib/config'
 import { deleteFile } from '../storage'

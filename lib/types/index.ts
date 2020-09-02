@@ -8,3 +8,7 @@ export * from './entities/group'
 export * from './entities/comment'
 export * from './request'
 export * from './superSearch'
+
+export type ANY_OBJECT = {
+  [key: string]: any
+}

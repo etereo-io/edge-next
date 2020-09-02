@@ -9,7 +9,7 @@ import {
   fillContent,
   findOneContent,
   updateOneContent,
-} from '@lib/api/entities/content/content'
+} from '@lib/api/entities/content'
 import {
   onGroupDeleted,
   onGroupUpdated,

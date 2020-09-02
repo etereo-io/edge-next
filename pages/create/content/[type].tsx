@@ -5,7 +5,7 @@ import ContentForm from '@components/content/write-content/content-form/content-
 import { GetServerSideProps } from 'next'
 import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
-import { findOneContent } from '@lib/api/entities/content/content'
+import { findOneContent } from '@lib/api/entities/content'
 import { getSession } from '@lib/api/auth/iron'
 import { useState } from 'react'
 

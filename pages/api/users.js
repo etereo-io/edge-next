@@ -3,7 +3,7 @@ import {
   findOneUser,
   findUsers,
   validateNewUser,
-} from '@lib/api/entities/users/user'
+} from '@lib/api/entities/users'
 import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'

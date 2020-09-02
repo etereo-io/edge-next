@@ -10,7 +10,7 @@ import {
   deleteOneContent,
   findOneContent,
   updateOneContent,
-} from '@lib/api/entities/content/content'
+} from '@lib/api/entities/content'
 import {
   onContentDeleted,
   onContentUpdated,

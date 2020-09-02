@@ -4,7 +4,7 @@ import {
   googleStrategy,
   localStrategy,
 } from '@lib/api/auth/passport-strategies'
-import { findOneUser, updateOneUser } from '@lib/api/entities/users/user'
+import { findOneUser, updateOneUser } from '@lib/api/entities/users'
 import { onEmailVerified, onUserLogged } from '@lib/api/hooks/user.hooks'
 import { removeTokenCookie, setTokenCookie } from '@lib/api/auth/auth-cookies'
 

@@ -1,11 +1,11 @@
 import {
   addActivity,
   deleteActivity,
-} from '@lib/api/entities/activity/activity'
+} from '@lib/api/entities/activity'
 import {
   deleteOneContent,
   findOneContent,
-} from '@lib/api/entities/content/content'
+} from '@lib/api/entities/content'
 
 import { ACTIVITY_TYPES } from '@lib/constants'
 import { FIELDS } from '@lib/constants'
