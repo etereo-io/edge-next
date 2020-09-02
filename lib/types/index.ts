@@ -10,3 +10,7 @@ export * from './request'
 export * from './superSearch'
 export * from './interactionTypeDefinition'
 export * from './entities/interaction'
+
+export type ANY_OBJECT = {
+  [key: string]: any
+}

@@ -8,7 +8,7 @@ import {
   deleteOneUser,
   findOneUser,
   updateOneUser,
-} from '@lib/api/entities/users/user'
+} from '@lib/api/entities/users'
 import {
   generateSaltAndHash,
   userPasswordsMatch,

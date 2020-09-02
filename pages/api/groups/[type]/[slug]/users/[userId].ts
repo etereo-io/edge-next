@@ -15,7 +15,7 @@ import { groupUserPermission } from '@lib/permissions'
 import methods, { getAction } from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
-import { updateOneContent } from '@lib/api/entities/content/content'
+import { updateOneContent } from '@lib/api/entities/content'
 
 function updateUsers({ type, id, data, callback, res }) {
   updateOneContent(type, id, data)

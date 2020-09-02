@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react'
+import { useEffect, useState, memo, useCallback } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -37,15 +37,17 @@ function ContentForm(props) {
   }, [props.content, props.type])
 
   // Store the fields
-  const handleFieldChange = (name) => (value) => {
-    setState({
-      ...state,
-      [name]: value,
-    })
-  }
+  const handleFieldChange = useCallback(
+    (name) => (value) => {
+      setState((prevState) => ({ ...prevState, [name]: value }))
+    },
+    [setState]
+  )
 
   const submitRequest = (data, jsonData) => {
-    const groupParamsString = props.group ? `groupId=${props.group.id}&groupType=${props.group.type}` : '';
+    const groupParamsString = props.group
+      ? `groupId=${props.group.id}&groupType=${props.group.type}`
+      : ''
     const url = `${API.content[props.type.slug]}${
       props.content.id
         ? `/${props.content.id}?field=id&${groupParamsString}`
@@ -133,7 +135,6 @@ function ContentForm(props) {
 
   return (
     <>
-
       <div className="contentForm">
         <form name="content-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
@@ -174,9 +175,8 @@ function ContentForm(props) {
         <div className="preview-wrapper">
           <div className="preview">
             <ContentSummaryView content={state} type={props.type} />
-
           </div>
-          { props.group && (
+          {props.group && (
             <Card>
               <GroupSummaryView
                 group={props.group}
@@ -203,7 +203,6 @@ function ContentForm(props) {
           }
 
           .preview-wrapper {
-
             position: sticky;
             top: 72px;
             width: 40%;

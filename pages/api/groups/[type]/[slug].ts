@@ -9,8 +9,11 @@ import {
   fillContent,
   findOneContent,
   updateOneContent,
-} from '@lib/api/entities/content/content'
-import { onGroupDeleted, onGroupUpdated } from '@lib/api/hooks/group.hooks'
+} from '@lib/api/entities/content'
+import {
+  onGroupDeleted,
+  onGroupUpdated,
+} from '@lib/api/hooks/group.hooks'
 
 import { connect } from '@lib/api/db'
 import { groupValidations } from '@lib/validations/group'

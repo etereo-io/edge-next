@@ -1,8 +1,6 @@
 import logger from '@lib/logger'
 
-type ANY_OBJECT = {
-  [key: string]: any
-}
+import { ANY_OBJECT } from '@lib/types'
 
 export default class Database {
   nativeDriver() {

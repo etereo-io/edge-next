@@ -1,7 +1,10 @@
-import { getDB } from '../../db'
+import { getDB } from '@lib/api/db'
+import { ANY_OBJECT } from '@lib/types'
 
 export function deleteActivity(options) {
-  return getDB().collection('activity').remove(options)
+  return getDB()
+    .collection('activity')
+    .remove(options)
 }
 
 export function addActivity(data) {
@@ -13,8 +16,13 @@ export function addActivity(data) {
     })
 }
 
-export function findActivity(options, searchOptions, paginationOptions) {
+export function findActivity(
+  options: ANY_OBJECT,
+  searchOptions: ANY_OBJECT,
+  paginationOptions: ANY_OBJECT = {}
+) {
   const { from = 0, limit = 15, sortBy, sortOrder = 'DESC' } = paginationOptions
+
   return getDB()
     .collection('activity')
     .limit(limit)

@@ -2,10 +2,10 @@ import { ACTIVITY_TYPES, FIELDS } from '@lib/constants'
 import {
   addActivity,
   deleteActivity,
-} from '@lib/api/entities/activity/activity'
+} from '@lib/api/entities/activity'
 
 import config from '@lib/config'
-import { deleteComment } from '@lib/api/entities/comments/comments'
+import { deleteComment } from '@lib/api/entities/comments'
 import { deleteFile } from '../storage'
 
 export function onContentRead(content, user) {
