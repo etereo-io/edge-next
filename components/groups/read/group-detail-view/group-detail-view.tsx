@@ -8,7 +8,6 @@ import { GroupTabs } from '@components/groups/read/group-tabs'
 import GroupActions from '../../group-actions/group-actions'
 import GroupContentMenu from '../../group-content-menu/group-content-menu'
 import GroupSummaryView from '../group-summary-view/group-summary-view'
-import { InteractionsList } from '@components/generic/interactions'
 
 interface Props {
   showActions: boolean

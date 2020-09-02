@@ -101,7 +101,7 @@ export const getConfig = () => {
         type: 'like',
         aggregation: 'sum',
         permissions: {
-          read: ['USER'],
+          read: ['PUBLIC', 'USER'],
           create: ['USER'],
           delete: ['USER'],
         },
@@ -109,7 +109,7 @@ export const getConfig = () => {
       {
         type: 'follow',
         permissions: {
-          read: ['USER'],
+          read: ['PUBLIC', 'USER'],
           create: ['USER'],
           delete: ['USER'],
         },

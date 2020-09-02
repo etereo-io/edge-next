@@ -34,6 +34,7 @@ import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '@components/generic/video-recorder/video-recorder-wrapper'
 import { Tabs, useTab } from '@components/generic/tabs'
 import { Editor } from '@components/generic/rich-text-editor'
+import StackedAvatars from '@components/generic/stacked-avatars'
 
 function Menu() {
   return (
@@ -51,6 +52,9 @@ function Menu() {
           </li>
           <li>
             <a href="#user-profile-box">User Profile Box</a>
+          </li>
+          <li>
+            <a href="#stacked-avatars">Stacked Avatars</a>
           </li>
           <li>
             <a href="#author-box">Author Box</a>
@@ -665,6 +669,63 @@ const links = [{
             <pre>{`
 <UserProfileBox user={{username: 'demo-user', profile: { bio: 'My bio is something special'}}} />
             `}</pre>
+          </div>
+          <div id="stacked-avatars" className="component">
+            <h3>Stacked Avatars</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <StackedAvatars
+                  numberItems={2}
+                  title="Users"
+                  users={[
+                    {
+                      id: 1,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=3',
+                        },
+                      },
+                    },
+                    {
+                      id: 2,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=1',
+                        },
+                      },
+                    },
+                    { id: 3 },
+                  ]}
+                  width="50px"
+                />
+              </div>
+              <pre>{`
+                <StackedAvatars
+                  numberItems={2}
+                  title="Users"
+                  users={[
+                    {
+                      id: 1,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=3',
+                        },
+                      },
+                    },
+                    {
+                      id: 2,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=1',
+                        },
+                      },
+                    },
+                    { id: 3 },
+                  ]}
+                  width="50px"
+                />
+            `}</pre>
+            </div>
           </div>
 
           <div id="author-box" className="component">
@@ -1536,7 +1597,10 @@ const links = [{
             <h3>Rich text editor</h3>
             <div className="component-demo">
               <div className="item-wrapper">
-                <Editor defaultValue="Some default value" label="Rich text editor"/>
+                <Editor
+                  defaultValue="Some default value"
+                  label="Rich text editor"
+                />
               </div>
             </div>
             <pre>{`<Editor defaultValue="Some default value" label="Rich text editor"/>`}</pre>

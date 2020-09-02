@@ -7,9 +7,15 @@ type Props = {
   title: string
   users?: UserType[]
   numberItems?: number
+  width: string
 }
 
-function InteractionUsers({ title, users = [], numberItems = 3 }: Props) {
+function InteractionUsers({
+  title,
+  width,
+  users = [],
+  numberItems = 3,
+}: Props) {
   const usersVisible = users.slice(0, numberItems)
   const extraUsers = users.length > numberItems ? users.length - numberItems : 0
 
@@ -22,7 +28,7 @@ function InteractionUsers({ title, users = [], numberItems = 3 }: Props) {
             {usersVisible.map((user, index) => {
               return (
                 <div className="user-item" key={`${user.id}-${index}`}>
-                  <Avatar radius="100%" width="25px" user={user} />
+                  <Avatar radius="100%" width={width} user={user} />
                 </div>
               )
             })}
@@ -61,8 +67,8 @@ function InteractionUsers({ title, users = [], numberItems = 3 }: Props) {
         }
 
         .extra-users {
-          width: 25px;
-          height: 25px;
+          width: ${width};
+          height: ${width};
           background: var(--edge-success);
           color: var(--edge-background);
           border-radius: 100%;

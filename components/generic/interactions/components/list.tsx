@@ -3,7 +3,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react'
 import { InteractionEntity, InteractionItem } from '../types'
 import useInteractionPermissions from '../hooks/useInteractionPermissions'
 import Item from './item'
-import InteractionUsers from '@components/generic/interactions/components/interaction-users'
+import StackedAvatars from '@components/generic/stacked-avatars'
 import fetcher from '@lib/fetcher'
 import { useUser } from '@lib/client/hooks'
 import { UserType } from '@lib/types'
@@ -145,8 +145,9 @@ function List({ interactions, entity, entityType, entityId }: Props) {
   return (
     <>
       {Object.entries(users).map(([type, users]) => (
-        <InteractionUsers
+        <StackedAvatars
           key={type}
+          width='40px'
           users={users.filter(Boolean)}
           title={type}
         />

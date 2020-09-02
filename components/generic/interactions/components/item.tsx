@@ -83,7 +83,7 @@ function Item({
             setInteraction(result)
 
             if (isNumber) {
-              setCounter((prevState) => prevState + 1)
+              setCounter((prevState) => +prevState + 1)
             }
           },
           //TODO: handle somehow

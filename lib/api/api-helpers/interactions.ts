@@ -257,22 +257,24 @@ export async function appendInteractions({
   )
 
   try {
-    const userInteractions = (
-      await getDB()
-        .collection('interactions')
-        .find(
-          {
-            entityId: { $in: ids },
-            type: { $in: permittedTypes },
-            author: currentUser.id,
-          },
-          { limit: 1000 }
-        )
-    ).map((interactionItem) => {
-      const { authorId, ...interaction } = interactionItem
+    const userInteractions = currentUser
+      ? (
+          await getDB()
+            .collection('interactions')
+            .find(
+              {
+                entityId: { $in: ids },
+                type: { $in: permittedTypes },
+                author: currentUser.id,
+              },
+              { limit: 1000 }
+            )
+        ).map((interactionItem) => {
+          const { authorId, ...interaction } = interactionItem
 
-      return interaction
-    })
+          return interaction
+        })
+      : []
 
     const resultInteractions = await getResultInteractions(
       ids,
