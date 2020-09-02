@@ -1,8 +1,10 @@
 import { PermissionsType } from './permissions'
-import { INTERACTION_TYPES } from '@lib/constants'
 
 export type InteractionTypeDefinition = {
-  type: INTERACTION_TYPES
+  type: string
   aggregation?: string
+  icon?: string,
+  activeTitle?: string,
+  inactiveTitle?: string,
   permissions: PermissionsType
 }

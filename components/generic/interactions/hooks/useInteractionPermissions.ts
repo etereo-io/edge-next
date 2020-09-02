@@ -1,12 +1,12 @@
-import { INTERACTION_TYPES } from '@lib/constants'
 import { usePermission } from '@lib/client/hooks'
+import { getInteractionsDefinition } from '@lib/config'
 
 import { Action, useInteractionPermissionsResult } from '../types'
 
 function getPermissions(
   entity: string,
   slug: string,
-  interactionType: INTERACTION_TYPES,
+  interactionType: string,
   action: Action
 ): string[] {
   return [
@@ -15,15 +15,18 @@ function getPermissions(
   ]
 }
 
-const actions: Action[] = ['read', 'create', 'delete']
+const actions: Action[] = ['read', 'create', 'delete', 'admin']
 
 export default function useInteractionPermissions(
   entity,
   slug
 ): useInteractionPermissionsResult {
   const permissions = {}
+  const interactions = getInteractionsDefinition(entity, slug).map(
+    ({ type }) => type
+  )
 
-  Object.values(INTERACTION_TYPES).forEach((type) => {
+  interactions.forEach((type) => {
     actions.forEach((action) => {
       if (!permissions[type]) {
         permissions[type] = {}

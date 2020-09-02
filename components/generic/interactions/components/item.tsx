@@ -1,13 +1,9 @@
 import React, { memo, useMemo, useCallback, useState } from 'react'
 
-import { INTERACTION_TYPES } from '@lib/constants'
-import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
 import API from '@lib/api/api-endpoints'
-import Like from '@icons/like.svg'
-import Favorite from '@icons/favorite.svg'
-import Follow from '@icons/follow.svg'
+import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
 
-import { InteractionItem } from '../types'
+import { InteractionItem, InteractionTypeDefinition } from '../types'
 
 interface Props {
   item: InteractionItem
@@ -23,21 +19,19 @@ interface Props {
   remove: (url: string, isNumber: boolean, type: string) => Promise<any>
 }
 
-const ICONS_MAPPING = {
-  [INTERACTION_TYPES.LIKE]: Like,
-  [INTERACTION_TYPES.FAVORITE]: Favorite,
-  [INTERACTION_TYPES.FOLLOW]: Follow,
-}
-
-function getTitle(type: INTERACTION_TYPES, isActive: boolean) {
-  switch (type) {
-    case INTERACTION_TYPES.FAVORITE:
-      return isActive ? 'Remove from favorites' : 'Add to favorites'
-    case INTERACTION_TYPES.FOLLOW:
-      return isActive ? 'Unfollow' : 'Follow'
-    case INTERACTION_TYPES.LIKE:
-      return isActive ? 'Unlike' : 'Like'
+function getTitle(
+  isActive: boolean,
+  { inactiveTitle, activeTitle }: InteractionTypeDefinition
+) {
+  if (isActive && activeTitle) {
+    return activeTitle
   }
+
+  if (!isActive && inactiveTitle) {
+    return inactiveTitle
+  }
+
+  return ''
 }
 
 function Item({
@@ -48,6 +42,7 @@ function Item({
     interaction: defaultInteraction,
     count,
     isNumber,
+    config,
   },
   entity,
   entityType,
@@ -55,12 +50,11 @@ function Item({
   create,
   remove,
 }: Props) {
-  const Icon = ICONS_MAPPING[type]
   const [interaction, setInteraction] = useState(defaultInteraction)
   const [isActive, setIsActive] = useState<boolean>(!!interaction)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [counter, setCounter] = useState<number>(count)
-  const title = getTitle(type, isActive)
+  const title = getTitle(isActive, config)
 
   const handleCreation = useCallback(() => {
     if (canCreate) {
@@ -142,73 +136,16 @@ function Item({
   return (
     <>
       <div className="interaction-block">
-        <button
-          title={title}
-          className={`interaction ${type} ${isActive ? 'active' : ''} ${
-            disabled ? 'disabled' : ''
-          }`}
+        <ReactionCounter
+          isLoading={isLoading}
+          active={isActive}
+          count={counter}
           onClick={isActive ? handleRemoving : handleCreation}
           disabled={disabled}
-        >
-          {isLoading ? <LoadingSpinner /> : <Icon />}
-        </button>
-        {counter}
+          type={type}
+          title={title}
+        />
       </div>
-
-      <style jsx>
-        {`
-          .interaction-block {
-            display: inline-flex;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-            margin-right: 20px;
-          }
-
-          .interaction {
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            border-radius: 20px;
-            border: none;
-            outline: none;
-            display: inline-flex;
-            justify-content: center;
-            align-content: center;
-            align-items: center;
-            background-color: rgb(239, 239, 239);
-            margin-right: 5px;
-          }
-          .interaction:hover {
-            background-color: #f6c6ce;
-          }
-          .interaction.active:hover {
-            background-color: rgb(239, 239, 239);
-          }
-
-          .interaction.active {
-            background-color: #f6c6ce;
-          }
-
-          .interaction svg {
-            fill: #000000;
-          }
-          .interaction:hover svg {
-            fill: #ff0000;
-          }
-
-          .interaction.active svg {
-            fill: #ff0000;
-          }
-          .interaction.active:hover svg {
-            fill: #000000;
-          }
-
-          .interaction.disabled {
-            cursor: default;
-          }
-        `}
-      </style>
     </>
   )
 }

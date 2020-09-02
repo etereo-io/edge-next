@@ -1,11 +1,10 @@
-import { INTERACTION_TYPES } from '@lib/constants'
 import { UserType } from '@lib/types'
 
 export type InteractionType = {
   id: string
   // property is only present in raw DB data
   _id?: string
-  type: INTERACTION_TYPES
+  type: string
   entity: string
   entityType: string
   entityId: string
@@ -14,7 +13,7 @@ export type InteractionType = {
 }
 
 export type InteractionEntity = {
-  [name in INTERACTION_TYPES]: {
+  [name: string]: {
     result: number | UserType[]
     interaction: null | InteractionType
   }

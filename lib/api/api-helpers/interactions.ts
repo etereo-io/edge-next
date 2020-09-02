@@ -1,15 +1,14 @@
 import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 import { interactionPermission } from '@lib/permissions'
 import { getDB } from '@lib/api/db'
-import { INTERACTION_TYPES } from '@lib/constants'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 import { InteractionType } from '@lib/types'
 
 type SingleResult = { agg: number }
 
 type GetResultParams = {
-  needAggregationTypes: INTERACTION_TYPES[]
-  type: INTERACTION_TYPES
+  needAggregationTypes: string[]
+  type: string
   values: SingleResult[] | InteractionType[]
   id: string
 }
@@ -136,67 +135,36 @@ function formResult(
   data,
   userInteractions,
   resultInteractions,
-  needAggregationTypes
+  needAggregationTypes,
+  permittedTypes
 ) {
   return data.map((record) => {
     const { id } = record
 
-    const like = { interaction: null, result: null }
-    const follow = { interaction: null, result: null }
-    const favorite = { interaction: null, result: null }
+    const interactions = permittedTypes.reduce((acc, interactionType) => {
+      acc[interactionType] = {
+        interaction:
+          userInteractions.find(
+            ({ type, entityId }) => entityId === id && type === interactionType
+          ) || null,
+        result: null,
+      }
 
-    like.interaction =
-      userInteractions.find(
-        ({ type, entityId }) =>
-          entityId === id && type === INTERACTION_TYPES.LIKE
-      ) || null
-    follow.interaction =
-      userInteractions.find(
-        ({ type, entityId }) =>
-          entityId === id && type === INTERACTION_TYPES.FOLLOW
-      ) || null
-    favorite.interaction =
-      userInteractions.find(
-        ({ type, entityId }) =>
-          entityId === id && type === INTERACTION_TYPES.FAVORITE
-      ) || null
+      return acc
+    }, {})
 
     resultInteractions.forEach((item) => {
       Object.entries<SingleResult[]>(item).forEach(([type, values]) => {
-        switch (type) {
-          case INTERACTION_TYPES.LIKE: {
-            like.result = getResult({
-              needAggregationTypes,
-              id,
-              type,
-              values,
-            })
-
-            break
-          }
-          case INTERACTION_TYPES.FOLLOW: {
-            follow.result = getResult({
-              needAggregationTypes,
-              id,
-              type,
-              values,
-            })
-
-            break
-          }
-          case INTERACTION_TYPES.FAVORITE: {
-            favorite.result = getResult({
-              needAggregationTypes,
-              id,
-              type,
-              values,
-            })
-          }
-        }
+        interactions[type].result = getResult({
+          needAggregationTypes,
+          id,
+          type,
+          values,
+        })
       })
     })
 
-    return { ...record, interactions: { like, follow, favorite } }
+    return { ...record, interactions }
   })
 }
 
@@ -215,33 +183,11 @@ export async function appendInteractions({
   entityType,
   interactionsConfig,
 }: AppendInteractionsParams) {
-  const canSeeLike = interactionPermission(
-    currentUser,
-    entity,
-    entityType,
-    INTERACTION_TYPES.LIKE,
-    'read'
-  )
-  const canSeeFollow = interactionPermission(
-    currentUser,
-    entity,
-    entityType,
-    INTERACTION_TYPES.FOLLOW,
-    'read'
-  )
-  const canSeeFavorite = interactionPermission(
-    currentUser,
-    entity,
-    entityType,
-    INTERACTION_TYPES.FAVORITE,
-    'read'
-  )
+  const interactionsList = interactionsConfig.map(({ type }) => type)
 
-  const permittedTypes = [
-    canSeeLike && INTERACTION_TYPES.LIKE,
-    canSeeFollow && INTERACTION_TYPES.FOLLOW,
-    canSeeFavorite && INTERACTION_TYPES.FAVORITE,
-  ].filter(Boolean)
+  const permittedTypes = interactionsList.filter((type) =>
+    interactionPermission(currentUser, entity, entityType, type, 'read')
+  )
 
   if (!permittedTypes.length) {
     return data
@@ -286,7 +232,8 @@ export async function appendInteractions({
       data,
       userInteractions,
       resultInteractions,
-      needAggregationTypes
+      needAggregationTypes,
+      permittedTypes
     )
   } catch (e) {
     console.log(e)

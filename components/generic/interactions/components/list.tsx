@@ -7,21 +7,22 @@ import StackedAvatars from '@components/generic/stacked-avatars'
 import fetcher from '@lib/fetcher'
 import { useUser } from '@lib/client/hooks'
 import { UserType } from '@lib/types'
-import { INTERACTION_TYPES } from '@lib/constants'
+import { getInteractionsDefinition } from '@lib/config'
 
 interface Props {
   interactions: InteractionEntity[]
-  entity: string
+  entity: 'group' | 'content' | 'user'
   entityType: string
   entityId: string
 }
 
-type Users = { [key in INTERACTION_TYPES]: UserType[] }
+type Users = { [key: string]: UserType[] }
 
 function List({ interactions, entity, entityType, entityId }: Props) {
   const [isRemovedUser, setIsRemovedUser] = useState({})
   const [isNewUser, setIsNewUser] = useState({})
   const permissions = useInteractionPermissions(entity, entityType)
+  const interactionsConfig = getInteractionsDefinition(entity, entityType)
   const { user } = useUser()
   const permittedUsersByType = useMemo<Users>(
     () =>
@@ -63,6 +64,9 @@ function List({ interactions, entity, entityType, entityId }: Props) {
               interaction,
               count,
               isNumber,
+              config: interactionsConfig.find(
+                ({ type: interactionType }) => interactionType === type
+              ),
             })
           }
 
@@ -147,23 +151,34 @@ function List({ interactions, entity, entityType, entityId }: Props) {
       {Object.entries(users).map(([type, users]) => (
         <StackedAvatars
           key={type}
-          width='40px'
+          width="40px"
           users={users.filter(Boolean)}
           title={type}
         />
       ))}
       {!!Object.keys(users).length && <hr />}
-      {items.map((item) => (
-        <Item
-          key={item.type}
-          item={item}
-          entityId={entityId}
-          entity={entity}
-          entityType={entityType}
-          create={handleCreation}
-          remove={handleRemoving}
-        />
-      ))}
+      <div className="interactions">
+        {items.map((item) => (
+          <Item
+            key={item.type}
+            item={item}
+            entityId={entityId}
+            entity={entity}
+            entityType={entityType}
+            create={handleCreation}
+            remove={handleRemoving}
+          />
+        ))}
+      </div>
+      <style jsx>{`
+        .interactions {
+          margin-top: 5px;
+          display: inline-flex;
+          justify-content: center;
+          align-content: center;
+          align-items: center;
+        }
+      `}</style>
     </>
   )
 }

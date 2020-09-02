@@ -1,22 +1,27 @@
-import { INTERACTION_TYPES } from '@lib/constants'
-import { InteractionType, InteractionEntity } from '@lib/types'
+import {
+  InteractionType,
+  InteractionEntity,
+  InteractionTypeDefinition,
+} from '@lib/types'
 
 export { InteractionEntity }
+export { InteractionTypeDefinition }
 
 export type InteractionItem = {
-  type: INTERACTION_TYPES
+  type: string
   canCreate: boolean
   canRemove: boolean
   interaction: null | InteractionType
   count: null | number
   isNumber: boolean
+  config: InteractionTypeDefinition
 }
 
-export type Action = 'read' | 'create' | 'delete'
+export type Action = 'read' | 'create' | 'delete' | 'admin'
 
 export type useInteractionPermissionsResult =
   | {
-      [name in INTERACTION_TYPES]: {
+      [name: string]: {
         [key in Action]: boolean
       }
     }

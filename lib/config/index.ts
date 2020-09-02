@@ -27,6 +27,15 @@ export const getGroupTypeDefinition = (
   return config.groups.types.find((item) => item.slug === slug)
 }
 
+export const getInteractionsDefinition = (
+  entity: 'group' | 'content' | 'user',
+  entitySlug: string
+): InteractionTypeDefinition[] => {
+  const entityRecord = getInteractionEntity(entity, entitySlug)
+
+  return (entityRecord && entityRecord.entityInteractions) || []
+}
+
 export const getInteractionTypeDefinition = (
   entity: 'group' | 'content' | 'user',
   entitySlug: string,
@@ -36,6 +45,20 @@ export const getInteractionTypeDefinition = (
     return
   }
 
+  const entityRecord = getInteractionEntity(entity, entitySlug)
+
+  return (
+    entityRecord &&
+    (entityRecord.entityInteractions || []).find(
+      ({ type: interactionType }) => interactionType === type
+    )
+  )
+}
+
+function getInteractionEntity(
+  entity: 'group' | 'content' | 'user',
+  entitySlug: string
+) {
   let entityRecord = null
 
   switch (entity) {
@@ -61,10 +84,5 @@ export const getInteractionTypeDefinition = (
     // DO NOTHING
   }
 
-  return (
-    entityRecord &&
-    (entityRecord.entityInteractions || []).find(
-      ({ type: interactionType }) => interactionType === type
-    )
-  )
+  return entityRecord
 }

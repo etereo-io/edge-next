@@ -11,7 +11,6 @@ export default class Database {
   add(item: ANY_OBJECT) {
     logger('ERROR', 'Add not implemented')
   }
-
   find(options: ANY_OBJECT, otherOptions: ANY_OBJECT) {
     logger('ERROR', 'Find not implemented')
   }

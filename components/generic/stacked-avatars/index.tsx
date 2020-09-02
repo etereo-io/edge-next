@@ -10,7 +10,7 @@ type Props = {
   width: string
 }
 
-function InteractionUsers({
+function StackedAvatars({
   title,
   width,
   users = [],
@@ -83,4 +83,4 @@ function InteractionUsers({
   )
 }
 
-export default memo(InteractionUsers)
+export default memo(StackedAvatars)
