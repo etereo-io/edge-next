@@ -100,7 +100,6 @@ export const getConfig = () => {
       {
         type: 'like',
         aggregation: 'sum',
-        icon: 'like',
         activeTitle: 'Like',
         inactiveTitle: 'Unlike',
         permissions: {
@@ -111,7 +110,6 @@ export const getConfig = () => {
       },
       {
         type: 'follow',
-        icon: 'follow',
         activeTitle: 'Follow',
         inactiveTitle: 'Unfollow',
         permissions: {
@@ -135,7 +133,6 @@ export const getConfig = () => {
         aggregation: 'sum',
         activeTitle: 'Remove from favorite',
         inactiveTitle: 'Add to favorite',
-        icon: 'favorite',
         permissions: {
           read: ['PUBLIC', 'USER'],
           create: ['USER'],
@@ -388,7 +385,6 @@ export const getConfig = () => {
       {
         type: 'like',
         aggregation: 'sum',
-        icon: 'like',
         activeTitle: 'Like',
         inactiveTitle: 'Unlike',
         permissions: {

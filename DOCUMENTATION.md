@@ -388,10 +388,16 @@ They are defined inside the content type, group type or user definitions in the 
   entityInteractions: [{
     type: 'like',
 
-    // How to hydrate the data from the database when loading a certain content (count/user). 
+    // How to hydrate the data from the database when loading a certain content (group/user). 
     // "user" will load the list of users who performed this interaction
-    // "count" will aggregate the result of interactions when the content is fetched
-    aggregation: 'count',
+    // "sum" will aggregate the result of interactions when the content is fetched
+    aggregation: 'sum',
+
+    // title user can see when an interaction is in active state
+    activeTitle: 'Remove from favorite',
+
+    // title user can see when an interaction is in inactive state
+    inactiveTitle: 'Add to favorite',
     
     permissions: {
       // Who can read the entity interactions
