@@ -115,7 +115,7 @@ function SummaryView({
             .filter((f) => f.name !== type.publishing.title)
             .map((field) => {
               return (
-                <div key={`${field.name}-${group.id}`}>
+                <div className="description" key={`${field.name}-${group.id}`}>
                   {shouldAddLink(field) && (
                     <Link href={`/group/${type.slug}/${group.slug}`}>
                       <a title="Go to item detail">
@@ -153,6 +153,12 @@ function SummaryView({
         </div>
       </div>
       <style jsx>{`
+        .description {
+          color: var(--accents-4);
+          font-size: 14px;
+          margin-bottom: 16px;
+          padding-right: 110px;
+        }
         .group-top-section {
           display: flex;
           flex-wrap: wrap;

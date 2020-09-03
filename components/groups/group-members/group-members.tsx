@@ -9,14 +9,13 @@ export default function GroupMembers({ members = [], visible = 3 }) {
     <>
       <div className="group-members">
         <div className="members-wrapper">
-          <div className="members-title">Members</div>
           <div className="members-list">
             {membersVisible.map((member, index) => {
               return (
                 <div className="member-item" key={`${member.id}-${index}`}>
                   <Avatar
                     radius={'100%'}
-                    width={'50px'}
+                    width={'32px'}
                     user={member as UserType}
                   />
                 </div>
@@ -24,7 +23,7 @@ export default function GroupMembers({ members = [], visible = 3 }) {
             })}
             {extraMembers !== 0 && (
               <div className="member-item">
-                <div className="extra-members">+ {extraMembers}</div>
+                <div className="extra-members">+{extraMembers}</div>
               </div>
             )}
           </div>
@@ -43,26 +42,26 @@ export default function GroupMembers({ members = [], visible = 3 }) {
         }
 
         .member-item:not(:first-child) {
-          margin-left: -25px;
+          margin-left: -12px;
           -webkit-mask: radial-gradient(
-            circle 30px at -5px -50%,
+            circle 24px at -5px -50%,
             transparent 99%,
             #fff 100%
           );
           mask: radial-gradient(
-            circle 30px at -5px -50%,
+            circle 24px at -5px -50%,
             transparent 99%,
             #fff 100%
           );
         }
 
         .extra-members {
-          width: 50px;
-          height: 50px;
+          width: 32px;
+          height: 32px;
           background: var(--edge-success);
           color: var(--edge-background);
           border-radius: 100%;
-          font-size: 20px;
+          font-size: 14px;
           font-weight: bold;
           display: flex;
           align-items: center;
