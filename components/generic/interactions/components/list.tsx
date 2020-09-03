@@ -173,7 +173,7 @@ function List({ interactions, entity, entityType, entityId }: Props) {
       </div>
       <style jsx>{`
         .interactions {
-          margin-top: 5px;
+          margin-top: var(--edge-gap);
           display: inline-flex;
           justify-content: center;
           align-content: center;

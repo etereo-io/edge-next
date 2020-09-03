@@ -19,6 +19,9 @@ import {
 import {
   deleteFile,
 } from '../../../../../lib/api/storage'
+import {
+  deleteInteractions,
+} from '../../../../../lib/api/entities/interactions'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import {
   getSession,
@@ -32,6 +35,7 @@ jest.mock('../../../../../lib/api/storage')
 jest.mock('../../../../../lib/api/entities/comments')
 jest.mock('../../../../../lib/api/entities/activity')
 jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/interactions')
 jest.mock('../../../../../lib/api/entities/users')
 
 jest.mock('../../../../../edge.config', () => {
@@ -208,6 +212,7 @@ describe('Integrations tests for user deletion endpoint', () => {
     deleteOneContent.mockReturnValue(Promise.resolve())
     deleteActivity.mockReturnValue(Promise.resolve())
     deleteComment.mockReturnValue(Promise.resolve())
+    deleteInteractions.mockReturnValue(Promise.resolve())
     deleteFile.mockReturnValue(Promise.resolve())
     deleteOneUser.mockReturnValue(Promise.resolve())
     findOneContent.mockReturnValue(Promise.resolve()).mockReturnValueOnce(
@@ -256,6 +261,7 @@ describe('Integrations tests for user deletion endpoint', () => {
     deleteComment.mockReset()
     deleteActivity.mockReset()
     deleteOneContent.mockReset()
+    deleteInteractions.mockReset()
     deleteOneUser.mockReset()
     findOneUser.mockReset()
     findOneComment.mockReset()
@@ -327,6 +333,10 @@ describe('Integrations tests for user deletion endpoint', () => {
       expect(deleteFile).toHaveBeenNthCalledWith(3, 'content.file')
 
       expect(deleteComment).toHaveBeenCalledWith({
+        author: 'userId',
+      })
+
+      expect(deleteInteractions).toHaveBeenCalledWith({
         author: 'userId',
       })
       expect(deleteActivity).toHaveBeenNthCalledWith(1, {

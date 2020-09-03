@@ -15,6 +15,9 @@ import {
 
 import config from '@lib/config'
 import { deleteFile } from '../storage'
+import {
+  deleteInteractions,
+} from '@lib/api/entities/interactions'
 import logger from '@lib/logger'
 import { onCommentDeleted } from './comment.hooks'
 import { onContentDeleted } from './content.hooks'
@@ -134,6 +137,11 @@ export async function onUserDeleted(user) {
   await deleteActivity({
     author: user.id,
     role: 'user',
+  })
+
+   // Delete all interactions refering to this content
+   await deleteInteractions({
+    author: user.id
   })
 
   // Delete all the conversations started by this user (and all children comments)

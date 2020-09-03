@@ -6,6 +6,7 @@ import {
 import { deleteActivity } from '../../../../../lib/api/entities/activity'
 import { deleteComment } from '../../../../../lib/api/entities/comments'
 import { deleteFile } from '../../../../../lib/api/storage'
+import { deleteInteractions } from '../../../../../lib/api/entities/interactions'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/content/[type]/[slug]'
@@ -15,6 +16,7 @@ jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/storage')
 jest.mock('../../../../../lib/api/entities/comments')
+jest.mock('../../../../../lib/api/entities/interactions')
 jest.mock('../../../../../lib/api/entities/activity')
 jest.mock('../../../../../lib/api/entities/content')
 
@@ -115,6 +117,7 @@ describe('Integrations tests for content deletion endpoint', () => {
     deleteActivity.mockReturnValue(Promise.resolve())
     deleteComment.mockReturnValue(Promise.resolve())
     deleteFile.mockReturnValue(Promise.resolve())
+    deleteInteractions.mockReturnValue(Promise.resolve())
     findOneContent.mockReturnValue(
       Promise.resolve({
         type: 'post',
@@ -150,6 +153,7 @@ describe('Integrations tests for content deletion endpoint', () => {
     deleteComment.mockReset()
     deleteActivity.mockReset()
     deleteOneContent.mockReset()
+    deleteInteractions.mockReset()
   })
 
   test('Should return 405 if required query string is missing', async () => {
@@ -200,6 +204,10 @@ describe('Integrations tests for content deletion endpoint', () => {
       })
       expect(deleteOneContent).toHaveBeenCalledWith('post', {
         id: 'contentid',
+      })
+      expect(deleteInteractions).toHaveBeenCalledWith({
+        entity: 'content',
+        entityId: 'contentid'
       })
     })
   })
