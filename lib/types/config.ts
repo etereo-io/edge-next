@@ -7,75 +7,95 @@ import { UserType } from './entities/user'
 import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 
 export declare type ThemeType = {
-  label: string;
-  value: string;
-  mainColor: string;
-  borderColor: string;
+  label: string
+  value: string
+  mainColor: string
+  borderColor: string
 }
 
 export declare type ConfigType = {
-  title: string;
-  description: string;
-  slogan?: string;
-  url: string;
+  title: string
+  description: string
+  slogan?: string
+  url: string
   api: {
     bodyParser: {
-      sizeLimit: string;
+      sizeLimit: string
     }
-  };
+  }
   logger: {
-    level: string;
+    level: string
   }
   storage: {
-    type: string;
-  };
+    type: string
+  }
   database: {
-    type: string;
-  };
+    type: string
+  }
   emails: {
-    from: string;
-    contact: string;
-  };
+    from: string
+    contact: string
+  }
   theme: {
-    default: string;
-    themes: ThemeType[];
-  },
+    default: string
+    themes: ThemeType[]
+  }
   activity: {
-    enabled: boolean;
-    permissions: PermissionsType[];
-    initialActivity: any[]; // TODO: Add type
-  },
+    enabled: boolean
+    permissions: PermissionsType[]
+    initialActivity: any[] // TODO: Add type
+  }
   like: {
-    enabled: boolean;
-  },
+    enabled: boolean
+  }
   follow: {
-    enabled: boolean;
-  },
+    enabled: boolean
+  }
   user: {
-    roles: FieldOptionType[];
-    newUserRoles: string[];
-    emailVerification: boolean;
-    providers: object;
+    roles: FieldOptionType[]
+    newUserRoles: string[]
+    emailVerification: boolean
+    providers: {
+      facebook: boolean
+      google: boolean
+      github: boolean
+      instagram: boolean
+      snapchat: boolean
+      twitter: boolean
+      linkedin: boolean
+      twitch: boolean
+      foursquare: boolean
+      tumblr: boolean
+      steam: boolean
+      pinterest: boolean
+      quickbooks: boolean
+    }
     profile: {
-      fields: FieldType[];
-    };
-    permissions: PermissionsType[];
-    initialUsers: UserType[];
-    entityInteractions: InteractionTypeDefinition[];
-  },
+      fields: FieldType[]
+    }
+    permissions: PermissionsType[]
+    initialUsers: UserType[]
+    entityInteractions: InteractionTypeDefinition[]
+  }
 
   content: {
-    types: ContentTypeDefinition[];
-    initialContent: any[]; // TODO: Add type
-  },
+    types: ContentTypeDefinition[]
+    initialContent: any[] // TODO: Add type
+  }
 
   groups: {
-    types: GroupTypeDefinition[];
+    types: GroupTypeDefinition[]
   }
-  permissions: object;
+  permissions: object
   superSearch: {
     enabled: boolean
-    permissions: string[];
-    entities: Array<{name: string; fields: string[]; permissions: string[], type: string, fieldsForShow: string[]}>
+    permissions: string[]
+    entities: Array<{
+      name: string
+      fields: string[]
+      permissions: string[]
+      type: string
+      fieldsForShow: string[]
+    }>
   }
 }

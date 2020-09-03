@@ -7,7 +7,7 @@ import {
   onGroupJoinDisapprove,
   onGroupUpdated,
 } from '@lib/api/hooks/group.hooks'
-
+import { Request } from '@lib/types'
 import { UPDATE_GROUP_USER_ACTIONS } from '@lib/constants'
 import { connect } from '@lib/api/db'
 import { getPermittedFields } from '@lib/validations/group/users'
@@ -17,8 +17,8 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content'
 
-function updateUsers({ type, id, data, callback, res }) {
-  updateOneContent(type, id, data)
+async function updateUsers({ type, id, data, callback, res }) {
+  return updateOneContent(type, id, data)
     .then(callback)
     .catch((err) => {
       res.status(500).json({
@@ -27,7 +27,7 @@ function updateUsers({ type, id, data, callback, res }) {
     })
 }
 
-function removeUser(req, res) {
+async function removeUser(req: Request, res) {
   const {
     query: { type, userId },
     item: { id, members: oldMembers, pendingMembers: oldPendingMembers = [] },
@@ -40,20 +40,20 @@ function removeUser(req, res) {
     ({ id: memberId }) => memberId !== userId
   )
 
-  updateUsers({
+  return updateUsers({
     type,
     res,
     id,
     callback: (data) => {
       onGroupJoinDisapprove({ ...data, userId }, currentUser)
 
-      res.status(200).json(data)
+      return res.status(200).json(data)
     },
     data: { members, pendingMembers },
   })
 }
 
-async function updateUser(req, res) {
+async function updateUser(req: Request, res) {
   const {
     query: { type, action, userId },
     item: {
@@ -82,7 +82,7 @@ async function updateUser(req, res) {
       data = { members: uniqBy([body, ...oldMembers].map(getPermittedFields)) }
   }
 
-  updateUsers({
+  return updateUsers({
     type,
     res,
     id,
@@ -107,7 +107,7 @@ function getMovedToMembersList({
   return { members, pendingMembers }
 }
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const {
     query: { type, userId },
     method,
@@ -159,7 +159,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     put: updateUser,
     del: removeUser,
   })

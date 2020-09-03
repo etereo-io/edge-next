@@ -4,10 +4,11 @@ import { findOneUser } from '@lib/api/entities/users'
 import { getSession } from '@lib/api/auth/iron'
 import { hasPermission } from '@lib/permissions'
 import logger from '@lib/logger'
+import { Request } from '@lib/types'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const hasPermissionForActivity = async (req, res, cb) => {
+const hasPermissionForActivity = async (req: Request, res, cb) => {
   const session = await getSession(req)
 
   const permission = [`activity.read`, `activity.admin`]
@@ -23,7 +24,7 @@ const hasPermissionForActivity = async (req, res, cb) => {
   }
 }
 
-const userExist = (userId) => async (req, res, cb) => {
+const userExist = (userId) => async (req: Request, res, cb) => {
   const user = await findOneUser({ id: userId })
 
   if (!user) {
@@ -33,11 +34,11 @@ const userExist = (userId) => async (req, res, cb) => {
   }
 }
 
-const getActivities = (filterParams, searchParams, paginationParams) => (
+const getActivities = (filterParams, searchParams, paginationParams) => async (
   req,
   res
 ) => {
-  findActivity(filterParams, searchParams, paginationParams)
+  return findActivity(filterParams, searchParams, paginationParams)
     .then((data) => {
       res.status(200).json(data)
     })
@@ -48,7 +49,7 @@ const getActivities = (filterParams, searchParams, paginationParams) => (
     })
 }
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const {
     query: { userId, sortBy, sortOrder, from, limit },
   } = req
@@ -81,7 +82,6 @@ export default async (req, res) => {
   try {
     await runMiddleware(req, res, userExist(userId))
   } catch (e) {
-    
     return res.status(404).json({
       error: e.message,
     })
@@ -95,7 +95,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     get: getActivities(filterParams, searchParams, paginationParams),
   })
 }

@@ -1,13 +1,10 @@
-import {
-  deleteOneComment,
-  findOneComment,
-} from '@lib/api/entities/comments'
+import { deleteOneComment, findOneComment } from '@lib/api/entities/comments'
 import {
   hasPermissionsForComment,
   hasPermissionsForGroupComment,
   loadUser,
 } from '@lib/api/middlewares'
-
+import { CommentType, Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import logger from '@lib/logger'
@@ -15,7 +12,7 @@ import methods from '@lib/api/api-helpers/methods'
 import { onCommentDeleted } from '@lib/api/hooks/comment.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const loadCommentItemMiddleware = async (req, res, cb) => {
+const loadCommentItemMiddleware = async (req: Request, res, cb) => {
   const searchOptions = {}
 
   // By default filter by comment slug
@@ -39,7 +36,7 @@ const loadCommentItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getComment = (req, res) => {
+const getComment = (req: Request, res) => {
   res.status(200).json(req.item)
 }
 
@@ -61,7 +58,7 @@ const deleteComment = async (req, res) => {
   }
 }
 
-export default async (req, res) => {
+export default async (req: Request<CommentType>, res) => {
   const {
     query: { id },
   } = req
@@ -135,7 +132,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     get: getComment,
     del: deleteComment,
     put: (req, res) => {

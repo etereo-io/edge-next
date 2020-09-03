@@ -5,7 +5,7 @@ import {
   validateNewUser,
 } from '@lib/api/entities/users'
 import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
-
+import { Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
@@ -14,7 +14,7 @@ import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
-const getUsers = (filterParams, paginationParams) => (req, res) => {
+const getUsers = (filterParams, paginationParams) => (req: Request, res) => {
   const permission = [`user.admin`]
   const showPrivateFields = hasPermission(req.currentUser, permission)
 
@@ -34,20 +34,20 @@ const getUsers = (filterParams, paginationParams) => (req, res) => {
     })
 }
 
-const addUser = (user) => async (
-  { currentUser },
-  res
-) => {
+const addUser = (user) => async ({ currentUser }: Request, res) => {
   let parsedUser = null
 
-
-  const currentUserHasAdministrationRights = hasPermission(currentUser,  [`user.admin`, `user.update`])
+  const currentUserHasAdministrationRights = hasPermission(currentUser, [
+    `user.admin`,
+    `user.update`,
+  ])
 
   if (user.roles || user.profile) {
     // Is a user being created manually, not a signup. People who signup can not chose their own roles or add profile information
     if (!currentUserHasAdministrationRights) {
       return res.status(401).json({
-        error: 'Unauthorized to create users with roles or profile information.'
+        error:
+          'Unauthorized to create users with roles or profile information.',
       })
     }
   }
@@ -78,11 +78,13 @@ const addUser = (user) => async (
   }
 
   try {
-    const added = await createUser(parsedUser, currentUserHasAdministrationRights)
-  
+    const added = await createUser(
+      parsedUser,
+      currentUserHasAdministrationRights
+    )
+
     onUserAdded(added, currentUser)
-  
-  
+
     res.status(200).json(hidePrivateUserFields(added))
   } catch (err) {
     res.status(500).json({
@@ -91,9 +93,9 @@ const addUser = (user) => async (
   }
 }
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const {
-    query: { search, sortBy, sortOrder, from, limit},
+    query: { search, sortBy, sortOrder, from, limit },
   } = req
 
   const filterParams = {}
@@ -138,7 +140,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     get: getUsers(filterParams, paginationParams),
     post: addUser(req.body),
   })

@@ -1,33 +1,38 @@
+import { addContent, findContent } from '@lib/api/entities/content'
 import {
-  addContent,
-  findContent,
-  findOneContent,
-} from '@lib/api/entities/content'
-import {
-  hasPermissionsForContent,
-  hasPermissionsForGroupContent,
-  isValidContentType,
+  hasPermissionsForGroup,
+  isValidGroupType,
   loadUser,
 } from '@lib/api/middlewares'
-import { getContentTypeDefinition } from '@lib/config'
+import { groupPermission } from '@lib/permissions'
+import { ANY_OBJECT, Request } from '@lib/types'
 import { connect } from '@lib/api/db'
-import { contentValidations } from '@lib/validations/content'
 import { fillContentWithDefaultData } from '@lib/api/entities/content/content.utils'
-import logger from '@lib/logger'
+import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
-import { onContentAdded } from '@lib/api/hooks/content.hooks'
+import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
+import { getGroupTypeDefinition } from '@lib/config'
 
-const getContent = (filterParams, paginationParams) => (req, res) => {
-  const type = req.contentType
+const getGroups = (filterParams, paginationParams, member) => async (
+  req: Request,
+  res
+) => {
+  const type = req.groupType
 
   const increasedFilters = {
     ...filterParams,
   }
 
+  if (member) {
+    // Filter by member
+    increasedFilters.members = { $elemMatch: { id: member } }
+  }
+
   const isAdmin =
     req.currentUser && req.currentUser.roles.indexOf('ADMIN') !== -1
+
   const isOwner =
     req.currentUser &&
     filterParams.author &&
@@ -38,39 +43,46 @@ const getContent = (filterParams, paginationParams) => (req, res) => {
     increasedFilters.draft = false
   }
 
-  findContent(type.slug, increasedFilters, paginationParams)
+  return findContent(type.slug, increasedFilters, paginationParams)
     .then(async (data) => {
-      const contentTypeDefinition = getContentTypeDefinition(type.slug)
-
       if (data.total) {
+        const groupTypeDefinition = getGroupTypeDefinition(type.slug)
+
         const results = await appendInteractions({
           data: data.results,
-          interactionsConfig: contentTypeDefinition.entityInteractions,
-          entity: 'content',
+          interactionsConfig: groupTypeDefinition.entityInteractions,
+          entity: 'group',
           entityType: type.slug,
           currentUser: req.currentUser,
         })
 
+        if (!groupPermission(req.currentUser, type.slug, 'user.read')) {
+          const content = results.map((group) => {
+            const { members, pendingMembers, ...item } = group
+
+            return item
+          })
+
+          return res.status(200).json({ ...data, results: content })
+        }
+
         return res.status(200).json({ ...data, results })
       }
 
-      return res.status(200).json(data)
+      res.status(200).json(data)
     })
     .catch((err) => {
-      return res.status(500).json({
+      res.status(500).json({
         error: 'Error while loading content ' + err.message,
       })
     })
 }
 
-const createContent = async (req, res) => {
-  const type = req.contentType
+const createGroup = async (req: Request, res) => {
+  const type = req.groupType
+  const content = req.body
 
-  const content = {
-    ...req.body,
-  }
-
-  contentValidations(type, content)
+  return groupValidations(type, content)
     .then(async () => {
       // Content is valid
       // Add default value to missing fields
@@ -78,8 +90,18 @@ const createContent = async (req, res) => {
         type,
         {
           ...content,
-          groupId: req.query.groupId ? req.query.groupId : null,
-          groupType: req.query.groupType ? req.query.groupType : null,
+          members: [
+            {
+              id: req.currentUser.id,
+              roles: ['GROUP_ADMIN'],
+            },
+            ...(content.members
+              ? content.members.map((member) => ({
+                  id: member.id,
+                  roles: member.roles,
+                }))
+              : []),
+          ],
         },
         req.currentUser
       )
@@ -87,14 +109,14 @@ const createContent = async (req, res) => {
       addContent(type.slug, newContent)
         .then((data) => {
           // Trigger on content added hook
-          onContentAdded(data, req.currentUser)
+          onGroupAdded(data, req.currentUser)
 
           // Respond
           res.status(200).json(data)
         })
         .catch((err) => {
           res.status(500).json({
-            error: 'Error while saving content ' + err.message,
+            error: 'Error while saving group ' + err.message,
           })
         })
     })
@@ -105,34 +127,15 @@ const createContent = async (req, res) => {
     })
 }
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const {
-    query: {
-      type,
-      sortBy,
-      sortOrder,
-      from,
-      limit,
-      author,
-      tags,
-      groupId,
-      groupType,
-    },
+    query: { type, sortBy, sortOrder, from, limit, author, member },
   } = req
 
-  // Group filtering if not set marks it to null
-  const filterParams = {
-    groupId: groupId ? groupId : null,
-    groupType: groupType ? groupType : null,
-  }
+  const filterParams: ANY_OBJECT = {}
 
   if (author) {
     filterParams.author = author
-  }
-
-  if (tags) {
-    // TODO: Make tags filter generic
-    filterParams['tags.slug'] = tags
   }
 
   const paginationParams = {
@@ -143,7 +146,7 @@ export default async (req, res) => {
   }
 
   try {
-    await runMiddleware(req, res, isValidContentType(type))
+    await runMiddleware(req, res, isValidGroupType(type))
   } catch (e) {
     return res.status(405).json({
       error: e.message,
@@ -154,7 +157,6 @@ export default async (req, res) => {
     // Connect to database
     await connect()
   } catch (e) {
-    logger('ERROR', 'Can not connect to db', e)
     return res.status(500).json({
       error: e.message,
     })
@@ -169,33 +171,15 @@ export default async (req, res) => {
   }
 
   try {
-    if (groupId) {
-      const group = await findOneContent(groupType, {
-        id: groupId,
-      })
-
-      if (!group) {
-        return res.status(404).json({
-          error: 'Not found',
-        })
-      }
-
-      await runMiddleware(
-        req,
-        res,
-        hasPermissionsForGroupContent(groupType, type, group)
-      )
-    } else {
-      await runMiddleware(req, res, hasPermissionsForContent(type))
-    }
+    await runMiddleware(req, res, hasPermissionsForGroup(type))
   } catch (e) {
     return res.status(401).json({
       error: e.message,
     })
   }
 
-  methods(req, res, {
-    get: getContent(filterParams, paginationParams),
-    post: createContent,
+  await methods(req, res, {
+    get: getGroups(filterParams, paginationParams, member),
+    post: createGroup,
   })
 }
