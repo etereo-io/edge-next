@@ -44,6 +44,12 @@ function DetailView({ group, type, showActions }: Props) {
           justify-content: space-between;
         }
 
+        @media all and (max-width: 720px) {
+          .edge-item-card-footer {
+            align-items: flex-start;
+          }
+        } 
+
         .edge-item-card-stats {
           display: flex;
         }

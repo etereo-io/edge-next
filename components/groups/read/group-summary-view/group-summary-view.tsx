@@ -159,6 +159,13 @@ function SummaryView({
           margin-bottom: 16px;
           padding-right: 110px;
         }
+
+        @media all and (max-width: 720px){
+          .description {
+            padding-right: 0;
+          }
+        }
+
         .group-top-section {
           display: flex;
           flex-wrap: wrap;
