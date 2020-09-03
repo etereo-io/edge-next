@@ -100,8 +100,8 @@ export const getConfig = () => {
       {
         type: 'like',
         aggregation: 'sum',
-        activeTitle: 'Like',
-        inactiveTitle: 'Unlike',
+        activeTitle: 'Unlike',
+        inactiveTitle: 'Like',
         permissions: {
           read: ['PUBLIC', 'USER'],
           create: ['USER'],
@@ -110,8 +110,8 @@ export const getConfig = () => {
       },
       {
         type: 'follow',
-        activeTitle: 'Follow',
-        inactiveTitle: 'Unfollow',
+        activeTitle: 'Unfollow',
+        inactiveTitle: 'Follow',
         permissions: {
           read: ['PUBLIC', 'USER'],
           create: ['USER'],
@@ -385,8 +385,8 @@ export const getConfig = () => {
       {
         type: 'like',
         aggregation: 'sum',
-        activeTitle: 'Like',
-        inactiveTitle: 'Unlike',
+        activeTitle: 'Unlike',
+        inactiveTitle: 'Like',
         permissions: {
           read: ['USER'],
           create: ['ADMIN'],

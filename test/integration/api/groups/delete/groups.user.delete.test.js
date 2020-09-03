@@ -1,9 +1,9 @@
 import {
   findOneContent,
   updateOneContent,
-} from '../../../../../lib/api/entities/content/content'
+} from '../../../../../lib/api/entities/content'
 
-import { findOneUser } from '../../../../../lib/api/entities/users/user'
+import { findOneUser } from '../../../../../lib/api/entities/users'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/groups/[type]/[slug]/users/[userId]'
@@ -11,8 +11,8 @@ import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => {

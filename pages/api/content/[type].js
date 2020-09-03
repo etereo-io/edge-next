@@ -17,7 +17,7 @@ import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onContentAdded } from '@lib/api/hooks/content.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 
 const getContent = (filterParams, paginationParams) => (req, res) => {
   const type = req.contentType

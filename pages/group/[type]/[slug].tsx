@@ -10,7 +10,7 @@ import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import GroupContext from '@components/groups/context/group-context'
-import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getSession } from '@lib/api/auth/iron'
 
 export const getServerSideProps: GetServerSideProps = async ({

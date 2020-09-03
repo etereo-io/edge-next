@@ -2,20 +2,20 @@ import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '../../../../../lib/api/entities/comments/comments'
+} from '../../../../../lib/api/entities/comments'
 import {
   deleteOneContent,
   findOneContent,
-} from '../../../../../lib/api/entities/content/content'
+} from '../../../../../lib/api/entities/content'
 import {
   deleteOneUser,
   findOneUser,
-} from '../../../../../lib/api/entities/users/user'
+} from '../../../../../lib/api/entities/users'
 
 import crypto from 'crypto'
 import {
   deleteActivity,
-} from '../../../../../lib/api/entities/activity/activity'
+} from '../../../../../lib/api/entities/activity'
 import {
   deleteFile,
 } from '../../../../../lib/api/storage'
@@ -29,10 +29,10 @@ import request from '../../requestHandler'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/storage')
-jest.mock('../../../../../lib/api/entities/comments/comments')
-jest.mock('../../../../../lib/api/entities/activity/activity')
-jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/comments')
+jest.mock('../../../../../lib/api/entities/activity')
+jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/users')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {

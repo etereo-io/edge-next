@@ -11,7 +11,7 @@ import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getGroupTypeDefinition } from '@lib/config'
 
 const getGroups = (filterParams, paginationParams, member) => (

@@ -1,10 +1,10 @@
 import {
   deleteOneContent,
   findOneContent,
-} from '../../../../../lib/api/entities/content/content'
+} from '../../../../../lib/api/entities/content'
 
-import { deleteActivity } from '../../../../../lib/api/entities/activity/activity'
-import { deleteComment } from '../../../../../lib/api/entities/comments/comments'
+import { deleteActivity } from '../../../../../lib/api/entities/activity'
+import { deleteComment } from '../../../../../lib/api/entities/comments'
 import { deleteFile } from '../../../../../lib/api/storage'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
@@ -14,9 +14,9 @@ import request from '../../requestHandler'
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/storage')
-jest.mock('../../../../../lib/api/entities/comments/comments')
-jest.mock('../../../../../lib/api/entities/activity/activity')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/comments')
+jest.mock('../../../../../lib/api/entities/activity')
+jest.mock('../../../../../lib/api/entities/content')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {

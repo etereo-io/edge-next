@@ -2,11 +2,11 @@ import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '../../../../../lib/api/entities/comments/comments'
+} from '../../../../../lib/api/entities/comments'
 
 import {
   deleteActivity,
-} from '../../../../../lib/api/entities/activity/activity'
+} from '../../../../../lib/api/entities/activity'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import {
   getSession,
@@ -16,8 +16,8 @@ import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/comments/comments')
-jest.mock('../../../../../lib/api/entities/activity/activity')
+jest.mock('../../../../../lib/api/entities/comments')
+jest.mock('../../../../../lib/api/entities/activity')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {

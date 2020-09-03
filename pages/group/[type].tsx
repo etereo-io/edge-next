@@ -11,7 +11,7 @@ import { getGroupTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { useGroupTypes } from '@lib/client/hooks'
 import { getSession } from '@lib/api/auth/iron'
-import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({

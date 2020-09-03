@@ -21,7 +21,7 @@ import { contentValidations } from '@lib/validations/content'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
-import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getContentTypeDefinition } from '@lib/config'
 
 

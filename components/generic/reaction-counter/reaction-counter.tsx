@@ -49,9 +49,11 @@ function ReactionCounter({
             <LoadingSpinner />
           ) : Icon ? (
             <Icon
-              className={`reaction-item reaction-item-${type} ${
+              className={`${
                 active ? 'active' : ''
-              } ${disabled ? 'disabled' : ''}
+              } reaction-item reaction-item-${type}  ${
+                disabled ? 'disabled' : ''
+              }
             `}
             />
           ) : (
@@ -142,12 +144,12 @@ function ReactionCounter({
           transition: 0.35s ease;
         }
 
-        .active .reaction-item path {
+        .active.reaction-item path {
           fill: var(--edge-alert);
           stroke: var(--edge-alert);
         }
 
-        .active .reaction-item span {
+        .active.reaction-item span {
           color: var(--edge-alert);
         }
 

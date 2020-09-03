@@ -21,7 +21,7 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { getGroupTypeDefinition } from '@lib/config'
-import { appendInteractions } from '@lib/api/api-helpers/interactions'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 
 // disable the default body parser to be able to use file upload
 export const config = {
