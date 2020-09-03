@@ -1,13 +1,13 @@
+import { InteractionEntity, InteractionItem } from '../types'
 import React, { memo, useCallback, useMemo, useState } from 'react'
 
-import { InteractionEntity, InteractionItem } from '../types'
-import useInteractionPermissions from '../hooks/useInteractionPermissions'
 import Item from './item'
 import StackedAvatars from '@components/generic/stacked-avatars'
-import fetcher from '@lib/fetcher'
-import { useUser } from '@lib/client/hooks'
 import { UserType } from '@lib/types'
+import fetcher from '@lib/fetcher'
 import { getInteractionsDefinition } from '@lib/config'
+import useInteractionPermissions from '../hooks/useInteractionPermissions'
+import { useUser } from '@lib/client/hooks'
 
 interface Props {
   interactions: InteractionEntity[]
@@ -152,6 +152,7 @@ function List({ interactions, entity, entityType, entityId }: Props) {
         <StackedAvatars
           key={type}
           width="40px"
+          maxItems={3}
           users={users.filter(Boolean)}
           title={type}
         />

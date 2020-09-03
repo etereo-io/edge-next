@@ -10,7 +10,7 @@ function GroupMembers({ members = [], visible = 3 }) {
           <StackedAvatars
             title="members"
             width="50px"
-            numberItems={visible}
+            maxItems={visible}
             users={members}
           />
         </div>

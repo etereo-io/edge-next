@@ -675,7 +675,7 @@ const links = [{
             <div className="component-demo">
               <div className="item-wrapper">
                 <StackedAvatars
-                  numberItems={2}
+                  maxItems={2}
                   title="Users"
                   users={[
                     {
@@ -701,7 +701,7 @@ const links = [{
               </div>
               <pre>{`
                 <StackedAvatars
-                  numberItems={2}
+                  maxItems={2}
                   title="Users"
                   users={[
                     {

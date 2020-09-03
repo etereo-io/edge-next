@@ -6,7 +6,7 @@ import { UserType } from '@lib/types'
 type Props = {
   title: string
   users?: UserType[]
-  numberItems?: number
+  maxItems?: number
   width: string
 }
 
@@ -14,10 +14,10 @@ function StackedAvatars({
   title,
   width,
   users = [],
-  numberItems = 3,
+  maxItems = 3,
 }: Props) {
-  const usersVisible = users.slice(0, numberItems)
-  const extraUsers = users.length > numberItems ? users.length - numberItems : 0
+  const usersVisible = users.slice(0, maxItems)
+  const extraUsers = users.length > maxItems ? users.length - maxItems : 0
 
   return (
     <>
