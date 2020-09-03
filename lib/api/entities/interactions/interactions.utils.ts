@@ -170,7 +170,7 @@ function formResult(
 
 type AppendInteractionsParams = {
   data: { [key: string]: any }[]
-  interactionsConfig: InteractionTypeDefinition[]
+  interactionsConfig?: InteractionTypeDefinition[]
   entity: 'group' | 'content' | 'user'
   currentUser
   entityType: string
@@ -181,7 +181,7 @@ export async function appendInteractions({
   currentUser,
   entity,
   entityType,
-  interactionsConfig,
+  interactionsConfig = [],
 }: AppendInteractionsParams) {
   const interactionsList = interactionsConfig.map(({ type }) => type)
 
