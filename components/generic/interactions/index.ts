@@ -1,1 +1,1 @@
-export { default as InteractionsList } from './components/list'
+export { default as Interaction } from './components/interaction'

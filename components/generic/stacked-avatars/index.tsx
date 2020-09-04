@@ -4,14 +4,14 @@ import Avatar from '@components/user/avatar/avatar'
 import { UserType } from '@lib/types'
 
 type Props = {
-  title: string
+  title?: string
   users?: UserType[]
   maxItems?: number
   width: string
 }
 
 function StackedAvatars({
-  title,
+  title = '',
   width,
   users = [],
   maxItems = 3,

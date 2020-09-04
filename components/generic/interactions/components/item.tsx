@@ -10,13 +10,8 @@ interface Props {
   entity: string
   entityType: string
   entityId: string
-  create: (
-    url: string,
-    body: object,
-    isNumber: boolean,
-    type: string
-  ) => Promise<any>
-  remove: (url: string, isNumber: boolean, type: string) => Promise<any>
+  create: (url: string, body: object, isNumber: boolean) => Promise<any>
+  remove: (url: string, isNumber: boolean) => Promise<any>
 }
 
 function getTitle(
@@ -68,8 +63,7 @@ function Item({
           type,
           entityId,
         },
-        isNumber,
-        type
+        isNumber
       )
         .then(
           (result) => {
@@ -103,8 +97,7 @@ function Item({
 
       remove(
         `${API.interactions}/${entity}/${entityType}/${type}?id=${id}`,
-        isNumber,
-        type
+        isNumber
       )
         .then(
           () => {
