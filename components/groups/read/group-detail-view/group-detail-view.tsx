@@ -20,6 +20,7 @@ function DetailView({ group, type, showActions }: Props) {
     <>
       <article className="edge-item-card">
         <div className="edge-item-card-header">
+          {showActions && <GroupActions group={group} />}
           {group.draft && <div className="status">Draft</div>}
         </div>
         <div className="edge-item-card-content">
@@ -32,7 +33,6 @@ function DetailView({ group, type, showActions }: Props) {
             </li>
           </ul>
         </footer>
-        {showActions && <GroupActions group={group} />}
         <GroupContentMenu group={group} />
         <GroupTabs id={group.id} group={group} />
       </article>
@@ -42,6 +42,12 @@ function DetailView({ group, type, showActions }: Props) {
           display: flex;
           justify-content: space-between;
         }
+
+        @media all and (max-width: 720px) {
+          .edge-item-card-footer {
+            align-items: flex-start;
+          }
+        } 
 
         .edge-item-card-stats {
           display: flex;

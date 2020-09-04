@@ -16,11 +16,11 @@ function GroupActions(props: Props) {
   const canEdit = groupPermission(currentUser.user, group.type, 'update', group)
 
   return (
-    <div className={`content-actions`}>
-      {canEdit && (
-        <Button href={`/edit/group/${group.type}/${group.slug}`}>Edit</Button>
-      )}
-    </div>
+      <div className={`content-actions`}>
+        {canEdit && (
+          <Button href={`/edit/group/${group.type}/${group.slug}`}>Edit</Button>
+        )}
+      </div>
   )
 }
 

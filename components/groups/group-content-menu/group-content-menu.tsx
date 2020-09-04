@@ -30,6 +30,7 @@ function GroupContentMenu(props: Props) {
       const contentType = getContentTypeDefinition(type.slug)
 
       return (
+        <>
         <div key={type.slug} className="content-action">
           <Button
             href={`/create/content/${type.slug}?groupId=${group.id}&groupType=${group.type}`}
@@ -38,11 +39,27 @@ function GroupContentMenu(props: Props) {
             Create a {contentType.title}
           </Button>
         </div>
+        <style jsx>{`
+          .content-action:last-of-type {
+            margin-left: 8px;
+          }
+        `}</style>
+      </>
       )
     }
   })
 
-  return <div className={`content-actions`}>{contentTypes}</div>
+  return (
+    <>
+    <div className={`content-actions`}>{contentTypes}</div>
+    <style jsx>{`
+        .content-actions {
+          display: flex;
+          margin-top: 24px;
+        }
+      `}</style>
+    </>
+  )
 }
 
 export default memo(GroupContentMenu)

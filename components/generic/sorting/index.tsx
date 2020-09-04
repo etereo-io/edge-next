@@ -59,7 +59,6 @@ function Sorting({ onChange, value, options }: Props) {
             ))}
           </select>
         </div>
-        <div className="vl" />
         <div className="sortOrder" onClick={handleChangeSortOrder}>
           {sortOrder === 'DESC' ? (
             <ArrowUp style={svgStyles} />
@@ -75,17 +74,14 @@ function Sorting({ onChange, value, options }: Props) {
             justify-content: flex-end;
           }
 
-          .vl {
-            border-left: 2px solid var(--light-border-color);
-          }
-
           .sortBy {
-            width: 200px;
             border: none;
+            cursor: pointer;
+            font-size: 14px;
           }
 
           .sortOrder {
-            width: 50px;
+            width: 32px;
             align-self: center;
             text-align: center;
           }

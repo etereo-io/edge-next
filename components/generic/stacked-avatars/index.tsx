@@ -55,12 +55,12 @@ function StackedAvatars({
         .user-item:not(:first-child) {
           margin-left: -25px;
           -webkit-mask: radial-gradient(
-            circle 30px at -5px -50%,
+            circle 24px at -5px -50%,
             transparent 99%,
             #fff 100%
           );
           mask: radial-gradient(
-            circle 30px at -5px -50%,
+            circle 24px at -5px -50%,
             transparent 99%,
             #fff 100%
           );
@@ -72,12 +72,16 @@ function StackedAvatars({
           background: var(--edge-success);
           color: var(--edge-background);
           border-radius: 100%;
-          font-size: 15px;
+          font-size: 14px;
           font-weight: bold;
           display: flex;
           align-items: center;
           justify-content: center;
         }
+
+        
+
+       
       `}</style>
     </>
   )
