@@ -10,6 +10,8 @@ import Link from 'next/link'
 import fetch from '@lib/fetcher'
 import { groupUserPermission } from '@lib/permissions'
 import { useUser } from '@lib/client/hooks'
+import { Interaction } from '@components/generic/interactions'
+import { getInteractionsDefinition } from '@lib/config'
 
 interface Props {
   linkToDetail?: boolean
@@ -82,6 +84,8 @@ function SummaryView({
       .finally(() => setIsLoading(false))
   }, [currentUser, group.type, group.slug])
 
+  const interactionsConfig = getInteractionsDefinition('group', type.slug)
+
   return (
     <>
       <div className={`group-summary-view ${className}`}>
@@ -148,8 +152,20 @@ function SummaryView({
                 Join
               </Button>
             )}
-            {error && <div className="error-message">Something went wrong.</div>}
+            {error && (
+              <div className="error-message">Something went wrong.</div>
+            )}
           </div>
+          {interactionsConfig.map((interaction) => (
+            <Interaction
+              key={interaction.type}
+              interactions={group.interactions}
+              interactionConfig={interaction}
+              entity="group"
+              entityType={type.slug}
+              entityId={group.id}
+            />
+          ))}
         </div>
       </div>
       <style jsx>{`

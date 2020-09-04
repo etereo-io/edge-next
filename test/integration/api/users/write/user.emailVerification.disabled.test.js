@@ -1,11 +1,11 @@
-import { findUserWithPassword } from '../../../../../lib/api/entities/users/user'
+import { findUserWithPassword } from '../../../../../lib/api/entities/users'
 import handler from '../../../../../pages/api/auth/[...action]'
 import { onUserAdded } from '../../../../../lib/api/hooks/user.hooks'
 import request from '../../requestHandler'
 import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({

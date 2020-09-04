@@ -26,7 +26,6 @@ function DetailView({ group, type, showActions }: Props) {
         <div className="edge-item-card-content">
           <GroupSummaryView group={group} linkToDetail={false} type={type} />
         </div>
-
         <footer className="edge-item-card-footer">
           <ul className="edge-item-card-stats">
             <li className="edge-item-card-stats-item">

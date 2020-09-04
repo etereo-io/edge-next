@@ -1,4 +1,4 @@
-import { findOneContent, updateOneContent } from '../../../../../lib/api/entities/content/content'
+import { findOneContent, updateOneContent } from '../../../../../lib/api/entities/content'
 
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/content/[type]/[slug]'
@@ -6,7 +6,7 @@ import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/api/storage')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/content')
 
 /*
   Scenario: 

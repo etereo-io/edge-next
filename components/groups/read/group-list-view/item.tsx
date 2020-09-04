@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import React, { memo } from 'react'
 import Card from '@components/generic/card/card'
 import GroupSummaryView from '@components/groups/read/group-summary-view/group-summary-view'
 

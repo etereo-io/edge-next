@@ -1,6 +1,6 @@
 import {
   findOneUser,
-} from '../../../../../lib/api/entities/users/user'
+} from '../../../../../lib/api/entities/users'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import {
   getSession,
@@ -10,7 +10,7 @@ import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/users')
 
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,

@@ -1,6 +1,7 @@
 import { FieldType } from './fields'
 import { PermissionsType } from './permissions'
 import { PublishingType } from './publishing'
+import { InteractionTypeDefinition } from './interactionTypeDefinition'
 
 export declare type CommentsType = {
   enabled: boolean;
@@ -19,4 +20,5 @@ export declare type ContentTypeDefinition = {
   },
   comments: CommentsType;
   fields: FieldType[]
+  entityInteractions: InteractionTypeDefinition[]
 }

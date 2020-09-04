@@ -1,4 +1,4 @@
-import { addContent, findOneContent } from '../../../../../lib/api/entities/content/content'
+import { addContent, findOneContent } from '../../../../../lib/api/entities/content'
 
 import { fillContentWithDefaultData } from '../../../../../lib/api/entities/content/content.utils'
 import { getSession } from '../../../../../lib/api/auth/iron'
@@ -6,7 +6,7 @@ import handler from '../../../../../pages/api/content/[type]'
 import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/content')
 jest.mock('../../../../../lib/api/entities/content/content.utils')
 
 /*

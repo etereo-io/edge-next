@@ -1,6 +1,6 @@
 import {
   findComments,
-} from '../../../../../lib/api/entities/comments/comments'
+} from '../../../../../lib/api/entities/comments'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import {
   getSession,
@@ -10,7 +10,7 @@ import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/comments/comments')
+jest.mock('../../../../../lib/api/entities/comments')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {

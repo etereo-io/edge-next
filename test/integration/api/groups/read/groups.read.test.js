@@ -1,6 +1,6 @@
 import {
   findContent,
-} from '../../../../../lib/api/entities/content/content'
+} from '../../../../../lib/api/entities/content'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import {
   getSession,
@@ -10,7 +10,7 @@ import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/content')
 
 jest.mock('../../../../../edge.config', () => {
 

@@ -2,17 +2,17 @@ import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '../../../../../lib/api/entities/comments/comments'
+} from '../../../../../lib/api/entities/comments'
 
-import { findOneContent } from '../../../../../lib/api/entities/content/content'
+import { findOneContent } from '../../../../../lib/api/entities/content'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/comments/[id]'
 import { onCommentDeleted } from '../../../../../lib/api/hooks/comment.hooks'
 import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
-jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/comments/comments')
+jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/comments')
 jest.mock('../../../../../lib/api/hooks/comment.hooks')
 
 

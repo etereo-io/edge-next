@@ -2,7 +2,7 @@ import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
 import {
   findOneUser,
   updateOneUser,
-} from '../../../../../lib/api/entities/users/user'
+} from '../../../../../lib/api/entities/users'
 
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
@@ -13,7 +13,7 @@ import { sendVerifyEmail } from '../../../../../lib/email'
 jest.mock('../../../../../lib/email')
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => ({

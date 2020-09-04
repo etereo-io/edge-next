@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react'
+import React, { useState, memo, Fragment } from 'react'
 
 import AuthorBox from '@components/user/author-box/author-box'
 import Button from '@components/generic/button/button'
@@ -10,11 +10,12 @@ import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import FollowButton from '@components/user/follow-button/follow-button'
 import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
 import SocialShare from '@components/generic/social-share/social-share'
-import config from '@lib/config'
+import config, { getInteractionsDefinition } from '@lib/config'
 import { format } from 'timeago.js'
 import { useMonetizationState } from 'react-web-monetization'
 import { usePermission } from '@lib/client/hooks'
 import { useUser } from '@lib/client/hooks'
+import { Interaction } from '@components/generic/interactions'
 
 interface Props {
   content: any
@@ -27,6 +28,11 @@ interface Props {
 
 function ContentDetailView(props: Props) {
   const { addComments = true } = props
+
+  const interactionsConfig = getInteractionsDefinition(
+    'content',
+    props.type.slug
+  )
 
   const shareUrl =
     typeof window !== 'undefined'
@@ -196,7 +202,18 @@ function ContentDetailView(props: Props) {
               />
             </div>
           )}
-
+        <div className="interactions">
+          {interactionsConfig.map((interaction) => (
+            <Interaction
+              key={interaction.type}
+              interactions={props.content.interactions}
+              interactionConfig={interaction}
+              entity="content"
+              entityType={props.type.slug}
+              entityId={props.content.id}
+            />
+          ))}
+        </div>
         {props.type.comments.enabled &&
           canReadComments.available &&
           showComments && (
@@ -215,6 +232,14 @@ function ContentDetailView(props: Props) {
         )}
       </article>
       <style jsx>{`
+        .interactions {
+          margin-top: var(--edge-gap);
+          display: inline-flex;
+          justify-content: center;
+          align-content: center;
+          align-items: center;
+        }
+
         .edge-item-card-footer {
           align-items: center;
           display: flex;

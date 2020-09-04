@@ -1,8 +1,8 @@
-import { findUserWithPassword } from '../../../../../lib/api/entities/users/user'
+import { findUserWithPassword } from '../../../../../lib/api/entities/users'
 import handler from '../../../../../pages/api/auth/[...action]'
 import request from '../../requestHandler'
 
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/users')
 
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,

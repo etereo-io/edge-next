@@ -96,6 +96,51 @@ export const getConfig = () => {
       },
     },
 
+    entityInteractions: [
+      {
+        type: 'like',
+        aggregation: 'sum',
+        activeTitle: 'Unlike',
+        inactiveTitle: 'Like',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+      {
+        type: 'follow',
+        activeTitle: 'Unfollow',
+        inactiveTitle: 'Follow',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+      {
+        type: 'report',
+        activeTitle: 'Report',
+        inactiveTitle: 'Report',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+      {
+        type: 'favorite',
+        aggregation: 'sum',
+        activeTitle: 'Remove from favorite',
+        inactiveTitle: 'Add to favorite',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+    ],
+
     fields: [
       {
         name: 'title',
@@ -332,6 +377,20 @@ export const getConfig = () => {
           update: ['GROUP_ADMIN'],
           delete: ['GROUP_ADMIN'],
           admin: ['GROUP_ADMIN'],
+        },
+      },
+    ],
+
+    entityInteractions: [
+      {
+        type: 'like',
+        aggregation: 'sum',
+        activeTitle: 'Unlike',
+        inactiveTitle: 'Like',
+        permissions: {
+          read: ['USER'],
+          create: ['ADMIN'],
+          delete: ['USER'],
         },
       },
     ],

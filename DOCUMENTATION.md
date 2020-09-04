@@ -8,6 +8,7 @@
   - [Content Types](#content-types)
   - [Groups](#groups)
     - [How groups work?](#how-groups-work)
+  - [Entity interactions](#entity-interactions)
   - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
   - [Storage](#storage)
@@ -33,9 +34,11 @@
   - [API](#api)
     - [Auth](#auth)
     - [Users](#users)
+    - [Groups](#groups-1)
     - [Content](#content)
     - [Comments](#comments)
     - [Activity](#activity)
+    - [Interactions](#interactions)
 
 
 
@@ -206,9 +209,6 @@ const contentType = {
     web: true // Enable web monetization for a content type
   },
 
-  // View type display on the users profile and content pages (grid or list)
-  display: 'grid',
-
   comments: {
     // Enable or disable comments
     enabled: true,
@@ -374,6 +374,58 @@ const projectGroupType = {
   }
 
 ```
+
+## Entity interactions
+
+Entity interactions may be added to any entity configuration in `edge.config.js`. It may be `ContentTypes`, `GroupTypes` or `Users`. 
+
+Entity interactions provide a relation between an entity and an action by the user. It usually may be something like "following" a user, "liking" a content, "mark to read later" a content, etc.
+
+They are defined inside the content type, group type or user definitions in the following way
+
+```javascript
+ // Entity interactions
+  entityInteractions: [{
+    type: 'like',
+
+    // How to hydrate the data from the database when loading a certain content (group/user). 
+    // "user" will load the list of users who performed this interaction
+    // "sum" will aggregate the result of interactions when the content is fetched
+    aggregation: 'sum',
+
+    // title user can see when an interaction is in active state
+    activeTitle: 'Remove from favorite',
+
+    // title user can see when an interaction is in inactive state
+    inactiveTitle: 'Add to favorite',
+    
+    permissions: {
+      // Who can read the entity interactions
+      read: ['PUBLIC'],
+
+      // Who can create entity interactions
+      create: ['ADMIN', 'USER'],
+    }
+  }]
+```
+
+Interactions are stored in a separate collection called "interactions". An example model of the data stored would be something like this:
+
+```
+{
+  id: xxxx,
+  author: xxxx,
+  entity: 'content',
+  entityType: 'post',
+  entityId: xxxx,
+  createdAt: Date,
+  type: 'like',
+  metadata: {
+    // anything here
+  }
+}
+```
+
 
 ## Fields
 
@@ -979,3 +1031,24 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `GET /api/super-search?query=XXX`
 - Returns a list of all entities which have phrase mentioned in `query` but limited by permissions described in the `edge.config.js` 
 
+### Interactions
+
+- `GET /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?author=USER_ID&entityId=id`
+  - Return all the interactions of a certain type, accepts filter by author, entityId and pagination options 
+- `POST /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE` 
+  - Create an interaction on an entity
+  - `author` id will be extracted from the current user
+  - Body expected:
+  ```
+  {
+    type: 'like',
+    entityId: 'XXXX',
+    entityType: 'post',
+    entity: 'content',
+    metadata: {
+      // anything
+    }
+  }
+  ```
+- `DELETE /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?id=xxxx`
+  - It will delete the interaction sent as an id

@@ -1,6 +1,7 @@
 import { FieldType } from './fields'
 import { PermissionsType } from './permissions'
 import { PublishingType } from './publishing'
+import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 
 type RoleType = {
   label: string
@@ -24,6 +25,6 @@ export declare type GroupTypeDefinition = {
     requireApproval: boolean
     permissions: PermissionsType
   }
-
-  contentTypes: ContentTypes[]
+  entityInteractions: InteractionTypeDefinition[];
+  contentTypes: ContentTypes[];
 }

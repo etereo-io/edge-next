@@ -20,6 +20,8 @@ import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
+import { getGroupTypeDefinition } from '@lib/config'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -56,8 +58,22 @@ const loadGroupItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getGroup = async (req, res) => {
-  res.status(200).json(req.item)
+const getGroup = async ({ groupType, currentUser, item }, res) => {
+  if (item) {
+    const groupTypeDefinition = getGroupTypeDefinition(groupType)
+
+    const data = await appendInteractions({
+      data: [item],
+      interactionsConfig: groupTypeDefinition.entityInteractions,
+      entity: 'group',
+      entityType: groupType,
+      currentUser: currentUser,
+    })
+
+    return res.status(200).json(data[0])
+  }
+
+  return res.status(200).json(item)
 }
 
 const deleteGroup = (req, res) => {
@@ -105,7 +121,7 @@ const updateGroup = async (req, res) => {
         req.item,
         content
       )
-      
+
       if (Object.keys(newContent).length === 0) {
         // It is an empty request, no file was uploaded, no file was deleted)
         const filled = await fillContent(req.item)
@@ -146,7 +162,6 @@ export default async (req, res) => {
       error: e.message,
     })
   }
-
 
   try {
     // Connect to database
