@@ -100,7 +100,7 @@ function useInfinityList<Item>({
   let total = 0
 
   if (response) {
-    ([{total}] = response)
+    ([{ total }] = response)
   }
 
   const isLoadingInitialData = !response && !error
