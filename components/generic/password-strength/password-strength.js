@@ -1,4 +1,6 @@
-export default function Named({ password = '' }) {
+import { memo } from 'react'
+
+function PasswordStrength({ password = '' }) {
   const special = new RegExp('[$@$!%*#?&]').test(password)
   const uppercase = new RegExp('[A-Z]').test(password)
   const numbers = new RegExp('[0-9]').test(password)
@@ -152,3 +154,5 @@ export default function Named({ password = '' }) {
     </>
   )
 }
+
+export default memo(PasswordStrength)

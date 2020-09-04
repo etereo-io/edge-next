@@ -11,7 +11,7 @@ export const getDB = () => {
   return db
 }
 
-export const setUpMongoDB = async () => {
+export const seedDatabase = async () => {
   const hasBeenSeeded = await db.collection('config').findOne({
     seed: true,
   })
@@ -56,7 +56,7 @@ export const connect = async () => {
         logger('INFO', 'Connecting to Mongo Database')
 
         db = await connectMongoDB()
-        await setUpMongoDB()
+        await seedDatabase()
 
         break
       }
@@ -64,7 +64,8 @@ export const connect = async () => {
         logger('INFO', 'Using in memory database')
 
         db = connectInMemoryDB()
-        await setUpMongoDB()
+        await seedDatabase()
+        break
       }
     }
   } else {

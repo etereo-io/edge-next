@@ -1,4 +1,6 @@
-export default function Named(props) {
+import { memo } from 'react'
+
+function Progress(props) {
   return (
     <>
       <div className="progress-bar">
@@ -22,3 +24,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(Progress)

@@ -1,15 +1,12 @@
-import { addContent } from '../../../../../lib/api/entities/content/content'
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
+import { addContent } from '../../../../../lib/api/entities/content'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/groups/[type]'
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/content')
 
 jest.mock('../../../../../edge.config', () => {
   
@@ -89,8 +86,7 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for Groups creation endpoint', () => {
-  let server
-  let url
+ 
 
   beforeEach(() => {
     addContent.mockReturnValue(Promise.resolve({ id: 'abc' }))
@@ -101,19 +97,7 @@ describe('Integrations tests for Groups creation endpoint', () => {
     getSession.mockReset()
     addContent.mockReset()
   })
-  
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
 
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   test('Should return 405 if required query string is missing', async () => {
 
@@ -133,24 +117,20 @@ describe('Integrations tests for Groups creation endpoint', () => {
         'test test  test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(url, {
+    const res = await request(handler, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toEqual(405)
+    expect(res.statusCode).toEqual(405)
   })
 
   test('Should return 405 if group type is invalid', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'classroom' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'group.project.create': ['USER'],
@@ -168,24 +148,23 @@ describe('Integrations tests for Groups creation endpoint', () => {
         'test test  test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toBe(405)
+
+    expect(res.statusCode).toBe(405)
   })
 
   test('Should return 400 if group validation fails', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project' }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'group.project.create': ['USER'],
@@ -203,29 +182,24 @@ describe('Integrations tests for Groups creation endpoint', () => {
         'test test  test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    const jsonResult = await response.json()
-
-    expect(response.status).toBe(400)
-    expect(jsonResult).toMatchObject({
+    expect(res.statusCode).toBe(400)
+    expect(res.body).toMatchObject({
       error: 'Invalid data: title length is less than 2',
     })
   })
 
   test('Should return 200 for a role that is allowed', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'group.project.create': ['USER'],
@@ -243,15 +217,16 @@ describe('Integrations tests for Groups creation endpoint', () => {
         'test test  test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
   
@@ -265,13 +240,8 @@ describe('Integrations tests for Groups creation endpoint', () => {
       roles: ['SAN BENITOP'],
       id: 'test-id',
     })
-
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     const newGroup = {
       title: 'tes',
@@ -279,25 +249,22 @@ describe('Integrations tests for Groups creation endpoint', () => {
         'test test  test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toBe(401)
+    expect(res.statusCode).toBe(401)
   })
 
 
   test('Should return 200 for admin when creating group', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'group.project.create': ['ADMIN'],
@@ -315,26 +282,23 @@ describe('Integrations tests for Groups creation endpoint', () => {
         'test test  test test test test test test test test test test test test test test ',
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
 
 
   test('Should return 401 if the member role is invalid', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'group.project.create': ['ADMIN'],
@@ -356,24 +320,22 @@ describe('Integrations tests for Groups creation endpoint', () => {
       }]
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toBe(400)
+
+    expect(res.statusCode).toBe(400)
   })
 
   test('Should return 200 if the member role is valid', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'group.project.create': ['ADMIN'],
@@ -395,24 +357,22 @@ describe('Integrations tests for Groups creation endpoint', () => {
       }]
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toBe(200)
+
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should return 400 if the member role is invalid', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'project' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getPermissions.mockReturnValue({
       'group.project.create': ['ADMIN'],
@@ -434,15 +394,17 @@ describe('Integrations tests for Groups creation endpoint', () => {
       }]
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newGroup),
+      body:newGroup
     })
 
-    expect(response.status).toBe(400)
+
+    expect(res.statusCode).toBe(400)
   })
 
  

@@ -1,4 +1,4 @@
-import { commentPermission, contentPermission, groupCommentPermission, groupContentPermission, groupPermission, userPermission } from '../../../../lib/permissions'
+import { commentPermission, contentPermission, groupCommentPermission, groupContentPermission, groupPermission, interactionPermission, userPermission } from '../../../../lib/permissions'
 
 import getPermissions from '../../../../lib/permissions/get-permissions'
 
@@ -496,6 +496,51 @@ describe('Entities permissions test', () => {
     })
 
    
+  })
+
+
+  
+  describe('Interaction permissions', () => {
+    const mockPermissions = {
+      'content.project.interactions.like.read': ['USER'],
+      'content.project.interactions.like.update': ['SUPERVISOR'],
+      'content.project.interactions.like.admin': ['ADMIN'],
+      'user.user.interactions.follow.read': ['PUBLIC']
+    }
+
+    test('Public user has no permissions to read project likes', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+  
+      expect(interactionPermission(null, 'content', 'project', 'like', 'read')).toEqual(false)
+    })
+
+    test('Logged user has permissions to read project likes', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+      const user = {
+        roles: ['USER'],
+        id: 'myid'
+      }
+  
+      expect(interactionPermission(user, 'content', 'project', 'like', 'read')).toEqual(true)
+    })
+
+    test('Admin has permissions to read project likes', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+      const user = {
+        roles: ['ADMIN'],
+        id: 'myid'
+      }
+  
+      expect(interactionPermission(user, 'content', 'project', 'like', 'read')).toEqual(true)
+    })
+
+
+    test('Public has permissions to read user follows', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+ 
+      expect(interactionPermission(null, 'user', 'user', 'follow', 'read')).toEqual(true)
+    })
+
   })
 })
  

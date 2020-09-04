@@ -39,5 +39,8 @@ module.exports = {
     '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
     '@lib(.*)$': '<rootDir>/lib/$1',
     '@components(.*)$': '<rootDir>/components/$1',
+    '@pages(.*)$': '<rootDir>/pages/$1',
+    '@rootFolder(.*)$': '<rootDir>/$1',
+    '\\.svg': '<rootDir>/test/unit/__mocks__/fileMock.tsx'
   },
 }

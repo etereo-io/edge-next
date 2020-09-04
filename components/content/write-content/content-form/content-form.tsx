@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo, useCallback } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -11,7 +11,7 @@ import Link from 'next/link'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 
-export default function Named(props) {
+function ContentForm(props) {
   // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -37,15 +37,17 @@ export default function Named(props) {
   }, [props.content, props.type])
 
   // Store the fields
-  const handleFieldChange = (name) => (value) => {
-    setState({
-      ...state,
-      [name]: value,
-    })
-  }
+  const handleFieldChange = useCallback(
+    (name) => (value) => {
+      setState((prevState) => ({ ...prevState, [name]: value }))
+    },
+    [setState]
+  )
 
   const submitRequest = (data, jsonData) => {
-    const groupParamsString = props.group ? `groupId=${props.group.id}&groupType=${props.group.type}` : '';
+    const groupParamsString = props.group
+      ? `groupId=${props.group.id}&groupType=${props.group.type}`
+      : ''
     const url = `${API.content[props.type.slug]}${
       props.content.id
         ? `/${props.content.id}?field=id&${groupParamsString}`
@@ -133,7 +135,6 @@ export default function Named(props) {
 
   return (
     <>
-     
       <div className="contentForm">
         <form name="content-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
@@ -170,13 +171,12 @@ export default function Named(props) {
           )}
           {error && <div className="error-message">Error saving </div>}
         </form>
-        
+
         <div className="preview-wrapper">
           <div className="preview">
             <ContentSummaryView content={state} type={props.type} />
-
           </div>
-          { props.group && (
+          {props.group && (
             <Card>
               <GroupSummaryView
                 group={props.group}
@@ -203,7 +203,6 @@ export default function Named(props) {
           }
 
           .preview-wrapper {
-
             position: sticky;
             top: 72px;
             width: 40%;
@@ -224,3 +223,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(ContentForm)

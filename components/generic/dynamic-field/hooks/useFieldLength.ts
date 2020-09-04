@@ -9,7 +9,7 @@ interface Result {
   max: number | null
 }
 
-export default function Named(field: Partial<FieldType> = {}): Result {
+export default function useFieldLength(field: Partial<FieldType> = {}): Result {
   const minLength = useMemo(
     () => (typeof field.minlength !== 'undefined' ? field.minlength : null),
     [field?.minlength]

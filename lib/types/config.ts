@@ -3,7 +3,8 @@ import { FieldOptionType, FieldType } from './fields'
 import { ContentTypeDefinition } from './contentTypeDefinition'
 import { GroupTypeDefinition } from './groupTypeDefinition'
 import { PermissionsType } from './permissions'
-import { UserType } from './user'
+import { UserType } from './entities/user'
+import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 
 export declare type ThemeType = {
   label: string;
@@ -60,6 +61,7 @@ export declare type ConfigType = {
     };
     permissions: PermissionsType[];
     initialUsers: UserType[];
+    entityInteractions: InteractionTypeDefinition[];
   },
 
   content: {
@@ -71,4 +73,9 @@ export declare type ConfigType = {
     types: GroupTypeDefinition[];
   }
   permissions: object;
+  superSearch: {
+    enabled: boolean
+    permissions: string[];
+    entities: Array<{name: string; fields: string[]; permissions: string[], type: string, fieldsForShow: string[]}>
+  }
 }

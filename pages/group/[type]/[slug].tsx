@@ -6,10 +6,12 @@ import GroupDetailView from '@components/groups/read/group-detail-view/group-det
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
-import { findOneContent } from '@lib/api/entities/content/content'
+import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import GroupContext from '@components/groups/context/group-context'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
+import { getSession } from '@lib/api/auth/iron'
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -58,9 +60,19 @@ export const getServerSideProps: GetServerSideProps = async ({
       ? item[groupTypeDefinition.publishing.title]
       : `${groupTypeDefinition.title} detail`
 
+  const currentUser = await getSession(req)
+
+  const data = await appendInteractions({
+    data: [item],
+    interactionsConfig: groupTypeDefinition.entityInteractions,
+    entity: 'group',
+    entityType: item.type,
+    currentUser,
+  })
+
   return {
     props: {
-      data: item || null,
+      data: data[0],
       pageTitle: contentTitle,
       groupType: groupTypeDefinition,
     },

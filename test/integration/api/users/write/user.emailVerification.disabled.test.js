@@ -1,15 +1,11 @@
-import * as handlerAuth from '../../../../../pages/api/auth/[...action]'
-
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import { findUserWithPassword } from '../../../../../lib/api/entities/users/user'
-import http from 'http'
-import listen from 'test-listen'
+import { findUserWithPassword } from '../../../../../lib/api/entities/users'
+import handler from '../../../../../pages/api/auth/[...action]'
 import { onUserAdded } from '../../../../../lib/api/hooks/user.hooks'
+import request from '../../requestHandler'
 import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
   getConfig: jest.fn().mockReturnValue({
@@ -30,23 +26,6 @@ const newUser = {
 }
 
 describe('Integration tests for email verification with emailVerification disabled', () => {
-  let serverAuth
-  let urlAuth
-  let urlLogin
-
-  beforeAll(async (done) => {
-    serverAuth = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handlerAuth)
-    )
-
-    urlAuth = await listen(serverAuth)
-    urlLogin = urlAuth + '/api/auth/login'
-    done()
-  })
-
-  afterAll((done) => {
-    serverAuth.close(done)
-  })
 
   afterEach(() => {
     findUserWithPassword.mockReset()
@@ -60,21 +39,21 @@ describe('Integration tests for email verification with emailVerification disabl
       })
     )
 
-    const response = await fetch(urlLogin, {
+    const res = await request(handler, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
+      url: '/api/auth/login',
+      body: {
         email: newUser.email,
         password: newUser.password,
-      }),
-    })
+      },
+    });
 
-    expect(response.status).toBe(200)
-    const jsonResult = await response.json()
+    expect(res.statusCode).toBe(200)
 
-    expect(jsonResult).toMatchObject({
+    expect(res.body).toMatchObject({
       done: true,
     })
   })

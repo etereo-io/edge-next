@@ -1,8 +1,15 @@
-export default function Named({ alt = false, width = '1.5em' }) {
+import { memo } from 'react'
+
+interface Props {
+  alt?: boolean
+  width?: string | number
+}
+
+function LoadingSpinner({ alt = false, width = '1.5em' }: Props) {
   return (
     <>
       <div className={`loading-spinner ${alt ? 'alt' : ''}`}>
-        <div className="ring"></div>
+        <div className="ring" />
       </div>
       <style jsx>{`
         .loading-spinner .ring:after {
@@ -34,3 +41,5 @@ export default function Named({ alt = false, width = '1.5em' }) {
     </>
   )
 }
+
+export default memo(LoadingSpinner)

@@ -1,11 +1,11 @@
-import { addComment, findComments } from '@lib/api/entities/comments/comments'
+import { addComment, findComments } from '@lib/api/entities/comments'
 import { commentPermission, groupCommentPermission } from '@lib/permissions'
 import { isValidContentType, loadUser } from '@lib/api/middlewares'
 
 import { commentValidations } from '@lib/validations/comment'
 import config from '@lib/config'
 import { connect } from '@lib/api/db'
-import { findOneContent } from '@lib/api/entities/content/content'
+import { findOneContent } from '@lib/api/entities/content'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentAdded } from '@lib/api/hooks/comment.hooks'
@@ -233,7 +233,6 @@ const createComment = async (req, res) => {
       })
     }
   }
-  
 
   const comment = req.body
 

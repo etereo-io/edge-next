@@ -2,15 +2,20 @@ import { ACTIVITY_TYPES, FIELDS } from '@lib/constants'
 import {
   addActivity,
   deleteActivity,
-} from '@lib/api/entities/activity/activity'
+} from '@lib/api/entities/activity'
 
 import config from '@lib/config'
-import { deleteComment } from '@lib/api/entities/comments/comments'
+import { deleteComment } from '@lib/api/entities/comments'
 import { deleteFile } from '../storage'
+import {
+  deleteInteractions,
+} from '@lib/api/entities/interactions'
 
 export function onContentRead(content, user) {
   // TODO: We can log stats about visitors
 }
+
+
 
 export function onContentAdded(content, user) {
   if (config.activity.enabled && content) {
@@ -72,6 +77,12 @@ export async function onContentDeleted(content, user, contentType) {
     meta: {
       contentId: content.id,
     },
+  })
+
+  // Delete all interactions refering to this content
+  await deleteInteractions({
+    entity: 'content',
+    entityId: content.id
   })
 
   // Will remove all the comments refering to this content

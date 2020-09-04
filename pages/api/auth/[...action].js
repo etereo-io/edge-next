@@ -4,7 +4,7 @@ import {
   googleStrategy,
   localStrategy,
 } from '@lib/api/auth/passport-strategies'
-import { findOneUser, updateOneUser } from '@lib/api/entities/users/user'
+import { findOneUser, updateOneUser } from '@lib/api/entities/users'
 import { onEmailVerified, onUserLogged } from '@lib/api/hooks/user.hooks'
 import { removeTokenCookie, setTokenCookie } from '@lib/api/auth/auth-cookies'
 
@@ -154,7 +154,7 @@ app.get('/api/auth/verify', async (req, res) => {
 
       await onEmailVerified(user)
 
-      res.status(200).send({
+      res.status(200).json({
         verified: true,
       })
     } catch (err) {
@@ -202,7 +202,7 @@ app.get('/api/auth/reset-password', async (req, res) => {
 
       await sendResetPassworEmail(user.email, token)
 
-      res.status(200).send({
+      res.status(200).json({
         reset: true,
       })
     } catch (e) {
@@ -252,7 +252,7 @@ app.post('/api/auth/reset-password', async (req, res) => {
         hash,
       })
 
-      res.status(200).send({
+      res.status(200).json({
         updated: true,
       })
     } catch (err) {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, memo, Fragment } from 'react'
+import { useEffect, useRef, memo, Fragment, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -6,10 +6,35 @@ import { useOnScreen, useInfinityList } from '@lib/client/hooks'
 import LoadingItems from '@components/generic/loading/loading-items'
 import EmptyList from '@components/generic/empty-list'
 import { GroupEntityType } from '@lib/types'
+import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
+import Sorting, { SortingValue } from '@components/generic/sorting'
 
 import Item from './item'
 
-function GroupListView({ infiniteScroll, query, type, initialData }) {
+const sortingOptions = [
+  { label: 'Most recent', value: 'createdAt' },
+  { label: 'Title', value: 'title' },
+]
+
+interface Props {
+  type: GroupTypeDefinition
+  infiniteScroll?: boolean
+  query?: string
+  defaultSortOptions?: SortingValue
+  initialData?: object | object[]
+  withSorting?: boolean
+}
+
+function GroupListView({
+  infiniteScroll,
+  query,
+  type,
+  initialData,
+  withSorting = true,
+  defaultSortOptions = { sortBy: 'createdAt', sortOrder: 'DESC' },
+}: Props) {
+  const [sorting, setSorting] = useState<SortingValue>(defaultSortOptions)
+  const { sortBy, sortOrder } = sorting
   let initData = null
 
   if (initialData) {
@@ -30,7 +55,9 @@ function GroupListView({ infiniteScroll, query, type, initialData }) {
     url: `${API.groups[type.slug]}`,
     limit: 10,
     query,
-    config: { initialData: initData },
+    sortBy,
+    sortOrder,
+    config: { initialData: initData, revalidateOnFocus: false },
   })
 
   const $loadMoreButton = useRef(null)
@@ -45,6 +72,13 @@ function GroupListView({ infiniteScroll, query, type, initialData }) {
   return (
     <>
       <div className="group-list-view">
+        {withSorting && (
+          <Sorting
+            value={sorting}
+            onChange={setSorting}
+            options={sortingOptions}
+          />
+        )}
         {data.map((item) => (
           <Fragment key={`${item.id}${item.createdAt}`}>
             <Item item={item} type={type} />

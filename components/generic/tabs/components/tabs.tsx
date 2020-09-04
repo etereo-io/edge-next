@@ -61,6 +61,12 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
             z-index: var(--z-index-minimum);
           }
 
+          @media all and (max-width: 720px) {
+            .navigation {
+              padding: 0;
+            }
+          }
+
           .navigation li {
             cursor: pointer;
             height: 100%;

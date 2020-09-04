@@ -1,6 +1,6 @@
 import { connect } from '@lib/api/db'
-import { findActivity } from '@lib/api/entities/activity/activity'
-import { findOneUser } from '@lib/api/entities/users/user'
+import { findActivity } from '@lib/api/entities/activity'
+import { findOneUser } from '@lib/api/entities/users'
 import { getSession } from '@lib/api/auth/iron'
 import { hasPermission } from '@lib/permissions'
 import logger from '@lib/logger'

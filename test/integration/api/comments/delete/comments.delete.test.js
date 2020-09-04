@@ -1,23 +1,23 @@
-import * as handler from '../../../../../pages/api/comments/[id]'
-
 import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '../../../../../lib/api/entities/comments/comments'
+} from '../../../../../lib/api/entities/comments'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import { deleteActivity } from '../../../../../lib/api/entities/activity/activity'
-import fetch from 'isomorphic-unfetch'
+import {
+  deleteActivity,
+} from '../../../../../lib/api/entities/activity'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import {
+  getSession,
+} from '../../../../../lib/api/auth/iron'
+import handler from '../../../../../pages/api/comments/[id]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/comments/comments')
-jest.mock('../../../../../lib/api/entities/activity/activity')
+jest.mock('../../../../../lib/api/entities/comments')
+jest.mock('../../../../../lib/api/entities/activity')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {
@@ -50,8 +50,7 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
+    fields: [{
         name: 'title',
         type: 'text',
         label: 'Title',
@@ -97,12 +96,15 @@ jest.mock('../../../../../edge.config', () => {
         initialContent: [],
       },
 
-      user : {
+      user: {
         permissions: {
-          
+
         },
-  
-        roles: [{ label : 'user', value: 'USER'}],
+
+        roles: [{
+          label: 'user',
+          value: 'USER'
+        }],
         newUserRoles: ['USER'],
       },
     }),
@@ -110,8 +112,7 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for comment deletion endpoint', () => {
-  let server
-  let url
+
 
   beforeEach(() => {
     deleteOneComment.mockReturnValue(Promise.resolve())
@@ -144,36 +145,19 @@ describe('Integrations tests for comment deletion endpoint', () => {
     deleteOneComment.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
 
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   test('Should return 405 if required query string is missing', async () => {
-    const response = await fetch(url)
-    expect(response.status).toBe(405)
+
+    const res = await request(handler, {
+      method: 'DELETE'
+    });
+
+    expect(res.statusCode).toBe(405)
   })
 
   describe('Correct delete', () => {
     test('Should delete child comments if the comment has no conversationId and activity if a comment is deleted', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = {
-        contentType: 'post',
-        contentId: '5ebe9d562779ed4d88c94f2f',
-        id: '5ebf9dd6e1d3192ac0ae2466',
-      }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.comments.delete': ['ADMIN'],
@@ -185,15 +169,22 @@ describe('Integrations tests for comment deletion endpoint', () => {
         id: 'userId',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'DELETE',
-      })
+        query: {
+          contentType: 'post',
+          contentId: '5ebe9d562779ed4d88c94f2f',
+          id: '5ebf9dd6e1d3192ac0ae2466',
+        }
+      });
 
-      expect(response.status).toBe(200)
+  
+      expect(res.statusCode).toBe(200)
 
-      expect(deleteComment).toHaveBeenCalledWith({
-        conversationId: '5ebf9dd6e1d3192ac0ae2466',
+      expect(deleteOneComment).toHaveBeenCalledWith({
+        id: '5ebf9dd6e1d3192ac0ae2466',
       })
+      
       expect(deleteActivity).toHaveBeenCalledWith({
         role: 'user',
         meta: {
@@ -201,24 +192,16 @@ describe('Integrations tests for comment deletion endpoint', () => {
         },
       })
 
-      expect(deleteOneComment).toHaveBeenCalledWith({
-        id: '5ebf9dd6e1d3192ac0ae2466',
+      expect(deleteComment).toHaveBeenCalledWith({
+        conversationId: '5ebf9dd6e1d3192ac0ae2466',
       })
+
+      
     })
   })
 
   describe('Invalid delete', () => {
     test('Should return 401 when deleting other person content without the content.post.delete permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = {
-        contentType: 'post',
-        contentId: '5ebe9d562779ed4d88c94f2f',
-        id: '5ebf9dd6e1d3192ac0ae2466',
-      }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.comments.delete': ['ADMIN'],
@@ -230,29 +213,24 @@ describe('Integrations tests for comment deletion endpoint', () => {
         id: 'i am another user',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'DELETE',
-      })
+        query: {
+          contentType: 'post',
+          contentId: '5ebe9d562779ed4d88c94f2f',
+          id: '5ebf9dd6e1d3192ac0ae2466',
+        }
+      });
 
-      const jsonResult = await response.json()
+  
 
-      expect(response.status).toBe(401)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(401)
+      expect(res.body).toMatchObject({
         error: 'User not authorized to perform operation on comment post',
       })
     })
 
     test('Should return 200 when deleting other person content with the content.post.comments.delete permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = {
-        contentType: 'post',
-        contentId: '5ebe9d562779ed4d88c94f2f',
-        id: '5ebf9dd6e1d3192ac0ae2466',
-      }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.comments.delete': ['USER'],
@@ -264,24 +242,20 @@ describe('Integrations tests for comment deletion endpoint', () => {
         id: 'i am another user',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'DELETE',
-      })
+        query: {
+          contentType: 'post',
+          contentId: '5ebe9d562779ed4d88c94f2f',
+          id: '5ebf9dd6e1d3192ac0ae2466',
+        }
+      });
 
-      expect(response.status).toBe(200)
+  
+      expect(res.statusCode).toBe(200)
     })
 
     test('Should return 200 when deleting other person content with the content.post.admin permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = {
-        contentType: 'post',
-        contentId: '5ebe9d562779ed4d88c94f2f',
-        id: '5ebf9dd6e1d3192ac0ae2466',
-      }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       getPermissions.mockReturnValue({
         'content.post.comments.delete': ['ADMIN'],
@@ -293,21 +267,21 @@ describe('Integrations tests for comment deletion endpoint', () => {
         id: 'definetely not me',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'DELETE',
-      })
+        query: {
+          contentType: 'post',
+          contentId: '5ebe9d562779ed4d88c94f2f',
+          id: '5ebf9dd6e1d3192ac0ae2466',
+        }
+      });
 
-      expect(response.status).toBe(200)
+  
+      expect(res.statusCode).toBe(200)
     })
   })
 
   test('Should return 401 for a role that is PUBLIC', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = {
-      contentType: 'post',
-      contentId: '5ebe9d562779ed4d88c94f2f',
-      id: '5ebf9dd6e1d3192ac0ae2466',
-    }
 
     getPermissions.mockReturnValue({
       'content.post.comments.delete': ['ADMIN'],
@@ -318,24 +292,21 @@ describe('Integrations tests for comment deletion endpoint', () => {
       roles: ['PUBLIC'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
-    })
+      query: {
+        contentType: 'post',
+        contentId: '5ebe9d562779ed4d88c94f2f',
+        id: '5ebf9dd6e1d3192ac0ae2466',
+      }
+    });
 
-    expect(response.status).toBe(401)
+
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 for ADMIN', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = {
-      contentType: 'post',
-      contentId: '5ebe9d562779ed4d88c94f2f',
-      id: '5ebf9dd6e1d3192ac0ae2466',
-    }
 
     getPermissions.mockReturnValue({
       'content.post.comments.delete': ['ADMIN'],
@@ -346,14 +317,16 @@ describe('Integrations tests for comment deletion endpoint', () => {
       roles: ['ADMIN'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
-    })
+      query: {
+        contentType: 'post',
+        contentId: '5ebe9d562779ed4d88c94f2f',
+        id: '5ebf9dd6e1d3192ac0ae2466',
+      }
+    });
 
-    expect(response.status).toBe(200)
+
+    expect(res.statusCode).toBe(200)
   })
 })

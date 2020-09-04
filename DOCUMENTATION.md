@@ -8,6 +8,7 @@
   - [Content Types](#content-types)
   - [Groups](#groups)
     - [How groups work?](#how-groups-work)
+  - [Entity interactions](#entity-interactions)
   - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
   - [Storage](#storage)
@@ -27,14 +28,17 @@
   - [Static Pages](#static-pages)
   - [Web monetization](#web-monetization)
   - [Other Payments](#other-payments)
+- [Super search](#super-search)
 - [env.local file](#envlocal-file)
   - [Deploy your own](#deploy-your-own)
   - [API](#api)
     - [Auth](#auth)
     - [Users](#users)
+    - [Groups](#groups-1)
     - [Content](#content)
     - [Comments](#comments)
     - [Activity](#activity)
+    - [Interactions](#interactions)
 
 
 
@@ -118,6 +122,7 @@ Theme variables are defined in the following way:
   --edge-success-dark: #0366d6;
   --edge-error-light: #f33;
   --edge-error: red;
+}
 ```
 
 Then edit the `edge.config.js` file and add your new theme
@@ -204,9 +209,6 @@ const contentType = {
     web: true // Enable web monetization for a content type
   },
 
-  // View type display on the users profile and content pages (grid or list)
-  display: 'grid',
-
   comments: {
     // Enable or disable comments
     enabled: true,
@@ -256,7 +258,7 @@ Groups are a conjunction of rules that applies to content and users. Groups can 
 
 ### How groups work?
 
-When a group is created, the author is asigned the role of `GROUP_ADMIN`, after that she may add new users manually. Group permissions are not dynamic for each group, they are configured in `edge.config.js`. This is a caveat and it doesn't allow to create private and public groups of the same group type. 
+When a group is created, the author is asigned the role of `GROUP_ADMIN`, after that it becomes possible to add new users manually. Group permissions are not dynamic for each group, they are configured in `edge.config.js`. This is a caveat and it doesn't allow to create private and public groups of the same group type. 
 
 Let's see the group definition to make it more clear.
 
@@ -286,6 +288,18 @@ const projectGroupType = {
       admin: ['ADMIN'],
     },
 
+    // Roles that group members can have
+    roles: [
+      {
+        label: 'Group Member',
+        value: 'GROUP_MEMBER',
+      },
+      {
+        label: 'Group admin',
+        value: 'GROUP_ADMIN',
+      },
+    ],
+
     // Allow keep projects as draft while creating them
     publishing: {
       draftMode: true,
@@ -294,9 +308,15 @@ const projectGroupType = {
 
     // Group user permissions
     user: {
+      // Default require approval or not
+      requireApproval: true,
+
       permissions: {
         // Who can see the other members of the group
         read: ['GROUP_MEMBER'],
+    
+        // Who can make request to join to the group
+        join: ['USER'],
 
         // Who can invite or add group members
         create: ['GROUP_ADMIN', 'ADMIN'],
@@ -354,6 +374,58 @@ const projectGroupType = {
   }
 
 ```
+
+## Entity interactions
+
+Entity interactions may be added to any entity configuration in `edge.config.js`. It may be `ContentTypes`, `GroupTypes` or `Users`. 
+
+Entity interactions provide a relation between an entity and an action by the user. It usually may be something like "following" a user, "liking" a content, "mark to read later" a content, etc.
+
+They are defined inside the content type, group type or user definitions in the following way
+
+```javascript
+ // Entity interactions
+  entityInteractions: [{
+    type: 'like',
+
+    // How to hydrate the data from the database when loading a certain content (group/user). 
+    // "user" will load the list of users who performed this interaction
+    // "sum" will aggregate the result of interactions when the content is fetched
+    aggregation: 'sum',
+
+    // title user can see when an interaction is in active state
+    activeTitle: 'Remove from favorite',
+
+    // title user can see when an interaction is in inactive state
+    inactiveTitle: 'Add to favorite',
+    
+    permissions: {
+      // Who can read the entity interactions
+      read: ['PUBLIC'],
+
+      // Who can create entity interactions
+      create: ['ADMIN', 'USER'],
+    }
+  }]
+```
+
+Interactions are stored in a separate collection called "interactions". An example model of the data stored would be something like this:
+
+```
+{
+  id: xxxx,
+  author: xxxx,
+  entity: 'content',
+  entityType: 'post',
+  entityId: xxxx,
+  createdAt: Date,
+  type: 'like',
+  metadata: {
+    // anything here
+  }
+}
+```
+
 
 ## Fields
 
@@ -504,7 +576,7 @@ In the [components page](/components) you will find more implemented dynamic fie
 
 To upload images and other files you will need to configure a storage. 
 
-Different options are: AWS, GOOGLE, Azure or FIREBASE.
+Different options are: GOOGLE or AZURE.
 
 ### Google
 
@@ -544,11 +616,13 @@ Another useful resources:
 
 
 ## Databases
-Different databases can be configured, MongoDB and "In Memory".  All the Databases use the same API, this way is easy to switch from one to the other. But if you don't like this approach you can change `/lib/api/database` and `/lib/api/entities/` to use your database in the way you want.
+Different databases can be configured, MongoDB and "In Memory".  All the Databases use the same API, this way is easy to switch from one to the other. But if you don't like this approach you can change `/lib/api/db` and `/lib/api/entities/` to use your database in the way you want.
 
 **Note: The only production ready database is MongoDB**.
 
-### Database API
+### Database API 
+
+All database modules are implemented Abstract Database class to have the same API. You can find all possible methods and their descriptions in the `/lib/api/db/Database.ts` file.
 
 
 #### Adding items
@@ -738,7 +812,7 @@ To enable web monetization, first, enable web monetization on a content type. Se
 ```javascript
   monetization: {
     web: true // Enable web monetization for a content type
-  },
+  }
 ```
 
 Also you will need to add a field named `paymentPointer` into the fields list of that content type.
@@ -787,6 +861,54 @@ Depending on what you want to seel (if you want the users to be able to sell, or
 
 [Stripe DOCS](https://stripe.com/docs/)
 [Getting Charges](https://stripe.com/docs/connect/charges)
+
+## Super search 
+
+It's possible to use super search module for the application. You can configure this functionality via `edge.config.js` file. 
+For example: 
+
+```javascript
+superSearch: {
+  enabled: true,
+  permissions: { 
+    // who can use search
+    read: [publicRole]
+  }, 
+  // entities that will participate in the search
+  entities: [
+    {
+      name: 'users', // a collection by which the search will be run
+      type: 'user', // used for separation purposes
+      fields: ['username'], // fields by which the search will be run
+      fieldsForShow: ['username', 'id'], // fields that will be retrieved from the db
+      permissions: user.permissions.read, // permissions for check before search
+    },
+    {
+      name: publishingGroupType.slug, // a collection by which the search will be run
+      type: 'group', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'description', 'slug', 'type'], // fields that will be retrieved from the db
+      permissions: publishingGroupType.permissions.read, // permissions for check before search
+    },
+    {
+      name: postContentType.slug, // a collection by which the search will be run
+      type: 'content', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+      permissions: postContentType.permissions.read, // permissions for check before search
+    },
+    {
+      name: siteNewsContentType.slug, // a collection by which the search will be run
+      type: 'content', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+      permissions: siteNewsContentType.permissions.read, // permissions for check before search
+    },
+  ]
+}
+```
+With this functionality you can run "full text" search by entities/fields you mentioned.
+
 
 ## Deploy your own
 
@@ -842,6 +964,38 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `DELETE /api/users/ID`
   - Access limited to own user or users with permission `user.admin` and `user.delete`. For the current user is also required to send a `password` query parameter.
 
+### Groups 
+- `GET /api/groups/[GROUP_TYPE]`
+  - Access limited to users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Retrieving a list of all groups based on the group type
+- `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` | `GET /api/content/[GROUP_TYPE]/[GROUP_ID]?field=id`
+  - Access limited to own user or users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Retrieving a specific group base on group type and group slug/id
+- `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users`
+  - Access limited to own user or users with permission `group.TYPE.user.read`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Retrieving a list of all group members bases on group type and group slug
+- `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]`
+  - Access limited to own user or users with permission `group.TYPE.user.read`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Retrieving a specific group member info based on group type and group slug
+- `POST /api/groups/[GROUP_TYPE]`
+  - Access limited to `group.TYPE.admin`, or `group.TYPE.create`
+  - Creation of a group with specific type
+- `POST /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users`
+  - Access limited to `group.TYPE.user.admin`, `group.TYPE.user.create`, `group.TYPE.user.join`, `group.TYPE.admin` or `user.admin`
+  - Adding users to members list or to pending members list if group requires approval. You can't add anybody else to pending list but yourself
+- `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` | `POST /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` |  `PUT /api/groups/[GROUP_TYPE]/[GROUP_ID]?field=id` |  `POST /api/groups/[GROUP_TYPE]/[GROUP_ID]?field=id`
+  - Access limited to own user or users with permission `group.TYPE.admin` or `group.TYPE.update`
+  - Updating group based on group type and group slug
+- `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]` | `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]?action=approve`
+  - Access limited to `group.TYPE.user.admin`, `group.TYPE.user.update`, `group.TYPE.admin` or `user.admin`
+  - Updating a specific user based on group type, group slug and user id. It's possible to update the particular user in the members list or move user from pending members list to members list
+- `DELETE /api/content/[GROUP_TYPE]/[GROUP_SLUG]` | `DELETE /api/content/[GROUP_TYPE]/[GROUP_ID]?field=id`
+  - Access limited to own user or users with permission `group.TYPE.admin` or `group.TYPE.delete`
+  - Removing a group from the system based on group type and group slug/id
+- `DELETE /api/content/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]`
+  - Access limited to own user or users with permission `group.TYPE.user.delete`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Removing a member from the group based on group type, group slug and user id
+
 ### Content
 - `GET /api/content/[TYPE]`
   - Access limited to users with permission `content.TYPE.read` or `content.TYPE.admin`
@@ -851,7 +1005,7 @@ The Content API is defined on your set of rules in the configuration file, the o
   - Access limited to `content.TYPE.admin`, or `content.TYPE.create`
 - `PUT /api/content/[TYPE]/[CONTENT_SLUG]` | `POST /api/content/[TYPE]/[CONTENT_SLUG]` |  `PUT /api/content/[TYPE]/[CONTENT_ID]?field=id` |  `POST /api/content/[TYPE]/[CONTENT_ID]?field=id`
   - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.update`
-- `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
+- `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `DELETE /api/content/[TYPE]/[CONTENT_ID]?field=id`
   - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.delete`
 
 ### Comments
@@ -871,5 +1025,30 @@ The Content API is defined on your set of rules in the configuration file, the o
 ### Activity
 
 - `GET /api/activity/[USER_ID]`
-  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin`
+  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin` 
+  
+### Full Text
+- `GET /api/super-search?query=XXX`
+- Returns a list of all entities which have phrase mentioned in `query` but limited by permissions described in the `edge.config.js` 
 
+### Interactions
+
+- `GET /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?author=USER_ID&entityId=id`
+  - Return all the interactions of a certain type, accepts filter by author, entityId and pagination options 
+- `POST /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE` 
+  - Create an interaction on an entity
+  - `author` id will be extracted from the current user
+  - Body expected:
+  ```
+  {
+    type: 'like',
+    entityId: 'XXXX',
+    entityType: 'post',
+    entity: 'content',
+    metadata: {
+      // anything
+    }
+  }
+  ```
+- `DELETE /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?id=xxxx`
+  - It will delete the interaction sent as an id

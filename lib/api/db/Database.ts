@@ -1,8 +1,6 @@
 import logger from '@lib/logger'
 
-type ANY_OBJECT = {
-  [key: string]: any
-}
+import { ANY_OBJECT } from '@lib/types'
 
 export default class Database {
   nativeDriver() {
@@ -11,8 +9,7 @@ export default class Database {
   add(item: ANY_OBJECT) {
     logger('ERROR', 'Add not implemented')
   }
-
-  find(options: ANY_OBJECT, orderOptions: ANY_OBJECT) {
+  find(options: ANY_OBJECT, otherOptions: ANY_OBJECT) {
     logger('ERROR', 'Find not implemented')
   }
   findOne(options: ANY_OBJECT) {
@@ -39,8 +36,10 @@ export default class Database {
   count(options: ANY_OBJECT) {
     logger('ERROR', 'Count not implemented')
   }
-
   remove(options: ANY_OBJECT, onlyOne: boolean) {
     logger('ERROR', 'Remove not implemented')
+  }
+  aggregation(options: ANY_OBJECT) {
+    logger('ERROR', 'Aggregation not implemented')
   }
 }

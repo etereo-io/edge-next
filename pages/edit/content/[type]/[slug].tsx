@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next'
 import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
 import { contentPermission } from '@lib/permissions'
-import { findOneContent } from '@lib/api/entities/content/content'
+import { findOneContent } from '@lib/api/entities/content'
 import { getContentTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 

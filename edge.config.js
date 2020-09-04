@@ -96,6 +96,51 @@ export const getConfig = () => {
       },
     },
 
+    entityInteractions: [
+      {
+        type: 'like',
+        aggregation: 'sum',
+        activeTitle: 'Unlike',
+        inactiveTitle: 'Like',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+      {
+        type: 'follow',
+        activeTitle: 'Unfollow',
+        inactiveTitle: 'Follow',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+      {
+        type: 'report',
+        activeTitle: 'Report',
+        inactiveTitle: 'Report',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+      {
+        type: 'favorite',
+        aggregation: 'sum',
+        activeTitle: 'Remove from favorite',
+        inactiveTitle: 'Add to favorite',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+    ],
+
     fields: [
       {
         name: 'title',
@@ -336,6 +381,20 @@ export const getConfig = () => {
       },
     ],
 
+    entityInteractions: [
+      {
+        type: 'like',
+        aggregation: 'sum',
+        activeTitle: 'Unlike',
+        inactiveTitle: 'Like',
+        permissions: {
+          read: ['USER'],
+          create: ['ADMIN'],
+          delete: ['USER'],
+        },
+      },
+    ],
+
     fields: [
       {
         name: 'title',
@@ -359,6 +418,112 @@ export const getConfig = () => {
           'Tell the world something about this publication group (max 200 characters)',
       },
     ],
+  }
+  // Users configuration
+  const user = {
+    // Capture user geolocation and enable geolocation display on the admin dashboard
+    captureGeolocation: false,
+
+    // Require email verification
+    emailVerification: true,
+
+    providers: {
+      github: true,
+      google: true,
+      facebook: true,
+    },
+
+    // General roles
+    roles: roles,
+
+    // New user roles
+    newUserRoles: [userRole],
+
+    permissions: {
+      read: [publicRole],
+      create: [publicRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
+    },
+
+    // Fields for the users profiles (in addition to picture and displayName)
+    profile: {
+      fields: [
+        {
+          name: 'bio',
+          type: 'textarea',
+          label: 'Bio',
+          required: false,
+          minlength: 20,
+          maxlength: 300,
+        },
+        {
+          name: 'twitter',
+          type: 'url',
+          label: 'twitter',
+          pattern: 'https?://.*',
+          required: false,
+          minlength: 10,
+          maxlength: 300,
+        },
+        {
+          name: 'facebook',
+          type: 'url',
+          label: 'facebook',
+          required: false,
+          pattern: 'https?://.*',
+          minlength: 10,
+          maxlength: 300,
+        },
+        {
+          name: 'github',
+          type: 'url',
+          label: 'github',
+          required: false,
+          pattern: 'https?://.*',
+          minlength: 10,
+          maxlength: 300,
+        },
+        {
+          name: 'date',
+          type: 'date',
+          label: 'Birth date',
+          required: false,
+        },
+        {
+          name: 'phone',
+          type: 'tel',
+          label: 'Your phone',
+        },
+        {
+          name: 'profile-images',
+          type: 'img',
+          label: 'Profile Images',
+          required: false,
+          multiple: true,
+        },
+        {
+          name: 'gender',
+          type: 'select',
+          label: 'gender',
+          required: true,
+          options: [
+            {
+              label: 'Male',
+              value: 'male',
+            },
+            {
+              label: 'Female',
+              value: 'female',
+            },
+          ],
+        },
+      ],
+    },
+
+    // Initial users data for testing purposes
+    initialUsers,
   }
 
   return {
@@ -467,112 +632,7 @@ export const getConfig = () => {
       },
     },
 
-    // Users configuration
-    user: {
-      // Capture user geolocation and enable geolocation display on the admin dashboard
-      captureGeolocation: false,
-
-      // Require email verification
-      emailVerification: true,
-
-      providers: {
-        github: true,
-        google: true,
-        facebook: true,
-      },
-
-      // General roles
-      roles: roles,
-
-      // New user roles
-      newUserRoles: [userRole],
-
-      permissions: {
-        read: [publicRole],
-        create: [publicRole],
-        update: [adminRole],
-        delete: [adminRole],
-        admin: [adminRole],
-      },
-
-      // Fields for the users profiles (in addition to picture and displayName)
-      profile: {
-        fields: [
-          {
-            name: 'bio',
-            type: 'textarea',
-            label: 'Bio',
-            required: false,
-            minlength: 20,
-            maxlength: 300,
-          },
-          {
-            name: 'twitter',
-            type: 'url',
-            label: 'twitter',
-            pattern: 'https?://.*',
-            required: false,
-            minlength: 10,
-            maxlength: 300,
-          },
-          {
-            name: 'facebook',
-            type: 'url',
-            label: 'facebook',
-            required: false,
-            pattern: 'https?://.*',
-            minlength: 10,
-            maxlength: 300,
-          },
-          {
-            name: 'github',
-            type: 'url',
-            label: 'github',
-            required: false,
-            pattern: 'https?://.*',
-            minlength: 10,
-            maxlength: 300,
-          },
-          {
-            name: 'date',
-            type: 'date',
-            label: 'Birth date',
-            required: false,
-          },
-          {
-            name: 'phone',
-            type: 'tel',
-            label: 'Your phone',
-          },
-          {
-            name: 'profile-images',
-            type: 'img',
-            label: 'Profile Images',
-            required: false,
-            multiple: true,
-          },
-          {
-            name: 'gender',
-            type: 'select',
-            label: 'gender',
-            required: true,
-            options: [
-              {
-                label: 'Male',
-                value: 'male',
-              },
-              {
-                label: 'Female',
-                value: 'female',
-              },
-            ],
-          },
-        ],
-      },
-
-      // Initial users data for testing purposes
-      initialUsers: initialUsers,
-    },
+    user,
 
     // Content configuration
     content: {
@@ -592,6 +652,42 @@ export const getConfig = () => {
     },
     follow: {
       enabled: false,
+    },
+
+    // super search configuration
+    superSearch: {
+      enabled: true,
+      permissions: { read: [publicRole] }, // who can use search
+      entities: [
+        {
+          name: 'users', // a collection by which the search will be run
+          type: 'user', // used for separation purposes
+          fields: ['username'], // fields by which the search will be run
+          fieldsForShow: ['username', 'id'], // fields that will be retrieved from the db
+          permissions: user.permissions.read, // permissions for check before search
+        },
+        {
+          name: publishingGroupType.slug, // a collection by which the search will be run
+          type: 'group', // used for separation purposes
+          fields: ['title', 'description'], // fields by which the search will be run
+          fieldsForShow: ['title', 'description', 'slug', 'type'], // fields that will be retrieved from the db
+          permissions: publishingGroupType.permissions.read, // permissions for check before search
+        },
+        {
+          name: postContentType.slug, // a collection by which the search will be run
+          type: 'content', // used for separation purposes
+          fields: ['title', 'description'], // fields by which the search will be run
+          fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+          permissions: postContentType.permissions.read, // permissions for check before search
+        },
+        {
+          name: siteNewsContentType.slug, // a collection by which the search will be run
+          type: 'content', // used for separation purposes
+          fields: ['title', 'description'], // fields by which the search will be run
+          fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+          permissions: siteNewsContentType.permissions.read, // permissions for check before search
+        },
+      ],
     },
   }
 }

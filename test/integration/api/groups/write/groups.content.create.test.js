@@ -1,15 +1,12 @@
-import { addContent, findOneContent } from '../../../../../lib/api/entities/content/content'
+import { addContent, findOneContent } from '../../../../../lib/api/entities/content'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import { fillContentWithDefaultData } from '../../../../../lib/api/entities/content/content.utils'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/content/[type]'
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/content')
 jest.mock('../../../../../lib/api/entities/content/content.utils')
 
 /*
@@ -149,8 +146,7 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for content creation in a group', () => {
-  let server
-  let url
+ 
 
   beforeEach(() => {
     fillContentWithDefaultData.mockImplementation((type, data ) => data )
@@ -163,18 +159,6 @@ describe('Integrations tests for content creation in a group', () => {
     findOneContent.mockReset()
   })
   
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   test('Should not allow to create a POST without a groupId and groupType', async () => {
 
@@ -182,27 +166,25 @@ describe('Integrations tests for content creation in a group', () => {
       roles: ['USER'],
       id: 'test-id-initial-user',
     })
-    
-    const urlToBeUsed = new URL(url)
+
+      
     const params = { type: 'post' }
     
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-    
+
     const newPost = {
       title: 'test'
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
+      body: newPost
     })
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should return 404 if the group is not found ', async () => {
@@ -213,26 +195,22 @@ describe('Integrations tests for content creation in a group', () => {
       id: 'test-id-initial-user',
     })
 
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'post', groupId: 'agroup', groupType: 'a nother'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     const newPost = {
       title: 'test'
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
+      body: newPost
     })
-
-    expect(response.status).toEqual(404)
+    expect(res.statusCode).toEqual(404)
   })
 
   test('Should not allow a non member to create content ', async () => {
@@ -248,26 +226,23 @@ describe('Integrations tests for content creation in a group', () => {
       id: 'test-id-initial-user',
     })
 
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     const newPost = {
       title: 'test'
     }
     
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
+      body: newPost
     })
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should allow a member to create content ', async () => {
@@ -283,26 +258,23 @@ describe('Integrations tests for content creation in a group', () => {
       id: 'user1',
     })
 
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     const newPost = {
       title: 'test'
     }
-    
-    const response = await fetch(urlToBeUsed.href, {
+
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
+      body: newPost
     })
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(addContent).toHaveBeenCalledWith("post", {
       groupId: 'agroup',
       groupType: 'project',
@@ -328,26 +300,23 @@ describe('Integrations tests for content creation in a group', () => {
         id: 'user1',
       })
   
-      const urlToBeUsed = new URL(url)
+        
       const params = { type: 'post', groupId: 'agroup', groupType: 'project'}
-  
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-  
+
       const newPost = {
         title: 'test'
       }
       
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'POST',
+        query:  params,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newPost),
+        body: newPost
       })
         
-      expect(response.status).toEqual(200)
+      expect(res.statusCode).toEqual(200)
      
     })
   })

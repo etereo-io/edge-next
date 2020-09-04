@@ -2,20 +2,17 @@ import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '../../../../../lib/api/entities/comments/comments'
+} from '../../../../../lib/api/entities/comments'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import { findOneContent } from '../../../../../lib/api/entities/content/content'
+import { findOneContent } from '../../../../../lib/api/entities/content'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/comments/[id]'
-import http from 'http'
-import listen from 'test-listen'
 import { onCommentDeleted } from '../../../../../lib/api/hooks/comment.hooks'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
-jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/comments/comments')
+jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/comments')
 jest.mock('../../../../../lib/api/hooks/comment.hooks')
 
 
@@ -160,8 +157,7 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for comment creation in a group content', () => {
-  let server
-  let url
+ 
 
   beforeEach(() => {
     deleteComment.mockReturnValue(Promise.resolve())
@@ -177,30 +173,15 @@ describe('Integrations tests for comment creation in a group content', () => {
     findOneContent.mockReset()
   })
   
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
+   
 
   test('should return check the normal permissions if the group is not found', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = {
       contentType: 'post',
       contentId: '5ebe9d562779ed4d88c94f2f',
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneComment.mockReturnValue(
       Promise.resolve({
@@ -229,25 +210,25 @@ describe('Integrations tests for comment creation in a group content', () => {
       id: 'i am another user',
     })
     
-   
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
+      query:  params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
   test('should return 401 for someone outside the group roles', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = {
       contentType: 'post',
       contentId: '5ebe9d562779ed4d88c94f2f',
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneComment.mockReturnValue(
       Promise.resolve({
@@ -282,25 +263,25 @@ describe('Integrations tests for comment creation in a group content', () => {
       id: 'i am another user',
     })
     
-   
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
+      query:  params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
 
-    expect(response.status).toBe(401)
+    expect(res.statusCode).toBe(401)
   })
 
   test('should return 200 for someone outside the group roles but general comments permission',async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = {
       contentType: 'post',
       contentId: '5ebe9d562779ed4d88c94f2f',
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneComment.mockReturnValue(
       Promise.resolve({
@@ -336,27 +317,28 @@ describe('Integrations tests for comment creation in a group content', () => {
     })
     
    
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
+      query:  params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
     
   })
   
   
 
   test('should return 401 for someone inside the group but without permission', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = {
       contentType: 'post',
       contentId: '5ebe9d562779ed4d88c94f2f',
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneComment.mockReturnValue(
       Promise.resolve({
@@ -393,27 +375,28 @@ describe('Integrations tests for comment creation in a group content', () => {
     })
     
    
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
+      query:  params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
 
-    expect(response.status).toBe(401)
+    expect(res.statusCode).toBe(401)
     
   })
 
   
 
   test('should return 200 for someone inside the group with permission',  async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = {
       contentType: 'post',
       contentId: '5ebe9d562779ed4d88c94f2f',
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneComment.mockReturnValue(
       Promise.resolve({
@@ -450,28 +433,26 @@ describe('Integrations tests for comment creation in a group content', () => {
     })
     
    
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'DELETE',
+      query:  params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
     
   })
-  
-
-  
 
   test('should return 200 for comment owner', async () => {
-    const urlToBeUsed = new URL(url)
+      
     const params = {
       contentType: 'post',
       contentId: '5ebe9d562779ed4d88c94f2f',
       id: '5ebf9dd6e1d3192ac0ae2466',
     }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     findOneComment.mockReturnValue(
       Promise.resolve({
@@ -506,17 +487,16 @@ describe('Integrations tests for comment creation in a group content', () => {
       id: 'theauthor',
     })
     
-   
-    const response = await fetch(urlToBeUsed.href, {
+   const res = await request(handler, {
       method: 'DELETE',
+      query:  params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
     })
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
     
   })
   
-  
- 
-
- 
 })

@@ -6,13 +6,19 @@ import Layout from '@components/layout/three-panels/layout'
 import LinkList from '@components/generic/link-list/link-list'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import { connect } from '@lib/api/db'
-import { findContent } from '@lib/api/entities/content/content'
+import { findContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { useGroupTypes } from '@lib/client/hooks'
+import { getSession } from '@lib/api/auth/iron'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 
 // Get serversideProps is important for SEO, and only available at the pages level
-export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  query,
+}) => {
   const groupTypeDefinition = getGroupTypeDefinition(query.type)
 
   if (!groupTypeDefinition) {
@@ -34,8 +40,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 
   const filterOptions = {} as any
 
+  const currentUser = await getSession(req)
+  const isAdmin = currentUser && currentUser.roles.indexOf('ADMIN') !== -1
+
   // If the content type allows draft, filter them out on the public list
-  if (groupTypeDefinition.publishing.draftMode) {
+  if (groupTypeDefinition.publishing.draftMode && !isAdmin) {
     filterOptions.draft = false
   }
 
@@ -43,21 +52,37 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     filterOptions['tags.slug'] = query.tags
   }
 
-  const response = await findContent(
-    query.type,
-    filterOptions,
-    { sortBy: 'createdAt', sortOrder: 'DESC', limit: 10 }
-  )
+  const response = await findContent(query.type, filterOptions, {
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+    limit: 10,
+  }).then(async (data) => {
+    if (data.total) {
+      const results = await appendInteractions({
+        data: data.results,
+        interactionsConfig: groupTypeDefinition.entityInteractions,
+        entity: 'group',
+        entityType: query.type as string,
+        currentUser,
+      })
+
+      return { ...data, results }
+    }
+
+    return data
+  })
 
   return {
     props: {
       data: response,
       type: query.type,
       canAccess: true,
-      query: `&sortBy=createdAt&sortOrder=DESC${
-        query.tags ? `&tags=${query.tags}` : ''
-      }`,
+      query: query.tags ? `tags=${query.tags}` : '',
       groupType: groupTypeDefinition,
+      sortOptions: {
+        sortBy: 'createdAt',
+        sortOrder: 'DESC',
+      },
     },
   }
 }
@@ -67,32 +92,31 @@ const ContentPage = (props) => {
 
   const links = groupTypes.map((type) => {
     return {
-      link: `/groups/${type.slug}`,
+      link: `/group/${type.slug}`,
       title: `See all ${type.title}`,
     }
   })
-  
+
   return (
     <Layout title="Groups" panelUser={<ToolBar />}>
       <div>
-   
         <div className="list-group-types">
           <LinkList links={links} />
         </div>
-
 
         <GroupListView
           initialData={props.data}
           type={props.groupType}
           infiniteScroll={true}
           query={props.query}
+          defaultSortOptions={props.sortOptions}
         />
-        <style jsx>{`
-          .list-group-types {
-            margin-bottom: var(--edge-gap-double);
-          }
-          `
-        }
+        <style jsx>
+          {`
+            .list-group-types {
+              margin-bottom: var(--edge-gap-double);
+            }
+          `}
         </style>
       </div>
     </Layout>

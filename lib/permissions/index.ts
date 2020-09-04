@@ -1,14 +1,15 @@
+import { UserType } from '@lib/types'
 import hasPerm from './has-permission'
 
 export const hasPermission = hasPerm
 
+// Default public user if user is not set
+const publicUser = { roles: ['PUBLIC'] } as UserType
+
 // Check permissions for a content type/ group type or a content item / group item.
 // It checks if the user has the permissions for the role or if it's the own user
 // This function is used by the client app and the permissions middleware for the API
-export const contentPermission = (user , entityType, action, content) => {
-  if (!user) {
-    user = { roles: ['PUBLIC'] }
-  }
+export const contentPermission = (user: UserType = publicUser , entityType, action, content) => {
 
   const permission = [
     `content.${entityType}.${action}`,
@@ -19,7 +20,7 @@ export const contentPermission = (user , entityType, action, content) => {
   const canAccess = hasPerm(user, permission)
 
   if (content) {
-    const isOwner = user && content.author === user.id
+    const isOwner = user && content.author === user?.id
     const isAdmin = hasPerm(user, `content.${entityType}.admin`)
 
     // Draft check
@@ -35,10 +36,8 @@ export const contentPermission = (user , entityType, action, content) => {
 
 
 
-export const groupContentPermission = (user , entityType, contentType, action, group, content) => {
-  if (!user) {
-    user = { roles: ['PUBLIC'] }
-  }
+export const groupContentPermission = (user: UserType = publicUser , entityType, contentType, action, group, content) => {
+ 
   const permission = [
     `group.${entityType}.content.${contentType}.${action}`,
     `group.${entityType}.content.${contentType}.admin`,
@@ -56,7 +55,7 @@ export const groupContentPermission = (user , entityType, contentType, action, g
     return canAccess
   }
 
-  const groupMember = group.members ? group.members.find(i => i.id === user.id): null
+  const groupMember = group.members ? group.members.find(i => i.id === user?.id): null
 
   if (group.permissions) {
     // Group based permissions
@@ -69,7 +68,7 @@ export const groupContentPermission = (user , entityType, contentType, action, g
 
   // Owner should be able to edit or delete content
   if (content) {
-    const isOwner = user && content.author === user.id
+    const isOwner = user && content.author === user?.id
     return canAccess || isOwner
   }
 
@@ -77,22 +76,20 @@ export const groupContentPermission = (user , entityType, contentType, action, g
 
 }
 
-export const groupPermission = (user , entityType, action, group) => {
-  if (!user) {
-    user = { roles: ['PUBLIC'] }
-  }
+export const groupPermission = (user: UserType = publicUser , entityType, action, group) => {
+  
   const permission = [
     `group.${entityType}.${action}`,
     `group.${entityType}.admin`,
   ]
 
-  const groupMember = group ? group.members.find(i => i.id === user.id) : null
+  const groupMember = group ? group.members.find(i => i.id === user?.id) : null
 
   // If there is a group we need to check also if the content owner is the current user
   const canAccess = hasPerm(user, permission) || hasPerm(groupMember, permission)
 
   if (group) {
-    const isOwner = user && group.author === user.id
+    const isOwner = user && group.author === user?.id
     const isAdmin = hasPerm(user, `group.${entityType}.admin`) || hasPerm(user, `group.${entityType}.admin`)
 
     // Draft check
@@ -109,7 +106,7 @@ export const groupPermission = (user , entityType, action, group) => {
 // Check permissions for users or a user item
 // It checks if the user has the permissions for the role or if it's the own user
 // This function is used by the client app and the permissions middleware for the API
-export const userPermission = function (user, action, userId) {
+export const userPermission = function (user: UserType, action, userId) {
   const permission = [`user.${action}`, `user.admin`]
   const canAccess = hasPerm(user, permission)
 
@@ -122,7 +119,7 @@ export const userPermission = function (user, action, userId) {
         user &&
         (isUsername
           ? user.username === userId.replace('@', '')
-          : user.id === userId)) ||
+          : user?.id === userId)) ||
       (user && userId === 'me')
 
     return canAccess || isOwner
@@ -133,10 +130,8 @@ export const userPermission = function (user, action, userId) {
 }
 
 
-export const groupUserPermission = (user , entityType, action, group) => {
-  if (!user) {
-    user = { roles: ['PUBLIC'] }
-  }
+export const groupUserPermission = (user: UserType = publicUser , entityType, action, group) => {
+ 
   const permission = [
     `group.${entityType}.user.${action}`,
     `group.${entityType}.user.admin`,
@@ -154,7 +149,7 @@ export const groupUserPermission = (user , entityType, action, group) => {
     return canAccess
   }
 
-  const groupMember = group ? (group.members || []).find(i => i.id === user.id) : null
+  const groupMember = group ? (group.members || []).find(i => i.id === user?.id) : null
 
   if (group.permissions) {
     // Group based permissions
@@ -168,7 +163,7 @@ export const groupUserPermission = (user , entityType, action, group) => {
 // Check permissions for comments or a comment item
 // It checks if the user has the permissions for the role or if it's the own user
 // This function is used by the client app and the permissions middleware for the API
-export const commentPermission = function (user, contentType, action, comment) {
+export const commentPermission = function (user: UserType = publicUser, contentType, action, comment) {
   const permission = [
     `content.${contentType}.comments.${action}`,
     `content.${contentType}.comments.admin`,
@@ -178,17 +173,15 @@ export const commentPermission = function (user, contentType, action, comment) {
   const canAccess = hasPerm(user, permission)
 
   if (comment) {
-    const isOwner = user && comment.author === user.id
+    const isOwner = comment.author === user?.id
     return canAccess || isOwner
   }
 
   return canAccess
 }
 
-export const groupCommentPermission = (user , entityType, contentType, action, group, comment) => {
-  if (!user) {
-    user = { roles: ['PUBLIC'] }
-  }
+export const groupCommentPermission = (user: UserType = publicUser , entityType, contentType, action, group, comment) => {
+  
   const permission = [
     `group.${entityType}.content.${contentType}.comments.${action}`,
     `group.${entityType}.content.${contentType}.comments.admin`,
@@ -207,7 +200,7 @@ export const groupCommentPermission = (user , entityType, contentType, action, g
     return canAccess
   }
 
-  const groupMember = group.members ? group.members.find(i => i.id === user.id): null
+  const groupMember = group.members ? group.members.find(i => i.id === user?.id): null
 
   if (group.permissions) {
     // Group based permissions
@@ -219,10 +212,20 @@ export const groupCommentPermission = (user , entityType, contentType, action, g
 
   // Comment owner has the rights to delete or edit a comment
   if (comment) {
-    const isOwner = user && comment.author === user.id
+    const isOwner = user && comment.author === user?.id
     return canAccess || isOwner
   }
 
   return canAccess
 }
 
+
+export const interactionPermission = (user: UserType = publicUser , entity: string, entityType: string, interactionType: string, action) => {
+  const permission = [
+    `${entity}.${entityType}.interactions.${interactionType}.${action}`,
+    `${entity}.${entityType}.interactions.${interactionType}.admin`,
+    `${entity}.${entityType}.admin`,
+  ]
+
+  return  hasPerm(user, permission)
+}

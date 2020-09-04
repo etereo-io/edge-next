@@ -3,7 +3,7 @@ import {
   findOneUser,
   findUsers,
   validateNewUser,
-} from '@lib/api/entities/users/user'
+} from '@lib/api/entities/users'
 import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
@@ -39,6 +39,7 @@ const addUser = (user) => async (
   res
 ) => {
   let parsedUser = null
+
 
   const currentUserHasAdministrationRights = hasPermission(currentUser,  [`user.admin`, `user.update`])
 
@@ -78,9 +79,11 @@ const addUser = (user) => async (
 
   try {
     const added = await createUser(parsedUser, currentUserHasAdministrationRights)
+  
     onUserAdded(added, currentUser)
-
-    res.status(200).send(hidePrivateUserFields(added))
+  
+  
+    res.status(200).json(hidePrivateUserFields(added))
   } catch (err) {
     res.status(500).json({
       error: err.message,

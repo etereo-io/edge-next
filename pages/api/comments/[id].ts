@@ -1,7 +1,7 @@
 import {
   deleteOneComment,
   findOneComment,
-} from '@lib/api/entities/comments/comments'
+} from '@lib/api/entities/comments'
 import {
   hasPermissionsForComment,
   hasPermissionsForGroupComment,
@@ -9,7 +9,7 @@ import {
 } from '@lib/api/middlewares'
 
 import { connect } from '@lib/api/db'
-import { findOneContent } from '@lib/api/entities/content/content'
+import { findOneContent } from '@lib/api/entities/content'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onCommentDeleted } from '@lib/api/hooks/comment.hooks'

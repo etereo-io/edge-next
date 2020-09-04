@@ -1,16 +1,12 @@
-import * as handler from '../../../../../pages/api/content/[type]/[slug]'
+import { findOneContent, updateOneContent } from '../../../../../lib/api/entities/content'
 
-import { findOneContent, updateOneContent } from '../../../../../lib/api/entities/content/content'
-
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import handler from '../../../../../pages/api/content/[type]/[slug]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/api/storage')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/content')
 
 /*
   Scenario: 
@@ -149,8 +145,7 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for content edition in a group', () => {
-  let server
-  let url
+ 
 
   beforeEach(() => {
     updateOneContent.mockReturnValue(Promise.resolve({ id: 'abc'}))
@@ -162,18 +157,6 @@ describe('Integrations tests for content edition in a group', () => {
     findOneContent.mockReset()
   })
   
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
 
   test('Should not allow to update a post without a groupId and groupType', async () => {
     // Find post
@@ -185,27 +168,22 @@ describe('Integrations tests for content edition in a group', () => {
       roles: ['USER'],
       id: 'test-id-initial-user',
     })
-    
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'a-post-slug' }
-    
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-    
+        
     const newPost = {
       title: 'test'
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: { type: 'post', slug: 'a-post-slug' },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
+      body: JSON.stringify(newPost)
+    });
+    
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should return 404 if the group is not found ', async () => {
@@ -223,27 +201,22 @@ describe('Integrations tests for content edition in a group', () => {
       id: 'test-id-initial-user',
     })
 
-    const urlToBeUsed = new URL(url)
-
     const params = { type: 'post', slug: 'a-post-slug', groupId: 'agroup', groupType: 'a nother'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     const newPost = {
       title: 'test'
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
-
-    expect(response.status).toEqual(404)
+      body: JSON.stringify(newPost)
+    });
+    
+    expect(res.statusCode).toEqual(404)
   })
 
   test('Should not allow a non member to update content ', async () => {
@@ -265,26 +238,24 @@ describe('Integrations tests for content edition in a group', () => {
       id: 'test-id-initial-user',
     })
 
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'post', slug: 'a-post-slug', groupId: 'agroup', groupType: 'project'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     const newPost = {
       title: 'test'
     }
     
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
+      body: JSON.stringify(newPost)
+    });
+    
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should allow a member to update content ', async () => {
@@ -309,26 +280,24 @@ describe('Integrations tests for content edition in a group', () => {
       id: 'user1',
     })
 
-    const urlToBeUsed = new URL(url)
+      
     const params = { type: 'post', slug: 'a-post-slug', groupId: 'agroup', groupType: 'project'}
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     const newPost = {
       title: 'test'
     }
     
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'PUT',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
+      body: JSON.stringify(newPost)
+    });
+    
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith("post", 'some-post', {
       title: 'test'
     })
@@ -361,26 +330,24 @@ describe('Integrations tests for content edition in a group', () => {
         id: 'user1',
       })
   
-      const urlToBeUsed = new URL(url)
+        
       const params = { type: 'post', slug: 'a-post-slug', groupId: 'agroup', groupType: 'project'}
-  
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
   
       const newPost = {
         title: 'tes'
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: params,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newPost),
-      })
-
-      expect(response.status).toEqual(200)
+        body: JSON.stringify(newPost)
+      });
+      
+  
+      expect(res.statusCode).toEqual(200)
      
     })
   })

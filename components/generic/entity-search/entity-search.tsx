@@ -1,8 +1,9 @@
+import { useState, memo } from 'react'
+
 import API from '@lib/api/api-endpoints'
 import { ENTITY_TYPES } from '@lib/constants'
 import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
 import fetch from '@lib/fetcher'
-import { useState } from 'react'
 
 function ResultItem({ item, onClick = (item) => {}, entityName = (item) => item.id }) {
   const [active, setActive] = useState(false)
@@ -20,7 +21,7 @@ function ResultItem({ item, onClick = (item) => {}, entityName = (item) => item.
       <div onClick={() => onClick(item)} className={`result-item ${active ? 'active' : ''}`} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
         {entityName(item)}
       </div>
-      <style jsx> 
+      <style jsx>
         {
           `
           .result-item {
@@ -34,7 +35,7 @@ function ResultItem({ item, onClick = (item) => {}, entityName = (item) => item.
           }
           `
         }
-      </style>    
+      </style>
     </>
   )
 }
@@ -47,9 +48,9 @@ type PropTypes = {
   entityName?: (val) => string
 }
 
-export default function Named({
-  onChange = (val) => {}, 
-  entity, 
+function EntitySearch({
+  onChange = (val) => {},
+  entity,
   entityType = '',
   placeholder = 'Search',
   entityName = (item) => item.id
@@ -63,7 +64,7 @@ export default function Named({
 
   const fetchData = (val) => {
     setLoading(true)
-    setError(false) 
+    setError(false)
 
     let apiRoute = ''
 
@@ -77,8 +78,8 @@ export default function Named({
       case ENTITY_TYPES.GROUP:
         apiRoute = `${API.groups[entityType]}?search=${val}`
         break;
-      
-      default: 
+
+      default:
         break;
     }
 
@@ -125,7 +126,7 @@ export default function Named({
         {resultsOpened && <div className="results">
           {results.map(result => {
             return (
-              
+
               <ResultItem key={`${entity}-result-item-${result.id}`} item={result} onClick={onSelectItem} entityName={entityName}/>
             )
           })}
@@ -140,3 +141,5 @@ export default function Named({
     </>
   )
 }
+
+export default memo(EntitySearch)

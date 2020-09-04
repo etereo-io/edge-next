@@ -2,19 +2,22 @@ import { ACTIVITY_TYPES, FIELDS } from '@lib/constants'
 import {
   addActivity,
   deleteActivity,
-} from '@lib/api/entities/activity/activity'
+} from '@lib/api/entities/activity'
 import {
   deleteComment,
   deleteOneComment,
   findOneComment,
-} from '@lib/api/entities/comments/comments'
+} from '@lib/api/entities/comments'
 import {
   deleteOneContent,
   findOneContent,
-} from '@lib/api/entities/content/content'
+} from '@lib/api/entities/content'
 
 import config from '@lib/config'
 import { deleteFile } from '../storage'
+import {
+  deleteInteractions,
+} from '@lib/api/entities/interactions'
 import logger from '@lib/logger'
 import { onCommentDeleted } from './comment.hooks'
 import { onContentDeleted } from './content.hooks'
@@ -134,6 +137,11 @@ export async function onUserDeleted(user) {
   await deleteActivity({
     author: user.id,
     role: 'user',
+  })
+
+   // Delete all interactions refering to this content
+   await deleteInteractions({
+    author: user.id
   })
 
   // Delete all the conversations started by this user (and all children comments)

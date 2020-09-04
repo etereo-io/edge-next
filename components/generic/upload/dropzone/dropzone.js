@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 
-export default function Named(props) {
+function DropZone(props) {
   const fileInputRef = React.createRef()
   const [highlighted, setHighlighted] = useState(false)
 
@@ -160,3 +160,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(DropZone);

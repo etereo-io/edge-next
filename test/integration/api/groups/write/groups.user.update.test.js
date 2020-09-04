@@ -1,22 +1,18 @@
 import {
   findOneContent,
   updateOneContent,
-} from '../../../../../lib/api/entities/content/content'
+} from '../../../../../lib/api/entities/content'
 
-import { findOneUser } from '../../../../../lib/api/entities/users/user'
-
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
+import { findOneUser } from '../../../../../lib/api/entities/users'
+import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/groups/[type]/[slug]/users/[userId]'
-import http from 'http'
-import listen from 'test-listen'
-import getPermissions from '../../../../../lib/permissions/get-permissions'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => {
@@ -108,31 +104,8 @@ jest.mock('../../../../../edge.config', () => {
 describe('Integrations tests for group user update', () => {
   const groupType = 'project'
   const groupSlug = 'group-1'
-  let urlToBeUsed = ''
-  let server
-  let url
-
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
-
+   
   beforeEach(() => {
-    urlToBeUsed = new URL(url)
-    const userParams = { type: groupType, slug: groupSlug }
-
-    Object.keys(userParams).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, userParams[key])
-    )
-
     // group to user has to be added to
     findOneContent.mockReturnValue(
       Promise.resolve({
@@ -173,18 +146,21 @@ describe('Integrations tests for group user update', () => {
 
   async function fetchQuery(body, userId, action = '') {
     const userParams = { userId, action }
-
-    Object.keys(userParams).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, userParams[key])
-    )
-
-    return fetch(urlToBeUsed.href, {
+    const params = { type: groupType, slug: groupSlug }
+    
+    const res = await request(handler, {
       method: 'PUT',
+      query: {
+        ...userParams,
+        ...params
+      },
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
-    })
+      body: body
+    });
+
+    return res
   }
 
   test('User with group admin role approves member 4', async () => {
@@ -206,9 +182,9 @@ describe('Integrations tests for group user update', () => {
       roles: ['GROUP_MEMBER'],
     }
 
-    const response = await fetchQuery(memberBody, 'user4', 'approve')
+    const res = await fetchQuery(memberBody, 'user4', 'approve')
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       pendingMembers: [{ id: 'user5', roles: ['GROUP_MEMBER'] }],
       members: [
@@ -238,9 +214,9 @@ describe('Integrations tests for group user update', () => {
       roles: ['GROUP_ADMIN'],
     }
 
-    const response = await fetchQuery(memberBody, 'user5', 'approve')
+    const res = await fetchQuery(memberBody, 'user5', 'approve')
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       pendingMembers: [{ id: 'user4', roles: ['GROUP_MEMBER'] }],
       members: [
@@ -262,9 +238,9 @@ describe('Integrations tests for group user update', () => {
       roles: ['GROUP_MEMBER'],
     }
 
-    const response = await fetchQuery(memberBody, 'user4', 'approve')
+    const res = await fetchQuery(memberBody, 'user4', 'approve')
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
     expect(updateOneContent).not.toHaveBeenCalled()
   })
 
@@ -291,9 +267,9 @@ describe('Integrations tests for group user update', () => {
       roles: ['GROUP_ADMIN'],
     }
 
-    const response = await fetchQuery(memberBody, 'user6')
+    const res = await fetchQuery(memberBody, 'user6')
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       members: [
         { id: 'user6', roles: ['GROUP_ADMIN'] },

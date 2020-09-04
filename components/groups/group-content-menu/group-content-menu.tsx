@@ -1,5 +1,6 @@
-import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
+import { memo } from 'react'
 
+import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
 import Button from '@components/generic/button/button'
 import { GroupEntityType } from '@lib/types'
 import { groupContentPermission } from '@lib/permissions'
@@ -9,7 +10,7 @@ interface Props {
   group: GroupEntityType
 }
 
-export default function Named(props: Props) {
+function GroupContentMenu(props: Props) {
   const { group = {} as GroupEntityType } = props
   // Check permissions to edit
   const currentUser = useUser()
@@ -29,6 +30,7 @@ export default function Named(props: Props) {
       const contentType = getContentTypeDefinition(type.slug)
 
       return (
+        <>
         <div key={type.slug} className="content-action">
           <Button
             href={`/create/content/${type.slug}?groupId=${group.id}&groupType=${group.type}`}
@@ -37,9 +39,27 @@ export default function Named(props: Props) {
             Create a {contentType.title}
           </Button>
         </div>
+        <style jsx>{`
+          .content-action:last-of-type {
+            margin-left: 8px;
+          }
+        `}</style>
+      </>
       )
     }
   })
 
-  return <div className={`content-actions`}>{contentTypes}</div>
+  return (
+    <>
+    <div className={`content-actions`}>{contentTypes}</div>
+    <style jsx>{`
+        .content-actions {
+          display: flex;
+          margin-top: 24px;
+        }
+      `}</style>
+    </>
+  )
 }
+
+export default memo(GroupContentMenu)

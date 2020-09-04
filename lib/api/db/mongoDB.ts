@@ -69,9 +69,13 @@ class MongoDB extends Database {
     })
   }
 
+  aggregation(options) {
+   return  this.db.collection(this.col).aggregate(options)
+  }
+
   find(
     { id, ...options },
-    sortOptions = { sortBy: 'createdAt', sortOrder: 'DESC' }
+    otherOptions = { sortBy: 'createdAt', sortOrder: 'DESC' }
   ) {
     logger('DEBUG', 'DB - Find', this.col, options)
 
@@ -79,17 +83,24 @@ class MongoDB extends Database {
       const sort = {}
       try {
         if (id) {
-          options._id = new ObjectID(id)
+          if(id.$in) {
+            options._id = {$in: id.$in.map(itemId => new ObjectID(itemId))}
+          } else {
+            options._id = new ObjectID(id)
+          }
+
         }
-        sort[sortOptions.sortBy || 'createdAt'] =
-          sortOptions.sortOrder === 'DESC' ? -1 : 1
+        sort[otherOptions.sortBy || 'createdAt'] =
+          otherOptions.sortOrder === 'DESC' ? -1 : 1
       } catch (err) {
         reject(err)
       }
 
+      const { sortBy, sortOrder, ...otherFindOptions } = otherOptions
+
       this.db
         .collection(this.col)
-        .find(options)
+        .find(options, otherFindOptions)
         .sort(sort)
         .skip(this.startIndex)
         .limit(this.limitIndex)

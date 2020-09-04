@@ -1,15 +1,18 @@
-import {addComment} from '../../../../../lib/api/entities/comments/comments'
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import { findOneContent } from '../../../../../lib/api/entities/content/content'
-import { getSession } from '../../../../../lib/api/auth/iron'
+import {
+  addComment,
+} from '../../../../../lib/api/entities/comments'
+import {
+  findOneContent,
+} from '../../../../../lib/api/entities/content'
+import {
+  getSession,
+} from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/comments'
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
-jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/comments/comments')
+jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/comments')
 
 /*
   Scenario: 
@@ -53,18 +56,16 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-        minlength: 1,
-        placeholder: 'Title',
-      }
-    ],
+    fields: [{
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      minlength: 1,
+      placeholder: 'Title',
+    }],
   }
 
-  
+
   const mockGroupType = {
     title: 'Project',
 
@@ -84,8 +85,7 @@ jest.mock('../../../../../edge.config', () => {
       admin: ['ADMIN'],
     },
 
-    fields: [
-      {
+    fields: [{
         name: 'title',
         type: 'text',
         label: 'Title',
@@ -107,9 +107,9 @@ jest.mock('../../../../../edge.config', () => {
       }
     ],
 
-    user : {
+    user: {
       permissions: {
-        
+
       }
     },
 
@@ -133,7 +133,7 @@ jest.mock('../../../../../edge.config', () => {
     getConfig: jest.fn().mockReturnValue({
       title: 'A test',
       description: 'A test',
-  
+
       groups: {
         types: [mockGroupType]
       },
@@ -142,12 +142,15 @@ jest.mock('../../../../../edge.config', () => {
         types: [mockPostContentType]
       },
 
-      user : {
+      user: {
         permissions: {
-          
+
         },
-  
-        roles: [{ label : 'user', value: 'USER'}],
+
+        roles: [{
+          label: 'user',
+          value: 'USER'
+        }],
         newUserRoles: ['USER'],
       },
     }),
@@ -155,11 +158,11 @@ jest.mock('../../../../../edge.config', () => {
 })
 
 describe('Integrations tests for comment creation in a group content', () => {
-  let server
-  let url
 
   beforeEach(() => {
-    addComment.mockReturnValue(Promise.resolve({ id: 'abc'}))
+    addComment.mockReturnValue(Promise.resolve({
+      id: 'abc'
+    }))
   })
 
   afterEach(() => {
@@ -167,27 +170,13 @@ describe('Integrations tests for comment creation in a group content', () => {
     addComment.mockReset()
     findOneContent.mockReset()
   })
-  
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
-  
 
   test('Should not allow to create a comment in a content that does not have a group', async () => {
     findOneContent.mockReturnValue(Promise.resolve({}))
       .mockReturnValueOnce(Promise.resolve({
         id: 'some-post',
       }))
-      .mockReturnValueOnce(Promise.resolve({ 
+      .mockReturnValueOnce(Promise.resolve({
         id: 'agroup',
         type: 'project',
         members: [{
@@ -195,7 +184,7 @@ describe('Integrations tests for comment creation in a group content', () => {
           roles: ['ANOTHER_ROLE']
         }],
         permissions: {
-          'group.project.content.post.update' : ['ANOTHER_ROLE']
+          'group.project.content.post.update': ['ANOTHER_ROLE']
         }
       }))
 
@@ -203,34 +192,35 @@ describe('Integrations tests for comment creation in a group content', () => {
       roles: ['USER'],
       id: 'test-id-initial-user',
     })
-    
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: 'abc' }
-    
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-    
+
+
+    const params = {
+      contentType: 'post',
+      contentId: 'abc'
+    }
+
+
     const newComment = {
       message: 'abc abc',
       conversationId: null
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newComment),
+      body: newComment
     })
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should return 404 if the content is not found', async () => {
     findOneContent.mockReturnValue(Promise.resolve({}))
       .mockReturnValueOnce(Promise.resolve(null))
-      .mockReturnValueOnce(Promise.resolve({ 
+      .mockReturnValueOnce(Promise.resolve({
         id: 'agroup',
         type: 'project',
         members: [{
@@ -238,7 +228,7 @@ describe('Integrations tests for comment creation in a group content', () => {
           roles: ['ANOTHER_ROLE']
         }],
         permissions: {
-          'group.project.content.post.update' : ['ANOTHER_ROLE']
+          'group.project.content.post.update': ['ANOTHER_ROLE']
         }
       }))
 
@@ -246,28 +236,26 @@ describe('Integrations tests for comment creation in a group content', () => {
       roles: ['USER'],
       id: 'test-id-initial-user',
     })
-    
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: 'abc' }
-    
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-    
+
+    const params = {
+      contentType: 'post',
+      contentId: 'abc'
+    }
+
     const newComment = {
       message: 'abc abc',
       conversationId: null
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newComment),
+      body: newComment
     })
-
-    expect(response.status).toEqual(404)
+    expect(res.statusCode).toEqual(404)
   })
 
   test('Should not allow a non member to create a coment', async () => {
@@ -277,7 +265,7 @@ describe('Integrations tests for comment creation in a group content', () => {
         groupId: 'agroup',
         groupType: 'project'
       }))
-      .mockReturnValueOnce(Promise.resolve({ 
+      .mockReturnValueOnce(Promise.resolve({
         id: 'agroup',
         type: 'project',
         members: [{
@@ -285,7 +273,7 @@ describe('Integrations tests for comment creation in a group content', () => {
           roles: ['ANOTHER_ROLE']
         }],
         permissions: {
-          'group.project.content.post.comments.create' : ['ANOTHER_ROLE']
+          'group.project.content.post.comments.create': ['ANOTHER_ROLE']
         }
       }))
 
@@ -293,28 +281,27 @@ describe('Integrations tests for comment creation in a group content', () => {
       roles: ['USER'],
       id: 'test-id-initial-user',
     })
-    
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: 'abc' }
-    
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-    
+
+    const params = {
+      contentType: 'post',
+      contentId: 'abc'
+    }
+
     const newComment = {
       message: 'abc abc',
       conversationId: null
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newComment),
+      body: newComment
     })
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
   })
 
   test('Should allow a  member to create a coment', async () => {
@@ -324,7 +311,7 @@ describe('Integrations tests for comment creation in a group content', () => {
         groupId: 'agroup',
         groupType: 'project'
       }))
-      .mockReturnValueOnce(Promise.resolve({ 
+      .mockReturnValueOnce(Promise.resolve({
         id: 'agroup',
         type: 'project',
         members: [{
@@ -332,7 +319,7 @@ describe('Integrations tests for comment creation in a group content', () => {
           roles: ['ANOTHER_ROLE']
         }],
         permissions: {
-          'group.project.content.post.comments.create' : ['ANOTHER_ROLE']
+          'group.project.content.post.comments.create': ['ANOTHER_ROLE']
         }
       }))
 
@@ -340,30 +327,28 @@ describe('Integrations tests for comment creation in a group content', () => {
       roles: ['USER'],
       id: 'user1', // The right role
     })
-    
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: 'abc' }
-    
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-    
+
+
+    const params = {
+      contentType: 'post',
+      contentId: 'abc'
+    }
+
     const newComment = {
       message: 'abc abc',
       conversationId: null
     }
 
-    const response = await fetch(urlToBeUsed.href, {
+    const res = await request(handler, {
       method: 'POST',
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newComment),
+      body: newComment
     })
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
   })
- 
 
- 
 })

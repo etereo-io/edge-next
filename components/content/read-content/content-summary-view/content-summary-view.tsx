@@ -1,8 +1,10 @@
-import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
-import { FIELDS } from '@lib/constants'
+import { memo } from 'react'
 import Link from 'next/link'
 
-export default function Named(props) {
+import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
+import { FIELDS } from '@lib/constants'
+
+function ContentSummaryView(props) {
   // Link to detail if it's not a summary
   const links = !!props.summary
 
@@ -95,3 +97,5 @@ export default function Named(props) {
     </>
   )
 }
+
+export default memo(ContentSummaryView)

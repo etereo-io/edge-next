@@ -1,22 +1,18 @@
 import {
   findOneContent,
   updateOneContent,
-} from '../../../../../lib/api/entities/content/content'
+} from '../../../../../lib/api/entities/content'
 
-import { findOneUser } from '../../../../../lib/api/entities/users/user'
-
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
+import { findOneUser } from '../../../../../lib/api/entities/users'
+import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/groups/[type]/[slug]/users'
-import http from 'http'
-import listen from 'test-listen'
-import getPermissions from '../../../../../lib/permissions/get-permissions'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/content/content')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/content')
+jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => {
@@ -108,30 +104,8 @@ jest.mock('../../../../../edge.config', () => {
 describe('Integrations tests for joining to the group', () => {
   const groupType = 'project'
   const groupSlug = 'group-1'
-  let urlToBeUsed = ''
-  let server
-  let url
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    urlToBeUsed = new URL(url)
-    const params = { type: groupType, slug: groupSlug }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
-
+ 
   beforeEach(() => {
     // group to user has to be added to
     findOneContent.mockReturnValue(
@@ -169,13 +143,17 @@ describe('Integrations tests for joining to the group', () => {
   })
 
   async function fetchQuery(body) {
-    return fetch(urlToBeUsed.href, {
+    const params = { type: groupType, slug: groupSlug }
+
+    const res = await request(handler, {
       method: 'POST',
+      query:  params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
+      body: body
     })
+    return res
   }
 
   test('User with the same id as in the body has to be added to the pending members list', async () => {
@@ -200,9 +178,9 @@ describe('Integrations tests for joining to the group', () => {
       id: 'user1',
     }
 
-    const response = await fetchQuery(memberBody)
+    const res = await fetchQuery(memberBody)
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       pendingMembers: [
         { id: 'user1', roles: ['GROUP_MEMBER'] },
@@ -222,9 +200,9 @@ describe('Integrations tests for joining to the group', () => {
       id: 'user4',
     }
 
-    const response = await fetchQuery(memberBody)
+    const res = await fetchQuery(memberBody)
 
-    expect(response.status).toEqual(401)
+    expect(res.statusCode).toEqual(401)
     expect(updateOneContent).not.toHaveBeenCalled()
   })
 
@@ -246,9 +224,9 @@ describe('Integrations tests for joining to the group', () => {
       id: 'user4',
     }
 
-    const response = await fetchQuery(memberBody)
+    const res = await fetchQuery(memberBody)
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       pendingMembers: [
         { id: 'user4', roles: ['GROUP_MEMBER'] },
@@ -275,9 +253,9 @@ describe('Integrations tests for joining to the group', () => {
       id: 'user6',
     }
 
-    const response = await fetchQuery(memberBody)
+    const res = await fetchQuery(memberBody)
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       members: [{ id: 'user6' }],
     })
@@ -299,9 +277,9 @@ describe('Integrations tests for joining to the group', () => {
 
     const memberBody = [{ id: 'user6' }, { id: 'user7' }]
 
-    const response = await fetchQuery(memberBody)
+    const res = await fetchQuery(memberBody)
 
-    expect(response.status).toEqual(200)
+    expect(res.statusCode).toEqual(200)
     expect(updateOneContent).toHaveBeenCalledWith(groupType, groupSlug, {
       members: [{ id: 'user6' }, { id: 'user7' }],
     })

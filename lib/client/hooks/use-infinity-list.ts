@@ -3,6 +3,7 @@ import { useSWRInfinite } from 'swr'
 import { ConfigInterface } from 'swr/dist/types'
 
 import fetch from '@lib/fetcher'
+import { useUpdateEffect } from '@lib/client/hooks'
 
 type getKeyProps = {
   url: string
@@ -29,9 +30,9 @@ const getKey = ({
 
   const from = pageIndex * limit
 
-  return `${url}?limit=${limit}${from ? '&from=' + from : ''}${
-    sortBy ? '&sortBy=' + sortBy : ''
-  }${sortOrder ? '&sortOrder=' + sortOrder : ''}${query ? '&' + query : ''}`
+  return `${url}?limit=${limit}${from ? `&from=${from}` : ''}${
+    sortBy ? `&sortBy=${sortBy}` : ''
+  }${sortOrder ? `&sortOrder=${sortOrder}` : ''}${query ? `&${query}` : ''}`
 }
 
 type DefaultListResponse<Data = any> = {
@@ -80,6 +81,7 @@ function useInfinityList<Item>({
     setSize,
     error,
     isValidating,
+    revalidate,
     ...rest
   } = useSWRInfinite<DefaultListResponse<Item>>(
     getKey({ url, sortBy, sortOrder, limit, query }),
@@ -87,7 +89,11 @@ function useInfinityList<Item>({
     config
   )
 
-  let data = response
+  useUpdateEffect(() => {
+    revalidate()
+  }, [sortBy, sortOrder])
+
+  const data = response
     ? [].concat(...response.map(({ results }) => results))
     : []
 

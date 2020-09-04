@@ -1,4 +1,4 @@
-import { addContent, findContent } from '@lib/api/entities/content/content'
+import { addContent, findContent } from '@lib/api/entities/content'
 import {
   hasPermissionsForGroup,
   isValidGroupType,
@@ -11,6 +11,8 @@ import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
+import { getGroupTypeDefinition } from '@lib/config'
 
 const getGroups = (filterParams, paginationParams, member) => (
   req,
@@ -41,7 +43,21 @@ const getGroups = (filterParams, paginationParams, member) => (
   }
 
   findContent(type.slug, increasedFilters, paginationParams)
-    .then((data) => {
+    .then(async (data) => {
+      if (data.total) {
+        const groupTypeDefinition = getGroupTypeDefinition(type.slug)
+
+        const results = await appendInteractions({
+          data: data.results,
+          interactionsConfig: groupTypeDefinition.entityInteractions,
+          entity: 'group',
+          entityType: type.slug,
+          currentUser: req.currentUser,
+        })
+
+        return res.status(200).json({ ...data, results })
+      }
+
       res.status(200).json(data)
     })
     .catch((err) => {

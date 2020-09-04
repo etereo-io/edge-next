@@ -1,17 +1,23 @@
 import {
   addActivity,
   deleteActivity,
-} from '@lib/api/entities/activity/activity'
+} from '@lib/api/entities/activity'
 import {
   deleteOneContent,
   findOneContent,
-} from '@lib/api/entities/content/content'
+} from '@lib/api/entities/content'
 
 import { ACTIVITY_TYPES } from '@lib/constants'
 import { FIELDS } from '@lib/constants'
 import config from '@lib/config'
 import { deleteFile } from '@lib/api/storage'
+import {
+  deleteInteractions,
+} from '@lib/api/entities/interactions'
 import logger from '@lib/logger'
+import {
+  onContentDeleted,
+} from './content.hooks'
 import { sendRequestToJoinToGroupEmail } from '@lib/email'
 
 export function onGroupAdded(group, user) {
@@ -122,8 +128,8 @@ export async function onGroupDeleted(group, user, groupType) {
           id: content.id,
         })
 
-        // TODO: we dont have such hook for now
-        // await onContentDeleted(content, user, type)
+        await onContentDeleted(content, user, type)
+
         content = await findOneContent(type.slug, {
           gid: group.id,
         })
@@ -132,6 +138,12 @@ export async function onGroupDeleted(group, user, groupType) {
   } catch (err) {
     logger('ERROR', 'Error deleting content for group', err)
   }
+
+   // Delete all interactions refering to this content
+   await deleteInteractions({
+    entity: 'group',
+    entityId: group.id
+  })
 
   if (config.activity.enabled) {
     addActivity({

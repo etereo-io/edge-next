@@ -1,9 +1,12 @@
-import { findOneUser } from '../users/user'
-import { getDB } from '../../db'
-import { hidePrivateUserFields } from '../users/user.utils'
+import { findOneUser } from '@lib/api/entities/users'
+import { getDB } from '@lib/api/db'
+import { ANY_OBJECT } from '@lib/types'
+import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 
 export function findOneComment(options = {}) {
-  return getDB().collection('comment').findOne(options)
+  return getDB()
+    .collection('comment')
+    .findOne(options)
 }
 
 export function addComment(data) {
@@ -20,10 +23,16 @@ export function addComment(data) {
 }
 
 export function updateOneComment(id, data) {
-  return getDB().collection('comment').doc(id).set(data)
+  return getDB()
+    .collection('comment')
+    .doc(id)
+    .set(data)
 }
 
-export function findComments(options = {}, paginationOptions = {}) {
+export function findComments(
+  options: ANY_OBJECT = {},
+  paginationOptions: ANY_OBJECT = {}
+) {
   const { from = 0, limit = 15, sortBy, sortOrder = 'DESC' } = paginationOptions
 
   return getDB()
@@ -39,7 +48,9 @@ export function findComments(options = {}, paginationOptions = {}) {
 
       const repliesCount = await Promise.all(
         data.map((d) =>
-          getDB().collection('comment').count({ conversationId: d.id })
+          getDB()
+            .collection('comment')
+            .count({ conversationId: d.id })
         )
       )
 
@@ -58,9 +69,13 @@ export function findComments(options = {}, paginationOptions = {}) {
 }
 
 export function deleteComment(options) {
-  return getDB().collection('comment').remove(options)
+  return getDB()
+    .collection('comment')
+    .remove(options)
 }
 
 export function deleteOneComment(options) {
-  return getDB().collection('comment').remove(options, true)
+  return getDB()
+    .collection('comment')
+    .remove(options, true)
 }
