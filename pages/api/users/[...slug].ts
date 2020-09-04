@@ -14,7 +14,7 @@ import {
   userPasswordsMatch,
 } from '@lib/api/entities/users/user.utils'
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
-
+import { ANY_OBJECT, Request, UserType } from '@lib/types'
 import { connect } from '@lib/api/db'
 import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
@@ -33,7 +33,7 @@ export const config = {
   },
 }
 
-const userExist = (userId = '') => async (req, res, cb) => {
+const userExist = (userId = '') => async (req: Request<UserType>, res, cb) => {
   let findUserId = userId
 
   if (userId === 'me') {
@@ -54,7 +54,7 @@ const userExist = (userId = '') => async (req, res, cb) => {
       }
     : { id: findUserId }
 
-  findOneUser(findOptions)
+  return findOneUser(findOptions)
     .then((user) => {
       if (user) {
         req.item = user
@@ -68,7 +68,7 @@ const userExist = (userId = '') => async (req, res, cb) => {
     })
 }
 
-const getUser = (req, res) => {
+const getUser = (req: Request<UserType>, res) => {
   const permission = [`user.admin`]
 
   const showPrivateFields =
@@ -80,7 +80,7 @@ const getUser = (req, res) => {
     .json(showPrivateFields ? req.item : hidePrivateUserFields(req.item))
 }
 
-const delUser = (req, res) => {
+const delUser = (req: Request<UserType>, res) => {
   // Self deletion, check password
   if (req.currentUser.id === req.item.id) {
     if (!req.query.password) {
@@ -98,7 +98,7 @@ const delUser = (req, res) => {
 
   // Other deletion, user has roles to perform operation
 
-  deleteOneUser({
+  return deleteOneUser({
     id: req.item.id,
   })
     .then(async () => {
@@ -112,7 +112,7 @@ const delUser = (req, res) => {
     })
 }
 
-async function updateProfile(userId, profile, req) {
+async function updateProfile(userId, profile, req: Request<UserType>) {
   const newContent = await uploadFiles(
     edgeConfig.user.profile.fields,
     req.files,
@@ -196,7 +196,7 @@ function updateProfilePicture(user, profilePicture) {
     }
 
     // Asign the new path
-    updateOneUser(user.id, {
+    return updateOneUser(user.id, {
       profile: {
         ...user.profile,
         picture: {
@@ -237,7 +237,7 @@ function updateProfileCover(user, profileCover) {
     }
 
     // Asign the new path
-    updateOneUser(user.id, {
+    return updateOneUser(user.id, {
       profile: {
         ...user.profile,
         cover: {
@@ -252,7 +252,7 @@ function updateProfileCover(user, profileCover) {
   })
 }
 
-const updateUser = (slug) => async (req, res) => {
+const updateUser = (slug) => async (req: Request<UserType>, res) => {
   try {
     await runMiddleware(req, res, bodyParser)
   } catch (e) {
@@ -262,6 +262,7 @@ const updateUser = (slug) => async (req, res) => {
   }
 
   const updateData = slug[1]
+  const files = req.files as ANY_OBJECT
 
   let promiseChange = null
 
@@ -302,18 +303,18 @@ const updateUser = (slug) => async (req, res) => {
       break
 
     case 'picture':
-      promiseChange = updateProfilePicture(req.item, req.files.profilePicture)
+      promiseChange = updateProfilePicture(req.item, files.profilePicture)
 
       break
     case 'cover':
-      promiseChange = updateProfileCover(req.item, req.files.profileCover)
+      promiseChange = updateProfileCover(req.item, files.profileCover)
 
       break
     default:
       promiseChange = Promise.reject('Update ' + updateData + ' not allowed')
   }
 
-  promiseChange
+  return promiseChange
     .then((newUser) => {
       // Invoke the hook
       onUserUpdated(newUser, updateData, req.currentUser)
@@ -330,7 +331,7 @@ const updateUser = (slug) => async (req, res) => {
     })
 }
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const {
     query: { slug },
   } = req
@@ -370,7 +371,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     get: getUser,
     del: delUser,
     put: updateUser(slug),

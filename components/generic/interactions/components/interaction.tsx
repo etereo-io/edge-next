@@ -87,7 +87,7 @@ function Interaction({
         type,
         canCreate,
         canRemove,
-        interaction: interaction.interaction,
+        interaction: interaction?.interaction,
         count,
         isNumber,
         config: interactionConfig,
@@ -133,15 +133,23 @@ function Interaction({
 
   return (
     <>
-      <StackedAvatars width="40px" maxItems={3} users={users.filter(Boolean)} />
-      <Item
-        item={item}
-        entityId={entityId}
-        entity={entity}
-        entityType={entityType}
-        create={handleCreation}
-        remove={handleRemoving}
-      />
+      {!!item && (
+        <>
+          <StackedAvatars
+            width="40px"
+            maxItems={3}
+            users={users.filter(Boolean)}
+          />
+          <Item
+            item={item}
+            entityId={entityId}
+            entity={entity}
+            entityType={entityType}
+            create={handleCreation}
+            remove={handleRemoving}
+          />
+        </>
+      )}
     </>
   )
 }

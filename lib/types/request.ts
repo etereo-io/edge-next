@@ -1,9 +1,14 @@
 import { NextApiRequest } from 'next'
 
-import { UserType } from '@lib/types'
-import { GroupEntityType } from '@lib/types/entities/group'
+import { UserType, ContentTypeDefinition, GroupEntityType, GroupTypeDefinition, ANY_OBJECT } from '@lib/types'
+import { METHODS } from '@lib/api/api-helpers/methods'
 
-export interface Request extends NextApiRequest {
+export interface Request<I = GroupEntityType> extends NextApiRequest {
   currentUser?: UserType
-  item?: GroupEntityType
+  item?: I
+  contentType?: ContentTypeDefinition
+  groupType?: GroupTypeDefinition
+  files?: ANY_OBJECT[]
+  userId?: string
+  method: METHODS
 }

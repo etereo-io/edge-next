@@ -10,11 +10,9 @@ import {
   findOneContent,
   updateOneContent,
 } from '@lib/api/entities/content'
-import {
-  onGroupDeleted,
-  onGroupUpdated,
-} from '@lib/api/hooks/group.hooks'
-
+import { groupUserPermission } from '@lib/permissions'
+import { onGroupDeleted, onGroupUpdated } from '@lib/api/hooks/group.hooks'
+import { Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
@@ -30,7 +28,7 @@ export const config = {
   },
 }
 
-const loadGroupItemMiddleware = async (req, res, cb) => {
+const loadGroupItemMiddleware = async (req: Request, res, cb) => {
   const type = req.groupType
 
   const searchOptions = {}
@@ -44,7 +42,7 @@ const loadGroupItemMiddleware = async (req, res, cb) => {
     searchOptions['slug'] = req.query.slug
   }
 
-  findOneContent(type.slug, searchOptions)
+  return findOneContent(type.slug, searchOptions)
     .then((data) => {
       if (!data) {
         cb(new Error('group not found'))
@@ -58,7 +56,7 @@ const loadGroupItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getGroup = async ({ groupType, currentUser, item }, res) => {
+const getGroup = async ({ groupType, currentUser, item }: Request, res) => {
   if (item) {
     const groupTypeDefinition = getGroupTypeDefinition(groupType)
 
@@ -66,20 +64,28 @@ const getGroup = async ({ groupType, currentUser, item }, res) => {
       data: [item],
       interactionsConfig: groupTypeDefinition.entityInteractions,
       entity: 'group',
-      entityType: groupType,
+      entityType: groupType.slug,
       currentUser: currentUser,
     })
 
-    return res.status(200).json(data[0])
+    const group = data[0]
+
+    if (!groupUserPermission(currentUser, groupType.slug, 'read', group)) {
+      const { members, pendingMembers, ...groupItem } = group
+
+      return res.status(200).json(groupItem)
+    }
+
+    return res.status(200).json(group)
   }
 
   return res.status(200).json(item)
 }
 
-const deleteGroup = (req, res) => {
+const deleteGroup = (req: Request, res) => {
   const item = req.item
 
-  deleteOneContent(item.type, { id: item.id })
+  return deleteOneContent(item.type, { id: item.id })
     .then(async () => {
       // Trigger on content deleted hook
       await onGroupDeleted(item, req.currentUser, req.groupType)
@@ -95,7 +101,7 @@ const deleteGroup = (req, res) => {
     })
 }
 
-const updateGroup = async (req, res) => {
+const updateGroup = async (req: Request, res) => {
   try {
     await runMiddleware(req, res, bodyParser)
   } catch (e) {
@@ -110,7 +116,7 @@ const updateGroup = async (req, res) => {
     ...req.body,
   }
 
-  groupValidations(type, content)
+  return groupValidations(type, content)
     .then(async () => {
       // Content is valid
 
@@ -129,13 +135,13 @@ const updateGroup = async (req, res) => {
         return
       }
 
-      updateOneContent(type.slug, req.item.id, newContent)
+      return updateOneContent(type.slug, req.item.id, newContent)
         .then((data) => {
           // Trigger on updated hook
           onGroupUpdated(data, req.currentUser)
 
           // Respond
-          res.status(200).json(data)
+          return res.status(200).json(data)
         })
         .catch((err) => {
           res.status(500).json({
@@ -150,7 +156,7 @@ const updateGroup = async (req, res) => {
     })
 }
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const {
     query: { type },
   } = req
@@ -196,7 +202,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     get: getGroup,
     del: deleteGroup,
     put: updateGroup,

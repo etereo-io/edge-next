@@ -76,7 +76,7 @@ export const groupContentPermission = (user: UserType = publicUser , entityType,
 
 }
 
-export const groupPermission = (user: UserType = publicUser , entityType, action, group) => {
+export const groupPermission = (user: UserType = publicUser , entityType, action, group = null) => {
   
   const permission = [
     `group.${entityType}.${action}`,

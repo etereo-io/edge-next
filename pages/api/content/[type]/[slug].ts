@@ -15,7 +15,7 @@ import {
   onContentDeleted,
   onContentUpdated,
 } from '@lib/api/hooks/content.hooks'
-
+import { ContentEntityType, Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
 import methods from '@lib/api/api-helpers/methods'
@@ -24,7 +24,6 @@ import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getContentTypeDefinition } from '@lib/config'
 
-
 // disable the default body parser to be able to use file upload
 export const config = {
   api: {
@@ -32,7 +31,7 @@ export const config = {
   },
 }
 
-const loadContentItemMiddleware = async (req, res, cb) => {
+const loadContentItemMiddleware = async (req: Request, res, cb) => {
   const type = req.contentType
 
   const searchOptions = {}
@@ -60,8 +59,8 @@ const loadContentItemMiddleware = async (req, res, cb) => {
     })
 }
 
-const getContent = async ({ item, currentUser }, res) => {
-  if(item) {
+const getContent = async ({ item, currentUser }: Request, res) => {
+  if (item) {
     const contentTypeDefinition = getContentTypeDefinition(item.type)
 
     const data = await appendInteractions({
@@ -78,7 +77,7 @@ const getContent = async ({ item, currentUser }, res) => {
   return res.status(200).json(item)
 }
 
-const deleteContent = (req, res) => {
+const deleteContent = (req: Request, res) => {
   const item = req.item
 
   deleteOneContent(item.type, { id: item.id })
@@ -97,7 +96,7 @@ const deleteContent = (req, res) => {
     })
 }
 
-const updateContent = async (req, res) => {
+const updateContent = async (req: Request, res) => {
   const type = req.contentType
   try {
     await runMiddleware(req, res, bodyParser)
@@ -109,7 +108,7 @@ const updateContent = async (req, res) => {
 
   // Extract the groupId, groupType. Since we don't want anybody being able to change those.
   const { groupId, groupType, ...content } = req.body
-  
+
   await contentValidations(type, content)
     .then(async () => {
       // Content is valid
@@ -148,11 +147,10 @@ const updateContent = async (req, res) => {
     })
 }
 
-export default async (req, res) => {
+export default async (req: Request<ContentEntityType>, res) => {
   const {
     query: { type },
   } = req
-
 
   try {
     await runMiddleware(req, res, isValidContentType(type))
@@ -221,7 +219,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     get: getContent,
     del: deleteContent,
     put: updateContent,
