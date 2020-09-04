@@ -15,6 +15,7 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content'
+import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
 
 const getUsers = async (
   { item: group, currentUser, groupType }: Request,
@@ -39,6 +40,20 @@ async function saveGroupUsers({ type, id, data, thenCallback, res }) {
     })
 }
 
+function formGroupItem(slug, fields, data, user) {
+  const [group] = getDecipheredData(
+    {
+      type: slug,
+      entity: 'group',
+      fields: fields,
+    },
+    [data],
+    user
+  )
+
+  return group
+}
+
 async function addUsers(req: Request, res) {
   const {
     query: { type },
@@ -51,20 +66,26 @@ async function addUsers(req: Request, res) {
   const {
     user: { requireApproval },
     roles,
+    slug,
+    fields,
   } = getGroupTypeDefinition(type)
   const [role] = roles
 
   const membersCallback = (data) => {
     onGroupUpdated(data, currentUser)
 
-    res.status(200).json(data)
+    const group = formGroupItem(slug, fields, data, currentUser)
+
+    res.status(200).json(group)
   }
   const pendingMembersCallback = async (data) => {
     const { email } = await findOneUser({ id: author })
 
     onGroupJoinRequest(data, currentUser, email, type)
 
-    res.status(200).json(data)
+    const group = formGroupItem(slug, fields, data, currentUser)
+
+    res.status(200).json(group)
   }
 
   // Has permissions to update members

@@ -1,5 +1,5 @@
 import GroupForm from '@components/groups/write/group-form/group-form'
-import { groupPermission } from '@lib/permissions'
+import { cypheredFieldPermission, groupPermission } from '@lib/permissions'
 import Layout from '@components/layout/normal/layout'
 import { useState, useMemo, useCallback } from 'react'
 import { GetServerSideProps } from 'next'
@@ -42,20 +42,38 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       groupType: groupTypeDefinition,
+      currentUser,
     },
   }
 }
 
-const CreateGroup = ({ groupType }) => {
+const CreateGroup = ({ groupType, currentUser }) => {
+  const permittedFields = useMemo(
+    () =>
+      groupType.fields.filter((field) => {
+        if (!field.cypher || !field.cypher.enabled) {
+          return true
+        }
+
+        return cypheredFieldPermission(
+          currentUser,
+          'group',
+          groupType.slug,
+          field.name
+        )
+      }),
+    [currentUser, groupType]
+  )
+
   const defaultState = useMemo(() => {
     const state = { draft: false }
 
-    groupType.fields.forEach(({ name, value, defaultValue }) => {
+    permittedFields.forEach(({ name, value, defaultValue }) => {
       state[name] = value || defaultValue
     })
 
     return state
-  }, [groupType])
+  }, [groupType, permittedFields])
 
   const [group, setGroup] = useState(defaultState)
 
@@ -71,7 +89,12 @@ const CreateGroup = ({ groupType }) => {
       <Layout title="New group">
         <div className="create-page">
           <h1>Create new {groupType ? groupType.title : 'group'}</h1>
-          <GroupForm group={group} type={groupType} onSave={onSave} />
+          <GroupForm
+            permittedFields={permittedFields}
+            group={group}
+            type={groupType}
+            onSave={onSave}
+          />
         </div>
       </Layout>
       <style jsx>{`

@@ -10,6 +10,7 @@ import { getContentTypeDefinition } from '@lib/config'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getSession } from '@lib/api/auth/iron'
+import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({
@@ -72,9 +73,19 @@ export const getServerSideProps: GetServerSideProps = async ({
     currentUser,
   })
 
+  const decipheredData = getDecipheredData(
+    {
+      type: contentTypeDefinition.slug,
+      entity: 'content',
+      fields: contentTypeDefinition.fields,
+    },
+    data,
+    currentUser
+  )
+
   return {
     props: {
-      data: data[0],
+      data: decipheredData[0],
       type: query.type,
       slug: query.slug,
       canAccess: true,

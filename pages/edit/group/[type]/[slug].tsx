@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { GetServerSideProps } from 'next'
 import GroupForm from '@components/groups/write/group-form/group-form'
@@ -7,7 +7,8 @@ import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
-import { groupPermission } from '@lib/permissions'
+import { cypheredFieldPermission, groupPermission } from '@lib/permissions'
+import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })
@@ -59,15 +60,26 @@ export const getServerSideProps: GetServerSideProps = async ({
     return
   }
 
+  const [groupObject] = getDecipheredData(
+    {
+      type: groupTypeDefinition.slug,
+      entity: 'group',
+      fields: groupTypeDefinition.fields,
+    },
+    [group],
+    currentUser
+  )
+
   return {
     props: {
       groupType: groupTypeDefinition,
-      groupObject: group,
+      groupObject,
+      currentUser,
     },
   }
 }
 
-const EditGroup = ({ groupType, groupObject }) => {
+const EditGroup = ({ groupType, groupObject, currentUser }) => {
   const [group, setGroup] = useState(groupObject)
 
   const onSave = useCallback(
@@ -77,12 +89,36 @@ const EditGroup = ({ groupType, groupObject }) => {
     [setGroup]
   )
 
+  const permittedFields = useMemo(
+    () =>
+      groupType.fields.filter((field) => {
+        if (!field.cypher || !field.cypher.enabled) {
+          return true
+        }
+
+        return (
+          cypheredFieldPermission(
+            currentUser,
+            'group',
+            groupType.slug,
+            field.name
+          ) || groupObject?.author === currentUser?.id
+        )
+      }),
+    [currentUser, groupType, groupObject]
+  )
+
   return (
     <>
       <Layout title="Edit group">
         <div className="edit-page">
           <h1>Editing: {group ? group.title : null}</h1>
-          <GroupForm type={groupType} onSave={onSave} group={group} />
+          <GroupForm
+            permittedFields={permittedFields}
+            type={groupType}
+            onSave={onSave}
+            group={group}
+          />
         </div>
       </Layout>
 

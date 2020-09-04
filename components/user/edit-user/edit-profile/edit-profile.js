@@ -1,15 +1,35 @@
-import { useState, useEffect, memo } from 'react'
+import { useState, useEffect, memo, useMemo } from 'react'
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 import config from '@lib/config'
 import { FIELDS } from '@lib/constants'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
+import { cypheredFieldPermission } from '@lib/permissions'
 
-function EditProfile({ user, onChange = () => {}, ...props }) {
+function EditProfile({ user, onChange = () => {}, currentUser }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const permittedFields = useMemo(
+    () =>
+      config.user.profile.fields.filter((field) => {
+        if (!field.cypher || !field.cypher.enabled) {
+          return true
+        }
+
+        return (
+          cypheredFieldPermission(
+            currentUser,
+            'user',
+            'profile',
+            field.name
+          ) || currentUser?.id === user.id
+        )
+      }),
+    [currentUser, user]
+  )
 
   const [fields, setFields] = useState({})
 
@@ -72,9 +92,7 @@ function EditProfile({ user, onChange = () => {}, ...props }) {
 
     Object.keys(fields).forEach((key) => {
       const fieldValue = fields[key]
-      const fieldDefinition = config.user.profile.fields.find(
-        (t) => t.name === key
-      )
+      const fieldDefinition = permittedFields.find((t) => t.name === key)
 
       if (
         fieldDefinition &&
@@ -105,7 +123,7 @@ function EditProfile({ user, onChange = () => {}, ...props }) {
   // Set default data
   useEffect(() => {
     const newFields = {}
-    config.user.profile.fields.forEach((f) => {
+    permittedFields.forEach((f) => {
       newFields[f.name] = user.profile ? user.profile[f.name] : null
     })
     setFields(newFields)
@@ -116,7 +134,7 @@ function EditProfile({ user, onChange = () => {}, ...props }) {
       <div className="change-displayname">
         <form onSubmit={onSubmit}>
           <div className="block-settings">
-            {config.user.profile.fields.map((field) => (
+            {permittedFields.map((field) => (
               <DynamicField
                 key={field.name}
                 field={field}

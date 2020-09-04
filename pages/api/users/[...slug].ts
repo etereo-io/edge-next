@@ -25,6 +25,8 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { v4 as uuidv4 } from 'uuid'
+import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
+import appConfig from '@lib/config'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -75,9 +77,19 @@ const getUser = (req: Request<UserType>, res) => {
     hasPermission(req.currentUser, permission) ||
     (req.currentUser && req.currentUser.id === req.item.id)
 
-  res
-    .status(200)
-    .json(showPrivateFields ? req.item : hidePrivateUserFields(req.item))
+  const user = showPrivateFields ? req.item : hidePrivateUserFields(req.item)
+
+  const decipheredData = getDecipheredData(
+    {
+      type: 'profile',
+      entity: 'user',
+      fields: appConfig.user.profile.fields,
+    },
+    [user],
+    req.currentUser
+  )
+
+  return res.status(200).json(decipheredData[0])
 }
 
 const delUser = (req: Request<UserType>, res) => {
@@ -125,6 +137,18 @@ async function updateProfile(userId, profile, req: Request<UserType>) {
     profile: {
       ...newContent,
     },
+  }).then((item) => {
+    const [user] = getDecipheredData(
+      {
+        type: 'user',
+        entity: 'user',
+        fields: appConfig.user.profile.fields,
+      },
+      [item],
+      req.currentUser
+    )
+
+    return user
   })
 }
 

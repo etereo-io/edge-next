@@ -26,7 +26,9 @@ function ContentForm(props) {
       const filteredData = {}
       // We filter the data that comes from the API into the state, because we don't want to send to the PUT and POST request
       // additional information
-      const allowedKeys = props.type.fields.map((f) => f.name).concat('draft')
+      const allowedKeys = props.permittedFields
+        .map((f) => f.name)
+        .concat('draft')
 
       allowedKeys.map((k) => {
         filteredData[k] = props.content[k]
@@ -80,7 +82,7 @@ function ContentForm(props) {
     // Separate JsonDATA for normal data and formData for files
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
-      const fieldDefinition = props.type.fields.find((t) => t.name === key)
+      const fieldDefinition = props.permittedFields.find((t) => t.name === key)
 
       if (
         fieldDefinition &&
@@ -147,7 +149,7 @@ function ContentForm(props) {
             </div>
           )}
 
-          {props.type.fields.map((field) => (
+          {props.permittedFields.map((field) => (
             <DynamicField
               key={field.name}
               field={field}
@@ -174,7 +176,11 @@ function ContentForm(props) {
 
         <div className="preview-wrapper">
           <div className="preview">
-            <ContentSummaryView content={state} type={props.type} />
+            <ContentSummaryView
+              content={state}
+              type={props.type}
+              user={props.currentUser}
+            />
           </div>
           {props.group && (
             <Card>

@@ -20,6 +20,10 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { getGroupTypeDefinition } from '@lib/config'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
+import {
+  cypherData,
+  getDecipheredData,
+} from '@lib/api/api-helpers/cypher-fields'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -68,12 +72,32 @@ const getGroup = async ({ groupType, currentUser, item }: Request, res) => {
       currentUser: currentUser,
     })
 
-    const group = data[0]
+    const [group] = getDecipheredData(
+      {
+        type: groupType.slug,
+        entity: 'group',
+        fields: groupType.fields,
+      },
+      data,
+      currentUser
+    )
 
     if (!groupUserPermission(currentUser, groupType.slug, 'read', group)) {
-      const { members, pendingMembers, ...groupItem } = group
+      const { members, pendingMembers, ...item } = group
 
-      return res.status(200).json(groupItem)
+      const permittedUsers = (members || []).filter(
+        ({ id }) => id === currentUser?.id
+      )
+
+      const permittedPendingUsers = (pendingMembers || []).filter(
+        ({ id }) => id === currentUser?.id
+      )
+
+      return res.status(200).json({
+        ...item,
+        members: permittedUsers,
+        pendingMembers: permittedPendingUsers,
+      })
     }
 
     return res.status(200).json(group)
@@ -131,17 +155,38 @@ const updateGroup = async (req: Request, res) => {
       if (Object.keys(newContent).length === 0) {
         // It is an empty request, no file was uploaded, no file was deleted)
         const filled = await fillContent(req.item)
-        res.status(200).json(filled)
-        return
+        const [group] = getDecipheredData(
+          {
+            type: type.slug,
+            entity: 'group',
+            fields: type.fields,
+          },
+          [filled],
+          req?.currentUser
+        )
+
+        return res.status(200).json(group)
       }
 
-      return updateOneContent(type.slug, req.item.id, newContent)
+      const cypheredData = cypherData(type.fields, newContent)
+
+      return updateOneContent(type.slug, req.item.id, cypheredData)
         .then((data) => {
           // Trigger on updated hook
           onGroupUpdated(data, req.currentUser)
 
+          const [group] = getDecipheredData(
+            {
+              type: type.slug,
+              entity: 'group',
+              fields: type.fields,
+            },
+            [data],
+            req?.currentUser
+          )
+
           // Respond
-          return res.status(200).json(data)
+          return res.status(200).json(group)
         })
         .catch((err) => {
           res.status(500).json({

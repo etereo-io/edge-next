@@ -1,13 +1,14 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import ContentForm from '@components/content/write-content/content-form/content-form'
 import { GetServerSideProps } from 'next'
 import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
-import { contentPermission } from '@lib/permissions'
+import { contentPermission, cypheredFieldPermission } from '@lib/permissions'
 import { findOneContent } from '@lib/api/entities/content'
 import { getContentTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
+import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })
@@ -64,15 +65,26 @@ export const getServerSideProps: GetServerSideProps = async ({
     return
   }
 
+  const [contentObject] = getDecipheredData(
+    {
+      type: contentTypeDefinition.slug,
+      entity: 'content',
+      fields: contentTypeDefinition.fields,
+    },
+    [content],
+    currentUser
+  )
+
   return {
     props: {
       contentType: contentTypeDefinition,
-      contentObject: content,
+      contentObject,
+      currentUser,
     },
   }
 }
 
-const EditContent = ({ contentType, contentObject }) => {
+const EditContent = ({ contentType, contentObject, currentUser }) => {
   const [content, setContent] = useState(contentObject)
 
   const onSave = useCallback(
@@ -81,13 +93,37 @@ const EditContent = ({ contentType, contentObject }) => {
     },
     [setContent]
   )
+  const permittedFields = useMemo(
+    () =>
+      contentType.fields.filter((field) => {
+        if (!field.cypher || !field.cypher.enabled) {
+          return true
+        }
+
+        return (
+          cypheredFieldPermission(
+            currentUser,
+            'content',
+            contentType.slug,
+            field.name
+          ) || contentObject?.author === currentUser?.id
+        )
+      }),
+    [currentUser, contentType, contentObject]
+  )
 
   return (
     <>
       <Layout title="Edit content">
         <div className="edit-page">
           <h1>Editing: {content ? content.title : null}</h1>
-          <ContentForm type={contentType} onSave={onSave} content={content} />
+          <ContentForm
+            permittedFields={permittedFields}
+            type={contentType}
+            onSave={onSave}
+            content={content}
+            currentUser={currentUser}
+          />
         </div>
       </Layout>
 

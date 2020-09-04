@@ -12,6 +12,8 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import GroupContext from '@components/groups/context/group-context'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getSession } from '@lib/api/auth/iron'
+import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
+import { groupUserPermission } from '@lib/permissions'
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -70,9 +72,41 @@ export const getServerSideProps: GetServerSideProps = async ({
     currentUser,
   })
 
+  const decipheredData = getDecipheredData(
+    {
+      type: groupTypeDefinition.slug,
+      entity: 'group',
+      fields: groupTypeDefinition.fields,
+    },
+    data,
+    currentUser
+  )
+
+  let [group] = decipheredData
+
+  if (
+    !groupUserPermission(currentUser, groupTypeDefinition.slug, 'read', group)
+  ) {
+    const { members, pendingMembers, ...item } = group
+
+    const permittedUsers = (members || []).filter(
+      ({ id }) => id === currentUser?.id
+    )
+
+    const permittedPendingUsers = (pendingMembers || []).filter(
+      ({ id }) => id === currentUser?.id
+    )
+
+    group = {
+      ...item,
+      members: permittedUsers,
+      pendingMembers: permittedPendingUsers,
+    }
+  }
+
   return {
     props: {
-      data: data[0],
+      data: group,
       pageTitle: contentTitle,
       groupType: groupTypeDefinition,
     },
@@ -82,9 +116,12 @@ export const getServerSideProps: GetServerSideProps = async ({
 const ContentPage = ({ data, groupType, pageTitle }) => {
   const [group, setGroup] = useState(data)
 
-  const onSubmitEvent = useCallback((data) => {
-    setGroup(data)
-  }, [setGroup])
+  const onSubmitEvent = useCallback(
+    (data) => {
+      setGroup(data)
+    },
+    [setGroup]
+  )
 
   return (
     <Layout title={pageTitle} panelUser={<ToolBar />}>

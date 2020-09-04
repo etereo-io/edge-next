@@ -71,7 +71,7 @@ const UserSettings = () => {
         id: 'profile',
         label: 'Profile',
         show: canSeeContent,
-        content: <EditProfileForm user={user} onChange={mutateUser} />,
+        content: <EditProfileForm user={user} currentUser={currentUser?.user} onChange={mutateUser} />,
       },
       {
         id: 'password',

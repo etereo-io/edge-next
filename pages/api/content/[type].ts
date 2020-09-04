@@ -9,7 +9,10 @@ import {
   isValidContentType,
   loadUser,
 } from '@lib/api/middlewares'
-import { getContentTypeDefinition } from '@lib/config'
+import {
+  cypherData,
+  getDecipheredData,
+} from '@lib/api/api-helpers/cypher-fields'
 import { ANY_OBJECT, Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
@@ -20,7 +23,10 @@ import { onContentAdded } from '@lib/api/hooks/content.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 
-const getContent = (filterParams, paginationParams) => async (req: Request, res) => {
+const getContent = (filterParams, paginationParams) => async (
+  req: Request,
+  res
+) => {
   const type = req.contentType
 
   const increasedFilters = {
@@ -41,18 +47,26 @@ const getContent = (filterParams, paginationParams) => async (req: Request, res)
 
   return findContent(type.slug, increasedFilters, paginationParams)
     .then(async (data) => {
-      const contentTypeDefinition = getContentTypeDefinition(type.slug)
-
       if (data.total) {
         const results = await appendInteractions({
           data: data.results,
-          interactionsConfig: contentTypeDefinition.entityInteractions,
+          interactionsConfig: type.entityInteractions,
           entity: 'content',
           entityType: type.slug,
           currentUser: req.currentUser,
         })
 
-        return res.status(200).json({ ...data, results })
+        const decipheredData = getDecipheredData(
+          {
+            type: type.slug,
+            entity: 'content',
+            fields: type.fields,
+          },
+          results,
+          req.currentUser
+        )
+
+        return res.status(200).json({ ...data, results: decipheredData })
       }
 
       return res.status(200).json(data)
@@ -85,13 +99,25 @@ const createContent = async (req: Request, res) => {
         req.currentUser
       )
 
-      addContent(type.slug, newContent)
+      const cypheredData = cypherData(type.fields, newContent)
+
+      addContent(type.slug, cypheredData)
         .then((data) => {
           // Trigger on content added hook
           onContentAdded(data, req.currentUser)
 
+          const [content] = getDecipheredData(
+            {
+              type: type.slug,
+              entity: 'content',
+              fields: type.fields,
+            },
+            [data],
+            req.currentUser
+          )
+
           // Respond
-          res.status(200).json(data)
+          res.status(200).json(content)
         })
         .catch((err) => {
           res.status(500).json({

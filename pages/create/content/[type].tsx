@@ -1,4 +1,10 @@
-import { contentPermission, groupContentPermission } from '@lib/permissions'
+import { useState, useMemo } from 'react'
+
+import {
+  contentPermission,
+  groupContentPermission,
+  cypheredFieldPermission,
+} from '@lib/permissions'
 import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
 
 import ContentForm from '@components/content/write-content/content-form/content-form'
@@ -7,10 +13,13 @@ import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import { getSession } from '@lib/api/auth/iron'
-import { useState } from 'react'
 
 // Get serversideProps is important for SEO, and only available at the pages level
-export const getServerSideProps: GetServerSideProps = async ({ req, res, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  query,
+}) => {
   const contentTypeDefinition = getContentTypeDefinition(query.type)
 
   if (!contentTypeDefinition) {
@@ -21,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
 
   await connect()
 
-  // Group is null by default 
+  // Group is null by default
   let group = null
   let groupTypeDefinition = null
 
@@ -30,9 +39,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     try {
       const searchOptions = {
         id: query.groupId,
-        type: query.groupType
+        type: query.groupType,
       }
-  
+
       group = await findOneContent(query.groupType, searchOptions)
 
       groupTypeDefinition = getGroupTypeDefinition(query.groupType)
@@ -42,9 +51,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
         res.end()
         return
       }
-
-
-    }  catch (e) {
+    } catch (e) {
       // User can not access
       res.writeHead(302, { Location: '/404' })
       res.end()
@@ -53,12 +60,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
   }
   const currentUser = await getSession(req)
 
-  const canAccess = group ? groupContentPermission(currentUser,
-    group.type,
-    contentTypeDefinition.slug,
-    'create',
-    group
-  ):  contentPermission(currentUser, contentTypeDefinition.slug, 'create')
+  const canAccess = group
+    ? groupContentPermission(
+        currentUser,
+        group.type,
+        contentTypeDefinition.slug,
+        'create',
+        group
+      )
+    : contentPermission(currentUser, contentTypeDefinition.slug, 'create')
 
   if (!canAccess) {
     // User can not access
@@ -67,31 +77,40 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, query }
     return
   }
 
-
   return {
     props: {
       group: group,
       groupType: groupTypeDefinition,
-      contentType: contentTypeDefinition
+      contentType: contentTypeDefinition,
+      currentUser,
     },
   }
 }
 
-const CreateContent = ({
-  group,
-  groupType,
-  contentType
-}) => {
-
+const CreateContent = ({ group, groupType, contentType, currentUser }) => {
   const defaultState = {
     draft: false,
   }
 
-  contentType.fields.forEach((field) => {
-    // Default field value
-    const fieldValue = field.value || field.defaultValue
-    // Content value
-    defaultState[field.name] = fieldValue
+  const permittedFields = useMemo(
+    () =>
+      contentType.fields.filter((field) => {
+        if (!field.cypher || !field.cypher.enabled) {
+          return true
+        }
+
+        return cypheredFieldPermission(
+          currentUser,
+          'content',
+          contentType.slug,
+          field.name
+        )
+      }),
+    [currentUser, contentType]
+  )
+
+  permittedFields.forEach((field) => {
+    defaultState[field.name] = field.value || field.defaultValue
   })
 
   const [content, setContent] = useState(defaultState)
@@ -99,7 +118,6 @@ const CreateContent = ({
   const onSave = (newItem) => {
     setContent(newItem)
   }
-
 
   return (
     <>
@@ -112,6 +130,7 @@ const CreateContent = ({
             group={group}
             groupType={groupType}
             onSave={onSave}
+            permittedFields={permittedFields}
           />
         </div>
       </Layout>

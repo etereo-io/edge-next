@@ -1,6 +1,6 @@
-import { GroupEntityType, GroupTypeDefinition } from '@lib/types'
-import React, { memo, useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
+import { GroupEntityType, GroupTypeDefinition } from '@lib/types'
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
@@ -8,7 +8,7 @@ import { FIELDS } from '@lib/constants'
 import GroupMembers from '@components/groups/group-members/group-members'
 import Link from 'next/link'
 import fetch from '@lib/fetcher'
-import { groupUserPermission } from '@lib/permissions'
+import { cypheredFieldPermission, groupUserPermission } from '@lib/permissions'
 import { useUser } from '@lib/client/hooks'
 import { Interaction } from '@components/generic/interactions'
 import { getInteractionsDefinition } from '@lib/config'
@@ -53,6 +53,25 @@ function SummaryView({
     group
   )
 
+  const permittedFields = useMemo(
+    () =>
+      type.fields.filter((field) => {
+        if (!field.cypher || !field.cypher.enabled) {
+          return true
+        }
+
+        return (
+          cypheredFieldPermission(
+            currentUser?.user,
+            'group',
+            type.slug,
+            field.name
+          ) || currentUser?.user?.id === group?.author
+        )
+      }),
+    [currentUser, type]
+  )
+
   useEffect(() => {
     if (currentUser.user) {
       const {
@@ -85,13 +104,14 @@ function SummaryView({
   }, [currentUser, group.type, group.slug])
 
   const interactionsConfig = getInteractionsDefinition('group', type.slug)
+  const isGroupCreation = useMemo(() => !group?.id, [group?.id])
 
   return (
     <>
       <div className={`group-summary-view ${className}`}>
         <div className="">
           <div className="group-top-section">
-            {type.fields
+            {permittedFields
               .filter((f) => f.name === type.publishing.title)
               .map((field) => {
                 return (
@@ -114,7 +134,7 @@ function SummaryView({
             )}
           </div>
 
-          {type.fields
+          {permittedFields
             .filter((f) => !f.hidden)
             .filter((f) => f.name !== type.publishing.title)
             .map((field) => {
@@ -141,31 +161,34 @@ function SummaryView({
                 </div>
               )
             })}
-          <div className="join-to-group-section">
-            {(inPendingMembersList || clicked) && (
-              <Button warning restProps={{ disabled: true }}>
-                Pending
-              </Button>
-            )}
-            {canJoin && !inPendingMembersList && !inMembersList && !clicked && (
-              <Button success loading={isLoading} onClick={handleJoinRequest}>
-                Join
-              </Button>
-            )}
-            {error && (
-              <div className="error-message">Something went wrong.</div>
-            )}
-          </div>
-          {interactionsConfig.map((interaction) => (
-            <Interaction
-              key={interaction.type}
-              interactions={group.interactions}
-              interactionConfig={interaction}
-              entity="group"
-              entityType={type.slug}
-              entityId={group.id}
-            />
-          ))}
+          {!isGroupCreation && (
+            <div className="join-to-group-section">
+              {(inPendingMembersList || clicked) && (
+                <Button warning restProps={{ disabled: true }}>
+                  Pending
+                </Button>
+              )}
+              {canJoin && !inPendingMembersList && !inMembersList && !clicked && (
+                <Button success loading={isLoading} onClick={handleJoinRequest}>
+                  Join
+                </Button>
+              )}
+              {error && (
+                <div className="error-message">Something went wrong.</div>
+              )}
+            </div>
+          )}
+          {!isGroupCreation &&
+            interactionsConfig.map((interaction) => (
+              <Interaction
+                key={interaction.type}
+                interactions={group.interactions}
+                interactionConfig={interaction}
+                entity="group"
+                entityType={type.slug}
+                entityId={group.id}
+              />
+            ))}
         </div>
       </div>
       <style jsx>{`
@@ -176,7 +199,7 @@ function SummaryView({
           padding-right: 110px;
         }
 
-        @media all and (max-width: 720px){
+        @media all and (max-width: 720px) {
           .description {
             padding-right: 0;
           }
