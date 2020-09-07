@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 
 import VideoRecorder from './video-recorder'
 
@@ -14,7 +14,7 @@ const RecordedVideo = (props) => {
   )
 }
 
-export default function (props) {
+function VideoRecorderWrapper() {
   const [videos, setVideos] = useState([])
 
   const handleVideoRecordingComplete = (blob) => {
@@ -48,3 +48,5 @@ export default function (props) {
     </div>
   )
 }
+
+export default memo(VideoRecorderWrapper)

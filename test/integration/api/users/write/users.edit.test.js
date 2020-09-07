@@ -1,23 +1,19 @@
-import * as handlerUser from '../../../../../pages/api/users/[...slug]'
-
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
 import {
   findOneUser,
   updateOneUser,
-} from '../../../../../lib/api/entities/users/user'
+} from '../../../../../lib/api/entities/users'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import handler from '../../../../../pages/api/users/[...slug]'
+import request from '../../requestHandler'
 import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => ({
@@ -29,7 +25,8 @@ jest.mock('../../../../../edge.config', () => ({
     user: {
       // Require email verification
       emailVerification: true,
-
+      roles: [{ label : 'user', value: 'USER'}],
+      newUserRoles: ['USER'],
       providers: {
         github: false,
         google: false,
@@ -152,42 +149,25 @@ jest.mock('../../../../../edge.config', () => ({
   }),
 }))
 
-describe('Integrations tests for login', () => {
-  let server
-  let url
-
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handlerUser)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
+describe('Integrations tests for user edition', () => {
+ 
 
   describe('User edition', () => {
     afterEach(() => {
-      findOneUser.mockClear()
-      updateOneUser.mockClear()
-      getPermissions.mockClear()
-      getSession.mockClear()
-      sendVerifyEmail.mockClear()
+      findOneUser.mockReset()
+      updateOneUser.mockReset()
+      getPermissions.mockReset()
+      getSession.mockReset()
+      sendVerifyEmail.mockReset()
     })
 
     test('a PUBLIC user should not be able to edit a profile', async () => {
-      const urlToBeUsed = new URL(url)
+        
       const params = { slug: ['1'] }
 
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -200,30 +180,26 @@ describe('Integrations tests for login', () => {
         description: 'Wea body test',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'PUT',
+        query: params,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      })
+      });
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(401)
-      expect(jsonResult).toMatchObject({
-        message: 'User not authorized to perform operation on user 1',
+      expect(res.statusCode).toBe(401)
+      expect(res.body).toMatchObject({
+        error: 'User not authorized to perform operation on user 1',
       })
     })
 
     test('an authorized user should be able to edit its own profile', async () => {
-      const urlToBeUsed = new URL(url)
-
-      urlToBeUsed.searchParams.append('slug', '1')
-      urlToBeUsed.searchParams.append('slug', 'profile')
+        
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -251,30 +227,31 @@ describe('Integrations tests for login', () => {
         description: 'Wea body test',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const params = {
+        slug: ['1', 'profile']
+      }
+
+      const res = await request(handler, {
         method: 'PUT',
+        query: params,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(200)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(200)
+      expect(res.body).toMatchObject({
         updated: true,
       })
     })
 
     test('Should notify by email when the email is edited', async () => {
-      const urlToBeUsed = new URL(url)
-
-      urlToBeUsed.searchParams.append('slug', '1')
-      urlToBeUsed.searchParams.append('slug', 'email')
+        
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -305,18 +282,22 @@ describe('Integrations tests for login', () => {
         description: 'Wea body test',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const params = {
+        slug: ['1', 'email']
+      }
+
+      const res = await request(handler, {
         method: 'PUT',
+        query: params,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(200)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(200)
+      expect(res.body).toMatchObject({
         updated: true,
       })
 
@@ -324,13 +305,10 @@ describe('Integrations tests for login', () => {
     })
 
     test('Should return error if editing email, the email already exists', async () => {
-      const urlToBeUsed = new URL(url)
-
-      urlToBeUsed.searchParams.append('slug', '1')
-      urlToBeUsed.searchParams.append('slug', 'email')
+        
 
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
@@ -368,18 +346,22 @@ describe('Integrations tests for login', () => {
         description: 'Wea body test',
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const params = {
+        slug: ['1', 'email']
+      }
+
+      const res = await request(handler, {
         method: 'PUT',
+        query: params,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      })
+      });
 
-      const jsonResult = await response.json()
 
-      expect(response.status).toBe(400)
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
         error: 'email already exists',
       })
 
@@ -399,19 +381,15 @@ describe('Integrations tests for login', () => {
 
   describe('Files', () => {
     it('should call the delete file for an update removing a file', async () => {
-      const urlToBeUsed = new URL(url)
-
-      urlToBeUsed.searchParams.append('slug', '1')
-      urlToBeUsed.searchParams.append('slug', 'profile')
-
+        
       // Mock permissions
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
         'user.admin': ['ADMIN'],
       })
 
       // Current user is logged
-      getSession.mockReturnValueOnce({
+      getSession.mockReturnValue({
         roles: ['USER'],
         id: '1',
       })
@@ -432,19 +410,26 @@ describe('Integrations tests for login', () => {
         })
       )
 
+      updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
       const newData = {
         images: [],
       }
 
-      const response = await fetch(urlToBeUsed.href, {
+      const params = {
+        slug: ['1', 'profile']
+      }
+
+      const res = await request(handler, {
         method: 'PUT',
+        query: params,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newData),
-      })
-
-      expect(response.status).toBe(200)
+      });
+      
+      expect(res.statusCode).toBe(200)
 
       expect(deleteFile).toHaveBeenCalledWith('abc.test')
     })

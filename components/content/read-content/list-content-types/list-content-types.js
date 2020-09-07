@@ -1,7 +1,9 @@
+import { memo } from 'react'
+
 import LinkList from '../../../generic/link-list/link-list'
 import { useContentTypes } from '@lib/client/hooks'
 
-export default function () {
+function ListContentTypes() {
   const contentTypes = useContentTypes(['read', 'admin'])
 
   const links = contentTypes.map((type) => {
@@ -25,3 +27,5 @@ export default function () {
     </>
   )
 }
+
+export default memo(ListContentTypes)

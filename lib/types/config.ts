@@ -1,58 +1,101 @@
-import { ContentType } from './contentType'
-import { FieldType } from './fields'
+import { FieldOptionType, FieldType } from './fields'
+
+import { ContentTypeDefinition } from './contentTypeDefinition'
+import { GroupTypeDefinition } from './groupTypeDefinition'
 import { PermissionsType } from './permissions'
-import { UserType } from './user'
+import { UserType } from './entities/user'
+import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 
 export declare type ThemeType = {
-  label: string;
-  value: string;
-  mainColor: string;
-  borderColor: string;
+  label: string
+  value: string
+  mainColor: string
+  borderColor: string
 }
 
 export declare type ConfigType = {
-  title: string;
-  description: string;
-  slogan?: string;
-  url: string;
+  title: string
+  description: string
+  slogan?: string
+  url: string
   api: {
     bodyParser: {
-      sizeLimit: string;
+      sizeLimit: string
     }
-  };
+  }
+  logger: {
+    level: string
+  }
   storage: {
-    type: string;
-  };
+    type: string
+  }
   database: {
-    type: string;
-  };
+    type: string
+  }
   emails: {
-    from: string;
-    contact: string;
-  };
+    from: string
+    contact: string
+  }
   theme: {
-    default: string;
-    themes: ThemeType[];
-  },
-  roles: object,
+    default: string
+    themes: ThemeType[]
+  }
   activity: {
-    enabled: boolean;
-    permissions: PermissionsType[];
-    initialActivity: any[]; // TODO: Add type
-  },
+    enabled: boolean
+    permissions: PermissionsType[]
+    initialActivity: any[] // TODO: Add type
+  }
+  like: {
+    enabled: boolean
+  }
+  follow: {
+    enabled: boolean
+  }
   user: {
-    roles: string[];
-    emailVerification: boolean;
-    providers: object;
+    roles: FieldOptionType[]
+    newUserRoles: string[]
+    emailVerification: boolean
+    providers: {
+      facebook: boolean
+      google: boolean
+      github: boolean
+      instagram: boolean
+      snapchat: boolean
+      twitter: boolean
+      linkedin: boolean
+      twitch: boolean
+      foursquare: boolean
+      tumblr: boolean
+      steam: boolean
+      pinterest: boolean
+      quickbooks: boolean
+    }
     profile: {
-      fields: FieldType[];
-    };
-    permissions: PermissionsType[];
-    initialUsers: UserType[];
-  },
+      fields: FieldType[]
+    }
+    permissions: PermissionsType[]
+    initialUsers: UserType[]
+    entityInteractions: InteractionTypeDefinition[]
+  }
+
   content: {
-    types: ContentType[],
-    initialContent: any[]; // TODO: Add type
-  },
-  permissions: object;
+    types: ContentTypeDefinition[]
+    initialContent: any[] // TODO: Add type
+  }
+
+  groups: {
+    types: GroupTypeDefinition[]
+  }
+  permissions: object
+  superSearch: {
+    enabled: boolean
+    permissions: string[]
+    entities: Array<{
+      name: string
+      fields: string[]
+      permissions: string[]
+      type: string
+      fieldsForShow: string[]
+    }>
+  }
 }

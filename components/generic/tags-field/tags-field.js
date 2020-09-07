@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Link from 'next/link'
 
 function Tag(props) {
@@ -26,7 +27,7 @@ function Tag(props) {
   )
 }
 
-export default function ({ tags = [], type = {} }) {
+function TagsField({ tags = [], type = {} }) {
   return (
     <>
       <div className="tags-field">
@@ -45,3 +46,5 @@ export default function ({ tags = [], type = {} }) {
     </>
   )
 }
+
+export default memo(TagsField)

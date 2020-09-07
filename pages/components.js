@@ -1,9 +1,11 @@
+import { useMemo, useState } from 'react'
+import Link from 'next/link'
+
 import Table, {
   TableCellBody,
   TableCellHeader,
   TableRowBody,
 } from '@components/generic/table/table'
-
 import AuthorBox from '@components/user/author-box/author-box'
 import Avatar from '@components/user/avatar/avatar'
 import Badge from '@components/generic/badge/badge'
@@ -16,14 +18,12 @@ import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import Image from '@components/generic/image/image'
 import Layout from '@components/layout/three-panels/layout'
-import Link from 'next/link'
 import LinkList from '@components/generic/link-list/link-list'
 import Loading from '@components/generic/loading/loading-spinner/loading-spinner'
 import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import Map from '@components/generic/map/map'
 import PasswordStrength from '@components/generic/password-strength/password-strength'
 import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
-import Select from '@components/generic/select/select'
 import SocialShare from '@components/generic/social-share/social-share'
 import TagsField from '@components/generic/tags-field/tags-field'
 import TagsInput from '@components/generic/tags-input/tags-input'
@@ -32,6 +32,9 @@ import Toggle from '@components/generic/toggle/toggle'
 import Upload from '@components/generic/upload/upload'
 import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import VideoRecorder from '@components/generic/video-recorder/video-recorder-wrapper'
+import { Tabs, useTab } from '@components/generic/tabs'
+import { Editor } from '@components/generic/rich-text-editor'
+import StackedAvatars from '@components/generic/stacked-avatars'
 
 function Menu() {
   return (
@@ -49,6 +52,9 @@ function Menu() {
           </li>
           <li>
             <a href="#user-profile-box">User Profile Box</a>
+          </li>
+          <li>
+            <a href="#stacked-avatars">Stacked Avatars</a>
           </li>
           <li>
             <a href="#author-box">Author Box</a>
@@ -124,6 +130,12 @@ function Menu() {
           </li>
           <li>
             <a href="#table">Table</a>
+          </li>
+          <li>
+            <a href="#tabs">Tabs</a>
+          </li>
+          <li>
+            <a href="#rich-text-editor">Rich text editor</a>
           </li>
           <li>
             <a href="#videorecorder">Video Recorder</a>
@@ -213,6 +225,8 @@ function Menu() {
 }
 
 const Components = () => {
+  const [state, setState] = useState({})
+
   const demoContent = {
     title: 'This is an example content',
     textarea:
@@ -358,6 +372,24 @@ const Components = () => {
       name: 'video',
       label: 'Video URL field',
     },
+    {
+      type: 'entity_search',
+      name: 'user',
+      entity: 'user',
+      label: 'Search user',
+      placeholder: 'Search user...',
+      multiple: true,
+      entityName: (u) => u.username,
+    },
+    {
+      type: 'entity_search',
+      name: 'post',
+      entity: 'content',
+      entityType: 'post',
+      label: 'Search posts',
+      placeholder: 'Search posts...',
+      entityName: (p) => p.title,
+    },
   ]
 
   const dynamicValues = [
@@ -386,6 +418,37 @@ const Components = () => {
       value: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     },
   ]
+
+  const { value: tab, onChange: handleTabChange } = useTab('account')
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: 'account',
+        label: 'Account',
+        content: 'Account tab',
+      },
+      {
+        id: 'likes',
+        label: 'likes',
+        counter: 5,
+        content: 'Tab with counter',
+      },
+      {
+        id: 'profile',
+        label: 'Profile',
+        disabled: true,
+        content: 'You can see tab label but cannot see content',
+      },
+      {
+        id: 'private',
+        label: 'Private tab',
+        show: false,
+        content: 'This tab will not be shown because of "show" property',
+      },
+    ],
+    []
+  )
 
   return (
     <Layout title="Components showcase" fullWidth={true} panelUser={<Menu />}>
@@ -422,7 +485,7 @@ const Components = () => {
                     </li>
 
                     <li>
-                      <Link href="/create/post">
+                      <Link href="/create/content/post">
                         <a title="New Post">New Post</a>
                       </Link>
                     </li>
@@ -606,6 +669,63 @@ const links = [{
             <pre>{`
 <UserProfileBox user={{username: 'demo-user', profile: { bio: 'My bio is something special'}}} />
             `}</pre>
+          </div>
+          <div id="stacked-avatars" className="component">
+            <h3>Stacked Avatars</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <StackedAvatars
+                  maxItems={2}
+                  title="Users"
+                  users={[
+                    {
+                      id: 1,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=3',
+                        },
+                      },
+                    },
+                    {
+                      id: 2,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=1',
+                        },
+                      },
+                    },
+                    { id: 3 },
+                  ]}
+                  width="50px"
+                />
+              </div>
+              <pre>{`
+                <StackedAvatars
+                  maxItems={2}
+                  title="Users"
+                  users={[
+                    {
+                      id: 1,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=3',
+                        },
+                      },
+                    },
+                    {
+                      id: 2,
+                      profile: {
+                        picture: {
+                          path: 'https://loremflickr.com/240/240/food?random=1',
+                        },
+                      },
+                    },
+                    { id: 3 },
+                  ]}
+                  width="50px"
+                />
+            `}</pre>
+            </div>
           </div>
 
           <div id="author-box" className="component">
@@ -1200,8 +1320,10 @@ const links = [{
                     return (
                       <DynamicField
                         field={f}
-                        value={null}
-                        onChange={() => {}}
+                        value={state[f.name]}
+                        onChange={(val) => {
+                          setState({ ...state, [f.name]: val })
+                        }}
                       />
                     )
                   })}
@@ -1209,8 +1331,14 @@ const links = [{
               </div>
             </div>
             <pre>{`
-{dynamicFields.map(f => {
-  return <DynamicField field={f} value={null} onChange={() => {}} />
+{dynamicFields.map((f) => {
+  return (
+    <DynamicField
+      field={f}
+      value={state[f.name]}
+      onChange={(val) => { setState({...state, [f.name]: val})}}
+    />
+  )
 })}
             `}</pre>
           </div>
@@ -1226,7 +1354,7 @@ const links = [{
                       <DynamicFieldView
                         field={item.field}
                         value={item.value}
-                        contentType={{ slug: 'test' }}
+                        typeDefinition={{ slug: 'test' }}
                       />
                     )
                   })}
@@ -1236,7 +1364,7 @@ const links = [{
             <pre>{`
 {dynamicValues.map(item => {
   return (
-    <DynamicFieldView field={item.field} value={item.value} contentType={{slug: 'test'}} />
+    <DynamicFieldView field={item.field} value={item.value} typeDefinition={{slug: 'test'}} />
   )
 })}
             `}</pre>
@@ -1423,6 +1551,59 @@ const links = [{
   </TableRowBody>
 </Table>
   `}</pre>
+          </div>
+          <div id="tabs" className="component">
+            <h3>Tabs</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Tabs tabs={tabs} value={tab} onChange={handleTabChange} />
+              </div>
+            </div>
+            <pre>{`
+  const { value: tab, onChange: handleTabChange } = useTab('account')
+
+  const tabs = useMemo(
+    () => [
+      {
+        id: 'account',
+        label: 'Account',
+        content: 'Account tab',
+      },
+      {
+        id: 'likes',
+        label: 'likes',
+        counter: 5,
+        content: 'Tab with counter',
+      },
+      {
+        id: 'profile',
+        label: 'Profile',
+        disabled: true,
+        content: 'You can see tab label but cannot see content'
+      },
+      {
+        id: 'private',
+        label: 'Private tab',
+        show: false,
+        content: 'This tab will not be shown because of "show" property',
+      },
+    ],
+    []
+  )
+                  `}</pre>
+          </div>
+
+          <div id="rich-text-editor" className="component">
+            <h3>Rich text editor</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <Editor
+                  defaultValue="Some default value"
+                  label="Rich text editor"
+                />
+              </div>
+            </div>
+            <pre>{`<Editor defaultValue="Some default value" label="Rich text editor"/>`}</pre>
           </div>
 
           <div id="videorecorder" className="component">

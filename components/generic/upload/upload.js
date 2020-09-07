@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 
 import Dropzone from './dropzone/dropzone'
 
-export default function ({ accept, name, required, multiple, ...props }) {
+function Upload({ accept, name, required, multiple, ...props }) {
   const inputProps = { accept, name, required, multiple }
   const [files, setFiles] = useState([])
   const [loading, setLoading] = useState(false)
@@ -106,3 +106,5 @@ export default function ({ accept, name, required, multiple, ...props }) {
     </>
   )
 }
+
+export default memo(Upload)

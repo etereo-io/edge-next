@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
+
 import API from '@lib/api/api-endpoints'
-import PasswordStrength from '@components/generic/password-strength/password-strength'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 
-export default function ({ user, ...props }) {
+function DeleteAccount({ user, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -114,3 +114,5 @@ export default function ({ user, ...props }) {
     </>
   )
 }
+
+export default memo(DeleteAccount)

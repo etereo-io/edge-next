@@ -1,32 +1,23 @@
-export default function ({ mobileCollapse = false }) {
+import Link from 'next/link'
+import { memo } from 'react'
+
+import { useUser } from '@lib/client/hooks'
+
+function SiteMenu({ mobileCollapse = false }) {
+  const { user } = useUser()
+
   return (
     <>
       <nav className={`site-menu ${mobileCollapse ? 'collapse' : ''}`}>
         <ul>
-          <li>
-            <a href="#" className="site-menu-item">
-              <img className="site-menu-icon" src="/icons/icon-groups.svg" />
-              <span className="site-menu-title">My Groups</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="site-menu-item">
-              <img className="site-menu-icon" src="/icons/icon-rewards.svg" />
-              <span className="site-menu-title">Rewards</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="site-menu-item">
-              <img className="site-menu-icon" src="/icons/icon-courses.svg" />
-              <span className="site-menu-title">Courses</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="site-menu-item">
-              <img className="site-menu-icon" src="/icons/icon-analytics.svg" />
-              <span className="site-menu-title">Analytics</span>
-            </a>
-          </li>
+          {user && <li>
+            <Link href={`/profile/@${user.username}?selectedTab=groups`}>
+              <a title="My groups" className="site-menu-item">
+                <img className="site-menu-icon" src="/icons/icon-groups.svg" alt="groups"/>
+                <span className="site-menu-title">My Groups</span>
+              </a>
+            </Link>
+          </li> }
         </ul>
       </nav>
       <style jsx>{`
@@ -71,3 +62,5 @@ export default function ({ mobileCollapse = false }) {
     </>
   )
 }
+
+export default memo(SiteMenu)

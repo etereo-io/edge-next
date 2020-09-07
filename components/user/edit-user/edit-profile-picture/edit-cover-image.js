@@ -1,8 +1,9 @@
-import { useState, createRef, useEffect } from 'react'
+import { useState, createRef, useEffect, memo } from 'react'
+
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 
-export default function ({ user, ...props }) {
+function EditCoverImage({ user, onChange = () => {} }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -25,6 +26,7 @@ export default function ({ user, ...props }) {
         setLoading(false)
         setSuccess(true)
         setError(false)
+        onChange()
       })
       .catch((err) => {
         setLoading(false)
@@ -85,7 +87,7 @@ export default function ({ user, ...props }) {
           <div className="field" onClick={openFileDialog}>
             <img
               style={{ height: '200px', cursor: 'pointer' }}
-              src={fields.cover.path || '/static/demo-images/cover/clouds.jfif'}
+              src={fields.cover.path || '/static/demo-images/default-background.jpg'}
             />
           </div>
 
@@ -101,7 +103,7 @@ export default function ({ user, ...props }) {
             {loading && <div className="loading-message">Loading...</div>}
             {success && (
               <div className="success-message">
-                Cover image successfuly updated
+                Cover image successfully updated
               </div>
             )}
           </div>
@@ -127,3 +129,5 @@ export default function ({ user, ...props }) {
     </>
   )
 }
+
+export default memo(EditCoverImage)

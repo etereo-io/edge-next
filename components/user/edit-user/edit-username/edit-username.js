@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
+
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 
-export default function ({ user, ...props }) {
+function EditUsername({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -28,6 +29,7 @@ export default function ({ user, ...props }) {
         setSuccess(true)
         setError(false)
         setFields({})
+        onChange()
       })
       .catch((err) => {
         setLoading(false)
@@ -119,3 +121,5 @@ export default function ({ user, ...props }) {
     </>
   )
 }
+
+export default memo(EditUsername)

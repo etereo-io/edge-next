@@ -5,7 +5,7 @@ jest.mock('../../../../edge.config')
 
 describe('Load configuration file', () => {
   afterEach(() => {
-    getConfig.mockClear()
+    getConfig.mockReset()
   })
 
   test('Should complain about missing required fields', async () => {
@@ -23,6 +23,10 @@ describe('Load configuration file', () => {
     getConfig.mockReturnValueOnce({
       title: 'A valid config',
       description: 'This is the description',
+      user: {
+        roles: [{ label : 'user', value: 'USER'}],
+        newUserRoles: ['USER'],
+      }
     })
 
     expect(() => {

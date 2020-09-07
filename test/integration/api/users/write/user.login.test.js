@@ -1,12 +1,8 @@
-import * as handlerAuth from '../../../../../pages/api/auth/[...action]'
+import { findUserWithPassword } from '../../../../../lib/api/entities/users'
+import handler from '../../../../../pages/api/auth/[...action]'
+import request from '../../requestHandler'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import { findUserWithPassword } from '../../../../../lib/api/entities/users/user'
-import http from 'http'
-import listen from 'test-listen'
-
-jest.mock('../../../../../lib/api/entities/users/user')
+jest.mock('../../../../../lib/api/entities/users')
 
 jest.mock('../../../../../edge.config', () => ({
   __esModule: true,
@@ -15,27 +11,13 @@ jest.mock('../../../../../edge.config', () => ({
     description: 'A test',
     user: {
       emailVerification: true,
+      roles: [{ label : 'user', value: 'USER'}],
+      newUserRoles: ['USER'],
     },
   }),
 }))
 
 describe('Integrations tests for login', () => {
-  let serverAuth
-  let urlAuth
-  let urlLogin
-
-  beforeAll(async (done) => {
-    serverAuth = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handlerAuth)
-    )
-    urlAuth = await listen(serverAuth)
-    urlLogin = urlAuth + '/api/auth/login'
-    done()
-  })
-
-  afterAll((done) => {
-    serverAuth.close(done)
-  })
 
   describe('Login', () => {
     const newUser = {
@@ -46,27 +28,26 @@ describe('Integrations tests for login', () => {
     }
 
     afterEach(() => {
-      findUserWithPassword.mockClear()
+      findUserWithPassword.mockReset()
     })
 
     test('should not allow to login if user does not exist', async () => {
       findUserWithPassword.mockReturnValueOnce(Promise.resolve(null))
-
-      const response = await fetch(urlLogin, {
+      const res = await request(handler, {
         method: 'POST',
+        url: '/api/auth/login',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
+        body: {
           email: 'test@test.com',
           password: 'testtest',
-        }),
-      })
+        },
+      });
+      
+      expect(res.statusCode).toBe(401)
 
-      expect(response.status).toBe(401)
-      const jsonResult = await response.json()
-
-      expect(jsonResult).toMatchObject({
+      expect(res.body).toMatchObject({
         error: 'User not found or invalid credentials',
       })
     })
@@ -74,21 +55,22 @@ describe('Integrations tests for login', () => {
     test('Should return 200 for a valid user', async () => {
       findUserWithPassword.mockReturnValueOnce(Promise.resolve(newUser))
 
-      const response = await fetch(urlLogin, {
+  
+      const res = await request(handler, {
         method: 'POST',
+        url: '/api/auth/login',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
+        body: {
           email: newUser.email,
           password: newUser.password,
-        }),
-      })
+        },
+      });
 
-      expect(response.status).toBe(200)
-      const jsonResult = await response.json()
+      expect(res.statusCode).toBe(200)
 
-      expect(jsonResult).toMatchObject({
+      expect(res.body).toMatchObject({
         done: true,
       })
     })
@@ -101,21 +83,22 @@ describe('Integrations tests for login', () => {
         })
       )
 
-      const response = await fetch(urlLogin, {
+      const res = await request(handler, {
         method: 'POST',
+        url: '/api/auth/login',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
+        body: {
           email: newUser.email,
           password: newUser.password,
-        }),
-      })
+        },
+      });
 
-      expect(response.status).toBe(401)
-      const jsonResult = await response.json()
 
-      expect(jsonResult).toMatchObject({
+      expect(res.statusCode).toBe(401)
+
+      expect(res.body).toMatchObject({
         error: 'User blocked',
       })
     })

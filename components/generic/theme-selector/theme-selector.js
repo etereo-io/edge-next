@@ -1,4 +1,5 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect, memo } from 'react'
+
 import Select from '../select/select'
 
 import {
@@ -24,7 +25,7 @@ function ColorBubble(props) {
   )
 }
 
-export default function (props) {
+function ThemeSelector() {
   const { mode, switchMode } = useContext(EdgeThemeContext)
 
   const [selectedTheme, setSelectedTheme] = useState(mode || defaultTheme)
@@ -67,3 +68,5 @@ export default function (props) {
     </>
   )
 }
+
+export default memo(ThemeSelector)

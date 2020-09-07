@@ -6,10 +6,14 @@
   - [edge.config.js](#edgeconfigjs)
   - [Adding a new theme](#adding-a-new-theme)
   - [Content Types](#content-types)
+  - [Groups](#groups)
+    - [How groups work?](#how-groups-work)
+  - [Entity interactions](#entity-interactions)
   - [Fields](#fields)
     - [Options for each field type](#options-for-each-field-type)
   - [Storage](#storage)
     - [Google](#google)
+    - [Azure](#azure)
   - [Databases](#databases)
     - [Database API](#database-api)
       - [Adding items](#adding-items)
@@ -18,22 +22,23 @@
       - [Deleting items](#deleting-items)
     - [In memory DB (only local)](#in-memory-db-only-local)
     - [MongoDB (default)](#mongodb-default)
-    - [Firebase](#firebase)
   - [Authentication](#authentication)
     - [Providers](#providers)
   - [Emails](#emails)
   - [Static Pages](#static-pages)
   - [Web monetization](#web-monetization)
   - [Other Payments](#other-payments)
+- [Super search](#super-search)
 - [env.local file](#envlocal-file)
   - [Deploy your own](#deploy-your-own)
-    - [Deploying on Vercel](#deploying-on-vercel)
   - [API](#api)
     - [Auth](#auth)
     - [Users](#users)
+    - [Groups](#groups-1)
     - [Content](#content)
     - [Comments](#comments)
     - [Activity](#activity)
+    - [Interactions](#interactions)
 
 
 
@@ -77,7 +82,7 @@
 1) Clone the [repo](https://github.com/nucleo-org/edge-next)
 2) Edit `edge.config.js` to define your *Content Types* and permissions
 3) Create the different accounts:
-   - Google storage
+   - Google storage/Azure Blob Storage
    - Social provider apps for sign-in/sign-up (github, facebook, google)
    - Mongo db database
 4) Configure the environment variables in the `.env.local` file.
@@ -117,6 +122,7 @@ Theme variables are defined in the following way:
   --edge-success-dark: #0366d6;
   --edge-error-light: #f33;
   --edge-error: red;
+}
 ```
 
 Then edit the `edge.config.js` file and add your new theme
@@ -203,9 +209,6 @@ const contentType = {
     web: true // Enable web monetization for a content type
   },
 
-  // View type display on the users profile and content pages (grid or list)
-  display: 'grid',
-
   comments: {
     // Enable or disable comments
     enabled: true,
@@ -243,6 +246,183 @@ const contentType = {
     required: true,
     pattern="[A-Za-z]{3}"
   }]
+}
+```
+
+## Groups
+
+Groups are a conjunction of rules that applies to content and users. Groups can help to model different functionalities like:
+- Projects (with members and tasks)
+- Publishing groups (similar to medium publishing groups)
+- Meetup groups 
+
+### How groups work?
+
+When a group is created, the author is asigned the role of `GROUP_ADMIN`, after that it becomes possible to add new users manually. Group permissions are not dynamic for each group, they are configured in `edge.config.js`. This is a caveat and it doesn't allow to create private and public groups of the same group type. 
+
+Let's see the group definition to make it more clear.
+
+In an example site we want to create a group called `Project` with the following characteristics: 
+- Projects are public for registered users. Any user may find projects.
+- The content inside the project is private for the users on that project. 
+- Users can only be added by a `GROUP_ADMIN` or a `GROUP_MEMBER` not anyone can join freely.
+- Inside the project members may create tasks. Tasks are a content type defined in the content type definitions as seen previously.
+
+```javascript
+const projectGroupType = {
+    title: 'Project',
+
+    // Identificator type for API and website calls /api/groups/project /groups/project
+    slug: 'project',
+
+    permissions: {
+      // Any user may list projects
+      read: ['USER'],
+
+      // Any user may create projects
+      create: ['USER'],
+
+      // Only admins may update, delete or administer ANY project on the platform. 
+      update: ['ADMIN'],
+      delete: ['ADMIN'],
+      admin: ['ADMIN'],
+    },
+
+    // Roles that group members can have
+    roles: [
+      {
+        label: 'Group Member',
+        value: 'GROUP_MEMBER',
+      },
+      {
+        label: 'Group admin',
+        value: 'GROUP_ADMIN',
+      },
+    ],
+
+    // Allow keep projects as draft while creating them
+    publishing: {
+      draftMode: true,
+      title: 'title',
+    },
+
+    // Group user permissions
+    user: {
+      // Default require approval or not
+      requireApproval: true,
+
+      permissions: {
+        // Who can see the other members of the group
+        read: ['GROUP_MEMBER'],
+    
+        // Who can make request to join to the group
+        join: ['USER'],
+
+        // Who can invite or add group members
+        create: ['GROUP_ADMIN', 'ADMIN'],
+
+        // Who can change group member roles
+        update: ['GROUP_ADMIN','ADMIN'],
+
+        // Who can remove users from the group
+        delete: ['GROUP_ADMIN','ADMIN'],
+
+        // Who can do all the above
+        admin: ['GROUP_ADMIN','ADMIN'],
+      },
+    },
+
+    // Differnt content types may be defined in a group
+    contentTypes: [{
+      slug: 'task',
+      permissions: {
+        // Who can see the tasks of this project
+        read: ['GROUP_MEMBER'],
+        // Who can add tasks in this project
+        create: ['GROUP_MEMBER'],
+        // Who can update tasks in this project
+        update: ['GROUP_ADMIN'],
+        // Who can delete tasks in this project
+        delete: ['GROUP_ADMIN'],
+        // Who can administer tasks in this project
+        admin: ['GROUP_ADMIN']
+      }
+    }],
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        placeholder: 'Title',
+        minlength: 8,
+        maxlength: 150,
+        required: true,
+        errorMessage: 'Title must be between 8 and 150 characters',
+      },
+      {
+        name: 'description',
+        type: 'textarea',
+        label: 'Description',
+        placeholder: 'Description',
+        minlength: 1,
+        maxlength: 200,
+        required: true,
+        description: 'Tell the world something about this publication group (max 200 characters)'
+      }
+    ],
+  }
+
+```
+
+## Entity interactions
+
+Entity interactions may be added to any entity configuration in `edge.config.js`. It may be `ContentTypes`, `GroupTypes` or `Users`. 
+
+Entity interactions provide a relation between an entity and an action by the user. It usually may be something like "following" a user, "liking" a content, "mark to read later" a content, etc.
+
+They are defined inside the content type, group type or user definitions in the following way
+
+```javascript
+ // Entity interactions
+  entityInteractions: [{
+    type: 'like',
+
+    // How to hydrate the data from the database when loading a certain content (group/user). 
+    // "user" will load the list of users who performed this interaction
+    // "sum" will aggregate the result of interactions when the content is fetched
+    aggregation: 'sum',
+
+    // title user can see when an interaction is in active state
+    activeTitle: 'Remove from favorite',
+
+    // title user can see when an interaction is in inactive state
+    inactiveTitle: 'Add to favorite',
+    
+    permissions: {
+      // Who can read the entity interactions
+      read: ['PUBLIC'],
+
+      // Who can create entity interactions
+      create: ['ADMIN', 'USER'],
+    }
+  }]
+```
+
+Interactions are stored in a separate collection called "interactions". An example model of the data stored would be something like this:
+
+```
+{
+  id: xxxx,
+  author: xxxx,
+  entity: 'content',
+  entityType: 'post',
+  entityId: xxxx,
+  createdAt: Date,
+  type: 'like',
+  metadata: {
+    // anything here
+  }
 }
 ```
 
@@ -296,6 +476,12 @@ const contentType = {
     - required
     - placeholder
     - defaultValue
+- password
+  - Available options:
+    - min
+    - max
+    - required
+    - placeholder
 - select
   - Available options:
     - required
@@ -363,7 +549,23 @@ const contentType = {
     - options
       - ```[{label: 'a', value: 'a'}] ```
     - defaultValue
- 
+- entity_search
+  - It will show a text input for searching and linking one or multiple entities from the database. 
+    - The stored field will have the id and text representation of the entity
+  - Available options:
+    - entity
+      - `user`, `content`, `group`
+    - entityType
+      - a group type or a content type
+    - multiple
+      - allow to select multiple items
+    - entityName 
+      - A function to extract the text representation of the entity selected. for example: (user) => u.username, this value will be stored in the database.
+- rich_text
+  - Available options:
+    - required
+    - placeholder
+    - defaultValue
 
 
 You can see the example configuration file for more details about content types and fields.
@@ -374,7 +576,7 @@ In the [components page](/components) you will find more implemented dynamic fie
 
 To upload images and other files you will need to configure a storage. 
 
-Different options are: AWS, GOOGLE or FIREBASE.
+Different options are: GOOGLE or AZURE.
 
 ### Google
 
@@ -396,13 +598,31 @@ Another useful resources:
 - [Making files public in google bucket](https://cloud.google.com/storage/docs/access-control/making-data-public)
 - [Another way to import Google Application Credentials](https://dev.to/parondeau/gcp-credentials-next-js-3a0d)
 
+### Azure
+
+To configure Azure Blob Storage you will need to follow the steps described [there](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-nodejs). You have to create a service account and a container with public visibility.
+
+The environment variables you need to configure are :
+
+````
+AZURE_STORAGE_ACCOUNT=XXX
+AZURE_STORAGE_CONTAINER=XXX
+AZURE_STORAGE_CONNECTION_STRING=XXX
+````
+
+Another useful resources:
+- [Blobs managing](https://www.npmjs.com/package/azure-storage) 
+- [Service information for NodeJS applications](https://www.infragistics.com/community/blogs/b/mihail_mateev/posts/how-to-manage-microsoft-azure-blob-storage-with-node-js) 
+
 
 ## Databases
-Different databases can be configured, Firebase (Firestore), MongoDB and "In Memory".  All the Databases use the same API, this way is easy to switch from one to the other. But if you don't like this approach you can change `/lib/api/database` and `/lib/api/entities/` to use your database in the way you want.
+Different databases can be configured, MongoDB and "In Memory".  All the Databases use the same API, this way is easy to switch from one to the other. But if you don't like this approach you can change `/lib/api/db` and `/lib/api/entities/` to use your database in the way you want.
 
-**Note: The only production ready database is MongoDB**, Firebase integration is not complete.
+**Note: The only production ready database is MongoDB**.
 
-### Database API
+### Database API 
+
+All database modules are implemented Abstract Database class to have the same API. You can find all possible methods and their descriptions in the `/lib/api/db/Database.ts` file.
 
 
 #### Adding items
@@ -491,29 +711,6 @@ The environment variables you need to configure are documented in the Deployment
 ```
 MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
 MONGODB_DATABASE=<database>
-```
-
-### Firebase 
-
-**Note: Firebase is not totally implemented**
-
-If you want to use Firebase you must set the following environment variables in the `.env` file:
-
-```
-FIREBASE_PROJECT_ID=XX
-FIREBASE_CLIENT_EMAIL=XX
-FIREBASE_DATABASE_URL=XX
-FIREBASE_PRIVATE_KEY=XX
-```
-
-See the [example .env.build file](/.env.build)
-
-Also in the config you must set the following values:
-
-```javascript
-database: {
-  type: 'FIREBASE'
-}
 ```
 
 ## Authentication 
@@ -615,7 +812,7 @@ To enable web monetization, first, enable web monetization on a content type. Se
 ```javascript
   monetization: {
     web: true // Enable web monetization for a content type
-  },
+  }
 ```
 
 Also you will need to add a field named `paymentPointer` into the fields list of that content type.
@@ -665,61 +862,57 @@ Depending on what you want to seel (if you want the users to be able to sell, or
 [Stripe DOCS](https://stripe.com/docs/)
 [Getting Charges](https://stripe.com/docs/connect/charges)
 
+## Super search 
+
+It's possible to use super search module for the application. You can configure this functionality via `edge.config.js` file. 
+For example: 
+
+```javascript
+superSearch: {
+  enabled: true,
+  permissions: { 
+    // who can use search
+    read: [publicRole]
+  }, 
+  // entities that will participate in the search
+  entities: [
+    {
+      name: 'users', // a collection by which the search will be run
+      type: 'user', // used for separation purposes
+      fields: ['username'], // fields by which the search will be run
+      fieldsForShow: ['username', 'id'], // fields that will be retrieved from the db
+      permissions: user.permissions.read, // permissions for check before search
+    },
+    {
+      name: publishingGroupType.slug, // a collection by which the search will be run
+      type: 'group', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'description', 'slug', 'type'], // fields that will be retrieved from the db
+      permissions: publishingGroupType.permissions.read, // permissions for check before search
+    },
+    {
+      name: postContentType.slug, // a collection by which the search will be run
+      type: 'content', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+      permissions: postContentType.permissions.read, // permissions for check before search
+    },
+    {
+      name: siteNewsContentType.slug, // a collection by which the search will be run
+      type: 'content', // used for separation purposes
+      fields: ['title', 'description'], // fields by which the search will be run
+      fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+      permissions: siteNewsContentType.permissions.read, // permissions for check before search
+    },
+  ]
+}
+```
+With this functionality you can run "full text" search by entities/fields you mentioned.
+
+
 ## Deploy your own
 
-To deploy your site with all the functionalities you need to follow the next steps:
-
-1. Get all the environment variables needed
-2. Configure the environment variables in Vercel dashboard (or your service of choice)
-3. Done
-
-All the environment variables you need to configure are defined inside the `.env.build`  file
-
-```
-AUTH_TOKEN_SECRET=secret-token-to-generate-sessions
-
-BASE_URL=http://localhost:3000
-
-MONGODB_URI=MONGODB_URI=mongodb+srv://<username>:<password>@<url>
-MONGODB_DATABASE=<database>
-
-SENDGRID_KEY=XXX
-
-GOOGLE_CLIENT_EMAIL=XX
-GOOGLE_PRIVATE_KEY=XX
-GOOGLE_PROJECTID=XX
-GOOGLE_BUCKET_NAME=edge-next
-
-FACEBOOK_ID=XX
-FACEBOOK_SECRET=XX
-GITHUB_ID=XX
-GITHUB_SECRET=XX
-GOOGLE_ID=XX
-GOOGLE_SECRET=XX
-
-NEXT_PUBLIC_GMAPS_API_KEY=XXXX
-
-NEXT_PUBLIC_GA_TRACKING_ID=xx
-```
-
-- **Base url**: Used to redirect oauth enpoints. Set `BASE_URL` to the url of your deployment
-- **Google Analytics**: Set `NEXT_PUBLIC_GA_TRACKING_ID` to the Tracking Id from Google Analytics
-- **Social Providers**: Set `FACEBOOK_ID`, `FACEBOOK_SECRET`, `GOOGLE_ID`, `GOOGLE_SECRET`, and `GITHUB_ID`, `GITHUB_SECRET`
-- **Storage**: For google cloud storage configure `GOOGLE_CLIENT_EMAIL`, `GOOGLE_PRIVATE_KEY`, `GOOGLE_PROJECTID` and `GOOGLE_BUCKET_NAME` from your credentials file.
-- **Email**: Configure `SENDGRID_KEY`
-- **Google Maps**: Configure `NEXT_PUBLIC_GMAPS_API_KEY`
-
-
-### Deploying on Vercel
-
-Deploy Edge using [Vercel](https://vercel.com):
-
-
-If you want your deployment in Vercel to recognize the `ENVIRONMENT` values, you will need to add the secrets to your deployment. 
-
-You can add them through the command line or through the administration dashboard in Vercel.com
-
-![](/static/docs/env-variables-vercel-2.png)
+Please follow the [deployments documentation](./doc/DEPLOYMENTS.md) 
 
 
 ## API
@@ -771,6 +964,38 @@ The Content API is defined on your set of rules in the configuration file, the o
 - `DELETE /api/users/ID`
   - Access limited to own user or users with permission `user.admin` and `user.delete`. For the current user is also required to send a `password` query parameter.
 
+### Groups 
+- `GET /api/groups/[GROUP_TYPE]`
+  - Access limited to users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Retrieving a list of all groups based on the group type
+- `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` | `GET /api/content/[GROUP_TYPE]/[GROUP_ID]?field=id`
+  - Access limited to own user or users with permission `group.TYPE.read` or `group.TYPE.admin`
+  - Retrieving a specific group base on group type and group slug/id
+- `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users`
+  - Access limited to own user or users with permission `group.TYPE.user.read`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Retrieving a list of all group members bases on group type and group slug
+- `GET /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]`
+  - Access limited to own user or users with permission `group.TYPE.user.read`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Retrieving a specific group member info based on group type and group slug
+- `POST /api/groups/[GROUP_TYPE]`
+  - Access limited to `group.TYPE.admin`, or `group.TYPE.create`
+  - Creation of a group with specific type
+- `POST /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users`
+  - Access limited to `group.TYPE.user.admin`, `group.TYPE.user.create`, `group.TYPE.user.join`, `group.TYPE.admin` or `user.admin`
+  - Adding users to members list or to pending members list if group requires approval. You can't add anybody else to pending list but yourself
+- `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` | `POST /api/groups/[GROUP_TYPE]/[GROUP_SLUG]` |  `PUT /api/groups/[GROUP_TYPE]/[GROUP_ID]?field=id` |  `POST /api/groups/[GROUP_TYPE]/[GROUP_ID]?field=id`
+  - Access limited to own user or users with permission `group.TYPE.admin` or `group.TYPE.update`
+  - Updating group based on group type and group slug
+- `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]` | `PUT /api/groups/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]?action=approve`
+  - Access limited to `group.TYPE.user.admin`, `group.TYPE.user.update`, `group.TYPE.admin` or `user.admin`
+  - Updating a specific user based on group type, group slug and user id. It's possible to update the particular user in the members list or move user from pending members list to members list
+- `DELETE /api/content/[GROUP_TYPE]/[GROUP_SLUG]` | `DELETE /api/content/[GROUP_TYPE]/[GROUP_ID]?field=id`
+  - Access limited to own user or users with permission `group.TYPE.admin` or `group.TYPE.delete`
+  - Removing a group from the system based on group type and group slug/id
+- `DELETE /api/content/[GROUP_TYPE]/[GROUP_SLUG]/users/[USER_ID]`
+  - Access limited to own user or users with permission `group.TYPE.user.delete`, `group.TYPE.user.admin`, `group.TYPE.admin` or `user.admin`
+  - Removing a member from the group based on group type, group slug and user id
+
 ### Content
 - `GET /api/content/[TYPE]`
   - Access limited to users with permission `content.TYPE.read` or `content.TYPE.admin`
@@ -780,7 +1005,7 @@ The Content API is defined on your set of rules in the configuration file, the o
   - Access limited to `content.TYPE.admin`, or `content.TYPE.create`
 - `PUT /api/content/[TYPE]/[CONTENT_SLUG]` | `POST /api/content/[TYPE]/[CONTENT_SLUG]` |  `PUT /api/content/[TYPE]/[CONTENT_ID]?field=id` |  `POST /api/content/[TYPE]/[CONTENT_ID]?field=id`
   - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.update`
-- `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `GET /api/content/[TYPE]/[CONTENT_ID]?field=id`
+- `DELETE /api/content/[TYPE]/[CONTENT_SLUG]` | `DELETE /api/content/[TYPE]/[CONTENT_ID]?field=id`
   - Access limited to own user or users with permission `content.TYPE.admin` or `content.TYPE.delete`
 
 ### Comments
@@ -800,5 +1025,30 @@ The Content API is defined on your set of rules in the configuration file, the o
 ### Activity
 
 - `GET /api/activity/[USER_ID]`
-  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin`
+  - Returns a list of activity for the user, access limited to own user or users with permission `activity.read` or `activity.admin` 
+  
+### Full Text
+- `GET /api/super-search?query=XXX`
+- Returns a list of all entities which have phrase mentioned in `query` but limited by permissions described in the `edge.config.js` 
 
+### Interactions
+
+- `GET /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?author=USER_ID&entityId=id`
+  - Return all the interactions of a certain type, accepts filter by author, entityId and pagination options 
+- `POST /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE` 
+  - Create an interaction on an entity
+  - `author` id will be extracted from the current user
+  - Body expected:
+  ```
+  {
+    type: 'like',
+    entityId: 'XXXX',
+    entityType: 'post',
+    entity: 'content',
+    metadata: {
+      // anything
+    }
+  }
+  ```
+- `DELETE /api/interactions/ENTITY/ENTITY_TYPE/INTERACTION_TYPE?id=xxxx`
+  - It will delete the interaction sent as an id

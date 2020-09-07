@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
+
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '../../generic/button/button'
@@ -49,7 +50,7 @@ function EmptyComponent() {
   return <div className="empty"></div>
 }
 
-export default function ({
+function CommentsFeed({
   contentId = null,
   type = {},
   newComments = [],
@@ -176,3 +177,5 @@ export default function ({
     </>
   )
 }
+
+export default memo(CommentsFeed)

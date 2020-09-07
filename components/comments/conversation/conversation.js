@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '../../generic/button/button'
@@ -45,7 +45,7 @@ function LoadingItems() {
   )
 }
 
-export default function ({
+function Conversation({
   contentId = '',
   type = {},
   comment = {},
@@ -213,3 +213,5 @@ export default function ({
     </>
   )
 }
+
+export default memo(Conversation);

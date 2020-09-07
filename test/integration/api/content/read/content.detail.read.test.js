@@ -1,12 +1,7 @@
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/content/[type]/[slug]'
-// See discussion https://github.com/zeit/next.js/discussions/11784
-// See example
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
@@ -134,68 +129,60 @@ jest.mock('../../../../../edge.config', () => {
         types: [mockPostContentType],
         initialContent: mockInitialPosts,
       },
+
+      user: {
+        roles: [{ label : 'user', value: 'USER'}],
+        newUserRoles: ['USER'],
+      }
     }),
   }
 })
 
 describe('Integrations tests for content detail endpoint', () => {
-  let server
-  let url
-
+  
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
-  })
-
+ 
   test('Should return 405 if required query string is missing', async () => {
-    const response = await fetch(url)
-    expect(response.status).toBe(405)
+    
+    const res = await request(handler, {
+      method: 'GET',
+    });
+
+
+    expect(res.statusCode).toBe(405)
   })
 
   test('Should return 405 if required query slug is missing', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post' }
+ 
+    const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post' }
+    });
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
-    const response = await fetch(urlToBeUsed.href)
-
-    expect(response.status).toBe(405)
+    expect(res.statusCode).toBe(405)
   })
 
   test('Should return content details given a valid request', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    getPermissions.mockReturnValueOnce({
+  
+    getPermissions.mockReturnValue({
       'content.post.read': ['PUBLIC'],
       'content.post.admin': ['ADMIN'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-    const jsonResult = await response.json()
+    const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post', slug: 'example-post-0' }
+    });
 
-    expect(response.status).toBe(200)
-    expect(jsonResult).toMatchObject({
+
+    expect(res.statusCode).toBe(200)
+    expect(res.body).toMatchObject({
       title: expect.any(String),
       type: 'post',
       slug: 'example-post-0',
@@ -207,10 +194,8 @@ describe('Integrations tests for content detail endpoint', () => {
   })
 
   test('Should return 200 for a role that is not public', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['PUBLIC'],
       'content.post.admin': ['ADMIN'],
     })
@@ -219,38 +204,34 @@ describe('Integrations tests for content detail endpoint', () => {
       roles: ['USER'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+    const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post', slug: 'example-post-0' }
+    });
 
-    const response = await fetch(urlToBeUsed.href)
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should return 401 if it does not have permissions to access', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+    const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post', slug: 'example-post-0' }
+    });
 
-    const response = await fetch(urlToBeUsed.href)
 
-    expect(response.status).toBe(401)
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 if it does have permissions to access for USER', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
 
-    getPermissions.mockReturnValueOnce({
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -259,20 +240,19 @@ describe('Integrations tests for content detail endpoint', () => {
       roles: ['USER'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+      const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post', slug: 'example-post-0' }
+    });
 
-    const response = await fetch(urlToBeUsed.href)
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should return 200 for ADMIN', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-1' }
 
-    getPermissions.mockReturnValueOnce({
+
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -281,20 +261,19 @@ describe('Integrations tests for content detail endpoint', () => {
       roles: ['ADMIN'],
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+      const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post', slug: 'example-post-1' }
+    });
 
-    const response = await fetch(urlToBeUsed.href)
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should return 401 for USER if content is not owned and is draft', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-1' }
 
-    getPermissions.mockReturnValueOnce({
+
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -304,20 +283,19 @@ describe('Integrations tests for content detail endpoint', () => {
       id: '1',
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+      const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post', slug: 'example-post-1' }
+    });
 
-    const response = await fetch(urlToBeUsed.href)
 
-    expect(response.status).toBe(401)
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 for USER if content is owned and is draft', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-1' }
 
-    getPermissions.mockReturnValueOnce({
+
+    getPermissions.mockReturnValue({
       'content.post.read': ['USER'],
       'content.post.admin': ['ADMIN'],
     })
@@ -327,12 +305,12 @@ describe('Integrations tests for content detail endpoint', () => {
       id: '2',
     })
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+      const res = await request(handler, {
+      method: 'GET',
+      query : { type: 'post', slug: 'example-post-1' }
+    });
 
-    const response = await fetch(urlToBeUsed.href)
 
-    expect(response.status).toBe(200)
+    expect(res.statusCode).toBe(200)
   })
 })

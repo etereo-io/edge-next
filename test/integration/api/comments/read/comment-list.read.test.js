@@ -1,15 +1,16 @@
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import fetch from 'isomorphic-unfetch'
-import { findComments } from '../../../../../lib/api/entities/comments/comments'
+import {
+  findComments,
+} from '../../../../../lib/api/entities/comments'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
+import {
+  getSession,
+} from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/comments'
-import http from 'http'
-import listen from 'test-listen'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
-jest.mock('../../../../../lib/api/entities/comments/comments')
+jest.mock('../../../../../lib/api/entities/comments')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {
@@ -42,15 +43,13 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-        title: true,
-        placeholder: 'Title',
-      },
-    ],
+    fields: [{
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      title: true,
+      placeholder: 'Title',
+    }, ],
   }
 
   const mockProductContentType = {
@@ -83,15 +82,13 @@ jest.mock('../../../../../edge.config', () => {
       },
     },
 
-    fields: [
-      {
-        name: 'title',
-        type: 'text',
-        label: 'Title',
-        title: true,
-        placeholder: 'Title',
-      },
-    ],
+    fields: [{
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      title: true,
+      placeholder: 'Title',
+    }, ],
   }
 
   return {
@@ -105,6 +102,18 @@ jest.mock('../../../../../edge.config', () => {
         types: [mockPostContentType, mockProductContentType],
         initialContent: [],
       },
+
+      user: {
+        permissions: {
+
+        },
+
+        roles: [{
+          label: 'user',
+          value: 'USER'
+        }],
+        newUserRoles: ['USER'],
+      },
     }),
   }
 })
@@ -114,8 +123,7 @@ jest.mock('../../../../../edge.config', () => {
 // find comments by contentType
 
 describe('Integrations tests for comment list read endpoint', () => {
-  let server
-  let url
+
 
   beforeEach(() => {
     findComments.mockReturnValue(
@@ -128,31 +136,14 @@ describe('Integrations tests for comment list read endpoint', () => {
   })
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
-    findComments.mockClear()
+    getPermissions.mockReset()
+    getSession.mockReset()
+    findComments.mockReset()
   })
 
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
 
-    done()
-  })
 
-  afterAll((done) => {
-    server.close(done)
-  })
-
-  test('Should return 405 if contentType does not exist', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'something' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
+  test('Should return 401 if contentType does not exist', async () => {
 
     getSession.mockReturnValue({
       roles: [],
@@ -162,20 +153,20 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.post.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
+        contentType: 'something'
+      }
+    });
+
 
     expect(findComments).not.toHaveBeenCalled()
 
-    expect(response.status).toBe(405)
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 401 if contentType does not allow comments', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'product' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue({
       roles: [],
@@ -183,23 +174,23 @@ describe('Integrations tests for comment list read endpoint', () => {
 
     getPermissions.mockReturnValue({
       'content.post.comments.read': ['PUBLIC'],
-      'content.product.comments.read': ['PUBLIC'],
+      'content.product.comments.read': [],
     })
 
-    const response = await fetch(urlToBeUsed.href)
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
+        contentType: 'product'
+      }
+    });
+
 
     expect(findComments).not.toHaveBeenCalled()
 
-    expect(response.status).toBe(401)
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 if contentType exists', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue({
       roles: [],
@@ -210,31 +201,29 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.product.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    const jsonResult = await response.json()
-
-    expect(response.status).toBe(200)
-    expect(findComments).toHaveBeenCalledWith(
-      {
-        contentType: 'post',
-      },
-      {
-        from: undefined,
-        limit: undefined,
-        sortBy: undefined,
-        sortOrder: undefined,
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
+        contentType: 'post'
       }
-    )
+    });
+
+
+    expect(res.statusCode).toBe(200)
+    expect(findComments).toHaveBeenCalledWith({
+      contentType: 'post',
+      groupId: null,
+      groupType: null
+    }, {
+      from: undefined,
+      limit: undefined,
+      sortBy: undefined,
+      sortOrder: undefined,
+    })
   })
 
   test('Should allow contentId option', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: 'example' }
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue({
       roles: [],
@@ -245,33 +234,30 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.product.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    const jsonResult = await response.json()
-
-    expect(response.status).toBe(200)
-
-    expect(findComments).toHaveBeenCalledWith(
-      {
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
         contentType: 'post',
-        contentId: 'example',
-      },
-      {
-        from: undefined,
-        limit: undefined,
-        sortBy: undefined,
-        sortOrder: undefined,
+        contentId: 'example'
       }
-    )
+    });
+
+    expect(res.statusCode).toBe(200)
+
+    expect(findComments).toHaveBeenCalledWith({
+      contentType: 'post',
+      contentId: 'example',
+      groupId: null,
+      groupType: null
+    }, {
+      from: undefined,
+      limit: undefined,
+      sortBy: undefined,
+      sortOrder: undefined,
+    })
   })
 
   test('Should allow conversationId option', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', conversationId: 'conversationId' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue({
       roles: [],
@@ -282,31 +268,32 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.product.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    expect(findComments).toHaveBeenCalledWith(
-      {
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
         contentType: 'post',
-        conversationId: 'conversationId',
-      },
-      {
-        from: undefined,
-        limit: undefined,
-        sortBy: undefined,
-        sortOrder: undefined,
+        conversationId: 'conversationId'
       }
-    )
 
-    expect(response.status).toBe(200)
+    });
+
+
+    expect(findComments).toHaveBeenCalledWith({
+      contentType: 'post',
+      conversationId: 'conversationId',
+      groupId: null,
+      groupType: null
+    }, {
+      from: undefined,
+      limit: undefined,
+      sortBy: undefined,
+      sortOrder: undefined,
+    })
+
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should allow conversationId option to false if we want to ellicit null conversationid', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', conversationId: 'false' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue({
       roles: [],
@@ -317,31 +304,31 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.product.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    expect(findComments).toHaveBeenCalledWith(
-      {
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
         contentType: 'post',
-        conversationId: null,
-      },
-      {
-        from: undefined,
-        limit: undefined,
-        sortBy: undefined,
-        sortOrder: undefined,
+        conversationId: 'false'
       }
-    )
+    });
 
-    expect(response.status).toBe(200)
+
+    expect(findComments).toHaveBeenCalledWith({
+      contentType: 'post',
+      conversationId: null,
+      groupId: null,
+      groupType: null
+    }, {
+      from: undefined,
+      limit: undefined,
+      sortBy: undefined,
+      sortOrder: undefined,
+    })
+
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should allow author option', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', author: 'author' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue({
       roles: [],
@@ -352,31 +339,31 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.product.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    expect(findComments).toHaveBeenCalledWith(
-      {
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
         contentType: 'post',
-        author: 'author',
-      },
-      {
-        from: undefined,
-        limit: undefined,
-        sortBy: undefined,
-        sortOrder: undefined,
+        author: 'author'
       }
-    )
+    });
 
-    expect(response.status).toBe(200)
+
+    expect(findComments).toHaveBeenCalledWith({
+      contentType: 'post',
+      author: 'author',
+      groupId: null,
+      groupType: null
+    }, {
+      from: undefined,
+      limit: undefined,
+      sortBy: undefined,
+      sortOrder: undefined,
+    })
+
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should allow empty contentType, meaning that it will call to all the available contents', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { author: 'author' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue({
       roles: [],
@@ -387,56 +374,64 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.product.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    expect(findComments).toHaveBeenCalledWith(
-      {
-        contentType: { $in: ['post', 'product'] },
-        author: 'author',
-      },
-      {
-        from: undefined,
-        limit: undefined,
-        sortBy: undefined,
-        sortOrder: undefined,
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
+        author: 'author'
       }
-    )
+    });
 
-    expect(response.status).toBe(200)
+
+    expect(findComments).toHaveBeenCalledWith({
+      contentType: {
+        $in: ['post', 'product']
+      },
+      author: 'author',
+      groupId: null,
+      groupType: null
+    }, {
+      from: undefined,
+      limit: undefined,
+      sortBy: undefined,
+      sortOrder: undefined,
+    })
+
+    expect(res.statusCode).toBe(200)
   })
 
-  test('Should accept pagination options exist', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', from: 10, limit: 20 }
+  test('Should accept pagination options', async () => {
 
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
     getSession.mockReturnValue()
 
     getPermissions.mockReturnValue({
       'content.post.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-
-    expect(findComments).toHaveBeenCalledWith(
-      {
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
         contentType: 'post',
-      },
-      { from: 10, limit: 20, sortBy: undefined, sortOrder: undefined }
-    )
+        from: 10,
+        limit: 20
+      }
+    });
 
-    expect(response.status).toBe(200)
+
+    expect(findComments).toHaveBeenCalledWith({
+      contentType: 'post',
+      groupId: null,
+      groupType: null
+    }, {
+      from: 10,
+      limit: 20,
+      sortBy: undefined,
+      sortOrder: undefined
+    })
+
+    expect(res.statusCode).toBe(200)
   })
 
   test('Should return 401 if user is not allowed', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post', contentId: 'example-post-0' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
 
     getSession.mockReturnValue()
 
@@ -444,32 +439,36 @@ describe('Integrations tests for comment list read endpoint', () => {
       'content.post.comments.read': ['USER'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-    const jsonResult = await response.json()
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
+        contentType: 'post',
+        contentId: 'example-post-0'
+      }
+    });
 
-    expect(response.status).toBe(401)
+
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return pagination list results', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { contentType: 'post' }
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
     getSession.mockReturnValue()
 
     getPermissions.mockReturnValue({
       'content.post.comments.read': ['PUBLIC'],
     })
 
-    const response = await fetch(urlToBeUsed.href)
-    const jsonResult = await response.json()
+    const res = await request(handler, {
+      method: 'GET',
+      query: {
+        contentType: 'post'
+      }
+    });
 
-    expect(response.status).toBe(200)
 
-    expect(jsonResult).toMatchObject({
+    expect(res.statusCode).toBe(200)
+
+    expect(res.body).toMatchObject({
       results: [],
       from: 0,
       limit: 15,

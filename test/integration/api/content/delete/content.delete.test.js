@@ -1,26 +1,24 @@
-import * as handler from '../../../../../pages/api/content/[type]/[slug]'
-
 import {
   deleteOneContent,
   findOneContent,
-} from '../../../../../lib/api/entities/content/content'
+} from '../../../../../lib/api/entities/content'
 
-import { apiResolver } from 'next/dist/next-server/server/api-utils'
-import { deleteActivity } from '../../../../../lib/api/entities/activity/activity'
-import { deleteComment } from '../../../../../lib/api/entities/comments/comments'
+import { deleteActivity } from '../../../../../lib/api/entities/activity'
+import { deleteComment } from '../../../../../lib/api/entities/comments'
 import { deleteFile } from '../../../../../lib/api/storage'
-import fetch from 'isomorphic-unfetch'
+import { deleteInteractions } from '../../../../../lib/api/entities/interactions'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import http from 'http'
-import listen from 'test-listen'
+import handler from '../../../../../pages/api/content/[type]/[slug]'
+import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/storage')
-jest.mock('../../../../../lib/api/entities/comments/comments')
-jest.mock('../../../../../lib/api/entities/activity/activity')
-jest.mock('../../../../../lib/api/entities/content/content')
+jest.mock('../../../../../lib/api/entities/comments')
+jest.mock('../../../../../lib/api/entities/interactions')
+jest.mock('../../../../../lib/api/entities/activity')
+jest.mock('../../../../../lib/api/entities/content')
 
 jest.mock('../../../../../edge.config', () => {
   const mockPostContentType = {
@@ -99,19 +97,27 @@ jest.mock('../../../../../edge.config', () => {
         types: [mockPostContentType],
         initialContent: [],
       },
+
+      user : {
+        permissions: {
+          
+        },
+  
+        roles: [{ label : 'user', value: 'USER'}],
+        newUserRoles: ['USER'],
+      },
     }),
   }
 })
 
 describe('Integrations tests for content deletion endpoint', () => {
-  let server
-  let url
-
+ 
   beforeEach(() => {
     deleteOneContent.mockReturnValue(Promise.resolve())
     deleteActivity.mockReturnValue(Promise.resolve())
     deleteComment.mockReturnValue(Promise.resolve())
     deleteFile.mockReturnValue(Promise.resolve())
+    deleteInteractions.mockReturnValue(Promise.resolve())
     findOneContent.mockReturnValue(
       Promise.resolve({
         type: 'post',
@@ -141,42 +147,31 @@ describe('Integrations tests for content deletion endpoint', () => {
   })
 
   afterEach(() => {
-    getPermissions.mockClear()
-    getSession.mockClear()
-    findOneContent.mockClear()
-    deleteComment.mockClear()
-    deleteActivity.mockClear()
-    deleteOneContent.mockClear()
-  })
-
-  beforeAll(async (done) => {
-    server = http.createServer((req, res) =>
-      apiResolver(req, res, undefined, handler)
-    )
-    url = await listen(server)
-
-    done()
-  })
-
-  afterAll((done) => {
-    server.close(done)
+    getPermissions.mockReset()
+    getSession.mockReset()
+    findOneContent.mockReset()
+    deleteComment.mockReset()
+    deleteActivity.mockReset()
+    deleteOneContent.mockReset()
+    deleteInteractions.mockReset()
   })
 
   test('Should return 405 if required query string is missing', async () => {
-    const response = await fetch(url)
-    expect(response.status).toBe(405)
+    const res = await request(handler, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    expect(res.statusCode).toBe(405)
+
   })
 
   describe('Correct delete', () => {
     test('Should delete comments, files and activity if a content is deleted', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-
-      getPermissions.mockReturnValueOnce({
+        
+      getPermissions.mockReturnValue({
         'content.post.delete': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
@@ -186,11 +181,16 @@ describe('Integrations tests for content deletion endpoint', () => {
         id: 'userId',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'DELETE',
-      })
-
-      expect(response.status).toBe(200)
+        query: { type: 'post', slug: 'example-post-0' },
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+  
+  
+      expect(res.statusCode).toBe(200)
 
       expect(deleteFile).toHaveBeenCalledWith('abc.test')
       expect(deleteComment).toHaveBeenCalledWith({
@@ -205,19 +205,17 @@ describe('Integrations tests for content deletion endpoint', () => {
       expect(deleteOneContent).toHaveBeenCalledWith('post', {
         id: 'contentid',
       })
+      expect(deleteInteractions).toHaveBeenCalledWith({
+        entity: 'content',
+        entityId: 'contentid'
+      })
     })
   })
 
   describe('Invalid delete', () => {
     test('Should return 401 when deleting other person content without the content.post.delete permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-
-      getPermissions.mockReturnValueOnce({
+        
+      getPermissions.mockReturnValue({
         'content.post.delete': ['ADMIN'],
         'content.post.admin': ['ADMIN'],
       })
@@ -227,27 +225,25 @@ describe('Integrations tests for content deletion endpoint', () => {
         id: 'i am another user',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'DELETE',
-      })
+        query: { type: 'post', slug: 'example-post-0' },
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+  
 
-      const jsonResult = await response.json()
-
-      expect(response.status).toBe(401)
-      expect(jsonResult).toMatchObject({
-        message: 'User not authorized to perform operation on content post',
+      expect(res.statusCode).toBe(401)
+      expect(res.body).toMatchObject({
+        error: 'User not authorized to perform operation on content post',
       })
     })
 
     test('Should return 200 when deleting other person content with the content.post.delete permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
+        
 
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-
-      getPermissions.mockReturnValueOnce({
+      getPermissions.mockReturnValue({
         'content.post.delete': ['USER'],
         'content.post.admin': ['ADMIN'],
       })
@@ -257,84 +253,93 @@ describe('Integrations tests for content deletion endpoint', () => {
         id: 'i am another user',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
+      const res = await request(handler, {
         method: 'DELETE',
-      })
-
-      expect(response.status).toBe(200)
+        query: { type: 'post', slug: 'example-post-0' },
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+  
+  
+      expect(res.statusCode).toBe(200)
     })
 
     test('Should return 200 when deleting other person content with the content.post.admin permission', async () => {
-      const urlToBeUsed = new URL(url)
-      const params = { type: 'post', slug: 'example-post-0' }
-
-      Object.keys(params).forEach((key) =>
-        urlToBeUsed.searchParams.append(key, params[key])
-      )
-
-      getPermissions.mockReturnValueOnce({
+      
+      getPermissions.mockReturnValue({
         'content.post.delete': ['ADMIN'],
         'content.post.admin': ['USER'],
       })
-
+      
       getSession.mockReturnValueOnce({
         roles: ['USER'],
         id: 'definetely not me',
       })
 
-      const response = await fetch(urlToBeUsed.href, {
-        method: 'DELETE',
-      })
+      const params = { type: 'post', slug: 'example-post-0' }
 
-      expect(response.status).toBe(200)
+      const res = await request(handler, {
+        method: 'DELETE',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+  
+  
+      expect(res.statusCode).toBe(200)
     })
   })
 
   test('Should return 401 for a role that is PUBLIC', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
-
-    getPermissions.mockReturnValueOnce({
+      
+    
+    getPermissions.mockReturnValue({
       'content.post.delete': ['ADMIN'],
       'content.post.admin': ['ADMIN'],
     })
-
+    
     getSession.mockReturnValueOnce({
       roles: ['PUBLIC'],
     })
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    const response = await fetch(urlToBeUsed.href, {
+    
+    const params = { type: 'post', slug: 'example-post-0' }
+    const res = await request(handler, {
       method: 'DELETE',
-    })
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
-    expect(response.status).toBe(401)
+
+    expect(res.statusCode).toBe(401)
   })
 
   test('Should return 200 for ADMIN', async () => {
-    const urlToBeUsed = new URL(url)
-    const params = { type: 'post', slug: 'example-post-0' }
-
-    getPermissions.mockReturnValueOnce({
+      
+    
+    getPermissions.mockReturnValue({
       'content.post.delete': ['ADMIN'],
       'content.post.admin': ['ADMIN'],
     })
-
+    
     getSession.mockReturnValueOnce({
       roles: ['ADMIN'],
     })
-
-    Object.keys(params).forEach((key) =>
-      urlToBeUsed.searchParams.append(key, params[key])
-    )
-
-    const response = await fetch(urlToBeUsed.href, {
+    const params = { type: 'post', slug: 'example-post-0' }
+    
+    const res = await request(handler, {
       method: 'DELETE',
-    })
+      query: params,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
-    expect(response.status).toBe(200)
+
+
+    expect(res.statusCode).toBe(200)
   })
 })

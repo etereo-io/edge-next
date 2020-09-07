@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Button from '@components/generic/button/button'
 import config from '@lib/config'
-import { FIELDS } from '@lib/config/config-constants'
+import { FIELDS } from '@lib/constants'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 
-export default function ({ user, ...props }) {
+function EditProfile({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -37,6 +37,7 @@ export default function ({ user, ...props }) {
         setLoading(false)
         setSuccess(true)
         setError(false)
+        onChange()
       })
       .catch((err) => {
         setLoading(false)
@@ -60,21 +61,6 @@ export default function ({ user, ...props }) {
     ev.preventDefault()
 
     let valid = true
-
-    // TODO: is this even needed?
-    /*config.user.profile.fields.forEach((f) => {
-      if (f.required && !d[f.name]) {
-        valid = false
-      }
-
-      if (f.minlength && d[f.name].length < f.minlength) {
-        valid = false
-      }
-
-      if (f.maxlength && d[f.name].length > f.maxlength) {
-        valid = false
-      }
-    })*/
 
     if (!valid) {
       setError('Please check that the data is correct')
@@ -170,3 +156,5 @@ export default function ({ user, ...props }) {
     </>
   )
 }
+
+export default memo(EditProfile)

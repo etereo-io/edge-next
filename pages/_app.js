@@ -1,14 +1,13 @@
-import '../styles/index.scss'
+import Router from 'next/router'
+import { useContext } from 'react'
+import Head from 'next/head'
 
 import * as gtag from '../lib/client/gtag'
-
 import withEdgeTheme, {
   EdgeThemeContext,
 } from '../lib/client/contexts/edge-theme'
-
 import { EdgeUserProvider } from '../lib/client/contexts/edge-user'
-import Router from 'next/router'
-import { useContext } from 'react'
+import '../styles/index.scss'
 
 // Store navigation events on Google analytics
 Router.events.on('routeChangeComplete', (url) => gtag.pageview(url))
@@ -18,6 +17,12 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <Head>
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
+        />
+      </Head>
       <div id="app-container" className={mode}>
         <EdgeUserProvider>
           <Component {...pageProps} />
@@ -512,22 +517,6 @@ function MyApp({ Component, pageProps }) {
 
         .edge-searchbox {
           position: relative;
-        }
-
-        .edge-searchbox img {
-          left: 16px;
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 16px;
-        }
-
-        .edge-searchbox input {
-          background-color: var(--accents-1-medium);
-          border: none;
-          font-size: 14px;
-          padding: var(--edge-gap-half);
-          padding-left: var(--edge-gap-double);
         }
 
         /* Avatar User*/

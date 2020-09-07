@@ -1,6 +1,8 @@
-import { useState } from 'react'
+import { useState, memo } from 'react'
+
 import ProgressiveImage from './progressive-image'
-export default function ({ srcs = [], width = '100%', height = '100%' }) {
+
+function Image({ srcs = [], width = '100%', height = '100%' }) {
   const isMultiple = srcs.length > 1
   const [position, setPosition] = useState(0)
 
@@ -51,10 +53,11 @@ export default function ({ srcs = [], width = '100%', height = '100%' }) {
             width: `${srcs.length * 100}%`,
           }}
         >
-          {srcs.map((s) => {
+          {srcs.map((s, index) => {
             const onlySrc = typeof s === 'string'
             return (
               <div
+                key={index}
                 className={`image-item ${
                   !onlySrc && s.quote ? 'with-quote' : ''
                 }`}
@@ -157,3 +160,5 @@ export default function ({ srcs = [], width = '100%', height = '100%' }) {
     </>
   )
 }
+
+export default memo(Image)

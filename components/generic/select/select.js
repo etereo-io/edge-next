@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 
-export default function (props) {
+function Select(props) {
   const { name, children, prefixes = [] } = props
 
   const [selectedValue, setSelectedValue] = useState(props.value)
@@ -114,3 +114,5 @@ export default function (props) {
     </>
   )
 }
+
+export default memo(Select)

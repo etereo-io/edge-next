@@ -1,3 +1,5 @@
+import { memo } from 'react'
+
 export function TableCellHeader({ children, ...props }) {
   return (
     <>
@@ -12,6 +14,10 @@ export function TableCellHeader({ children, ...props }) {
           position: sticky;
           text-align: left;
           top: 0;
+        }
+        
+        .center {
+          text-align: center
         }
       `}</style>
     </>
@@ -56,7 +62,7 @@ export function TableRowBody({ children, ...props }) {
   )
 }
 
-export default function (props) {
+function Table(props) {
   return (
     <>
       <table className="table">
@@ -92,3 +98,5 @@ export default function (props) {
     </>
   )
 }
+
+export default memo(Table)

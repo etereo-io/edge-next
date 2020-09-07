@@ -1,5 +1,6 @@
-import { useState } from 'react'
-export default function (props) {
+import { useState, memo } from 'react'
+
+function DropDownMenu(props) {
   const [open, setOpened] = useState(props.open || false)
   const align = props.align || 'left'
   const toggleMenu = () => {
@@ -125,3 +126,5 @@ export default function (props) {
     </>
   )
 }
+
+export default memo(DropDownMenu)

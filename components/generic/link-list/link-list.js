@@ -1,11 +1,12 @@
 import Link from 'next/link'
+import React, { memo } from 'react'
 
-export default function (props) {
+function Links({ links, className = '' }) {
   return (
     <>
-      <div>
+      <div className={className}>
         <ul>
-          {props.links.map((i) => (
+          {links.map((i) => (
             <li key={i.title}>
               <Link href={i.link}>
                 <a title={i.title}>{i.title}</a>
@@ -35,8 +36,15 @@ export default function (props) {
             display: block;
             border-radius: var(--edge-radius);
           }
+          
+          .space-evenly ul {
+            justify-content: space-evenly;
+          }
+         
         `}
       </style>
     </>
   )
 }
+
+export default memo(Links)

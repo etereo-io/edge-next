@@ -1,9 +1,10 @@
-import { useState, createRef, useEffect } from 'react'
+import { useState, createRef, useEffect, memo } from 'react'
+
 import API from '@lib/api/api-endpoints'
 import fetch from '@lib/fetcher'
 import Avatar from '@components/user/avatar/avatar'
 
-export default function ({ user, ...props }) {
+function EditProfilePicture({ user, onChange = () => {}, ...props }) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -27,6 +28,7 @@ export default function ({ user, ...props }) {
         setLoading(false)
         setSuccess(true)
         setError(false)
+        onChange()
       })
       .catch((err) => {
         setLoading(false)
@@ -85,7 +87,7 @@ export default function ({ user, ...props }) {
           <label>Profile Picture</label>
           <p>Click on the image to change it</p>
           <div className="field" onClick={openFileDialog}>
-            <Avatar src={fields.picture.path} />
+            <Avatar src={fields.picture.path} title={`${user ? user.username: ''} avatar`}/>
           </div>
 
           <input
@@ -124,3 +126,6 @@ export default function ({ user, ...props }) {
     </>
   )
 }
+
+export default memo(EditProfilePicture)
+
