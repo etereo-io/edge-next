@@ -5,13 +5,12 @@
 - [Website](https://edge-next.now.sh/)
 - [Documentation](./DOCUMENTATION.md)
   
-*Edge version 1.0 will be released on June/July 2020, this is a work in progress*
 
 ## Sponsors 
 
 <a href="https://etereo.io" title="Etéreo" target="_blank"><img src="./public/static/sponsors/etereo.png" width="80px" /></a>
 
-*Your name or company here?* Contact us at hi@nucleo.is
+*Your name or company here?* Contact us at hello@etereo.io
 
 
 ## What is Edge? 
@@ -20,17 +19,20 @@ Edge is a piece of software written on top of Next.js to create a Dynamic API / 
 
 The main features of Edge are:
 - Dynamic content types and permissions, and APIs.
-- Comments on content types
+- Groups with private content, members and administrators.
+- Comments on content types.
+- Interactions on entities (like, follow, report, etc).
 - Users APIs (login, register, update)
-- Emails (email verification, contact emails) templates and implementation
-- Dynamic admin dashboard for all the content, comments and users.
-- Block users the access to the site
+- Emails (email verification, contact emails)
+- Dynamic admin dashboard for all the content, groups and users.
+- Block access to users to the site
 - CSS themes that the user can change
 - User activity log
 - Login / Register with social providers
 - A set of pre-implemented components
 - PWA (Progressive Web APP)
 - SSG (Static Site Generation) for static pages with markdown
+- Entities Search (through mongo DB)
 - Web monetization
 - Easy to deploy
 
@@ -51,7 +53,7 @@ To use this tool:
 - 3 Do `yarn dev` to launch your site (as any NextJS application)
 - 4 Edit `edge.config.js` to add your own texts and content types or permissions
   - You can learn more on how to create new content types, permissions and themes in our tutorials
-- 5 Deploy! We recommend services like [Vercel](https://vercel.com)
+- 5 Deploy! 
   - Check how to configure all the different providers in the documentation. You will need to create different set of environment variables and register in the different services like Email and Database.
 
 ## Issues
@@ -79,42 +81,11 @@ Check our roadmap if you want to add more cool things into Edge.
 ## Roadmap
 
 
-### Version 1
-
-- Allow to report content and comments, we can use a flag on the content if anyone has reported it, instead of a list of reports.
-
-- Review everything on lighthouse
+### Version 2
 
 - Add a cookies component
 
-- Connect to an additional database:
-  - Firebase 
-  - See if there is any ORM that can work for this use case
-
-- Add algolia as a search engine
-
-- Introduce basic site stats
-
-- https://help.github.com/en/github/supporting-the-open-source-community-with-github-sponsors/about-github-sponsors
-- OpenColective
-
-- profile react re-renders
-
-### Refactor List
-
-- use `use export * from package` instead of double naming variables.
-- try to unify groups and content types logic somehow
-- Test:
-  - Group delete test
-  - Delete comment in group test
-  - Group user test (list , create , edit , delete )
-
-### After Version 1: Additional features
-
-- Groups
-  - Test that group creation and edition allows to update the members list
-  - Test that group retrieval returns the group members data fulfilled from DB
-  
+- Introduce basic site stats  
 
 - Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552
 
@@ -126,34 +97,13 @@ Check our roadmap if you want to add more cool things into Edge.
 
 - Preprocess uploaded images to create a lighter version and allow the client to load them progresivelly
 
-- Create an example site running an online shop
-  - Create the concept of "shopping cart"
-  - Integrate with a payment provider
-  - Add a "buyable" option into content types
-
-- Add site stats
-  - Store stats for each page visit
-  - Display the stats into the admin dashboard
-  - Create stats components
-
 - Add i18n
   - NextJS is preparing a RFC for i18n we will wait on that
 
 - Add a `sitemap.xml` API endpoint. 
   - Generate a dynamic sitemap by fetching the database for public content and adding also the static routes.
 
-- Redux
-  - Study if we will add redux for the dashboard 
-    - Examples: https://github.com/willianantunes/nextjs-playground, https://github.com/kirill-konshin/next-redux-wrapper
-  
-- Startup script
-  - Preseed database 
-
-- Dockerfile
-  - See how to complete a good example
-
 
 -----------
 
- 2020 - Original idea of [@rafinskipg](https://github.com/rafinskipg) and [@hayderaldeen](https://github.com/hayderaldeen)
-
+ 2020 - Original idea of [@rafinskipg](https://github.com/rafinskipg) and [@hayderaldeen](https://github.com/hayderaldeen). 
