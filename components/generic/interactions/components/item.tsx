@@ -139,6 +139,16 @@ function Item({
           title={title}
         />
       </div>
+
+      <style global jsx>{`
+        .interaction-block{
+          margin-left: 16px;
+        }
+
+        .interaction-block:first-of-type{
+          margin-left: 0;
+        }
+      `}</style>
     </>
   )
 }

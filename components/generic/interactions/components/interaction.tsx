@@ -135,11 +135,6 @@ function Interaction({
     <>
       {!!item && (
         <>
-          <StackedAvatars
-            width="40px"
-            maxItems={3}
-            users={users.filter(Boolean)}
-          />
           <Item
             item={item}
             entityId={entityId}
@@ -147,6 +142,11 @@ function Interaction({
             entityType={entityType}
             create={handleCreation}
             remove={handleRemoving}
+          />
+          <StackedAvatars
+            width="32px"
+            maxItems={3}
+            users={users.filter(Boolean)}
           />
         </>
       )}

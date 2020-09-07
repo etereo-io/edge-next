@@ -232,6 +232,9 @@ function ContentDetailView(props: Props) {
         )}
       </article>
       <style jsx>{`
+      .comment-count{
+          cursor: pointer;
+        }
         .interactions {
           margin-top: var(--edge-gap);
           display: inline-flex;

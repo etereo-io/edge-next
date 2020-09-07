@@ -43,7 +43,6 @@ function ReactionCounter({
   return (
     <>
       <div className={`reaction-wr ${active ? 'active' : ''}`}>
-        <span className="reaction-counter">{count}</span>
         <div className="reaction-item-wr" onClick={onClick} title={title}>
           {isLoading ? (
             <LoadingSpinner />
@@ -66,19 +65,24 @@ function ReactionCounter({
             </div>
           )}
         </div>
+        <span className="reaction-counter">{count}</span>
       </div>
       <style global jsx>{`
         .reaction-wr {
           align-items: center;
           text-align: center;
           display: flex;
-          margin-right: var(--edge-gap-half);
+          margin-left: var(--edge-gap);
+        }
+
+        .reaction-wr:first-of-type{
+          margin-left: 0;
         }
 
         .reaction-counter {
           color: var(--accents-3);
           font-size: 13px;
-          margin-right: var(--edge-gap-half);
+          margin-left: 4px;
         }
 
         .reaction-item-wr {

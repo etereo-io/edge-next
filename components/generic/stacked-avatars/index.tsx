@@ -53,7 +53,7 @@ function StackedAvatars({
         }
 
         .user-item:not(:first-child) {
-          margin-left: -25px;
+          margin-left: -21px;
           -webkit-mask: radial-gradient(
             circle 24px at -5px -50%,
             transparent 99%,
