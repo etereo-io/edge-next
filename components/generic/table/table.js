@@ -8,16 +8,15 @@ export function TableCellHeader({ children, ...props }) {
       </th>
       <style jsx>{`
         th {
-          background: var(--accents-2);
           border-bottom: 1px solid rgba(0, 0, 0, 0.1);
           padding: var(--edge-gap-half);
           position: sticky;
           text-align: left;
           top: 0;
         }
-        
+
         .center {
-          text-align: center
+          text-align: center;
         }
       `}</style>
     </>
@@ -30,9 +29,30 @@ export function TableCellBody({ children, ...props }) {
       <td {...props}>{children}</td>
       <style jsx>{`
         td {
+          border-top: 1px solid var(--accents-2);
           border-bottom: 1px solid var(--accents-2);
-          padding: var(--edge-gap-half);
+          padding: 16px 8px;
+          max-width: 180px;
+          overflow: hidden;
           white-space: nowrap;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        td:last-of-type{
+          max-width: none;
+        }
+
+        td:first-of-type{
+          border-left: 1px solid var(--accents-2);
+          border-top-left-radius: 8px;
+          border-bottom-left-radius: 8px;
+        }
+
+        td:last-of-type{
+          border-right: 1px solid var(--accents-2);
+          border-top-right-radius: 8px;
+          border-bottom-right-radius: 8px;
         }
       `}</style>
     </>
@@ -78,9 +98,10 @@ function Table(props) {
       <style jsx>{`
         table {
           border-collapse: collapse;
-          border-spacing: 0;
           font-size: 14px;
           width: 100%;
+          border-collapse: separate;
+          border-spacing: 0;
         }
 
         table tr {
@@ -91,7 +112,7 @@ function Table(props) {
         }
 
         table thead {
-          background: var(--accents-2);
+          background: var(--accents-1);
           z-index: var(--z-index-minimum);
         }
       `}</style>

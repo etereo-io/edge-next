@@ -6,7 +6,7 @@ const Layout = (props) => (
     <Header />
 
     <main>
-      <div className="admin-container">{props.children}</div>
+      <div className="edge-container">{props.children}</div>
     </main>
     <style jsx>{`
       .admin-container {

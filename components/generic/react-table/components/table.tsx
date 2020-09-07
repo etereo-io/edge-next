@@ -245,8 +245,6 @@ function ReactTable<T extends object = {}>({
           }
 
           .th {
-            background: var(--accents-2);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             padding: var(--edge-gap-half);
             position: sticky;
             text-align: left;
