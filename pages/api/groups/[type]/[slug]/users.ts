@@ -6,6 +6,7 @@ import {
 import { onGroupJoinRequest, onGroupUpdated } from '@lib/api/hooks/group.hooks'
 
 import { connect } from '@lib/api/db'
+import { Request } from '@lib/types'
 import { findOneUser } from '@lib/api/entities/users'
 import { getGroupTypeDefinition } from '@lib/config'
 import { getPermittedFields } from '@lib/validations/group/users'
@@ -15,11 +16,20 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content'
 
-const getUsers = async ({ item: { members } }, res) => {
-  res.status(200).json(members)
+const getUsers = async (
+  { item: group, currentUser, groupType }: Request,
+  res
+) => {
+  if (!groupUserPermission(currentUser, groupType.slug, 'read', group)) {
+    return res.status(401).json({
+      error: "User don't have permissions for fetching members list",
+    })
+  }
+
+  return res.status(200).json(group.members)
 }
 
-function saveGroupUsers({ type, id, data, thenCallback, res }) {
+async function saveGroupUsers({ type, id, data, thenCallback, res }) {
   updateOneContent(type, id, data)
     .then(thenCallback)
     .catch((err) => {
@@ -29,14 +39,10 @@ function saveGroupUsers({ type, id, data, thenCallback, res }) {
     })
 }
 
-async function addUsers(req, res) {
+async function addUsers(req: Request, res) {
   const {
     query: { type },
-    item: {
-      id,
-      author,
-      pendingMembers: oldPendingMembers = [],
-    },
+    item: { id, author, pendingMembers: oldPendingMembers = [] },
     item,
     currentUser,
     body,
@@ -105,7 +111,7 @@ async function addUsers(req, res) {
   })
 }
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const {
     query: { type },
   } = req
@@ -143,7 +149,7 @@ export default async (req, res) => {
     })
   }
 
-  methods(req, res, {
+  await methods(req, res, {
     get: getUsers,
     post: addUsers,
   })

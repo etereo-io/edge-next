@@ -15,7 +15,7 @@ const {
 } = config
 
 export default async (
-  request: NextApiRequest,
+  request: Request,
   response: NextApiResponse<{ data: SuperSearchResponse[] } | { error: string }>
 ) => {
   try {
@@ -35,7 +35,7 @@ export default async (
     })
   }
 
-  const { currentUser } = request as Request
+  const { currentUser } = request
 
   if (
     !hasPermission(currentUser, ['superSearch.read', 'user.admin']) ||
@@ -46,7 +46,7 @@ export default async (
     })
   }
 
-  methods(request, response, {
+  await methods(request, response, {
     get: getEntities,
   })
 }
