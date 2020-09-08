@@ -149,14 +149,15 @@ function ContentForm(props) {
             </div>
           )}
 
-          {props.permittedFields.map((field) => (
-            <DynamicField
-              key={field.name}
-              field={field}
-              value={state[field.name]}
-              onChange={handleFieldChange(field.name)}
-            />
-          ))}
+          {!!Object.keys(state).length &&
+            props.permittedFields.map((field) => (
+              <DynamicField
+                key={field.name}
+                field={field}
+                value={state[field.name]}
+                onChange={handleFieldChange(field.name)}
+              />
+            ))}
 
           <div className="actions">
             <Button loading={loading} alt={true} type="submit">
@@ -177,7 +178,7 @@ function ContentForm(props) {
         <div className="preview-wrapper">
           <div className="preview">
             <ContentSummaryView
-              content={state}
+              content={{ ...state, author: props.content.author }}
               type={props.type}
               user={props.currentUser}
             />

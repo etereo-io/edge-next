@@ -73,7 +73,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     currentUser,
   })
 
-  const decipheredData = getDecipheredData(
+  const [content] = getDecipheredData(
     {
       type: contentTypeDefinition.slug,
       entity: 'content',
@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      data: decipheredData[0],
+      data: content,
       type: query.type,
       slug: query.slug,
       canAccess: true,

@@ -111,7 +111,7 @@ export const groupPermission = (
     const isOwner = user && group.author === user?.id
     const isAdmin =
       hasPerm(user, `group.${entityType}.admin`) ||
-      hasPerm(user, `group.${entityType}.admin`)
+      hasPerm(groupMember, `group.${entityType}.admin`)
 
     // Draft check
     if (group.draft && !isOwner && !isAdmin) {
@@ -273,7 +273,6 @@ export const interactionPermission = (
 
   return hasPerm(user, permissions)
 }
-
 
 export const cypheredFieldPermission = (
   user: UserType = publicUser,

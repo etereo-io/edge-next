@@ -1,15 +1,48 @@
-import { AES, enc } from 'crypto-js'
+import crypto from 'crypto'
+
 import { FieldType, UserType } from '@lib/types'
 import { cypheredFieldPermission } from '@lib/permissions'
 
-const secretKey = process.env.CYPHER_SECRET
+const ENCRYPTION_KEY = process.env.CYPHER_SECRET // Must be 256 bits (32 characters)
+const IV_LENGTH = 16 // For AES, this is always 16
+const algorithm = 'aes-256-cbc'
+
+function encrypt(text) {
+  const iv = crypto.randomBytes(IV_LENGTH)
+  const cipher = crypto.createCipheriv(
+    algorithm,
+    Buffer.from(ENCRYPTION_KEY),
+    iv
+  )
+  let encrypted = cipher.update(text)
+
+  encrypted = Buffer.concat([encrypted, cipher.final()])
+
+  return iv.toString('hex') + ':' + encrypted.toString('hex')
+}
+
+function decrypt(text) {
+  const textParts = text.split(':')
+  const iv = Buffer.from(textParts.shift(), 'hex')
+  const encryptedText = Buffer.from(textParts.join(':'), 'hex')
+  const decipher = crypto.createDecipheriv(
+    algorithm,
+    Buffer.from(ENCRYPTION_KEY),
+    iv
+  )
+  let decrypted = decipher.update(encryptedText)
+
+  decrypted = Buffer.concat([decrypted, decipher.final()])
+
+  return decrypted.toString()
+}
 
 export function cypherData(fields: FieldType[], data: { [ket: string]: any }) {
   const cypheredData = { ...data }
 
   fields.forEach(({ name, cypher: { enabled } = {} }) => {
     if (enabled && cypheredData[name]) {
-      cypheredData[name] = AES.encrypt(cypheredData[name], secretKey).toString()
+      cypheredData[name] = encrypt(cypheredData[name])
     }
   })
 
@@ -32,6 +65,7 @@ export function getDecipheredData(
       const canSee = cypheredFieldPermission(user, entity, type, name)
 
       cypheredData.forEach((item, index) => {
+        // decrypt data only if user has permission or he is the author of the post/group/ profile owner
         if (
           canSee ||
           item?.author === user?.id ||
@@ -39,13 +73,9 @@ export function getDecipheredData(
         ) {
           try {
             if (entity === 'user') {
-              const bytes = AES.decrypt(item.profile[name], secretKey)
-
-              cypheredData[index].profile[name] = bytes.toString(enc.Utf8)
+              cypheredData[index].profile[name] = decrypt(item.profile[name])
             } else {
-              const bytes = AES.decrypt(item[name], secretKey)
-
-              cypheredData[index][name] = bytes.toString(enc.Utf8)
+              cypheredData[index][name] = decrypt(item[name])
             }
           } catch (e) {
             return item
