@@ -41,11 +41,11 @@ class CypherFields {
   }
 
   cypherData(fields: FieldType[], data: { [ket: string]: any }) {
-    const cypheredData = { ...data }
+    const cypheredData = JSON.parse(JSON.stringify({ ...data }))
 
     fields.forEach(({ name, cypher: { enabled } = {} }) => {
       if (enabled && cypheredData[name]) {
-        cypheredData[name] = this.encrypt(cypheredData[name])
+        cypheredData[name] = this.encrypt(`${cypheredData[name]}`)
       }
     })
 
@@ -61,7 +61,7 @@ class CypherFields {
     data,
     user: UserType
   ) {
-    const cypheredData = [...data]
+    const cypheredData = JSON.parse(JSON.stringify([...data]))
 
     fields.forEach(({ name, cypher: { enabled } = {} }) => {
       if (enabled) {
