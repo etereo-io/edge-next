@@ -5,15 +5,14 @@ const Layout = (props) => (
     <Head {...props} />
     <Header />
 
-    <main>
+    <main className="admin-layout">
       <div className="edge-container">{props.children}</div>
     </main>
     <style jsx>{`
-      .admin-container {
-        max-width: 95vw;
+      .admin-layout {
+        background: var(--accents-1);
         min-height: 100vh;
-        margin: 0 auto;
-        padding: 2rem 1.25rem;
+        padding: var(--edge-gap-medium) var(--edge-gap);
       }
     `}</style>
   </>

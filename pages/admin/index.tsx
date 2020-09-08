@@ -49,17 +49,22 @@ const AdminPage = () => {
       <Layout title="Administration area">
         <h1>Administration</h1>
         <div className="links">
-          <LinkList links={[...links, ...contentLinks, ...groupLinks]} className="space-evenly"/>
+          <LinkList
+            links={[...links, ...contentLinks, ...groupLinks]}
+            className="space-evenly"
+          />
         </div>
 
         <style jsx>
-          {
-            `
-              .links {
-                margin-top: 5%;
-              }
-            `
-          }
+          {`
+            h1 {
+              font-size: 24px;
+              font-weight: 500;
+            }
+            .links {
+              margin-top: 5%;
+            }
+          `}
         </style>
       </Layout>
     )

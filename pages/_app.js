@@ -104,9 +104,10 @@ function MyApp({ Component, pageProps }) {
           --edge-success-light: #3291ff;
           --edge-success: #0070f3;
           --edge-success-dark: #0366d6;
-          --edge-success-soft: #0070f321;
+          --edge-success-soft: rgb(0 112 243 / 8%);
           --edge-error-light: #ff1a1a;
           --edge-error: #e00;
+          --edge-error-soft: rgb(238 0 0 / 8%);
           --edge-error-dark: #c00;
           --edge-warning-light: #f7b955;
           --edge-warning: #f5a623;
