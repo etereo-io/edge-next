@@ -13,10 +13,7 @@ import methods from '@lib/api/api-helpers/methods'
 import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import {
-  cypherData,
-  getDecipheredData,
-} from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 const getGroups = (filterParams, paginationParams, member) => async (
   req: Request,
@@ -57,7 +54,7 @@ const getGroups = (filterParams, paginationParams, member) => async (
           currentUser: req.currentUser,
         })
 
-        const decipheredData = getDecipheredData(
+        const decipheredData = Cypher.getDecipheredData(
           {
             type: type.slug,
             entity: 'group',
@@ -131,14 +128,14 @@ const createGroup = async (req: Request, res) => {
         req.currentUser
       )
 
-      const cypheredData = cypherData(type.fields, newContent)
+      const cypheredData = Cypher.cypherData(type.fields, newContent)
 
       addContent(type.slug, cypheredData)
         .then((data) => {
           // Trigger on content added hook
           onGroupAdded(data, req.currentUser)
 
-          const [group] = getDecipheredData(
+          const [group] = Cypher.getDecipheredData(
             {
               type: type.slug,
               entity: 'group',

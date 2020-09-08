@@ -20,10 +20,7 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { getGroupTypeDefinition } from '@lib/config'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import {
-  cypherData,
-  getDecipheredData,
-} from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -72,7 +69,7 @@ const getGroup = async ({ groupType, currentUser, item }: Request, res) => {
       currentUser: currentUser,
     })
 
-    const [group] = getDecipheredData(
+    const [group] = Cypher.getDecipheredData(
       {
         type: groupType.slug,
         entity: 'group',
@@ -155,7 +152,7 @@ const updateGroup = async (req: Request, res) => {
       if (Object.keys(newContent).length === 0) {
         // It is an empty request, no file was uploaded, no file was deleted)
         const filled = await fillContent(req.item)
-        const [group] = getDecipheredData(
+        const [group] = Cypher.getDecipheredData(
           {
             type: type.slug,
             entity: 'group',
@@ -168,14 +165,14 @@ const updateGroup = async (req: Request, res) => {
         return res.status(200).json(group)
       }
 
-      const cypheredData = cypherData(type.fields, newContent)
+      const cypheredData = Cypher.cypherData(type.fields, newContent)
 
       return updateOneContent(type.slug, req.item.id, cypheredData)
         .then((data) => {
           // Trigger on updated hook
           onGroupUpdated(data, req.currentUser)
 
-          const [group] = getDecipheredData(
+          const [group] = Cypher.getDecipheredData(
             {
               type: type.slug,
               entity: 'group',

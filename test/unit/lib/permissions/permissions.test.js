@@ -1,8 +1,16 @@
-import { commentPermission, contentPermission, groupCommentPermission, groupContentPermission, groupPermission, interactionPermission, userPermission } from '../../../../lib/permissions'
+import {
+  commentPermission,
+  contentPermission,
+  groupContentPermission,
+  groupPermission,
+  interactionPermission,
+  userPermission,
+  cypheredFieldPermission,
+} from '../../../../lib/permissions'
 
-import getPermissions from '../../../../lib/permissions/get-permissions'
+import getPermissions from '@lib/permissions/get-permissions'
 
-jest.mock('../../../../lib/permissions/get-permissions')
+jest.mock('@lib/permissions/get-permissions')
 
 describe('Entities permissions test', () => {
   afterEach(() => {
@@ -12,180 +20,186 @@ describe('Entities permissions test', () => {
   describe('Content permissions', () => {
     test('Public user has no permissions', async () => {
       getPermissions.mockReturnValue({
-        'content.project.read': ['USER']
+        'content.project.read': ['USER'],
       })
-  
+
       expect(contentPermission(null, 'project', 'read')).toEqual(false)
     })
 
     test('Public user has permissions', async () => {
       getPermissions.mockReturnValue({
-        'content.project.read': ['PUBLIC']
+        'content.project.read': ['PUBLIC'],
       })
-  
+
       expect(contentPermission(null, 'project', 'read')).toEqual(true)
     })
 
     test('User can not edit another content from other user', async () => {
       getPermissions.mockReturnValue({
-        'content.project.update': ['ADMIN']
+        'content.project.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const content = {
-        author: 'another'
+        author: 'another',
       }
-  
-      expect(contentPermission(user, 'project', 'update', content)).toEqual(false)
+
+      expect(contentPermission(user, 'project', 'update', content)).toEqual(
+        false
+      )
     })
 
     test('User can edit own content', async () => {
       getPermissions.mockReturnValue({
-        'content.project.update': ['ADMIN']
+        'content.project.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const content = {
-        author: 'myid'
+        author: 'myid',
       }
-  
-      expect(contentPermission(user, 'project', 'update', content)).toEqual(true)
+
+      expect(contentPermission(user, 'project', 'update', content)).toEqual(
+        true
+      )
     })
 
     test('Admin can edit any content', async () => {
       getPermissions.mockReturnValue({
-        'content.project.update': ['ADMIN']
+        'content.project.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['ADMIN'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const content = {
-        author: 'another'
+        author: 'another',
       }
-  
-      expect(contentPermission(user, 'project', 'update', content)).toEqual(true)
+
+      expect(contentPermission(user, 'project', 'update', content)).toEqual(
+        true
+      )
     })
   })
 
   describe('Group permissions', () => {
     test('Public user has no permissions', async () => {
       getPermissions.mockReturnValue({
-        'group.project.read': ['USER']
+        'group.project.read': ['USER'],
       })
-  
+
       expect(groupPermission(null, 'project', 'read')).toEqual(false)
     })
 
     test('Public user has permissions', async () => {
       getPermissions.mockReturnValue({
-        'group.project.read': ['PUBLIC']
+        'group.project.read': ['PUBLIC'],
       })
-  
+
       expect(groupPermission(null, 'project', 'read')).toEqual(true)
     })
 
     test('User can not edit another group from other user', async () => {
       getPermissions.mockReturnValue({
-        'group.project.update': ['ADMIN']
+        'group.project.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const group = {
         author: 'another',
-        members: []
+        members: [],
       }
-  
+
       expect(groupPermission(user, 'project', 'update', group)).toEqual(false)
     })
 
     test('User can edit own group', async () => {
       getPermissions.mockReturnValue({
-        'group.project.update': ['ADMIN']
+        'group.project.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const group = {
         author: 'myid',
-        members: []
+        members: [],
       }
-  
+
       expect(groupPermission(user, 'project', 'update', group)).toEqual(true)
     })
 
     test('Group admin can edit group', async () => {
       getPermissions.mockReturnValue({
-        'group.project.update': ['ADMIN', 'GROUP_ADMIN']
+        'group.project.update': ['ADMIN', 'GROUP_ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const group = {
         author: 'another user',
-        members: [{
-          id: 'myid',
-          roles: ['GROUP_ADMIN']
-        }]
+        members: [
+          {
+            id: 'myid',
+            roles: ['GROUP_ADMIN'],
+          },
+        ],
       }
-  
+
       expect(groupPermission(user, 'project', 'update', group)).toEqual(true)
     })
 
     test('Admin can edit any group', async () => {
       getPermissions.mockReturnValue({
-        'group.project.update': ['ADMIN']
+        'group.project.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['ADMIN'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const group = {
         author: 'another',
-        members: []
+        members: [],
       }
-  
+
       expect(groupPermission(user, 'project', 'update', group)).toEqual(true)
     })
   })
 
-
   describe('Group content permissions', () => {
-    
-
     test('Public user has no permissions', async () => {
       const group = {
         members: [],
       }
 
       getPermissions.mockReturnValue({
-        'group.project.content.task.read': ['GROUP_MEMBER']
+        'group.project.content.task.read': ['GROUP_MEMBER'],
       })
 
-  
-      expect(groupContentPermission(null, 'project', 'task', 'read', group)).toEqual(false)
+      expect(
+        groupContentPermission(null, 'project', 'task', 'read', group)
+      ).toEqual(false)
     })
 
     test('Public user has permissions', async () => {
@@ -194,69 +208,96 @@ describe('Entities permissions test', () => {
       }
 
       getPermissions.mockReturnValue({
-        'group.project.content.task.read': ['PUBLIC']
+        'group.project.content.task.read': ['PUBLIC'],
       })
 
-  
-      expect(groupContentPermission(null, 'project', 'task', 'read', group)).toEqual(true)
+      expect(
+        groupContentPermission(null, 'project', 'task', 'read', group)
+      ).toEqual(true)
     })
 
     test('Member user has permissions', async () => {
       const group = {
-        members: [{
-          id: 'abc',
-          roles: ['GROUP_MEMBER']
-        }],
+        members: [
+          {
+            id: 'abc',
+            roles: ['GROUP_MEMBER'],
+          },
+        ],
       }
 
       getPermissions.mockReturnValue({
-        'group.project.content.task.read': ['GROUP_MEMBER']
+        'group.project.content.task.read': ['GROUP_MEMBER'],
       })
 
-  
-      expect(groupContentPermission({
-        id: 'abc'
-      }, 'project', 'task', 'read', group)).toEqual(true)
+      expect(
+        groupContentPermission(
+          {
+            id: 'abc',
+          },
+          'project',
+          'task',
+          'read',
+          group
+        )
+      ).toEqual(true)
     })
 
     test('Non Member user has no permissions', async () => {
       const group = {
-        members: [{
-          id: 'abc',
-          roles: ['GROUP_MEMBER']
-        }],
+        members: [
+          {
+            id: 'abc',
+            roles: ['GROUP_MEMBER'],
+          },
+        ],
       }
 
       getPermissions.mockReturnValue({
-        'group.project.content.task.read': ['GROUP_MEMBER']
+        'group.project.content.task.read': ['GROUP_MEMBER'],
       })
 
-  
-      expect(groupContentPermission({
-        id: 'xxxx'
-      }, 'project', 'task', 'read', group)).toEqual(false)
+      expect(
+        groupContentPermission(
+          {
+            id: 'xxxx',
+          },
+          'project',
+          'task',
+          'read',
+          group
+        )
+      ).toEqual(false)
     })
-
 
     test('User can not edit another content from other user inside a group', async () => {
       const group = {
-        members: []
+        members: [],
       }
 
       getPermissions.mockReturnValue({
-        'group.project.content.task.update': ['ADMIN']
+        'group.project.content.task.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const content = {
-        author: 'another'
+        author: 'another',
       }
-  
-      expect(groupContentPermission(user, 'project', 'task', 'update', group, content)).toEqual(false)
+
+      expect(
+        groupContentPermission(
+          user,
+          'project',
+          'task',
+          'update',
+          group,
+          content
+        )
+      ).toEqual(false)
     })
 
     test('User can edit own content inside a group', async () => {
@@ -265,170 +306,221 @@ describe('Entities permissions test', () => {
       }
 
       getPermissions.mockReturnValue({
-        'group.project.content.task.update': ['ADMIN']
+        'group.project.content.task.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
 
       const content = {
-        author: 'myid'
+        author: 'myid',
       }
-  
-      expect(groupContentPermission(user, 'project', 'task', 'update', group, content)).toEqual(true)
+
+      expect(
+        groupContentPermission(
+          user,
+          'project',
+          'task',
+          'update',
+          group,
+          content
+        )
+      ).toEqual(true)
     })
 
     test('User with edit permissions can edit other content inside a group', async () => {
       const group = {
-        members: [ {
-          id: '111',
-          roles: ['SECRET_ROLE']
-        }],
+        members: [
+          {
+            id: '111',
+            roles: ['SECRET_ROLE'],
+          },
+        ],
         permissions: {
           'group.project.content.task.read': ['SECRET_ROLE'],
-          'group.project.content.task.update': ['SECRET_ROLE']
-        }
+          'group.project.content.task.update': ['SECRET_ROLE'],
+        },
       }
 
       getPermissions.mockReturnValue({
-        'group.project.content.task.update': ['ADMIN']
+        'group.project.content.task.update': ['ADMIN'],
       })
 
       const user = {
         roles: ['USER'],
-        id: '111' // SECRET_ROLE
+        id: '111', // SECRET_ROLE
       }
 
       const content = {
-        author: 'myid'
+        author: 'myid',
       }
-  
-      expect(groupContentPermission(user, 'project', 'task', 'update', group, content)).toEqual(true)
+
+      expect(
+        groupContentPermission(
+          user,
+          'project',
+          'task',
+          'update',
+          group,
+          content
+        )
+      ).toEqual(true)
     })
 
     test('Content admin can edit any content, indenpendent of a group', async () => {
       const group = {
-        members: [{
-          id: 'abc',
-          roles: ['GROUP_MEMBER']
-        }, {
-          id: 'xxx',
-          roles: ['GROUP_ADMIN']
-        }],
+        members: [
+          {
+            id: 'abc',
+            roles: ['GROUP_MEMBER'],
+          },
+          {
+            id: 'xxx',
+            roles: ['GROUP_ADMIN'],
+          },
+        ],
         permissions: {
           'group.project.content.task.read': ['GROUP_MEMBER', 'GROUP_ADMIN'],
-          'group.project.content.task.update': ['GROUP_ADMIN']
-        }
+          'group.project.content.task.update': ['GROUP_ADMIN'],
+        },
       }
       getPermissions.mockReturnValue({
-        'content.project.admin': ['ADMIN']
+        'content.project.admin': ['ADMIN'],
       })
 
       const user = {
         roles: ['ADMIN'],
-        id: 'abc'
+        id: 'abc',
       }
 
       const content = {
-        author: 'another'
+        author: 'another',
       }
-  
-      expect(groupContentPermission(user, 'project', 'task', 'update', group, content)).toEqual(true)
+
+      expect(
+        groupContentPermission(
+          user,
+          'project',
+          'task',
+          'update',
+          group,
+          content
+        )
+      ).toEqual(true)
     })
   })
 
   test('Normal member can not edit other content', async () => {
     const group = {
-      members: [{
-        id: 'abc',
-        roles: ['GROUP_MEMBER']
-      }, {
-        id: 'xxx',
-        roles: ['GROUP_ADMIN']
-      }],
+      members: [
+        {
+          id: 'abc',
+          roles: ['GROUP_MEMBER'],
+        },
+        {
+          id: 'xxx',
+          roles: ['GROUP_ADMIN'],
+        },
+      ],
       permissions: {
         'group.project.content.task.read': ['GROUP_MEMBER', 'GROUP_ADMIN'],
-        'group.project.content.task.update': ['GROUP_ADMIN']
-      }
+        'group.project.content.task.update': ['GROUP_ADMIN'],
+      },
     }
     getPermissions.mockReturnValue({
-      'content.project.admin': ['ADMIN']
+      'content.project.admin': ['ADMIN'],
     })
 
     const user = {
       roles: ['USER'],
-      id: 'abc'
+      id: 'abc',
     }
 
     const content = {
-      author: 'another'
+      author: 'another',
     }
 
-    expect(groupContentPermission(user, 'project', 'task', 'update', group, content)).toEqual(false)
+    expect(
+      groupContentPermission(user, 'project', 'task', 'update', group, content)
+    ).toEqual(false)
   })
 
   describe('Comments permission', () => {
     test('Public user can list comments ', () => {
       getPermissions.mockReturnValue({
-        'content.test.comments.read': ['PUBLIC']
+        'content.test.comments.read': ['PUBLIC'],
       })
 
       expect(commentPermission(null, 'test', 'read')).toEqual(true)
-  
     })
 
     test('Public user can not list comments ', () => {
       getPermissions.mockReturnValue({
-        'content.test.comments.read': ['USER']
+        'content.test.comments.read': ['USER'],
       })
 
       expect(commentPermission(null, 'test', 'read')).toEqual(false)
-  
     })
 
     test('Admin can list comments ', () => {
       getPermissions.mockReturnValue({
-        'content.test.comments.admin': ['ADMIN']
+        'content.test.comments.admin': ['ADMIN'],
       })
 
-      expect(commentPermission({
-        roles: ['ADMIN']
-      }, 'test', 'read')).toEqual(true)
-  
+      expect(
+        commentPermission(
+          {
+            roles: ['ADMIN'],
+          },
+          'test',
+          'read'
+        )
+      ).toEqual(true)
     })
 
     test('Owner can edit own comment ', () => {
       getPermissions.mockReturnValue({
-        'content.test.comments.update': ['ADMIN']
+        'content.test.comments.update': ['ADMIN'],
       })
 
-      expect(commentPermission({
-        id: 'abc',
-        roles: ['USER']
-      }, 'test', 'update', { author: 'abc'})).toEqual(true)
-  
+      expect(
+        commentPermission(
+          {
+            id: 'abc',
+            roles: ['USER'],
+          },
+          'test',
+          'update',
+          { author: 'abc' }
+        )
+      ).toEqual(true)
     })
 
     test('User can not edit other comment ', () => {
       getPermissions.mockReturnValue({
-        'content.test.comments.update': ['ADMIN']
+        'content.test.comments.update': ['ADMIN'],
       })
 
-      expect(commentPermission({
-        id: 'abc',
-        roles: ['USER']
-      }, 'test', 'update', { author: 'xxxx'})).toEqual(false)
-  
+      expect(
+        commentPermission(
+          {
+            id: 'abc',
+            roles: ['USER'],
+          },
+          'test',
+          'update',
+          { author: 'xxxx' }
+        )
+      ).toEqual(false)
     })
   })
-
 
   describe('User permission', () => {
     test('Public user can list user ', () => {
       getPermissions.mockReturnValue({
-        'user.read': ['PUBLIC']
+        'user.read': ['PUBLIC'],
       })
 
       expect(userPermission(null, 'read')).toEqual(true)
@@ -436,7 +528,7 @@ describe('Entities permissions test', () => {
 
     test('Public user can list a user ', () => {
       getPermissions.mockReturnValue({
-        'user.read': ['PUBLIC']
+        'user.read': ['PUBLIC'],
       })
 
       expect(userPermission(null, 'read', '@userid')).toEqual(true)
@@ -444,7 +536,7 @@ describe('Entities permissions test', () => {
 
     test('Public user can not list user ', () => {
       getPermissions.mockReturnValue({
-        'user.read': ['USER']
+        'user.read': ['USER'],
       })
 
       expect(userPermission(null, 'read')).toEqual(false)
@@ -452,95 +544,214 @@ describe('Entities permissions test', () => {
 
     test('User can see own profile ', () => {
       getPermissions.mockReturnValue({
-        'user.read': ['RESTRICTED_ROLE']
+        'user.read': ['RESTRICTED_ROLE'],
       })
 
-      expect(userPermission({
-        id: 'abc',
-        roles: ['USER']
-      }, 'read', 'abc')).toEqual(true)
+      expect(
+        userPermission(
+          {
+            id: 'abc',
+            roles: ['USER'],
+          },
+          'read',
+          'abc'
+        )
+      ).toEqual(true)
     })
 
     test('User can see me profile ', () => {
       getPermissions.mockReturnValue({
-        'user.read': ['RESTRICTED_ROLE']
+        'user.read': ['RESTRICTED_ROLE'],
       })
 
-      expect(userPermission({
-        id: 'abc',
-        roles: ['USER']
-      }, 'read', 'me')).toEqual(true)
+      expect(
+        userPermission(
+          {
+            id: 'abc',
+            roles: ['USER'],
+          },
+          'read',
+          'me'
+        )
+      ).toEqual(true)
     })
 
     test('User can not see other profile ', () => {
       getPermissions.mockReturnValue({
-        'user.read': ['RESTRICTED_ROLE']
+        'user.read': ['RESTRICTED_ROLE'],
       })
 
-      expect(userPermission({
-        id: 'abc',
-        roles: ['USER']
-      }, 'read', '@jimmy')).toEqual(false)
+      expect(
+        userPermission(
+          {
+            id: 'abc',
+            roles: ['USER'],
+          },
+          'read',
+          '@jimmy'
+        )
+      ).toEqual(false)
     })
 
     test('Admin can see other profile ', () => {
       getPermissions.mockReturnValue({
         'user.read': ['RESTRICTED_ROLE'],
-        'user.admin': ['ADMIN']
+        'user.admin': ['ADMIN'],
       })
 
-      expect(userPermission({
-        id: 'abc',
-        roles: ['ADMIN']
-      }, 'read', '@jimmy')).toEqual(true)
+      expect(
+        userPermission(
+          {
+            id: 'abc',
+            roles: ['ADMIN'],
+          },
+          'read',
+          '@jimmy'
+        )
+      ).toEqual(true)
     })
-
-   
   })
 
-
-  
   describe('Interaction permissions', () => {
     const mockPermissions = {
       'content.project.interactions.like.read': ['USER'],
       'content.project.interactions.like.update': ['SUPERVISOR'],
       'content.project.interactions.like.admin': ['ADMIN'],
-      'user.user.interactions.follow.read': ['PUBLIC']
+      'user.user.interactions.follow.read': ['PUBLIC'],
     }
 
     test('Public user has no permissions to read project likes', async () => {
       getPermissions.mockReturnValue(mockPermissions)
-  
-      expect(interactionPermission(null, 'content', 'project', 'like', 'read')).toEqual(false)
+
+      expect(
+        interactionPermission(null, 'content', 'project', 'like', 'read')
+      ).toEqual(false)
     })
 
     test('Logged user has permissions to read project likes', async () => {
       getPermissions.mockReturnValue(mockPermissions)
       const user = {
         roles: ['USER'],
-        id: 'myid'
+        id: 'myid',
       }
-  
-      expect(interactionPermission(user, 'content', 'project', 'like', 'read')).toEqual(true)
+
+      expect(
+        interactionPermission(user, 'content', 'project', 'like', 'read')
+      ).toEqual(true)
     })
 
     test('Admin has permissions to read project likes', async () => {
       getPermissions.mockReturnValue(mockPermissions)
       const user = {
         roles: ['ADMIN'],
-        id: 'myid'
+        id: 'myid',
       }
-  
-      expect(interactionPermission(user, 'content', 'project', 'like', 'read')).toEqual(true)
-    })
 
+      expect(
+        interactionPermission(user, 'content', 'project', 'like', 'read')
+      ).toEqual(true)
+    })
 
     test('Public has permissions to read user follows', async () => {
       getPermissions.mockReturnValue(mockPermissions)
- 
-      expect(interactionPermission(null, 'user', 'user', 'follow', 'read')).toEqual(true)
+
+      expect(
+        interactionPermission(null, 'user', 'user', 'follow', 'read')
+      ).toEqual(true)
+    })
+  })
+
+  describe('Cyphered Field Permission', () => {
+    const mockPermissions = {
+      'content.post1.fields.description.cypher': ['USER'],
+      'group.project.fields.field1.cypher': ['USER'],
+      'group.project.admin': ['ADMIN'],
+      'user.profile.fields.field2.cypher': ['SHOW'],
+    }
+
+    test('Public user has no permissions to read content field', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+
+      expect(
+        cypheredFieldPermission(null, 'content', 'post1', 'description')
+      ).toEqual(false)
     })
 
+    test('Logged user has permissions to read content field', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+
+      const user = {
+        roles: ['USER'],
+        id: 'myid',
+      }
+
+      expect(
+        cypheredFieldPermission(user, 'content', 'post1', 'description')
+      ).toEqual(true)
+    })
+
+    test('Logged user has permissions to read group field', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+
+      const user = {
+        roles: ['USER', 'PUB'],
+        id: 'myid',
+      }
+
+      expect(
+        cypheredFieldPermission(user, 'group', 'project', 'field1')
+      ).toEqual(true)
+    })
+
+    test('Logged user has permissions to read group field if user has admin rights', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+
+      const user = {
+        roles: ['ADMIN'],
+        id: 'myid',
+      }
+
+      expect(
+        cypheredFieldPermission(user, 'group', 'project', 'field1')
+      ).toEqual(true)
+    })
+
+    test("Logged user has no permissions to read group field if user doesn't have admin rights", async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+
+      const user = {
+        roles: ['A'],
+        id: 'myid',
+      }
+
+      expect(
+        cypheredFieldPermission(user, 'group', 'project', 'field1')
+      ).toEqual(false)
+    })
+
+    test('Logged user has permissions to read profile field', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+
+      const user = {
+        roles: ['SHOW'],
+        id: 'myid',
+      }
+
+      expect(
+        cypheredFieldPermission(user, 'user', 'profile', 'field2')
+      ).toEqual(true)
+    })
+
+    test('Public user has no permissions to read profile field', async () => {
+      getPermissions.mockReturnValue(mockPermissions)
+
+      const user = {
+        roles: ['PUBLIC'],
+      }
+
+      expect(
+        cypheredFieldPermission(user, 'user', 'profile', 'field2')
+      ).toEqual(false)
+    })
   })
 })
- 

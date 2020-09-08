@@ -13,10 +13,7 @@ import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import {
-  getDecipheredData,
-  cypherData,
-} from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import appConfig from '@lib/config'
 
 const getUsers = (filterParams, paginationParams) => (req: Request, res) => {
@@ -29,7 +26,7 @@ const getUsers = (filterParams, paginationParams) => (req: Request, res) => {
         ? data.results
         : data.results.map(hidePrivateUserFields)
 
-      const results = getDecipheredData(
+      const results = Cypher.getDecipheredData(
         {
           type: 'profile',
           entity: 'user',
@@ -96,13 +93,13 @@ const addUser = (user) => async ({ currentUser }: Request, res) => {
   try {
     const added = await createUser(
       // @ts-ignore
-      cypherData(appConfig.user.profile.fields, parsedUser),
+      Cypher.cypherData(appConfig.user.profile.fields, parsedUser),
       currentUserHasAdministrationRights
     )
 
-    // onUserAdded(added, currentUser)
+    onUserAdded(added, currentUser)
 
-    const [createdUser] = getDecipheredData(
+    const [createdUser] = Cypher.getDecipheredData(
       {
         type: 'user',
         entity: 'user',

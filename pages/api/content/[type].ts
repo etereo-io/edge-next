@@ -9,10 +9,7 @@ import {
   isValidContentType,
   loadUser,
 } from '@lib/api/middlewares'
-import {
-  cypherData,
-  getDecipheredData,
-} from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { ANY_OBJECT, Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
@@ -56,7 +53,7 @@ const getContent = (filterParams, paginationParams) => async (
           currentUser: req.currentUser,
         })
 
-        const decipheredData = getDecipheredData(
+        const decipheredData = Cypher.getDecipheredData(
           {
             type: type.slug,
             entity: 'content',
@@ -99,14 +96,14 @@ const createContent = async (req: Request, res) => {
         req.currentUser
       )
 
-      const cypheredData = cypherData(type.fields, newContent)
+      const cypheredData = Cypher.cypherData(type.fields, newContent)
 
       addContent(type.slug, cypheredData)
         .then((data) => {
           // Trigger on content added hook
           onContentAdded(data, req.currentUser)
 
-          const [content] = getDecipheredData(
+          const [content] = Cypher.getDecipheredData(
             {
               type: type.slug,
               entity: 'content',

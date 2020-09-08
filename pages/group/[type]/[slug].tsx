@@ -12,7 +12,7 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import GroupContext from '@components/groups/context/group-context'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getSession } from '@lib/api/auth/iron'
-import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { groupUserPermission } from '@lib/permissions'
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -72,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     currentUser,
   })
 
-  const decipheredData = getDecipheredData(
+  const decipheredData = Cypher.getDecipheredData(
     {
       type: groupTypeDefinition.slug,
       entity: 'group',

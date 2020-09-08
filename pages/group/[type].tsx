@@ -12,7 +12,7 @@ import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { useGroupTypes } from '@lib/client/hooks'
 import { getSession } from '@lib/api/auth/iron'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { groupPermission } from '@lib/permissions'
 
 // Get serversideProps is important for SEO, and only available at the pages level
@@ -68,7 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         currentUser,
       })
 
-      const decipheredData = getDecipheredData(
+      const decipheredData = Cypher.getDecipheredData(
         {
           type: groupTypeDefinition.slug,
           entity: 'group',

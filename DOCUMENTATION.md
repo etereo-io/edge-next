@@ -442,6 +442,7 @@ There are different fields that can be configured with some standard attributes 
 - hidden
 - description
 - showLabel: shows the field label on the content view, default false
+- cyphered (the value of the field will be stored to the database in the cyphered format. Only users with specific roles can see deciphered information or author of post/group/profile)
 
 Example: 
 
@@ -454,7 +455,11 @@ const contentType = {
     name: 'myfield',
     description: 'This is some information to help the user fill the field',
     hidden: false, // Hide the field from display
-    errorMessage: 'The error message that is going to be displayed'
+    errorMessage: 'The error message that is going to be displayed',
+    cyphered: {
+      enabled: true,
+      read: ['ADMIN', 'USER'] // which roles can see this field and the value
+    }
   }]
 }
 ```

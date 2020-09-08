@@ -25,8 +25,7 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { v4 as uuidv4 } from 'uuid'
-import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
-import appConfig from '@lib/config'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -79,11 +78,11 @@ const getUser = (req: Request<UserType>, res) => {
 
   const user = showPrivateFields ? req.item : hidePrivateUserFields(req.item)
 
-  const decipheredData = getDecipheredData(
+  const decipheredData = Cypher.getDecipheredData(
     {
       type: 'profile',
       entity: 'user',
-      fields: appConfig.user.profile.fields,
+      fields: edgeConfig.user.profile.fields,
     },
     [user],
     req.currentUser
@@ -133,16 +132,18 @@ async function updateProfile(userId, profile, req: Request<UserType>) {
     profile
   )
 
+  const newUser = Cypher.cypherData(edgeConfig.user.profile.fields, newContent)
+
   return updateOneUser(userId, {
     profile: {
-      ...newContent,
+      ...newUser,
     },
   }).then((item) => {
-    const [user] = getDecipheredData(
+    const [user] = Cypher.getDecipheredData(
       {
         type: 'user',
         entity: 'user',
-        fields: appConfig.user.profile.fields,
+        fields: edgeConfig.user.profile.fields,
       },
       [item],
       req.currentUser

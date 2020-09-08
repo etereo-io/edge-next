@@ -8,7 +8,7 @@ import { contentPermission, cypheredFieldPermission } from '@lib/permissions'
 import { findOneContent } from '@lib/api/entities/content'
 import { getContentTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
-import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })
@@ -65,7 +65,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return
   }
 
-  const [contentObject] = getDecipheredData(
+  const [contentObject] = Cypher.getDecipheredData(
     {
       type: contentTypeDefinition.slug,
       entity: 'content',

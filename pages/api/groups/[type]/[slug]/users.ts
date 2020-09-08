@@ -15,7 +15,7 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content'
-import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 const getUsers = async (
   { item: group, currentUser, groupType }: Request,
@@ -41,7 +41,7 @@ async function saveGroupUsers({ type, id, data, thenCallback, res }) {
 }
 
 function formGroupItem(slug, fields, data, user) {
-  const [group] = getDecipheredData(
+  const [group] = Cypher.getDecipheredData(
     {
       type: slug,
       entity: 'group',

@@ -8,7 +8,7 @@ import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 import { cypheredFieldPermission, groupPermission } from '@lib/permissions'
-import { getDecipheredData } from '@lib/api/api-helpers/cypher-fields'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })
@@ -60,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     return
   }
 
-  const [groupObject] = getDecipheredData(
+  const [groupObject] = Cypher.getDecipheredData(
     {
       type: groupTypeDefinition.slug,
       entity: 'group',
