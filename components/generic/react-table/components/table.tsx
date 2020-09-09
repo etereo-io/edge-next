@@ -146,7 +146,7 @@ function ReactTable<T extends object = {}>({
                     >
                       {column.render('Header')}
                     </div>
-                    <span>
+                    <span className="sort-icon">
                       {column.isSorted
                         ? column.isSortedDesc
                           ? ' ↓'
@@ -202,6 +202,14 @@ function ReactTable<T extends object = {}>({
             background: var(--accents-1-medium);
             display: block;
             font-size: 12px;
+          }
+
+          .sort-icon {
+            font-size: 14px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 16px;
           }
 
           .table .tr {
