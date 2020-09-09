@@ -96,6 +96,12 @@ const EditGroup = ({ groupType, groupObject }) => {
           margin-bottom: var(--edge-gap);
         }
 
+        @media all and (max-width: 720px) {
+          h1 {
+            font-size: 18px;
+          }
+        }
+
         .edit-page .description {
           font-size: 12px;
         }

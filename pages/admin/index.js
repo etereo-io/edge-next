@@ -111,6 +111,12 @@ const AdminPage = () => {
           font-weight: 500;
         }
 
+        @media all and (max-width: 720px) {
+          h1 {
+            font-size: 18px;
+          }
+        }
+
         .stats-panel{
           align-items: start;
           display: flex;

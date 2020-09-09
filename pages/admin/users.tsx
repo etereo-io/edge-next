@@ -34,6 +34,12 @@ const AdminPage = () => {
             font-size: 23px;
             font-weight: 500;
           }
+
+          @media all and (max-width: 720px) {
+          h1 {
+            font-size: 18px;
+          }
+        }
             .user-administration {
               display: flex;
               flex-direction: column
