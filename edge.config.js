@@ -57,7 +57,7 @@ export const getConfig = () => {
   const postContentType = {
     title: 'Posts',
 
-    slug: 'posts',
+    slug: 'post',
 
     slugGeneration: ['title', 'createdAt'],
 
@@ -161,10 +161,6 @@ export const getConfig = () => {
         required: true,
         description: 'Markdown supported.',
         errorMessage: 'Description must be between 20 and 2000 characters',
-        cypher: {
-          enabled: true,
-          read: ['ADMIN']
-        },
       },
       {
         name: 'images',
@@ -209,10 +205,6 @@ export const getConfig = () => {
         placeholder: 'Markdown',
         required: true,
         errorMessage: 'Text is required',
-        cypher: {
-          enabled: true,
-          read: ['ADMIN', 'USER']
-        },
       },
     ],
   }
@@ -422,10 +414,6 @@ export const getConfig = () => {
         minlength: 1,
         maxlength: 200,
         required: true,
-        cypher: {
-          enabled: true,
-          read: ['ADMIN']
-        },
         description:
           'Tell the world something about this publication group (max 200 characters)',
       },
@@ -469,10 +457,6 @@ export const getConfig = () => {
           required: false,
           minlength: 20,
           maxlength: 300,
-          cypher: {
-            enabled: true,
-            read: ['ADMIN']
-          },
         },
         {
           name: 'twitter',
