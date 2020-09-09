@@ -103,7 +103,7 @@ function ToolBar() {
 
         @media all and (max-width: 720px) {
           .edge-panel-user {
-            top: 56px;
+            top: 80px;
             padding: var(--edge-gap) 0;
           }
 
