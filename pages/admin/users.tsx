@@ -29,8 +29,12 @@ const AdminPage = () => {
         </div>
         <style jsx>
           {`
+
+          h1 {
+            font-size: 23px;
+            font-weight: 500;
+          }
             .user-administration {
-              margin: 1%;
               display: flex;
               flex-direction: column
             }
