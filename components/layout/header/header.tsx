@@ -1,14 +1,48 @@
 import React, { useState, memo } from 'react'
 import Link from 'next/link'
-
+import LinkList from '@components/generic/link-list/link-list'
 import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
-import { useUser } from '@lib/client/hooks'
 import Progress from './progress'
 import UserHeader from './user-header'
+import { hasPermission } from '@lib/permissions'
+import {
+  useContentTypes,
+  usePermission,
+  useUser,
+  useGroupTypes,
+} from '@lib/client/hooks'
 
 function Header() {
   const { user } = useUser()
   const [active, setActive] = useState(false)
+  const links = []
+  const contentTypes = useContentTypes(['admin'])
+  const groupTypes = useGroupTypes(['admin'])
+  const groupLinks = groupTypes.map(({ slug, title }) => ({
+    link: `/admin/groups/${slug}`,
+    title: `${title}`,
+  }))
+
+  if (hasPermission(user, `user.admin`)) {
+    links.push({
+      title: 'Users',
+      link: '/admin/users',
+    })
+  }
+
+  if (hasPermission(user, `admin.stats`)) {
+    links.push({
+      title: 'Site stats',
+      link: '/admin/stats',
+    })
+  }
+
+  const contentLinks = contentTypes.map((type) => {
+    return {
+      link: `/admin/content/${type.slug}`,
+      title: `${type.title}`,
+    }
+  })
 
   return (
     <>
@@ -35,6 +69,13 @@ function Header() {
                 <EdgeLogo />
               </a>
             </Link>
+
+            <nav className="admin-menu">
+              <LinkList
+                links={[...links, ...contentLinks, ...groupLinks]}
+                className="space-evenly"
+              />
+            </nav>
 
             <UserHeader user={user} />
           </div>

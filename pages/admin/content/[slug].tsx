@@ -17,13 +17,24 @@ const AdminPage = () => {
 
   // Load data
   return (
-    available && (
+    <>
+    {available && (
       <Layout title="Content">
         <h1>Content administration for {slug}</h1>
-
         <ContentTable type={contentType} />
       </Layout>
-    )
+    )}
+
+    <style jsx>
+    {`
+      h1{
+        font-size: 23px;
+        font-weight: 500;
+        margin-bottom: 40px;
+      }
+    `}
+  </style>
+</>
   )
 }
 

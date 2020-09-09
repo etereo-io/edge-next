@@ -35,13 +35,13 @@ const AdminPage = () => {
   const contentLinks = contentTypes.map((type) => {
     return {
       link: `/admin/content/${type.slug}`,
-      title: `Administer ${type.title}`,
+      title: `${type.title}`,
     }
   })
 
   const groupLinks = groupTypes.map(({ slug, title }) => ({
     link: `/admin/groups/${slug}`,
-    title: `Administer ${title}`,
+    title: `${title}`,
   }))
 
   return (

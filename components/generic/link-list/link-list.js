@@ -21,24 +21,13 @@ function Links({ links, className = '' }) {
             list-style: none;
             display: flex;
             flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
           }
 
           li {
-            margin-right: var(--edge-gap);
-            margin-bottom: var(--edge-gap);
-          }
-
-          a {
-            border: var(--light-border);
-            padding: var(--edge-gap);
-            color: var(--edge-link-color);
-            text-decoration: none;
-            display: block;
-            border-radius: var(--edge-radius);
-          }
-          
-          .space-evenly ul {
-            justify-content: space-evenly;
+            font-size: 13px;
+            padding: 0 8px;
           }
          
         `}
