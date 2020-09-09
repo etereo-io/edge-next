@@ -259,8 +259,6 @@ describe('Integrations tests for cyphered data of content endpoint', () => {
       'all fields of the first post have to be deciphered',
       {
         'content.post.read': ['USER'],
-        'content.post.admin': ['ADMIN'],
-        'content.post.fields.cypher1.cypher': ['ADMIN'],
       },
       {
         id: '5',
@@ -293,8 +291,6 @@ describe('Integrations tests for cyphered data of content endpoint', () => {
       'all fields of the second posts have to be deciphered',
       {
         'content.post.read': ['USER'],
-        'content.post.admin': ['ADMIN'],
-        'content.post.fields.cypher1.cypher': ['ADMIN'],
       },
       {
         id: '6',

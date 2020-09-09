@@ -259,8 +259,6 @@ describe('Integrations tests for cyphered data of group endpoint', () => {
       'all fields of the first group have to be deciphered',
       {
         'group.project.read': ['USER'],
-        'group.project.admin': ['ADMIN'],
-        'group.project.fields.cypher1.cypher': ['ADMIN'],
       },
       {
         id: '5',
@@ -293,8 +291,6 @@ describe('Integrations tests for cyphered data of group endpoint', () => {
       'all fields of the second group have to be deciphered',
       {
         'group.project.read': ['USER'],
-        'group.project.admin': ['ADMIN'],
-        'group.project.fields.cypher1.cypher': ['ADMIN'],
       },
       {
         id: '6',

@@ -18,7 +18,6 @@ import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
-import { getGroupTypeDefinition } from '@lib/config'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import Cypher from '@lib/api/api-helpers/cypher-fields'
 
@@ -59,11 +58,9 @@ const loadGroupItemMiddleware = async (req: Request, res, cb) => {
 
 const getGroup = async ({ groupType, currentUser, item }: Request, res) => {
   if (item) {
-    const groupTypeDefinition = getGroupTypeDefinition(groupType)
-
     const data = await appendInteractions({
       data: [item],
-      interactionsConfig: groupTypeDefinition.entityInteractions,
+      interactionsConfig: groupType.entityInteractions,
       entity: 'group',
       entityType: groupType.slug,
       currentUser: currentUser,

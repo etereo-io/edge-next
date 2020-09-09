@@ -255,8 +255,6 @@ describe('Integrations tests for cyphered data of users endpoint', () => {
       'all fields of the first user have to be deciphered',
       {
         'user.read': ['USER'],
-        'user.admin': ['ADMIN'],
-        'user.profile.fields.cypher1.cypher': ['ADMIN'],
       },
       {
         id: '0',
@@ -304,8 +302,6 @@ describe('Integrations tests for cyphered data of users endpoint', () => {
       'all fields of the second user have to be deciphered',
       {
         'user.read': ['USER'],
-        'user.admin': ['ADMIN'],
-        'user.profile.fields.cypher1.cypher': ['ADMIN'],
       },
       {
         id: '1',
