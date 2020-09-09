@@ -89,7 +89,7 @@ const ListItem = (props) => {
           </Button>
         )}
         {!success && (
-          <Button loading={loading} alt={true} onClick={onClickDelete}>
+          <Button loading={loading} success={true} onClick={onClickDelete}>
             Delete
           </Button>
         )}

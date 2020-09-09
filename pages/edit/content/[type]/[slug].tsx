@@ -96,7 +96,13 @@ const EditContent = ({ contentType, contentObject }) => {
           margin-bottom: var(--edge-gap-double);
         }
         h1 {
+          font-size: 23px;
+          font-weight: 500;
           margin-bottom: var(--edge-gap);
+        }
+
+        .edit-page .description {
+          font-size: 12px;
         }
       `}</style>
     </>

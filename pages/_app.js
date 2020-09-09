@@ -287,6 +287,7 @@ function MyApp({ Component, pageProps }) {
 
         a {
           color: inherit;
+          text-decoration: none;
         }
 
         #app-container {
@@ -341,7 +342,7 @@ function MyApp({ Component, pageProps }) {
 
         .input-group label {
           display: block;
-          font-size: var(--edge-form-large-font);
+          font-size: 14px;
           font-weight: 500;
           padding-bottom: var(--edge-gap-half);
         }
@@ -403,7 +404,7 @@ function MyApp({ Component, pageProps }) {
           border: var(--light-border);
           border-radius: var(--edge-radius);
           color: var(--edge-foreground);
-          font-size: var(--edge-form-large-font);
+          font-size: 14px;
           padding: var(--edge-gap);
           transition: 0.25s ease;
           width: 100%;
@@ -465,7 +466,7 @@ function MyApp({ Component, pageProps }) {
           border: var(--light-border);
           border-radius: 4px;
           cursor: pointer;
-          font-size: var(--edge-form-large-font);
+          font-size: 14px;
           padding: var(--edge-gap);
           text-align: center;
           transition: 0.25s ease;

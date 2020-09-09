@@ -42,7 +42,7 @@ function ActionsCell({ slug, deleteRequest, item }: Props) {
         <Button href={`/edit/group/${slug}/${item.slug}`}>Edit</Button>
       )}
       {!success && (
-        <Button loading={loading} alt={true} onClick={onClickDelete}>
+        <Button loading={loading} success={true} onClick={onClickDelete}>
           Delete
         </Button>
       )}

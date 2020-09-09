@@ -161,6 +161,10 @@ function Button(props) {
             align-items: center;
             justify-content: center;
           }
+
+          a{
+            text-decoration: none;
+          }
         `}
       </style>
     </>

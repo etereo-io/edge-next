@@ -88,10 +88,16 @@ const EditGroup = ({ groupType, groupObject }) => {
 
       <style jsx>{`
         .edit-page {
-          margin-bottom: var(--edge-gap-double);
+          padding: var(--edge-gap-medium) var(--edge-gap);
         }
         h1 {
+          font-size: 23px;
+          font-weight: 500;
           margin-bottom: var(--edge-gap);
+        }
+
+        .edit-page .description {
+          font-size: 12px;
         }
       `}</style>
     </>
