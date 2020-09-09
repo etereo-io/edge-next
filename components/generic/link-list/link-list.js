@@ -27,7 +27,7 @@ function Links({ links, className = '' }) {
 
           li {
             font-size: 13px;
-            padding: 0 8px;
+            padding: 0 16px;
           }
          
         `}

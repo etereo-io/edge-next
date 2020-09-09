@@ -251,6 +251,11 @@ function Field(props) {
           .error .quill .ql-container {
             border: 1px solid red;
           }
+
+          .description {
+            color: var(--accents-3);
+            font-size: 12px;
+          }
         `}
       </style>
     </div>

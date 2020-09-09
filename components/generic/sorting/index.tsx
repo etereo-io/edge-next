@@ -5,8 +5,8 @@ import ArrowDown from '@icons/arrow-down.svg'
 
 const svgStyles = {
   fill: 'var(--edge-foreground)',
-  height: 16,
-  weight: 16,
+  height: 12,
+  weight: 12,
   cursor: 'pointer',
 }
 
@@ -70,8 +70,17 @@ function Sorting({ onChange, value, options }: Props) {
       <style jsx>
         {`
           .sorting {
+            background: var(--edge-background);
+            border-radius: 8px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
             display: flex;
             justify-content: flex-end;
+            z-index: 1;
+            position: relative;
+            margin-bottom: 8px;
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
           }
 
           .sortBy {
@@ -82,9 +91,10 @@ function Sorting({ onChange, value, options }: Props) {
           }
 
           .sortOrder {
-            width: 32px;
-            align-self: center;
+            width: 25px;
             text-align: center;
+            height: 25px;
+            line-height: 25px;
           }
 
           select {

@@ -8,12 +8,12 @@ const Layout = (props) => (
     <Header />
 
     <main
-      className={`${props.hasDivider ? 'has-divider' : ''} ${
+      className={`page-layout ${props.hasDivider ? 'has-divider' : ''} ${
         props.alt ? 'alt' : ''
       } ${props.className ? props.className : ''}`}
     >
       <div
-        className={`container ${props.fullWidth ? 'fullWidth' : ''} ${
+        className={`edge-container ${props.fullWidth ? 'fullWidth' : ''} ${
           props.className ? props.className : ''
         }`}
       >
@@ -48,6 +48,12 @@ const Layout = (props) => (
         margin: 0 auto;
         max-width: var(--edge-page-max-width);
         width: 100%;
+      }
+
+      .page-layout{
+        background: var(--accents-1-medium);
+        min-height: 100vh;
+        padding: var(--edge-gap-medium) var(--edge-gap);
       }
 
       @media all and (max-width: 720px) {

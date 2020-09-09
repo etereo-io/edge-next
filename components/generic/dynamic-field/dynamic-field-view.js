@@ -103,6 +103,7 @@ function Field({ field, value, typeDefinition }) {
             ))}
             <style jsx>{`
               span {
+                font-size: 14px;
                 padding-right: 5px;
               }
             `}</style>
@@ -120,8 +121,16 @@ function Field({ field, value, typeDefinition }) {
 
       {getField(field, value)}
       <style jsx>{`
+        .field-view:first-of-type {
+          border-bottom: 1px solid var(--accents-2);
+          padding-bottom: 8px;
+          margin-bottom: 8px;
+        }
+
         label {
+          font-size: 12px;
           font-weight: bold;
+          text-transform: uppercase;
         }
       `}</style>
     </div>

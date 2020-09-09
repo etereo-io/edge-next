@@ -88,7 +88,7 @@ function Header() {
         </div>
       </header>
       <style jsx>{`
-        @media all and (max-width: 860px){
+        @media all and (max-width: 960px){
           .admin-menu {
             display: none;
           }

@@ -98,11 +98,17 @@ const CreateGroup = ({ groupType, currentUser }) => {
         </div>
       </Layout>
       <style jsx>{`
-        .create-page {
+      .create-page {
           margin-bottom: var(--edge-gap-double);
         }
         h1 {
-          margin-bottom: var(--edge-gap);
+          font-size: 23px;
+          font-weight: 500;
+        }
+        @media all and (max-width: 720px) {
+          h1{
+              font-size: 16px;
+          }
         }
       `}</style>
     </>
