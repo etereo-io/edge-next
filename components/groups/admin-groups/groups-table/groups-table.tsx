@@ -145,7 +145,7 @@ function GroupsTable({ type }: Props) {
 
       <div className="load-more">
         {!isReachingEnd && (
-          <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
+          <Button loading={isLoadingMore} onClick={loadNewItems}>
             Load More
           </Button>
         )}
