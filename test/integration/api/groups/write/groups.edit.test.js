@@ -6,7 +6,7 @@ import {
 
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
-import  handler from '../../../../../pages/api/groups/[type]/[slug]'
+import handler from '../../../../../pages/api/groups/[type]/[slug]'
 import request from '../../requestHandler'
 
 jest.mock('../../../../../lib/api/auth/iron')
@@ -15,7 +15,6 @@ jest.mock('../../../../../lib/api/entities/content')
 jest.mock('../../../../../lib/api/storage')
 
 jest.mock('../../../../../edge.config', () => {
-  
   const mockGroupType = {
     title: 'Project',
 
@@ -24,7 +23,7 @@ jest.mock('../../../../../edge.config', () => {
     slugGeneration: ['title', 'createdAt'],
 
     publishing: {
-      draftMode: true
+      draftMode: true,
     },
 
     permissions: {
@@ -56,14 +55,23 @@ jest.mock('../../../../../edge.config', () => {
         type: 'img',
         label: 'Image',
         placeholder: 'Image',
-      }
+      },
+      {
+        name: 'cypherField',
+        label: 'cypherField',
+        type: 'text',
+        cypher: {
+          enabled: true,
+          read: ['USER1'],
+        },
+      },
     ],
 
-    user : {
+    user: {
       permissions: {
-        admin: ['GROUP_ADMIN', 'ADMIN']
-      }
-    }
+        admin: ['GROUP_ADMIN', 'ADMIN'],
+      },
+    },
   }
 
   return {
@@ -71,27 +79,26 @@ jest.mock('../../../../../edge.config', () => {
     getConfig: jest.fn().mockReturnValue({
       title: 'A test',
       description: 'A test',
-  
+
       groups: {
-        types: [mockGroupType]
+        types: [mockGroupType],
       },
 
-      user : {
-        permissions: {
-          
-        },
-  
-        roles: [{ label : 'user', value: 'USER'}],
+      user: {
+        permissions: {},
+
+        roles: [{ label: 'user', value: 'USER' }],
         newUserRoles: ['USER'],
       },
     }),
   }
-})  
+})
 
 describe('Integrations tests for group edition', () => {
-
   beforeEach(() => {
-    updateOneContent.mockReturnValue(Promise.resolve({ something: 'something '}))
+    updateOneContent.mockReturnValue(
+      Promise.resolve({ something: 'something ' })
+    )
   })
 
   afterEach(() => {
@@ -101,15 +108,15 @@ describe('Integrations tests for group edition', () => {
     getSession.mockReset()
   })
 
-
   test('a PUBLIC user should not be able to edit a group if its not allowed', async () => {
-      
     const params = { type: 'project', slug: '1' }
 
-    findOneContent.mockReturnValueOnce(Promise.resolve({
-      author: 'abc',
-      members: []
-    }))
+    findOneContent.mockReturnValueOnce(
+      Promise.resolve({
+        author: 'abc',
+        members: [],
+      })
+    )
 
     // Mock permissions
     getPermissions.mockReturnValue({
@@ -121,18 +128,17 @@ describe('Integrations tests for group edition', () => {
     getSession.mockReturnValueOnce()
 
     const newData = {
-      title: 'test'
+      title: 'test',
     }
 
     const res = await request(handler, {
       method: 'PUT',
-      query:params,
+      query: params,
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData)
-    });
-
+      body: JSON.stringify(newData),
+    })
 
     expect(res.statusCode).toBe(401)
     expect(res.body).toMatchObject({
@@ -141,15 +147,15 @@ describe('Integrations tests for group edition', () => {
   })
 
   test('a USER user should  be able to edit a group if its the author', async () => {
-      
     const params = { type: 'project', slug: '1' }
 
-
-    findOneContent.mockReturnValueOnce(Promise.resolve({
-      author: 'abc',
-      id: 'something',
-      members: []
-    }))
+    findOneContent.mockReturnValueOnce(
+      Promise.resolve({
+        author: 'abc',
+        id: 'something',
+        members: [],
+      })
+    )
 
     // Mock permissions
     getPermissions.mockReturnValue({
@@ -159,11 +165,11 @@ describe('Integrations tests for group edition', () => {
 
     getSession.mockReturnValueOnce({
       id: 'abc',
-      roles: ['USER']
+      roles: ['USER'],
     })
 
     const newData = {
-      title: 'test'
+      title: 'test',
     }
 
     const res = await request(handler, {
@@ -172,44 +178,45 @@ describe('Integrations tests for group edition', () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData)
-    });
+      body: JSON.stringify(newData),
+    })
 
-   
     expect(res.statusCode).toBe(200)
 
     expect(updateOneContent).toHaveBeenCalledWith('project', 'something', {
-      title: 'test'
+      title: 'test',
     })
   })
 
   test('a USER user should  be able to edit a group if its listed in the members group with a privileged role', async () => {
-      
     const params = { type: 'project', slug: '1' }
 
-
-    findOneContent.mockReturnValueOnce(Promise.resolve({
-      author: 'a person',
-      id: 'something',
-      members: [{
-        id: 'abc',
-        roles: ['GROUP_ADMIN']
-      }]
-    }))
+    findOneContent.mockReturnValueOnce(
+      Promise.resolve({
+        author: 'a person',
+        id: 'something',
+        members: [
+          {
+            id: 'abc',
+            roles: ['GROUP_ADMIN'],
+          },
+        ],
+      })
+    )
 
     // Mock permissions
     getPermissions.mockReturnValue({
-      'group.project.update': ['ADMIN','GROUP_ADMIN'],
+      'group.project.update': ['ADMIN', 'GROUP_ADMIN'],
       'group.project.admin': ['ADMIN'],
     })
 
     getSession.mockReturnValueOnce({
       id: 'abc',
-      roles: ['USER']
+      roles: ['USER'],
     })
 
     const newData = {
-      title: 'test'
+      title: 'test',
     }
 
     const res = await request(handler, {
@@ -218,21 +225,18 @@ describe('Integrations tests for group edition', () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData)
-    });
+      body: JSON.stringify(newData),
+    })
 
-   
     expect(res.statusCode).toBe(200)
 
     expect(updateOneContent).toHaveBeenCalledWith('project', 'something', {
-      title: 'test'
+      title: 'test',
     })
   })
- 
 
   describe('Files', () => {
     it('should call the delete file for an update removing a file', async () => {
-        
       const params = { type: 'project', slug: 'profile' }
 
       // Mock permissions
@@ -256,7 +260,7 @@ describe('Integrations tests for group edition', () => {
               path: 'abc.test',
             },
           ],
-          members: []
+          members: [],
         })
       )
 
@@ -270,13 +274,92 @@ describe('Integrations tests for group edition', () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newData)
-      });
-  
+        body: JSON.stringify(newData),
+      })
 
       expect(res.statusCode).toBe(200)
 
       expect(deleteFile).toHaveBeenCalledWith('abc.test')
     })
+  })
+
+  test('Should save cyphered data#1', async () => {
+    findOneContent.mockReturnValue(Promise.resolve({ id: 'something' }))
+    getPermissions.mockReturnValue({
+      'group.project.fields.cypherField.cypher': ['USER1'],
+      'group.project.update': ['USER1'],
+      'group.project.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER1'],
+    })
+
+    const newGroup = {
+      title: 'test#1 test#1 test#1',
+      description: 'test#1 test#1 test#1 test#1',
+      cypherField: 'cypherField#1',
+    }
+
+    const res = await request(handler, {
+      method: 'PUT',
+      query: { type: 'project', slug: '1' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newGroup),
+    })
+
+    expect(updateOneContent).toBeCalledWith(
+      'project',
+      'something',
+      expect.objectContaining({
+        description: 'test#1 test#1 test#1 test#1',
+        title: 'test#1 test#1 test#1',
+        //to make sure that we save cyphered value but not pure value
+        cypherField: expect.not.stringContaining('cypherField#1'),
+      })
+    )
+    expect(res.statusCode).toBe(200)
+  })
+
+  test('Should save cyphered data#2', async () => {
+    findOneContent.mockReturnValue(Promise.resolve({ id: 'something' }))
+    getPermissions.mockReturnValue({
+      'group.project.fields.cypherField.cypher': ['USER1'],
+      'group.project.update': ['USER1'],
+      'group.project.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER1'],
+    })
+
+    const newGroup = {
+      title: 'test#1 test#1 test#1',
+      description: 'test#1 test#1 test#1 test#1',
+      cypherField: 'cypherField#2',
+    }
+
+    const res = await request(handler, {
+      method: 'PUT',
+      query: { type: 'project', slug: '1' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newGroup),
+    })
+
+    expect(updateOneContent).toBeCalledWith(
+      'project',
+      'something',
+      expect.objectContaining({
+        description: 'test#1 test#1 test#1 test#1',
+        title: 'test#1 test#1 test#1',
+        //to make sure that we save cyphered value but not pure value
+        cypherField: expect.not.stringContaining('cypherField#2'),
+      })
+    )
+    expect(res.statusCode).toBe(200)
   })
 })

@@ -27,7 +27,11 @@ function ListItem({
   type,
   loading,
 }: Props) {
-  const [role] = userRoles
+  let role
+
+  if (userRoles) {
+    role = userRoles[0]
+  }
 
   const handleRemoveUser = useCallback(() => {
     removeUser(id)

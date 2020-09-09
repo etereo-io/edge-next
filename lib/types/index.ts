@@ -11,6 +11,7 @@ export * from './superSearch'
 export * from './entities/content'
 export * from './interactionTypeDefinition'
 export * from './entities/interaction'
+export * from './userTypeDefinition'
 
 export type ANY_OBJECT = {
   [key: string]: any

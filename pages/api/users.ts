@@ -13,18 +13,31 @@ import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
+import appConfig from '@lib/config'
 
 const getUsers = (filterParams, paginationParams) => (req: Request, res) => {
   const permission = [`user.admin`]
   const showPrivateFields = hasPermission(req.currentUser, permission)
 
-  findUsers(filterParams, paginationParams)
+  return findUsers(filterParams, paginationParams)
     .then((data) => {
-      res.status(200).json({
+      const users = showPrivateFields
+        ? data.results
+        : data.results.map(hidePrivateUserFields)
+
+      const results = Cypher.getDecipheredData(
+        {
+          type: 'profile',
+          entity: 'user',
+          fields: appConfig.user.profile.fields,
+        },
+        users,
+        req.currentUser
+      )
+      return res.status(200).json({
         ...data,
-        results: showPrivateFields
-          ? data.results
-          : data.results.map(hidePrivateUserFields),
+        results,
       })
     })
     .catch((err) => {
@@ -79,13 +92,24 @@ const addUser = (user) => async ({ currentUser }: Request, res) => {
 
   try {
     const added = await createUser(
-      parsedUser,
+      // @ts-ignore
+      Cypher.cypherData(appConfig.user.profile.fields, parsedUser),
       currentUserHasAdministrationRights
     )
 
     onUserAdded(added, currentUser)
 
-    res.status(200).json(hidePrivateUserFields(added))
+    const [createdUser] = Cypher.getDecipheredData(
+      {
+        type: 'user',
+        entity: 'user',
+        fields: appConfig.user.profile.fields,
+      },
+      [hidePrivateUserFields(added)],
+      currentUser
+    )
+
+    return res.status(200).json(createdUser)
   } catch (err) {
     res.status(500).json({
       error: err.message,

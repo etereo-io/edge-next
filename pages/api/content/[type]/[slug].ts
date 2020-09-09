@@ -22,7 +22,7 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import { getContentTypeDefinition } from '@lib/config'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -59,19 +59,27 @@ const loadContentItemMiddleware = async (req: Request, res, cb) => {
     })
 }
 
-const getContent = async ({ item, currentUser }: Request, res) => {
+const getContent = async ({ item, currentUser, contentType }: Request, res) => {
   if (item) {
-    const contentTypeDefinition = getContentTypeDefinition(item.type)
-
     const data = await appendInteractions({
       data: [item],
-      interactionsConfig: contentTypeDefinition.entityInteractions,
+      interactionsConfig: contentType.entityInteractions,
       entity: 'content',
       entityType: item.type,
       currentUser,
     })
 
-    return res.status(200).json(data[0])
+    const [content] = Cypher.getDecipheredData(
+      {
+        type: contentType.slug,
+        entity: 'content',
+        fields: contentType.fields,
+      },
+      data,
+      currentUser
+    )
+
+    return res.status(200).json(content)
   }
 
   return res.status(200).json(item)
@@ -80,7 +88,7 @@ const getContent = async ({ item, currentUser }: Request, res) => {
 const deleteContent = (req: Request, res) => {
   const item = req.item
 
-  deleteOneContent(item.type, { id: item.id })
+  return deleteOneContent(item.type, { id: item.id })
     .then(async () => {
       // Trigger on content deleted hook
       await onContentDeleted(item, req.currentUser, req.contentType)
@@ -109,7 +117,7 @@ const updateContent = async (req: Request, res) => {
   // Extract the groupId, groupType. Since we don't want anybody being able to change those.
   const { groupId, groupType, ...content } = req.body
 
-  await contentValidations(type, content)
+  return contentValidations(type, content)
     .then(async () => {
       // Content is valid
       const newContent = await uploadFiles(
@@ -122,17 +130,38 @@ const updateContent = async (req: Request, res) => {
 
       if (Object.keys(newContent).length === 0) {
         // It is an empty request, no file was uploaded, no file was deleted)
-        res.status(200).json(req.item)
-        return
+        const [content] = Cypher.getDecipheredData(
+          {
+            type: type.slug,
+            entity: 'content',
+            fields: type.fields,
+          },
+          [req.item],
+          req.currentUser
+        )
+
+        return res.status(200).json(content)
       }
 
-      updateOneContent(type.slug, req.item.id, newContent)
+      const cypheredData = Cypher.cypherData(type.fields, newContent)
+
+      return updateOneContent(type.slug, req.item.id, cypheredData)
         .then((data) => {
           // Trigger on updated hook
           onContentUpdated(data, req.currentUser)
 
+          const [content] = Cypher.getDecipheredData(
+            {
+              type: type.slug,
+              entity: 'content',
+              fields: type.fields,
+            },
+            [data],
+            req.currentUser
+          )
+
           // Respond
-          res.status(200).json(data)
+          res.status(200).json(content)
         })
         .catch((err) => {
           res.status(500).json({

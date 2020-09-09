@@ -16,6 +16,7 @@ import methods, { getAction } from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 async function updateUsers({ type, id, data, callback, res }) {
   return updateOneContent(type, id, data)
@@ -63,6 +64,7 @@ async function updateUser(req: Request, res) {
     },
     currentUser,
     body,
+    groupType,
   } = req
 
   let data
@@ -89,7 +91,17 @@ async function updateUser(req: Request, res) {
     callback: (response) => {
       onGroupUpdated(data, currentUser)
 
-      res.status(200).json(response)
+      const [group] = Cypher.getDecipheredData(
+        {
+          type: groupType.slug,
+          entity: 'group',
+          fields: groupType.fields,
+        },
+        [response],
+        currentUser
+      )
+
+      res.status(200).json(group)
     },
     data,
   })

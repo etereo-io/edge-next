@@ -25,7 +25,7 @@ function GroupForm(props) {
       const filteredData = {}
       // We filter the data that comes from the API into the state, because we don't want to send to the PUT and POST request
       // additional information
-      const allowedKeys = props.type.fields.map((f) => f.name).concat('draft', 'members')
+      const allowedKeys = props.permittedFields.map((f) => f.name).concat('draft', 'members')
 
       allowedKeys.map((k) => {
         filteredData[k] = props.group[k]
@@ -79,7 +79,7 @@ function GroupForm(props) {
     // Build the JSON data object and the formdata for the files.
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
-      const fieldDefinition = props.type.fields.find((t) => t.name === key)
+      const fieldDefinition = props.permittedFields.find((t) => t.name === key)
 
       if (
         fieldDefinition &&
@@ -147,7 +147,7 @@ function GroupForm(props) {
             </div>
           )}
 
-          {props.type.fields.map((field) => (
+          {props.permittedFields.map((field) => (
             <DynamicField
               key={field.name}
               field={field}

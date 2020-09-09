@@ -3,6 +3,11 @@ export declare type FieldOptionType = {
   value: any;
 }
 
+export type CypherType = {
+  enabled: boolean
+  read: string[]
+}
+
 export declare type FieldType = {
   name: string;
   type: string;
@@ -22,4 +27,5 @@ export declare type FieldType = {
   accept?: string;
   capture?: string;
   defaultValue?: any;
+  cypher?: CypherType
 }

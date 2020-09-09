@@ -1,10 +1,7 @@
-import { FieldOptionType, FieldType } from './fields'
-
 import { ContentTypeDefinition } from './contentTypeDefinition'
+import { UserTypeDefinition } from './userTypeDefinition'
 import { GroupTypeDefinition } from './groupTypeDefinition'
 import { PermissionsType } from './permissions'
-import { UserType } from './entities/user'
-import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 
 export declare type ThemeType = {
   label: string
@@ -51,32 +48,7 @@ export declare type ConfigType = {
   follow: {
     enabled: boolean
   }
-  user: {
-    roles: FieldOptionType[]
-    newUserRoles: string[]
-    emailVerification: boolean
-    providers: {
-      facebook: boolean
-      google: boolean
-      github: boolean
-      instagram: boolean
-      snapchat: boolean
-      twitter: boolean
-      linkedin: boolean
-      twitch: boolean
-      foursquare: boolean
-      tumblr: boolean
-      steam: boolean
-      pinterest: boolean
-      quickbooks: boolean
-    }
-    profile: {
-      fields: FieldType[]
-    }
-    permissions: PermissionsType[]
-    initialUsers: UserType[]
-    entityInteractions: InteractionTypeDefinition[]
-  }
+  user: UserTypeDefinition
 
   content: {
     types: ContentTypeDefinition[]
@@ -85,6 +57,7 @@ export declare type ConfigType = {
 
   groups: {
     types: GroupTypeDefinition[]
+    initialGroups: any[]
   }
   permissions: object
   superSearch: {

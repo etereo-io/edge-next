@@ -20,25 +20,27 @@ export function validateNewUser(user) {
   }
 }
 
-
-export async function createUser({
-  username,
-  email,
-  password,
-  tokens = [],
-  facebook = null,
-  google = null,
-  github = null,
-  profile = {},
-  roles = config.user.newUserRoles
-}, verified = false): Promise<UserType> {
-
+export async function createUser(
+  {
+    username,
+    email,
+    password,
+    tokens = [],
+    facebook = null,
+    google = null,
+    github = null,
+    profile = {},
+    roles = config.user.newUserRoles,
+    ...otherFields
+  },
+  verified = false
+): Promise<UserType> {
   const { salt, hash } = generateSaltAndHash(password)
 
   const profileFields = {}
 
   config.user.profile.fields.forEach((f) => {
-    profileFields[f.name] = f.defaultValue || null
+    profileFields[f.name] = f.defaultValue || otherFields[f.name] || null
   })
 
   return getDB()
@@ -52,10 +54,12 @@ export async function createUser({
       google,
       github,
       emailVerified: verified || !config.user.emailVerification ? true : false,
-      emailVerificationToken: verified || !config.user.emailVerification ? null : uuidv4(),
+      emailVerificationToken:
+        verified || !config.user.emailVerification ? null : uuidv4(),
       roles: verified ? roles : config.user.newUserRoles,
       createdAt: Date.now(),
       profile: {
+        ...otherFields,
         ...profileFields,
         ...profile,
       },
@@ -66,7 +70,6 @@ export async function createUser({
       },
     })
 }
-
 
 export async function findUserWithPassword({
   email,
@@ -96,7 +99,9 @@ export async function findUserWithPassword({
 export async function findUsers(options, paginationOptions) {
   const { from = 0, limit = 15, sortBy, sortOrder = 'DESC' } = paginationOptions
 
-  const total = await getDB().collection('users').count(options);
+  const total = await getDB()
+    .collection('users')
+    .count(options)
 
   return getDB()
     .collection('users')
@@ -111,7 +116,7 @@ export async function findUsers(options, paginationOptions) {
         results: data,
         from,
         limit,
-        total
+        total,
       }
     })
 }
