@@ -1,4 +1,4 @@
-import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
+import { deleteFile } from '../../../../../lib/api/storage'
 import {
   findOneUser,
   updateOneUser,
@@ -25,7 +25,7 @@ jest.mock('../../../../../edge.config', () => ({
     user: {
       // Require email verification
       emailVerification: true,
-      roles: [{ label : 'user', value: 'USER'}],
+      roles: [{ label: 'user', value: 'USER' }],
       newUserRoles: ['USER'],
       providers: {
         github: false,
@@ -66,6 +66,15 @@ jest.mock('../../../../../edge.config', () => ({
                 value: 'female',
               },
             ],
+          },
+          {
+            name: 'cypherField',
+            label: 'cypherField',
+            type: 'text',
+            cypher: {
+              enabled: true,
+              read: ['USER1'],
+            },
           },
         ],
       },
@@ -150,8 +159,6 @@ jest.mock('../../../../../edge.config', () => ({
 }))
 
 describe('Integrations tests for user edition', () => {
- 
-
   describe('User edition', () => {
     afterEach(() => {
       findOneUser.mockReset()
@@ -162,9 +169,7 @@ describe('Integrations tests for user edition', () => {
     })
 
     test('a PUBLIC user should not be able to edit a profile', async () => {
-        
       const params = { slug: ['1'] }
-
 
       // Mock permissions
       getPermissions.mockReturnValue({
@@ -187,7 +192,7 @@ describe('Integrations tests for user edition', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      });
+      })
 
       expect(res.statusCode).toBe(401)
       expect(res.body).toMatchObject({
@@ -196,8 +201,6 @@ describe('Integrations tests for user edition', () => {
     })
 
     test('an authorized user should be able to edit its own profile', async () => {
-        
-
       // Mock permissions
       getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
@@ -228,7 +231,7 @@ describe('Integrations tests for user edition', () => {
       }
 
       const params = {
-        slug: ['1', 'profile']
+        slug: ['1', 'profile'],
       }
 
       const res = await request(handler, {
@@ -238,8 +241,7 @@ describe('Integrations tests for user edition', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      });
-
+      })
 
       expect(res.statusCode).toBe(200)
       expect(res.body).toMatchObject({
@@ -248,8 +250,6 @@ describe('Integrations tests for user edition', () => {
     })
 
     test('Should notify by email when the email is edited', async () => {
-        
-
       // Mock permissions
       getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
@@ -283,7 +283,7 @@ describe('Integrations tests for user edition', () => {
       }
 
       const params = {
-        slug: ['1', 'email']
+        slug: ['1', 'email'],
       }
 
       const res = await request(handler, {
@@ -293,8 +293,7 @@ describe('Integrations tests for user edition', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      });
-
+      })
 
       expect(res.statusCode).toBe(200)
       expect(res.body).toMatchObject({
@@ -305,8 +304,6 @@ describe('Integrations tests for user edition', () => {
     })
 
     test('Should return error if editing email, the email already exists', async () => {
-        
-
       // Mock permissions
       getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
@@ -347,7 +344,7 @@ describe('Integrations tests for user edition', () => {
       }
 
       const params = {
-        slug: ['1', 'email']
+        slug: ['1', 'email'],
       }
 
       const res = await request(handler, {
@@ -357,8 +354,7 @@ describe('Integrations tests for user edition', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUserData),
-      });
-
+      })
 
       expect(res.statusCode).toBe(400)
       expect(res.body).toMatchObject({
@@ -381,7 +377,6 @@ describe('Integrations tests for user edition', () => {
 
   describe('Files', () => {
     it('should call the delete file for an update removing a file', async () => {
-        
       // Mock permissions
       getPermissions.mockReturnValue({
         'user.update': ['ADMIN'],
@@ -417,7 +412,7 @@ describe('Integrations tests for user edition', () => {
       }
 
       const params = {
-        slug: ['1', 'profile']
+        slug: ['1', 'profile'],
       }
 
       const res = await request(handler, {
@@ -427,11 +422,109 @@ describe('Integrations tests for user edition', () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(newData),
-      });
-      
+      })
+
       expect(res.statusCode).toBe(200)
 
       expect(deleteFile).toHaveBeenCalledWith('abc.test')
     })
+  })
+
+  test('Should save cyphered data#1', async () => {
+    getPermissions.mockReturnValue({
+      'user.profile.fields.cypherField.cypher': ['USER1'],
+      'user.update': ['USER1'],
+      'user.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER1'],
+      id: '1',
+    })
+
+    // Find one user returns the data
+    findOneUser.mockReturnValueOnce(
+      Promise.resolve({
+        id: '1',
+        email: 'test@t.com',
+        password: '12345678',
+        username: 'test',
+        profile: {},
+      })
+    )
+
+    updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
+    const newUserData = {
+      description: 'Wea body test',
+      cypherField: 'cypherField#1',
+    }
+
+    const res = await request(handler, {
+      method: 'PUT',
+      query: { slug: ['1', 'profile'] },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUserData),
+    })
+
+    expect(updateOneUser).toBeCalledWith('1', {
+      profile: {
+        description: 'Wea body test',
+        //to make sure that we save cyphered value but not pure value
+        cypherField: expect.not.stringContaining('cypherField#1'),
+      },
+    })
+    expect(res.statusCode).toBe(200)
+  })
+
+  test('Should save cyphered data#2', async () => {
+    getPermissions.mockReturnValue({
+      'user.profile.fields.cypherField.cypher': ['USER1'],
+      'user.update': ['USER1'],
+      'user.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER1'],
+      id: '1',
+    })
+
+    // Find one user returns the data
+    findOneUser.mockReturnValueOnce(
+      Promise.resolve({
+        id: '1',
+        email: 'test@t.com',
+        password: '12345678',
+        username: 'test',
+        profile: {},
+      })
+    )
+
+    updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
+    const newUserData = {
+      description: 'Wea body test',
+      cypherField: 'cypherField#2',
+    }
+
+    const res = await request(handler, {
+      method: 'PUT',
+      query: { slug: ['1', 'profile'] },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUserData),
+    })
+
+    expect(updateOneUser).toBeCalledWith('1', {
+      profile: {
+        description: 'Wea body test',
+        //to make sure that we save cyphered value but not pure value
+        cypherField: expect.not.stringContaining('cypherField#2'),
+      },
+    })
+    expect(res.statusCode).toBe(200)
   })
 })

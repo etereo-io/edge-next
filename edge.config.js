@@ -57,7 +57,7 @@ export const getConfig = () => {
   const postContentType = {
     title: 'Posts',
 
-    slug: 'posts',
+    slug: 'post',
 
     slugGeneration: ['title', 'createdAt'],
 

@@ -36,6 +36,14 @@ export const seedDatabase = async () => {
     })
   }
 
+  if (config.groups.initialGroups) {
+    logger('INFO', 'Inserting initial database groups')
+
+    config.groups.initialGroups.map(async (item) => {
+      await db.collection(item.type).add(item)
+    })
+  }
+
   if (config.user.initialUsers) {
     logger('INFO', 'Inserting initial users')
 

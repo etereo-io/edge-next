@@ -1,4 +1,5 @@
 import { Tabs, useTab } from '@components/generic/tabs'
+import { hasPermission, userPermission } from '@lib/permissions'
 import { useEffect, useMemo } from 'react'
 import useSWR, { mutate } from 'swr'
 
@@ -9,6 +10,7 @@ import EditEmailForm from '@components/user/edit-user/edit-email/edit-email'
 import EditPasswordForm from '@components/user/edit-user/edit-password/edit-password'
 import EditProfileForm from '@components/user/edit-user/edit-profile/edit-profile'
 import EditProfilePictureForm from '@components/user/edit-user/edit-profile-picture/edit-profile-picture'
+import EditRolesForm from '@components/user/edit-user/edit-roles'
 import EditUsernameForm from '@components/user/edit-user/edit-username/edit-username'
 import Layout from '@components/layout/normal/layout'
 import LoadingPage from '@components/generic/loading/loading-page/loading-page'
@@ -17,7 +19,6 @@ import UserProfileBox from '@components/user/user-profile-box/user-profile-box'
 import fetch from '@lib/fetcher'
 import { useRouter } from 'next/router'
 import { useUser } from '@lib/client/hooks'
-import { userPermission } from '@lib/permissions'
 
 const UserSettings = () => {
   // Check if the logged in user can access to this resource
@@ -31,6 +32,9 @@ const UserSettings = () => {
     'update',
     userId
   )
+
+  const isAdmin = hasPermission(currentUser.user, 'user.admin')
+
 
   const { data: user, error } = useSWR(
     userId ? `/api/users/${userId}` : null,
@@ -63,6 +67,7 @@ const UserSettings = () => {
             <EditUsernameForm user={user} onChange={mutateUser} />
             <EditDisplayNameForm user={user} onChange={mutateUser}/>
             <EditEmailForm user={user} onChange={mutateUser} />
+            {isAdmin && <EditRolesForm user={user} onChange={mutateUser} />}
             <DeleteAccountForm user={user}/>
           </>
         ),
@@ -71,7 +76,7 @@ const UserSettings = () => {
         id: 'profile',
         label: 'Profile',
         show: canSeeContent,
-        content: <EditProfileForm user={user} onChange={mutateUser} />,
+        content: <EditProfileForm user={user} currentUser={currentUser?.user} onChange={mutateUser} />,
       },
       {
         id: 'password',

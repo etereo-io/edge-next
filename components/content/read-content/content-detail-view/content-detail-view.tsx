@@ -162,6 +162,7 @@ function ContentDetailView(props: Props) {
             content={props.content}
             summary={!!props.summary}
             type={props.type}
+            user={user}
           />
         </div>
 
