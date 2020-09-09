@@ -72,7 +72,7 @@ function StackedAvatars({
           background: var(--edge-success);
           color: var(--edge-background);
           border-radius: 100%;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: bold;
           display: flex;
           align-items: center;

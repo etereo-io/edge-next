@@ -171,7 +171,7 @@ function SummaryView({
       <style jsx>{`
         .description {
           color: var(--accents-4);
-          font-size: 14px;
+          font-size: 12px;
           margin-bottom: 16px;
           padding-right: 110px;
         }
@@ -191,7 +191,7 @@ function SummaryView({
         }
 
         .content-title {
-          font-size: 24px;
+          font-size: 23px;
           line-height: 1;
           padding-right: var(--edge-gap);
         }

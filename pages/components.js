@@ -208,7 +208,7 @@ function Menu() {
 
         .list-menu li a {
           color: var(--accents-6);
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
           padding: var(--edge-gap-half);
           display: block;
@@ -1651,7 +1651,7 @@ const links = [{
         
 
         .components-layout h3{
-          font-size: 24px;
+          font-size: 23px;
         }
 
        
@@ -1727,7 +1727,7 @@ const links = [{
         }
 
         .component h3  {
-          font-size: 24px;
+          font-size: 23px;
         }
 
         .component p {

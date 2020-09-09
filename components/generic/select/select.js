@@ -74,7 +74,7 @@ function Select(props) {
           background: var(--accents-2);
           background-image: none;
           color: var(--accents-5);
-          font-size: 14px;
+          font-size: 12px;
           flex: 1;
           padding: var(--edge-gap-half) var(--edge-gap-half) var(--edge-gap-half) var(--edge-gap-double);
           cursor: pointer;

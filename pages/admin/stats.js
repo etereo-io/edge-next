@@ -107,7 +107,7 @@ const AdminPage = () => {
         }
 
         h1 {
-          font-size: 24px;
+          font-size: 23px;
           font-weight: 500;
         }
 
@@ -151,13 +151,13 @@ const AdminPage = () => {
 
         .stats-unit-data {
           display: block;
-          font-size: 24px;
+          font-size: 23px;
         }
 
         .stats-unit-title {
           color: var(--accents-4);
           display: block;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 400;
           white-space: nowrap;
         }
@@ -167,7 +167,7 @@ const AdminPage = () => {
           background: var(--edge-success-soft);
           border-radius: 8px;
           display: flex;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           padding: 0;
           margin-right: 8px;
@@ -188,7 +188,7 @@ const AdminPage = () => {
             padding: 16px;
           }
           .stats-unit-increase{
-            font-size: 14px;
+            font-size: 12px;
             position: absolute;
             top: 4px;
             right: 8px;
@@ -236,7 +236,7 @@ const AdminPage = () => {
         }
 
         .stats-quick-view .stats-unit .title{
-          font-size: 14px;
+          font-size: 12px;
           text-transform: uppercase;
         }
 

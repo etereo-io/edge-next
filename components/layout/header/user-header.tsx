@@ -216,7 +216,7 @@ function UserHeader(props) {
           align-items: center;
           border-radius: 4px;
           display: flex;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
           padding: var(--edge-gap-half);
           text-decoration: none;

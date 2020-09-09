@@ -152,16 +152,16 @@ function GroupsTable({ type }: Props) {
       </div>
       <style jsx>{`
         .table-wrapper {
-          padding: 1rem;
           display: block;
           overflow: auto;
+          margin: 40px 0 24px;
         }
 
         .load-more {
           display: flex;
           margin: var(--edge-gap);
           justify-content: center;
-        }
+        }        
       `}</style>
     </div>
   )

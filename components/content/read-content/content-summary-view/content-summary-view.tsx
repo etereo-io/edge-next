@@ -75,7 +75,7 @@ function ContentSummaryView(props) {
       </div>
       <style jsx>{`
         .content-title {
-          font-size: 24px;
+          font-size: 23px;
           line-height: 1;
           margin-bottom: var(--edge-gap);
           padding-right: var(--edge-gap);

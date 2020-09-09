@@ -10,7 +10,7 @@ const Layout = (props) => (
     </main>
     <style jsx>{`
       .admin-layout {
-        background: var(--accents-1);
+        background: var(--accents-1-medium);
         min-height: 100vh;
         padding: var(--edge-gap-medium) var(--edge-gap);
       }

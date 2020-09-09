@@ -77,7 +77,7 @@ function Sorting({ onChange, value, options }: Props) {
           .sortBy {
             border: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
           }
 
           .sortOrder {

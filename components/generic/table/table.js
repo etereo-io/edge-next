@@ -98,7 +98,7 @@ function Table(props) {
       <style jsx>{`
         table {
           border-collapse: collapse;
-          font-size: 14px;
+          font-size: 12px;
           width: 100%;
           border-collapse: separate;
           border-spacing: 0;

@@ -107,7 +107,7 @@ function DeleteAccount({ user, ...props }) {
             padding-right: var(--edge-gap);
           }
           .info p {
-            font-size: 14px;
+            font-size: 12px;
           }
         `}
       </style>

@@ -76,7 +76,7 @@ function AuthorBox(props) {
           }
 
           .author-box-user .display-name {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             text-transform: lowercase;
             line-height: 1;

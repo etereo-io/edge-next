@@ -64,7 +64,7 @@ function Button(props) {
             color: var(--edge-foreground);
             cursor: pointer;
             display: inline-block;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             padding: ${padding ? padding : '8px var(--edge-gap)'};
             transition: 0.3s ease;
@@ -118,13 +118,13 @@ function Button(props) {
           }
 
           .button.big {
-            font-size: 16px;
+            font-size: 14px;
             padding: 24px;
             width: fit-content;
           }
 
           .button.medium {
-            font-size: 16px;
+            font-size: 14px;
             padding: 16px;
             width: fit-content;
           }

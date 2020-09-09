@@ -154,7 +154,7 @@ function DropZone(props) {
           color: var(--accents-3);
           display: block;
           margin-top: 4px;
-          font-size: 14px;
+          font-size: 12px;
         }
       `}</style>
     </>

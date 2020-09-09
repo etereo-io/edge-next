@@ -18,13 +18,21 @@ function AdminPage() {
   const groupType = getGroupTypeDefinition(slug)
 
   return (
-    available && (
+    <>
+    {available && (
       <Layout title="Content">
         <h1>Group administration for {slug}</h1>
 
         <GroupsTable type={groupType} />
       </Layout>
-    )
+    )}
+    <style jsx>{`
+      h1{
+        font-size: 23px;
+        font-weight: 500;
+      }
+    `}</style>
+  </>
   )
 }
 

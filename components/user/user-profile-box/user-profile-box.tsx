@@ -114,7 +114,7 @@ function UserProfileBox({ user, ...props }) {
 
           @media all and (max-width: 720px) {
             .general-profile.horizontal .general-profile-user .display-name {
-              font-size: 24px;
+              font-size: 23px;
             }
           }
 
@@ -125,7 +125,7 @@ function UserProfileBox({ user, ...props }) {
 
           @media all and (max-width: 720px) {
             .general-profile.horizontal .general-profile-user .username a {
-              font-size: 16px;
+              font-size: 14px;
             }
           }
 
@@ -150,7 +150,7 @@ function UserProfileBox({ user, ...props }) {
           }
 
           .general-profile-user .display-name {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             display: flex;
             justify-content: center;
@@ -164,12 +164,12 @@ function UserProfileBox({ user, ...props }) {
           .general-profile-user a {
             color: var(--edge-foreground);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 12px;
           }
 
           .general-profile-bio p {
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
             line-height: 1.5;
             margin-top: var(--edge-gap);
           }

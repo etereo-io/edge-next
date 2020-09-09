@@ -188,10 +188,10 @@ const Landing = () => {
             flex-flow: column;
           }
           .featured-section-title {
-            font-size: 24px;
+            font-size: 23px;
           }
           .featured-section-text {
-            font-size: 16px;
+            font-size: 14px;
           }
         }
 
@@ -200,7 +200,7 @@ const Landing = () => {
             font-size: 21px;
           }
           .featured-section-text {
-            font-size: 14px;
+            font-size: 12px;
           }
         }
 
@@ -237,7 +237,7 @@ const Landing = () => {
         }
 
         .featured-section .title {
-          font-size: 24px;
+          font-size: 23px;
           font-weight: 600;
           margin-bottom: var(--edge-gap);
         }

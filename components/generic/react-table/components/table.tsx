@@ -199,18 +199,27 @@ function ReactTable<T extends object = {}>({
       <style jsx>
         {`
           .table {
+            background: var(--accents-1-medium);
             display: block;
+            font-size: 12px;
           }
 
           .table .tr {
+            align-items: center;
+            background: var(--edge-background);
             border: none;
-            height: var(--cds-layout-04, 3rem);
+            border-radius: 8px;
             transition: 0.3s ease;
+            margin: 8px 0;
             width: 100%;
           }
 
+          .table .tr:first-of-type {
+            margin-top: 0;
+          }
+
           .tr:hover {
-            background: var(--accents-2);
+            background: var(--edge-background);
           }
 
           .table .thead {
@@ -223,18 +232,45 @@ function ReactTable<T extends object = {}>({
           .table .tbody {
             overflow-y: scroll;
             overflow-x: hidden;
-            margin-top: 5px;
+          }
+
+          .table .tbody .td:first-of-type{
+            color: var(--accents-7);
+            font-weight: 600;
           }
 
           .table .td {
+            color: var(--accents-5);
+            overflow: hidden;
+            padding: 16px;
             position: relative;
+          }
+
+          div[role=columnheader]{
+            background: var(--accents-2);
+            color: var(--accents-4);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 8px;
+          }
+
+          div[role=columnheader]:first-of-type{
+            border-top-left-radius: 8px;
+            overflow: hidden;
+          }
+
+          div[role=columnheader]:last-of-type{
+            border-top-right-radius: 8px;
+            overflow: hidden;
           }
 
           .resizer {
             display: inline-block;
             word-wrap: break-word;
-            background: black;
-            width: 3px;
+            background: var(--accents-4);
+            opacity: 0.2;
+            width: 1px;
             height: 100%;
             position: absolute;
             right: 0;
@@ -242,6 +278,10 @@ function ReactTable<T extends object = {}>({
             transform: translateX(50%);
             z-index: 1;
             touch-action: none;
+          }
+
+          .resizer:hover{
+            opacity: 1;
           }
 
           .th {

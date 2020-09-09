@@ -58,7 +58,7 @@ const AdminPage = () => {
         <style jsx>
           {`
             h1 {
-              font-size: 24px;
+              font-size: 23px;
               font-weight: 500;
             }
             .links {

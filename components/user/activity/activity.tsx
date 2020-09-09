@@ -237,7 +237,7 @@ function Activities({ user }: Props) {
         }
 
         .message {
-          font-size: 14px;
+          font-size: 12px;
         }
 
         .message strong {

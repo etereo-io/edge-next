@@ -33,7 +33,7 @@ function SiteMenu({ mobileCollapse = false }) {
           align-items: center;
           border-radius: 4px;
           display: flex;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
           padding: 16px;
           text-decoration: none;

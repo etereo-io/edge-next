@@ -172,7 +172,7 @@ function ToolBar() {
         .edge-panel-user-tag-unit {
           border-radius: 4px;
           display: block;
-          font-size: 14px;
+          font-size: 12px;
           font-weight: 500;
           overflow: hidden;
           padding: 16px;
