@@ -39,15 +39,29 @@ function ActionsCell({ slug, deleteRequest, item }: Props) {
   return (
     <>
       {!success && (
-        <Button href={`/edit/group/${slug}/${item.slug}`}>Edit</Button>
+        <div className="button-wr">
+          <Button href={`/edit/group/${slug}/${item.slug}`}>Edit</Button>
+        </div>
       )}
       {!success && (
-        <Button loading={loading} success={true} onClick={onClickDelete}>
-          Delete
-        </Button>
+        <div className="button-wr">
+          <Button loading={loading} success={true} onClick={onClickDelete}>
+            Delete
+          </Button>
+        </div>
       )}
       {error && <div className="error">Error deleting item</div>}
       {success && <div className="success">Item deleted</div>}
+    
+      <style jsx>{`
+      .button-wr{
+        margin: 0 8px 0 8px;
+      }
+
+      .button-wr:last-of-type{
+        margin: 0;
+      }
+    `}</style>
     </>
   )
 }

@@ -154,7 +154,21 @@ function GroupsTable({ type }: Props) {
         .table-wrapper {
           display: block;
           overflow: auto;
+          position: relative;
           margin: 40px 0 24px;
+        }
+        
+        .content-list{
+          position: relative;
+        }
+        .content-list:after{
+          background: linear-gradient(to left, var(--accents-1-medium) 0%,transparent 100%);
+          /*content: '';*/
+          height: 100%;
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 16px;
         }
 
         .load-more {

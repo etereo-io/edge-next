@@ -1726,7 +1726,7 @@ const links = [{
           margin: 0;
         }
 
-        .component h3  {
+        .component h3 {
           font-size: 23px;
         }
 

@@ -230,7 +230,7 @@ function ReactTable<T extends object = {}>({
           }
 
           .table .tbody {
-            overflow-y: scroll;
+            overflow-y: auto;
             overflow-x: hidden;
           }
 
@@ -244,6 +244,8 @@ function ReactTable<T extends object = {}>({
             overflow: hidden;
             padding: 16px;
             position: relative;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
 
           div[role=columnheader]{
