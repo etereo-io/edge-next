@@ -64,6 +64,12 @@ const AdminPage = () => {
             .links {
               margin-top: 5%;
             }
+
+            @media all and (max-width: 720px) {
+          h1 {
+            font-size: 18px;
+          }
+        }
           `}
         </style>
       </Layout>

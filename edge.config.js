@@ -55,9 +55,9 @@ export const getConfig = () => {
   ]
 
   const postContentType = {
-    title: 'Post',
+    title: 'Posts',
 
-    slug: 'post',
+    slug: 'posts',
 
     slugGeneration: ['title', 'createdAt'],
 
@@ -210,7 +210,7 @@ export const getConfig = () => {
   }
 
   const siteNewsContentType = {
-    title: 'Site news',
+    title: 'News',
 
     slug: 'site-news',
 
@@ -316,7 +316,7 @@ export const getConfig = () => {
   }
 
   const publishingGroupType = {
-    title: 'Publishing Group',
+    title: 'Groups',
 
     slug: 'publishing-group',
 

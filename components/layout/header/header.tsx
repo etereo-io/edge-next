@@ -23,17 +23,17 @@ function Header() {
     title: `${title}`,
   }))
 
+  if (hasPermission(user, `admin.stats`)) {
+    links.push({
+      title: 'General',
+      link: '/admin',
+    })
+  }
+
   if (hasPermission(user, `user.admin`)) {
     links.push({
       title: 'Users',
       link: '/admin/users',
-    })
-  }
-
-  if (hasPermission(user, `admin.stats`)) {
-    links.push({
-      title: 'Site stats',
-      link: '/admin/stats',
     })
   }
 
@@ -88,6 +88,12 @@ function Header() {
         </div>
       </header>
       <style jsx>{`
+        @media all and (max-width: 860px){
+          .admin-menu {
+            display: none;
+          }
+        }
+
         .edge-topper {
           background: var(--edge-foreground);
           color: var(--edge-background);
