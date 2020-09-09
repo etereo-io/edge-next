@@ -65,6 +65,7 @@ interface Result<Data, Item> {
   isEmpty: boolean
   data: Item[]
   total: number
+  revalidate: () => void
 }
 
 function useInfinityList<Item>({
@@ -115,6 +116,7 @@ function useInfinityList<Item>({
   return {
     ...rest,
     error,
+    revalidate,
     isValidating,
     data,
     loadNewItems,
