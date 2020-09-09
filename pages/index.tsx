@@ -162,7 +162,7 @@ const Landing = () => {
         .featured-section-text {
           color: var(--accents-4);
           display: block;
-          font-size: 18px;
+          font-size: 16px;
           margin: 0 auto;
           margin-top: var(--edge-gap-half);
           max-width: 440px;

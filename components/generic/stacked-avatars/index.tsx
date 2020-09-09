@@ -28,13 +28,13 @@ function StackedAvatars({
             {usersVisible.map((user, index) => {
               return (
                 <div className="user-item" key={`${user.id}-${index}`}>
-                  <Avatar radius="100%" width={width} user={user} />
+                  <Avatar radius="50%" width={width} user={user} />
                 </div>
               )
             })}
             {!!extraUsers && (
               <div className="user-item">
-                <div className="extra-users">+ {extraUsers}</div>
+                <div className="extra-users">+{extraUsers}</div>
               </div>
             )}
           </div>
@@ -45,6 +45,13 @@ function StackedAvatars({
           display: flex;
         }
 
+        .users-title {
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          display: none;
+        }
+
         .user-item {
           border-radius: 100%;
           overflow: hidden;
@@ -53,7 +60,7 @@ function StackedAvatars({
         }
 
         .user-item:not(:first-child) {
-          margin-left: -21px;
+          margin-left: -18px;
           -webkit-mask: radial-gradient(
             circle 24px at -5px -50%,
             transparent 99%,

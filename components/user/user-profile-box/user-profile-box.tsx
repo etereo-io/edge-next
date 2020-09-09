@@ -109,18 +109,18 @@ function UserProfileBox({ user, ...props }) {
           }
 
           .general-profile.horizontal .general-profile-user .display-name {
-            font-size: 32px;
+            font-size: 28px;
           }
 
           @media all and (max-width: 720px) {
             .general-profile.horizontal .general-profile-user .display-name {
-              font-size: 23px;
+              font-size: 21px;
             }
           }
 
           .general-profile.horizontal .general-profile-user .username a {
             color: var(--accents-3);
-            font-size: 18px;
+            font-size: 16px;
           }
 
           @media all and (max-width: 720px) {

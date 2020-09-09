@@ -5,8 +5,8 @@ import ArrowDown from '@icons/arrow-down.svg'
 
 const svgStyles = {
   fill: 'var(--edge-foreground)',
-  height: 20,
-  weight: 20,
+  height: 16,
+  weight: 16,
   cursor: 'pointer',
 }
 
@@ -78,6 +78,7 @@ function Sorting({ onChange, value, options }: Props) {
             border: none;
             cursor: pointer;
             font-size: 12px;
+            padding: 0;
           }
 
           .sortOrder {

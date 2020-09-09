@@ -113,7 +113,7 @@ const AdminPage = () => {
 
         @media all and (max-width: 720px) {
           h1 {
-            font-size: 18px;
+            font-size: 16px;
           }
         }
 

@@ -20,9 +20,8 @@ function GroupItems({ group: { type, slug, title, description } }: Props) {
         {`
           .item {
             line-height: 1;
-            margin-bottom: var(--edge-gap);
             padding-right: var(--edge-gap);
-            font-size: 1rem;
+            font-size: 14px;
           }
 
           .description {

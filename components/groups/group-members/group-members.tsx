@@ -9,7 +9,7 @@ function GroupMembers({ members = [], visible = 3 }) {
         <div className="members-wrapper">
           <StackedAvatars
             title="members"
-            width="50px"
+            width="32px"
             maxItems={visible}
             users={members}
           />
