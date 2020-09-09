@@ -57,6 +57,7 @@ export declare type ConfigType = {
 
   groups: {
     types: GroupTypeDefinition[]
+    initialGroups: any[]
   }
   permissions: object
   superSearch: {

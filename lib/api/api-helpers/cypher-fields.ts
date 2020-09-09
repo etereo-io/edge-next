@@ -94,6 +94,13 @@ class CypherFields {
   }
 }
 
-const cypher = new CypherFields(process.env.CYPHER_SECRET || 'this-is-a-secret-value-with-32ch', 'aes-256-cbc', 16)
+const cypher = new CypherFields(
+  process.env.CYPHER_SECRET || 'this-is-a-secret-value-with-32ch',
+  'aes-256-cbc',
+  16
+)
 
 export default cypher
+
+export const cypherData = cypher.cypherData.bind(cypher)
+export const getDecipheredData = cypher.getDecipheredData.bind(cypher)
