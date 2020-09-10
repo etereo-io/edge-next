@@ -565,7 +565,7 @@ const contentType = {
     - multiple
       - allow to select multiple items
     - entityName 
-      - A function to extract the text representation of the entity selected. for example: (user) => u.username, this value will be stored in the database.
+      - A field of entity to extract the text representation of the entity selected. For example: user.username, this value will be stored in the database.
 - rich_text
   - Available options:
     - required

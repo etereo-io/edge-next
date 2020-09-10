@@ -24,7 +24,6 @@ function Button(props) {
     success,
     padding,
     hoverable,
-
     round,
     width = '32px',
   } = props
