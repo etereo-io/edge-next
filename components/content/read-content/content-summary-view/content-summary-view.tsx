@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo } from 'react'
-import Link from 'next/link'
 
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import { FIELDS } from '@lib/constants'
+import Link from 'next/link'
 import { cypheredFieldPermission } from '@lib/permissions'
 
 function ContentSummaryView(props) {
@@ -101,6 +101,9 @@ function ContentSummaryView(props) {
           line-height: 1;
           margin-bottom: var(--edge-gap);
           padding-right: var(--edge-gap);
+          border-bottom: 1px solid var(--accents-2);
+          padding-bottom: 8px;
+          
         }
 
         @media all and (max-width: 720px) {

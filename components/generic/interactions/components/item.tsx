@@ -1,9 +1,8 @@
-import React, { memo, useMemo, useCallback, useState } from 'react'
+import { InteractionItem, InteractionTypeDefinition } from '../types'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
-
-import { InteractionItem, InteractionTypeDefinition } from '../types'
 
 interface Props {
   item: InteractionItem
@@ -140,7 +139,7 @@ function Item({
         />
       </div>
 
-      <style global jsx>{`
+      <style jsx>{`
         .interaction-block{
           margin-left: 16px;
         }

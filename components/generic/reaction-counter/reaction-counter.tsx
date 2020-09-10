@@ -1,8 +1,8 @@
 import React, { memo } from 'react'
 
-import Like from '@icons/like.svg'
 import Favorite from '@icons/favorite.svg'
 import Follow from '@icons/follow.svg'
+import Like from '@icons/like.svg'
 import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
 
 function getIcon(type) {
@@ -67,7 +67,7 @@ function ReactionCounter({
         </div>
         <span className="reaction-counter">{count}</span>
       </div>
-      <style global jsx>{`
+      <style jsx>{`
         .reaction-wr {
           align-items: center;
           text-align: center;

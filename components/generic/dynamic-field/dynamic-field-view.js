@@ -4,6 +4,7 @@ import MarkdownIt from 'markdown-it'
 import MarkdownRead from '../markdown-read/markdown-read'
 import ReactPlayer from 'react-player'
 import TagsField from '../tags-field/tags-field'
+
 const md = MarkdownIt({
   html: false,
   linkify: true,
@@ -121,11 +122,6 @@ function Field({ field, value, typeDefinition }) {
 
       {getField(field, value)}
       <style jsx>{`
-        .field-view:first-of-type {
-          border-bottom: 1px solid var(--accents-2);
-          padding-bottom: 8px;
-          margin-bottom: 8px;
-        }
 
         label {
           font-size: 12px;

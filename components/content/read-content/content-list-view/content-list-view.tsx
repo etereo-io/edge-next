@@ -1,14 +1,14 @@
-import { useEffect, useRef, memo, Fragment, useState, useCallback } from 'react'
+import { Fragment, memo, useCallback, useEffect, useRef, useState } from 'react'
+import Sorting, { SortingValue } from '@components/generic/sorting'
+import { useInfinityList, useOnScreen } from '@lib/client/hooks'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import ContentDetailView from '../content-detail-view/content-detail-view'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import EmptyList from '@components/generic/empty-list'
-import LoadingItems from '@components/generic/loading/loading-items'
-import { useInfinityList, useOnScreen } from '@lib/client/hooks'
 import { GroupEntityType } from '@lib/types'
-import Sorting, { SortingValue } from '@components/generic/sorting'
+import LoadingItems from '@components/generic/loading/loading-items'
 
 const sortingOptions = [
   { label: 'Most recent', value: 'createdAt' },
@@ -76,7 +76,7 @@ function ContentListView({
   return (
     <>
       <div className="contentListView">
-        {withSorting && (
+        {withSorting && !isEmpty && (
           <Sorting
             value={sorting}
             onChange={setSorting}
