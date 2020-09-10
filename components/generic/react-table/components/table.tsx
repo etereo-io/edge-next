@@ -33,7 +33,7 @@ interface ExtendedHeader<T extends object = {}> extends HeaderGroup<T> {
 interface Props<T extends object = {}> {
   columns: Column<T>[]
   data: T[]
-  fetchData: (params: any) => void
+  fetchData?: (params: any) => void
   loading?: boolean
   isSort?: boolean
   isEmpty?: boolean
@@ -68,7 +68,7 @@ const getStyles = (
 function ReactTable<T extends object = {}>({
   columns = [],
   data = [],
-  fetchData,
+  fetchData = () => {},
   initialState,
   loading = false,
   isEmpty,

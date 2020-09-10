@@ -12,6 +12,7 @@ import {
 } from '@components/generic/react-table'
 
 import ActionsCell from './actions-cell'
+import Avatar from '@components/user/avatar/avatar'
 
 const limit = 10
 
@@ -49,20 +50,17 @@ function UserTable() {
     [setOrdering]
   )
 
-  const blockRequest = useCallback(
-    (id, blockedStatus) => {
-      const url = `${API.users}/${id}/block?field=id`
+  const blockRequest = useCallback((id, blockedStatus) => {
+    const url = `${API.users}/${id}/block?field=id`
 
-      return fetch(url, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          blocked: blockedStatus,
-        }),
-      })
-    },
-    []
-  )
+    return fetch(url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        blocked: blockedStatus,
+      }),
+    })
+  }, [])
 
   const deleteRequest = useCallback((id) => {
     const url = `${API.users}/${id}?field=id`
@@ -79,15 +77,13 @@ function UserTable() {
         id: 'username',
         accessor: 'username',
         sortable: true,
-        Cell: ({
-          value,
-          row: {
-            original: { id },
-          },
-        }) => (
-          <Link href={`/profile/${id}`}>
-            <a>{value}</a>
-          </Link>
+        Cell: ({ value, row: { original: user } }) => (
+          <>
+            <Avatar width={'32px'} user={user} />
+            <Link href={`/profile/${user.id}`}>
+              <a>{value}</a>
+            </Link>
+          </>
         ),
       },
       {
