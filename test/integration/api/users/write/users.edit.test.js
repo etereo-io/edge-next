@@ -1,9 +1,9 @@
-import { deleteFile } from '../../../../../lib/api/storage'
 import {
   findOneUser,
   updateOneUser,
 } from '../../../../../lib/api/entities/users'
 
+import { deleteFile } from '../../../../../lib/api/storage'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import { getSession } from '../../../../../lib/api/auth/iron'
 import handler from '../../../../../pages/api/users/[...slug]'
@@ -364,14 +364,227 @@ describe('Integrations tests for user edition', () => {
       expect(sendVerifyEmail).not.toHaveBeenCalled()
     })
 
+    test('Should return error if editing username, the username already exists', async () => {
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.update': ['ADMIN'],
+        'user.admin': ['ADMIN'],
+      })
+
+      // Current user is logged
+      getSession.mockReturnValueOnce({
+        roles: ['USER'],
+        id: '1',
+      })
+
+      // Find one user returns the data
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve({
+          email: 'test@t.com',
+          password: '12345678',
+          username: 'test',
+          profile: null,
+        })
+      )
+
+      // When we check if the username already exists
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve({
+          email: 'test@test.com',
+          password: '12345678',
+          username: 'test',
+          profile: null,
+        })
+      )
+
+      updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
+      const newUserData = {
+        email: 'test@test.com',
+        description: 'Wea body test',
+      }
+
+      const params = {
+        slug: ['1', 'username'],
+      }
+
+      const res = await request(handler, {
+        method: 'PUT',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUserData),
+      })
+
+      expect(res.statusCode).toBe(400)
+      expect(res.body).toMatchObject({
+        error: 'Username already exists',
+      })
+      expect(updateOneUser).not.toHaveBeenCalled()
+    })
+
+    test('Should allow editing username, if the username does not exists', async () => {
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.update': ['ADMIN'],
+        'user.admin': ['ADMIN'],
+      })
+
+      // Current user is logged
+      getSession.mockReturnValueOnce({
+        roles: ['USER'],
+        id: '1',
+      })
+
+      // Find one user returns the data
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve({
+          email: 'test@t.com',
+          password: '12345678',
+          username: 'test',
+          profile: null,
+        })
+      )
+
+      // When we check if the username already exists
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve(null)
+      )
+
+      updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
+      const newUserData = {
+        email: 'test@test.com',
+        description: 'Wea body test',
+      }
+
+      const params = {
+        slug: ['1', 'username'],
+      }
+
+      const res = await request(handler, {
+        method: 'PUT',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUserData),
+      })
+
+      expect(res.statusCode).toBe(200)
+      expect(updateOneUser).toHaveBeenCalled()
+    })
+
+
+    test('Should allow editing roles, if the current user is an admin', async () => {
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.update': ['ADMIN'],
+        'user.admin': ['ADMIN'],
+      })
+
+      // Current user is logged
+      getSession.mockReturnValueOnce({
+        roles: ['ADMIN'],
+        id: '1',
+      })
+
+      // Find one user returns the data
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve({
+          email: 'test@t.com',
+          password: '12345678',
+          username: 'test',
+          profile: null,
+          roles: ['A', 'B']
+        })
+      )
+
+      // When we check if the username already exists
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve(null)
+      )
+
+      updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
+      const newUserData = {
+        roles: ['B', 'C']
+      }
+
+      const params = {
+        slug: ['1', 'roles'],
+      }
+
+      const res = await request(handler, {
+        method: 'PUT',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUserData),
+      })
+
+      expect(res.statusCode).toBe(200)
+      expect(updateOneUser).toHaveBeenCalled()
+    })
+
+    test('Should not allow editing roles, if the current user is not an admin', async () => {
+      // Mock permissions
+      getPermissions.mockReturnValue({
+        'user.update': ['ADMIN'],
+        'user.admin': ['ADMIN'],
+      })
+
+      // Current user is logged
+      getSession.mockReturnValueOnce({
+        roles: ['USER'],
+        id: '1',
+      })
+
+      // Find one user returns the data
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve({
+          email: 'test@t.com',
+          password: '12345678',
+          username: 'test',
+          id: 1,
+          profile: null,
+          roles: ['A', 'B']
+        })
+      )
+
+      // When we check if the username already exists
+      findOneUser.mockReturnValueOnce(
+        Promise.resolve(null)
+      )
+
+      updateOneUser.mockReturnValueOnce(Promise.resolve({ id: 1 }))
+
+      const newUserData = {
+        roles: ['B', 'C']
+      }
+
+      const params = {
+        slug: ['1', 'roles'],
+      }
+
+      const res = await request(handler, {
+        method: 'PUT',
+        query: params,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUserData),
+      })
+
+      expect(res.statusCode).toBe(401)
+      expect(updateOneUser).not.toHaveBeenCalled()
+    })
     /* 
       TODO: 
-      - test that a user can not edit another user
       - test that an ADMIN can edit other user
-      - test that editing the username only works if that username is not available
-      - test that editing an email triggers a e-mail verification hook
       - test that profile image uploading works
-      - test that editing an email checks that that email does not exist
     */
   })
 

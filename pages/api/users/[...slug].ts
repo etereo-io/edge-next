@@ -1,3 +1,4 @@
+import { ANY_OBJECT, Request, UserType } from '@lib/types'
 import {
   bodyParser,
   hasPermissionsForUser,
@@ -14,7 +15,8 @@ import {
   userPasswordsMatch,
 } from '@lib/api/entities/users/user.utils'
 import { onUserDeleted, onUserUpdated } from '@lib/api/hooks/user.hooks'
-import { ANY_OBJECT, Request, UserType } from '@lib/types'
+
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { connect } from '@lib/api/db'
 import edgeConfig from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
@@ -25,7 +27,6 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
 import { v4 as uuidv4 } from 'uuid'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -176,6 +177,12 @@ function updateEmail(userId, email) {
   })
 }
 
+function updateRoles(userId, roles) {
+  return updateOneUser(userId, {
+    roles
+  })
+}
+
 function updateBlockedStatus(userId, blocked) {
   return updateOneUser(userId, {
     blocked,
@@ -287,6 +294,20 @@ const updateUser = (slug) => async (req: Request<UserType>, res) => {
   }
 
   const updateData = slug[1]
+
+  if (updateData === 'roles') {
+    // Check if its an admin
+    const isAdmin = hasPermission(req.currentUser, 'user.admin')
+
+    if (!isAdmin) {
+      res.status(401).json({
+        error: 'Unauthorized'
+      })
+
+      return
+    }
+  }
+
   const files = req.files as ANY_OBJECT
 
   let promiseChange = null
@@ -311,7 +332,11 @@ const updateUser = (slug) => async (req: Request<UserType>, res) => {
       /* Update only email */
       promiseChange = updateEmail(req.item.id, req.body.email)
       break
-
+    case 'roles':
+      /* Update only roles */
+      promiseChange = updateRoles(req.item.id, req.body.roles)
+      break
+  
     case 'block':
       /* Update only blocked status */
       promiseChange = updateBlockedStatus(req.item.id, req.body.blocked)

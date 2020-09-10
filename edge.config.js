@@ -159,6 +159,10 @@ export const getConfig = () => {
         placeholder: 'Description',
         minlength: 20,
         required: true,
+        /* cypher: {
+          enabled: true,
+          read: ['ADMIN']
+        },*/
         description: 'Markdown supported.',
         errorMessage: 'Description must be between 20 and 2000 characters',
       },
