@@ -210,7 +210,7 @@ function SummaryView({
           flex-wrap: wrap;
           margin-bottom: var(--edge-gap);
           justify-content: space-between;
-          align-items: center;
+          align-items: start;
         }
 
         .content-title {

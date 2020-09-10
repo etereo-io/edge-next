@@ -97,7 +97,14 @@ function List({ data, isLoading }: Props) {
       )}
       <style jsx>{`
         .list-container {
-          position: fixed;
+          position: absolute;
+        }
+        
+        hr{
+          border-color: var(--accents-2);
+          border-top: 0;
+          display: block;
+          margin: var(--edge-gap-half) 0;
         }
 
         .center {
@@ -105,19 +112,25 @@ function List({ data, isLoading }: Props) {
         }
 
         .list {
-          width: 455px;
-          max-height: 500px;
+          width: 100%;
+          max-height: 420px;
           overflow-y: auto;
           z-index: 99;
           background: var(--edge-background);
-          border-left: var(--light-border);
-          border-bottom: var(--light-border);
+          border-radius: 8px;
+          box-shadow: var(--shadow-small);
           padding: 10px;
         }
 
         .header-title {
-          font-size: 2rem;
-          margin-bottom: 5px;
+          display: block;
+          font-size: 16px;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+
+        .item {
+          font-size: 14px;
         }
       `}</style>
     </div>

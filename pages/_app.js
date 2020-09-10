@@ -316,6 +316,9 @@ function MyApp({ Component, pageProps }) {
         }
 
         @media all and (max-width: 720px) {
+          .page-layout .edge-container {
+            padding: 0;
+          }
           .container {
             padding: 0 var(--edge-gap);
           }

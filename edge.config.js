@@ -294,7 +294,7 @@ export const getConfig = () => {
         showLabel: true,
         options: [
           {
-            label: 'Content Api',
+            label: 'API',
             value: 'content-api',
           },
           {

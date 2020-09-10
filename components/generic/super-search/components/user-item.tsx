@@ -17,8 +17,8 @@ function UserItem({ user: { id, username } }: Props) {
         {`
           .item {
             line-height: 1;
-            margin-bottom: var(--edge-gap);
             padding-right: var(--edge-gap);
+            margin: 0;
             font-size: 1rem;
           }
         `}

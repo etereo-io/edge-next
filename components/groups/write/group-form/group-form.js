@@ -135,7 +135,7 @@ function GroupForm(props) {
 
   return (
     <>
-      <div className="group-form">
+      <div className="group-form contentForm">
         <form name="group-form" onSubmit={onSubmit}>
           {props.type.publishing.draftMode && (
             <div className="draft input-group">
@@ -172,9 +172,11 @@ function GroupForm(props) {
           )}
           {error && <div className="error-message">Error saving </div>}
         </form>
-
-        <div className="preview">
-          <GroupSummaryView group={state} type={props.type} linkToDetail={false}/>
+        
+        <div className="preview-wrapper">
+          <div className="preview">
+            <GroupSummaryView group={state} type={props.type} linkToDetail={false}/>
+          </div>
         </div>
       </div>
       <style jsx>
@@ -182,23 +184,39 @@ function GroupForm(props) {
           .group-form {
             align-items: flex-start;
             background: var(--edge-background);
+            border-radius: 8px;
             box-shadow: var(--shadow-smallest);
             display: flex;
             justify-content: space-between;
             padding: var(--edge-gap);
+            margin: 40px 0 24px;
           }
 
           .group-form form {
             width: 50%;
           }
 
+          .preview-wrapper {
+            position: sticky;
+            top: 120px;
+            width: 40%;
+          }
+
+          @media all and (max-width: 960px) {
+            .preview-wrapper {
+              display: none;
+            }
+
+            .contentForm form {
+              width: 100%;
+            }
+          }
+
           .preview {
             border-radius: 4px;
             box-shadow: var(--shadow-large);
             padding: var(--edge-gap);
-            position: sticky;
-            top: 72px;
-            width: 40%;
+            margin-bottom: var(--edge-gap);
           }
 
           .actions {

@@ -103,7 +103,7 @@ function ToolBar() {
 
         @media all and (max-width: 720px) {
           .edge-panel-user {
-            top: 56px;
+            top: 80px;
             padding: var(--edge-gap) 0;
           }
 
@@ -123,8 +123,15 @@ function ToolBar() {
         }
 
         .edge-panel-user-faqs {
-          width: var(--edge-gap-double);
-          margin-right: var(--edge-gap-half);
+          margin-right: var(--edge-gap);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+        }
+
+        .edge-panel-user-faqs img{
+          width: 100%;
         }
 
         .edge-panel-user-footer select {

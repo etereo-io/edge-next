@@ -199,10 +199,12 @@ function ContentForm(props) {
           .contentForm {
             align-items: flex-start;
             background: var(--edge-background);
+            border-radius: 8px;
             box-shadow: var(--shadow-smallest);
             display: flex;
             justify-content: space-between;
             padding: var(--edge-gap);
+            margin: 40px 0 24px;
           }
 
           .contentForm form {
@@ -211,8 +213,18 @@ function ContentForm(props) {
 
           .preview-wrapper {
             position: sticky;
-            top: 72px;
+            top: 120px;
             width: 40%;
+          }
+
+          @media all and (max-width: 960px) {
+            .preview-wrapper {
+              display: none;
+            }
+
+            .contentForm form {
+              width: 100%;
+            }
           }
 
           .preview {
