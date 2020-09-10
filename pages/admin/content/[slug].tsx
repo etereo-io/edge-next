@@ -20,7 +20,7 @@ const AdminPage = () => {
     <>
 
     <Layout title="Content" loading={!available || !contentType}>
-      <h1>{contentType.title} administration</h1>
+      <h1>{contentType?.title} administration</h1>
 
       <ContentTable type={contentType} />
     </Layout>

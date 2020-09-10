@@ -63,6 +63,7 @@ function SuperSearch({ user }: Props) {
             onFocus={handleOnFocus}
             type="text"
             placeholder="Search"
+            aria-label="Search"
           />
           {isFocus && debouncedSearch && (
             <List data={data?.data || []} isLoading={isValidating} />

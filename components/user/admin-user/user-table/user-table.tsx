@@ -79,8 +79,8 @@ function UserTable() {
         sortable: true,
         Cell: ({ value, row: { original: user } }) => (
           <>
-          <div className="user-avatar">
-            <Avatar width={'32px'} user={user} />
+            <div className="user-avatar">
+              <Avatar width={'32px'} user={user} />
             </div>
             <Link href={`/profile/${user.id}`}>
               <a>{value}</a>
@@ -99,12 +99,6 @@ function UserTable() {
         id: 'roles',
         sortable: false,
         accessor: ({ roles }) => (roles || []).join(','),
-      },
-      {
-        Header: 'Reported',
-        id: 'metadata.reported',
-        sortable: false,
-        accessor: ({ metadata: { reported } }) => reported,
       },
       {
         Header: 'Last login',
