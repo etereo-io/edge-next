@@ -18,7 +18,7 @@ interface Props {
   type: GroupTypeDefinition
 }
 
-const limit = 3
+const limit = 10
 
 function GroupsTable({ type }: Props) {
   const [{ sortBy, sortOrder }, setOrdering] = useState({

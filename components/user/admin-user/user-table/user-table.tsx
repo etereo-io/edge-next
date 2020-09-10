@@ -1,141 +1,26 @@
-import { useState, memo } from 'react'
+import React, { useState, memo, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { format } from 'timeago.js'
 
-import Table, {
-  TableCellBody,
-  TableCellHeader,
-  TableRowBody,
-} from '@components/generic/table/table'
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import { useInfinityList } from '@lib/client/hooks'
 import { UserType } from '@lib/types'
-import Placeholder from '@components/generic/loading/table-loading'
+import {
+  ExtendedColumn,
+  Table as ReactTable,
+} from '@components/generic/react-table'
 
-const ListItem = (props) => {
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(false)
+import ActionsCell from './actions-cell'
+import Avatar from '@components/user/avatar/avatar'
 
-  const blockRequest = (blockedStatus) => {
-    const url = `${API.users}/${props.item.id}/block?field=id`
+const limit = 10
 
-    return fetch(url, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        blocked: blockedStatus,
-      }),
-    })
-  }
-
-  const onClickBlockUser = (ev) => {
-    const result = window.confirm('Are you sure you want to block this user?')
-
-    if (result) {
-      setLoading(true)
-      setError(false)
-
-      blockRequest(!props.item.blocked)
-        .then((result) => {
-          setLoading(false)
-          setError(false)
-        })
-        .catch((err) => {
-          setLoading(false)
-          alert('User could not be blocked')
-        })
-    }
-  }
-
-  const deleteRequest = () => {
-    const url = `${API.users}/${props.item.id}?field=id`
-    return fetch(url, {
-      method: 'delete',
-    })
-  }
-
-  const onClickDelete = (ev) => {
-    const result = window.confirm('Are you sure you want to delete this user?')
-
-    if (result) {
-      setLoading(true)
-      setSuccess(false)
-      setError(false)
-
-      deleteRequest()
-        .then((result) => {
-          setLoading(false)
-          setSuccess(true)
-          setError(false)
-        })
-        .catch((err) => {
-          setLoading(false)
-          setSuccess(false)
-          setError(true)
-          console.error(err)
-        })
-    }
-  }
-
-  return (
-    <TableRowBody>
-      <TableCellBody>
-        <Link href={`/profile/${props.item.id}`}>
-          <a>{props.item.username}</a>
-        </Link>
-      </TableCellBody>
-      <TableCellBody>{props.item.email}</TableCellBody>
-      <TableCellBody>{(props.item.roles || []).join(',')}</TableCellBody>
-      <TableCellBody>{props.item.metadata.reported}</TableCellBody>
-      <TableCellBody>
-        {props.item.metadata.lastLogin
-          ? format(props.item.metadata.lastLogin)
-          : 'Never'}
-      </TableCellBody>
-      <TableCellBody>{format(props.item.createdAt)}</TableCellBody>
-      <TableCellBody>{props.item.blocked ? 'Blocked' : '-'}</TableCellBody>
-      <TableCellBody>
-        <span className="table-actions">
-          {!success && (
-            <Button href={`/settings/${props.item.id}`}>Edit</Button>
-          )}
-          {!success && (
-            <Button loading={loading} alt={true} onClick={onClickDelete}>
-              Delete
-            </Button>
-          )}
-
-          <Button
-            loading={loading}
-            warning={!props.item.blocked}
-            secondary={props.item.blocked}
-            onClick={onClickBlockUser}
-          >
-            {props.item.blocked ? 'Unblock' : 'Block'}
-          </Button>
-
-          {error && <div className="error">Error deleting item</div>}
-          {success && <div className="success">Item deleted</div>}
-        </span>
-      </TableCellBody>
-      <style jsx>
-        {`
-          .table-actions {
-            display: flex;
-            justify-content: space-evenly;
-          }
-        `}
-      </style>
-    </TableRowBody>
-  )
-}
-
-function UserTable(props) {
-  const [sortBy, setSortBy] = useState('createdAt')
-  const [sortOrder, setSortOrder] = useState('DESC')
-
+function UserTable() {
+  const [{ sortBy, sortOrder }, setOrdering] = useState({
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+  })
   const {
     data,
     loadNewItems,
@@ -144,70 +29,138 @@ function UserTable(props) {
     isLoadingMore,
   } = useInfinityList<UserType>({
     url: `${API.users}`,
-    limit: 10,
+    limit,
     sortBy,
     sortOrder,
+    config: {
+      revalidateOnFocus: false,
+    },
   })
 
-  const headerCells = [
-    <TableCellHeader
-      onClick={() => {
-        setSortBy('username')
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      Username
-    </TableCellHeader>,
-    <TableCellHeader
-      onClick={() => {
-        setSortBy('email')
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      Email
-    </TableCellHeader>,
-    <TableCellHeader>Roles</TableCellHeader>,
-    <TableCellHeader>Reported</TableCellHeader>,
-    <TableCellHeader
-      onClick={() => {
-        setSortBy('metadta.lastLogin')
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      Last Login
-    </TableCellHeader>,
-    <TableCellHeader
-      onClick={() => {
-        setSortBy('createdAt')
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      Created at
-    </TableCellHeader>,
-    <TableCellHeader
-      onClick={() => {
-        setSortBy('blocked')
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      Blocked
-    </TableCellHeader>,
-    <TableCellHeader className="center">Actions</TableCellHeader>,
-  ]
+  const changeOrdering = useCallback(
+    (options: Array<{ field: string; order: string }>) => {
+      if (options.length) {
+        const [{ field, order }] = options
+
+        setOrdering({ sortBy: field, sortOrder: order })
+      } else {
+        setOrdering({ sortBy: '', sortOrder: '' })
+      }
+    },
+    [setOrdering]
+  )
+
+  const blockRequest = useCallback((id, blockedStatus) => {
+    const url = `${API.users}/${id}/block?field=id`
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        blocked: blockedStatus,
+      }),
+    })
+  }, [])
+
+  const deleteRequest = useCallback((id) => {
+    const url = `${API.users}/${id}?field=id`
+
+    return fetch(url, {
+      method: 'delete',
+    })
+  }, [])
+
+  const columns = useMemo<ExtendedColumn<UserType>[]>(
+    () => [
+      {
+        Header: 'Username',
+        id: 'username',
+        accessor: 'username',
+        sortable: true,
+        Cell: ({ value, row: { original: user } }) => (
+          <>
+            <Avatar width={'32px'} user={user} />
+            <Link href={`/profile/${user.id}`}>
+              <a>{value}</a>
+            </Link>
+          </>
+        ),
+      },
+      {
+        Header: 'Email',
+        id: 'email',
+        accessor: 'email',
+        sortable: true,
+      },
+      {
+        Header: 'Roles',
+        id: 'roles',
+        sortable: false,
+        accessor: ({ roles }) => (roles || []).join(','),
+      },
+      {
+        Header: 'Reported',
+        id: 'metadata.reported',
+        sortable: false,
+        accessor: ({ metadata: { reported } }) => reported,
+      },
+      {
+        Header: 'Last login',
+        id: 'metadata.lastLogin',
+        sortable: true,
+        accessor: ({ metadata: { lastLogin } }) =>
+          lastLogin ? format(lastLogin) : 'Never',
+      },
+      {
+        Header: 'Created at',
+        id: 'createdAt',
+        sortable: true,
+        accessor: ({ createdAt }) => format(createdAt),
+      },
+      {
+        Header: 'Blocked',
+        id: 'blocked',
+        sortable: true,
+        accessor: ({ blocked }) => (blocked ? 'Blocked' : '-'),
+      },
+      {
+        Header: 'Actions',
+        Cell: ({
+          row: {
+            original: { id, blocked },
+          },
+        }) => (
+          <ActionsCell
+            id={id}
+            blocked={blocked}
+            deleteRequest={deleteRequest}
+            blockRequest={blockRequest}
+          />
+        ),
+        minWidth: 150,
+        headerAlign: 'center',
+        justifyContent: 'space-evenly',
+      },
+    ],
+    []
+  )
 
   return (
     <div className="content-list">
       <div className="table-wrapper">
-        <Table headerCells={headerCells}>
-          {data.map((item) => (
-            <ListItem key={item.id} type={props.type} item={item} />
-          ))}
-          {isLoadingMore && <Placeholder />}
-          {isEmpty && <div className="empty">Sorry, no items found.</div>}
-        </Table>
+        <ReactTable
+          columns={columns as ExtendedColumn<object>[]}
+          data={data}
+          limit={limit}
+          isEmpty={isEmpty}
+          loading={isLoadingMore}
+          initialState={{ sortBy: [{ id: 'createdAt', desc: true }] }}
+          fetchData={changeOrdering}
+        />
       </div>
+
       <div className="load-more">
-        {isReachingEnd ? null : (
+        {!isReachingEnd && (
           <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
             Load More
           </Button>
@@ -215,17 +168,32 @@ function UserTable(props) {
       </div>
       <style jsx>{`
         .table-wrapper {
-          overflow-x: scroll;
+          display: block;
+          overflow: auto;
+          position: relative;
+          margin: 40px 0 24px;
+        }
+
+        .content-list {
+          position: relative;
+        }
+        .content-list:after {
+          background: linear-gradient(
+            to left,
+            var(--accents-1-medium) 0%,
+            transparent 100%
+          );
+          height: 100%;
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 16px;
         }
 
         .load-more {
           display: flex;
+          margin: var(--edge-gap);
           justify-content: center;
-          margin-top: 10px;
-        }
-
-        .content-list {
-          margin-top: 10px;
         }
       `}</style>
     </div>
