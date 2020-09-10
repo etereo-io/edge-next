@@ -1,10 +1,9 @@
-import { useRouter } from 'next/router'
-import { useCallback } from 'react'
-
+import Button from '@components/generic/button/button'
 import Layout from '@components/layout/admin/layout-admin'
 import UserTable from '@components/user/admin-user/user-table/user-table'
+import { useCallback } from 'react'
 import { usePermission } from '@lib/client/hooks'
-import Button from '@components/generic/button/button'
+import { useRouter } from 'next/router'
 
 const AdminPage = () => {
   const { available } = usePermission([`user.admin`], '/')
@@ -15,20 +14,20 @@ const AdminPage = () => {
   }, [router])
 
   return (
-    available && (
-      <Layout title="User administration">
-        <div className="user-administration">
-          <h1>User adminsitration</h1>
-          <div className="create-button">
-            <Button onClick={createUser}>
-              Create user
-            </Button>
-          </div>
 
-          <UserTable />
+    <Layout title="User administration" loading={!available}>
+      <div className="user-administration">
+        <h1>User adminsitration</h1>
+        <div className="create-button">
+          <Button onClick={createUser}>
+            Create user
+            </Button>
         </div>
-        <style jsx>
-          {`
+
+        <UserTable />
+      </div>
+      <style jsx>
+        {`
 
           h1 {
             font-size: 23px;
@@ -50,9 +49,9 @@ const AdminPage = () => {
               justify-content: flex-end;
             }
           `}
-        </style>
-      </Layout>
-    )
+      </style>
+    </Layout>
+
   )
 }
 

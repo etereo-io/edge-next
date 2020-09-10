@@ -18,14 +18,17 @@ function AdminPage() {
 
   return (
     <>
-    {available && (
-      <Layout title="Content">
-        <h1>{groupType.title} administration</h1>
 
-        <GroupsTable type={groupType} />
+      <Layout title="Content" loading={!available || !groupType}>
+        {groupType && (
+          <>
+            <h1>{groupType.title} administration</h1>
+            <GroupsTable type={groupType} />
+          </>
+        )}
       </Layout>
-    )}
-    <style jsx>{`
+
+      <style jsx>{`
       h1{
         font-size: 23px;
         font-weight: 500;
@@ -37,7 +40,7 @@ function AdminPage() {
           }
         }
     `}</style>
-  </>
+    </>
   )
 }
 

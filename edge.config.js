@@ -421,7 +421,13 @@ export const getConfig = () => {
         description:
           'Tell the world something about this publication group (max 200 characters)',
       },
-    ],
+      {
+        name: 'group-header-image',
+        type: 'img',
+        label: 'Header image',
+        required: false,
+      },
+    ], 
   }
   // Users configuration
   const user = {
@@ -667,7 +673,7 @@ export const getConfig = () => {
           name: 'users', // a collection by which the search will be run
           type: 'user', // used for separation purposes
           fields: ['username'], // fields by which the search will be run
-          fieldsForShow: ['username', 'id'], // fields that will be retrieved from the db
+          fieldsForShow: ['username', 'id', 'profile'], // fields that will be retrieved from the db
           permissions: user.permissions.read, // permissions for check before search
         },
         {

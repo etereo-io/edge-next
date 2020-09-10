@@ -18,14 +18,13 @@ const AdminPage = () => {
   // Load data
   return (
     <>
-    {available && (
-      <Layout title="Content">
-        <h1>{contentType.title} administration</h1>
 
-        <ContentTable type={contentType} />
-      </Layout>
-    )}
+    <Layout title="Content" loading={!available || !contentType}>
+      <h1>{contentType.title} administration</h1>
 
+      <ContentTable type={contentType} />
+    </Layout>
+    
     <style jsx>
     {`
       h1{

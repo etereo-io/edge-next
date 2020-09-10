@@ -1,19 +1,18 @@
-import React, { useState, memo, useMemo, useCallback } from 'react'
-import { format } from 'timeago.js'
-
-import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
-import API from '@lib/api/api-endpoints'
-import Button from '@components/generic/button/button'
-import { useInfinityList } from '@lib/client/hooks'
-import { GroupEntityType } from '@lib/types/entities/group'
 import {
-  Table as ReactTable,
   ExtendedColumn,
+  Table as ReactTable,
 } from '@components/generic/react-table'
-import ActionsCell from './actions-cell'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 
+import API from '@lib/api/api-endpoints'
+import ActionsCell from './actions-cell'
+import Button from '@components/generic/button/button'
+import { GroupEntityType } from '@lib/types/entities/group'
+import { GroupTypeDefinition } from '@lib/types/groupTypeDefinition'
 import Link from 'next/link'
 import fetch from '@lib/fetcher'
+import { format } from 'timeago.js'
+import { useInfinityList } from '@lib/client/hooks'
 
 interface Props {
   type: GroupTypeDefinition
@@ -82,7 +81,7 @@ function GroupsTable({ type }: Props) {
             )
           }
 
-          return value
+          return value || ''
         },
       })
     )

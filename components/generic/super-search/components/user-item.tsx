@@ -1,17 +1,18 @@
-import Link from 'next/link'
 import React, { memo } from 'react'
 
+import Avatar from '@components/user/avatar/avatar'
+import Link from 'next/link'
 import { UserType } from '@lib/types'
 
 interface Props {
-  user: Partial<UserType>
+  user: UserType
 }
 
-function UserItem({ user: { id, username } }: Props) {
+function UserItem({ user }: Props) {
   return (
     <div className="item">
-      <Link href={`/profile/${id}`}>
-        <a>{username}</a>
+      <Link href={`/profile/${user.id}`}>
+        <a title={`${user.username}'s profile`}><Avatar width={'20px'} user={user} /> {user.username}</a>
       </Link>
       <style jsx>
         {`
