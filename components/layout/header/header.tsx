@@ -1,16 +1,17 @@
-import React, { useState, memo } from 'react'
+import React, { memo, useState } from 'react'
+import {
+  useContentTypes,
+  useGroupTypes,
+  usePermission,
+  useUser,
+} from '@lib/client/hooks'
+
+import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
 import LinkList from '@components/generic/link-list/link-list'
-import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Progress from './progress'
 import UserHeader from './user-header'
 import { hasPermission } from '@lib/permissions'
-import {
-  useContentTypes,
-  usePermission,
-  useUser,
-  useGroupTypes,
-} from '@lib/client/hooks'
 
 function Header() {
   const { user } = useUser()
@@ -185,11 +186,6 @@ function Header() {
           }
         }
 
-        @media all and (max-width: 640px) {
-          .edge-searchbox {
-            display: none;
-          }
-        }
       `}</style>
     </>
   )

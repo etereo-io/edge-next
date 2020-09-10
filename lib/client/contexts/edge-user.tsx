@@ -1,10 +1,13 @@
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { Dispatch, useContext, useEffect, useReducer } from 'react'
 
+import { UserType } from '@lib/types'
 import fetch from '../../fetcher'
 import useSWR from 'swr'
 
-const EdgeStateContext = React.createContext()
-const EdgeDispatchContext = React.createContext()
+const EdgeStateContext = React.createContext<{ user: UserType | null }>({
+  user: null
+})
+const EdgeDispatchContext = React.createContext<Dispatch<any>>(() => null)
 
 const reducer = (state, action) => {
   switch (action.type) {

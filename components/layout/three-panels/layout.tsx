@@ -1,6 +1,7 @@
+import Cookies from '../../generic/cookies'
+import Footer from '../footer/footer'
 import Head from '../head/head'
 import Header from '../header/header'
-import Footer from '../footer/footer'
 
 const Layout = (props) => (
   <>
@@ -20,8 +21,9 @@ const Layout = (props) => (
         <aside className="edge-panel-ads">{props.panelAds}</aside>
       )}
     </div>
-
+    
     <Footer />
+    <Cookies />
     <style jsx>{`
       /*Edge panels*/
       .edge-panels {

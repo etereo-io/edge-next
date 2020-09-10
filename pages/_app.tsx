@@ -1,16 +1,22 @@
-import Router from 'next/router'
-import { useContext } from 'react'
-import Head from 'next/head'
-
-import * as gtag from '../lib/client/gtag'
-import withEdgeTheme, {
-  EdgeThemeContext,
-} from '../lib/client/contexts/edge-theme'
-import { EdgeUserProvider } from '../lib/client/contexts/edge-user'
 import '../styles/index.scss'
 
+import * as gtag from '../lib/client/gtag'
+
+import withEdgeTheme, {
+  EdgeThemeContext,
+} from '@lib/client/contexts/edge-theme'
+
+import { CookiesProvider } from '@lib/client/contexts/cookies'
+import { EdgeUserProvider } from '@lib/client/contexts/edge-user'
+import Head from 'next/head'
+import Router from 'next/router'
+import { isClient } from '@lib/client/utils'
+import { useContext } from 'react'
+
 // Store navigation events on Google analytics
-Router.events.on('routeChangeComplete', (url) => gtag.pageview(url))
+if (isClient()) {
+  Router.events.on('routeChangeComplete', (url) => gtag.pageview(url))
+}
 
 function MyApp({ Component, pageProps }) {
   const { mode } = useContext(EdgeThemeContext)
@@ -25,7 +31,9 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <div id="app-container" className={mode}>
         <EdgeUserProvider>
-          <Component {...pageProps} />
+          <CookiesProvider>
+            <Component {...pageProps} />
+          </CookiesProvider>
         </EdgeUserProvider>
       </div>
       <style jsx global>{`
@@ -497,17 +505,6 @@ function MyApp({ Component, pageProps }) {
           -webkit-appearance: none;
         }
 
-        /* Edge Button */
-        .edge-button {
-          background-color: var(--edge-success);
-          border: none;
-          border-radius: 4px;
-          color: var(--edge-background);
-          font-size: 13px;
-          font-weight: 500;
-          padding: var(--edge-gap-half) var(--edge-gap);
-          position: relative;
-        }
 
         .edge-tag {
           background: var(--edge-foreground);
@@ -520,9 +517,7 @@ function MyApp({ Component, pageProps }) {
           text-transform: uppercase;
         }
 
-        .edge-searchbox {
-          position: relative;
-        }
+      
 
         /* Avatar User*/
 

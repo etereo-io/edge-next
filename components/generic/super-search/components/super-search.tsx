@@ -1,19 +1,17 @@
-import React, { memo, useCallback, useState, useRef } from 'react'
-import useSWR from 'swr'
+import React, { memo, useCallback, useRef, useState } from 'react'
 
+import API from '@lib/api/api-endpoints'
+import List from './list'
+import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
+import SearchIcon from '@icons/icon-search.svg'
+import { SuperSearchResponse } from '@lib/types'
 import { UserType } from '@lib/types'
 import config from '@lib/config'
-import API from '@lib/api/api-endpoints'
 import fetcher from '@lib/fetcher'
 import { hasPermission } from '@lib/permissions'
-import { useDebounce } from '@lib/client/hooks'
-import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
-import { SuperSearchResponse } from '@lib/types'
 import { useClickAwayListener } from '@lib/client/hooks'
-
-import SearchIcon from '@icons/icon-search.svg'
-
-import List from './list'
+import { useDebounce } from '@lib/client/hooks'
+import useSWR from 'swr'
 
 const { superSearch: searchConfig } = config
 
@@ -74,6 +72,10 @@ function SuperSearch({ user }: Props) {
 
       <style jsx>
         {`
+          .edge-searchbox {
+            position: relative;
+          }
+          
           @media all and (max-width: 640px) {
             .edge-searchbox {
               display: none;

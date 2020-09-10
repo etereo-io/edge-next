@@ -57,10 +57,12 @@ function Button(props) {
       </button>
       <style jsx>
         {`
+ 
+
           .button {
             border-radius: var(--edge-radius);
             border: var(--light-border);
-            background: var(--edge-background);
+            background-color: var(--edge-background);
             color: var(--edge-foreground);
             cursor: pointer;
             display: inline-block;
@@ -69,6 +71,7 @@ function Button(props) {
             padding: ${padding ? padding : '8px var(--edge-gap)'};
             transition: 0.3s ease;
             -webkit-appearance: none;
+            position: relative;
           }
 
           .button:hover {
