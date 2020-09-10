@@ -67,7 +67,7 @@ function ReactionCounter({
         </div>
         <span className="reaction-counter">{count}</span>
       </div>
-      <style jsx>{`
+      <style global jsx>{`
         .reaction-wr {
           align-items: center;
           text-align: center;

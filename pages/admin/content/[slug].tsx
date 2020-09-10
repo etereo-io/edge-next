@@ -20,7 +20,8 @@ const AdminPage = () => {
     <>
     {available && (
       <Layout title="Content">
-        <h1>Content administration for {slug}</h1>
+        <h1>{contentType.title} administration</h1>
+
         <ContentTable type={contentType} />
       </Layout>
     )}

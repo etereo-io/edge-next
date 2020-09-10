@@ -1,10 +1,9 @@
-import { useRouter } from 'next/router'
-import { memo } from 'react'
-
 import GroupsTable from '@components/groups/admin-groups/groups-table/groups-table'
 import Layout from '@components/layout/admin/layout-admin'
 import { getGroupTypeDefinition } from '@lib/config'
+import { memo } from 'react'
 import { usePermission } from '@lib/client/hooks'
+import { useRouter } from 'next/router'
 
 function AdminPage() {
   const router = useRouter()
@@ -21,7 +20,7 @@ function AdminPage() {
     <>
     {available && (
       <Layout title="Content">
-        <h1>Group administration for {slug}</h1>
+        <h1>{groupType.title} administration</h1>
 
         <GroupsTable type={groupType} />
       </Layout>
