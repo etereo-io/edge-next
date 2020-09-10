@@ -168,6 +168,7 @@ class MongoDB extends Database {
             {
               $set: {
                 ...newItemData,
+                updatedAt: Date.now(),
               },
             },
             { returnOriginal: false },
