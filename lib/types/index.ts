@@ -12,6 +12,7 @@ export * from './entities/content'
 export * from './interactionTypeDefinition'
 export * from './entities/interaction'
 export * from './userTypeDefinition'
+export * from './entities/email'
 
 export type ANY_OBJECT = {
   [key: string]: any

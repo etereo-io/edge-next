@@ -1,4 +1,4 @@
-export declare type UserType = {
+export type UserType = {
   username: string
   id: string
   salt: string
@@ -17,6 +17,7 @@ export declare type UserType = {
     displayName: string
     picture: {
       path: string
+      source: string
     }
   }
   tokens: Array<{ [key: string]: any }>
