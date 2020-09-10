@@ -243,8 +243,17 @@ function ReactTable<T extends object = {}>({
           }
 
           .table .tbody .td:first-of-type{
+            align-items: center!important;
             color: var(--accents-7);
             font-weight: 600;
+          }
+
+          .user-avatar {
+            margin-right: 4px;
+          }
+
+          .table .tbody .td .avatar{
+            margin-right: 4px;
           }
 
           .table .td {
@@ -254,6 +263,10 @@ function ReactTable<T extends object = {}>({
             position: relative;
             white-space: nowrap;
             text-overflow: ellipsis;
+          }
+
+          .table .td:last-of-type{
+            overflow:visible;
           }
 
           div[role=columnheader]{

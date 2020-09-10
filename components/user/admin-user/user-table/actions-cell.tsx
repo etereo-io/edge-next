@@ -1,5 +1,5 @@
 import React, { useState, memo, useCallback } from 'react'
-
+import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import Button from '@components/generic/button/button'
 
 const ActionsCell = ({
@@ -53,26 +53,35 @@ const ActionsCell = ({
 
   return (
     <>
-      {!isDeleted && <Button href={`/settings/${id}`}>Edit</Button>}
-      {!isDeleted && (
-        <Button loading={loading} alt={true} onClick={onClickDelete}>
-          Delete
-        </Button>
-      )}
-
-      {!isDeleted && (
-        <Button
-          loading={loading}
-          warning={!blocked}
-          secondary={blocked}
-          onClick={onClickBlockUser}
-        >
-          {blocked ? 'Unblock' : 'Block'}
-        </Button>
-      )}
-
-      {error && <div className="error">Error deleting item</div>}
-      {isDeleted && <div className="success">Item deleted</div>}
+      <DropdownMenu align={'right'}>
+        <ul>
+          <li>
+            {!isDeleted && <Button fullWidth href={`/settings/${id}`}>Edit</Button>}
+          </li>
+          <li>
+            {!isDeleted && (
+              <Button fullWidth loading={loading} alt={true} onClick={onClickDelete}>
+                Delete
+              </Button>
+            )}
+          </li>
+          <li>
+            {!isDeleted && (
+              <Button
+                fullWidth
+                loading={loading}
+                warning={!blocked}
+                secondary={blocked}
+                onClick={onClickBlockUser}
+              >
+                {blocked ? 'Unblock' : 'Block'}
+              </Button>
+            )}
+          </li>
+          <li>{error && <div className="error">Error deleting item</div>}</li>
+          <li>{isDeleted && <div className="success">Item deleted</div>}</li>
+        </ul>
+      </DropdownMenu>
       <style jsx>{`
         .button-wr {
           margin: 0 8px 0 8px;

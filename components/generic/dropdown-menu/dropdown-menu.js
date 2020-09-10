@@ -113,6 +113,7 @@ function DropDownMenu(props) {
         nav.dropdown-menu-nav > :global(ul li a) {
           text-decoration: none;
           color: var(--edge-foreground);
+          width: 100%;
         }
 
         nav.dropdown-menu-nav > :global(.spacer) {

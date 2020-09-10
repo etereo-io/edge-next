@@ -79,7 +79,9 @@ function UserTable() {
         sortable: true,
         Cell: ({ value, row: { original: user } }) => (
           <>
+          <div className="user-avatar">
             <Avatar width={'32px'} user={user} />
+            </div>
             <Link href={`/profile/${user.id}`}>
               <a>{value}</a>
             </Link>
@@ -117,12 +119,12 @@ function UserTable() {
         sortable: true,
         accessor: ({ createdAt }) => format(createdAt),
       },
-      {
+      /*{
         Header: 'Blocked',
         id: 'blocked',
         sortable: true,
         accessor: ({ blocked }) => (blocked ? 'Blocked' : '-'),
-      },
+      },*/
       {
         Header: 'Actions',
         Cell: ({
