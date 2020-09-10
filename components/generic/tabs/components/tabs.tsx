@@ -31,6 +31,7 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
                       <span>{label}</span>
                       {counter ? <span>({counter})</span> : null}
                     </a>
+                    <span className="counter-items">27</span>
                   </li>
                 )
             )}
@@ -58,7 +59,7 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
             padding-bottom: 0;
             position: sticky;
             top: 80px;
-            z-index: var(--z-index-minimum);
+            z-index: 2;
           }
 
           @media all and (max-width: 720px) {
@@ -86,8 +87,17 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
             border-bottom: 2px solid var(--edge-foreground);
           }
 
-          .navigation li.active a {
+          .navigation li.active a, .navigation li.active .counter-items {
             color: var(--edge-foreground);
+          }
+
+          .navigation li .counter-items {
+            color: var(--accents-3);
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 500;
+            margin-left: 4px;
+            transform: translateY(-50%);
           }
 
           .navigation-tab {
@@ -106,6 +116,10 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
             .navigation-tab.active {
               padding: var(--edge-gap);
               padding-bottom: 0;
+            }
+
+            .navigation li .counter-items {
+              display: none;
             }
           }
 

@@ -22,18 +22,18 @@ function DetailView({ group, type, showActions }: Props) {
         <div className="edge-item-card-header">
           {showActions && <GroupActions group={group} />}
           {group.draft && <div className="status">Draft</div>}
+          
+          <div className="group-actions">
+            <GroupContentMenu group={group} />
+            <b className="created-at">
+              <span>Created: </span>
+                {format(group.createdAt)}
+            </b>
+          </div>
         </div>
         <div className="edge-item-card-content">
           <GroupSummaryView group={group} linkToDetail={false} type={type} />
         </div>
-        <footer className="edge-item-card-footer">
-          <ul className="edge-item-card-stats">
-            <li className="edge-item-card-stats-item">
-              <b>{format(group.createdAt)}</b>
-            </li>
-          </ul>
-        </footer>
-        <GroupContentMenu group={group} />
         <GroupTabs id={group.id} group={group} />
       </article>
       <style jsx>{`
@@ -136,6 +136,28 @@ function DetailView({ group, type, showActions }: Props) {
           text-align: center;
           text-transform: uppercase;
           width: fit-content;
+        }
+
+        .created-at {
+          color: var(--accents-5);
+          font-size: 12px;
+          font-weight: 500;
+          margin-left: 24px;
+        }
+
+        .group-actions {
+          align-items: center;
+          display: flex;
+        }
+
+        @media all and (max-width: 860px) {
+          .group-actions {
+            margin-top: 0;
+          }
+
+          .created-at { 
+            display: none;
+          }
         }
       `}</style>
     </>

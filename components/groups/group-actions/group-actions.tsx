@@ -16,11 +16,46 @@ function GroupActions(props: Props) {
   const canEdit = groupPermission(currentUser.user, group.type, 'update', group)
 
   return (
+    <>
       <div className={`content-actions`}>
         {canEdit && (
-          <Button href={`/edit/group/${group.type}/${group.slug}`}>Edit</Button>
+          <a
+            className="edit-button"
+            href={`/edit/group/${group.type}/${group.slug}`}
+          >
+            <img
+              style={{ width: '15px' }}
+              src="/icons/icon-edit.svg"
+              alt="edit"
+            />
+          </a>
         )}
       </div>
+
+      <style jsx>{`
+        .edit-button {
+          border: var(--light-border);
+          background-color: var(--edge-background);
+          color: var(--edge-foreground);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: 500;
+          transition: 0.3s ease;
+          position: relative;
+          width: 36px;
+          height: 36px;
+          text-align: center;
+          border-radius: 50%;
+        }
+
+        .edit-button img{
+          display: inline-block;
+        }
+      `}</style>
+    </>
   )
 }
 
