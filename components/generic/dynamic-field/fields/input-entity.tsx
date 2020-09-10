@@ -1,70 +1,83 @@
-import Table, {
-  TableCellBody,
-  TableCellHeader,
-  TableRowBody,
-} from '@components/generic/table/table'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, memo } from 'react'
 
 import Button from '@components/generic/button/button'
 import EntitySearch from '@components/generic/entity-search/entity-search'
+import {
+  ExtendedColumn,
+  Table as ReactTable,
+} from '@components/generic/react-table'
 
-export default function InputEntity(props) {
-  const [val, setVal] = useState(props.value || [])
+function InputEntity(props) {
+  const { value, field, onChange: onChangeCallback } = props
+  const [values, setVal] = useState(value || [])
 
-  const validate = (value) => {
-    return props.field.required && value.length === 0 ? false : true
-  }
+  const validate = useCallback(
+    (value) => {
+      return field.required && value.length === 0 ? false : true
+    },
+    [field]
+  )
 
-  const onChange = item => {
-    const newVal = props.field.multiple ? [item, ...val] : [item]
-    
-    setVal(newVal)
-    props.onChange(newVal, validate(newVal))
-  }
+  const onChange = useCallback(
+    (item) => {
+      const newVal = field.multiple ? [item, ...values] : [item]
 
-  const removeItem = item => {
-    const newVal = val.filter(i => i.id !== item.id)
-    setVal(newVal)
-    props.onChange(newVal, validate(newVal))
-  }
+      onChangeCallback(newVal, validate(newVal))
+      setVal(newVal)
+    },
+    [field, setVal, values, onChangeCallback, validate]
+  )
+
+  const removeItem = useCallback(
+    (item) => () => {
+      const newVal = values.filter((i) => i.id !== item.id)
+
+      setVal(newVal)
+      onChangeCallback(newVal, validate(newVal))
+    },
+    [setVal, values, onChangeCallback, validate]
+  )
 
   useEffect(() => {
-    setVal(val)
-  }, [props.value])
+    setVal(values)
+  }, [value])
 
-  const headerCells = [
-    (<TableCellHeader key={`${props.field.name}-header-title`}>
-      Item
-    </TableCellHeader>),
-    (<TableCellHeader key={`${props.field.name}-header-actions`}>
-      Actions
-    </TableCellHeader>),
-  ]
+  const columns = useMemo<ExtendedColumn<{ [key: string]: any }>[]>(
+    () => [
+      {
+        Header: 'Item',
+        Cell: ({ row: { original } }) => original[field.entityName],
+      },
+      {
+        Header: 'Actions',
+        Cell: ({ row: { original } }) => (
+          <Button restProps={{ type: 'button' }} onClick={removeItem(original)}>
+            Remove
+          </Button>
+        ),
+      },
+    ],
+    []
+  )
+  const entityNameGetter = useCallback((item) => item[field.entityName], [
+    field,
+  ])
 
   return (
-    <div className="input-entity" data-testid={props['data-testid']} >
-      <EntitySearch placeholder={props.field.placeholder} entity={props.field.entity} entityType={props.field.entityType} entityName={props.field.entityName} onChange={onChange} />
+    <div className="input-entity" data-testid={props['data-testid']}>
+      <EntitySearch
+        placeholder={props.field.placeholder}
+        entity={props.field.entity}
+        entityType={props.field.entityType}
+        entityName={entityNameGetter}
+        onChange={onChange}
+      />
 
       <div className="results">
-      
-          <Table headerCells={headerCells}>
-            {val.length > 0 ? val.map(item => {
-              return (
-                <TableRowBody key={`${props.field.name}-${item.id}`}>
-                  <TableCellBody>{props.field.entityName(item)}</TableCellBody>
-                  <TableCellBody><Button onClick={() => removeItem(item)}>Remove</Button></TableCellBody>
-              </TableRowBody>)
-            }) : (
-              <TableRowBody>
-                  <TableCellBody>No items found</TableCellBody>
-                  <TableCellBody>-</TableCellBody>
-              </TableRowBody>
-            )}
-            
-
-          </Table>
-        
+        <ReactTable data={values} columns={columns} isEmpty={!values.length} />
       </div>
     </div>
   )
 }
+
+export default memo(InputEntity)

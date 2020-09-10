@@ -110,6 +110,14 @@ function Field({ field, value, typeDefinition }) {
             `}</style>
           </div>
         ) : null
+      case FIELDS.ENTITY_SEARCH: {
+        const text = (value || [])
+          .map((item) => `${item[field.entityName]}`)
+          .join(', ')
+
+        return <p data-testid={datatestId}>{text}</p>
+      }
+
       default:
         return <p data-testid={datatestId}>{value}</p>
         break
@@ -122,7 +130,6 @@ function Field({ field, value, typeDefinition }) {
 
       {getField(field, value)}
       <style jsx>{`
-
         label {
           font-size: 12px;
           font-weight: bold;

@@ -208,7 +208,7 @@ function SummaryView({
         .group-top-section {
           display: flex;
           flex-wrap: wrap;
-          margin-bottom: var(--edge-gap);
+          margin-bottom: var(--edge-gap-half);
           justify-content: space-between;
           align-items: start;
         }

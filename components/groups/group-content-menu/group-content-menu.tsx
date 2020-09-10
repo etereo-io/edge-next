@@ -55,7 +55,6 @@ function GroupContentMenu(props: Props) {
     <style jsx>{`
         .content-actions {
           display: flex;
-          margin-top: 24px;
         }
       `}</style>
     </>

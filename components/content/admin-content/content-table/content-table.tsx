@@ -1,108 +1,26 @@
 import { format } from 'timeago.js'
-import { useState, memo } from 'react'
+import React, { useState, memo, useMemo, useCallback } from 'react'
 import Link from 'next/link'
 
-import Table, {
-  TableCellBody,
-  TableCellHeader,
-  TableRowBody,
-} from '@components/generic/table/table'
-import Placeholder from '@components/generic/loading/table-loading'
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import { useInfinityList } from '@lib/client/hooks'
-import { GroupEntityType } from '@lib/types'
+import { ContentEntityType } from '@lib/types'
+import {
+  Table as ReactTable,
+  ExtendedColumn,
+} from '@components/generic/react-table'
+import fetch from '@lib/fetcher'
 
-const ListItem = (props) => {
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(false)
+import ActionsCell from './actions-cell'
 
-  const deleteRequest = () => {
-    const url = `${API.content[props.type.slug]}/${props.item.id}?field=id`
-    return fetch(url, {
-      method: 'delete',
-    })
-  }
+const limit = 10
 
-  const onClickDelete = (ev) => {
-    const result = window.confirm('Are you sure you want to delete this item?')
-
-    if (result) {
-      setLoading(true)
-      setSuccess(false)
-      setError(false)
-
-      deleteRequest()
-        .then((result) => {
-          setLoading(false)
-          setSuccess(true)
-          setError(false)
-        })
-        .catch((err) => {
-          setLoading(false)
-          setSuccess(false)
-          setError(true)
-        })
-    }
-  }
-
-  return (
-    <TableRowBody>
-      {props.type.fields.map((field, index) => {
-        const value = props.item[field.name] ? props.item[field.name] : '-'
-        const content =
-          index === 0 ? (
-            <Link href={`/content/${props.type.slug}/${props.item.slug}`}>
-              <a>{typeof value === 'string' ? value : JSON.stringify(value)}</a>
-            </Link>
-          ) : typeof value === 'string' ? (
-            value
-          ) : (
-            JSON.stringify(value)
-          )
-
-        return (
-          <TableCellBody
-            style={{
-              maxWidth: '200px',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
-            {content}
-          </TableCellBody>
-        )
-      })}
-      <TableCellBody>{format(props.item.createdAt)}</TableCellBody>
-      {props.type.publishing.draftMode && (
-        <TableCellBody>{props.item.draft ? 'DRAFT' : '-'}</TableCellBody>
-      )}
-      {props.type.comments.enabled && (
-        <TableCellBody>{props.item.comments || 0}</TableCellBody>
-      )}
-      <TableCellBody>0 times</TableCellBody>
-      <TableCellBody>
-        {!success && (
-          <Button href={`/edit/content/${props.type.slug}/${props.item.slug}`}>
-            Edit
-          </Button>
-        )}
-        {!success && (
-          <Button loading={loading} success={true} onClick={onClickDelete}>
-            Delete
-          </Button>
-        )}
-        {error && <div className="error">Error deleting item</div>}
-        {success && <div className="success">Item deleted</div>}
-      </TableCellBody>
-    </TableRowBody>
-  )
-}
-
-function ContentTable(props) {
-  const [sortBy, setSortBy] = useState('createdAt')
-  const [sortOrder, setSortOrder] = useState('DESC')
+function ContentTable({ type }) {
+  const [{ sortBy, sortOrder }, setOrdering] = useState({
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+  })
 
   const {
     data,
@@ -110,72 +28,128 @@ function ContentTable(props) {
     isReachingEnd,
     isEmpty,
     isLoadingMore,
-  } = useInfinityList<GroupEntityType>({
-    url: `${API.content[props.type.slug]}`,
+  } = useInfinityList<ContentEntityType>({
+    url: `${API.content[type.slug]}`,
     limit: 10,
     sortBy,
     sortOrder,
+    config: { revalidateOnFocus: false },
   })
 
-  const headerCells = props.type.fields.map((field) => {
-    return (
-      <TableCellHeader
-        key={field.name}
-        onClick={() => {
-          setSortBy(field.name)
-          setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-        }}
-      >
-        {field.name}
-      </TableCellHeader>
-    )
-  })
+  const changeOrdering = useCallback(
+    (options: Array<{ field: string; order: string }>) => {
+      if (options.length) {
+        const [{ field, order }] = options
 
-  headerCells.push(
-    <TableCellHeader
-      onClick={() => {
-        setSortBy('createdAt')
-        setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-      }}
-    >
-      Created at
-    </TableCellHeader>
+        setOrdering({ sortBy: field, sortOrder: order })
+      } else {
+        setOrdering({ sortBy: '', sortOrder: '' })
+      }
+    },
+    [setOrdering]
   )
 
-  if (props.type.publishing.draftMode) {
-    headerCells.push(
-      <TableCellHeader
-        onClick={() => {
-          setSortBy('draft')
-          setSortOrder(sortOrder === 'DESC' ? 'ASC' : 'DESC')
-        }}
-      >
-        Draft
-      </TableCellHeader>
+  const deleteRequest = useCallback((slug, id) => {
+    const url = `${API.content[slug]}/${id}?field=id`
+
+    return fetch(url, {
+      method: 'delete',
+    })
+  }, [])
+
+  const columns = useMemo(() => {
+    const columnsConfig: ExtendedColumn<ContentEntityType>[] = type.fields.map(
+      ({ name }, index) => ({
+        Header: name,
+        id: name,
+        sortable: true,
+        Cell: ({ row: { original: item } }) => {
+          const value =
+            typeof item[name] === 'string'
+              ? item[name]
+              : JSON.stringify(item[name])
+
+          if (index === 0) {
+            return (
+              <Link href={`/content/${type.slug}/${item.slug}`}>
+                <a>{value}</a>
+              </Link>
+            )
+          }
+
+          return value || '-'
+        },
+      })
     )
-  }
 
-  if (props.type.comments.enabled) {
-    headerCells.push(<TableCellHeader>Comments</TableCellHeader>)
-  }
+    columnsConfig.push({
+      Header: 'Created at',
+      id: 'createdAt',
+      accessor: 'createdAt',
+      Cell: ({ value }) => format(value),
+      sortable: true,
+    })
 
-  headerCells.push(<TableCellHeader>Reported</TableCellHeader>)
-  headerCells.push(<TableCellHeader>Actions</TableCellHeader>)
+    if (type.publishing.draftMode) {
+      columnsConfig.push({
+        Header: 'Draft',
+        id: 'draft',
+        Cell: ({ value }) => value || '-',
+        sortable: true,
+        justifyContent: 'center',
+      })
+    }
+
+    if (type.comments.enabled) {
+      columnsConfig.push({
+        Header: 'Comments',
+        id: 'comments',
+        Cell: ({ value }) => value || '-',
+        sortable: false,
+        justifyContent: 'center',
+      })
+    }
+
+    columnsConfig.push(
+      {
+        Header: 'Reported',
+        id: 'reported',
+        Cell: ({ value }) => `${value || 0} times`,
+      },
+      {
+        Header: 'Actions',
+        Cell: ({ row: { original } }) => (
+          <ActionsCell
+            item={original}
+            slug={type.slug}
+            deleteRequest={deleteRequest}
+          />
+        ),
+        minWidth: 150,
+        headerAlign: 'center',
+        justifyContent: 'space-evenly',
+      }
+    )
+
+    return columnsConfig
+  }, [])
 
   return (
     <div className="content-list">
       <div className="table-wrapper">
-        <Table headerCells={headerCells}>
-          {data.map((item) => (
-            <ListItem key={item.id} type={props.type} item={item} />
-          ))}
-          {isLoadingMore && <Placeholder />}
-          {isEmpty && <div className="empty">Sorry, no items found.</div>}
-        </Table>
+        <ReactTable
+          columns={columns as ExtendedColumn<object>[]}
+          data={data}
+          limit={limit}
+          isEmpty={isEmpty}
+          loading={isLoadingMore}
+          initialState={{ sortBy: [{ id: 'createdAt', desc: true }] }}
+          fetchData={changeOrdering}
+        />
       </div>
 
       <div className="load-more">
-        {isReachingEnd ? null : (
+        {!isReachingEnd && (
           <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
             Load More
           </Button>
@@ -183,7 +157,26 @@ function ContentTable(props) {
       </div>
       <style jsx>{`
         .table-wrapper {
-          overflow-x: scroll;
+          display: block;
+          overflow: auto;
+          position: relative;
+          margin: 40px 0 24px;
+        }
+
+        .content-list {
+          position: relative;
+        }
+        .content-list:after {
+          background: linear-gradient(
+            to left,
+            var(--accents-1-medium) 0%,
+            transparent 100%
+          );
+          height: 100%;
+          position: absolute;
+          right: 0;
+          top: 0;
+          width: 16px;
         }
 
         .load-more {

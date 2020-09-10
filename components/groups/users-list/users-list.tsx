@@ -1,10 +1,15 @@
-import React, { useEffect, useState, memo, useCallback } from 'react'
+import React, { useEffect, useState, memo, useCallback, useMemo } from 'react'
 
-import Table, { TableCellHeader } from '@components/generic/table/table'
 import EntitySearch from '@components/generic/entity-search/entity-search'
 import { MemberType } from '@lib/types/entities/group'
-
-import ListItem from './list-item'
+import {
+  ExtendedColumn,
+  Table as ReactTable,
+} from '@components/generic/react-table'
+import { UserType } from '@lib/types'
+import Link from 'next/link'
+import Button from '@components/generic/button/button'
+import Avatar from '@components/user/avatar/avatar'
 
 export enum TYPES {
   MEMBERS = 'members',
@@ -24,18 +29,18 @@ interface Props {
     method?: METHODS
   ) => void
   type: TYPES
-  loading?: boolean;
+  loading?: boolean
 }
-
-const headerCells = [
-  <TableCellHeader key="user">User</TableCellHeader>,
-  <TableCellHeader key="role">Role</TableCellHeader>,
-  <TableCellHeader key="actions">Actions</TableCellHeader>,
-]
 
 const entityNameGetter = ({ username, email }) => `${username} | ${email}`
 
-function UsersList({ users = [], onChange, roles = [], type, loading = false }: Props) {
+function UsersList({
+  users = [],
+  onChange,
+  roles = [],
+  type,
+  loading = false,
+}: Props) {
   const [items, setItems] = useState(users)
   const [role] = roles
 
@@ -61,7 +66,7 @@ function UsersList({ users = [], onChange, roles = [], type, loading = false }: 
   )
 
   const removeUser = useCallback(
-    (userId) => {
+    (userId) => () => {
       const newItems = items.filter(({ id: itemId }) => itemId !== userId)
 
       setItems(newItems)
@@ -76,7 +81,7 @@ function UsersList({ users = [], onChange, roles = [], type, loading = false }: 
   )
 
   const approveUser = useCallback(
-    (user) => {
+    (user) => () => {
       onChange(user, METHODS.UPDATE)
     },
     [onChange]
@@ -104,6 +109,89 @@ function UsersList({ users = [], onChange, roles = [], type, loading = false }: 
     [items, setItems, onChange, type]
   )
 
+  const handleChangeRole = useCallback(
+    (id) => (event) => {
+      setUserRole(id, event.target.value)
+    },
+    [setUserRole]
+  )
+
+  const columns = useMemo<
+    ExtendedColumn<{ user: UserType; loading: boolean; type: TYPES }>[]
+  >(
+    () => [
+      {
+        Header: 'User',
+        id: 'user',
+        Cell: ({
+          row: {
+            original: {
+              user: { id, username, email },
+              user,
+            },
+          },
+        }) => (
+          <>
+            <Avatar width={'32px'} user={user} />
+            <Link href={`/profile/${id}`}>{username || email}</Link>
+          </>
+        ),
+      },
+      {
+        Header: 'Role',
+        id: 'roles',
+        Cell: ({
+          row: {
+            original: {
+              user: { roles: userRoles, id },
+              loading,
+            },
+          },
+        }) => (
+          <select
+            className="select-role"
+            value={userRoles ? userRoles[0] : undefined}
+            onChange={handleChangeRole(id)}
+            disabled={loading}
+          >
+            {roles.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        ),
+      },
+      {
+        Header: 'Actions',
+        id: 'actions',
+        Cell: ({
+          row: {
+            original: { user, loading, type },
+          },
+        }) => (
+          <>
+            <Button loading={loading} onClick={removeUser(user.id)}>
+              Remove
+            </Button>
+            {type === TYPES.PENDING_MEMBERS && (
+              <Button loading={loading} onClick={approveUser(user)}>
+                Approve
+              </Button>
+            )}
+          </>
+        ),
+      },
+    ],
+    [approveUser, removeUser, handleChangeRole]
+  )
+
+  const data = useMemo(() => items.map((user) => ({ user, loading, type })), [
+    items,
+    loading,
+    type,
+  ])
+
   return (
     <>
       <div className="user-permissions">
@@ -118,20 +206,11 @@ function UsersList({ users = [], onChange, roles = [], type, loading = false }: 
           </div>
         )}
         <div className="user-list">
-          <Table headerCells={headerCells}>
-            {items.map((user) => (
-              <ListItem
-                loading={loading}
-                key={user.id}
-                user={user}
-                removeUser={removeUser}
-                roles={roles}
-                setUserRole={setUserRole}
-                approveUser={approveUser}
-                type={type}
-              />
-            ))}
-          </Table>
+          <ReactTable
+            columns={columns as ExtendedColumn<object>[]}
+            data={data}
+            loading={loading}
+          />
         </div>
       </div>
       <style jsx>{`
