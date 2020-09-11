@@ -1,109 +1,76 @@
-import { usePermission, useUser } from '@lib/client/hooks'
-
-import Layout from '@components/layout/admin/layout-admin'
+import React, { memo } from 'react'
 import { format } from 'timeago.js'
+import useSWR from 'swr'
 
-const AdminPage = () => {
+import { usePermission, useUser } from '@lib/client/hooks'
+import Layout from '@components/layout/admin/layout-admin'
+import fetcher from '@lib/fetcher'
+import API from '@lib/api/api-endpoints'
+import { StatisticResponse } from '@lib/types'
+import { Widget } from '@components/statistic'
+
+function AdminPage() {
   const { user } = useUser({ redirectTo: '/' })
 
+  const { data, isValidating } = useSWR<StatisticResponse>(
+    API.statistic,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
+  )
   const { available } = usePermission([`admin.stats`], '/')
+
+  const usersData = data?.data.users || []
+  const contentData = data?.data.content || []
+  const groupsData = data?.data.groups || []
 
   return (
     <>
-      <Layout title="Stats" loading={!available || !user}>
+      <Layout title="Stats" loading={!available || !user || isValidating}>
         <header className="admin-title">
           <h1>Administration</h1>
-          <small className="login-date">Last login: {format(user?.metadata.lastLogin)}</small>
+          <small className="login-date">
+            Last login: {format(user?.metadata.lastLogin)}
+          </small>
         </header>
         <section className="stats-panel">
-          <div className="stats-unit">
-            <div className="stats-unit-view">
-              <small className="stats-unit-percentage">
-                <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
-                  <defs />
-                  <path fill="var(--edge-success)" fillRule="evenodd" d="M7.9962 2a.6639.6639 0 00-.5049.228l-4.66 5.3334a.6667.6667 0 001.004.8773l3.498-4.0034v8.898a.6667.6667 0 101.3334 0V4.4467l3.4986 3.9927a.6667.6667 0 001.0028-.8787L8.5518 2.2923A.666.666 0 008 2h-.0038z" clipRule="evenodd" />
-                </svg>
-              </small>
-              <div className="stats-title">
-                <b className="stats-unit-data">124</b>
-                <h4 className="stats-unit-title">Total Users</h4>
-              </div>
+          {usersData.map((item) => (
+            <div className="stats-unit" key={item.title}>
+              <Widget data={item} />
             </div>
-            <b className="stats-unit-increase">+21</b>
-          </div>
-
-          <div className="stats-unit">
-            <div className="stats-unit-view">
-              <small className="stats-unit-percentage">
-                <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
-                  <defs />
-                  <path fill="var(--edge-success)" fillRule="evenodd" d="M7.9962 2a.6639.6639 0 00-.5049.228l-4.66 5.3334a.6667.6667 0 001.004.8773l3.498-4.0034v8.898a.6667.6667 0 101.3334 0V4.4467l3.4986 3.9927a.6667.6667 0 001.0028-.8787L8.5518 2.2923A.666.666 0 008 2h-.0038z" clipRule="evenodd" />
-                </svg>
-              </small>
-              <div className="stats-title">
-                <b className="stats-unit-data">124</b>
-                <h4 className="stats-unit-title">Total Users</h4>
-              </div>
+          ))}
+          {contentData.map((item) => (
+            <div className="stats-unit" key={item.title}>
+              <Widget data={item} />
             </div>
-            <b className="stats-unit-increase">+21</b>
-          </div>
-
-          <div className="stats-unit minus">
-            <div className="stats-unit-view">
-              <small className="stats-unit-percentage">
-                <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
-                  <defs />
-                  <path fill="var(--edge-error)" fillRule="evenodd" d="M7.996 14a.6641.6641 0 01-.5047-.228l-4.66-5.3334a.6667.6667 0 011.004-.8772l3.498 4.0033v-8.898a.6667.6667 0 111.3334 0v8.8866l3.4986-3.9927a.6667.6667 0 011.0028.8787l-4.6163 5.2683A.6659.6659 0 018 14h-.004z" clipRule="evenodd" />
-                </svg>
-              </small>
-              <div className="stats-title">
-                <b className="stats-unit-data">124</b>
-                <h4 className="stats-unit-title">Total Users</h4>
-              </div>
+          ))}
+          {groupsData.map((item) => (
+            <div className="stats-unit" key={item.title}>
+              <Widget data={item} />
             </div>
-            <b className="stats-unit-increase">-16</b>
-          </div>
-
-          <div className="stats-unit">
-            <div className="stats-unit-view">
-              <small className="stats-unit-percentage">
-                <svg className="arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
-                  <defs />
-                  <path fill="var(--edge-success)" fillRule="evenodd" d="M7.9962 2a.6639.6639 0 00-.5049.228l-4.66 5.3334a.6667.6667 0 001.004.8773l3.498-4.0034v8.898a.6667.6667 0 101.3334 0V4.4467l3.4986 3.9927a.6667.6667 0 001.0028-.8787L8.5518 2.2923A.666.666 0 008 2h-.0038z" clipRule="evenodd" />
-                </svg>
-              </small>
-              <div className="stats-title">
-                <b className="stats-unit-data">124</b>
-                <h4 className="stats-unit-title">Total Users</h4>
-              </div>
-            </div>
-            <b className="stats-unit-increase">+21</b>
-          </div>
+          ))}
         </section>
 
         <section className="stats-quick-view">
           <div className="stats-unit">
-            <b className="title">
-              Users
-              </b>
+            <b className="title">Users</b>
           </div>
           <div className="stats-unit">
-            <b className="title">
-              Groups
-              </b>
+            <b className="title">Groups</b>
           </div>
         </section>
       </Layout>
 
-      <style jsx>{`
-        .admin-title {
+      <style global jsx>{`
+        .admin-title  {
           align-items: center;
           display: flex;
           justify-content: space-between;
           width: 100%;
         }
 
-        .admin-title .login-date{
+        .admin-title .login-date {
           color: var(--accents-5);
           font-size: 12px;
         }
@@ -119,7 +86,7 @@ const AdminPage = () => {
           }
         }
 
-        .stats-panel{
+        .stats-panel {
           align-items: start;
           display: flex;
           flex-wrap: wrap;
@@ -140,13 +107,13 @@ const AdminPage = () => {
           width: 23%;
         }
 
-        .stats-unit-view {
+        .stats-unit-view  {
           align-items: center;
           display: flex;
         }
 
         @media all and (max-width: 600px) {
-          .stats-unit {
+          .stats-unit  {
             margin-bottom: 16px;
             width: calc(50% - 16px);
           }
@@ -184,18 +151,18 @@ const AdminPage = () => {
           width: 48px;
         }
 
-        @media all and (max-width: 990px){
-          .stats-unit-percentage {
+        @media all and (max-width: 990px) {
+          .stats-unit-percentage  {
             height: 36px;
             width: 36px;
           }
         }
 
-        @media all and (max-width: 960px) {
-          .stats-unit{
+        @media all and (max-width: 960px) {
+          .stats-unit {
             padding: 16px;
           }
-          .stats-unit-increase{
+          .stats-unit-increase {
             font-size: 12px;
             position: absolute;
             top: 4px;
@@ -203,8 +170,8 @@ const AdminPage = () => {
           }
         }
 
-        @media all and (min-width: 600px) and (max-width: 760px) {
-          .stats-unit-percentage {
+        @media all and (min-width: 600px) and (max-width: 760px) {
+          .stats-unit-percentage  {
             height: 24px;
             width: 24px;
           }
@@ -222,15 +189,11 @@ const AdminPage = () => {
           color: var(--edge-success);
         }
 
-        .arrow{
-          width: 16px;
-        }
-        
-        .stats-unit.minus .stats-unit-percentage{
+        .stats-unit.minus .stats-unit-percentage {
           background: var(--edge-error-soft);
         }
 
-        .stats-unit.minus .stats-unit-increase{
+        .stats-unit.minus .stats-unit-increase {
           color: var(--edge-error);
         }
 
@@ -239,11 +202,11 @@ const AdminPage = () => {
           justify-content: space-between;
         }
 
-        .stats-quick-view .stats-unit{
+        .stats-quick-view .stats-unit {
           align-items: start;
         }
 
-        .stats-quick-view .stats-unit .title{
+        .stats-quick-view .stats-unit .title {
           font-size: 12px;
           text-transform: uppercase;
         }
@@ -256,4 +219,4 @@ const AdminPage = () => {
   )
 }
 
-export default AdminPage
+export default memo(AdminPage)
