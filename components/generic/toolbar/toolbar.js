@@ -65,7 +65,7 @@ function ToolBar() {
         <footer className="edge-panel-user-footer">
           <Link href="/p/faq">
             <a className="edge-panel-user-faqs">
-              <img src="/icons/icon-question.svg" />
+              <img src="/icons/icon-question.svg" alt="question mark" />
             </a>
           </Link>
 
@@ -73,7 +73,7 @@ function ToolBar() {
         </footer>
 
         <button className="edge-panel-user-action-mobile">
-          <img src="/icons/icon-add.svg" />
+          <img src="/icons/icon-add.svg" alt="add"/>
         </button>
       </aside>
       <style jsx>{`
@@ -130,7 +130,7 @@ function ToolBar() {
           width: 32px;
         }
 
-        .edge-panel-user-faqs img{
+        .edge-panel-user-faqs img {
           width: 100%;
         }
 

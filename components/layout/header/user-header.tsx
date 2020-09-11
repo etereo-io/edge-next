@@ -42,7 +42,7 @@ function UserHeader(props) {
           <div className="edge-user-actions-buttons">
             <Link href={`/settings/${user.id}`}>
               <a title="Settings">
-                <img src="/icons/icon-configuration.svg" />
+                <img src="/icons/icon-configuration.svg" alt="configuration" />
               </a>
             </Link>
           </div>

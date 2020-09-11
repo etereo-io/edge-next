@@ -5,14 +5,14 @@ import Link from 'next/link'
 import { UserType } from '@lib/types'
 
 interface Props {
-  user: UserType
+  user: Partial<UserType>
 }
 
 function UserItem({ user }: Props) {
   return (
     <div className="item">
       <Link href={`/profile/${user.id}`}>
-        <a title={`${user.username}'s profile`}><Avatar width={'20px'} user={user} /> {user.username}</a>
+        <a title={`${user?.username}'s profile`}><Avatar width={'20px'} user={user} /> {user?.username}</a>
       </Link>
       <style jsx>
         {`

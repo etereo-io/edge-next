@@ -110,26 +110,19 @@ function ContentTable({ type }) {
       })
     }
 
-    columnsConfig.push(
-      {
-        Header: 'Reported',
-        id: 'reported',
-        Cell: ({ value }) => `${value || 0} times`,
-      },
-      {
-        Header: 'Actions',
-        Cell: ({ row: { original } }) => (
-          <ActionsCell
-            item={original}
-            slug={type.slug}
-            deleteRequest={deleteRequest}
-          />
-        ),
-        minWidth: 150,
-        headerAlign: 'center',
-        justifyContent: 'space-evenly',
-      }
-    )
+    columnsConfig.push({
+      Header: 'Actions',
+      Cell: ({ row: { original } }) => (
+        <ActionsCell
+          item={original}
+          slug={type.slug}
+          deleteRequest={deleteRequest}
+        />
+      ),
+      minWidth: 150,
+      headerAlign: 'center',
+      justifyContent: 'space-evenly',
+    })
 
     return columnsConfig
   }, [])

@@ -88,6 +88,7 @@ function EditCoverImage({ user, onChange = () => {} }) {
             <img
               style={{ height: '200px', cursor: 'pointer' }}
               src={fields.cover.path || '/static/demo-images/default-background.jpg'}
+              alt="default background"
             />
           </div>
 
