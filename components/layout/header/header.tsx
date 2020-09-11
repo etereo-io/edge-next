@@ -34,7 +34,7 @@ function Header() {
   if (hasPermission(user, `admin.email`)) {
     links.push({
       title: 'Emails',
-      link: '/emails',
+      link: '/admin/emails',
     })
   }
 
