@@ -6,23 +6,27 @@ import React, { memo, useCallback, useMemo, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
+import EmailForm from '@components/email/email-form'
 import { EmailType } from '@lib/types'
 import { format } from 'timeago.js'
 import { useInfinityList } from '@lib/client/hooks'
 
 const limit = 10
 
-function EmailsTable() {
+function EmailsTable({ user }) {
+
   const [{ sortBy, sortOrder }, setOrdering] = useState({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
   })
+  
   const {
     data,
     loadNewItems,
     isReachingEnd,
     isEmpty,
     isLoadingMore,
+    revalidate
   } = useInfinityList<EmailType>({
     url: `${API.email}`,
     limit,
@@ -71,8 +75,26 @@ function EmailsTable() {
     []
   )
 
+  const [ showEmailForm, setShowEmailForm] = useState(false)
+
+  const onSubmittedEmail = () => {
+    setShowEmailForm(false)
+    revalidate()
+  }
+
+  const onCancel = () => {
+    setShowEmailForm(false)
+  }
+
   return (
     <div className="content-list">
+      <div className="create-button">
+        {!showEmailForm && <Button onClick={() => setShowEmailForm(true)}>
+          Create Email
+          </Button>}
+      </div>
+      {showEmailForm && <EmailForm user={user} onSubmitted={onSubmittedEmail} onCancel={onCancel} />}
+      
       <div className="table-wrapper">
         <ReactTable
           columns={columns as ExtendedColumn<object>[]}
@@ -93,6 +115,10 @@ function EmailsTable() {
         )}
       </div>
       <style jsx>{`
+        .create-button {
+          display: flex;
+          justify-content: flex-end;
+        }
         .table-wrapper {
           display: block;
           overflow: auto;

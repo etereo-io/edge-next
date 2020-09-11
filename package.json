@@ -17,6 +17,7 @@
     "content-type": "^1.0.4",
     "cookie": "0.4.0",
     "deepmerge": "^4.2.2",
+    "email-validator": "^2.0.4",
     "express": "4.17.1",
     "firebase-admin": "^8.10.0",
     "formidable": "^2.0.0-canary.20200504.1",

@@ -1,15 +1,15 @@
-import { EmailEntity } from '@lib/types/entities/email'
+import { EmailType } from '@lib/types/entities/email'
 import { getDB } from '@lib/api/db'
 
 export function deleteEmail(options) {
   return getDB()
-    .collection('email')
+    .collection('emails')
     .remove(options)
 }
 
-export function addEmail(data : EmailEntity) {
+export function addEmail(data : EmailType) {
   return getDB()
-    .collection('email')
+    .collection('emails')
     .add({
       ...data,
       createdAt: Date.now(),

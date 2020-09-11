@@ -1,9 +1,9 @@
-import { EmailCreationType, EmailType } from '@lib/types/entities/email'
 import {
   addEmail,
   findEmails,
 } from '@lib/api/entities/email'
 
+import { EmailCreationType } from '@lib/types/entities/email'
 import { Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
@@ -19,7 +19,7 @@ import {
 } from '@lib/email'
 
 function isValidEmail(email: EmailCreationType) {
-  if (!email.from || !email.to || !email.subject || !email.text) {
+  if ( (!email.to && !email.cc && !email.bcc) || !email.subject || (!email.text && !email.html)) {
     return false
   }
   return true

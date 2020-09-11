@@ -68,17 +68,17 @@ export function sendRequestToJoinToGroupEmail(to, type, group) {
 }
 
 export function sendStandardEmail(email: EmailCreationType, user: UserType) {
-  const htmlString = md.render(email.text)
+  const htmlString = email.html ? email.html : md.render(email.text)
 
   const html = standardEmailTemplate({
     message: htmlString
   })
 
   return sendEmail({
-    from: config.emails.from,
+    from: email.from  || config.emails.from,
     to: email.to,
     subject: email.subject,
-    text: email.text,
+    text: email.text || email.html,
     html
   })
 }

@@ -2,6 +2,7 @@ export const FIELDS = {
   TEXT: 'text',
   TEXTAREA: 'textarea',
   TAGS: 'tags',
+  EMAILS: 'emails',
   IMAGE: 'img',
   FILE: 'file',
   NUMBER: 'number',
