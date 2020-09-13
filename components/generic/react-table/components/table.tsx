@@ -192,6 +192,14 @@ function ReactTable<T extends object = {}>({
       </div>
       <style jsx>
         {`
+          .empty {
+            background: var(--edge-background);
+            border-radius: 8px;
+            color: var(--accents-7);
+            font-weight: 600;            
+            padding: 16px;
+          }
+
           .table {
             background: var(--accents-1-medium);
             display: block;
