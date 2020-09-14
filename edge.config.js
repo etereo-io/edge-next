@@ -639,6 +639,7 @@ export const getConfig = () => {
       permissions: {
         access: [adminRole],
         stats: [adminRole],
+        email: [adminRole]
       },
     },
 

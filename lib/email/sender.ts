@@ -1,3 +1,4 @@
+import { EmailType } from '@lib/types/entities/email'
 import logger from '@lib/logger'
 import sendgrid from '@sendgrid/mail'
 
@@ -13,23 +14,33 @@ try {
   logger('ERROR', e.message)
 }
 
-export default function send(
-  from,
-  to,
-  subject = 'Email subject',
-  text = 'Email body',
-  html = '<p>Email body</p>'
-) {
+export default function send(email: EmailType) {
+  const { 
+    from,
+    to,
+    cc,
+    bcc,
+    subject = 'Email subject',
+    text = 'Email body',
+    html = '<p>Email body</p>'
+  } = email
+
+
   if (config.sendgridKey) {
     return sendgrid.send({
       to,
+      cc,
+      bcc,
       from,
       subject,
       text,
       html,
-    }).catch(err => {
+    })
+    
+    .catch(err => {
       logger('ERROR', 'Could not send email ' + err.message)
     })
+    
   } else {
     logger('ERROR', 'Missing SENDGRID_KEY environment variable, not sending emails')
     return Promise.resolve()

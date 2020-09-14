@@ -28,8 +28,8 @@
   - [Static Pages](#static-pages)
   - [Web monetization](#web-monetization)
   - [Other Payments](#other-payments)
-- [Super search](#super-search)
-- [env.local file](#envlocal-file)
+  - [Super search](#super-search)
+  - [Statistic](#statistic)
   - [Deploy your own](#deploy-your-own)
   - [API](#api)
     - [Auth](#auth)
@@ -38,9 +38,9 @@
     - [Content](#content)
     - [Comments](#comments)
     - [Activity](#activity)
+    - [Full Text](#full-text)
     - [Interactions](#interactions)
-    - [Super Search](#Full Text)
-    - [Statistic](#Statistic)
+    - [Statistic](#statistic-1)
 
 ## Features
 
@@ -539,6 +539,11 @@ const contentType = {
     - maxlength
     - defaultValue
 - tags
+  - Available options:
+    - required
+    - defaultValue
+    - options \*
+- emails
   - Available options:
     - required
     - defaultValue
