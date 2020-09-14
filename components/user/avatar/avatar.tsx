@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { UserType } from '@lib/types'
 
 type PropTypes = {
-  user?: UserType
+  user?: Partial<UserType>
   title?: string
   status?: string
   width?: string

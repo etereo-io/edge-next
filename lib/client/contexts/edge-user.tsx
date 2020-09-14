@@ -4,8 +4,12 @@ import { UserType } from '@lib/types'
 import fetch from '../../fetcher'
 import useSWR from 'swr'
 
-const EdgeStateContext = React.createContext<{ user: UserType | null }>({
-  user: null
+const EdgeStateContext = React.createContext<{
+  user: UserType | null
+  loaded?: boolean
+  error?: boolean
+}>({
+  user: null,
 })
 const EdgeDispatchContext = React.createContext<Dispatch<any>>(() => null)
 

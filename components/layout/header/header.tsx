@@ -65,9 +65,11 @@ function Header() {
               to stay tuned!
             </p>
             <button
+              name="close"
+              aria-label="close"
               className="edge-topper-close"
               onClick={() => setActive(!active)}
-            ></button>
+            />
           </div>
         </aside>
         <div className="edge-header-content">
@@ -96,7 +98,7 @@ function Header() {
         </div>
       </header>
       <style jsx>{`
-        @media all and (max-width: 960px){
+        @media all and (max-width: 960px) {
           .admin-menu {
             display: none;
           }
@@ -192,7 +194,6 @@ function Header() {
             height: 56px;
           }
         }
-
       `}</style>
     </>
   )

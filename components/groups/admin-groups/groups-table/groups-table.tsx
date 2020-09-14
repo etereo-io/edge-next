@@ -104,26 +104,19 @@ function GroupsTable({ type }: Props) {
       })
     }
 
-    columnsConfig.push(
-      {
-        Header: 'Reported',
-        id: 'reported',
-        Cell: ({ value }) => `${value || 0} times`,
-      },
-      {
-        Header: 'Actions',
-        Cell: ({ row: { original } }) => (
-          <ActionsCell
-            item={original}
-            slug={type.slug}
-            deleteRequest={deleteRequest}
-          />
-        ),
-        minWidth: 150,
-        headerAlign: 'center',
-        justifyContent: 'space-evenly',
-      }
-    )
+    columnsConfig.push({
+      Header: 'Actions',
+      Cell: ({ row: { original } }) => (
+        <ActionsCell
+          item={original}
+          slug={type.slug}
+          deleteRequest={deleteRequest}
+        />
+      ),
+      minWidth: 150,
+      headerAlign: 'center',
+      justifyContent: 'space-evenly',
+    })
 
     return columnsConfig
   }, [])
@@ -156,12 +149,16 @@ function GroupsTable({ type }: Props) {
           position: relative;
           margin: 40px 0 24px;
         }
-        
-        .content-list{
+
+        .content-list {
           position: relative;
         }
-        .content-list:after{
-          background: linear-gradient(to left, var(--accents-1-medium) 0%,transparent 100%);
+        .content-list:after {
+          background: linear-gradient(
+            to left,
+            var(--accents-1-medium) 0%,
+            transparent 100%
+          );
           /*content: '';*/
           height: 100%;
           position: absolute;
@@ -174,7 +171,7 @@ function GroupsTable({ type }: Props) {
           display: flex;
           margin: var(--edge-gap);
           justify-content: center;
-        }        
+        }
       `}</style>
     </div>
   )

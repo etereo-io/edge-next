@@ -4,14 +4,17 @@ import { useEffect } from 'react'
 import { useUserState } from '../contexts/edge-user'
 
 declare type UseUserResponse = {
-  user: UserType;
-  error: boolean;
-  finished: boolean;
+  user: UserType
+  error: boolean
+  finished: boolean
 }
 /*
   Loads current user, redirects if there is no user
 */
-export default function useUser({ redirectTo = '', redirectIfFound = false} = {}): UseUserResponse{
+export default function useUser({
+  redirectTo = '',
+  redirectIfFound = false,
+} = {}): UseUserResponse {
   const userState = useUserState()
 
   useEffect(() => {

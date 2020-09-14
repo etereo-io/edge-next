@@ -1,16 +1,16 @@
-import { hasPermissionsForContent, loadUser } from '@lib/api/middlewares'
+import { hasPermissionsForContent, hasPermissionsForGroupContent, loadUser } from '@lib/api/middlewares'
 
 import ContentDetailView from '@components/content/read-content/content-detail-view/content-detail-view'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { GetServerSideProps } from 'next'
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import { getContentTypeDefinition } from '@lib/config'
-import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getSession } from '@lib/api/auth/iron'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({
@@ -47,7 +47,24 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   try {
     await runMiddleware(req, res, loadUser)
-    await runMiddleware(req, res, hasPermissionsForContent(query.type, item))
+    
+    if (item.groupId) {
+      const group = await findOneContent(item.groupType, {
+        id: item.groupId,
+      })
+
+      if (!group) {
+        throw new Error('Not found')
+      }
+
+      await runMiddleware(
+        req,
+        res,
+        hasPermissionsForGroupContent(item.groupType, query.type, group, item)
+      )
+    } else {
+      await runMiddleware(req, res, hasPermissionsForContent(query.type, item))
+    }
   } catch (e) {
     // User can not access
     res.writeHead(302, { Location: '/404' })

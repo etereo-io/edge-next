@@ -71,4 +71,12 @@ export declare type ConfigType = {
       fieldsForShow: string[]
     }>
   }
+  statistic: {
+    users: {
+      enabled: boolean
+      title: string
+    }
+    content: Array<{ name: string; title: string }>
+    groups: Array<{ name: string; title: string }>
+  }
 }

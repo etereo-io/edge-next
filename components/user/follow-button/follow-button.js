@@ -10,12 +10,12 @@ export default ({ following }) => {
       >
         {following && (
           <div className="button-inner">
-            <img src="/icons/icon-check.svg" /> <span>Following</span>
+            <img src="/icons/icon-check.svg" alt="check" /> <span>Following</span>
           </div>
         )}
         {!following && (
           <div className="button-inner">
-            <img src="/icons/icon-check.svg" /> <span>Follow</span>
+            <img src="/icons/icon-check.svg" alt="check" /> <span>Follow</span>
           </div>
         )}
       </Button>

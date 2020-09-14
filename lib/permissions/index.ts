@@ -191,7 +191,7 @@ export const commentPermission = function(
   user: UserType = publicUser,
   contentType,
   action,
-  comment
+  comment = null
 ) {
   const permission = [
     `content.${contentType}.comments.${action}`,
@@ -215,7 +215,7 @@ export const groupCommentPermission = (
   contentType,
   action,
   group,
-  comment
+  comment = null
 ) => {
   const permission = [
     `group.${entityType}.content.${contentType}.comments.${action}`,

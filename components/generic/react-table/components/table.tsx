@@ -1,4 +1,4 @@
-import React, { useMemo, memo, useEffect } from 'react'
+import React, { useMemo, memo, useEffect, Fragment } from 'react'
 import {
   useTable,
   useFlexLayout,
@@ -89,7 +89,7 @@ function ReactTable<T extends object = {}>({
   const records = []
 
   if (loading && prevData) {
-    records.push(...Array.isArray(prevData)? prevData: [])
+    records.push(...(Array.isArray(prevData) ? prevData : []))
   } else {
     records.push(...data)
   }
@@ -134,33 +134,27 @@ function ReactTable<T extends object = {}>({
           {headerGroups.map((headerGroup) => (
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column: ExtendedHeader<T>) => (
-                <>
+                <div
+                  {...column.getHeaderProps(headerProps)}
+                  className={`th ${column.headerClassName || ''}`}
+                >
                   <div
-                    {...column.getHeaderProps(headerProps)}
-                    className={`th ${column.headerClassName || ''}`}
+                    {...column.getHeaderProps(
+                      column.sortable ? column.getSortByToggleProps() : {}
+                    )}
                   >
-                    <div
-                      {...column.getHeaderProps(
-                        column.sortable ? column.getSortByToggleProps() : {}
-                      )}
-                    >
-                      {column.render('Header')}
-                    </div>
-                    <span className="sort-icon">
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' ↓'
-                          : ' ↑'
-                        : ''}
-                    </span>
-                    <div
-                      {...column.getResizerProps()}
-                      className={`resizer ${
-                        column.isResizing ? 'isResizing' : ''
-                      }`}
-                    />
+                    {column.render('Header')}
                   </div>
-                </>
+                  <span className="sort-icon">
+                    {column.isSorted ? (column.isSortedDesc ? ' ↓' : ' ↑') : ''}
+                  </span>
+                  <div
+                    {...column.getResizerProps()}
+                    className={`resizer ${
+                      column.isResizing ? 'isResizing' : ''
+                    }`}
+                  />
+                </div>
               ))}
             </div>
           ))}
@@ -198,13 +192,21 @@ function ReactTable<T extends object = {}>({
       </div>
       <style jsx>
         {`
+          .empty {
+            background: var(--edge-background);
+            border-radius: 8px;
+            color: var(--accents-7);
+            font-weight: 600;            
+            padding: 16px;
+          }
+
           .table {
             background: var(--accents-1-medium);
             display: block;
             font-size: 12px;
           }
 
-          .sort-icon {
+          .sort-icon  {
             font-size: 14px;
             position: absolute;
             top: 50%;
@@ -242,17 +244,17 @@ function ReactTable<T extends object = {}>({
             overflow-x: hidden;
           }
 
-          .table .tbody .td:first-of-type{
-            align-items: center!important;
+          .table .tbody .td:first-of-type {
+            align-items: center !important;
             color: var(--accents-7);
             font-weight: 600;
           }
 
-          .user-avatar {
+          .user-avatar  {
             margin-right: 4px;
           }
 
-          .table .tbody .td .avatar{
+          .table .tbody .td .avatar {
             margin-right: 4px;
           }
 
@@ -265,11 +267,11 @@ function ReactTable<T extends object = {}>({
             text-overflow: ellipsis;
           }
 
-          .table .td:last-of-type{
-            overflow:visible;
+          .table .td:last-of-type {
+            overflow: visible;
           }
 
-          div[role=columnheader]{
+          div[role='columnheader'] {
             background: var(--accents-2);
             color: var(--accents-4);
             font-size: 11px;
@@ -278,13 +280,13 @@ function ReactTable<T extends object = {}>({
             padding: 8px;
           }
 
-          div[role=columnheader]:first-of-type{
+          div[role='columnheader']:first-of-type {
             border-top-left-radius: 8px;
             border-bottom-left-radius: 8px;
             overflow: hidden;
           }
 
-          div[role=columnheader]:last-of-type{
+          div[role='columnheader']:last-of-type {
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
             overflow: hidden;
@@ -305,7 +307,7 @@ function ReactTable<T extends object = {}>({
             touch-action: none;
           }
 
-          .resizer:hover{
+          .resizer:hover {
             opacity: 1;
           }
 

@@ -28,5 +28,6 @@ export default {
   activity: '/api/activity',
   superSearch: '/api/super-search',
   interactions: '/api/interactions',
-  email: '/api/email'
+  email: '/api/email',
+  statistic: '/api/statistic'
 }

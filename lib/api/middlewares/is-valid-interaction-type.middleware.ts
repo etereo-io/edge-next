@@ -1,10 +1,9 @@
 import { getInteractionTypeDefinition } from '@lib/config'
-import { INTERACTION_TYPES } from '@lib/constants'
 
 export default (
   entity: 'user' | 'group' | 'content',
   entitySlug: string,
-  interactionType: INTERACTION_TYPES
+  interactionType: string
 ) => (req, res, cb) => {
   const interactionDefinition = getInteractionTypeDefinition(
     entity,
