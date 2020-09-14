@@ -5,7 +5,10 @@ import {
   validateNewUser,
 } from '@lib/api/entities/users'
 import { hasPermissionsForUser, loadUser } from '@lib/api/middlewares'
+
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { Request } from '@lib/types'
+import appConfig from '@lib/config'
 import { connect } from '@lib/api/db'
 import { hasPermission } from '@lib/permissions'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
@@ -13,8 +16,6 @@ import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onUserAdded } from '@lib/api/hooks/user.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
-import appConfig from '@lib/config'
 
 const getUsers = (filterParams, paginationParams) => (req: Request, res) => {
   const permission = [`user.admin`]
@@ -126,8 +127,8 @@ export default async (req: Request, res) => {
 
   if (search) {
     filterParams['$or'] = [
-      { email: { $regex: search } },
-      { username: { $regex: search } },
+      { email: { $regex: search, $options : 'i' } },
+      { username: { $regex: search, $options : 'i' } },
     ]
   }
 
