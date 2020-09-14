@@ -27,6 +27,7 @@ import ReactionCounter from '@components/generic/reaction-counter/reaction-count
 import SocialShare from '@components/generic/social-share/social-share'
 import TagsField from '@components/generic/tags-field/tags-field'
 import TagsInput from '@components/generic/tags-input/tags-input'
+import EmailsInput from '@components/generic/emails-input'
 import ThemeSelector from '@components/generic/theme-selector/theme-selector'
 import Toggle from '@components/generic/toggle/toggle'
 import Upload from '@components/generic/upload/upload'
@@ -118,6 +119,9 @@ function Menu() {
           </li>
           <li>
             <a href="#dynamic-field-view">Dynamic field view</a>
+          </li>
+          <li>
+            <a href="#emailsinput">Emails Input</a>
           </li>
           <li>
             <a href="#tagsinput">Tags Input</a>
@@ -1368,6 +1372,27 @@ const links = [{
   )
 })}
             `}</pre>
+          </div>
+
+          <div id="emailsinput" className="component">
+            <h3>Emails Input</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <EmailsInput placeholder="Add some emails" />
+              </div>
+
+              <div className="item-wrapper">
+                <EmailsInput
+                  value={[
+                    'paco@test.com', 'pepe@test.com'
+                  ]}
+                  placeholder="Your emails"
+                />
+              </div>
+            </div>
+            <pre>{`
+ <EmailsInput placeholder="Add some emails" />
+   `}</pre>
           </div>
 
           <div id="tagsinput" className="component">

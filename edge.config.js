@@ -639,31 +639,33 @@ export const getConfig = () => {
       permissions: {
         access: [adminRole],
         stats: [adminRole],
+        email: [adminRole]
       },
     },
 
     statistic: {
       users: {
+        // any other configuration will be placed here
         enabled: true,
-        title: 'Users'
+        title: 'Users', // this title will be appeared ont the widget
       },
       content: [
         {
           // any other configuration will be placed here
           name: postContentType.slug,
-          title: postContentType.title
+          title: postContentType.title, // this title will be appeared ont the widget
         },
         {
           // any other configuration will be placed here
           name: siteNewsContentType.slug,
-          title: siteNewsContentType.title
+          title: siteNewsContentType.title, // this title will be appeared ont the widget
         },
       ],
       groups: [
         {
           // any other configuration will be placed here
           name: publishingGroupType.slug,
-          title: publishingGroupType.title
+          title: publishingGroupType.title, // this title will be appeared ont the widget
         },
       ],
     },

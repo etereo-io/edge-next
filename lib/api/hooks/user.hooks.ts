@@ -13,6 +13,7 @@ import {
   findOneContent,
 } from '@lib/api/entities/content'
 
+import { UserType } from '@lib/types'
 import config from '@lib/config'
 import { deleteFile } from '../storage'
 import {
@@ -23,7 +24,7 @@ import { onCommentDeleted } from './comment.hooks'
 import { onContentDeleted } from './content.hooks'
 import { sendVerifyEmail } from '@lib/email'
 
-export async function onUserAdded(user, currentUser) {
+export async function onUserAdded(user: UserType, currentUser?: UserType) {
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
@@ -53,7 +54,7 @@ export async function onUserAdded(user, currentUser) {
 }
 
 
-export async function onUserUpdated(user, updateFields, currentUser) {
+export async function onUserUpdated(user: UserType, updateFields, currentUser: UserType) {
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
@@ -82,7 +83,7 @@ export async function onUserUpdated(user, updateFields, currentUser) {
   }
 }
 
-export async function onUserDeleted(user) {
+export async function onUserDeleted(user: UserType) {
   // delete user profile picture
   try {
     if (user.profile.picture && user.profile.picture.source === 'internal') {
@@ -183,7 +184,7 @@ export async function onUserDeleted(user) {
   }
 }
 
-export async function onUserLogged(user) {
+export async function onUserLogged(user: UserType) {
   if (config.activity.enabled) {
     addActivity({
       role: 'user',
@@ -197,7 +198,7 @@ export async function onUserLogged(user) {
   }
 }
 
-export async function onEmailVerified(user) {
+export async function onEmailVerified(user: UserType) {
   if (config.activity.enabled) {
     addActivity({
       author: user.id,

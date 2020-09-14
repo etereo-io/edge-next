@@ -31,6 +31,13 @@ function Header() {
     })
   }
 
+  if (hasPermission(user, `admin.email`)) {
+    links.push({
+      title: 'Emails',
+      link: '/admin/emails',
+    })
+  }
+
   if (hasPermission(user, `user.admin`)) {
     links.push({
       title: 'Users',

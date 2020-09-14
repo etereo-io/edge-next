@@ -1,8 +1,7 @@
+import { ConfigInterface } from 'swr/dist/types'
+import fetch from '@lib/fetcher'
 import { useCallback } from 'react'
 import { useSWRInfinite } from 'swr'
-import { ConfigInterface } from 'swr/dist/types'
-
-import fetch from '@lib/fetcher'
 import { useUpdateEffect } from '@lib/client/hooks'
 
 type getKeyProps = {
@@ -13,7 +12,7 @@ type getKeyProps = {
   query?: string
 }
 
-const getKey = ({
+export const getKey = ({
   url,
   sortBy = '',
   sortOrder = '',

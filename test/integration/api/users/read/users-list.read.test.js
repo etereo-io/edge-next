@@ -31,7 +31,6 @@ const demoUser = {
   roles: ['USER'],
   hash: 'asdadasd',
   salt: 'asdasdsa',
-  email: 'email@email.com',
   facebook: 'abc',
   github: 'abc',
   tokens: [{ github: 'abc' }],

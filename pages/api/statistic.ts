@@ -89,7 +89,10 @@ async function getStatistic(
                 yesterdayTotal: [
                   {
                     $match: {
-                      createdAt: { $lte: yesterdayStart, $gte: twoDaysAgoStart },
+                      createdAt: {
+                        $lte: yesterdayStart,
+                        $gte: twoDaysAgoStart,
+                      },
                     },
                   },
                   { $count: 'id' },
@@ -120,7 +123,7 @@ async function getStatistic(
     )
 
     return response.json({ data: { ...result } })
-  } catch (e) {
-    return response.json({ error: e })
+  } catch (error) {
+    return response.json({ error })
   }
 }

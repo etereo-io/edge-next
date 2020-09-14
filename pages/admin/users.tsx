@@ -31,10 +31,10 @@ const AdminPage = () => {
       <style jsx>
         {`
 
-        .user-administration-header {
-          display: flex;
-          justify-content: space-between;
-        }
+          .user-administration-header {
+            display: flex;
+            justify-content: space-between;
+          }
 
           h1 {
             font-size: 23px;
@@ -42,23 +42,23 @@ const AdminPage = () => {
           }
 
           @media all and (max-width: 720px) {
-          h1 {
-            font-size: 18px;
+            h1 {
+              font-size: 18px;
+            }
           }
-        }
-            .user-administration {
-              display: flex;
-              flex-direction: column
-            }
+          .user-administration {
+            display: flex;
+            flex-direction: column
+          }
 
-            .create-button {
-              display: flex;
-              justify-content: flex-end;
-            }
+          .create-button {
+            display: flex;
+            justify-content: flex-end;
+          }
 
-            form{
-              margin: 40px 0 24px;
-            }
+          form{
+            margin: 40px 0 24px;
+          }
           `}
       </style>
     </Layout>

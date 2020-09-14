@@ -1,5 +1,6 @@
 import {
   InputDate,
+  InputEmails,
   InputEntity,
   InputFile,
   InputImage,
@@ -9,9 +10,9 @@ import {
   InputText,
   InputUrl,
   Radio,
+  RichEditor,
   Select,
   TextArea,
-  RichEditor,
 } from './fields'
 import { memo, useCallback, useState } from 'react'
 
@@ -144,7 +145,16 @@ function Field(props) {
             onChange={onChange}
           />
         )
-
+      case FIELDS.EMAILS:
+        return (
+          <InputEmails
+            field={field}
+            value={props.value}
+            disabled={props.disabled}
+            data-testid={datatestId}
+            onChange={onChange}
+          />
+        )
       case FIELDS.SELECT:
         return (
           <Select

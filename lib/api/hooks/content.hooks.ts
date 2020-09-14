@@ -1,4 +1,5 @@
 import { ACTIVITY_TYPES, FIELDS } from '@lib/constants'
+import { ContentEntityType, UserType } from '@lib/types'
 import {
   addActivity,
   deleteActivity,
@@ -11,13 +12,13 @@ import {
   deleteInteractions,
 } from '@lib/api/entities/interactions'
 
-export function onContentRead(content, user) {
+export function onContentRead(content: ContentEntityType, user:UserType) {
   // TODO: We can log stats about visitors
 }
 
 
 
-export function onContentAdded(content, user) {
+export function onContentAdded(content: ContentEntityType, user: UserType) {
   if (config.activity.enabled && content) {
     addActivity({
       author: user.id,
@@ -35,7 +36,7 @@ export function onContentAdded(content, user) {
   }
 }
 
-export function onContentUpdated(content, user) {
+export function onContentUpdated(content: ContentEntityType, user:UserType) {
   if (config.activity.enabled && content) {
     addActivity({
       author: user.id,
@@ -53,7 +54,7 @@ export function onContentUpdated(content, user) {
   }
 }
 
-export async function onContentDeleted(content, user, contentType) {
+export async function onContentDeleted(content: ContentEntityType, user:UserType, contentType) {
   // Delete content files
   try {
     contentType.fields.forEach(async (field) => {
