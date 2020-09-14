@@ -84,7 +84,7 @@ export default function EmailForm({
         <form onSubmit={onSubmit}>
         <DynamicFieldEdit
             value={from}
-            onChange={(val) => setFrom(val)}
+            onChange={setFrom}
             field={{
               name: 'from',
               type: 'text',
@@ -93,7 +93,7 @@ export default function EmailForm({
           />
           <DynamicFieldEdit
             value={to}
-            onChange={(val) => setTo(val)}
+            onChange={setTo}
             field={{
               name: 'to',
               type: 'emails',
@@ -103,7 +103,7 @@ export default function EmailForm({
 
           <DynamicFieldEdit
             value={cc}
-            onChange={(val) => setCc(val)}
+            onChange={setCc}
             field={{
               name: 'cc',
               type: 'emails',
@@ -114,7 +114,7 @@ export default function EmailForm({
           <DynamicFieldEdit
 
             value={bcc}
-            onChange={(val) => setBcc(val)}
+            onChange={setBcc}
             field={{
               name: 'bcc',
               type: 'emails',
@@ -124,7 +124,7 @@ export default function EmailForm({
 
           <DynamicFieldEdit
             value={subject}
-            onChange={(val) => setSubject(val)}
+            onChange={setSubject}
             field={{
               name: 'subject',
               type: 'text',
@@ -135,7 +135,7 @@ export default function EmailForm({
 
           <DynamicFieldEdit
             value={html}
-            onChange={(val) => setHtml(val)}
+            onChange={setHtml}
             field={{
               name: 'text',
               type: 'rich_text',
