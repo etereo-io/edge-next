@@ -427,7 +427,7 @@ export const getConfig = () => {
         label: 'Header image',
         required: false,
       },
-    ], 
+    ],
   }
   // Users configuration
   const user = {
@@ -642,6 +642,32 @@ export const getConfig = () => {
       },
     },
 
+    statistic: {
+      users: {
+        enabled: true,
+        title: 'Users'
+      },
+      content: [
+        {
+          // any other configuration will be placed here
+          name: postContentType.slug,
+          title: postContentType.title
+        },
+        {
+          // any other configuration will be placed here
+          name: siteNewsContentType.slug,
+          title: siteNewsContentType.title
+        },
+      ],
+      groups: [
+        {
+          // any other configuration will be placed here
+          name: publishingGroupType.slug,
+          title: publishingGroupType.title
+        },
+      ],
+    },
+
     user,
 
     // Content configuration
@@ -687,14 +713,28 @@ export const getConfig = () => {
           name: postContentType.slug, // a collection by which the search will be run
           type: 'content', // used for separation purposes
           fields: ['title', 'description'], // fields by which the search will be run
-          fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+          fieldsForShow: [
+            'title',
+            'slug',
+            'description',
+            'groupId',
+            'groupType',
+            'type',
+          ], // fields that will be retrieved from the db
           permissions: postContentType.permissions.read, // permissions for check before search
         },
         {
           name: siteNewsContentType.slug, // a collection by which the search will be run
           type: 'content', // used for separation purposes
           fields: ['title', 'description'], // fields by which the search will be run
-          fieldsForShow: ['title', 'slug', 'description', 'groupId', 'groupType', 'type'], // fields that will be retrieved from the db
+          fieldsForShow: [
+            'title',
+            'slug',
+            'description',
+            'groupId',
+            'groupType',
+            'type',
+          ], // fields that will be retrieved from the db
           permissions: siteNewsContentType.permissions.read, // permissions for check before search
         },
       ],

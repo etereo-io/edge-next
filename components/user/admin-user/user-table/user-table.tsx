@@ -79,7 +79,7 @@ function UserTable() {
         sortable: true,
         Cell: ({ value, row: { original: user } }) => (
           <>
-            <div className="user-avatar">
+            <div className="user-avatar" style={{ marginRight: '8px' }}>
               <Avatar width={'32px'} user={user} />
             </div>
             <Link href={`/profile/${user.id}`}>
@@ -184,6 +184,10 @@ function UserTable() {
           right: 0;
           top: 0;
           width: 16px;
+        }
+
+        .user-avatar{
+          margin-right: 40px;
         }
 
         .load-more {

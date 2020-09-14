@@ -17,17 +17,24 @@ const AdminPage = () => {
 
     <Layout title="User administration" loading={!available}>
       <div className="user-administration">
-        <h1>User adminsitration</h1>
-        <div className="create-button">
-          <Button onClick={createUser}>
-            Create user
+        <header className="user-administration-header">
+          <h1>User adminsitration</h1>
+          <div className="create-button">
+            <Button onClick={createUser}>
+              Create user
             </Button>
-        </div>
+          </div>
+        </header>
 
         <UserTable />
       </div>
       <style jsx>
         {`
+
+        .user-administration-header {
+          display: flex;
+          justify-content: space-between;
+        }
 
           h1 {
             font-size: 23px;
@@ -47,6 +54,10 @@ const AdminPage = () => {
             .create-button {
               display: flex;
               justify-content: flex-end;
+            }
+
+            form{
+              margin: 40px 0 24px;
             }
           `}
       </style>
