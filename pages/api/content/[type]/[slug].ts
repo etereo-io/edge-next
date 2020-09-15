@@ -1,3 +1,4 @@
+import { ContentEntityType, Request } from '@lib/types'
 import {
   bodyParser,
   hasPermissionsForContent,
@@ -15,14 +16,14 @@ import {
   onContentDeleted,
   onContentUpdated,
 } from '@lib/api/hooks/content.hooks'
-import { ContentEntityType, Request } from '@lib/types'
+
+import Cypher from '@lib/api/api-helpers/cypher-fields'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
-import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -85,7 +86,7 @@ const getContent = async ({ item, currentUser, contentType }: Request, res) => {
   return res.status(200).json(item)
 }
 
-const deleteContent = (req: Request, res) => {
+const deleteContent = (req: Request<ContentEntityType>, res) => {
   const item = req.item
 
   return deleteOneContent(item.type, { id: item.id })
@@ -104,7 +105,7 @@ const deleteContent = (req: Request, res) => {
     })
 }
 
-const updateContent = async (req: Request, res) => {
+const updateContent = async (req: Request<ContentEntityType>, res) => {
   const type = req.contentType
   try {
     await runMiddleware(req, res, bodyParser)

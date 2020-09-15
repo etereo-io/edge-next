@@ -4,10 +4,12 @@ import {
   googleStrategy,
   localStrategy,
 } from '@lib/api/auth/passport-strategies'
-import { Request } from 'express'
 import { findOneUser, updateOneUser } from '@lib/api/entities/users'
 import { onEmailVerified, onUserLogged } from '@lib/api/hooks/user.hooks'
 import { removeTokenCookie, setTokenCookie } from '@lib/api/auth/auth-cookies'
+
+import { Request } from 'express'
+import { UserType } from '@lib/types'
 import appConfig from '@lib/config'
 import { connect } from '@lib/api/db'
 import { encryptSession } from '@lib/api/auth/iron'
@@ -17,7 +19,6 @@ import logger from '@lib/logger'
 import passport from 'passport'
 import { sendResetPassworEmail } from '@lib/email'
 import { v4 as uuidv4 } from 'uuid'
-import { UserType } from '@lib/types'
 
 export const config = {
   api: {
@@ -80,7 +81,7 @@ const logUserIn = async (res, user) => {
   const token = await encryptSession(session)
 
   // Store the activity
-  await onUserLogged(session)
+  await onUserLogged(user)
 
   // Add last login information
   await updateOneUser(user.id, {
