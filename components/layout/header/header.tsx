@@ -58,11 +58,7 @@ function Header() {
         <aside className={active ? 'edge-topper hide' : 'edge-topper'}>
           <div className="edge-container">
             <p className="edge-topper-content">
-              🚨 We are working on Edge Pro. Follow our journey on{' '}
-              <a href="https://medium.com/@nucleo" target="_blank">
-                our blog
-              </a>{' '}
-              to stay tuned!
+              🚨 This is a site for demo purposes
             </p>
             <button
               name="close"

@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
-import cx from 'classnames'
 
 import { Tab } from '../types'
+import cx from 'classnames'
 
 export interface Props {
   tabs: Tab[]
@@ -31,7 +31,7 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
                       <span>{label}</span>
                       {counter ? <span>({counter})</span> : null}
                     </a>
-                    <span className="counter-items">27</span>
+                   
                   </li>
                 )
             )}
@@ -87,18 +87,7 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
             border-bottom: 2px solid var(--edge-foreground);
           }
 
-          .navigation li.active a, .navigation li.active .counter-items {
-            color: var(--edge-foreground);
-          }
-
-          .navigation li .counter-items {
-            color: var(--accents-3);
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 500;
-            margin-left: 4px;
-            transform: translateY(-50%);
-          }
+  
 
           .navigation-tab {
             height: 0;
@@ -118,9 +107,6 @@ const Tabs: React.FC<Props> = ({ tabs, value, onChange, className }) => {
               padding-bottom: 0;
             }
 
-            .navigation li .counter-items {
-              display: none;
-            }
           }
 
           @media all and (max-width: 460px) {
