@@ -1,9 +1,10 @@
-name: Etereo Edge - Development
+name: Etereo Edge - Production
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - v*
+
 
 jobs:
   deploy:
@@ -21,12 +22,12 @@ jobs:
         env:
           CI: true
       - name: Generate environment variables file
-        run: node generate-vars.js "${{ secrets.ENV_VARIABLES }}"
+        run: node generate-vars.js "${{ secrets.ENV_VARIABLES_PRO }}"
       - name: Build
         run: npm run build
       - name: Initialize Google Cloud SDK && Deploy
         uses: etereo-io/deploy-gae-action@master
         with:
-          gae_config_path: './app-dev.yaml'
+          gae_config_path: './app-pro.yaml'
           service_account: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ secrets.PROJECT_ID }}

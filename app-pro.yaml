@@ -1,0 +1,3 @@
+runtime: nodejs12
+service: default
+instance_class: F2

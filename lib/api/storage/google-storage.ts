@@ -76,10 +76,10 @@ class GoogleStorage implements AbstractStorage {
 export default function Initialize() {
   const storage = new Storage({
     credentials: {
-      client_email: process.env.GOOGLE_CLIENT_EMAIL,
-      private_key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+      client_email: process.env.GOOGLE_STORAGE_CLIENT_EMAIL,
+      private_key: (process.env.GOOGLE_STORAGE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
     },
-    projectId: process.env.GOOGLE_PROJECTID,
+    projectId: process.env.GOOGLE_STORAGE_PROJECTID,
   })
   
   const instance = new GoogleStorage(storage, process.env.GOOGLE_BUCKET_NAME)

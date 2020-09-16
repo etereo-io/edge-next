@@ -1,0 +1,3 @@
+runtime: nodejs12
+service: app-dev
+instance_class: F2

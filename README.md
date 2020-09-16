@@ -1,6 +1,6 @@
 <img src="./public/icons/icon-512x512.png" width="50px" />
 
-# Edge - A dynamic site that lives on the edge
+# Edge - A multipurpose content platform
 
 - [Website](https://edge-next.now.sh/)
 - [Documentation](./DOCUMENTATION.md)
@@ -76,34 +76,32 @@ Do you think you can improve the performance of the solution? Send us a pull req
 Check our roadmap if you want to add more cool things into Edge.
 
 
-----
+## Deployments
 
-## Roadmap
+Edge is deployed in 2 environments (DEV & PRO) on google app engine.
+  
+- Environment variables are configured under Github Secrets in 2 different variables
+- ENV_VARIABLES_PRO (prod)
+- ENV_VARIABLES (dev)
 
+ENV_VARIABLES is a base64 encoded .env file with the following shape:
 
-### Version 2
+```
+BASE_URL=http://localhost:5000
+... rest of .env.build file
+```
 
-- Add a cookies component
+For the deployments we are using Github Actions and [Etereo Deploy GAE action](https://github.com/etereo-io/deploy-gae-action), that requires 
 
-- Introduce basic site stats  
-
-- Move to getStaticProps and getStaticPaths when the RFC is completed https://github.com/zeit/next.js/discussions/11552
-
-- Field options
-  - validation (NOT IMPLEMENTED)
-    - Optional validarion function in the form of `(value) => { return true or false } `
-  - permissions (NOT IMPLEMENTED)
-    - Array, list of roles that can SEE this field when editing the content and when reading it
-
-- Preprocess uploaded images to create a lighter version and allow the client to load them progresivelly
-
-- Add i18n
-  - NextJS is preparing a RFC for i18n we will wait on that
-
-- Add a `sitemap.xml` API endpoint. 
-  - Generate a dynamic sitemap by fetching the database for public content and adding also the static routes.
-
+For more information, please check [Deployments Doc](./doc/DEPLOYMENTS.md)
 
 -----------
 
  2020 - Original idea of [@rafinskipg](https://github.com/rafinskipg) and [@hayderaldeen](https://github.com/hayderaldeen). 
+
+With the contribution of : 
+- [@ihorkitrum](https://github.com/ihorkitrum) 
+- [w3bdesign](https://github.com/w3bdesign)
+
+With the Sponsorship of:
+- [Etéreo](https://etereo.io)
