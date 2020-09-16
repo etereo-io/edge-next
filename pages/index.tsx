@@ -94,7 +94,7 @@ const Landing = () => {
           </p>
           <div className="featured-section-buttons">
             <Button success>
-              <a href="https://github.com/nucleo-org/edge-next/blob/master/DOCUMENTATION.md">
+              <a href="https://github.com/etereo-io/edge-next">
                 Main documentation
               </a>
             </Button>

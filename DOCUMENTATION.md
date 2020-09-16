@@ -78,7 +78,7 @@
 
 ## How to start using Edge.
 
-1. Clone the [repo](https://github.com/nucleo-org/edge-next)
+1. Clone the [repo](https://github.com/etereo-io/edge-next)
 2. Edit `edge.config.js` to define your _Content Types_, _Group Types_ and permissions
 3. Create the different accounts:
    - Google storage/Azure Blob Storage
