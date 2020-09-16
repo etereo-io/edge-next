@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, Fragment } from 'react'
 import { format } from 'timeago.js'
 import useSWR from 'swr'
 
@@ -36,28 +36,25 @@ function AdminPage() {
         </header>
         <section className="stats-panel">
           {usersData.map((item) => (
-            <div className="stats-unit" key={item.title}>
+            <Fragment key={item.title}>
               <Widget data={item} />
-            </div>
+            </Fragment>
           ))}
           {contentData.map((item) => (
-            <div className="stats-unit" key={item.title}>
+            <Fragment key={item.title}>
               <Widget data={item} />
-            </div>
+            </Fragment>
           ))}
           {groupsData.map((item) => (
-            <div className="stats-unit" key={item.title}>
+            <Fragment key={item.title}>
               <Widget data={item} />
-            </div>
+            </Fragment>
           ))}
         </section>
 
         <section className="stats-quick-view">
           <div className="stats-unit">
             <b className="title">Users</b>
-          </div>
-          <div className="stats-unit">
-            <b className="title">Groups</b>
           </div>
         </section>
       </Layout>

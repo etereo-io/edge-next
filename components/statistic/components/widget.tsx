@@ -14,7 +14,7 @@ function Widget({
   const increasing = todayTotal - yesterdayTotal
 
   return (
-    <>
+    <div className={`stats-unit ${increasing < 0 ? 'minus' : ''}`}>
       <div className="stats-unit-view">
         <small className="stats-unit-percentage">
           {increasing !== 0 && <ArrowIcon isError={increasing < 0} />}
@@ -25,7 +25,7 @@ function Widget({
         </div>
       </div>
       <b className="stats-unit-increase">{formatter(increasing)}</b>
-    </>
+    </div>
   )
 }
 
