@@ -44,6 +44,15 @@ This is a sketch of the interaction between the two:
 
 ## SETUP GOOGLE CLOUD
 
+### Enable APIs
+
+- Go to [https://console.cloud.google.com/](https://console.cloud.google.com/) and search “App Engine Admin API”. Hit “ENABLE” button and the API will be enabled in a few seconds.
+
+![](./images/enable_api.png)
+
+- Search “Cloud Resource Manager API” and enable this API too.
+- Search "Cloud Build API" and enable this API too.
+
 ### Create and configure a service account
 
 Visit [https://console.cloud.google.com/iam-admin/serviceaccounts/create](https://console.cloud.google.com/iam-admin/serviceaccounts/create)
@@ -55,50 +64,42 @@ II Grant the following roles:
 - App Engine Admin
 - Cloud Build Editor
 
-
 ![](./images/iam_gcp.png)
 
 III Generate key (JSON)
 
 ![](./images/create_key.png)
 
-Generate a JSON file with the key for this service account. **YOU WILL NEED THIS FILE TO STORE THE VALUES AS GITHUB SECRETS.**
+Generate a JSON file with the key for this service account. 
 
-- Now, encode this JSON (the contents) as a base64 and set it in your github secrets section as `GCP_SA_KEY`
-- Then, get the 
+**STORE THE VALUES AS GITHUB SECRETS.**
+
+### Github Secrets
+
+- Now, encode the key JSON (the contents) as a base64 and set it in your github secrets section as `GCP_SA_KEY`
+- Then, get the project_id and add it to the github secrets: as `PROJECT_ID`
+- The remaining secrets to be added will be `ENV_VARIABLES` and `ENV_VARIABLES_PRO`, we will se this later.
+
+We have two types of secrets: 
+
+- secrets with values needed for deploying in GAE (GCP_SA_KEY and PROJECT_ID). **THEY COME FROM THE JSON FILE GENERATED WHEN YOU CREATE THE SERVICE ACCOUNT.**
+- secrets with values consumed in the app's code (ENV_VARIABLES and ENV_VARIABLES_PRO).
+
+GCP_SA_KEY (service account’s key json file, encoded as base64 string **$cat project-id.json | base64**)
+
+PROJECT_ID (project’s id google cloud platform)
+
+ENV_VARIABLES/ENV_VARIABLES_PRO: This is an base64 encoded version of the environment variables that are used inside the application. (Mantaining the .env format)
 
 
-**Create an application in App Engine**
+### Create an application in App Engine**
 
-Visit [https://console.cloud.google.com/appengine](https://console.cloud.google.com/appengine) and create an application.
+Visit [https://console.cloud.google.com/appengine](https://console.cloud.google.com/appengine) and create an application. App engine will wait for you to push a default service to actually create an instance.
 
 ![](./images/create_app.png)
 
-### Configure Storage buckets
 
-Visit [https://console.cloud.google.com/storage/browser](https://console.cloud.google.com/storage/browser)
-
-![](./images/bucket_permissions.png)
-
-I Edit bucket permissions and add your service account as a member of these buckets:
-
-- staging.PROJECT-ID.appspot.com
-- REGION.artifacts.PROJECT-ID.appspot.com (Create bucket with this name, if you don’t have one)
-
-with the roles **Storage Object Creator** and **Storage Object Viewer**.
-
-### Enable APIs
-
-- Go to [https://console.cloud.google.com/](https://console.cloud.google.com/) and search “App Engine Admin API”. Hit “ENABLE” button and the API will be enabled in a few seconds.
-
-![](./images/enable_api.png)
-
-- Search “Cloud Resource Manager API” and enable this API too.
-- Search "Cloud Build API" and enable this API too.
-
-### Enable Billing
-
-## SETUP GITHUB ACTIONS AND SECRETS
+## GITHUB ACTIONS
 
 Github Actions reads the workflows for your application from **project_folder/.github/workflows**. Each workflow defines which events trigger its execution.
 
@@ -156,19 +157,6 @@ We download/cache the node version 12.x. Then, we execute the generate-vars.js s
 ```
 
 We use Google Cloud SDK commands to authenticate with the service account and deploy the application to GAE
-
-### Github Secrets
-
-We have two types of secrets: 
-
-- secrets with values needed for deploying in GAE (GCP_SA_KEY and PROJECT_ID). **THEY COME FROM THE JSON FILE GENERATED WHEN YOU CREATE THE SERVICE ACCOUNT.**
-- secrets with values consumed in the app's code (ENV_VARIABLES and ENV_VARIABLES_PRO).
-
-GCP_SA_KEY (service account’s key json file, encoded as base64 string **$cat project-id.json | base64**)
-
-PROJECT_ID (project’s id google cloud platform)
-
-ENV_VARIABLES/ENV_VARIABLES_PRO: This is an base64 encoded version of the environment variables that are used inside the application.
 
 
 ## Other files related to the deployment process
