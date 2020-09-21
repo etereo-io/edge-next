@@ -1,18 +1,17 @@
-import { memo } from 'react'
-import Link from 'next/link'
-
-import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
-import { useUser } from '@lib/client/hooks'
-import Button from '@components/generic/button/button'
 import Avatar from '@components/user/avatar/avatar'
-import ThemeSelector from '@components/generic/theme-selector/theme-selector'
+import Button from '@components/generic/button/button'
+import Link from 'next/link'
+import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
 import SiteMenu from '@components/generic/site-menu/site-menu'
+import ThemeSelector from '@components/generic/theme-selector/theme-selector'
+import { memo } from 'react'
+import { useUser } from '@lib/client/hooks'
 
 function ToolBar() {
   const { user, finished } = useUser()
   return (
     <>
-      <aside className="edge-panel-user">
+      <aside className="toolbar">
         {!finished && (
           <div className="edge-avatar-user">
             <LoadingPlaceholder width="100%" height="30px" />
@@ -78,22 +77,9 @@ function ToolBar() {
       </aside>
       <style jsx>{`
         /*Edge Panel User*/
-        .edge-panel-user {
+        .toolbar {
           display: flex;
           flex-flow: column;
-          grid-area: edge-panel-user;
-          max-width: 232px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          padding: var(--edge-gap-medium) var(--edge-gap) var(--edge-gap-medium)
-            0;
-          position: sticky;
-          top: 112px;
-          height: calc(100vh - 112px);
-        }
-
-        .edge-panel-user::-webkit-scrollbar {
-          width: 0;
         }
 
         .not-logged {
@@ -101,12 +87,7 @@ function ToolBar() {
           justify-content: center;
         }
 
-        @media all and (max-width: 720px) {
-          .edge-panel-user {
-            top: 80px;
-            padding: var(--edge-gap) 0;
-          }
-
+        @media all and (max-width: 460px) {
           .not-logged {
             display: none;
           }
@@ -199,15 +180,14 @@ function ToolBar() {
         }
 
         @media all and (max-width: 720px) {
-          .edge-panel-user .edge-avatar-user-info,
+          .toolbar .edge-avatar-user-info,
           .edge-panel-user-footer {
             display: none;
           }
-          .edge-panel-user {
+          .toolbar {
             align-items: center;
             display: flex;
             flex-flow: column;
-            transform: translateX(-12px);
           }
           .edge-panel-user-tags {
             display: none;
@@ -215,10 +195,6 @@ function ToolBar() {
         }
 
         @media all and (max-width: 460px) {
-          .edge-panel-user {
-            display: none;
-            transform: none;
-          }
           .edge-panel-user .edge-avatar-image {
             height: 32px;
             width: 32px;

@@ -12,8 +12,10 @@ const Layout = (props) => (
       className={`edge-panels ${
         props.panelAds ? 'three-panels' : 'two-panels'
       } edge-container`}
-    >
-      {props.panelUser}
+    > 
+      <div className="edge-panel-user">
+        {props.panelUser}
+      </div>
       <div className="edge-panel-content">
         <div className="edge-panel-content-inner">{props.children}</div>
       </div>
@@ -31,17 +33,45 @@ const Layout = (props) => (
         display: flex;
         flex-flow: row;
         justify-content: space-between;
+        margin: 0 auto;
+        max-width: 1292px;
+        width: 100%;
       }
 
-      .edge-panels-three-panels .edge-panel-user,
-      .edge-panels-three-panels .edge-panel-ads {
-        height: fit-content;
-        padding: var(--edge-gap-medium) 0;
-        position: sticky;
-        top: 80px;
-        height: calc(100vh - 112px);
+      
+
+      .edge-panel-user {
+        background: var(--edge-background);
+        display: flex;
+        flex-flow: column;
+        grid-area: edge-panel-user;
         max-width: 232px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: var(--edge-gap-medium) var(--edge-gap) var(--edge-gap-medium) var(--edge-gap);
+        position: sticky;
+        height: calc(100vh);  
       }
+      
+      .edge-panel-user::-webkit-scrollbar {
+        width: 0;
+      }
+
+      @media all and (max-width: 720px) {
+        .edge-panel-user {
+          top: 80px;
+          padding: var(--edge-gap) 0;
+          transform: translateX(-12px);
+        }
+      }
+
+      @media all and (max-width: 460px) {
+        .edge-panel-user {
+          display: none;
+          transform: none;
+        }
+      }
+
 
       /* Three panels*/
 
@@ -51,6 +81,15 @@ const Layout = (props) => (
         grid-template-rows: 0.5fr;
         gap: 0;
         grid-template-areas: 'edge-panel-user edge-panel-content edge-panel-ads';
+      }
+      
+      .edge-panels-three-panels .edge-panel-user,
+      .edge-panels-three-panels .edge-panel-ads {
+        height: fit-content;
+        padding: var(--edge-gap-medium) 0;
+        position: sticky;
+        height: calc(100vh);
+        max-width: 323px;
       }
 
       @media all and (max-width: 960px) {
@@ -66,31 +105,13 @@ const Layout = (props) => (
           gap: 0;
           grid-template-columns: auto minmax(0, 1fr);
         }
-
-        .edge-panel-user-navigation-title,
-        .edge-panel-user-footer {
-          display: none;
-        }
-        .edge-panel-user {
-          align-items: center;
-          display: flex;
-          flex-flow: column;
-          min-height: calc(100vh - 56px);
-          top: 56px;
-          transform: translateX(-12px);
-        }
-        .edge-panel-user-tags {
-          display: none;
-        }
       }
 
       @media all and (max-width: 460px) {
         .edge-panels.three-panels {
           padding-left: 0;
         }
-        .edge-panel-user {
-          transform: none;
-        }
+
       }
 
       /* Two Panels */
@@ -111,26 +132,12 @@ const Layout = (props) => (
         }
       }
 
-      .edge-panels .edge-panel-user {
-        height: fit-content;
-        position: sticky;
-        top: 80px;
-        height: calc(100vh - 80px);
-        max-width: 232px;
-      }
-
       .edge-panels .edge-panel-content {
-        background: var(--accents-1);
         grid-area: edge-panel-content;
         padding: var(--edge-gap-medium) var(--edge-gap);
         height: 100%;
+        background: var(--accents-1);
       }
-
-      /*@media all and (max-width: 720px){
-        .edge-panels .edge-panel-content {
-          padding: 0;
-        }
-      }*/
 
       @media all and (max-width: 460px) {
         .edge-panels .edge-panel-content {
@@ -154,10 +161,6 @@ const Layout = (props) => (
           grid-template-columns: auto minmax(0, 1fr);
         }
 
-        .edge-panels.two-panels .edge-panel-user-navigation-title,
-        .edge-panels.two-panels .edge-panel-user-footer {
-          display: none;
-        }
         .edge-panels.two-panels .edge-panel-user {
           align-items: center;
           display: flex;
@@ -166,9 +169,7 @@ const Layout = (props) => (
           top: 56px;
           transform: translateX(-$edge-gap-triple / 2);
         }
-        .edge-panels.two-panels .edge-panel-user-tags {
-          display: none;
-        }
+        
       }
 
       @media all and (max-width: 460px) {
@@ -195,6 +196,7 @@ const Layout = (props) => (
         position: sticky;
         top: 112px;
         max-width: 232px;
+        padding-right: var(--edge-gap);
       }
 
       .edge-panel-ads::-webkit-scrollbar {

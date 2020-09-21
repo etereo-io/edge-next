@@ -108,7 +108,7 @@ export const getConfig = (defaultOptions) => {
  
   return {
     // Title for the site
-    title: 'Nucleo - Edge',
+    title: 'Etereo - Edge',
 
     // Meta description
     description: 'A dynamic site that lives on the edge',
