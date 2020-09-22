@@ -321,6 +321,7 @@ function MyApp({ Component, pageProps }) {
           margin: 0 auto;
           max-width: 1292px;
           width: 100%;
+          position: relative;
         }
 
         @media all and (max-width: 720px) {
