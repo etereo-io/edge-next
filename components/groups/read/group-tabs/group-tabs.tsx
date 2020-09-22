@@ -51,7 +51,7 @@ function GroupTabs({ id, group }: Props) {
   )
 
   const { value: tab, onChange: handleTabChange } = useTab(
-    contentType?.slug || 'post'
+    contentType?.slug
   )
 
   const tabs = useMemo(
