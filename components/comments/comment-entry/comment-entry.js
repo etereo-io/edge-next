@@ -6,12 +6,9 @@ import AuthorBox from '../../user/author-box/author-box'
 import { useState } from 'react'
 import CommentForm from '../comment-form/comment-form'
 import MarkdownRead from '@components/generic/markdown-read/markdown-read'
+import Markdown from '@lib/markdown'
 
-import MarkdownIt from 'markdown-it'
-const md = MarkdownIt({
-  html: false,
-  linkify: true,
-}).disable(['heading', 'hr', 'table'])
+const md = Markdown()
 
 export default function CommentEntry({
   contentId = '',

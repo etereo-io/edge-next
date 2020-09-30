@@ -1,10 +1,11 @@
 import Layout from '@components/layout/normal/layout'
-import MarkdownIt from 'markdown-it'
+import Markdown from '@lib/markdown'
 import MarkdownRead from '@components/generic/markdown-read/markdown-read'
 import React from 'react'
 import fs from 'fs'
 import matter from 'gray-matter'
 import path from 'path'
+const md = Markdown()
 
 const Page = ({ htmlString, data }) => {
   return (
@@ -30,10 +31,6 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params }) => {
-  const md = new MarkdownIt({
-    html: true,
-    linkify: true,
-  })
 
   const slug = params['static-page']
   const markdownWithMetadata = fs

@@ -1,15 +1,16 @@
 import { EmailCreationType } from '@lib/types/entities/email'
-import MarkdownIt from 'markdown-it'
+import Markdown from '@lib/markdown'
 import { UserType } from '@lib/types'
 import callToActionTemplate from './email-templates/call-to-action.template'
 import config from '../config'
 import sendEmail from './sender'
 import standardEmailTemplate from './email-templates/standard-template'
 
-const md = MarkdownIt({
-  html: false,
-  linkify: true,
+const md = Markdown({
+  html: true,
+  linkify: true
 })
+
 // Send an email to verify the new email address
 export const sendVerifyEmail = (to, token) => {
   const linkToVerifyEmail = `${

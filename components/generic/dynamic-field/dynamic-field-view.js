@@ -1,14 +1,11 @@
 import { FIELDS } from '@lib/constants'
 import Image from '../image/image'
-import MarkdownIt from 'markdown-it'
+import Markdown from '@lib/markdown'
 import MarkdownRead from '../markdown-read/markdown-read'
 import ReactPlayer from 'react-player'
 import TagsField from '../tags-field/tags-field'
 
-const md = MarkdownIt({
-  html: false,
-  linkify: true,
-})
+const md = Markdown()
 
 function Field({ field, value, typeDefinition }) {
   const getField = (field, value) => {

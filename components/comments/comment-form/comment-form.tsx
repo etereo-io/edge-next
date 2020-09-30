@@ -1,8 +1,9 @@
-import { useEffect, useState, memo } from 'react'
-
 import { CommentType, ContentTypeDefinition } from '@lib/types'
+import { memo, useEffect, useState } from 'react'
+
 import API from '@lib/api/api-endpoints'
 import Button from '../../generic/button/button'
+import EmojiPicker from '@components/generic/emoji-picker'
 import fetch from '@lib/fetcher'
 
 type PropTypes = {
@@ -93,6 +94,12 @@ function CommentForm({
     }
   }, [comment, setMessage])
 
+  const onSelectEmoji = (val) => {
+    const newMessage = message + ' ' + val
+    setMessage(newMessage)
+    onChange(newMessage)
+  }
+
   return (
     <>
       <div className="">
@@ -108,6 +115,9 @@ function CommentForm({
           </div>
 
           <div className="actions">
+            <div className="action">
+              <EmojiPicker onSelect={onSelectEmoji} />
+            </div>
             <div className="action">
               <a
                 href="https://memeful.com/"

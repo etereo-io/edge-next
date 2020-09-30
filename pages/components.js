@@ -36,6 +36,7 @@ import VideoRecorder from '@components/generic/video-recorder/video-recorder-wra
 import { Tabs, useTab } from '@components/generic/tabs'
 import { Editor } from '@components/generic/rich-text-editor'
 import StackedAvatars from '@components/generic/stacked-avatars'
+import EmojiPicker from '@components/generic/emoji-picker'
 
 function Menu() {
   return (
@@ -149,6 +150,9 @@ function Menu() {
           </li>
           <li>
             <a href="#map">Map</a>
+          </li>
+          <li>
+            <a href="#emoji-picker">Emoji Picker</a>
           </li>
         </ul>
       </div>
@@ -1664,6 +1668,18 @@ const links = [{
             </div>
             <pre>{`
 <Map />
+  `}</pre>
+          </div>
+
+          <div id="emoji-picker" className="component">
+            <h3>Emoji Picker</h3>
+            <div className="component-demo">
+              <div className="item-wrapper">
+                <EmojiPicker onSelect={() => null} />
+              </div>
+            </div>
+            <pre>{`
+<EmojiPicker onSelect={() => null} />
   `}</pre>
           </div>
         </div>
