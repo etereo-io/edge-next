@@ -1,15 +1,35 @@
 import Link from 'next/link'
 import { useState } from 'react'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+
+import config from '@lib/config'
 
 import Button from '../generic/button/button'
 import PasswordStrength from '../generic/password-strength/password-strength'
 
-import config from '@lib/config'
-
 const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
-  const [password, setPassword] = useState('')
-  const onChangePassword = (ev) => {
-    setPassword(ev.target.value)
+  const [state, setState] = useState({ email: '', password: '' })
+  const password = state.password
+
+  const { executeRecaptcha } = useGoogleReCaptcha()
+
+  const onChange = (event) => {
+    event.persist()
+
+    setState((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const token = await executeRecaptcha('login_page')
+
+    if (token) {
+      onSubmit(state)
+    }
   }
 
   const hasSocialProviders =
@@ -66,19 +86,20 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
         </div>
       </div>
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         {hasSocialProviders && <hr className="sign-up-form-separator"></hr>}
         {!isLogin && (
           <div className="input-group required">
             <input
               type="text"
-              placeholder="Choose username"
+              placeholder="Nombre de usuario"
               name="username"
               pattern="[a-z\d_-]+$"
               required
-            ></input>
+              onChange={onChange}
+            />
             <div className="description">
-              Use only numbers, lowercase letters and underscores
+              Usa solamente letras en minúsculas, numeros y guiones bajos.
             </div>
           </div>
         )}
@@ -88,17 +109,18 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
             name="email"
             placeholder="E-mail"
             required
-          ></input>
+            onChange={onChange}
+          />
         </div>
         <div className="input-group password required">
           <input
             type="password"
             name="password"
-            onChange={onChangePassword}
+            onChange={onChange}
             value={password}
-            placeholder="Password"
+            placeholder="Contraseña"
             required
-          ></input>
+          />
           <div className="toggle-password">
             <svg
               className="show-password"
@@ -133,17 +155,17 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
         {!isLogin && (
           <div className="terms">
-            By signing up you agree to our{' '}
+            Al registrarte aceptas nuestros{' '}
             <Link href="/p/terms-of-service">
-              <a title="Terms">Terms of Service</a>
+              <a title="Términos del servicio">Términos del servicio</a>
             </Link>
-            . Learn more about our{' '}
+            . Aprende más acerca de nuestra{' '}
             <Link href="/p/privacy-policy">
-              <a title="Privacy policy">Privacy policy</a>
+              <a title="política de privacidad">política de privacidad</a>
             </Link>{' '}
-            and our{' '}
+            y nuestra{' '}
             <Link href="/p/copyright-policy">
-              <a title="Copyright policy">Copyright policy</a>
+              <a title="política de copyright">política de copyright</a>
             </Link>
             .
           </div>
@@ -155,7 +177,6 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
               <Button
                 loading={loading}
                 big={true}
-                alt={true}
                 fullWidth={true}
                 type="submit"
               >
@@ -164,11 +185,11 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
               <div className="alt-actions">
                 <Link href="/auth/signup">
-                  <a title="Go to signup">I don't have an account</a>
+                  <a title="Ir al registro">No tengo una cuenta</a>
                 </Link>
                 <Link href="/auth/reset-password">
-                  <a title="Go to password reset">
-                    I don't remember my password
+                  <a title="Recordar mi contraseña">
+                    No recuerdo mi contraseña
                   </a>
                 </Link>
               </div>
@@ -181,19 +202,19 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                 alt={true}
                 fullWidth={true}
                 type="submit"
+                title="Registro"
               >
-                Sign up
+                Registro
               </Button>
 
               <div className="alt-actions">
                 <Link href="/auth/login">
-                  <a title="Go to login">I already have an account</a>
+                  <a title="Ir al login">Ya tengo una cuenta</a>
                 </Link>
               </div>
             </>
           )}
         </div>
-
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
 
@@ -258,6 +279,11 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           display: block;
           color: var(--edge-foreground);
           text-decoration: none;
+        }
+
+        .description  {
+          color: var(--accents-3);
+          font-size: 12px;
         }
       `}</style>
     </>

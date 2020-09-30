@@ -9,6 +9,7 @@ import { findOneContent } from '@lib/api/entities/content'
 import { getContentTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 import Cypher from '@lib/api/api-helpers/cypher-fields'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })
@@ -117,6 +118,9 @@ const EditContent = ({ contentType, contentObject, currentUser }) => {
       <Layout title="Edit content">
         <div className="edit-page">
           <h1>Editing: {content ? content.title : null}</h1>
+          <GoogleReCaptchaProvider
+            reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
+          >
           <ContentForm
             permittedFields={permittedFields}
             type={contentType}
@@ -124,6 +128,7 @@ const EditContent = ({ contentType, contentObject, currentUser }) => {
             content={content}
             currentUser={currentUser}
           />
+          </GoogleReCaptchaProvider>
         </div>
       </Layout>
 

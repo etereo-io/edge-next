@@ -1,4 +1,6 @@
-import { useEffect, useState, memo, useCallback } from 'react'
+import React, { useEffect, useState, memo, useCallback } from 'react'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import Link from 'next/link'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -7,7 +9,6 @@ import ContentSummaryView from '../../read-content/content-summary-view/content-
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '@components/groups/read/group-summary-view/group-summary-view'
-import Link from 'next/link'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 
@@ -74,9 +75,7 @@ function ContentForm(props) {
     })
   }
 
-  const onSubmit = (ev) => {
-    ev.preventDefault()
-
+  const onSubmit = () => {
     const formData = new FormData()
     const jsonData = {}
     // Separate JsonDATA for normal data and formData for files
@@ -130,6 +129,18 @@ function ContentForm(props) {
       })
   }
 
+  const { executeRecaptcha } = useGoogleReCaptcha()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const token = await executeRecaptcha('login_page')
+
+    if (token) {
+      onSubmit()
+    }
+  }
+
   // It needs the type definition
   if (!props.type) {
     return <p>Missing type definition</p>
@@ -138,7 +149,7 @@ function ContentForm(props) {
   return (
     <>
       <div className="contentForm">
-        <form name="content-form" onSubmit={onSubmit}>
+        <form name="content-form" onSubmit={handleSubmit}>
           {props.type.publishing.draftMode && (
             <div className="draft input-group">
               <label>Draft</label>

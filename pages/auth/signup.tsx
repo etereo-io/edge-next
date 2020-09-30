@@ -1,8 +1,10 @@
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import React, { useState } from 'react'
+import Router from 'next/router'
+
 import Form from '@components/auth/login-register.form'
 import Layout from '@components/layout/auth/auth-layout'
-import Router from 'next/router'
 import fetch from '@lib/fetcher'
-import { useState } from 'react'
 import { useUser } from '@lib/client/hooks'
 
 const Signup = () => {
@@ -11,15 +13,14 @@ const Signup = () => {
   const [errorMsg, setErrorMsg] = useState('')
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e) {
-    event.preventDefault()
-
+  async function handleSubmit(data) {
     if (errorMsg) setErrorMsg('')
 
     const body = {
-      email: e.currentTarget.email.value,
-      username: e.currentTarget.username.value,
-      password: e.currentTarget.password.value,
+      email: data.email,
+      username: data.username,
+      password: data.password,
+      identificationNumber: data.identificationNumber,
     }
 
     setLoading(true)
@@ -45,15 +46,17 @@ const Signup = () => {
   }
 
   return (
-    <Layout title="Signup" fullWidth={true}>
-      <div className="login">
+    <Layout title="Registro" fullWidth={true}>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
+      >
         <Form
           isLogin={false}
           loading={loading}
           errorMessage={errorMsg}
           onSubmit={handleSubmit}
         />
-      </div>
+      </GoogleReCaptchaProvider>
       <style jsx>{`
         .form-title {
           display: block;
