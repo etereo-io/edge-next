@@ -372,6 +372,16 @@ export const getConfig = () => {
           delete: ['GROUP_ADMIN'],
           admin: ['GROUP_ADMIN'],
         },
+        comments: {
+          enabled: true,
+          permissions: {
+            read: ['GROUP_MEMBER'],
+            create: ['GROUP_MEMBER'],
+            update: ['GROUP_ADMIN'],
+            delete: ['GROUP_ADMIN'],
+            admin: ['GROUP_ADMIN'],
+          },
+        }
       },
       {
         slug: 'site-news',
@@ -382,6 +392,16 @@ export const getConfig = () => {
           delete: ['GROUP_ADMIN'],
           admin: ['GROUP_ADMIN'],
         },
+        comments: {
+          enabled: true,
+          permissions: {
+            read: ['GROUP_MEMBER'],
+            create: ['GROUP_MEMBER'],
+            update: ['GROUP_ADMIN'],
+            delete: ['GROUP_ADMIN'],
+            admin: ['GROUP_ADMIN'],
+          },
+        }
       },
     ],
 
