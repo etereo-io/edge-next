@@ -1,5 +1,6 @@
 import {
   InputDate,
+  InputDateTime,
   InputEmails,
   InputEntity,
   InputFile,
@@ -8,6 +9,7 @@ import {
   InputTags,
   InputTel,
   InputText,
+  InputTime,
   InputUrl,
   Radio,
   RichEditor,
@@ -102,7 +104,26 @@ function Field(props) {
             onChange={onChange}
           />
         )
-
+      case FIELDS.TIME:
+        return (
+          <InputTime
+            field={field}
+            value={props.value}
+            disabled={props.disabled}
+            data-testid={datatestId}
+            onChange={onChange}
+          />
+        )
+      case FIELDS.DATETIME:
+        return (
+          <InputDateTime
+            field={field}
+            value={props.value}
+            disabled={props.disabled}
+            data-testid={datatestId}
+            onChange={onChange}
+          />
+        )
       case FIELDS.DATE:
         return (
           <InputDate

@@ -18,4 +18,6 @@ export const FIELDS = {
   PASSWORD: 'password',
   ENTITY_SEARCH: 'entity_search',
   RICH_TEXT: 'rich_text',
+  TIME: 'time',
+  DATETIME: 'datetime'
 }
