@@ -9,6 +9,7 @@ import { getGroupTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
 import { cypheredFieldPermission, groupPermission } from '@lib/permissions'
 import Cypher from '@lib/api/api-helpers/cypher-fields'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })
@@ -113,12 +114,16 @@ const EditGroup = ({ groupType, groupObject, currentUser }) => {
       <Layout title="Edit group">
         <div className="edit-page">
           <h1>Editing: {group ? group.title : null}</h1>
+          <GoogleReCaptchaProvider
+            reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
+          >
           <GroupForm
             permittedFields={permittedFields}
             type={groupType}
             onSave={onSave}
             group={group}
           />
+          </GoogleReCaptchaProvider>
         </div>
       </Layout>
 

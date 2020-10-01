@@ -1,4 +1,6 @@
 import { useEffect, useState, memo, useCallback } from 'react'
+import Link from 'next/link'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -7,7 +9,6 @@ import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
-import Link from 'next/link'
 
 function GroupForm(props) {
 
@@ -70,9 +71,7 @@ function GroupForm(props) {
     })
   }
 
-  const onSubmit = (ev) => {
-    ev.preventDefault()
-
+  const onSubmit = () => {
     const formData = new FormData()
     const jsonData = {}
 
@@ -128,6 +127,18 @@ function GroupForm(props) {
       })
   }
 
+  const { executeRecaptcha } = useGoogleReCaptcha()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const token = await executeRecaptcha('login_page')
+
+    if (token) {
+      onSubmit()
+    }
+  }
+
   // It needs the type definition
   if (!props.type) {
     return <p>Missing type definition</p>
@@ -136,7 +147,7 @@ function GroupForm(props) {
   return (
     <>
       <div className="group-form contentForm">
-        <form name="group-form" onSubmit={onSubmit}>
+        <form name="group-form" onSubmit={handleSubmit}>
           {props.type.publishing.draftMode && (
             <div className="draft input-group">
               <label>Draft</label>

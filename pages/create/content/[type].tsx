@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 
 import {
   contentPermission,
@@ -124,14 +125,18 @@ const CreateContent = ({ group, groupType, contentType, currentUser }) => {
       <Layout title="New content">
         <div className="create-page">
           <h1>Create new {contentType ? contentType.title : 'content'}</h1>
-          <ContentForm
-            content={content}
-            type={contentType}
-            group={group}
-            groupType={groupType}
-            onSave={onSave}
-            permittedFields={permittedFields}
-          />
+          <GoogleReCaptchaProvider
+            reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
+          >
+            <ContentForm
+              content={content}
+              type={contentType}
+              group={group}
+              groupType={groupType}
+              onSave={onSave}
+              permittedFields={permittedFields}
+            />
+          </GoogleReCaptchaProvider>
         </div>
       </Layout>
       <style jsx>{`
@@ -143,8 +148,8 @@ const CreateContent = ({ group, groupType, contentType, currentUser }) => {
           font-weight: 500;
         }
         @media all and (max-width: 720px) {
-          h1{
-              font-size: 16px;
+          h1 {
+            font-size: 16px;
           }
         }
       `}</style>

@@ -1,11 +1,12 @@
 import Router, { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { mutate } from 'swr'
 
 import Card from '@components/generic/card/card'
 import Form from '@components/auth/login-register.form'
 import Layout from '@components/layout/auth/auth-layout'
 import fetch from '@lib/fetcher'
-import { mutate } from 'swr'
 import { useUser } from '@lib/client/hooks'
 
 const Login = () => {
@@ -17,14 +18,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const [showAlert, setShowAlert] = useState('')
 
-  async function handleSubmit(e) {
-    event.preventDefault()
-
+  async function handleSubmit(data) {
     if (errorMsg) setErrorMsg('')
 
     const body = {
-      email: e.currentTarget.email.value,
-      password: e.currentTarget.password.value,
+      email: data.email,
+      password: data.password,
     }
 
     setLoading(true)
@@ -67,12 +66,16 @@ const Login = () => {
         </Card>
       )}
       <div className="login">
-        <Form
-          isLogin
-          errorMessage={errorMsg}
-          loading={loading}
-          onSubmit={handleSubmit}
-        />
+        <GoogleReCaptchaProvider
+          reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_KEY}
+        >
+          <Form
+            isLogin
+            errorMessage={errorMsg}
+            loading={loading}
+            onSubmit={handleSubmit}
+          />
+        </GoogleReCaptchaProvider>
       </div>
       <style jsx>{`
         .form-title {
