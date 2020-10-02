@@ -11,7 +11,7 @@ type Props = {
   medium?: boolean
   className?: string
   href?: string
-  onClick?: () => void
+  onClick?: (...args: any[]) => any
   restProps?: { [key: string]: any }
   reference?: string
   title?: string
