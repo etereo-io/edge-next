@@ -129,17 +129,6 @@ function ContentDetailView(props: Props) {
           )}
 
           <div className="edge-item-card-actions">
-            {config.follow.enabled && (
-              <div className="header-item-action follow-button">
-                <FollowButton following={true} />
-              </div>
-            )}
-            {config.like.enabled && (
-              <div className="header-item-action">
-                <ReactionCounter type="like" count={10} />
-              </div>
-            )}
-
             {(canEditComment.available || isContentOwner) && (
               <div className="header-item-action">
                 <Button
