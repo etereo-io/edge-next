@@ -13,7 +13,7 @@ type Props = {
   href?: string
   onClick?: (...args: any[]) => any
   restProps?: { [key: string]: any }
-  reference?: string
+  reference?: any
   title?: string
   type?: string
   secondary?: boolean
