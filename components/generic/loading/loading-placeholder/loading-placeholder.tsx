@@ -1,13 +1,19 @@
 import { memo } from 'react'
 
+type Props = {
+  width?: string
+  height?: string
+  borderRadius?: string
+}
+
 function LoadingPlaceholder({
   width = '200px',
   height = '20px',
   borderRadius = 'var(--edge-radius)',
-}) {
+}: Props) {
   return (
     <>
-      <div className="loading-placeholder"></div>
+      <div className="loading-placeholder" />
       <style jsx>{`
         .loading-placeholder {
           width: ${width};

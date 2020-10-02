@@ -1,4 +1,4 @@
-import { useEffect, useState, memo, useCallback } from 'react'
+import React, { useEffect, useState, memo, useCallback } from 'react'
 import Link from 'next/link'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
@@ -8,33 +8,42 @@ import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 import { FIELDS } from '@lib/constants'
+import { FieldType, GroupEntityType, GroupTypeDefinition } from '@lib/types'
 import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
 
-function GroupForm(props) {
+type Props = {
+  type: GroupTypeDefinition
+  group: Partial<GroupEntityType>
+  permittedFields: FieldType[]
+  onSave: (result) => void
+}
 
+function GroupForm({ type, group, onSave, permittedFields }: Props) {
   // Saving states
-  const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(false)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [success, setSuccess] = useState<boolean>(false)
+  const [error, setError] = useState<boolean>(false)
 
   // used to store values
-  const [state, setState] = useState({})
+  const [state, setState] = useState<Partial<GroupEntityType>>({})
 
   useEffect(() => {
     // Preload the form values
-    if (props.type && props.group) {
+    if (type && group) {
       const filteredData = {}
       // We filter the data that comes from the API into the state, because we don't want to send to the PUT and POST request
       // additional information
-      const allowedKeys = props.permittedFields.map((f) => f.name).concat('draft', 'members')
+      const allowedKeys = permittedFields
+        .map((f) => f.name)
+        .concat('draft', 'members')
 
       allowedKeys.map((k) => {
-        filteredData[k] = props.group[k]
+        filteredData[k] = group[k]
       })
 
       setState(filteredData)
     }
-  }, [props.group, props.type])
+  }, [group, type])
 
   // Store the fields
   const handleFieldChange = useCallback(
@@ -45,29 +54,31 @@ function GroupForm(props) {
   )
 
   const submitRequest = (data, jsonData) => {
-    const url = `${API.groups[props.type.slug]}${
-      props.group.id ? '/' + props.group.id + '?field=id' : ''
+    const url = `${API.groups[type.slug]}${
+      group.id ? '/' + group.id + '?field=id' : ''
     }`
 
     return fetch(url, {
-      method: props.group.id ? 'PUT' : 'POST',
+      method: group.id ? 'PUT' : 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         ...jsonData,
         // Clean the members data that we are storing to only send the id and group role
-        members: jsonData.members ? jsonData.members.map(member => ({ id: member.id, roles: member.roles})) : []
+        members: jsonData.members
+          ? jsonData.members.map((member) => ({
+              id: member.id,
+              roles: member.roles,
+            }))
+          : [],
       }),
     }).then((result) => {
       // Files are always updated as a PUT
-      return fetch(
-        `${API.groups[props.type.slug]}${'/' + result.id + '?field=id'}`,
-        {
-          method: 'PUT',
-          body: data,
-        }
-      )
+      return fetch(`${API.groups[type.slug]}${'/' + result.id + '?field=id'}`, {
+        method: 'PUT',
+        body: data,
+      })
     })
   }
 
@@ -78,7 +89,7 @@ function GroupForm(props) {
     // Build the JSON data object and the formdata for the files.
     Object.keys(state).forEach((key) => {
       const fieldValue = state[key]
-      const fieldDefinition = props.permittedFields.find((t) => t.name === key)
+      const fieldDefinition = permittedFields.find((t) => t.name === key)
 
       if (
         fieldDefinition &&
@@ -93,7 +104,6 @@ function GroupForm(props) {
               // Append each new file to the formData to be uploaded
               formData.append(key, item.file)
             } else {
-
               // If it is a file that is already uploaded before, keep it on the json data
               jsonData[key] = jsonData[key] ? [...jsonData[key], item] : [item]
             }
@@ -116,8 +126,8 @@ function GroupForm(props) {
         setSuccess(true)
         setError(false)
 
-        if (props.onSave) {
-          props.onSave(result)
+        if (onSave) {
+          onSave(result)
         }
       })
       .catch((err) => {
@@ -140,7 +150,7 @@ function GroupForm(props) {
   }
 
   // It needs the type definition
-  if (!props.type) {
+  if (!type) {
     return <p>Missing type definition</p>
   }
 
@@ -148,7 +158,7 @@ function GroupForm(props) {
     <>
       <div className="group-form contentForm">
         <form name="group-form" onSubmit={handleSubmit}>
-          {props.type.publishing.draftMode && (
+          {type.publishing.draftMode && (
             <div className="draft input-group">
               <label>Draft</label>
               <Toggle
@@ -158,7 +168,7 @@ function GroupForm(props) {
             </div>
           )}
 
-          {props.permittedFields.map((field) => (
+          {permittedFields.map((field) => (
             <DynamicField
               key={field.name}
               field={field}
@@ -167,26 +177,25 @@ function GroupForm(props) {
             />
           ))}
 
-
           <div className="actions">
-            <Button loading={loading} alt={true} type="submit">
+            <Button loading={loading} alt type="submit">
               Save
             </Button>
           </div>
           {success && (
             <div className="success-message">
               Saved: You can see it{' '}
-              <Link href={`/group/${props.type.slug}/${props.group.slug}`}>
+              <Link href={`/group/${type.slug}/${group.slug}`}>
                 <a title="View Content">here</a>
               </Link>
             </div>
           )}
           {error && <div className="error-message">Error saving </div>}
         </form>
-        
+
         <div className="preview-wrapper">
           <div className="preview">
-            <GroupSummaryView group={state} type={props.type} linkToDetail={false}/>
+            <GroupSummaryView group={state} type={type} linkToDetail={false} />
           </div>
         </div>
       </div>
@@ -239,4 +248,4 @@ function GroupForm(props) {
   )
 }
 
-export default memo(GroupForm);
+export default memo(GroupForm)

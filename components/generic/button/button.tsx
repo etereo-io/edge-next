@@ -1,34 +1,57 @@
-import { memo } from 'react';
+import { memo } from 'react'
 import Link from 'next/link'
 
 import LoadingSpinner from '../loading/loading-spinner/loading-spinner'
 
-function Button(props) {
-  const {
-    children,
-    loading,
-    alt,
-    big,
-    medium,
-    className,
-    href,
-    onClick,
-    restProps,
-    reference,
-    title = '',
-    secondary,
-    warning,
-    fullWidth,
-    alert,
-    soft,
-    success,
-    padding,
-    hoverable,
-    round,
-    width = '32px',
-  } = props
+type Props = {
+  children?: any
+  loading?: boolean
+  alt?: boolean
+  big?: boolean
+  medium?: boolean
+  className?: string
+  href?: string
+  onClick?: () => void
+  restProps?: { [key: string]: any }
+  reference?: string
+  title?: string
+  type?: string
+  secondary?: boolean
+  warning?: boolean
+  fullWidth?: boolean
+  alert?: boolean
+  soft?: boolean
+  success?: boolean
+  padding?: string
+  hoverable?: boolean
+  round?: boolean
+  width?: string
+}
 
-  const classNames = `edge-button button ${loading ? 'loading' : ''}  ${
+function Button({
+  children,
+  loading,
+  alt,
+  big,
+  medium,
+  className,
+  href,
+  onClick,
+  restProps,
+  reference,
+  title = '',
+  secondary,
+  warning,
+  fullWidth,
+  alert,
+  soft,
+  success,
+  padding,
+  hoverable,
+  round,
+  width = '32px',
+}: Props) {
+  const classNames = `edge-button button ${loading ? 'loading' : ''} ${
     alt ? 'alt' : ''
   } ${fullWidth ? 'full-width' : ''} ${big ? 'big' : ''} ${
     medium ? 'medium' : ''
@@ -56,8 +79,6 @@ function Button(props) {
       </button>
       <style jsx>
         {`
- 
-
           .button {
             border-radius: var(--edge-radius);
             border: var(--light-border);
@@ -164,7 +185,7 @@ function Button(props) {
             justify-content: center;
           }
 
-          a{
+          a {
             text-decoration: none;
           }
         `}
