@@ -15,10 +15,17 @@ export type UserType = {
   createdAt: number
   profile: {
     displayName: string
+    cover?: {
+      path: string
+    }
     picture: {
       path: string
       source: string
-    }
+    },
+    bio?: string
+    facebook?: string
+    twitter?: string
+    github?: string
   }
   tokens: Array<{ [key: string]: any }>
   metadata: {

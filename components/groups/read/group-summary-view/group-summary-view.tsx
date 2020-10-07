@@ -15,7 +15,7 @@ import { getInteractionsDefinition } from '@lib/config'
 
 interface Props {
   linkToDetail?: boolean
-  group: GroupEntityType
+  group: Partial<GroupEntityType>
   className?: string
   type: GroupTypeDefinition
 }

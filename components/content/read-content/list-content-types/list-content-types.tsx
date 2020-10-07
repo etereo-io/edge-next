@@ -1,7 +1,7 @@
-import { memo } from 'react'
+import React, { memo } from 'react'
 
-import LinkList from '../../../generic/link-list/link-list'
 import { useContentTypes } from '@lib/client/hooks'
+import LinkList from '@components/generic/link-list/link-list'
 
 function ListContentTypes() {
   const contentTypes = useContentTypes(['read', 'admin'])

@@ -1,13 +1,19 @@
-import { memo } from 'react'
+import React, { memo } from 'react'
 
-import loadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
+import LoadingPlaceholder from '@components/generic/loading/loading-placeholder/loading-placeholder'
+import { UserType } from '@lib/types'
 
-function CoverImage({ user, loading = false }) {
+type Props = {
+  user?: UserType
+  loading?: boolean
+}
+
+function CoverImage({ user, loading = false }: Props) {
   return (
     <>
       <div className="cover-image-wrapper">
-        {loading && <loadingPlaceholder width={'100%'} height={'100%'} />}
-        {!loading && <div className="cover-image"></div>}
+        {loading && <LoadingPlaceholder width="100%" height="100%" />}
+        {!loading && <div className="cover-image" />}
       </div>
       <style jsx>{`
       .cover-image-wrapper {

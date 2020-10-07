@@ -1,29 +1,34 @@
-import {memo} from 'react'
+import { memo } from 'react'
 import Link from 'next/link'
 
+import { UserType } from '@lib/types'
 import Avatar from '../avatar/avatar'
 import LoadingPlaceholder from '../../generic/loading/loading-placeholder/loading-placeholder'
 
-function UserProfileBox({ user, ...props }) {
+type Props = {
+  user?: UserType
+  horizontal?: boolean
+  basic?: boolean
+  small?: boolean
+}
+
+function UserProfileBox({ user, horizontal, basic, small }: Props) {
   return (
     <>
       <div
-        className={`general-profile ${props.horizontal ? 'horizontal' : ''} ${
-          props.basic ? 'basic' : ''
-        } ${props.small ? 'small' : ''}`}
+        className={`general-profile ${horizontal ? 'horizontal' : ''} ${
+          basic ? 'basic' : ''
+        } ${small ? 'small' : ''}`}
       >
         <div className="profile-avatar-bio">
           <div className="avatar">
-            {user && (
+            {user ? (
               <Link href={`/profile/@${user.username}`}>
                 <a title={`${user.username} profile`}>
-                  <Avatar
-                    user={user}
-                  />
+                  <Avatar user={user} />
                 </a>
               </Link>
-            )}
-            {!user && (
+            ) : (
               <LoadingPlaceholder
                 borderRadius="15%"
                 height={'100px'}
@@ -39,18 +44,18 @@ function UserProfileBox({ user, ...props }) {
                 <LoadingPlaceholder width={'100px'} />
               )}
             </div>
-            {user && (
+            {user ? (
               <div className="username">
                 <Link href={`/profile/@${user.username}`}>
                   <a title={`${user.username} profile`}>@{user.username}</a>
                 </Link>
               </div>
-            )}
-            {!user && (
+            ) : (
               <div className="username">
                 <LoadingPlaceholder width={'100px'} />
               </div>
             )}
+
             <div className="profile-bio-social">
               {user && user.profile.bio && (
                 <div className="general-profile-bio">
