@@ -47,7 +47,7 @@ function RememberPasswordForm({ onSubmit, loading, setErrorMsg }: Props) {
 
         <div className="info">
           <span>
-            Te enviaremos un enlace de verificación al correo para cambiar tu contraseña.
+            We will send you a link to verify your account
           </span>
         </div>
 
@@ -60,15 +60,15 @@ function RememberPasswordForm({ onSubmit, loading, setErrorMsg }: Props) {
             fullWidth={true}
             type="submit"
           >
-            Envíame un enlace de verificación
+            Send me a verification link
           </Button>
 
           <div className="alt-actions">
             <Link href="/auth/login">
-              <a title="Ir al login">Ir al login</a>
+              <a title="Go to login">Go to login</a>
             </Link>
             <Link href="/auth/signup">
-              <a title="Crear una cuenta">Crear una cuenta</a>
+              <a title="Create an account">Create an account</a>
             </Link>
           </div>
         </div>

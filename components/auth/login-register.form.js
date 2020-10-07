@@ -92,14 +92,14 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
           <div className="input-group required">
             <input
               type="text"
-              placeholder="Nombre de usuario"
+              placeholder="User name"
               name="username"
               pattern="[a-z\d_-]+$"
               required
               onChange={onChange}
             />
             <div className="description">
-              Usa solamente letras en minúsculas, numeros y guiones bajos.
+              Use only lowercase letters, numbers and underscores
             </div>
           </div>
         )}
@@ -155,17 +155,17 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
         {!isLogin && (
           <div className="terms">
-            Al registrarte aceptas nuestros{' '}
+            When registering you accept our{' '}
             <Link href="/p/terms-of-service">
-              <a title="Términos del servicio">Términos del servicio</a>
+              <a title="terms of service">terms of service</a>
             </Link>
-            . Aprende más acerca de nuestra{' '}
+            . Learn more about our{' '}
             <Link href="/p/privacy-policy">
-              <a title="política de privacidad">política de privacidad</a>
+              <a title="privacy policy">privacy policy</a>
             </Link>{' '}
-            y nuestra{' '}
+            and our{' '}
             <Link href="/p/copyright-policy">
-              <a title="política de copyright">política de copyright</a>
+              <a title="copyright policy">copyright policy</a>
             </Link>
             .
           </div>
@@ -185,11 +185,11 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
 
               <div className="alt-actions">
                 <Link href="/auth/signup">
-                  <a title="Ir al registro">No tengo una cuenta</a>
+                  <a title="Go to register">I don't have an account</a>
                 </Link>
                 <Link href="/auth/reset-password">
-                  <a title="Recordar mi contraseña">
-                    No recuerdo mi contraseña
+                  <a title="Remember my password">
+                  Remember my password
                   </a>
                 </Link>
               </div>
@@ -202,14 +202,14 @@ const Form = ({ isLogin, errorMessage, onSubmit, loading }) => {
                 alt={true}
                 fullWidth={true}
                 type="submit"
-                title="Registro"
+                title="Register"
               >
-                Registro
+                Register
               </Button>
 
               <div className="alt-actions">
                 <Link href="/auth/login">
-                  <a title="Ir al login">Ya tengo una cuenta</a>
+                  <a title="Go to login">I have an account</a>
                 </Link>
               </div>
             </>

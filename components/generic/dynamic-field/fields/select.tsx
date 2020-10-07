@@ -14,6 +14,7 @@ function Select(props) {
         onChange={onChange}
         value={props.value}
       >
+        <option value=''>Select one</option>
         {props.field.options.map((o) => (
           <option key={o.value} value={o.value}>
             {o.label}

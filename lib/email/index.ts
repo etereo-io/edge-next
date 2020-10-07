@@ -14,7 +14,7 @@ const md = Markdown({
 // Send an email to verify the new email address
 export const sendVerifyEmail = (to, token) => {
   const linkToVerifyEmail = `${
-    config.url
+    process.env.BASE_URL
     }/auth/verify?email=${to}&date=${Date.now()}&token=${token}`
 
   const textMessage = `Please copy and paste the following link in your browser to verify your email address: ${linkToVerifyEmail}`
@@ -35,7 +35,7 @@ export const sendVerifyEmail = (to, token) => {
 // Send an email to update password
 export const sendResetPassworEmail = (to, token) => {
   const linkToResetPassword = `${
-    config.url
+    process.env.BASE_URL
     }/auth/reset-password-verify?email=${to}&date=${Date.now()}&token=${token}`
 
   const textMessage = `Please copy and paste the following link in your browser to update your password: ${linkToResetPassword}. \n If you didn't request to reset your password, please, ignore this message.`
@@ -54,7 +54,7 @@ export const sendResetPassworEmail = (to, token) => {
 
 // send an email after user send request that he want to join to the group.
 export function sendRequestToJoinToGroupEmail(to, type, group) {
-  const linkToGroup = `${config.url}/group/${type}/${group.slug}`
+  const linkToGroup = `${process.env.BASE_URL}/group/${type}/${group.slug}`
 
   const textMessage = `A user wants to join ${group.title}. Go to the user's administration page to approve or deny the membership`
   const subject = `A user wants to join ${group.title}`

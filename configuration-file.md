@@ -133,9 +133,6 @@ export const getConfig = (defaultOptions) => {
       type: 'MONGO',
     },
 
-    // Used for e-mails and links
-    url: 'https://edge-next.now.sh/',
-
     emails: {
       from: 'no-reply@edge-next.io',
       contact: 'contact@edge-next.io',

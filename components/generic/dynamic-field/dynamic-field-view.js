@@ -4,6 +4,7 @@ import Markdown from '@lib/markdown'
 import MarkdownRead from '../markdown-read/markdown-read'
 import ReactPlayer from 'react-player'
 import TagsField from '../tags-field/tags-field'
+import Link from 'next/link'
 
 const md = Markdown()
 
@@ -107,13 +108,28 @@ function Field({ field, value, typeDefinition }) {
             `}</style>
           </div>
         ) : null
-      case FIELDS.ENTITY_SEARCH: {
-        const text = (value || [])
-          .map((item) => `${item[field.entityName]}`)
-          .join(', ')
-
-        return <p data-testid={datatestId}>{text}</p>
-      }
+        
+        case FIELDS.ENTITY_SEARCH:
+          return (
+            <>
+              <div className="linked-entities">
+                <b>Linked items:</b>
+                {value.map(i => (
+                  <div className="entity-item">
+                    <Link href={`/${field.entity}/${field.entityType}/${i.slug}`}>
+                      <a>{i[field.entityName]}`</a>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+              <style jsx>
+                {
+                  `
+                  `
+                }
+              </style>
+            </>
+          )
 
       default:
         return <p data-testid={datatestId}>{value}</p>
