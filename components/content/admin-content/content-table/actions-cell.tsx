@@ -2,6 +2,7 @@ import React, { memo, useCallback, useState } from 'react'
 
 import Button from '@components/generic/button/button'
 import { ContentEntityType } from '@lib/types'
+import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 
 interface Props {
   slug: string
@@ -38,29 +39,29 @@ function ActionsCell({ slug, deleteRequest, item }: Props) {
 
   return (
     <>
-      {!success && (
-        <div className="button-wr">
-          <Button href={`/edit/content/${slug}/${item.slug}`}>Edit</Button>
-        </div>
-      )}
-      {!success && (
-        <div className="button-wr">
-          <Button loading={loading} success={true} onClick={onClickDelete}>
-            Delete
-          </Button>
-        </div>
-      )}
-      {error && <div className="error">Error deleting item</div>}
-      {success && <div className="success">Item deleted</div>}
-    
+      <DropdownMenu align={'right'}>
+        <ul>
+          {!success && (
+            <li>
+              <Button fullWidth title="Edit" href={`/edit/content/${slug}/${item.slug}`}>Edit</Button>
+            </li>
+          )}
+          {!success && (
+            <li >
+              <Button fullWidth title="Delete" loading={loading} success={true} onClick={onClickDelete}>
+                Delete
+              </Button>
+            </li>
+          )}
+          {error && <li><div className="error">Error deleting item</div></li>}
+          {success && <li><div className="success">Item deleted</div></li>}
+        </ul>
+      </DropdownMenu>
+      
       <style jsx>{`
-      .button-wr{
-        margin: 0 8px 0 8px;
-      }
+      
 
-      .button-wr:last-of-type{
-        margin: 0;
-      }
+      
     `}</style>
     </>
   )

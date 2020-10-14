@@ -1,6 +1,7 @@
-import React, { useState, memo, useCallback } from 'react'
-import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
+import React, { memo, useCallback, useState } from 'react'
+
 import Button from '@components/generic/button/button'
+import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 
 const ActionsCell = ({
   blockRequest,
@@ -83,13 +84,7 @@ const ActionsCell = ({
         </ul>
       </DropdownMenu>
       <style jsx>{`
-        .button-wr {
-          margin: 0 8px 0 8px;
-        }
-
-        .button-wr:last-of-type {
-          margin: 0;
-        }
+        
       `}</style>
     </>
   )

@@ -1,19 +1,19 @@
-import React, { useState, useCallback } from 'react'
-import { GetServerSideProps } from 'next'
-
+import React, { useCallback, useEffect, useState } from 'react'
 import { hasPermissionsForGroup, loadUser } from '@lib/api/middlewares'
+
+import Cypher from '@lib/api/api-helpers/cypher-fields'
+import { GetServerSideProps } from 'next'
+import GroupContext from '@components/groups/context/group-context'
 import GroupDetailView from '@components/groups/read/group-detail-view/group-detail-view'
 import Layout from '@components/layout/three-panels/layout'
 import ToolBar from '@components/generic/toolbar/toolbar'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
-import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import GroupContext from '@components/groups/context/group-context'
-import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { getSession } from '@lib/api/auth/iron'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { groupUserPermission } from '@lib/permissions'
+import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -115,13 +115,18 @@ export const getServerSideProps: GetServerSideProps = async ({
 
 const ContentPage = ({ data, groupType, pageTitle }) => {
   const [group, setGroup] = useState(data)
-
+  // Context to store the group object and refresh it after editing members. 
+  // Refactor this
   const onSubmitEvent = useCallback(
     (data) => {
       setGroup(data)
     },
     [setGroup]
   )
+
+  useEffect(() => {
+    onSubmitEvent(data)
+  }, [data])
 
   return (
     <Layout title={pageTitle} panelUser={<ToolBar />}>

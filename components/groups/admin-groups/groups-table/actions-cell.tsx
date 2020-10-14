@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useState } from 'react'
 
 import Button from '@components/generic/button/button'
+import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import { GroupEntityType } from '@lib/types/entities/group'
 
 interface Props {
@@ -38,29 +39,27 @@ function ActionsCell({ slug, deleteRequest, item }: Props) {
 
   return (
     <>
-      {!success && (
-        <div className="button-wr">
-          <Button href={`/edit/group/${slug}/${item.slug}`}>Edit</Button>
-        </div>
-      )}
-      {!success && (
-        <div className="button-wr">
-          <Button loading={loading} success={true} onClick={onClickDelete}>
-            Delete
-          </Button>
-        </div>
-      )}
-      {error && <div className="error">Error deleting item</div>}
-      {success && <div className="success">Item deleted</div>}
-    
-      <style jsx>{`
-      .button-wr{
-        margin: 0 8px 0 8px;
-      }
+      <DropdownMenu align={'right'}>
+        <ul>
+          {!success && (
+            <li>
+              <Button fullWidth title="Edit" href={`/edit/group/${slug}/${item.slug}`}>Edit</Button>
+            </li>
+          )}
+          {!success && (
+            <li>
+              <Button fullWidth title="Borrar" loading={loading} success={true} onClick={onClickDelete}>
+                Borrar
+              </Button>
+            </li>
+          )}
+          {error && <li><div className="error">Error deleting item</div></li>}
+          {success && <li><div className="success">Item deleted</div></li>}
 
-      .button-wr:last-of-type{
-        margin: 0;
-      }
+        </ul>
+      </DropdownMenu>
+      <style jsx>{`
+      
     `}</style>
     </>
   )

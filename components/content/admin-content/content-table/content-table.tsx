@@ -1,18 +1,17 @@
-import { format } from 'timeago.js'
-import React, { useState, memo, useMemo, useCallback } from 'react'
-import Link from 'next/link'
+import {
+  ExtendedColumn,
+  Table as ReactTable,
+} from '@components/generic/react-table'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
-import Button from '@components/generic/button/button'
-import { useInfinityList } from '@lib/client/hooks'
-import { ContentEntityType } from '@lib/types'
-import {
-  Table as ReactTable,
-  ExtendedColumn,
-} from '@components/generic/react-table'
-import fetch from '@lib/fetcher'
-
 import ActionsCell from './actions-cell'
+import Button from '@components/generic/button/button'
+import { ContentEntityType } from '@lib/types'
+import Link from 'next/link'
+import fetch from '@lib/fetcher'
+import { format } from 'timeago.js'
+import { useInfinityList } from '@lib/client/hooks'
 
 const limit = 10
 
@@ -59,8 +58,8 @@ function ContentTable({ type }) {
 
   const columns = useMemo(() => {
     const columnsConfig: ExtendedColumn<ContentEntityType>[] = type.fields.map(
-      ({ name }, index) => ({
-        Header: name,
+      ({ name, label }, index) => ({
+        Header: label || name,
         id: name,
         sortable: true,
         Cell: ({ row: { original: item } }) => {
