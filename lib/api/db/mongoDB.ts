@@ -37,6 +37,7 @@ class MongoDB extends Database {
       _id: new ObjectID(),
       ...item,
       createdAt: item.createdAt || Date.now(),
+      updatedAt: Date.now()
     }
 
     return new Promise((resolve, reject) => {

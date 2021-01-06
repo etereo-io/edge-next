@@ -2,7 +2,7 @@ import { ChangeEvent, useCallback, useState } from 'react'
 
 interface Props {
   onChangeHandler: (
-    value: string | number,
+    value: any,
     event: ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >

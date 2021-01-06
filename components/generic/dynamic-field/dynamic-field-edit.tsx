@@ -124,6 +124,8 @@ function Field(props) {
             onChange={onChange}
           />
         )
+
+      
       case FIELDS.DATE:
         return (
           <InputDate

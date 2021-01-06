@@ -19,5 +19,6 @@ export const FIELDS = {
   ENTITY_SEARCH: 'entity_search',
   RICH_TEXT: 'rich_text',
   TIME: 'time',
-  DATETIME: 'datetime'
+  DATETIME: 'datetime',
+  CITY: 'city'
 }
