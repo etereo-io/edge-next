@@ -1,6 +1,8 @@
+import { findOneStats, findStats } from '../stats'
 import { findOneUser, findUsers } from '@lib/api/entities/users'
-import { getDB } from '@lib/api/db'
+
 import { ANY_OBJECT } from '@lib/types'
+import { getDB } from '@lib/api/db'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 
 export function findOneContent(type, options) {
@@ -55,12 +57,14 @@ export async function fillContent(item) {
           )
         )
       : null
+  const itemStats = await findOneStats({ contentId: item.id })
 
   return {
     ...item,
     user: hidePrivateUserFields(user),
     comments,
     members,
+    visits: itemStats ? itemStats.visits : 0
   }
 }
 
@@ -91,6 +95,10 @@ async function fillContentList(items) {
     ])
     .toArray()
 
+  const statsList = await findStats({
+    contentId: { $in: [...new Set(itemIds)]}
+  })
+
   return items.map((item) => {
     const { id, members, author } = item
 
@@ -107,11 +115,14 @@ async function fillContentList(items) {
         ),
       }))
 
+    const stats = statsList.find(item => item.contentId === id)
+
     return {
       ...item,
       user: hidePrivateUserFields(user),
       members: membersList || null,
       comments: comments ? comments.count : 0,
+      visits: stats? stats.visits: 0
     }
   })
 }

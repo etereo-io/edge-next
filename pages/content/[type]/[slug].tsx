@@ -10,6 +10,7 @@ import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import { getContentTypeDefinition } from '@lib/config'
 import { getSession } from '@lib/api/auth/iron'
+import { onContentRead } from '@lib/api/hooks/content.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 
 // Get serversideProps is important for SEO, and only available at the pages level
@@ -81,6 +82,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     contentTypeDefinition.monetization && contentTypeDefinition.monetization.web
   const monetizationMeta = hasWebMonetization ? item.paymentPointer : null
   const currentUser = await getSession(req)
+  await onContentRead(item, currentUser)
 
   const data = await appendInteractions({
     data: [item],

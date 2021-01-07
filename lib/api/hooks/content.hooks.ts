@@ -4,6 +4,12 @@ import {
   addActivity,
   deleteActivity,
 } from '@lib/api/entities/activity'
+import {
+  addStats,
+  deleteOneStats,
+  findOneStats,
+  updateOneStats,
+} from '@lib/api/entities/stats'
 
 import config from '@lib/config'
 import { deleteComment } from '@lib/api/entities/comments'
@@ -12,8 +18,21 @@ import {
   deleteInteractions,
 } from '@lib/api/entities/interactions'
 
-export function onContentRead(content: ContentEntityType, user:UserType) {
-  // TODO: We can log stats about visitors
+export async function onContentRead(content: ContentEntityType, user:UserType) {
+  const prevStats = await findOneStats({
+    contentId: content.id
+  })
+
+  if (prevStats) {
+    await updateOneStats(prevStats.id, {
+      visits: prevStats.visits + 1
+    })
+  } else {
+    await addStats({
+      contentId: content.id,
+      visits: 1
+    })
+  }
 }
 
 
@@ -89,6 +108,11 @@ export async function onContentDeleted(content: ContentEntityType, user:UserType
   // Will remove all the comments refering to this content
   await deleteComment({
     contentId: content.id,
+  })
+
+  // Remove stats
+  await deleteOneStats({
+    contentId: content.id
   })
 
   if (config.activity.enabled) {

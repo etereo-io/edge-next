@@ -14,6 +14,7 @@ import {
 } from '@lib/api/entities/content'
 import {
   onContentDeleted,
+  onContentRead,
   onContentUpdated,
 } from '@lib/api/hooks/content.hooks'
 
@@ -79,6 +80,8 @@ const getContent = async ({ item, currentUser, contentType }: Request, res) => {
       data,
       currentUser
     )
+
+    await onContentRead(content, currentUser)
 
     return res.status(200).json(content)
   }
