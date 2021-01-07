@@ -1,56 +1,22 @@
 import React, { memo, useState } from 'react'
-import {
-  useContentTypes,
-  useGroupTypes,
-  usePermission,
-  useUser,
-} from '@lib/client/hooks'
 
+import AdminHeader from './admin-sub-header'
 import EdgeLogo from '../../generic/icons/edge-icon/edge-icon'
 import Link from 'next/link'
-import LinkList from '@components/generic/link-list/link-list'
 import Progress from './progress'
 import UserHeader from './user-header'
 import { hasPermission } from '@lib/permissions'
+import {
+  useUser,
+} from '@lib/client/hooks'
 
 function Header() {
   const { user } = useUser()
+  const showAdminNav = hasPermission(user, `admin.access`)
+
+
   const [active, setActive] = useState(false)
-  const links = []
-  const contentTypes = useContentTypes(['admin'])
-  const groupTypes = useGroupTypes(['admin'])
-  const groupLinks = groupTypes.map(({ slug, title }) => ({
-    link: `/admin/groups/${slug}`,
-    title: `${title}`,
-  }))
-
-  if (hasPermission(user, `admin.stats`)) {
-    links.push({
-      title: 'General',
-      link: '/admin',
-    })
-  }
-
-  if (hasPermission(user, `admin.email`)) {
-    links.push({
-      title: 'Emails',
-      link: '/admin/emails',
-    })
-  }
-
-  if (hasPermission(user, `user.admin`)) {
-    links.push({
-      title: 'Users',
-      link: '/admin/users',
-    })
-  }
-
-  const contentLinks = contentTypes.map((type) => {
-    return {
-      link: `/admin/content/${type.slug}`,
-      title: `${type.title}`,
-    }
-  })
+  
 
   return (
     <>
@@ -68,20 +34,15 @@ function Header() {
             />
           </div>
         </aside>
+        {showAdminNav && <AdminHeader user={user} />}
         <div className="edge-header-content">
+
           <div className="edge-container">
             <Link href="/">
               <a title="Home page">
                 <EdgeLogo />
               </a>
             </Link>
-
-            <nav className="admin-menu">
-              <LinkList
-                links={[...links, ...contentLinks, ...groupLinks]}
-                className="space-evenly"
-              />
-            </nav>
 
             <UserHeader user={user} />
           </div>
@@ -94,11 +55,7 @@ function Header() {
         </div>
       </header>
       <style jsx>{`
-        @media all and (max-width: 960px) {
-          .admin-menu {
-            display: none;
-          }
-        }
+       
 
         .edge-topper {
           background: var(--edge-foreground);
