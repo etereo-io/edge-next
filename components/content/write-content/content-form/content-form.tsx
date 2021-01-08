@@ -1,6 +1,5 @@
-import React, { useEffect, useState, memo, useCallback } from 'react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
-import Link from 'next/link'
+import PurchasingOptionsForm, { PurchashingOptionsType } from './purchasing-options-form'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -9,8 +8,11 @@ import ContentSummaryView from '../../read-content/content-summary-view/content-
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '@components/groups/read/group-summary-view/group-summary-view'
+import Link from 'next/link'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
+import hasPermission from '@lib/permissions/has-permission'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 function ContentForm(props) {
   // Saving states
@@ -18,8 +20,18 @@ function ContentForm(props) {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
+  const defaultShoppingOptions: PurchashingOptionsType = {
+    multiple: false,
+    sku: '',
+    stock: 1,
+    options: []
+  }
+
   // used to store values
-  const [state, setState] = useState({})
+  const [state, setState] = useState({
+    draft: false,
+    purchasingOptions: defaultShoppingOptions
+  })
 
   useEffect(() => {
     // Preload the form values
@@ -30,12 +42,17 @@ function ContentForm(props) {
       const allowedKeys = props.permittedFields
         .map((f) => f.name)
         .concat('draft')
+        .concat('purchasingOptions')
 
       allowedKeys.map((k) => {
         filteredData[k] = props.content[k]
       })
 
-      setState(filteredData)
+      setState({
+        ...state,
+        ...filteredData,
+        purchasingOptions: filteredData['purchasingOptions'] || defaultShoppingOptions
+      })
     }
   }, [props.content, props.type])
 
@@ -169,6 +186,13 @@ function ContentForm(props) {
                 onChange={handleFieldChange(field.name)}
               />
             ))}
+
+          {hasPermission(props.currentUser, `content.${props.type.slug}.purchasing.sell`) && <div className="purchasing-options-wrapper">
+              <PurchasingOptionsForm value={state['purchasingOptions']} onChange={(val) => setState({
+                ...state,
+                purchasingOptions: val
+              })} />
+          </div>}
 
           <div className="actions">
             <Button loading={loading} alt={true} type="submit">

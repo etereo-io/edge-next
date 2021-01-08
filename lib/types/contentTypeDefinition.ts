@@ -1,11 +1,23 @@
 import { FieldType } from './fields'
+import { InteractionTypeDefinition } from './interactionTypeDefinition'
 import { PermissionsType } from './permissions'
 import { PublishingType } from './publishing'
-import { InteractionTypeDefinition } from './interactionTypeDefinition'
 
 export declare type CommentsType = {
   enabled: boolean;
   permissions: PermissionsType
+}
+
+type PurchasingPermissionsType = {
+  buy: [string],
+  sell: [string],
+  admin: [string],
+  ship: [string]
+}
+
+export declare type PurchasingType = {
+  enabled: boolean;
+  permissions: PurchasingPermissionsType
 }
 
 export declare type ContentTypeDefinition = {
@@ -19,6 +31,7 @@ export declare type ContentTypeDefinition = {
     web: boolean;
   },
   comments: CommentsType;
+  purchasing: PurchasingType;
   fields: FieldType[]
   entityInteractions: InteractionTypeDefinition[]
 }

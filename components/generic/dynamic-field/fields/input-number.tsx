@@ -1,7 +1,6 @@
-import {  memo } from 'react'
-
-import useOnChange from '@components/generic/dynamic-field/hooks/useOnChange'
+import { memo } from 'react'
 import useFieldLength from '@components/generic/dynamic-field/hooks/useFieldLength'
+import useOnChange from '@components/generic/dynamic-field/hooks/useOnChange'
 
 function InputNumber(props) {
   const { onChange, touched } = useOnChange({ onChangeHandler: props.onChange })
@@ -19,6 +18,7 @@ function InputNumber(props) {
       min={min}
       max={max}
       className={`${touched ? 'touched' : ''}`}
+      step="any"
       onChange={onChange}
     />
   )
