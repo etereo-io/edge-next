@@ -1,3 +1,4 @@
+import { ANY_OBJECT, Request } from '@lib/types'
 import {
   addContent,
   findContent,
@@ -9,16 +10,17 @@ import {
   isValidContentType,
   loadUser,
 } from '@lib/api/middlewares'
+
 import Cypher from '@lib/api/api-helpers/cypher-fields'
-import { ANY_OBJECT, Request } from '@lib/types'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { connect } from '@lib/api/db'
 import { contentValidations } from '@lib/validations/content'
 import { fillContentWithDefaultData } from '@lib/api/entities/content/content.utils'
 import logger from '@lib/logger'
 import methods from '@lib/api/api-helpers/methods'
 import { onContentAdded } from '@lib/api/hooks/content.hooks'
+import { purchasingPermission } from '@lib/permissions'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 
 const getContent = (filterParams, paginationParams) => async (
   req: Request,
@@ -78,8 +80,14 @@ const getContent = (filterParams, paginationParams) => async (
 const createContent = async (req: Request, res) => {
   const type = req.contentType
 
-  const content = {
-    ...req.body,
+  const { purchasingOptions, ...rest} = req.body
+  
+  // Only store purchasing options if the current user has permissions
+  const content = purchasingPermission(req.currentUser, type.slug, 'sell') ? {
+    ...rest,
+    purchasingOptions
+  } : {
+    ...rest
   }
 
   return contentValidations(type, content)

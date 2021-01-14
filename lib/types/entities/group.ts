@@ -1,4 +1,5 @@
 import { InteractionEntity } from './interaction'
+import { PermissionsType } from '../permissions'
 
 export type MemberType = {
   id: string
@@ -18,5 +19,6 @@ export declare type GroupEntityType = {
   draft: boolean
   author: string
   createdAt: string
-  interactions: InteractionEntity[]
+  interactions: InteractionEntity[],
+  permissions?: PermissionsType
 }

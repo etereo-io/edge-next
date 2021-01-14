@@ -270,7 +270,7 @@ describe('Integrations tests for users creation endpoint', () => {
         },
         body: newUser
       });
-      console.log('COMPLETED', res)
+      // console.log('COMPLETED', res)
       expect(res.statusCode).toBe(200)
 
       expect(res.body).toMatchObject({

@@ -1,27 +1,12 @@
+import { PurchashingOptionsType, PurchasingVariantType } from '@lib/types/purchasing'
 import React, { useState } from 'react'
 
 import Button from '@components/generic/button/button'
 import DynamicFieldEdit from '@components/generic/dynamic-field/dynamic-field-edit'
 
-type OptionsType = {
-  name: string,
-  price: number,
-  default: boolean,
-  stock: number,
-}
-
-export type PurchashingOptionsType = {
-  multiple: boolean,
-  stock: number,
-  sku: string,
-  currency: string,
-  price: number,
-  options?: OptionsType[]
-}
-
 type PropTypesVariantItem = {
-  variant: OptionsType,
-  onChange: (val: OptionsType) => void,
+  variant: PurchasingVariantType,
+  onChange: (val: PurchasingVariantType) => void,
   onClickRemove: () => void
 }
 

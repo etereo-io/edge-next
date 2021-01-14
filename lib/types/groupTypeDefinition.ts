@@ -1,7 +1,7 @@
 import { FieldType } from './fields'
+import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 import { PermissionsType } from './permissions'
 import { PublishingType } from './publishing'
-import { InteractionTypeDefinition } from '@lib/types/interactionTypeDefinition'
 
 type RoleType = {
   label: string

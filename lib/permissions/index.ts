@@ -1,6 +1,7 @@
-import { UserType } from '@lib/types'
-import hasPerm from './has-permission'
+import { CommentType, ContentEntityType, GroupEntityType, UserType } from '@lib/types'
+
 import getPermissions from '@lib/config'
+import hasPerm from './has-permission'
 
 export const hasPermission = hasPerm
 
@@ -12,9 +13,9 @@ const publicUser = { roles: ['PUBLIC'] } as UserType
 // This function is used by the client app and the permissions middleware for the API
 export const contentPermission = (
   user: UserType = publicUser,
-  entityType,
-  action,
-  content = null
+  entityType: string,
+  action: string,
+  content: ContentEntityType = null
 ) => {
   const permission = [
     `content.${entityType}.${action}`,
@@ -39,13 +40,38 @@ export const contentPermission = (
   return canAccess
 }
 
+// Check permissions for a content purchasing actions 
+export const purchasingPermission = (
+  user: UserType = publicUser,
+  entityType: string,
+  action: string,
+  content: ContentEntityType = null
+) => {
+  const permission = [
+    `content.${entityType}.purchasing.${action}`,
+    `content.${entityType}.purchasing.admin`,
+  ]
+
+  // If there is a content we need to check also if the content owner is the current user
+  const canAccess = hasPerm(user, permission)
+
+  if (content) {
+    // Draft check
+    if (content.draft && action === 'buy') {
+      return false
+    }
+  }
+
+  return canAccess
+}
+
 export const groupContentPermission = (
   user: UserType = publicUser,
-  entityType,
-  contentType,
-  action,
-  group,
-  content = null
+  entityType: string,
+  contentType: string,
+  action: string,
+  group: GroupEntityType,
+  content: ContentEntityType = null
 ) => {
   const permission = [
     `group.${entityType}.content.${contentType}.${action}`,
@@ -90,9 +116,9 @@ export const groupContentPermission = (
 
 export const groupPermission = (
   user: UserType = publicUser,
-  entityType,
-  action,
-  group = null
+  entityType: string,
+  action: string,
+  group: GroupEntityType = null
 ) => {
   const permission = [
     `group.${entityType}.${action}`,
@@ -127,7 +153,7 @@ export const groupPermission = (
 // Check permissions for users or a user item
 // It checks if the user has the permissions for the role or if it's the own user
 // This function is used by the client app and the permissions middleware for the API
-export const userPermission = function(user: UserType, action, userId) {
+export const userPermission = function(user: UserType, action: string, userId: string) {
   const permission = [`user.${action}`, `user.admin`]
   const canAccess = hasPerm(user, permission)
 
@@ -150,9 +176,9 @@ export const userPermission = function(user: UserType, action, userId) {
 
 export const groupUserPermission = (
   user: UserType = publicUser,
-  entityType,
-  action,
-  group
+  entityType: string,
+  action: string,
+  group: GroupEntityType
 ) => {
   const permission = [
     `group.${entityType}.user.${action}`,
@@ -189,9 +215,9 @@ export const groupUserPermission = (
 // This function is used by the client app and the permissions middleware for the API
 export const commentPermission = function(
   user: UserType = publicUser,
-  contentType,
-  action,
-  comment = null
+  contentType: string,
+  action: string,
+  comment: ContentEntityType = null
 ) {
   const permission = [
     `content.${contentType}.comments.${action}`,
@@ -211,11 +237,11 @@ export const commentPermission = function(
 
 export const groupCommentPermission = (
   user: UserType = publicUser,
-  entityType,
-  contentType,
-  action,
-  group,
-  comment = null
+  entityType: string,
+  contentType: string,
+  action: string,
+  group: GroupEntityType,
+  comment: CommentType = null
 ) => {
   const permission = [
     `group.${entityType}.content.${contentType}.comments.${action}`,
@@ -263,7 +289,7 @@ export const interactionPermission = (
   entity: string,
   entityType: string,
   interactionType: string,
-  action
+  action: string
 ) => {
   const permissions = [
     `${entity}.${entityType}.interactions.${interactionType}.${action}`,

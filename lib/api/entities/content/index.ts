@@ -4,9 +4,12 @@ import { findOneUser, findUsers } from '@lib/api/entities/users'
 import { ANY_OBJECT } from '@lib/types'
 import { getDB } from '@lib/api/db'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
+import logger from '@lib/logger'
 
 export function findOneContent(type, options) {
-  console.log('find', type, options)
+  
+  logger('DEBUG', 'Find', type, options)
+  
   return getDB()
     .collection(type)
     .findOne(options)

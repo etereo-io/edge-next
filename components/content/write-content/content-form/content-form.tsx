@@ -1,4 +1,3 @@
-import PurchasingOptionsForm, { PurchashingOptionsType } from './purchasing-options-form'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
@@ -9,9 +8,12 @@ import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '@components/groups/read/group-summary-view/group-summary-view'
 import Link from 'next/link'
+import { PurchashingOptionsType } from '@lib/types/purchasing'
+import PurchasingOptionsForm from './purchasing-options-form'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 import hasPermission from '@lib/permissions/has-permission'
+import { purchasingPermission } from '@lib/permissions'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 function ContentForm(props) {
@@ -24,6 +26,8 @@ function ContentForm(props) {
     multiple: false,
     sku: '',
     stock: 1,
+    currency: '',
+    price: 0.0,
     options: []
   }
 
@@ -187,7 +191,7 @@ function ContentForm(props) {
               />
             ))}
 
-          {hasPermission(props.currentUser, `content.${props.type.slug}.purchasing.sell`) && <div className="purchasing-options-wrapper">
+          {purchasingPermission(props.currentUser, props.type.slug, 'sell')  && <div className="purchasing-options-wrapper">
               <PurchasingOptionsForm value={state['purchasingOptions']} onChange={(val) => setState({
                 ...state,
                 purchasingOptions: val
