@@ -1,5 +1,4 @@
 import { DATABASES } from '@lib/constants'
-
 import { getConfig } from '../../edge.config'
 import merge from 'deepmerge'
 import schema from './config.schema'
@@ -178,8 +177,8 @@ export default function load() {
           type.purchasing.permissions.buy
         availablePermissions[`content.${type.slug}.purchasing.sell`] =
           type.purchasing.permissions.sell
-        availablePermissions[`content.${type.slug}.purchasing.ship`] =
-          type.purchasing.permissions.ship
+        availablePermissions[`content.${type.slug}.purchasing.orders`] =
+          type.purchasing.permissions.orders
         availablePermissions[`content.${type.slug}.purchasing.admin`] =
           type.purchasing.permissions.admin
       }

@@ -49,7 +49,7 @@ jest.mock('../../../../../edge.config', () => {
       permissions: {
         buy: ['USER'],
         sell: ['SHOP', 'ADMIN'],
-        ship: ['ADMIN'],
+        orders: ['ADMIN'],
         admin: ['ADMIN']
       }
     },

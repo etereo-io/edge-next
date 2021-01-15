@@ -23,6 +23,8 @@ The main features of Edge are:
 - Comments on content types.
 - Interactions on entities (like, follow, report, etc).
 - Users APIs (login, register, update)
+- Purchasing options and order management
+  - You can use Edge as a order API for your own storefront, or use Edge as a full store yourself
 - Emails (email verification, contact emails)
 - Dynamic admin dashboard for all the content, groups and users.
 - Block access to users to the site

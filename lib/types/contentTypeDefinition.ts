@@ -12,7 +12,7 @@ type PurchasingPermissionsType = {
   buy: [string],
   sell: [string],
   admin: [string],
-  ship: [string]
+  orders: [string]
 }
 
 export declare type PurchasingType = {

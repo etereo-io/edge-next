@@ -26,6 +26,7 @@
     - [Providers](#providers)
   - [Emails](#emails)
   - [Static Pages](#static-pages)
+  - [Ecommerce](#ecommerce)
   - [Web monetization](#web-monetization)
   - [Other Payments](#other-payments)
   - [Super search](#super-search)
@@ -74,7 +75,8 @@
   - Provided by [next-pwa](https://github.com/shadowwalker/next-pwa)
 - Easy to deploy
   - Deploy on platforms like Vercel in minutes
-- ~Multilingual support~
+- Multilingual support*
+  - Based on nextjs i18n 
 
 ## How to start using Edge.
 
@@ -229,6 +231,23 @@ const contentType = {
     },
   },
 
+  purchasing: {
+    // Enable or disable purchasing this content
+    enabled: true,
+    permissions: {
+      // Who will see the "purchase" form and will be able to purchase the item 
+      buy: ['USER'],
+
+      // Who will be able to see the "purchasing options" form on the content edition/creation
+      sell: ['SHOP', 'ADMIN'],
+
+      // Who will be able to update any orders (users with "sell" role are always allowed to update their own orders)
+      orders: ['WAREHOUSE'],
+
+      // Who will be able to administer any order and purchasing option
+      admin: ['ADMIN']
+    }
+  },
 
   // A list of fields, see below for more information
   fields: [{
@@ -732,6 +751,10 @@ Edge uses [Passport.js](http://www.passportjs.org) cookie based authentication w
 
 The login cookie is httpOnly, meaning it can only be accessed by the API, and it's encrypted using [@hapi/iron](https://hapi.dev/family/iron) for more security.
 
+Apart from the cookie authentication there are two more ways to authenticate:
+- JWT token on the Authenthication header*
+- API Key
+
 ### Providers
 
 In the configuration different providers can be enabled or disabled
@@ -811,6 +834,16 @@ description: 'Example page description'
 
 Hello, this is a static page, automatically rendered.
 ```
+
+## Ecommerce
+
+Edge can be used as a ecommerce. It offers the ability to mark content types as purchasable. When doing that:
+- A purchasing options form will appear on the content creation/edition
+- Users with the role "buy" will be able to add items to the shopping cart and complete a purchase
+- An "orders" API will be enabled
+  - When creating an order, an email will be triggered for both the buyer and the seller
+  - When an order is marked as "shipped" an email will be sent to the buyer
+  - The buyer will be able to see their ongoing orders on their dashboard
 
 ## Web monetization
 

@@ -97,13 +97,13 @@ const ContentTypeSchema = object({
     permissions: object({
       buy: array(string()),
       sell: array(string()),
-      ship: array(string()),
+      orders: array(string()),
       admin: array(string()),
     })
       .default({
         buy: [],
         sell: [],
-        ship: [],
+        orders: [],
         admin: [],
       }),
   }),
