@@ -7,7 +7,7 @@ function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
   )
 }
 
-export const getConfig = () => {
+export const getConfig = (config: any) => {
   const userRole = 'USER'
   const adminRole = 'ADMIN'
   const publicRole = 'PUBLIC'
