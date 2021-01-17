@@ -28,7 +28,7 @@ export function updateOneOrder(id, data:OrderType) {
     .set(data)
 }
 
-export async function findorders(
+export async function findOrders(
   options = {},
   paginationOptions: ANY_OBJECT = {}
 ): Promise<OrdersResponseType> {
@@ -56,7 +56,7 @@ export async function findorders(
     })
 }
 
-export function deleteorders(options) {
+export function deleteOrders(options) {
   return getDB()
     .collection('orders')
     .remove(options)

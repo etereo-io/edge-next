@@ -2,6 +2,7 @@ import { TDate } from "timeago.js"
 
 export type OrderProductType = {
   productId: string,
+  productContentType: string,
   amount: number,
   price: number,
   variant?: string,

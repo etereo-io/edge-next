@@ -17,4 +17,6 @@ export enum ACTIVITY_TYPES {
   GROUP_DELETED = 'group_deleted',
   EMAIL_SENT = 'email_sent',
   EMAIL_VERIFIED = 'email_verified',
+  ORDER_CREATED = 'order_created',
+  ORDER_STATUS_CHANGED = 'order_status_changed',
 }
