@@ -1,4 +1,5 @@
 import '../styles/index.scss'
+import 'line-awesome/dist/line-awesome/css/line-awesome.css'
 
 import * as gtag from '../lib/client/gtag'
 

@@ -163,7 +163,7 @@ export default object({
   storage: object().required('Missing storage configuration'),
   database: object({
     type: string().matches(
-      `(${DATABASES.FIREBASE}|${DATABASES.IN_MEMORY}|${DATABASES.MONGO})`,
+      `(${DATABASES.IN_MEMORY}|${DATABASES.MONGO})`,
       'Invalid database type'
     ),
   }),
@@ -220,6 +220,21 @@ export default object({
   groups: object({
     types: array(GroupTypeSchema),
     initialGroups: array(),
+  }),
+  purchasing: object({
+    enabled: boolean().default(false),
+    permissions: object({
+      buy: array(string()),
+      sell: array(string()),
+      orders: array(string()),
+      admin: array(string()),
+    })
+      .default({
+        buy: [],
+        sell: [],
+        orders: [],
+        admin: [],
+      }),
   }),
   superSearch: object({
     enabled: boolean(),

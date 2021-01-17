@@ -122,6 +122,19 @@ export default function load() {
         newConfig.superSearch.permissions.read
     }
 
+    // Purchasing
+    if (newConfig.purchasing.enabled) {
+      availablePermissions[`purchasing.buy`] =
+        newConfig.purchasing.permissions.buy
+      availablePermissions[`purchasing.sell`] =
+        newConfig.purchasing.permissions.sell
+      availablePermissions[`purchasing.orders`] =
+        newConfig.purchasing.permissions.orders
+      availablePermissions[`purchasing.admin`] =
+        newConfig.purchasing.permissions.admin
+    }
+
+
     // interactions
     ;(newConfig.user.entityInteractions || []).forEach(
       ({ type: interactionType, permissions }) => {

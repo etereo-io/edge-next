@@ -11,17 +11,31 @@ type PropTypes = {
 
 export default function AdminSubHeader({ user }: PropTypes) {
   // Links
-  const contentTypes = useContentTypes(['admin'])
   const groupTypes = useGroupTypes(['admin'])
-
   const groupLinks = groupTypes.map(({ slug, title }) => ({
     link: `/admin/groups/${slug}`,
     title: `${title}`,
   }))
 
+  const contentTypes = useContentTypes(['admin'])
   const contentLinks = contentTypes.map((type) => {
     return {
       link: `/admin/content/${type.slug}`,
+      title: `${type.title}`,
+    }
+  })
+
+  const createContentTypes = useContentTypes(['create'])
+  const createContentTypeLinks = createContentTypes.map((type) => {
+    return {
+      link: `/create/content/${type.slug}`,
+      title: `${type.title}`,
+    }
+  })
+  const createGroupTypes = useGroupTypes(['create'])
+  const createGroupTypeLinks = createGroupTypes.map((type) => {
+    return {
+      link: `/create/group/${type.slug}`,
       title: `${type.title}`,
     }
   })
@@ -97,7 +111,7 @@ export default function AdminSubHeader({ user }: PropTypes) {
               </Link>
             </li>}
 
-            <li className="view-more">
+            {hasPermission(user, 'admin.access') && <li className="view-more">
               <a title="Content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <defs />
@@ -134,7 +148,8 @@ export default function AdminSubHeader({ user }: PropTypes) {
                 })}
               </ul>
             </li>
-            <li className="view-more">
+            }
+            {hasPermission(user, 'admin.access') && <li className="view-more">
               <a title="Groups">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <defs />
@@ -170,8 +185,75 @@ export default function AdminSubHeader({ user }: PropTypes) {
                   )
                 })}
               </ul>
-            </li>
+            </li>}
 
+            {(hasPermission(user, 'purchasing.orders') || hasPermission(user, 'purchasing.sell')) && <li>
+              <Link href="/orders">
+                <a title="Orders">
+                <i className="las la-cubes"></i>
+                  <span>Orders</span>
+                </a>
+              </Link>
+            </li>}
+            <li className="view-more">
+              <a title="Create">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <defs />
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path
+                    className="icon"
+                    d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+                  />
+                </svg>
+                <span>Create</span>
+              </a>
+              <ul>
+                {createContentTypeLinks.map(link => {
+                  return (
+                    <li key={link.link}>
+                      <Link href={link.link}>
+                        <a title={`Create a ${link.title}`}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <defs />
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                              className="icon"
+                              d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"
+                            />
+                          </svg>
+                          <span>{link.title}</span>
+                        </a>
+                      </Link>
+                    </li>
+                  )
+                })}
+                {createGroupTypeLinks.map(link => {
+                  return (
+                    <li key={link.link}>
+                      <Link href={link.link}>
+                        <a title={`Administer ${link.title}`}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <defs />
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                              className="icon"
+                              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM8 17.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5zM9.5 8c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5S9.5 9.38 9.5 8zm6.5 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                            />
+                          </svg>
+                          <span>{link.title}</span>
+                        </a>
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </li>
 
           </ul>
         </div>
@@ -208,6 +290,12 @@ export default function AdminSubHeader({ user }: PropTypes) {
         .admin-navigation li:hover .icon {
           fill: var(--accents-2);
         }
+
+        .i {
+          font-size: 20px;
+          padding-right: 5px;
+          color: var(--accents-4);
+        }
         svg {
           margin-right: 4px;
           width: 20px;
@@ -217,7 +305,7 @@ export default function AdminSubHeader({ user }: PropTypes) {
           transition: 0.35s ease;
         }
         .view-more{
-          padding-right: 32px;
+
           position: relative;
           user-select: none;
         }
@@ -247,10 +335,6 @@ export default function AdminSubHeader({ user }: PropTypes) {
 
           .admin-navigation li:hover a span {
             max-width: 100px;
-          }
-
-          .view-more {
-            padding-right: 80px;
           }
 
           svg{

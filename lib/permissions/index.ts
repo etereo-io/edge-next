@@ -43,17 +43,23 @@ export const contentPermission = (
 // Check permissions for a content purchasing actions 
 export const purchasingPermission = (
   user: UserType = publicUser,
-  entityType: string,
   action: string,
+  entityType?: string,
   content: ContentEntityType = null
 ) => {
-  const permission = [
+
+  const globalPermission = [
+    `purchasing.${action}`,
+    `purchasing.admin`,
+  ]
+
+  const contentTypePermission = [
     `content.${entityType}.purchasing.${action}`,
     `content.${entityType}.purchasing.admin`,
   ]
 
   // If there is a content we need to check also if the content owner is the current user
-  const canAccess = hasPerm(user, permission)
+  const canAccess = entityType ? hasPerm(user, contentTypePermission) : hasPerm(user, globalPermission)
 
   if (content) {
     // Draft check

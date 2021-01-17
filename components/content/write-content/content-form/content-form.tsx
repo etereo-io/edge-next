@@ -191,7 +191,7 @@ function ContentForm(props) {
               />
             ))}
 
-          {purchasingPermission(props.currentUser, props.type.slug, 'sell')  && <div className="purchasing-options-wrapper">
+          {purchasingPermission(props.currentUser, 'sell', props.type.slug)  && <div className="purchasing-options-wrapper">
               <PurchasingOptionsForm value={state['purchasingOptions']} onChange={(val) => setState({
                 ...state,
                 purchasingOptions: val

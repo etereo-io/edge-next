@@ -249,6 +249,16 @@ export const getConfig = (config: any) => {
       web: false,
     },
 
+    purchasing: {
+      enabled: true,
+      permissions: {
+        buy: [userRole],
+        sell: [shopRole, adminRole],
+        ship: [adminRole],
+        admin: [adminRole]
+      }
+    },
+
     comments: {
       enabled: true,
       permissions: {
@@ -258,16 +268,6 @@ export const getConfig = (config: any) => {
         delete: [adminRole],
         admin: [adminRole],
       },
-    },
-
-    purchasing: {
-      enabled: true,
-      permissions: {
-        buy: [userRole],
-        sell: [shopRole, adminRole],
-        ship: [adminRole],
-        admin: [adminRole]
-      }
     },
 
     entityInteractions: [
@@ -827,6 +827,17 @@ export const getConfig = (config: any) => {
     },
     follow: {
       enabled: false,
+    },
+
+    // Purchasing
+    purchasing: {
+      enabled: true,
+      permissions: {
+        buy: [userRole],
+        sell: [shopRole, adminRole],
+        ship: [adminRole],
+        admin: [adminRole]
+      },
     },
 
     // super search configuration

@@ -12,7 +12,7 @@ import {
 
 function Header() {
   const { user } = useUser()
-  const showAdminNav = hasPermission(user, `admin.access`)
+  const showAdminNav = hasPermission(user, `admin.access`) || hasPermission(user, 'purchasing.sell') || hasPermission(user, 'purchasing.orders')
 
 
   const [active, setActive] = useState(false)
@@ -35,6 +35,7 @@ function Header() {
           </div>
         </aside>
         {showAdminNav && <AdminHeader user={user} />}
+        
         <div className="edge-header-content">
 
           <div className="edge-container">

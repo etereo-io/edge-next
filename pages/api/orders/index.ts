@@ -36,6 +36,12 @@ import validateOrder from '@lib/validations/order'
 
 async function createOrder(req: Request, res) {
 
+  if (!purchasingPermission(req.currentUser, 'buy')) {
+    return res.status(401).json({
+      error: 'Unauthorized'
+    })
+  }
+
   const orderObject: OrderType = {
     ...req.body,
   }
@@ -60,27 +66,37 @@ async function createOrder(req: Request, res) {
 
 }
 
-const getOrders = (filterParams, paginationParams) => (req: Request, res) => {
-  return findOrders(filterParams, paginationParams)
-    .then(result => {
-      return res.status(200).json(result)
-    })
-}
-
-
-export default async (req: Request, res) => {
+const getOrders = (req: Request, res) => {
   const {
-    query: { search, sortBy, sortOrder, from, limit },
+    query: { sellerId, buyerId, sortBy, sortOrder, from, limit },
   } = req
 
-  const filterParams = {}
+  const filterParams = { }
 
-  if (search) {
-    filterParams['$or'] = [
-      { to: { $regex: search } },
-      { from: { $regex: search } },
-      { text: { $regex: search } }
-    ]
+  if (sellerId) {
+    filterParams['sellerId'] = sellerId
+  }
+
+  if (buyerId) {
+    filterParams['buyerId'] = buyerId
+  }
+
+
+  // If there is a buyer ID
+  // We allow the current user to see their orders
+  // We allow order manager role to see orders
+  // We allow seller to see orders
+  const canAccessWithBuyerId = buyerId && (req.currentUser.id === buyerId || purchasingPermission(req.currentUser, 'orders') || (sellerId && req.currentUser.id === sellerId))
+  const canAccessWithoutSellerId = !sellerId && purchasingPermission(req.currentUser, 'orders')
+  const canAccessSellerId = sellerId && (req.currentUser.id === sellerId || purchasingPermission(req.currentUser, 'orders'))
+  const canManageOrders = purchasingPermission(req.currentUser, 'orders')
+
+  const canAccess = canAccessWithBuyerId || canAccessWithoutSellerId || canAccessSellerId || canManageOrders
+
+  if (!canAccess) {
+    return res.status(401).json({
+      error: 'Unauthorized'
+    })
   }
 
   const paginationParams = {
@@ -89,6 +105,16 @@ export default async (req: Request, res) => {
     from,
     limit,
   }
+
+
+  return findOrders(filterParams, paginationParams)
+    .then(result => {
+      return res.status(200).json(result)
+    })
+}
+
+
+export default async (req: Request, res) => {
 
   try {
     // Connect to database
@@ -108,15 +134,9 @@ export default async (req: Request, res) => {
     })
   }
 
-  // TODO: We need to check the permissions of all the products in the order object
-  if (!purchasingPermission(req.currentUser, type, 'buy')) {
-    return res.status(401).json({
-      error: 'Unauthorized'
-    })
-  }
 
   await methods(req, res, {
-    get: getOrders(filterParams, paginationParams),
+    get: getOrders,
     post: createOrder,
   })
 }

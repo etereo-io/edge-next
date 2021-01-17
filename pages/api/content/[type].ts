@@ -83,7 +83,7 @@ const createContent = async (req: Request, res) => {
   const { purchasingOptions, ...rest} = req.body
   
   // Only store purchasing options if the current user has permissions
-  const content = purchasingPermission(req.currentUser, type.slug, 'sell') ? {
+  const content = purchasingPermission(req.currentUser, 'sell', type.slug) ? {
     ...rest,
     purchasingOptions
   } : {
