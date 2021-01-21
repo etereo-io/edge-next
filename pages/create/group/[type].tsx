@@ -1,12 +1,13 @@
-import GroupForm from '@components/groups/write/group-form/group-form'
 import { cypheredFieldPermission, groupPermission } from '@lib/permissions'
-import Layout from '@components/layout/normal/layout'
-import { useState, useMemo, useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+
 import { GetServerSideProps } from 'next'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import GroupForm from '@components/groups/write/group-form/group-form'
+import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
 import { getGroupTypeDefinition } from '@lib/config'
-import { getSession } from '@lib/api/auth/iron'
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { getSession } from '@lib/api/auth/token'
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,

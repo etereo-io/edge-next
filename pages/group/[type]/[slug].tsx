@@ -11,7 +11,7 @@ import { appendInteractions } from '@lib/api/entities/interactions/interactions.
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
-import { getSession } from '@lib/api/auth/iron'
+import { getSession } from '@lib/api/auth/token'
 import { groupUserPermission } from '@lib/permissions'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 

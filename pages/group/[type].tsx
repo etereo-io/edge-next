@@ -1,19 +1,19 @@
 import { hasPermissionsForGroup, loadUser } from '@lib/api/middlewares'
 
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { GetServerSideProps } from 'next'
 import GroupListView from '@components/groups/read/group-list-view/group-list-view'
 import Layout from '@components/layout/three-panels/layout'
 import LinkList from '@components/generic/link-list/link-list'
 import ToolBar from '@components/generic/toolbar/toolbar'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { connect } from '@lib/api/db'
 import { findContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
+import { getSession } from '@lib/api/auth/token'
+import { groupPermission } from '@lib/permissions'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { useGroupTypes } from '@lib/client/hooks'
-import { getSession } from '@lib/api/auth/iron'
-import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
-import { groupPermission } from '@lib/permissions'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({

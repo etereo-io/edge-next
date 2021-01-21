@@ -12,7 +12,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
-import { getSession } from '@lib/api/auth/iron'
+import { getSession } from '@lib/api/auth/token'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({

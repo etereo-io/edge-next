@@ -749,11 +749,13 @@ MONGODB_DATABASE=<database>
 
 Edge uses [Passport.js](http://www.passportjs.org) cookie based authentication with email and password.
 
-The login cookie is httpOnly, meaning it can only be accessed by the API, and it's encrypted using [@hapi/iron](https://hapi.dev/family/iron) for more security.
+The login cookie is httpOnly, meaning it can only be accessed by the API, and it's encrypted using [JWT](https://www.npmjs.com/package/jsonwebtoken) for more security.
 
-Apart from the cookie authentication there are two more ways to authenticate:
-- JWT token on the Authenthication header*
+Apart from the cookie authentication there are two more ways to authorizate users:
+- JWT token on the Authenthication header
+  - Using the format `Authentication: Bearer TOKEN`
 - API Key
+  - TO-DO
 
 ### Providers
 

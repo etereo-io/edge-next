@@ -12,7 +12,7 @@ import { Request } from 'express'
 import { UserType } from '@lib/types'
 import appConfig from '@lib/config'
 import { connect } from '@lib/api/db'
-import { encryptSession } from '@lib/api/auth/iron'
+import { encryptSession } from '@lib/api/auth/token'
 import express from 'express'
 import { generateSaltAndHash } from '@lib/api/entities/users/user.utils'
 import logger from '@lib/logger'
@@ -91,6 +91,8 @@ const logUserIn = async (res, user) => {
   })
 
   setTokenCookie(res, token)
+
+  return token
 }
 
 // Normal login
@@ -120,9 +122,9 @@ app.post('/api/auth/login', async (req: Request, res) => {
       })
     }
 
-    await logUserIn(res, user)
+    const token = await logUserIn(res, user)
 
-    return res.status(200).json({ done: true })
+    return res.status(200).json({ token, userId: user.id })
   } catch (error) {
     console.error(error)
     return res.status(401).json({ error: error.message })
