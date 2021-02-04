@@ -15,7 +15,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "baseUrl": "./",
-    "downlevelIteration": true,
     "paths": {
       "@lib/*": ["lib/*"],
       "@components/*": ["components/*"],
@@ -23,5 +22,5 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "test/integration/api/shopping-cart/shopping-cart.create.test.js"]
 }

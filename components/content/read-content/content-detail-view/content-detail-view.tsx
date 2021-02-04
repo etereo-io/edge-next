@@ -1,4 +1,5 @@
-import React, { useState, memo, Fragment } from 'react'
+import React, { Fragment, memo, useState } from 'react'
+import config, { getInteractionsDefinition } from '@lib/config'
 
 import AuthorBox from '@components/user/author-box/author-box'
 import Button from '@components/generic/button/button'
@@ -8,14 +9,14 @@ import ContentActions from '../../content-actions/content-actions'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import FollowButton from '@components/user/follow-button/follow-button'
+import { Interaction } from '@components/generic/interactions'
 import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
 import SocialShare from '@components/generic/social-share/social-share'
-import config, { getInteractionsDefinition } from '@lib/config'
 import { format } from 'timeago.js'
+import { purchasingPermission } from '@lib/permissions'
 import { useMonetizationState } from 'react-web-monetization'
 import { usePermission } from '@lib/client/hooks'
 import { useUser } from '@lib/client/hooks'
-import { Interaction } from '@components/generic/interactions'
 
 interface Props {
   content: any
@@ -82,6 +83,8 @@ function ContentDetailView(props: Props) {
       setShowComments(true)
     }
   }
+
+
   return (
     <>
       <article className="edge-item-card">
@@ -154,6 +157,8 @@ function ContentDetailView(props: Props) {
             user={user}
           />
         </div>
+              
+        {purchasingPermission(user, 'buy', props.type.slug) && <PurchasingProductForm product={props.content} /> }
 
         <footer className="edge-item-card-footer">
           <ul className="edge-item-card-stats">

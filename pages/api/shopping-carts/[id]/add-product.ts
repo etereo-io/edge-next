@@ -1,9 +1,9 @@
-import { Request, UserType } from '@lib/types'
 import {
   addShoppingCart,
   findShoppingCarts,
 } from '@lib/api/entities/shopping-carts'
 
+import { Request } from '@lib/types'
 import { ShoppingCartType } from '@lib/types/entities/shopping-cart'
 import { connect } from '@lib/api/db'
 import { loadUser } from '@lib/api/middlewares'
@@ -17,20 +17,7 @@ function validateShoppingCart(item: ShoppingCartType) {
     return false
   }
 
-  let validProductAmount = true
-  let validProductId = true
-
-  item.products.forEach((p) => {
-    
-    if (!p.amount || p.amount < 1) {
-      validProductAmount = false
-    }
-
-    if (!p.productId || !p.productContentType) {
-      validProductId = false
-    }
-  })
-  return validProductAmount && validProductId
+  // TODO: validate data structure. Maybe use yup schema
 }
 
 async function createShoppingCart(req: Request, res) {
@@ -46,38 +33,16 @@ async function createShoppingCart(req: Request, res) {
   }
 
   if (!validateShoppingCart(shoppingCartObject)) {
-    logger('DEBUG', 'Invalid shopping cart shape')
     return res.status(400).json({
-      error: 'Malformed shopping cart entity'
-    })
-  }
-  
-  let validProductPermissions = true
-
-  shoppingCartObject.products.forEach((p) => {
-    if (!purchasingPermission(req.currentUser, 'buy', p.productContentType)) {
-      validProductPermissions = false
-    }
-  })
-
-  if (!validProductPermissions) {
-    logger('DEBUG', 'Invalid shopping cart permissions')
-
-    return res.status(401).json({
-      error: 'Invalid product types'
+      error: 'Malformed order entity'
     })
   }
 
   try {
-    const result = await addShoppingCart({
-      ...shoppingCartObject,
-      userId: req.currentUser.id,
-    })
+    const result = await addShoppingCart(shoppingCartObject)
 
     return res.status(200).json(result)
   } catch (err) {
-    logger('ERROR', 'Error creating shoppign cart')
-
     res.status(500).json({
       error: 'Error creating shoppign cart ' + err.message
     })

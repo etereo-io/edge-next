@@ -102,7 +102,7 @@ type PropTypes = {
 }
 
 
-export default function PurchasingOptionsForm({
+export default function PurchasingProductForm({
   value,
   onChange
 }: PropTypes) {

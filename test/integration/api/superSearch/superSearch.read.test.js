@@ -1,11 +1,10 @@
 import { findAll } from '@lib/api/entities/superSearch'
 import getPermissions from '@lib/permissions/get-permissions'
-import { getSession } from '@lib/api/auth/iron'
+import { getSession } from '@lib/api/auth/token'
 import handler from '@pages/api/super-search'
-
 import request from '../requestHandler'
 
-jest.mock('@lib/api/auth/iron')
+jest.mock('@lib/api/auth/token')
 jest.mock('@lib/permissions/get-permissions')
 jest.mock('@lib/api/entities/superSearch')
 

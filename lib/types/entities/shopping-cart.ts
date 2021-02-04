@@ -5,7 +5,7 @@ export type ShoppingCartProductType = {
   productContentType: string,
   sellerId: string,
   amount: number,
-  variant: string
+  variant?: string
 }
 
 export type ShoppingCartType = {

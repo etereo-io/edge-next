@@ -1,10 +1,10 @@
 import { addContent } from '../../../../../lib/api/entities/content'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
+import { getSession } from '../../../../../lib/api/auth/token'
 import handler from '../../../../../pages/api/groups/[type]'
 import request from '../../requestHandler'
 
-jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/api/auth/token')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/entities/content')
 
