@@ -1,14 +1,14 @@
-import React, { useState, memo } from 'react'
-import Link from 'next/link'
-
+import React, { memo, useState } from 'react'
+import { hasPermission, purchasingPermission } from '@lib/permissions'
 import { useContentTypes, useGroupTypes } from '@lib/client/hooks'
-import { hasPermission } from '@lib/permissions'
+
 import Avatar from '@components/user/avatar/avatar'
 import Button from '@components/generic/button/button'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
-import ThemeSelector from '@components/generic/theme-selector/theme-selector'
+import Link from 'next/link'
 import SiteMenu from '@components/generic/site-menu/site-menu'
 import { SuperSearch } from '@components/generic/super-search'
+import ThemeSelector from '@components/generic/theme-selector/theme-selector'
 
 function UserHeader(props) {
   const user = props.user
@@ -21,9 +21,9 @@ function UserHeader(props) {
     setLoading(true)
 
     // Invalidate caches for service worker
-    await caches.keys().then(function(keyList) {
+    await caches.keys().then(function (keyList) {
       return Promise.all(
-        keyList.map(function(key) {
+        keyList.map(function (key) {
           return caches.delete(key)
         })
       )
@@ -39,10 +39,22 @@ function UserHeader(props) {
       {user && (
         <div className="edge-user-actions-logged">
           {/*User Actions Buttons*/}
+          {
+            purchasingPermission(user, 'buy') && (
+              <div className="edge-user-actions-buttons">
+                <Link href={`/shopping-cart/${user.id}`}>
+                  <a title="Shopping cart">
+                    <i className="las la-shopping-cart"></i>
+                  </a>
+                </Link>
+              </div>
+            )
+
+          }
           <div className="edge-user-actions-buttons">
             <Link href={`/settings/${user.id}`}>
               <a title="Settings">
-                <img src="/icons/icon-configuration.svg" alt="configuration" />
+                <i className="las la-cog"></i>
               </a>
             </Link>
           </div>
