@@ -10,7 +10,7 @@ function checkStatus(response) {
   }
 }
 
-export default async function fetcher(url, options) {
+export default async function fetcher(url, options?) {
   return fetch(url, options)
     .then(checkStatus)
     .then((r) => r.json())

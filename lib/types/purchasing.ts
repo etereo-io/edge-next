@@ -7,7 +7,7 @@ export type PurchasingVariantType = {
 }
 
 export type ShippingFeeType = {
-  countryCode: string,
+  countryCodes: [string],
   price: number,
   name: string
 }

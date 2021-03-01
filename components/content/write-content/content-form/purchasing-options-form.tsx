@@ -2,7 +2,9 @@ import { PurchashingOptionsType, PurchasingVariantType, ShippingFeeType } from '
 import React, { useState } from 'react'
 
 import Button from '@components/generic/button/button'
+import { COUNTRIES_LIST } from '@lib/constants/countries'
 import DynamicFieldEdit from '@components/generic/dynamic-field/dynamic-field-edit'
+import { FIELDS } from '@lib/constants'
 
 type PropTypesVariantItem = {
   variant: PurchasingVariantType,
@@ -34,7 +36,7 @@ function VariantItem({
           })}
           field={{
             name: 'default',
-            type: 'boolean',
+            type: FIELDS.BOOLEAN,
             label: 'This is the default variant',
           }} />
         <DynamicFieldEdit
@@ -46,7 +48,7 @@ function VariantItem({
           })}
           field={{
             name: 'name',
-            type: 'text',
+            type: FIELDS.TEXT,
             placeholder: 'Size M',
             label: 'name',
             min: 0
@@ -60,7 +62,7 @@ function VariantItem({
           })}
           field={{
             name: 'stock',
-            type: 'number',
+            type: FIELDS.NUMBER,
             label: 'stock',
             min: 0
           }} />
@@ -73,7 +75,7 @@ function VariantItem({
           })}
           field={{
             name: 'price',
-            type: 'number',
+            type: FIELDS.NUMBER,
             label: 'price',
             placeholder: 0.4,
             min: 0.1,
@@ -85,6 +87,95 @@ function VariantItem({
       <style jsx>{
         `
         .variant-item {
+          padding: var(--edge-gap);
+          border: 1px solid var(--accents-3);
+          margin: var(--edge-gap);
+        }
+        `
+      }</style>
+    </>
+  )
+}
+
+type PropTypesShippingCountry = {
+  shippingFee: ShippingFeeType,
+  onChange: (val: ShippingFeeType) => void,
+  onClickRemove: () => void
+}
+
+function ShippingFeeItem({
+  shippingFee,
+  onChange,
+  onClickRemove
+}: PropTypesShippingCountry) {
+
+  const onClickRemoveButton = (ev: React.MouseEvent<HTMLButtonElement>) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    onClickRemove()
+  }
+
+  return (
+    <>
+      <div className="shipping-fee-item">
+
+        <DynamicFieldEdit
+          name="name"
+          value={shippingFee.name}
+          onChange={(val) => onChange({
+            ...shippingFee,
+            name: val
+          })}
+          field={{
+            name: 'name',
+            type: FIELDS.TEXT,
+            placeholder: 'All Countries',
+            description: 'Use a descriptive name for the shipping fee. For example: Shipping Fee Spain',
+            label: 'Name',
+            min: 0
+          }} />
+        <DynamicFieldEdit
+          name="countryCodes"
+          value={shippingFee.countryCodes}
+          onChange={(val) => onChange({
+            ...shippingFee,
+            countryCodes: val
+          })}
+          field={{
+            name: 'countryCodes',
+            type: FIELDS.ENTITY_SEARCH,
+            label: 'Country Codes',
+            entities: COUNTRIES_LIST.map(i => {
+              return {
+                label: i.name,
+                value: i.code
+              }
+            }),
+            entityNameGetter: (i) => i.label
+          }} />
+
+        <DynamicFieldEdit
+          name="price"
+          value={shippingFee.price}
+          onChange={(val) => onChange({
+            ...shippingFee,
+            price: val
+          })}
+          field={{
+            name: 'price',
+            type: FIELDS.NUMBER,
+            label: 'price',
+            placeholder: 0.4,
+            min: 0,
+            max: 10000,
+            description: 'Set it to 0 for a FREE shipment'
+          }} />
+
+        <Button onClick={onClickRemoveButton}>Remove</Button>
+      </div>
+      <style jsx>{
+        `
+        .shipping-fee-item {
           padding: var(--edge-gap);
           border: 1px solid var(--accents-3);
           margin: var(--edge-gap);
@@ -138,6 +229,19 @@ export default function PurchasingOptionsForm({
     }))
   }
 
+
+  const addShippingFee = (ev: React.MouseEvent<HTMLButtonElement>) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+
+    setShippingFees([...shippingFees, {
+      name: '',
+      price: 0.0,
+      countryCodes: []
+    }])
+  }
+
+
   const onChangeShippingFee = (index, value: ShippingFeeType) => {
     setShippingFees(shippingFees.map((item, i) => {
       return index === i ? {
@@ -167,7 +271,7 @@ export default function PurchasingOptionsForm({
           })}
           field={{
             name: 'multiple',
-            type: 'boolean',
+            type: FIELDS.BOOLEAN,
             label: 'Allow multiple items',
           }} />
         <DynamicFieldEdit
@@ -179,7 +283,7 @@ export default function PurchasingOptionsForm({
           })}
           field={{
             name: 'sku',
-            type: 'text',
+            type: FIELDS.TEXT,
             label: 'SKU',
           }} />
         <DynamicFieldEdit
@@ -255,9 +359,11 @@ export default function PurchasingOptionsForm({
         <p>You can specify what countries you will ship too and the prices.</p>
         {shippingFees.map((item, index) => {
           return <div className="shipping-fee" key={`shipping-fee-${index}`}>
-            <ShippingFeeItem fee={item} onChange={(val) => onChangeShippingFee(index, val)} onClickRemove={() => onRemoveShippingFee(index)} />
+            <ShippingFeeItem shippingFee={item} onChange={(val) => onChangeShippingFee(index, val)} onClickRemove={() => onRemoveShippingFee(index)} />
           </div>
         })}
+        <Button onClick={addShippingFee}>Add shipping fee</Button>
+
 
       </div>
       <style jsx>{

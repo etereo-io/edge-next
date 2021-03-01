@@ -1,11 +1,12 @@
-import { useState, memo } from 'react'
+import { memo, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import { ENTITY_TYPES } from '@lib/constants'
+import { FieldOptionType } from '@lib/types/fields'
 import LoadingSpinner from '@components/generic/loading/loading-spinner/loading-spinner'
 import fetch from '@lib/fetcher'
 
-function ResultItem({ item, onClick = (item) => {}, entityName = (item) => item.id }) {
+function ResultItem({ item, onClick = (item) => {}, entityNameGetter = (item) => item.id }) {
   const [active, setActive] = useState(false)
 
   const onMouseEnter = () => {
@@ -19,7 +20,7 @@ function ResultItem({ item, onClick = (item) => {}, entityName = (item) => item.
   return (
     <>
       <div onClick={() => onClick(item)} className={`result-item ${active ? 'active' : ''}`} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-        {entityName(item)}
+        {entityNameGetter(item)}
       </div>
       <style jsx>
         {
@@ -45,7 +46,8 @@ type PropTypes = {
   entity: string,
   entityType?: string,
   placeholder?: string,
-  entityName?: (val) => string
+  entityNameGetter?: (val) => string,
+  entities?: FieldOptionType[]
 }
 
 function EntitySearch({
@@ -53,7 +55,8 @@ function EntitySearch({
   entity,
   entityType = '',
   placeholder = 'Search',
-  entityName = (item) => item.id
+  entityNameGetter = (item) => item.id,
+  entities
 }: PropTypes) {
 
   const [resultsOpened, setResultsOpened] = useState(false)
@@ -63,8 +66,7 @@ function EntitySearch({
   const [search, setSearch] = useState('')
 
   const fetchData = (val) => {
-    setLoading(true)
-    setError(false)
+  
 
     let apiRoute = ''
 
@@ -80,14 +82,25 @@ function EntitySearch({
         break;
 
       default:
+
         break;
     }
 
-    if (!apiRoute) {
+    if (!apiRoute && !entities) {
       setError(true)
       return
     }
+    
+    if (entities) {
+      setResults(entities.filter(i => {
+        return new RegExp(i.label).test(search);
+      }))
+      setResultsOpened(true)
+      return
+    }
 
+    setLoading(true)
+    setError(false)
 
     fetch(apiRoute)
       .then(found => {
@@ -127,7 +140,7 @@ function EntitySearch({
           {results.map(result => {
             return (
 
-              <ResultItem key={`${entity}-result-item-${result.id}`} item={result} onClick={onSelectItem} entityName={entityName}/>
+              <ResultItem key={`${entity}-result-item-${result.id || result.value}`} item={result} onClick={onSelectItem} entityNameGetter={entityNameGetter}/>
             )
           })}
         </div>}

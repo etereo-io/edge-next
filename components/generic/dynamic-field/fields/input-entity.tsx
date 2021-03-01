@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useState, memo } from 'react'
-
-import Button from '@components/generic/button/button'
-import EntitySearch from '@components/generic/entity-search/entity-search'
 import {
   ExtendedColumn,
   Table as ReactTable,
 } from '@components/generic/react-table'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+
+import Button from '@components/generic/button/button'
+import EntitySearch from '@components/generic/entity-search/entity-search'
 
 function InputEntity(props) {
   const { value, field, onChange: onChangeCallback } = props
@@ -46,7 +46,7 @@ function InputEntity(props) {
     () => [
       {
         Header: 'Item',
-        Cell: ({ row: { original } }) => original[field.entityName],
+        Cell: ({ row: { original } }) => field.entityNameGetter(original),
       },
       {
         Header: 'Actions',
@@ -59,7 +59,7 @@ function InputEntity(props) {
     ],
     []
   )
-  const entityNameGetter = useCallback((item) => item[field.entityName], [
+  const entityNameGetter = useCallback((item) => field.entityNameGetter(item), [
     field,
   ])
 
@@ -69,7 +69,8 @@ function InputEntity(props) {
         placeholder={props.field.placeholder}
         entity={props.field.entity}
         entityType={props.field.entityType}
-        entityName={entityNameGetter}
+        entityNameGetter={entityNameGetter}
+        entities={props.field.entities}
         onChange={onChange}
       />
 
