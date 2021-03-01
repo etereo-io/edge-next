@@ -6,6 +6,12 @@ export type PurchasingVariantType = {
   stock: number,
 }
 
+export type ShippingFeeType = {
+  countryCode: string,
+  price: number,
+  name: string
+}
+
 export type PurchashingOptionsType = {
   multiple: boolean,
   stock: number,

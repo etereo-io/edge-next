@@ -1,4 +1,4 @@
-import { PurchashingOptionsType, PurchasingVariantType } from '@lib/types/purchasing'
+import { PurchashingOptionsType, PurchasingVariantType, ShippingFeeType } from '@lib/types/purchasing'
 import React, { useState } from 'react'
 
 import Button from '@components/generic/button/button'
@@ -16,7 +16,7 @@ function VariantItem({
   onClickRemove
 }: PropTypesVariantItem) {
 
-  const onClickRemoveButton = (ev: React.MouseEvent<HTMLButtonElement>)  => {
+  const onClickRemoveButton = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault()
     ev.stopPropagation()
     onClickRemove()
@@ -80,7 +80,7 @@ function VariantItem({
             max: 10000
           }} />
 
-          <Button onClick={onClickRemoveButton}>Remove</Button>
+        <Button onClick={onClickRemoveButton}>Remove</Button>
       </div>
       <style jsx>{
         `
@@ -107,8 +107,9 @@ export default function PurchasingOptionsForm({
   onChange
 }: PropTypes) {
   const [variants, setVariants] = useState([])
+  const [shippingFees, setShippingFees] = useState([])
 
-  const addVariant = (ev: React.MouseEvent<HTMLButtonElement>)  => {
+  const addVariant = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault()
     ev.stopPropagation()
 
@@ -126,13 +127,29 @@ export default function PurchasingOptionsForm({
         ...value
       } : {
           ...item,
-          default: value.default === true ? false: item.default
+          default: value.default === true ? false : item.default
         }
     }))
   }
 
   const onRemoveVariant = (index) => {
     setVariants(variants.filter((item, i) => {
+      return i !== index
+    }))
+  }
+
+  const onChangeShippingFee = (index, value: ShippingFeeType) => {
+    setShippingFees(shippingFees.map((item, i) => {
+      return index === i ? {
+        ...value
+      } : {
+          ...item
+        }
+    }))
+  }
+
+  const onRemoveShippingFee = (index) => {
+    setShippingFees(shippingFees.filter((item, i) => {
       return i !== index
     }))
   }
@@ -232,6 +249,16 @@ export default function PurchasingOptionsForm({
           </div>
         })}
         <Button onClick={addVariant}>Add variant</Button>
+
+        <div className="divider"></div>
+        <h4>Shipping Fees</h4>
+        <p>You can specify what countries you will ship too and the prices.</p>
+        {shippingFees.map((item, index) => {
+          return <div className="shipping-fee" key={`shipping-fee-${index}`}>
+            <ShippingFeeItem fee={item} onChange={(val) => onChangeShippingFee(index, val)} onClickRemove={() => onRemoveShippingFee(index)} />
+          </div>
+        })}
+
       </div>
       <style jsx>{
         `

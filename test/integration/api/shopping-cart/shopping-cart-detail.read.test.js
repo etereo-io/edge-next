@@ -116,7 +116,7 @@ jest.mock('../../../../edge.config', () => {
   }
 })
 
-describe('Shopping carts creation', () => {
+describe('Shopping carts detail', () => {
   beforeEach(() => {
     findShoppingCarts.mockReturnValue(Promise.resolve([]))
     getPermissions.mockReturnValue({

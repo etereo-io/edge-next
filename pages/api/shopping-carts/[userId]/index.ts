@@ -4,6 +4,7 @@ import {
   addShoppingCart,
   findOneShoppingCart,
   findShoppingCarts,
+  updateOneShoppingCart,
 } from '@lib/api/entities/shopping-carts'
 
 import { Request } from '@lib/types'
@@ -46,7 +47,7 @@ export default async (req: Request, res) => {
   }
 
   const cart = await findOneShoppingCart({
-    id: req.query.id
+    userId: req.query.userId
   })
 
   if (!cart) {
@@ -69,8 +70,17 @@ export default async (req: Request, res) => {
         cart
       })
     },
-    put: function() {
+    put: async function() {
+      const newCartInfo = req.body
 
+      // TODO: Validate body info
+      const result = await updateOneShoppingCart(cart.id, {
+        ...newCartInfo
+      })
+
+      res.status(200).json({
+        cart: result
+      })
     },
   })
 }

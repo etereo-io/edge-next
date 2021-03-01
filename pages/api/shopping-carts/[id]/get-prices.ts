@@ -1,1 +1,0 @@
-// Fetch product prices and total
