@@ -37,6 +37,7 @@ The main features of Edge are:
 - Entities Search (through mongo DB)
 - Web monetization
 - Easy to deploy
+- Internationalization built in
 
 If you want to read about all the features you can check the [Documentation](./DOCUMENTATION.md) or check the [Website Demo](https://edge-next.now.sh/).
 

@@ -5,6 +5,7 @@ import { useContentTypes, useGroupTypes } from '@lib/client/hooks'
 import Avatar from '@components/user/avatar/avatar'
 import Button from '@components/generic/button/button'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
+import LanguageChooser from '@components/generic/language-chooser'
 import Link from 'next/link'
 import SiteMenu from '@components/generic/site-menu/site-menu'
 import { SuperSearch } from '@components/generic/super-search'
@@ -70,6 +71,9 @@ function UserHeader(props) {
                 <ul>
                   <li>
                     <ThemeSelector />
+                  </li>
+                  <li>
+                    <LanguageChooser />
                   </li>
                   <li className="mobile-menu-item">
                     <SiteMenu />

@@ -75,7 +75,7 @@
   - Provided by [next-pwa](https://github.com/shadowwalker/next-pwa)
 - Easy to deploy
   - Deploy on platforms like Vercel in minutes
-- Multilingual support*
+- Multilingual support
   - Based on nextjs i18n 
 
 ## How to start using Edge.
