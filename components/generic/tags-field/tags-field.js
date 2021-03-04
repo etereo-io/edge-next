@@ -32,7 +32,7 @@ function TagsField({ tags = [], type = {} }) {
     <>
       <div className="tags-field">
         {(tags || []).map((tag) => {
-          return <Tag tag={tag} key={tag.slug} type={type} />
+          return <div className="tag-wr" key={tag.slug}><Tag tag={tag} key={tag.slug} type={type} /></div>
         })}
       </div>
       <style jsx>{`
@@ -41,7 +41,13 @@ function TagsField({ tags = [], type = {} }) {
           flex-wrap: wrap;
           margin-bottom: var(--edge-gap);
           margin-top: var(--edge-gap-double);
+          margin: 0;
         }
+
+        .tag-wr {
+          margin-bottom: 5px;
+        }
+        
       `}</style>
     </>
   )

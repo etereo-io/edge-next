@@ -1,3 +1,4 @@
+import { ContentEntityType, ContentTypeDefinition } from '@lib/types'
 import {
   ExtendedColumn,
   Table as ReactTable,
@@ -7,7 +8,7 @@ import React, { memo, useCallback, useMemo, useState } from 'react'
 import API from '@lib/api/api-endpoints'
 import ActionsCell from './actions-cell'
 import Button from '@components/generic/button/button'
-import { ContentEntityType } from '@lib/types'
+import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import Link from 'next/link'
 import fetch from '@lib/fetcher'
 import { format } from 'timeago.js'
@@ -15,7 +16,12 @@ import { useInfinityList } from '@lib/client/hooks'
 
 const limit = 10
 
-function ContentTable({ type }) {
+type Props = {
+  type: ContentTypeDefinition
+}
+
+function ContentTable({ type }: Props) {
+
   const [{ sortBy, sortOrder }, setOrdering] = useState({
     sortBy: 'createdAt',
     sortOrder: 'DESC',
@@ -63,29 +69,29 @@ function ContentTable({ type }) {
         id: name,
         sortable: true,
         Cell: ({ row: { original: item } }) => {
-          const value =
-            typeof item[name] === 'string'
-              ? item[name]
-              : JSON.stringify(item[name])
+          const componentCell = <DynamicFieldView
+            field={type.fields.find(i => i.name === name)}
+            value={item[name]}
+            typeDefinition={type} />
 
           if (index === 0) {
             return (
               <Link href={`/content/${type.slug}/${item.slug}`}>
-                <a>{value}</a>
+                <a title={label || name}>{componentCell}</a>
               </Link>
             )
           }
 
-          return value || '-'
+          return componentCell
         },
       })
     )
 
     columnsConfig.push({
-      Header: 'Created at',
+      Header: 'Created',
       id: 'createdAt',
       accessor: 'createdAt',
-      Cell: ({ value }) => format(value),
+      Cell: ({ value }) => format(value, 'es'),
       sortable: true,
     })
 
@@ -93,7 +99,8 @@ function ContentTable({ type }) {
       columnsConfig.push({
         Header: 'Draft',
         id: 'draft',
-        Cell: ({ value }) => value || '-',
+        accessor: 'draft',
+        Cell: ({ value }) => (value ? 'DRAFT' : '-'),
         sortable: true,
         justifyContent: 'center',
       })
@@ -103,6 +110,7 @@ function ContentTable({ type }) {
       columnsConfig.push({
         Header: 'Comments',
         id: 'comments',
+        accessor: 'comments',
         Cell: ({ value }) => value || '-',
         sortable: false,
         justifyContent: 'center',
@@ -124,7 +132,7 @@ function ContentTable({ type }) {
     })
 
     return columnsConfig
-  }, [])
+  }, [type])
 
   return (
     <div className="content-list">
@@ -142,8 +150,8 @@ function ContentTable({ type }) {
 
       <div className="load-more">
         {!isReachingEnd && (
-          <Button loading={isLoadingMore} big={true} onClick={loadNewItems}>
-            Load More
+          <Button title="Load more" loading={isLoadingMore} big={true} onClick={loadNewItems}>
+            Load more
           </Button>
         )}
       </div>

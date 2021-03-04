@@ -98,7 +98,9 @@ function Field({ field, value, typeDefinition }) {
         return value ? (
           <div data-testid={datatestId}>
             {(Array.isArray(value) ? value : [value]).map((i) => (
-              <span>{field.options.find((o) => o.value === i).label}</span>
+              <span key={i}>
+              {field.options.find((o) => o.value === i) ? field.options.find((o) => o.value === i).label : i.label}
+              </span>
             ))}
             <style jsx>{`
               span {
