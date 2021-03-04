@@ -64,14 +64,6 @@ function UserHeader(props) {
             </a>
           </Link>
 
-          <div className="user-actions-button">
-            <Link href={`/create/content/post`}>
-              <a>
-                <Button success>Write a post</Button>
-              </a>
-            </Link>
-          </div>
-
           <ul className="navigation">
             <li>
               <DropdownMenu align="right" width={'180px'}>

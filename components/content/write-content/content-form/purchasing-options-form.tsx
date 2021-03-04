@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 
 import Button from '@components/generic/button/button'
 import { COUNTRIES_LIST } from '@lib/constants/countries'
+import { CURRENCIES } from '@lib/constants/currencies'
 import DynamicFieldEdit from '@components/generic/dynamic-field/dynamic-field-edit'
 import { FIELDS } from '@lib/constants'
 
@@ -27,61 +28,73 @@ function VariantItem({
   return (
     <>
       <div className="variant-item">
-        <DynamicFieldEdit
-          name="default"
-          value={variant.default}
-          onChange={(val) => onChange({
-            ...variant,
-            default: val
-          })}
-          field={{
-            name: 'default',
-            type: FIELDS.BOOLEAN,
-            label: 'This is the default variant',
-          }} />
-        <DynamicFieldEdit
-          name="name"
-          value={variant.name}
-          onChange={(val) => onChange({
-            ...variant,
-            name: val
-          })}
-          field={{
-            name: 'name',
-            type: FIELDS.TEXT,
-            placeholder: 'Size M',
-            label: 'name',
-            min: 0
-          }} />
-        <DynamicFieldEdit
-          name="stock"
-          value={variant.stock}
-          onChange={(val) => onChange({
-            ...variant,
-            stock: val
-          })}
-          field={{
-            name: 'stock',
-            type: FIELDS.NUMBER,
-            label: 'stock',
-            min: 0
-          }} />
-        <DynamicFieldEdit
-          name="price"
-          value={variant.price}
-          onChange={(val) => onChange({
-            ...variant,
-            price: val
-          })}
-          field={{
-            name: 'price',
-            type: FIELDS.NUMBER,
-            label: 'price',
-            placeholder: 0.4,
-            min: 0.1,
-            max: 10000
-          }} />
 
+        <div className="input-wr">
+          <DynamicFieldEdit
+            name="default"
+            value={variant.default}
+            onChange={(val) => onChange({
+              ...variant,
+              default: val
+            })}
+            field={{
+              name: 'default',
+              type: FIELDS.BOOLEAN,
+              label: 'This is the default variant',
+            }} />
+        </div>
+
+        <div className="input-wr">
+          <DynamicFieldEdit
+            name="name"
+            value={variant.name}
+            onChange={(val) => onChange({
+              ...variant,
+              name: val
+            })}
+            field={{
+              name: 'name',
+              type: FIELDS.TEXT,
+              placeholder: 'Size M',
+              label: 'name',
+              min: 0
+            }} />
+        </div>
+        <div className="input-wr">
+
+          <DynamicFieldEdit
+            name="stock"
+            value={variant.stock}
+            onChange={(val) => onChange({
+              ...variant,
+              stock: val
+            })}
+            field={{
+              name: 'stock',
+              type: FIELDS.NUMBER,
+              label: 'stock',
+              min: 0
+            }} />
+        </div>
+
+        <div className="input-wr">
+          <DynamicFieldEdit
+            name="price"
+            value={variant.price}
+            onChange={(val) => onChange({
+              ...variant,
+              price: val
+            })}
+            field={{
+              name: 'price',
+              type: FIELDS.NUMBER,
+              label: 'price',
+              placeholder: 0.4,
+              min: 0.1,
+              max: 10000
+            }} />
+        </div>
+        
         <Button onClick={onClickRemoveButton}>Remove</Button>
       </div>
       <style jsx>{
@@ -144,7 +157,8 @@ function ShippingFeeItem({
           field={{
             name: 'countryCodes',
             type: FIELDS.ENTITY_SEARCH,
-            label: 'Country Codes',
+            label: 'Countries',
+            multiple: true,
             entities: COUNTRIES_LIST.map(i => {
               return {
                 label: i.name,
@@ -330,13 +344,13 @@ export default function PurchasingOptionsForm({
                 type: 'select',
                 label: 'Currency',
                 options: [{
-                  value: 'euro',
+                  value: CURRENCIES.EUR,
                   label: '€'
                 }, {
-                  value: 'dollar',
+                  value: CURRENCIES.USD,
                   label: '$'
                 }, {
-                  value: 'pound',
+                  value: CURRENCIES.GBP,
                   label: '£'
                 }],
                 description: 'Note: All values will be transformed to dollars at the moment of the payment.'

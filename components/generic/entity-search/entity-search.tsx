@@ -92,8 +92,15 @@ function EntitySearch({
     }
     
     if (entities) {
+      
+      if (!val.trim()) {
+        setResults([])
+        setResultsOpened(false)
+        return 
+      }
+
       setResults(entities.filter(i => {
-        return new RegExp(i.label).test(search);
+        return new RegExp(val.toLowerCase()).test(i.label.toLowerCase());
       }))
       setResultsOpened(true)
       return
