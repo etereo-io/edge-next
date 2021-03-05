@@ -152,7 +152,7 @@ function ShippingFeeItem({
           value={shippingFee.countryCodes}
           onChange={(val) => onChange({
             ...shippingFee,
-            countryCodes: val
+            countryCodes: val.map(i => i.value)
           })}
           field={{
             name: 'countryCodes',
@@ -218,29 +218,50 @@ export default function PurchasingOptionsForm({
     ev.preventDefault()
     ev.stopPropagation()
 
-    setVariants([...variants, {
+    const newVariants = [...variants, {
       name: '',
       price: 0.0,
       stock: 0,
       default: false
-    }])
+    }]
+
+    setVariants(newVariants)
+
+    onChange({
+      ...value,
+      variants: newVariants
+    })
   }
 
-  const onChangeVariant = (index, value: PurchasingVariantType) => {
-    setVariants(variants.map((item, i) => {
+  const onChangeVariant = (index, variant: PurchasingVariantType) => {
+    const newVariants = variants.map((item, i) => {
       return index === i ? {
-        ...value
+        ...variant
       } : {
           ...item,
-          default: value.default === true ? false : item.default
+          default: variant.default === true ? false : item.default
         }
-    }))
+    })
+    setVariants(newVariants)
+
+    onChange({
+      ...value,
+      variants: newVariants
+    })
+    
   }
 
   const onRemoveVariant = (index) => {
-    setVariants(variants.filter((item, i) => {
+    const newVariants = variants.filter((item, i) => {
       return i !== index
-    }))
+    })
+
+    setVariants(newVariants)
+
+    onChange({
+      ...value,
+      variants: newVariants
+    })
   }
 
 
@@ -248,28 +269,47 @@ export default function PurchasingOptionsForm({
     ev.preventDefault()
     ev.stopPropagation()
 
-    setShippingFees([...shippingFees, {
+    const newShippingFees = [...shippingFees, {
       name: '',
       price: 0.0,
       countryCodes: []
-    }])
+    }]
+
+    setShippingFees(newShippingFees)
+    onChange({
+      ...value,
+      shippingFees: newShippingFees
+    })
   }
 
 
-  const onChangeShippingFee = (index, value: ShippingFeeType) => {
-    setShippingFees(shippingFees.map((item, i) => {
+  const onChangeShippingFee = (index, shippingFee: ShippingFeeType) => {
+    const newShippingFees = shippingFees.map((item, i) => {
       return index === i ? {
-        ...value
+        ...shippingFee
       } : {
           ...item
         }
-    }))
+    })
+    
+    setShippingFees(newShippingFees)
+
+    onChange({
+      ...value,
+      shippingFees: newShippingFees
+    })
   }
 
   const onRemoveShippingFee = (index) => {
-    setShippingFees(shippingFees.filter((item, i) => {
+    const newShippingFees = shippingFees.filter((item, i) => {
       return i !== index
-    }))
+    })
+    
+    setShippingFees(newShippingFees)
+    onChange({
+      ...value,
+      shippingFees: newShippingFees
+    })
   }
 
   return (

@@ -18,5 +18,6 @@ export type PurchashingOptionsType = {
   sku: string,
   currency: string,
   price: number,
-  options?: PurchasingVariantType[]
+  variants: PurchasingVariantType[],
+  shippingFees: ShippingFeeType[]
 }
