@@ -28,8 +28,12 @@ export const ShoopingCartProvider = ({ children }: any) => {
 
   const { user } = useContext(UserContext)
 
-  const addProduct = (prodcut: ShoppingCartProductType) => {
+  const addProduct = (product: ShoppingCartProductType) => {
     // TODO
+    setShoppingCart({
+      ...shoppingCart,
+      products: [product, ...shoppingCart.products]
+    })
   }
 
   const removeProduct = (productId: string) => {
@@ -57,7 +61,7 @@ export const ShoopingCartProvider = ({ children }: any) => {
         <div className="shopping-cart-layer">
           <div className="shopping-cart-layer-top">
             <div className="shopping-cart-layer-top-title">
-              <h1>Shopping Cart</h1>
+              <h1>{t('purchasing.shoppingCart.title')}</h1>
             </div>
             <div className="shopping-cart-layer-top-actions">
               <Button title={t('purchasing.shoppingCart.close')}

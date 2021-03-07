@@ -3,6 +3,7 @@ import { hasPermission, purchasingPermission } from '@lib/permissions'
 import { useContentTypes, useGroupTypes } from '@lib/client/hooks'
 
 import Avatar from '@components/user/avatar/avatar'
+import Badge from '@components/generic/badge/badge'
 import Button from '@components/generic/button/button'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import LanguageChooser from '@components/generic/language-chooser'
@@ -20,7 +21,7 @@ function UserHeader(props) {
   const groupTypes = useGroupTypes(['create', 'admin'])
   const { onLogout } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
-  const { openShoppingCart } = useContext(ShoppingCartContext)
+  const { openShoppingCart, shoppingCart } = useContext(ShoppingCartContext)
   const onClickLogout = async () => {
     setLoading(true)
     onLogout()
@@ -40,6 +41,13 @@ function UserHeader(props) {
               <div className="edge-user-actions-buttons">
                 <Button padding={'10px'} alt onClick={openShoppingCart} title={t('purchasing.shoppingCart.open')}>
                   <i className="las la-shopping-cart" style={{fontSize: '18px'}}></i>
+                  <span className="products" style={{
+                    position: 'absolute',
+                    bottom: '-5px',
+                    right: '-5px'
+                  }}>
+                    <Badge success={true} >{shoppingCart.products.length}</Badge> 
+                  </span>
                 </Button>
               </div>
             )

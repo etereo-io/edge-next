@@ -1,6 +1,15 @@
-import { memo } from 'react'
+import { ReactNode, memo } from 'react'
 
-function Badge({ children, featured, success, secondary, warning, alert }) {
+type PropTypes = {
+  children: ReactNode,
+  featured?: boolean,
+  secondary?: boolean,
+  warning?: boolean,
+  alert?: boolean,
+  success?: boolean
+}
+
+function Badge({ children, featured, success, secondary, warning, alert }: PropTypes) {
   return (
     <>
       <div

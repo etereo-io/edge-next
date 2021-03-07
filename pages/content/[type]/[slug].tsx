@@ -112,8 +112,6 @@ export const getServerSideProps: GetServerSideProps = async ({
       pageTitle: contentTitle,
       contentType: contentTypeDefinition,
       monetizationMeta: monetizationMeta || '',
-      query,
-      locale
     },
   }
 }
