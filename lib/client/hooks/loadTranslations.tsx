@@ -11,7 +11,13 @@ export default function() {
     resources: {
       en: {
         translation: {
-          "example": "Hello"
+          "example": "Hello",
+          "purchasing": {
+            "shoppingCart": {
+              "open": "Open shopping cart",
+              "close": "Close shopping cart"
+            }
+          }
         }
       },
       es: {

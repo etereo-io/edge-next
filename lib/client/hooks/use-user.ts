@@ -1,7 +1,8 @@
+import { useContext, useEffect } from 'react'
+
 import Router from 'next/router'
+import { UserContext } from '../contexts/user-context'
 import { UserType } from '@lib/types'
-import { useEffect } from 'react'
-import { useUserState } from '../contexts/edge-user'
 
 declare type UseUserResponse = {
   user: UserType
@@ -15,23 +16,24 @@ export default function useUser({
   redirectTo = '',
   redirectIfFound = false,
 } = {}): UseUserResponse {
-  const userState = useUserState()
+
+  const { user, loaded, error } = useContext(UserContext)
 
   useEffect(() => {
-    if (!redirectTo || !userState.loaded) return
+    if (!redirectTo || !loaded) return
     if (
       // If redirectTo is set, redirect if the user was not found.
-      (redirectTo && !redirectIfFound && !userState.user) ||
+      (redirectTo && !redirectIfFound && !user) ||
       // If redirectIfFound is also set, redirect if the user was found
-      (redirectIfFound && userState.user)
+      (redirectIfFound && user)
     ) {
       Router.push(redirectTo)
     }
-  }, [redirectTo, redirectIfFound, userState.loaded, userState.user])
+  }, [redirectTo, redirectIfFound, loaded, user])
 
   return {
-    user: userState.user,
-    error: userState.error,
-    finished: userState.loaded,
+    user: user,
+    error: error,
+    finished: loaded,
   }
 }

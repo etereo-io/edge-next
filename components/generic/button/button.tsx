@@ -1,7 +1,6 @@
-import { memo } from 'react'
 import Link from 'next/link'
-
 import LoadingSpinner from '../loading/loading-spinner/loading-spinner'
+import { memo } from 'react'
 
 type Props = {
   children?: any
@@ -64,6 +63,7 @@ function Button({
   const buttonItem = (
     <>
       <button
+        title={title}
         className={classNames}
         {...restProps}
         ref={reference}

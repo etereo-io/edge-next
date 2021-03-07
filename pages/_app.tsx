@@ -7,11 +7,14 @@ import withEdgeTheme, {
   EdgeThemeContext,
 } from '@lib/client/contexts/edge-theme'
 
-import { CookiesProvider } from '@lib/client/contexts/cookies'
-import { EdgeUserProvider } from '@lib/client/contexts/edge-user'
+import { CookiesProvider } from '@lib/client/contexts/cookies-context'
 import Head from 'next/head'
+import { ModalProvider } from '@lib/client/contexts/modal-context'
 import Router from 'next/router'
+import { ShoopingCartProvider } from '@lib/client/contexts/shopping-cart-context'
+import { UserProvider } from '@lib/client/contexts/user-context'
 import { isClient } from '@lib/client/utils'
+import loadTranslations from '@lib/client/hooks/loadTranslations'
 import { useContext } from 'react'
 
 // Store navigation events on Google analytics
@@ -21,6 +24,8 @@ if (isClient()) {
 
 function MyApp({ Component, pageProps }) {
   const { mode } = useContext(EdgeThemeContext)
+  
+  loadTranslations()
 
   return (
     <>
@@ -31,11 +36,15 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <div id="app-container" className={mode}>
-        <EdgeUserProvider>
+        <UserProvider>
           <CookiesProvider>
-            <Component {...pageProps} />
+            <ShoopingCartProvider>
+              <ModalProvider>
+                <Component {...pageProps} />
+              </ModalProvider>
+            </ShoopingCartProvider>
           </CookiesProvider>
-        </EdgeUserProvider>
+        </UserProvider>
       </div>
       <style jsx global>{`
         // Global variables

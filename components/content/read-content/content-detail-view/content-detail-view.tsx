@@ -6,11 +6,11 @@ import Button from '@components/generic/button/button'
 import CommentForm from '../../../comments/comment-form/comment-form'
 import CommentsFeed from '../../../comments/comments-feed/comments-feed'
 import ContentActions from '../../content-actions/content-actions'
+import { ContentEntityType } from '@lib/types'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
-import FollowButton from '@components/user/follow-button/follow-button'
 import { Interaction } from '@components/generic/interactions'
-import ReactionCounter from '@components/generic/reaction-counter/reaction-counter'
+import PurchasingProductForm from './purchasing-product-form'
 import SocialShare from '@components/generic/social-share/social-share'
 import { format } from 'timeago.js'
 import { purchasingPermission } from '@lib/permissions'
@@ -19,7 +19,7 @@ import { usePermission } from '@lib/client/hooks'
 import { useUser } from '@lib/client/hooks'
 
 interface Props {
-  content: any
+  content: ContentEntityType
   type: ContentTypeDefinition
   summary?: boolean
   showActions?: boolean
@@ -158,7 +158,7 @@ function ContentDetailView(props: Props) {
           />
         </div>
               
-        {purchasingPermission(user, 'buy', props.type.slug) && <PurchasingProductForm product={props.content} /> }
+        {purchasingPermission(user, 'buy', props.type.slug) && props.content.purchasingOptions && <PurchasingProductForm value={props.content.purchasingOptions} /> }
 
         <footer className="edge-item-card-footer">
           <ul className="edge-item-card-stats">

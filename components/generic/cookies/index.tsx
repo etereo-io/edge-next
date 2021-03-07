@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 
 import Button from '@components/generic/button/button'
-import { CookiesContext } from '@lib/client/contexts/cookies'
+import { CookiesContext } from '@lib/client/contexts/cookies-context'
 
 export default function Cookies() {
   const { accepted, accept } = useContext(CookiesContext)

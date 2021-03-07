@@ -5,25 +5,27 @@ import Button from '@components/generic/button/button'
 import DynamicFieldEdit from '@components/generic/dynamic-field/dynamic-field-edit'
 
 type PropTypes = {
-  value: PurchashingOptionsType,
-  onChange: (val: PurchashingOptionsType) => void
+  value: PurchashingOptionsType
 }
 
 
 export default function PurchasingProductForm({
-  value,
-  onChange
+  value
 }: PropTypes) {
-  const [variants, setVariants] = useState([])
 
   const [selectedVariant, setSelectedVariant] = useState('')
   const [amount, setAmount] = useState(1)
 
   useEffect(() => {
-    setSelectedVariant(value.options.find(i => i.default).name)
+    if (value) {
+      const defaultVariant = value.variants.find(i => i.default) || value.variants[0]
+      if (value.variants.length > 0) {
+        setSelectedVariant(defaultVariant.name)
+      }
+    }
   }, [value])
 
-  const variant = selectedVariant ? value.options.find(i => i.name === name): null
+  const variant = selectedVariant ? value.variants.find(i => i.name === name): null
 
   const totalPrice = variant ? variant.price * amount : value.price * amount
   const currency = '€'
@@ -45,7 +47,7 @@ export default function PurchasingProductForm({
               name: 'Type',
               type: 'select',
               label: 'Type',
-              options: value.options.map(i => {
+              options: value.variants.map(i => {
                 return {
                   label: i.name,
                   value: i.name

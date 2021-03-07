@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useContext, useState } from 'react'
 import { hasPermission, purchasingPermission } from '@lib/permissions'
 import { useContentTypes, useGroupTypes } from '@lib/client/hooks'
 
@@ -7,31 +7,26 @@ import Button from '@components/generic/button/button'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
 import LanguageChooser from '@components/generic/language-chooser'
 import Link from 'next/link'
+import { ShoppingCartContext } from '@lib/client/contexts/shopping-cart-context'
 import SiteMenu from '@components/generic/site-menu/site-menu'
 import { SuperSearch } from '@components/generic/super-search'
 import ThemeSelector from '@components/generic/theme-selector/theme-selector'
+import { UserContext } from '@lib/client/contexts/user-context'
+import { useTranslation } from 'react-i18next'
 
 function UserHeader(props) {
   const user = props.user
   const contentTypes = useContentTypes(['create', 'admin'])
   const groupTypes = useGroupTypes(['create', 'admin'])
-
+  const { onLogout } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
-
+  const { openShoppingCart } = useContext(ShoppingCartContext)
   const onClickLogout = async () => {
     setLoading(true)
-
-    // Invalidate caches for service worker
-    await caches.keys().then(function (keyList) {
-      return Promise.all(
-        keyList.map(function (key) {
-          return caches.delete(key)
-        })
-      )
-    })
-
-    window.location.href = '/api/auth/logout'
+    onLogout()
   }
+
+  const { t } = useTranslation()
 
   return (
     <div className="edge-user-actions">
@@ -43,11 +38,9 @@ function UserHeader(props) {
           {
             purchasingPermission(user, 'buy') && (
               <div className="edge-user-actions-buttons">
-                <Link href={`/shopping-cart/${user.id}`}>
-                  <a title="Shopping cart">
-                    <i className="las la-shopping-cart"></i>
-                  </a>
-                </Link>
+                <Button padding={'10px'} alt onClick={openShoppingCart} title={t('purchasing.shoppingCart.open')}>
+                  <i className="las la-shopping-cart" style={{fontSize: '18px'}}></i>
+                </Button>
               </div>
             )
 

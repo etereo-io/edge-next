@@ -1,5 +1,7 @@
 import { InteractionEntity, UserType } from '@lib/types'
 
+import { PurchashingOptionsType } from '../purchasing'
+
 export type ContentEntityType = {
   id: string
   slug: string
@@ -24,5 +26,6 @@ export type ContentEntityType = {
   groupId: string
   comments: number
   interactions: InteractionEntity[],
-  visits: number
+  visits: number,
+  purchasingOptions?: PurchashingOptionsType
 }

@@ -18,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   res,
   query,
+  locale
 }) => {
   const contentTypeDefinition = getContentTypeDefinition(query.type)
 
@@ -111,6 +112,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       pageTitle: contentTitle,
       contentType: contentTypeDefinition,
       monetizationMeta: monetizationMeta || '',
+      query,
+      locale
     },
   }
 }

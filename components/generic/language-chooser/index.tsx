@@ -5,7 +5,10 @@ function LanguageChooser(props) {
 
   const onChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     const val = ev.target.value
-    router.push(router.pathname, router.pathname, { locale: val })
+    router.push({
+      pathname: router.pathname,
+      query: {...router.query},
+    }, router.pathname, { locale: val })
   }
   
   return <div className="language-chooser">

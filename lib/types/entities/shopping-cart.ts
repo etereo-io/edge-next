@@ -1,5 +1,3 @@
-import { TDate } from "timeago.js";
-
 export type ShoppingCartProductType = {
   productId: string,
   productContentType: string,
