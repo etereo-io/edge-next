@@ -65,8 +65,14 @@ function ContentForm(props) {
       setState({
         ...state,
         ...filteredData,
-        purchasingOptions: filteredData['purchasingOptions'] || defaultShoppingOptions,
-        seo: filteredData['seo'] || defaultSeoOptions
+        purchasingOptions: {
+          ...defaultShoppingOptions,
+          ...(filteredData['purchasingOptions'] || {})
+        },
+        seo: {
+          ...defaultSeoOptions,
+          ...(filteredData['seo'] || {})
+        }
       })
     }
   }, [props.content, props.type])
@@ -208,7 +214,7 @@ function ContentForm(props) {
             })} />
           </div>}
 
-          <SEOForm value={props.content.seo} onChange={(val) => setState({
+          <SEOForm value={state.seo} onChange={(val) => setState({
             ...state,
             seo: val
           })} />

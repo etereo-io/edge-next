@@ -2,6 +2,21 @@ import { ContentEntityType, ContentTypeDefinition, UserType } from '@lib/types'
 
 import slugify from 'slugify'
 
+export function generateSlug(contentType: ContentTypeDefinition, content: ContentEntityType, user: UserType): string {
+  const slug = slugify(
+    contentType.slugGeneration.reduce(
+      (prev, next) =>
+        prev + ' ' + (next !== 'userId' ? content[next] : user.id),
+      ''
+    ),
+    {
+      lower: true,
+      strict: true,
+    }
+  )
+  return slug
+}
+
 export function fillContentWithDefaultData(contentType: ContentTypeDefinition, content: ContentEntityType, user: UserType) {
   try {
     const defaultEmptyFields = {}
@@ -19,25 +34,13 @@ export function fillContentWithDefaultData(contentType: ContentTypeDefinition, c
       ...content,
     }
 
-    const slug = slugify(
-      contentType.slugGeneration.reduce(
-        (prev, next) =>
-          prev + ' ' + (next !== 'userId' ? newContent[next] : user.id),
-        ''
-      ),
-      {
-        lower: true,
-        strict: true,
-      }
-    )
-
     const extraFields = {
       seo: {
-        slug
+        slug: generateSlug(contentType, newContent, user)
       }
     }
 
-    return Object.assign({}, extraFields, newContent )
+    return Object.assign({}, extraFields, newContent)
   } catch (err) {
     throw new Error('Invalid slug or default data generation ' + err.message)
   }

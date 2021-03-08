@@ -9,7 +9,7 @@ type PropTypes = {
 }
 
 export default function SEOForm({
-  value,
+  value ,
   onChange
 }: PropTypes) {
   return (
@@ -73,7 +73,14 @@ export default function SEOForm({
       </div>
       <style jsx>{
         `
-        
+        .seo-form {
+          padding: var(--edge-gap);
+          border: 1px solid;
+          border-radius: var(--edge-radius);
+          border-color: var(--light-border-color);
+          margin-bottom: var(--edge-gap);
+        }
+
         `
       }</style>
     </>

@@ -101,8 +101,8 @@ function VariantItem({
         `
         .variant-item {
           padding: var(--edge-gap);
-          border: 1px solid var(--accents-3);
-          margin: var(--edge-gap);
+          border: 1px solid var(--light-border-color);
+          margin-bottom: var(--edge-gap);
         }
         `
       }</style>
@@ -191,8 +191,8 @@ function ShippingFeeItem({
         `
         .shipping-fee-item {
           padding: var(--edge-gap);
-          border: 1px solid var(--accents-3);
-          margin: var(--edge-gap);
+          border: 1px solid var(--light-border-color);
+          margin-bottom: var(--edge-gap);
         }
         `
       }</style>
@@ -425,7 +425,9 @@ export default function PurchasingOptionsForm({
         .purchasing-options {
           padding: var(--edge-gap);
           border: 1px solid;
-          
+          border-radius: var(--edge-radius);
+          border-color: var(--light-border-color);
+          margin-bottom: var(--edge-gap);
         }
 
         .form-row {
@@ -434,6 +436,10 @@ export default function PurchasingOptionsForm({
 
         .form-row .input-wr {
           width: 50%;
+        }
+
+        h4 {
+          margin-top: var(--edge-gap);
         }
         `
       }</style>

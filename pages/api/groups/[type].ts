@@ -1,19 +1,20 @@
+import { ANY_OBJECT, Request } from '@lib/types'
 import { addContent, findContent } from '@lib/api/entities/content'
 import {
   hasPermissionsForGroup,
   isValidGroupType,
   loadUser,
 } from '@lib/api/middlewares'
-import { groupPermission } from '@lib/permissions'
-import { ANY_OBJECT, Request } from '@lib/types'
+
+import Cypher from '@lib/api/api-helpers/cypher-fields'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { connect } from '@lib/api/db'
-import { fillContentWithDefaultData } from '@lib/api/entities/content/content.utils'
+import { fillContentWithDefaultData } from '@lib/content/content.utils'
+import { groupPermission } from '@lib/permissions'
 import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import { onGroupAdded } from '@lib/api/hooks/group.hooks'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
-import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 const getGroups = (filterParams, paginationParams, member) => async (
   req: Request,
