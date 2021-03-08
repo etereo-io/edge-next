@@ -44,7 +44,7 @@ const loadContentItemMiddleware = async (req: Request, res, cb) => {
   if (req.query.field === 'id') {
     searchOptions['id'] = req.query.slug
   } else {
-    searchOptions['slug'] = req.query.slug
+    searchOptions['seo.slug'] = req.query.slug
   }
 
   findOneContent(type.slug, searchOptions)

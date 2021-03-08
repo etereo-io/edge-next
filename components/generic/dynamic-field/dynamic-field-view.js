@@ -118,7 +118,7 @@ function Field({ field, value, typeDefinition }) {
                 <b>Linked items:</b>
                 {value && value.length > 0 && value.map(i => (                  
                   <div className="entity-item">
-                    <Link href={`/${field.entity}/${field.entityType}/${i.slug}`}>
+                    <Link href={`/${field.entity}/${field.entityType}/${i.seo.slug}`}>
                       <a>{field.entityNameGetter(i)}`</a>
                     </Link>
                   </div>

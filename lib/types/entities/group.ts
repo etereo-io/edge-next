@@ -1,5 +1,6 @@
 import { InteractionEntity } from './interaction'
 import { PermissionsType } from '../permissions'
+import { SEOPropertiesType } from '../seo'
 
 export type MemberType = {
   id: string
@@ -10,7 +11,7 @@ export type MemberType = {
 
 export declare type GroupEntityType = {
   id: string
-  slug: string
+  seo: SEOPropertiesType,
   type: string
   title: string
   description: string

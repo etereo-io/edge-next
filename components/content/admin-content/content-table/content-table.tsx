@@ -76,7 +76,7 @@ function ContentTable({ type }: Props) {
 
           if (index === 0) {
             return (
-              <Link href={`/content/${type.slug}/${item.slug}`}>
+              <Link href={`/content/${type.slug}/${item.seo.slug}`}>
                 <a title={label || name}>{componentCell}</a>
               </Link>
             )

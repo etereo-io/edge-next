@@ -1,6 +1,6 @@
 import { EmailCreationType } from '@lib/types/entities/email'
+import { GroupEntityType } from '@lib/types'
 import Markdown from '@lib/markdown'
-import { UserType } from '@lib/types'
 import callToActionTemplate from './email-templates/call-to-action.template'
 import config from '../config'
 import sendEmail from './sender'
@@ -12,7 +12,7 @@ const md = Markdown({
 })
 
 // Send an email to verify the new email address
-export const sendVerifyEmail = (to, token) => {
+export const sendVerifyEmail = (to: string, token: string) => {
   const linkToVerifyEmail = `${
     process.env.BASE_URL
     }/auth/verify?email=${to}&date=${Date.now()}&token=${token}`
@@ -33,7 +33,7 @@ export const sendVerifyEmail = (to, token) => {
 }
 
 // Send an email to update password
-export const sendResetPassworEmail = (to, token) => {
+export const sendResetPassworEmail = (to: string, token: string) => {
   const linkToResetPassword = `${
     process.env.BASE_URL
     }/auth/reset-password-verify?email=${to}&date=${Date.now()}&token=${token}`
@@ -53,8 +53,8 @@ export const sendResetPassworEmail = (to, token) => {
 }
 
 // send an email after user send request that he want to join to the group.
-export function sendRequestToJoinToGroupEmail(to, type, group) {
-  const linkToGroup = `${process.env.BASE_URL}/group/${type}/${group.slug}`
+export function sendRequestToJoinToGroupEmail(to: string, type: string, group: GroupEntityType) {
+  const linkToGroup = `${process.env.BASE_URL}/group/${type}/${group.seo.slug}`
 
   const textMessage = `A user wants to join ${group.title}. Go to the user's administration page to approve or deny the membership`
   const subject = `A user wants to join ${group.title}`
@@ -68,7 +68,7 @@ export function sendRequestToJoinToGroupEmail(to, type, group) {
   return sendEmail({ from: config.emails.from, to, subject, text: textMessage, html })
 }
 
-export function sendStandardEmail(email: EmailCreationType, user: UserType) {
+export function sendStandardEmail(email: EmailCreationType) {
   const htmlString = email.html ? email.html : md.render(email.text)
 
   const html = standardEmailTemplate({

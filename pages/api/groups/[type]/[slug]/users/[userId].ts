@@ -3,20 +3,21 @@ import {
   loadGroupItemMiddleware,
   loadUser,
 } from '@lib/api/middlewares'
+import methods, { getAction } from '@lib/api/api-helpers/methods'
 import {
   onGroupJoinDisapprove,
   onGroupUpdated,
 } from '@lib/api/hooks/group.hooks'
+
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { Request } from '@lib/types'
 import { UPDATE_GROUP_USER_ACTIONS } from '@lib/constants'
 import { connect } from '@lib/api/db'
 import { getPermittedFields } from '@lib/validations/group/users'
 import { groupUserPermission } from '@lib/permissions'
-import methods, { getAction } from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 async function updateUsers({ type, id, data, callback, res }) {
   return updateOneContent(type, id, data)
@@ -46,7 +47,7 @@ async function removeUser(req: Request, res) {
     res,
     id,
     callback: (data) => {
-      onGroupJoinDisapprove({ ...data, userId }, currentUser)
+      onGroupJoinDisapprove(data, userId, currentUser)
 
       return res.status(200).json(data)
     },

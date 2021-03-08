@@ -10,16 +10,17 @@ import {
   findOneContent,
   updateOneContent,
 } from '@lib/api/entities/content'
-import { groupUserPermission } from '@lib/permissions'
 import { onGroupDeleted, onGroupUpdated } from '@lib/api/hooks/group.hooks'
+
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { Request } from '@lib/types'
+import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
 import { connect } from '@lib/api/db'
+import { groupUserPermission } from '@lib/permissions'
 import { groupValidations } from '@lib/validations/group'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import { uploadFiles } from '@lib/api/api-helpers/dynamic-file-upload'
-import { appendInteractions } from '@lib/api/entities/interactions/interactions.utils'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 // disable the default body parser to be able to use file upload
 export const config = {
@@ -39,7 +40,7 @@ const loadGroupItemMiddleware = async (req: Request, res, cb) => {
   if (req.query.field === 'id') {
     searchOptions['id'] = req.query.slug
   } else {
-    searchOptions['slug'] = req.query.slug
+    searchOptions['seo.slug'] = req.query.slug
   }
 
   return findOneContent(type.slug, searchOptions)

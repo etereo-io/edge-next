@@ -1,10 +1,11 @@
 import { InteractionEntity, UserType } from '@lib/types'
 
 import { PurchashingOptionsType } from '../purchasing'
+import { SEOPropertiesType } from '../seo'
 
 export type ContentEntityType = {
   id: string
-  slug: string
+  seo: SEOPropertiesType
   type: string
   title: string
   description: string

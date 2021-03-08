@@ -1,15 +1,15 @@
-import React, { useEffect, useState, memo, useCallback } from 'react'
-import Link from 'next/link'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { FieldType, GroupEntityType, GroupTypeDefinition } from '@lib/types'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
+import { FIELDS } from '@lib/constants'
+import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
+import Link from 'next/link'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
-import { FIELDS } from '@lib/constants'
-import { FieldType, GroupEntityType, GroupTypeDefinition } from '@lib/types'
-import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 type Props = {
   type: GroupTypeDefinition
@@ -185,7 +185,7 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
           {success && (
             <div className="success-message">
               Saved: You can see it{' '}
-              <Link href={`/group/${type.slug}/${group.slug}`}>
+              <Link href={`/group/${type.slug}/${group.seo.slug}`}>
                 <a title="View Content">here</a>
               </Link>
             </div>

@@ -1,3 +1,4 @@
+import { GroupEntityType, GroupTypeDefinition, UserType } from '@lib/types'
 import {
   addActivity,
   deleteActivity,
@@ -14,13 +15,14 @@ import { deleteFile } from '@lib/api/storage'
 import {
   deleteInteractions,
 } from '@lib/api/entities/interactions'
+import { findOneUser } from '../entities/users'
 import logger from '@lib/logger'
 import {
   onContentDeleted,
 } from './content.hooks'
 import { sendRequestToJoinToGroupEmail } from '@lib/email'
 
-export function onGroupAdded(group, user) {
+export function onGroupAdded(group:GroupEntityType, user: UserType) {
   if (config.activity.enabled && group) {
     addActivity({
       author: user.id,
@@ -28,7 +30,7 @@ export function onGroupAdded(group, user) {
       type: ACTIVITY_TYPES.GROUP_ADDED,
       meta: {
         groupId: group.id,
-        groupSlug: group.slug,
+        groupSlug: group.seo.slug,
         groupTitle: group.title, // This will not work with dynamic fields
         groupType: group.type,
       },
@@ -36,7 +38,7 @@ export function onGroupAdded(group, user) {
   }
 }
 
-export function onGroupUpdated(data, user) {
+export function onGroupUpdated(data: GroupEntityType, user: UserType) {
   if (config.activity.enabled && data) {
     addActivity({
       author: user.id,
@@ -44,7 +46,7 @@ export function onGroupUpdated(data, user) {
       type: ACTIVITY_TYPES.GROUP_UPDATED,
       meta: {
         groupId: data.id,
-        groupSlug: data.slug,
+        groupSlug: data.seo.slug,
         groupTitle: data.title, // This will not work with dynamic fields
         groupType: data.type,
       },
@@ -52,16 +54,16 @@ export function onGroupUpdated(data, user) {
   }
 }
 
-export function onGroupJoinDisapprove(data, user) {
+export function onGroupJoinDisapprove(data: GroupEntityType, userId: string, user: UserType) {
   if (config.activity.enabled && data) {
     addActivity({
       author: user.id,
       role: 'user',
       type: ACTIVITY_TYPES.GROUP_MEMBER_JOIN_DISAPPROVE,
       meta: {
-        userId: data.userId,
+        userId: userId,
         groupId: data.id,
-        groupSlug: data.slug,
+        groupSlug: data.seo.slug,
         groupTitle: data.title, // This will not work with dynamic fields
         groupType: data.type,
       },
@@ -69,7 +71,8 @@ export function onGroupJoinDisapprove(data, user) {
   }
 }
 
-export function onGroupJoinRequest(group, user, groupAuthorEmail, groupType) {
+export async function onGroupJoinRequest(group: GroupEntityType, user: UserType) {
+
   if (config.activity.enabled && group) {
     addActivity({
       author: user.id,
@@ -77,7 +80,7 @@ export function onGroupJoinRequest(group, user, groupAuthorEmail, groupType) {
       type: ACTIVITY_TYPES.GROUP_MEMBER_JOIN_REQUEST,
       meta: {
         groupId: group.id,
-        groupSlug: group.slug,
+        groupSlug: group.seo.slug,
         groupTitle: group.title,
         groupType: group.type,
         userId: user.id,
@@ -85,10 +88,13 @@ export function onGroupJoinRequest(group, user, groupAuthorEmail, groupType) {
     })
   }
 
-  sendRequestToJoinToGroupEmail(groupAuthorEmail, groupType, group)
+  const { email } = await findOneUser({ id: group.author })
+
+
+  sendRequestToJoinToGroupEmail(email, group.type, group)
 }
 
-export async function onGroupDeleted(group, user, groupType) {
+export async function onGroupDeleted(group: GroupEntityType, user: UserType, groupType: GroupTypeDefinition) {
   // Delete group files
   try {
     groupType.fields.forEach(async (field) => {

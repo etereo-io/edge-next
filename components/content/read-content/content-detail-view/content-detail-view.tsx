@@ -38,7 +38,7 @@ function ContentDetailView(props: Props) {
   const shareUrl =
     typeof window !== 'undefined'
       ? `${String(window.location)}/content/${props.type.slug}/${
-          props.content.slug
+          props.content.seo.slug
         }`
       : ''
   const [showComments, setShowComments] = useState(!!props.showComments)
@@ -97,7 +97,7 @@ function ContentDetailView(props: Props) {
               </p>
 
               <Button
-                href={`/content/${props.type.slug}/${props.content.slug}`}
+                href={`/content/${props.type.slug}/${props.content.seo.slug}`}
               >
                 See full content
               </Button>
@@ -135,7 +135,7 @@ function ContentDetailView(props: Props) {
             {(canEditComment.available || isContentOwner) && (
               <div className="header-item-action">
                 <Button
-                  href={`/edit/content/${props.content.type}/${props.content.slug}`}
+                  href={`/edit/content/${props.content.type}/${props.content.seo.slug}`}
                   round
                   aria-label="round button"
                 >

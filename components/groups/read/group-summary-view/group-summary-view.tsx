@@ -1,17 +1,17 @@
-import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
-
 import { GroupEntityType, GroupTypeDefinition } from '@lib/types'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { cypheredFieldPermission, groupUserPermission } from '@lib/permissions'
+
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import DynamicFieldView from '@components/generic/dynamic-field/dynamic-field-view'
 import { FIELDS } from '@lib/constants'
 import GroupMembers from '@components/groups/group-members/group-members'
+import { Interaction } from '@components/generic/interactions'
 import Link from 'next/link'
 import fetch from '@lib/fetcher'
-import { cypheredFieldPermission, groupUserPermission } from '@lib/permissions'
-import { useUser } from '@lib/client/hooks'
-import { Interaction } from '@components/generic/interactions'
 import { getInteractionsDefinition } from '@lib/config'
+import { useUser } from '@lib/client/hooks'
 
 interface Props {
   linkToDetail?: boolean
@@ -90,7 +90,7 @@ function SummaryView({
   const handleJoinRequest = useCallback(() => {
     setIsLoading(true)
 
-    fetch(`${API.groups[group.type]}/${group.slug}/users`, {
+    fetch(`${API.groups[group.type]}/${group.seo.slug}/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(currentUser.user),
@@ -101,7 +101,7 @@ function SummaryView({
       })
       .catch(() => setError(true))
       .finally(() => setIsLoading(false))
-  }, [currentUser, group.type, group.slug])
+  }, [currentUser, group.type, group.seo.slug])
 
   const interactionsConfig = getInteractionsDefinition('group', type.slug)
   const isGroupCreation = useMemo(() => !group?.id, [group?.id])
@@ -120,7 +120,7 @@ function SummaryView({
                     key={`${field.name}-${group.id}`}
                   >
                     {linkToDetail && (
-                      <Link href={`/group/${type.slug}/${group.slug}`}>
+                      <Link href={`/group/${type.slug}/${group.seo.slug}`}>
                         <a>{group[field.name]}</a>
                       </Link>
                     )}
@@ -141,7 +141,7 @@ function SummaryView({
               return (
                 <div className="description" key={`${field.name}-${group.id}`}>
                   {shouldAddLink(field) && (
-                    <Link href={`/group/${type.slug}/${group.slug}`}>
+                    <Link href={`/group/${type.slug}/${group.seo.slug}`}>
                       <a title="Go to item detail">
                         <DynamicFieldView
                           field={field}

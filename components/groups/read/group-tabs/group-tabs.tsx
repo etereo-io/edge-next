@@ -1,15 +1,14 @@
 import React, { memo, useMemo } from 'react'
-
 import { Tabs, useTab } from '@components/generic/tabs'
 import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
+import { groupContentPermission, groupUserPermission } from '@lib/permissions'
+
+import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import { GroupEntityType } from '@lib/types/entities/group'
-import { groupContentPermission, groupUserPermission } from '@lib/permissions'
-import { useUser } from '@lib/client/hooks'
-import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
-
 import MembersTab from './members-tab'
 import PendingMembersTab from './pending-members-tab'
+import { useUser } from '@lib/client/hooks'
 
 interface Props {
   id: string
@@ -45,7 +44,7 @@ function GroupTabs({ id, group }: Props) {
 
   const canUpdate = groupUserPermission(
     currentUser.user,
-    groupType,
+    groupType.slug,
     'update',
     group
   )

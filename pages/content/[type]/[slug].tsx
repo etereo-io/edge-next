@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           id: query.slug,
         }
       : {
-          slug: query.slug,
+          'seo.slug': query.slug,
         }
 
   const item = await findOneContent(query.type, searchOptions)

@@ -1,9 +1,9 @@
 import React, { memo } from 'react'
 
 import Button from '@components/generic/button/button'
+import { ContentEntityType } from '@lib/types'
 import { contentPermission } from '@lib/permissions'
 import { useUser } from '@lib/client/hooks'
-import { ContentEntityType } from '@lib/types'
 
 type Props = {
   content?: Partial<ContentEntityType>
@@ -23,7 +23,7 @@ function ContentActions({ content = {}, className }: Props) {
   return (
     <div className={`content-actions ${className}`}>
       {canEdit && (
-        <Button href={`/edit/content/${content.type}/${content.slug}`}>
+        <Button href={`/edit/content/${content.type}/${content.seo.slug}`}>
           Edit
         </Button>
       )}
