@@ -11,6 +11,17 @@ export default function() {
     resources: {
       en: {
         translation: {
+          "admin": {
+            "menu": {
+              "administration": "Administration",
+              "users": "Users",
+              "emails": "Emails",
+              "content": "Content",
+              "groups": "Groups",
+              "orders": "Orders",
+              "create": "Create"
+            }
+          },
           "purchasing": {
             "shoppingCart": {
               "title": "Shopping Cart",

@@ -10,9 +10,10 @@ import GroupSummaryView from '@components/groups/read/group-summary-view/group-s
 import Link from 'next/link'
 import { PurchashingOptionsType } from '@lib/types/purchasing'
 import PurchasingOptionsForm from './purchasing-options-form'
+import SEOForm from './seo-form'
+import { SEOPropertiesType } from '@lib/types/seo'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
-import hasPermission from '@lib/permissions/has-permission'
 import { purchasingPermission } from '@lib/permissions'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
@@ -28,13 +29,21 @@ function ContentForm(props) {
     stock: 1,
     currency: '',
     price: 0.0,
-    options: []
+    variants: [],
+    shippingFees: []
+  }
+
+  const defaultSeoOptions: SEOPropertiesType = {
+    slug: '',
+    title: '',
+    description: ''
   }
 
   // used to store values
   const [state, setState] = useState({
     draft: false,
-    purchasingOptions: defaultShoppingOptions
+    purchasingOptions: defaultShoppingOptions,
+    seo: defaultSeoOptions
   })
 
   useEffect(() => {
@@ -47,6 +56,7 @@ function ContentForm(props) {
         .map((f) => f.name)
         .concat('draft')
         .concat('purchasingOptions')
+        .concat('seo')
 
       allowedKeys.map((k) => {
         filteredData[k] = props.content[k]
@@ -55,7 +65,8 @@ function ContentForm(props) {
       setState({
         ...state,
         ...filteredData,
-        purchasingOptions: filteredData['purchasingOptions'] || defaultShoppingOptions
+        purchasingOptions: filteredData['purchasingOptions'] || defaultShoppingOptions,
+        seo: filteredData['seo'] || defaultSeoOptions
       })
     }
   }, [props.content, props.type])
@@ -72,11 +83,10 @@ function ContentForm(props) {
     const groupParamsString = props.group
       ? `groupId=${props.group.id}&groupType=${props.group.type}`
       : ''
-    const url = `${API.content[props.type.slug]}${
-      props.content.id
+    const url = `${API.content[props.type.slug]}${props.content.id
         ? `/${props.content.id}?field=id&${groupParamsString}`
         : `?${groupParamsString}`
-    }`
+      }`
 
     return fetch(url, {
       method: props.content.id ? 'PUT' : 'POST',
@@ -191,12 +201,17 @@ function ContentForm(props) {
               />
             ))}
 
-          {purchasingPermission(props.currentUser, 'sell', props.type.slug)  && <div className="purchasing-options-wrapper">
-              <PurchasingOptionsForm value={state['purchasingOptions']} onChange={(val) => setState({
-                ...state,
-                purchasingOptions: val
-              })} />
+          {purchasingPermission(props.currentUser, 'sell', props.type.slug) && <div className="purchasing-options-wrapper">
+            <PurchasingOptionsForm value={state['purchasingOptions']} onChange={(val) => setState({
+              ...state,
+              purchasingOptions: val
+            })} />
           </div>}
+
+          <SEOForm value={props.content.seo} onChange={(val) => setState({
+            ...state,
+            seo: val
+          })} />
 
           <div className="actions">
             <Button loading={loading} alt={true} type="submit">
@@ -206,7 +221,7 @@ function ContentForm(props) {
           {success && (
             <div className="success-message">
               Saved: You can see it{' '}
-              <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
+              <Link href={`/content/${props.type.slug}/${props.content.seo.slug}`}>
                 <a title="View content">here</a>
               </Link>
             </div>

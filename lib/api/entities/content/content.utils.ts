@@ -1,6 +1,8 @@
+import { ContentEntityType, ContentTypeDefinition, UserType } from '@lib/types'
+
 import slugify from 'slugify'
 
-export function fillContentWithDefaultData(contentType, content, user) {
+export function fillContentWithDefaultData(contentType: ContentTypeDefinition, content: ContentEntityType, user: UserType) {
   try {
     const defaultEmptyFields = {}
 
@@ -30,10 +32,12 @@ export function fillContentWithDefaultData(contentType, content, user) {
     )
 
     const extraFields = {
-      slug: slug,
+      seo: {
+        slug
+      }
     }
 
-    return Object.assign({}, newContent, extraFields)
+    return Object.assign({}, extraFields, newContent )
   } catch (err) {
     throw new Error('Invalid slug or default data generation ' + err.message)
   }

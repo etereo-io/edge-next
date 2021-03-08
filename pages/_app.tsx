@@ -9,6 +9,7 @@ import withEdgeTheme, {
 
 import { CookiesProvider } from '@lib/client/contexts/cookies-context'
 import Head from 'next/head'
+import { MaintenanceProvider } from '@lib/client/contexts/maintenance-context'
 import { ModalProvider } from '@lib/client/contexts/modal-context'
 import Router from 'next/router'
 import { ShoopingCartProvider } from '@lib/client/contexts/shopping-cart-context'
@@ -37,13 +38,15 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <div id="app-container" className={mode}>
         <UserProvider>
-          <CookiesProvider>
-            <ShoopingCartProvider>
-              <ModalProvider>
-                <Component {...pageProps} />
-              </ModalProvider>
-            </ShoopingCartProvider>
-          </CookiesProvider>
+          <MaintenanceProvider>
+            <CookiesProvider>
+              <ShoopingCartProvider>
+                <ModalProvider>
+                  <Component {...pageProps} />
+                </ModalProvider>
+              </ShoopingCartProvider>
+            </CookiesProvider>
+          </MaintenanceProvider>
         </UserProvider>
       </div>
       <style jsx global>{`

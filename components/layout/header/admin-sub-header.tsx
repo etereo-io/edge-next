@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React from 'react'
 import { UserType } from '@lib/types'
 import { hasPermission } from '@lib/permissions'
+import { useTranslation } from 'react-i18next'
 
 type PropTypes = {
   user: UserType
@@ -40,6 +41,8 @@ export default function AdminSubHeader({ user }: PropTypes) {
     }
   })
 
+  const { t } = useTranslation() 
+
   return (
     <>
       <div className="admin-sub-header">
@@ -47,9 +50,9 @@ export default function AdminSubHeader({ user }: PropTypes) {
           <ul className="admin-navigation">
             {hasPermission(user, `admin.stats`) && <li>
               <Link href="/admin">
-                <a title="Admin">
+                <a title={t('admin.menu.administration')}>
                   <i className="las la-cog"></i>
-                  <span>Administration</span>
+                  <span>{t('admin.menu.administration')}</span>
                 </a>
               </Link>
             </li>}
@@ -57,9 +60,9 @@ export default function AdminSubHeader({ user }: PropTypes) {
 
             {hasPermission(user, `user.admin`) && <li>
               <Link href="/admin/users">
-                <a title="Admin">
+                <a title={t('admin.menu.users')}>
                   <i className="las la-users-cog"></i>
-                  <span>Users</span>
+                  <span>{t('admin.menu.users')}</span>
                 </a>
               </Link>
             </li>}
@@ -67,17 +70,17 @@ export default function AdminSubHeader({ user }: PropTypes) {
 
             {hasPermission(user, `admin.email`) && <li>
               <Link href="/admin/emails">
-                <a title="Admin">
+                <a title={t('admin.menu.emails')}>
                   <i className="las la-envelope"></i>
-                  <span>Emails</span>
+                  <span>{t('admin.menu.emails')}</span>
                 </a>
               </Link>
             </li>}
 
             {hasPermission(user, 'admin.access') && <li className="view-more">
-              <a title="Content">
+              <a title={t('admin.menu.content')}>
                 <i className="las la-file"></i>
-                <span>Content</span>
+                <span>{t('admin.menu.content')}</span>
               </a>
               <ul>
                 {contentLinks.map(link => {
@@ -96,9 +99,9 @@ export default function AdminSubHeader({ user }: PropTypes) {
             </li>
             }
             {hasPermission(user, 'admin.access') && <li className="view-more">
-              <a title="Groups">
+              <a title={t('admin.menu.groups')}>
                 <i className="las la-users"></i>
-                <span>Groups</span>
+                <span>{t('admin.menu.groups')}</span>
               </a>
               <ul>
                 {groupLinks.map(link => {
@@ -118,16 +121,16 @@ export default function AdminSubHeader({ user }: PropTypes) {
 
             {(hasPermission(user, 'purchasing.orders') || hasPermission(user, 'purchasing.sell')) && <li>
               <Link href="/orders">
-                <a title="Orders">
+                <a title={t('admin.menu.orders')}>
                   <i className="las la-cubes"></i>
-                  <span>Orders</span>
+                  <span>{t('admin.menu.orders')}</span>
                 </a>
               </Link>
             </li>}
             <li className="view-more">
-              <a title="Create">
+              <a title={t('admin.menu.create')}>
                 <i className="las la-plus-circle"></i>
-                <span>Create</span>
+                <span>{t('admin.menu.create')}</span>
               </a>
               <ul>
                 {createContentTypeLinks.map(link => {

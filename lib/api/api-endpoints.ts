@@ -29,5 +29,6 @@ export default {
   superSearch: '/api/super-search',
   interactions: '/api/interactions',
   email: '/api/email',
-  statistic: '/api/statistic'
+  statistic: '/api/statistic',
+  maintenance: '/api/maintenance'
 }
