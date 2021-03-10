@@ -14,11 +14,15 @@ export function encryptSession(session) {
 
 export async function getSession(req) {
   const token = getTokenCookie(req)
-  
-  if (token) {
-    return jwt.verify(token, TOKEN_SECRET)
-  } else if (req.headers['authorization']) {
-    return jwt.verify(req.headers['authorization'].replace('Bearer ', ''), TOKEN_SECRET)
+  try {
+    if (token) {
+      return jwt.verify(token, TOKEN_SECRET)
+    } else if (req.headers['authorization']) {
+      return jwt.verify(req.headers['authorization'].replace('Bearer ', ''), TOKEN_SECRET)
+    }
+
+  } catch (e) {
+    return null
   }
 
   return null

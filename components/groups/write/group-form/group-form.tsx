@@ -7,6 +7,8 @@ import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
 import Link from 'next/link'
+import SEOForm from '@components/content/write-content/content-form/seo-form'
+import { SEOPropertiesType } from '@lib/types/seo'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
@@ -24,8 +26,16 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
   const [success, setSuccess] = useState<boolean>(false)
   const [error, setError] = useState<boolean>(false)
 
-  // used to store values
-  const [state, setState] = useState<Partial<GroupEntityType>>({})
+
+  const defaultSeoOptions: SEOPropertiesType = {
+    slug: '',
+    title: '',
+    description: ''
+  }
+  
+  const [state, setState] = useState<Partial<GroupEntityType>>({
+    seo: defaultSeoOptions
+  })
 
   useEffect(() => {
     // Preload the form values
@@ -35,13 +45,19 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
       // additional information
       const allowedKeys = permittedFields
         .map((f) => f.name)
-        .concat('draft', 'members')
+        .concat('draft', 'members', 'seo')
 
       allowedKeys.map((k) => {
         filteredData[k] = group[k]
       })
 
-      setState(filteredData)
+      setState({
+        ...filteredData,
+        seo: {
+          ...defaultSeoOptions,
+          ...(filteredData['seo'] || {})
+        }
+      })
     }
   }, [group, type])
 
@@ -177,8 +193,13 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
             />
           ))}
 
+          <SEOForm value={state.seo} onChange={(val) => setState({
+            ...state,
+            seo: val
+          })} />
+
           <div className="actions">
-            <Button loading={loading} alt type="submit">
+            <Button title="Save" loading={loading} alt type="submit">
               Save
             </Button>
           </div>
