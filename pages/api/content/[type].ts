@@ -1,4 +1,4 @@
-import { ANY_OBJECT, Request } from '@lib/types'
+import { ANY_OBJECT, ContentEntityType, Request } from '@lib/types'
 import {
   addContent,
   findContent,
@@ -83,7 +83,7 @@ const createContent = async (req: Request, res) => {
   const { purchasingOptions, ...rest} = req.body
   
   // Only store purchasing options if the current user has permissions
-  const content = purchasingPermission(req.currentUser, 'sell', type.slug) ? {
+  const content: ContentEntityType = purchasingPermission(req.currentUser, 'sell', type.slug) ? {
     ...rest,
     purchasingOptions
   } : {
@@ -92,6 +92,15 @@ const createContent = async (req: Request, res) => {
 
   return contentValidations(type, content)
     .then(async () => {
+      // Make sure that there is no content with the same slug
+      const maybeContent = await findOneContent(type.slug, {
+        'seo.slug': content.seo.slug
+      })
+
+      if (maybeContent) {
+        throw new Error('Invalid slug. It already exists.')
+      }
+      
       // Content is valid
       // Add default value to missing fields
       const newContent = fillContentWithDefaultData(

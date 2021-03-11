@@ -688,10 +688,6 @@ export const getConfig = (config: any) => {
       },
     },
 
-    logger: {
-      level: 'ERROR',
-    },
-
     // Storages: GOOGLE, AWS, FIREBASE, AZURE
     storage: {
       type: 'GOOGLE',

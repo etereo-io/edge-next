@@ -157,9 +157,6 @@ export default object({
       sizeLimit: string().default('1mb'),
     }),
   }),
-  logger: object().default({
-    level: 'ERROR',
-  }),
   storage: object().required('Missing storage configuration'),
   database: object({
     type: string().matches(

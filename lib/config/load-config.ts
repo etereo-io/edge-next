@@ -70,9 +70,6 @@ const defaultConfig = {
   database: {
     type: DATABASES.IN_MEMORY,
   },
-  logger: {
-    level: 'ERROR',
-  },
   activity: {
     enabled: true,
     permissions: {

@@ -1,7 +1,7 @@
 import { ContentTypeDefinition } from './contentTypeDefinition'
-import { UserTypeDefinition } from './userTypeDefinition'
 import { GroupTypeDefinition } from './groupTypeDefinition'
 import { PermissionsType } from './permissions'
+import { UserTypeDefinition } from './userTypeDefinition'
 
 export declare type ThemeType = {
   label: string
@@ -19,9 +19,6 @@ export declare type ConfigType = {
     bodyParser: {
       sizeLimit: string
     }
-  }
-  logger: {
-    level: string
   }
   storage: {
     type: string

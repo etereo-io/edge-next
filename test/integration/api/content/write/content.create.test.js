@@ -1,3 +1,7 @@
+import {
+  addContent,
+  findOneContent,
+} from '../../../../../lib/api/entities/content'
 import { deleteFile, uploadFile } from '../../../../../lib/api/storage'
 
 import getPermissions from '../../../../../lib/permissions/get-permissions'
@@ -8,6 +12,7 @@ import request from '../../requestHandler'
 jest.mock('../../../../../lib/api/storage')
 jest.mock('../../../../../lib/api/auth/token')
 jest.mock('../../../../../lib/permissions/get-permissions')
+jest.mock('../../../../../lib/api/entities/content')
 
 jest.mock('../../../../../edge.config', () => {
   const mockInitialPosts = []
@@ -100,6 +105,10 @@ jest.mock('../../../../../edge.config', () => {
 
 describe('Integrations tests for content creation endpoint', () => {
   afterEach(() => {
+    addContent.mockReturnValue(Promise.resolve({
+      id: 'abc'
+    }))
+    findOneContent.mockReturnValue(Promise.resolve(null))
     getPermissions.mockReset()
     getSession.mockReset()
   })
@@ -210,6 +219,57 @@ describe('Integrations tests for content creation endpoint', () => {
       author: 'test-id',
       id: expect.anything(),
     })
+  })
+
+  test('Should return 400 if the slug is duplicated', async () => {
+
+    getPermissions.mockReturnValue({
+      'content.post.create': ['USER'],
+      'content.post.admin': ['ADMIN'],
+    })
+
+    getSession.mockReturnValueOnce({
+      roles: ['USER'],
+      id: 'test-id',
+    })
+    
+    findOneContent.mockReturnValue({
+      id: 'abc'
+    })
+
+    const newPost = {
+      title: 'test test test test test test ',
+      seo: {
+        slug: '1',
+        title: '1,'
+      },
+      description:
+        'test test  test test test test test test test test test test test test test test ',
+      tags: [
+        {
+          label: 'Hello',
+          slug: 'hello',
+        },
+        {
+          label: 'World',
+          slug: 'world',
+        },
+      ],
+    }
+
+    const res = await request(handler, {
+      method: 'POST',
+      query:  { type: 'post' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: newPost
+    });
+
+
+    expect(res.statusCode).toBe(400)
+    
+   
   })
 
   test('Should return 401 for a role that is PUBLIC', async () => {

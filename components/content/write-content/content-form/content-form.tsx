@@ -21,7 +21,7 @@ function ContentForm(props) {
   // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState('')
 
   const defaultShoppingOptions: PurchashingOptionsType = {
     multiple: false,
@@ -110,6 +110,7 @@ function ContentForm(props) {
         }
       )
     })
+   
   }
 
   const onSubmit = () => {
@@ -147,22 +148,23 @@ function ContentForm(props) {
 
     setLoading(true)
     setSuccess(false)
-    setError(false)
+    setError('')
 
     submitRequest(formData, jsonData)
       .then((result) => {
         setLoading(false)
         setSuccess(true)
-        setError(false)
+        setError('')
 
         if (props.onSave) {
           props.onSave(result)
         }
       })
       .catch((err) => {
+        
         setLoading(false)
         setSuccess(false)
-        setError(true)
+        setError(err.error ? err.error : err)
       })
   }
 
@@ -227,12 +229,12 @@ function ContentForm(props) {
           {success && (
             <div className="success-message">
               Saved: You can see it{' '}
-              <Link href={`/content/${props.type.slug}/${props.content.seo.slug}`}>
+              <Link href={`/content/${props.type.slug}/${state.seo.slug}`}>
                 <a title="View content">here</a>
               </Link>
             </div>
           )}
-          {error && <div className="error-message">Error saving </div>}
+          {error && <div className="error-message">Error saving: {error} </div>}
         </form>
 
         <div className="preview-wrapper">

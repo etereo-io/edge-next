@@ -6,7 +6,7 @@ import { getDB } from '@lib/api/db'
 import { hidePrivateUserFields } from '@lib/api/entities/users/user.utils'
 import logger from '@lib/logger'
 
-export function findOneContent(type, options) {
+export function findOneContent(type: string, options) {
   
   logger('DEBUG', 'Find', type, options)
   
@@ -22,7 +22,7 @@ export function findOneContent(type, options) {
     })
 }
 
-export function addContent(type, data) {
+export function addContent(type: string, data) {
   return getDB()
     .collection(type)
     .add(data)
@@ -31,7 +31,7 @@ export function addContent(type, data) {
     })
 }
 
-export function updateOneContent(type, id, data) {
+export function updateOneContent(type: string, id: string, data) {
   return getDB()
     .collection(type)
     .doc(id)

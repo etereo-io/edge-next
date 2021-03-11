@@ -17,4 +17,10 @@ export default async function fetcher(url, options?) {
     .then((data) => {
       return data
     })
+    .catch(err => {
+      return err.json()
+        .then((e) => {
+          throw e
+        })
+    })
 }

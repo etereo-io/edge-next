@@ -24,7 +24,7 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
   // Saving states
   const [loading, setLoading] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
 
 
   const defaultSeoOptions: SEOPropertiesType = {
@@ -134,13 +134,13 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
 
     setLoading(true)
     setSuccess(false)
-    setError(false)
+    setError('')
 
     submitRequest(formData, jsonData)
       .then((result) => {
         setLoading(false)
         setSuccess(true)
-        setError(false)
+        setError('')
 
         if (onSave) {
           onSave(result)
@@ -149,7 +149,7 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
       .catch((err) => {
         setLoading(false)
         setSuccess(false)
-        setError(true)
+        setError(err.error ? err.error : err)
       })
   }
 
@@ -206,12 +206,12 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
           {success && (
             <div className="success-message">
               Saved: You can see it{' '}
-              <Link href={`/group/${type.slug}/${group.seo.slug}`}>
+              <Link href={`/group/${type.slug}/${state.seo.slug}`}>
                 <a title="View Content">here</a>
               </Link>
             </div>
           )}
-          {error && <div className="error-message">Error saving </div>}
+          {error && <div className="error-message">Error saving : {error}</div>}
         </form>
 
         <div className="preview-wrapper">

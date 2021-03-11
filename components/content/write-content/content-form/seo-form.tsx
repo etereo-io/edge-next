@@ -2,6 +2,7 @@ import DynamicFieldEdit from '@components/generic/dynamic-field/dynamic-field-ed
 import { FIELDS } from '@lib/constants'
 import React from 'react'
 import { SEOPropertiesType } from '@lib/types/seo'
+import slugify from 'slugify'
 
 type PropTypes = {
   value: SEOPropertiesType,
@@ -24,6 +25,12 @@ export default function SEOForm({
               ...value,
               slug: val
             })}
+            onBlur={() => {
+              onChange({
+                ...value,
+                slug: slugify(value.slug.toLowerCase())
+              })
+            }}
             field={{
               name: 'slug',
               type: FIELDS.TEXT,

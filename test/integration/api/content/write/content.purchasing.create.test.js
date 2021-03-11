@@ -13,9 +13,6 @@ import {
 } from '../../../../../lib/api/auth/token'
 import handler from '../../../../../pages/api/content/[type]'
 import request from '../../requestHandler'
-import {
-  string,
-} from 'yup'
 
 jest.mock('../../../../../lib/api/storage')
 jest.mock('../../../../../lib/api/auth/token')

@@ -1,8 +1,9 @@
-const standardAllowedFields = ['draft', 'permissions', 'comments', 'purchasingOptions']
+const standardAllowedFields = ['draft', 'permissions', 'comments', 'purchasingOptions', 'seo']
 
 import {
   PurchashingOptionsType,
 } from '@lib/types/purchasing'
+import { SEOPropertiesType } from '@lib/types/seo'
 import {
   validateField,
 } from '../fields'
@@ -20,6 +21,22 @@ function validatePurchasingOptions(purchasingOptions: PurchashingOptionsType) {
 
   return errors
 }
+
+function validateSeoField(seo: SEOPropertiesType) {
+  const errors = []
+
+  if (!seo.slug) {
+    errors.push('Missing slug')
+  }
+
+  if (!seo.title) {
+    errors.push('Title can not be empty')
+  }
+
+  return errors
+}
+
+
 
 export function contentValidations(typeDefinition, content) {
   return new Promise((resolve, reject) => {
@@ -51,6 +68,10 @@ export function contentValidations(typeDefinition, content) {
             if (typeof (value) !== 'boolean') {
               errors.push('Invalid draft value')
             }
+            break;
+          case 'seo':
+            const seoError = validateSeoField(value)
+            errors = [...seoError, ...errors]
             break;
           case 'permissions':
             if (typeof (value) !== 'object') {
