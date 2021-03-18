@@ -7,6 +7,7 @@ import withEdgeTheme, {
   EdgeThemeContext,
 } from '@lib/client/contexts/edge-theme'
 
+import { AnalyticsProvider } from '@lib/client/contexts/analytics-context'
 import { CookiesProvider } from '@lib/client/contexts/cookies-context'
 import Head from 'next/head'
 import { MaintenanceProvider } from '@lib/client/contexts/maintenance-context'
@@ -40,11 +41,13 @@ function MyApp({ Component, pageProps }) {
         <UserProvider>
           <MaintenanceProvider>
             <CookiesProvider>
-              <ShoopingCartProvider>
-                <ModalProvider>
-                  <Component {...pageProps} />
-                </ModalProvider>
-              </ShoopingCartProvider>
+              <AnalyticsProvider>
+                <ShoopingCartProvider>
+                  <ModalProvider>
+                    <Component {...pageProps} />
+                  </ModalProvider>
+                </ShoopingCartProvider>
+              </AnalyticsProvider>
             </CookiesProvider>
           </MaintenanceProvider>
         </UserProvider>
