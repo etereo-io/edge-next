@@ -1,5 +1,3 @@
-import config from '@lib/config'
-
 export default function(level = 'DEBUG', ...args) {
   const numberLevel = {
     'DEBUG': 0,
@@ -9,7 +7,7 @@ export default function(level = 'DEBUG', ...args) {
   }
 
   const numberRequested = numberLevel[level] || 0
-  const actualNumber = numberLevel[config.logger.level] || 0
+  const actualNumber = numberLevel[process.env.LOG_LEVEL || 'DEBUG'] || 0
 
   if(numberRequested >= actualNumber) {
     console.log.apply(null, args)

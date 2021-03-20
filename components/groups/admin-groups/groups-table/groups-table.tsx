@@ -75,7 +75,7 @@ function GroupsTable({ type }: Props) {
 
           if (index === 0) {
             return (
-              <Link href={`/group/${type.slug}/${item.slug}`}>
+              <Link href={`/group/${type.slug}/${item.seo.slug}`}>
                 <a>{value}</a>
               </Link>
             )

@@ -7,10 +7,11 @@ function ObjectID(rnd = (r16) => Math.floor(r16).toString(16)) {
   )
 }
 
-export const getConfig = () => {
+export const getConfig = (config: any) => {
   const userRole = 'USER'
   const adminRole = 'ADMIN'
   const publicRole = 'PUBLIC'
+  const shopRole = 'SHOP'
 
   const roles = [
     {
@@ -25,6 +26,10 @@ export const getConfig = () => {
       label: 'Public',
       value: publicRole,
     },
+    {
+      label: 'Shop',
+      value: shopRole
+    }
   ]
 
   const salt = crypto.randomBytes(16).toString('hex')
@@ -209,6 +214,117 @@ export const getConfig = () => {
         placeholder: 'Markdown',
         required: true,
         errorMessage: 'Text is required',
+      },
+    ],
+  }
+
+  const productContentType = {
+    title: 'Product',
+
+    slug: 'product',
+
+    slugGeneration: ['title', 'createdAt'],
+
+    methods: {
+      get: true,
+      post: true,
+      delete: true,
+      put: true,
+    },
+
+    permissions: {
+      read: [publicRole],
+      create: [adminRole, shopRole],
+      update: [adminRole],
+      delete: [adminRole],
+      admin: [adminRole],
+    },
+
+    publishing: {
+      draftMode: true,
+      title: 'title',
+    },
+
+    monetization: {
+      web: false,
+    },
+
+    purchasing: {
+      enabled: true,
+      permissions: {
+        buy: [userRole],
+        sell: [shopRole, adminRole],
+        ship: [adminRole],
+        admin: [adminRole]
+      }
+    },
+
+    comments: {
+      enabled: true,
+      permissions: {
+        read: [publicRole],
+        create: [userRole, adminRole],
+        update: [adminRole],
+        delete: [adminRole],
+        admin: [adminRole],
+      },
+    },
+
+    entityInteractions: [
+      
+      {
+        type: 'favorite',
+        aggregation: 'sum',
+        activeTitle: 'Remove from favorite',
+        inactiveTitle: 'Add to favorite',
+        permissions: {
+          read: ['PUBLIC', 'USER'],
+          create: ['USER'],
+          delete: ['USER'],
+        },
+      },
+    ],
+
+    fields: [
+      {
+        name: 'title',
+        type: 'text',
+        label: 'Title',
+        placeholder: 'Title',
+        minlength: 8,
+        maxlength: 150,
+        required: true,
+        errorMessage: 'Title must be between 8 and 150 characters',
+      },
+      {
+        name: 'images',
+        type: 'img',
+        label: 'Image',
+        placeholder: 'Image',
+        multiple: true,
+        required: true,
+        errorMessage: 'Only images are supported',
+      },
+      {
+        name: 'video',
+        type: 'video_url',
+        label: 'Video (URL)',
+        errorMessage: 'Only urls (https://) are supported',
+      },
+      {
+        name: 'tags',
+        type: 'tags',
+        label: 'Tags',
+        placeholder: 'Tags',
+      },
+      {
+        name: 'description',
+        type: 'rich_text',
+        label: 'Description',
+        placeholder: 'Description',
+        required: true,
+        minlength: 20,
+        errorMessage: 'Description is required',
       },
     ],
   }
@@ -573,10 +689,6 @@ export const getConfig = () => {
       },
     },
 
-    logger: {
-      level: 'ERROR',
-    },
-
     // Storages: GOOGLE, AWS, FIREBASE, AZURE
     storage: {
       type: 'GOOGLE',
@@ -677,6 +789,11 @@ export const getConfig = () => {
           name: siteNewsContentType.slug,
           title: siteNewsContentType.title, // this title will be appeared ont the widget
         },
+        {
+          // any other configuration will be placed here
+          name: productContentType.slug,
+          title: productContentType.title, // this title will be appeared ont the widget
+        },
       ],
       groups: [
         {
@@ -692,7 +809,7 @@ export const getConfig = () => {
     // Content configuration
     content: {
       // Different content types defined
-      types: [postContentType, siteNewsContentType],
+      types: [postContentType, siteNewsContentType, productContentType],
       initialContent: [],
     },
 
@@ -707,6 +824,17 @@ export const getConfig = () => {
     },
     follow: {
       enabled: false,
+    },
+
+    // Purchasing
+    purchasing: {
+      enabled: true,
+      permissions: {
+        buy: [userRole],
+        sell: [shopRole, adminRole],
+        ship: [adminRole],
+        admin: [adminRole]
+      },
     },
 
     // super search configuration
@@ -755,6 +883,20 @@ export const getConfig = () => {
             'type',
           ], // fields that will be retrieved from the db
           permissions: siteNewsContentType.permissions.read, // permissions for check before search
+        },
+        {
+          name: productContentType.slug, // a collection by which the search will be run
+          type: 'content', // used for separation purposes
+          fields: ['title', 'description'], // fields by which the search will be run
+          fieldsForShow: [
+            'title',
+            'slug',
+            'description',
+            'groupId',
+            'groupType',
+            'type',
+          ], // fields that will be retrieved from the db
+          permissions: productContentType.permissions.read, // permissions for check before search
         },
       ],
     },

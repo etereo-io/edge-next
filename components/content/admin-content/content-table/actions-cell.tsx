@@ -43,7 +43,7 @@ function ActionsCell({ slug, deleteRequest, item }: Props) {
         <ul>
           {!success && (
             <li>
-              <Button fullWidth title="Edit" href={`/edit/content/${slug}/${item.slug}`}>Edit</Button>
+              <Button fullWidth title="Edit" href={`/edit/content/${slug}/${item.seo.slug}`}>Edit</Button>
             </li>
           )}
           {!success && (

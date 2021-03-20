@@ -1,15 +1,15 @@
+import { cypheredFieldPermission, groupPermission } from '@lib/permissions'
 import { useCallback, useMemo, useState } from 'react'
 
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { GetServerSideProps } from 'next'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import GroupForm from '@components/groups/write/group-form/group-form'
 import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
 import { getGroupTypeDefinition } from '@lib/config'
-import { getSession } from '@lib/api/auth/iron'
-import { cypheredFieldPermission, groupPermission } from '@lib/permissions'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
+import { getSession } from '@lib/api/auth/token'
 
 function notFound(res) {
   res.writeHead(302, { Location: '/404' })

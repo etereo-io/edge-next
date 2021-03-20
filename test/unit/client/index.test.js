@@ -1,6 +1,6 @@
-import { EdgeUserProvider } from '../../../lib/client/contexts/edge-user'
 import Index from '../../../pages/index'
 import React from 'react'
+import { UserProvider } from '../../../lib/client/contexts/edge-user'
 import { render } from '@testing-library/react'
 
 describe('Home page', () => {
@@ -19,9 +19,9 @@ describe('Home page', () => {
   })
   test('renders login link', () => {
     const { getAllByText } = render(
-      <EdgeUserProvider>
+      <UserProvider>
         <Index />
-      </EdgeUserProvider>
+      </UserProvider>
     )
     const linkElements = getAllByText(/Login/)
   

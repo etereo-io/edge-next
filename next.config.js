@@ -10,8 +10,8 @@ module.exports = withPWA({
     NEXT_PUBLIC_GMAPS_API_KEY: process.env.NEXT_PUBLIC_GMAPS_API_KEY,
   },  
   i18n: {
-    locales: ['en-US', 'es'],
-    defaultLocale: 'en-US',
+    locales: ['en', 'es'],
+    defaultLocale: 'en',
   },
   webpack(config) {
     config.resolve.alias['@lib'] = path.join(__dirname, 'lib')

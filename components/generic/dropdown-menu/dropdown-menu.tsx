@@ -1,20 +1,37 @@
-import { useState, memo } from 'react'
+import React, { memo, useRef, useState } from 'react'
+
+import useOnClickOutside from '@lib/client/hooks/use-click-away-listener'
 
 function DropDownMenu(props) {
-  const [open, setOpened] = useState(props.open || false)
+  const [open, setOpened] = useState<Boolean>(props.open || false)
   const align = props.align || 'left'
   const toggleMenu = () => {
     setOpened(!open)
   }
 
+  const ref = useRef(null);
+ 
+  useOnClickOutside(ref, () => {
+    setOpened(false)
+  })
+
   return (
     <>
-      <div className="dropdown-menu">
-        <div
-          onClick={toggleMenu}
-          className={`dropdown-menu-indicator ${open ? 'open' : 'closed'}`}
-          aria-label={`${open ? 'close menu' : 'open menu'}`}
-        ></div>
+      <div className={`dropdown-menu ${props.icon ? 'custom-icon' : ''}`} ref={ref}>
+        {props.icon ? (
+          <props.icon
+            width="20px"
+            height="20px"
+            onClick={toggleMenu}
+            aria-label={`${open ? 'close menu' : 'open menu'}`}
+          />
+        ) : (
+          <div
+            onClick={toggleMenu}
+            className={`dropdown-menu-indicator ${open ? 'open' : 'closed'}`}
+            aria-label={`${open ? 'close menu' : 'open menu'}`}
+          />
+        )}
         {open && (
           <div
             className={`dropdown-menu-wrapper ${align}`}
@@ -42,6 +59,11 @@ function DropDownMenu(props) {
           user-select: none;
           -webkit-tap-highlight-color: transparent;
           -webkit-touch-callout: none;
+        }
+
+        .dropdown-menu.custom-icon {
+          background: transparent;
+          border: none;
         }
 
         .dropdown-menu-indicator {

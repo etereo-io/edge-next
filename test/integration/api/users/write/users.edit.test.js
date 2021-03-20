@@ -5,13 +5,13 @@ import {
 
 import { deleteFile } from '../../../../../lib/api/storage'
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
+import { getSession } from '../../../../../lib/api/auth/token'
 import handler from '../../../../../pages/api/users/[...slug]'
 import request from '../../requestHandler'
 import { sendVerifyEmail } from '../../../../../lib/email'
 
 jest.mock('../../../../../lib/email')
-jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/api/auth/token')
 jest.mock('../../../../../lib/permissions/get-permissions')
 jest.mock('../../../../../lib/api/entities/users')
 jest.mock('../../../../../lib/api/storage')

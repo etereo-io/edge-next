@@ -387,7 +387,7 @@ const Components = () => {
       label: 'Search user',
       placeholder: 'Search user...',
       multiple: true,
-      entityName: (u) => u.username,
+      entityNameGetter: (u) => u.username,
     },
     {
       type: 'entity_search',
@@ -396,7 +396,7 @@ const Components = () => {
       entityType: 'post',
       label: 'Search posts',
       placeholder: 'Search posts...',
-      entityName: (p) => p.title,
+      entityNameGetter: (p) => p.title,
     },
   ]
 

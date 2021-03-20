@@ -45,7 +45,7 @@ export function onContentAdded(content: ContentEntityType, user: UserType) {
       type: ACTIVITY_TYPES.CONTENT_ADDED,
       meta: {
         contentId: content.id,
-        contentSlug: content.slug,
+        contentSlug: content.seo.slug,
         contentTitle: content.title, // This will not work with dynamic fields
         contentType: content.type,
         groupType: content.groupType,
@@ -63,7 +63,7 @@ export function onContentUpdated(content: ContentEntityType, user:UserType) {
       type: ACTIVITY_TYPES.CONTENT_UPDATED,
       meta: {
         contentId: content.id,
-        contentSlug: content.slug,
+        contentSlug: content.seo.slug,
         contentTitle: content.title, // This will not work with dynamic fields
         contentType: content.type,
         groupType: content.groupType,

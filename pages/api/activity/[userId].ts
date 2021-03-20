@@ -1,10 +1,10 @@
+import { Request } from '@lib/types'
 import { connect } from '@lib/api/db'
 import { findActivity } from '@lib/api/entities/activity'
 import { findOneUser } from '@lib/api/entities/users'
-import { getSession } from '@lib/api/auth/iron'
+import { getSession } from '@lib/api/auth/token'
 import { hasPermission } from '@lib/permissions'
 import logger from '@lib/logger'
-import { Request } from '@lib/types'
 import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 

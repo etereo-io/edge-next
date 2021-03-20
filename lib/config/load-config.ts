@@ -1,5 +1,4 @@
 import { DATABASES } from '@lib/constants'
-
 import { getConfig } from '../../edge.config'
 import merge from 'deepmerge'
 import schema from './config.schema'
@@ -71,9 +70,6 @@ const defaultConfig = {
   database: {
     type: DATABASES.IN_MEMORY,
   },
-  logger: {
-    level: 'ERROR',
-  },
   activity: {
     enabled: true,
     permissions: {
@@ -123,6 +119,19 @@ export default function load() {
         newConfig.superSearch.permissions.read
     }
 
+    // Purchasing
+    if (newConfig.purchasing.enabled) {
+      availablePermissions[`purchasing.buy`] =
+        newConfig.purchasing.permissions.buy
+      availablePermissions[`purchasing.sell`] =
+        newConfig.purchasing.permissions.sell
+      availablePermissions[`purchasing.orders`] =
+        newConfig.purchasing.permissions.orders
+      availablePermissions[`purchasing.admin`] =
+        newConfig.purchasing.permissions.admin
+    }
+
+
     // interactions
     ;(newConfig.user.entityInteractions || []).forEach(
       ({ type: interactionType, permissions }) => {
@@ -156,6 +165,8 @@ export default function load() {
       availablePermissions[`content.${type.slug}.admin`] =
         type.permissions.admin
 
+
+
       // Comments
       if (type.comments.enabled) {
         availablePermissions[`content.${type.slug}.comments.read`] =
@@ -168,6 +179,18 @@ export default function load() {
           type.comments.permissions.delete
         availablePermissions[`content.${type.slug}.comments.admin`] =
           type.comments.permissions.admin
+      }
+
+      // Purchasing
+      if (type.purchasing.enabled) {
+        availablePermissions[`content.${type.slug}.purchasing.buy`] =
+          type.purchasing.permissions.buy
+        availablePermissions[`content.${type.slug}.purchasing.sell`] =
+          type.purchasing.permissions.sell
+        availablePermissions[`content.${type.slug}.purchasing.orders`] =
+          type.purchasing.permissions.orders
+        availablePermissions[`content.${type.slug}.purchasing.admin`] =
+          type.purchasing.permissions.admin
       }
 
       // interactions

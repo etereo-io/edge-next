@@ -16,26 +16,37 @@ const Page = ({ htmlString, data }) => {
 }
 
 export const getStaticPaths = async () => {
-  const files = fs.readdirSync('static-pages')
+  const filesEnglish = fs.readdirSync('static-pages/en')
+  const filesSpanish = fs.readdirSync('static-pages/es')
 
-  const paths = files.map((filename) => ({
+  const pathsEn = filesEnglish.map((filename) => ({
     params: {
       ['static-page']: filename.replace('.md', ''),
     },
+    locale: 'en'
+  }))
+
+  const pathsEs = filesSpanish.map((filename) => ({
+    params: {
+      ['static-page']: filename.replace('.md', ''),
+    },
+    locale: 'es'
   }))
 
   return {
-    paths,
+    paths: [...pathsEn, ...pathsEs],
     fallback: false,
   }
 }
 
-export const getStaticProps = async ({ params }) => {
-
+export const getStaticProps = async ({ params, locale }) => {
+  
   const slug = params['static-page']
+  // TODO: handle missing route, error reading fs
   const markdownWithMetadata = fs
-    .readFileSync(path.join('static-pages', slug + '.md'))
+    .readFileSync(path.join('static-pages', locale, slug + '.md'))
     .toString()
+
   const parsedMarkdown = matter(markdownWithMetadata)
 
   return {

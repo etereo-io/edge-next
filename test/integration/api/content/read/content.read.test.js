@@ -1,11 +1,11 @@
 import getPermissions from '../../../../../lib/permissions/get-permissions'
 import {
   getSession,
-} from '../../../../../lib/api/auth/iron'
+} from '../../../../../lib/api/auth/token'
 import handler from '../../../../../pages/api/content/[type]'
 import request from '../../requestHandler'
 
-jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/api/auth/token')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
 jest.mock('../../../../../edge.config', () => {

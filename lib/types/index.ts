@@ -14,6 +14,8 @@ export * from './entities/interaction'
 export * from './userTypeDefinition'
 export * from './entities/email'
 export * from './statistic'
+export * from './entities/orders'
+export * from './entities/shopping-cart'
 
 export type ANY_OBJECT = {
   [key: string]: any

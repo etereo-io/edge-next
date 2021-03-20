@@ -1,15 +1,17 @@
-import React, { useEffect, useState, memo, useCallback } from 'react'
-import Link from 'next/link'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
+import { FieldType, GroupEntityType, GroupTypeDefinition } from '@lib/types'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
+import { FIELDS } from '@lib/constants'
+import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
+import Link from 'next/link'
+import SEOForm from '@components/content/write-content/content-form/seo-form'
+import { SEOPropertiesType } from '@lib/types/seo'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
-import { FIELDS } from '@lib/constants'
-import { FieldType, GroupEntityType, GroupTypeDefinition } from '@lib/types'
-import GroupSummaryView from '../../read/group-summary-view/group-summary-view'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 type Props = {
   type: GroupTypeDefinition
@@ -22,10 +24,18 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
   // Saving states
   const [loading, setLoading] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>(false)
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string>('')
 
-  // used to store values
-  const [state, setState] = useState<Partial<GroupEntityType>>({})
+
+  const defaultSeoOptions: SEOPropertiesType = {
+    slug: '',
+    title: '',
+    description: ''
+  }
+  
+  const [state, setState] = useState<Partial<GroupEntityType>>({
+    seo: defaultSeoOptions
+  })
 
   useEffect(() => {
     // Preload the form values
@@ -35,13 +45,19 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
       // additional information
       const allowedKeys = permittedFields
         .map((f) => f.name)
-        .concat('draft', 'members')
+        .concat('draft', 'members', 'seo')
 
       allowedKeys.map((k) => {
         filteredData[k] = group[k]
       })
 
-      setState(filteredData)
+      setState({
+        ...filteredData,
+        seo: {
+          ...defaultSeoOptions,
+          ...(filteredData['seo'] || {})
+        }
+      })
     }
   }, [group, type])
 
@@ -118,13 +134,13 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
 
     setLoading(true)
     setSuccess(false)
-    setError(false)
+    setError('')
 
     submitRequest(formData, jsonData)
       .then((result) => {
         setLoading(false)
         setSuccess(true)
-        setError(false)
+        setError('')
 
         if (onSave) {
           onSave(result)
@@ -133,7 +149,7 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
       .catch((err) => {
         setLoading(false)
         setSuccess(false)
-        setError(true)
+        setError(err.error ? err.error : err)
       })
   }
 
@@ -177,20 +193,25 @@ function GroupForm({ type, group, onSave, permittedFields }: Props) {
             />
           ))}
 
+          <SEOForm value={state.seo} onChange={(val) => setState({
+            ...state,
+            seo: val
+          })} />
+
           <div className="actions">
-            <Button loading={loading} alt type="submit">
+            <Button title="Save" loading={loading} alt type="submit">
               Save
             </Button>
           </div>
           {success && (
             <div className="success-message">
               Saved: You can see it{' '}
-              <Link href={`/group/${type.slug}/${group.slug}`}>
+              <Link href={`/group/${type.slug}/${state.seo.slug}`}>
                 <a title="View Content">here</a>
               </Link>
             </div>
           )}
-          {error && <div className="error-message">Error saving </div>}
+          {error && <div className="error-message">Error saving : {error}</div>}
         </form>
 
         <div className="preview-wrapper">

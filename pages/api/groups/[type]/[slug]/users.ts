@@ -5,8 +5,9 @@ import {
 } from '@lib/api/middlewares'
 import { onGroupJoinRequest, onGroupUpdated } from '@lib/api/hooks/group.hooks'
 
-import { connect } from '@lib/api/db'
+import Cypher from '@lib/api/api-helpers/cypher-fields'
 import { Request } from '@lib/types'
+import { connect } from '@lib/api/db'
 import { findOneUser } from '@lib/api/entities/users'
 import { getGroupTypeDefinition } from '@lib/config'
 import { getPermittedFields } from '@lib/validations/group/users'
@@ -15,7 +16,6 @@ import methods from '@lib/api/api-helpers/methods'
 import runMiddleware from '@lib/api/api-helpers/run-middleware'
 import uniqBy from '@lib/uniqBy'
 import { updateOneContent } from '@lib/api/entities/content'
-import Cypher from '@lib/api/api-helpers/cypher-fields'
 
 const getUsers = async (
   { item: group, currentUser, groupType }: Request,
@@ -79,9 +79,8 @@ async function addUsers(req: Request, res) {
     res.status(200).json(group)
   }
   const pendingMembersCallback = async (data) => {
-    const { email } = await findOneUser({ id: author })
 
-    onGroupJoinRequest(data, currentUser, email, type)
+    onGroupJoinRequest(data, currentUser)
 
     const group = formGroupItem(slug, fields, data, currentUser)
 

@@ -1,36 +1,33 @@
-import React, { useState, memo } from 'react'
-import Link from 'next/link'
-
+import React, { memo, useContext, useState } from 'react'
+import { hasPermission, purchasingPermission } from '@lib/permissions'
 import { useContentTypes, useGroupTypes } from '@lib/client/hooks'
-import { hasPermission } from '@lib/permissions'
+
 import Avatar from '@components/user/avatar/avatar'
+import Badge from '@components/generic/badge/badge'
 import Button from '@components/generic/button/button'
 import DropdownMenu from '@components/generic/dropdown-menu/dropdown-menu'
-import ThemeSelector from '@components/generic/theme-selector/theme-selector'
+import LanguageChooser from '@components/generic/language-chooser'
+import Link from 'next/link'
+import { ShoppingCartContext } from '@lib/client/contexts/shopping-cart-context'
 import SiteMenu from '@components/generic/site-menu/site-menu'
 import { SuperSearch } from '@components/generic/super-search'
+import ThemeSelector from '@components/generic/theme-selector/theme-selector'
+import { UserContext } from '@lib/client/contexts/user-context'
+import { useTranslation } from 'react-i18next'
 
 function UserHeader(props) {
   const user = props.user
   const contentTypes = useContentTypes(['create', 'admin'])
   const groupTypes = useGroupTypes(['create', 'admin'])
-
+  const { onLogout } = useContext(UserContext)
   const [loading, setLoading] = useState(false)
-
+  const { openShoppingCart, shoppingCart } = useContext(ShoppingCartContext)
   const onClickLogout = async () => {
     setLoading(true)
-
-    // Invalidate caches for service worker
-    await caches.keys().then(function(keyList) {
-      return Promise.all(
-        keyList.map(function(key) {
-          return caches.delete(key)
-        })
-      )
-    })
-
-    window.location.href = '/api/auth/logout'
+    onLogout()
   }
+
+  const { t } = useTranslation()
 
   return (
     <div className="edge-user-actions">
@@ -39,10 +36,27 @@ function UserHeader(props) {
       {user && (
         <div className="edge-user-actions-logged">
           {/*User Actions Buttons*/}
+          {
+            purchasingPermission(user, 'buy') && (
+              <div className="edge-user-actions-buttons">
+                <Button padding={'10px'} alt onClick={openShoppingCart} title={t('purchasing.shoppingCart.open')}>
+                  <i className="las la-shopping-cart" style={{fontSize: '18px'}}></i>
+                  <span className="products" style={{
+                    position: 'absolute',
+                    bottom: '-5px',
+                    right: '-5px'
+                  }}>
+                    <Badge success={true} >{shoppingCart.products.length}</Badge> 
+                  </span>
+                </Button>
+              </div>
+            )
+
+          }
           <div className="edge-user-actions-buttons">
             <Link href={`/settings/${user.id}`}>
               <a title="Settings">
-                <img src="/icons/icon-configuration.svg" alt="configuration" />
+                <i className="las la-cog"></i>
               </a>
             </Link>
           </div>
@@ -52,20 +66,15 @@ function UserHeader(props) {
             </a>
           </Link>
 
-          <div className="user-actions-button">
-            <Link href={`/create/content/post`}>
-              <a>
-                <Button success>Write a post</Button>
-              </a>
-            </Link>
-          </div>
-
           <ul className="navigation">
             <li>
               <DropdownMenu align="right" width={'180px'}>
                 <ul>
                   <li>
                     <ThemeSelector />
+                  </li>
+                  <li>
+                    <LanguageChooser />
                   </li>
                   <li className="mobile-menu-item">
                     <SiteMenu />

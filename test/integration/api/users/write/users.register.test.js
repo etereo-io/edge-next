@@ -1,9 +1,9 @@
 import getPermissions from '../../../../../lib/permissions/get-permissions'
-import { getSession } from '../../../../../lib/api/auth/iron'
+import { getSession } from '../../../../../lib/api/auth/token'
 import handler from '../../../../../pages/api/users'
 import request from '../../requestHandler'
 
-jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/api/auth/token')
 jest.mock('../../../../../lib/permissions/get-permissions')
 
 jest.mock('../../../../../edge.config', () => ({
@@ -270,7 +270,7 @@ describe('Integrations tests for users creation endpoint', () => {
         },
         body: newUser
       });
-      console.log('COMPLETED', res)
+      // console.log('COMPLETED', res)
       expect(res.statusCode).toBe(200)
 
       expect(res.body).toMatchObject({

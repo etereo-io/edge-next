@@ -15,9 +15,12 @@ function Field({ field, value, typeDefinition }) {
     switch (field.type) {
       case FIELDS.TEXTAREA:
         return (
-          <p data-testid={datatestId} style={{ wordBreak: 'break-all' }}>
-            {value}
-          </p>
+          <div data-testid={datatestId}>
+            <b>{field.label}: </b>{' '}
+            <p data-testid={datatestId} style={{ wordBreak: 'break-all' }}>
+              {value}
+            </p>
+          </div>
         )
       case FIELDS.MARKDOWN:
         const htmlString = md.render(value || '')
@@ -97,12 +100,18 @@ function Field({ field, value, typeDefinition }) {
       case FIELDS.RADIO:
         return value ? (
           <div data-testid={datatestId}>
-            {(Array.isArray(value) ? value : [value]).map((i) => (
-              <span>{field.options.find((o) => o.value === i).label}</span>
-            ))}
+            <div>
+              <b>{field.label}: </b>
+              {(Array.isArray(value) ? value : [value]).map((i) => (
+                <span key={i}>
+                  {field.options.find((o) => o.value === i)
+                    ? field.options.find((o) => o.value === i).label
+                    : i.label}
+                </span>
+              ))}
+            </div>
             <style jsx>{`
               span {
-                font-size: 14px;
                 padding-right: 5px;
               }
             `}</style>
@@ -114,9 +123,10 @@ function Field({ field, value, typeDefinition }) {
             <>
               <div className="linked-entities">
                 <b>Linked items:</b>
-                {value && value.length > 0 && value.map(i => (                  <div className="entity-item">
-                    <Link href={`/${field.entity}/${field.entityType}/${i.slug}`}>
-                      <a>{i[field.entityName]}`</a>
+                {value && value.length > 0 && value.map(i => (                  
+                  <div className="entity-item">
+                    <Link href={`/${field.entity}/${field.entityType}/${i.seo.slug}`}>
+                      <a>{field.entityNameGetter(i)}`</a>
                     </Link>
                   </div>
                 ))}
@@ -131,8 +141,11 @@ function Field({ field, value, typeDefinition }) {
           )
 
       default:
-        return <p data-testid={datatestId}>{value}</p>
-        break
+        return (
+          <div data-testid={datatestId}>
+            <b>{field.label}: </b> <p>{value}</p>
+          </div>
+        )
     }
   }
 

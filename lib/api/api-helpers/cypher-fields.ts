@@ -1,6 +1,6 @@
-import crypto from 'crypto'
-
 import { FieldType, UserType } from '@lib/types'
+
+import crypto from 'crypto'
 import { cypheredFieldPermission } from '@lib/permissions'
 
 class CypherFields {
@@ -41,8 +41,11 @@ class CypherFields {
   }
 
   cypherData(fields: FieldType[], data: { [ket: string]: any }) {
+    // Deep clone the data (TODO: See why)
     const cypheredData = JSON.parse(JSON.stringify({ ...data }))
 
+
+    // Cypher each field that is marked as enabled
     fields.forEach(({ name, cypher: { enabled } = {} }) => {
       if (enabled && cypheredData[name]) {
         cypheredData[name] = this.encrypt(`${cypheredData[name]}`)

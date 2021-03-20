@@ -1,13 +1,13 @@
 import {
-  findOneInteraction,
   deleteOneInteraction,
+  findOneInteraction,
 } from '@lib/api/entities/interactions'
-import { getSession } from '@lib/api/auth/iron'
-import handler from '@pages/api/interactions/[entity]/[entity-type]/[interaction-type]'
 
+import { getSession } from '@lib/api/auth/token'
+import handler from '@pages/api/interactions/[entity]/[entity-type]/[interaction-type]'
 import request from '../../requestHandler'
 
-jest.mock('@lib/api/auth/iron')
+jest.mock('@lib/api/auth/token')
 jest.mock('@lib/api/entities/interactions')
 
 const contentEntity = 'content'

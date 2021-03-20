@@ -1,19 +1,18 @@
-import { useState, useMemo } from 'react'
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
-
 import {
   contentPermission,
-  groupContentPermission,
   cypheredFieldPermission,
+  groupContentPermission,
 } from '@lib/permissions'
 import { getContentTypeDefinition, getGroupTypeDefinition } from '@lib/config'
+import { useMemo, useState } from 'react'
 
 import ContentForm from '@components/content/write-content/content-form/content-form'
 import { GetServerSideProps } from 'next'
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3'
 import Layout from '@components/layout/normal/layout'
 import { connect } from '@lib/api/db'
 import { findOneContent } from '@lib/api/entities/content'
-import { getSession } from '@lib/api/auth/iron'
+import { getSession } from '@lib/api/auth/token'
 
 // Get serversideProps is important for SEO, and only available at the pages level
 export const getServerSideProps: GetServerSideProps = async ({
@@ -134,6 +133,7 @@ const CreateContent = ({ group, groupType, contentType, currentUser }) => {
               group={group}
               groupType={groupType}
               onSave={onSave}
+              currentUser={currentUser}
               permittedFields={permittedFields}
             />
           </GoogleReCaptchaProvider>

@@ -6,11 +6,13 @@ import {
 
 import API from '@lib/api/api-endpoints'
 import Layout from '@components/layout/admin/layout-admin'
+import MaintenanceModeForm from '@components/admin/maintenance-mode-form'
 import { StatisticResponse } from '@lib/types'
 import { Widget } from '@components/statistic'
 import fetcher from '@lib/fetcher'
 import { format } from 'timeago.js'
 import useSWR from 'swr'
+import { useTranslation } from 'react-i18next'
 
 function AdminPage() {
   const { user } = useUser({ redirectTo: '/home' })
@@ -27,13 +29,14 @@ function AdminPage() {
   const usersData = data?.data.users || []
   const contentData = data?.data.content || []
   const groupsData = data?.data.groups || []
-
+  
+  const { t } = useTranslation()
   
   return (
     <>
       <Layout title="Stats" loading={!available || !user || isValidating}>
         <header className="admin-title">
-          <h1>Administration</h1>
+          <h1>{t('admin.menu.administration')}</h1>
           <small className="login-date">
             Last login: {format(user?.metadata.lastLogin)}
           </small>
@@ -56,6 +59,8 @@ function AdminPage() {
             </Fragment>
           ))}
         </section>
+
+        <MaintenanceModeForm />
 
         
       </Layout>

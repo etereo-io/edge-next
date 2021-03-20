@@ -1,6 +1,7 @@
 import Button from '@components/generic/button/button'
 import ContentListView from '@components/content/read-content/content-list-view/content-list-view'
 import Layout from '@components/layout/three-panels/layout'
+import ProductList from '@components/content/read-content/product-list-view'
 import ToolBar from '@components/generic/toolbar/toolbar'
 import config from '@lib/config'
 import { getContentTypeDefinition } from '@lib/config'
@@ -104,6 +105,8 @@ const Landing = () => {
           </div>
           <button className="close" onClick={() => setActive(!active)}></button>
         </aside>
+        <ProductList type={getContentTypeDefinition('product')} />
+
         {contentType && <ContentListView type={contentType} />}
       </Layout>
       <style jsx>{`

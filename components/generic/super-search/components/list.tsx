@@ -1,17 +1,16 @@
-import React, { memo, useMemo, Fragment, useRef } from 'react'
-
 import {
   ContentTypeDefinition,
   GroupEntityType,
   SuperSearchResponse,
   UserType,
 } from '@lib/types'
-import { useOnScreen } from '@lib/client/hooks'
-import ArrowDown from '@icons/arrow-down.svg'
+import React, { Fragment, memo, useMemo, useRef } from 'react'
 
-import UserItem from './user-item'
+import ArrowDown from '@icons/arrow-down.svg'
 import ContentItems from './content-items'
 import GroupItem from './group-item'
+import UserItem from './user-item'
+import { useOnScreen } from '@lib/client/hooks'
 
 interface Props {
   data: SuperSearchResponse[]
@@ -69,7 +68,7 @@ function List({ data, isLoading }: Props) {
               <Fragment key={name}>
                 {!!groupData.length &&
                   (groupData as Partial<GroupEntityType>[]).map((group) => (
-                    <GroupItem key={group.slug} group={group} />
+                    <GroupItem key={group.seo.slug} group={group} />
                   ))}
               </Fragment>
             ))}

@@ -1,4 +1,5 @@
 import '../styles/index.scss'
+import 'line-awesome/dist/line-awesome/css/line-awesome.css'
 
 import * as gtag from '../lib/client/gtag'
 
@@ -6,11 +7,16 @@ import withEdgeTheme, {
   EdgeThemeContext,
 } from '@lib/client/contexts/edge-theme'
 
-import { CookiesProvider } from '@lib/client/contexts/cookies'
-import { EdgeUserProvider } from '@lib/client/contexts/edge-user'
+import { AnalyticsProvider } from '@lib/client/contexts/analytics-context'
+import { CookiesProvider } from '@lib/client/contexts/cookies-context'
 import Head from 'next/head'
+import { MaintenanceProvider } from '@lib/client/contexts/maintenance-context'
+import { ModalProvider } from '@lib/client/contexts/modal-context'
 import Router from 'next/router'
+import { ShoopingCartProvider } from '@lib/client/contexts/shopping-cart-context'
+import { UserProvider } from '@lib/client/contexts/user-context'
 import { isClient } from '@lib/client/utils'
+import loadTranslations from '@lib/client/hooks/loadTranslations'
 import { useContext } from 'react'
 
 // Store navigation events on Google analytics
@@ -20,6 +26,8 @@ if (isClient()) {
 
 function MyApp({ Component, pageProps }) {
   const { mode } = useContext(EdgeThemeContext)
+  
+  loadTranslations()
 
   return (
     <>
@@ -30,11 +38,19 @@ function MyApp({ Component, pageProps }) {
         />
       </Head>
       <div id="app-container" className={mode}>
-        <EdgeUserProvider>
-          <CookiesProvider>
-            <Component {...pageProps} />
-          </CookiesProvider>
-        </EdgeUserProvider>
+        <UserProvider>
+          <MaintenanceProvider>
+            <CookiesProvider>
+              <AnalyticsProvider>
+                <ShoopingCartProvider>
+                  <ModalProvider>
+                    <Component {...pageProps} />
+                  </ModalProvider>
+                </ShoopingCartProvider>
+              </AnalyticsProvider>
+            </CookiesProvider>
+          </MaintenanceProvider>
+        </UserProvider>
       </div>
       <style jsx global>{`
         // Global variables

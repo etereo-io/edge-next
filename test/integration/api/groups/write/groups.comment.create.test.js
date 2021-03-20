@@ -6,11 +6,11 @@ import {
 } from '../../../../../lib/api/entities/content'
 import {
   getSession,
-} from '../../../../../lib/api/auth/iron'
+} from '../../../../../lib/api/auth/token'
 import handler from '../../../../../pages/api/comments'
 import request from '../../requestHandler'
 
-jest.mock('../../../../../lib/api/auth/iron')
+jest.mock('../../../../../lib/api/auth/token')
 jest.mock('../../../../../lib/api/entities/content')
 jest.mock('../../../../../lib/api/entities/comments')
 

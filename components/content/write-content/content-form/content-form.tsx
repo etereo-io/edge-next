@@ -1,6 +1,4 @@
-import React, { useEffect, useState, memo, useCallback } from 'react'
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
-import Link from 'next/link'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import API from '@lib/api/api-endpoints'
 import Button from '@components/generic/button/button'
@@ -9,17 +7,44 @@ import ContentSummaryView from '../../read-content/content-summary-view/content-
 import DynamicField from '@components/generic/dynamic-field/dynamic-field-edit'
 import { FIELDS } from '@lib/constants'
 import GroupSummaryView from '@components/groups/read/group-summary-view/group-summary-view'
+import Link from 'next/link'
+import { PurchashingOptionsType } from '@lib/types/purchasing'
+import PurchasingOptionsForm from './purchasing-options-form'
+import SEOForm from './seo-form'
+import { SEOPropertiesType } from '@lib/types/seo'
 import Toggle from '@components/generic/toggle/toggle'
 import fetch from '@lib/fetcher'
+import { purchasingPermission } from '@lib/permissions'
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 
 function ContentForm(props) {
   // Saving states
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(false)
+  const [error, setError] = useState('')
+
+  const defaultShoppingOptions: PurchashingOptionsType = {
+    multiple: false,
+    sku: '',
+    stock: 1,
+    currency: '',
+    price: 0.0,
+    variants: [],
+    shippingFees: []
+  }
+
+  const defaultSeoOptions: SEOPropertiesType = {
+    slug: '',
+    title: '',
+    description: ''
+  }
 
   // used to store values
-  const [state, setState] = useState({})
+  const [state, setState] = useState({
+    draft: false,
+    purchasingOptions: defaultShoppingOptions,
+    seo: defaultSeoOptions
+  })
 
   useEffect(() => {
     // Preload the form values
@@ -30,12 +55,25 @@ function ContentForm(props) {
       const allowedKeys = props.permittedFields
         .map((f) => f.name)
         .concat('draft')
+        .concat('purchasingOptions')
+        .concat('seo')
 
       allowedKeys.map((k) => {
         filteredData[k] = props.content[k]
       })
 
-      setState(filteredData)
+      setState({
+        ...state,
+        ...filteredData,
+        purchasingOptions: {
+          ...defaultShoppingOptions,
+          ...(filteredData['purchasingOptions'] || {})
+        },
+        seo: {
+          ...defaultSeoOptions,
+          ...(filteredData['seo'] || {})
+        }
+      })
     }
   }, [props.content, props.type])
 
@@ -51,11 +89,10 @@ function ContentForm(props) {
     const groupParamsString = props.group
       ? `groupId=${props.group.id}&groupType=${props.group.type}`
       : ''
-    const url = `${API.content[props.type.slug]}${
-      props.content.id
+    const url = `${API.content[props.type.slug]}${props.content.id
         ? `/${props.content.id}?field=id&${groupParamsString}`
         : `?${groupParamsString}`
-    }`
+      }`
 
     return fetch(url, {
       method: props.content.id ? 'PUT' : 'POST',
@@ -73,6 +110,7 @@ function ContentForm(props) {
         }
       )
     })
+   
   }
 
   const onSubmit = () => {
@@ -110,22 +148,23 @@ function ContentForm(props) {
 
     setLoading(true)
     setSuccess(false)
-    setError(false)
+    setError('')
 
     submitRequest(formData, jsonData)
       .then((result) => {
         setLoading(false)
         setSuccess(true)
-        setError(false)
+        setError('')
 
         if (props.onSave) {
           props.onSave(result)
         }
       })
       .catch((err) => {
+        
         setLoading(false)
         setSuccess(false)
-        setError(true)
+        setError(err.error ? err.error : err)
       })
   }
 
@@ -170,6 +209,18 @@ function ContentForm(props) {
               />
             ))}
 
+          {purchasingPermission(props.currentUser, 'sell', props.type.slug) && <div className="purchasing-options-wrapper">
+            <PurchasingOptionsForm value={state['purchasingOptions']} onChange={(val) => setState({
+              ...state,
+              purchasingOptions: val
+            })} />
+          </div>}
+
+          <SEOForm value={state.seo} onChange={(val) => setState({
+            ...state,
+            seo: val
+          })} />
+
           <div className="actions">
             <Button loading={loading} alt={true} type="submit">
               Save
@@ -178,12 +229,12 @@ function ContentForm(props) {
           {success && (
             <div className="success-message">
               Saved: You can see it{' '}
-              <Link href={`/content/${props.type.slug}/${props.content.slug}`}>
+              <Link href={`/content/${props.type.slug}/${state.seo.slug}`}>
                 <a title="View content">here</a>
               </Link>
             </div>
           )}
-          {error && <div className="error-message">Error saving </div>}
+          {error && <div className="error-message">Error saving: {error} </div>}
         </form>
 
         <div className="preview-wrapper">

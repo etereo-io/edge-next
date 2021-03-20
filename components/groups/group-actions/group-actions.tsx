@@ -1,8 +1,7 @@
-import { memo } from 'react'
-
 import Button from '@components/generic/button/button'
 import { GroupEntityType } from '@lib/types'
 import { groupPermission } from '@lib/permissions'
+import { memo } from 'react'
 import { useUser } from '@lib/client/hooks'
 
 interface Props {
@@ -21,7 +20,7 @@ function GroupActions(props: Props) {
         {canEdit && (
           <a
             className="edit-button"
-            href={`/edit/group/${group.type}/${group.slug}`}
+            href={`/edit/group/${group.type}/${group.seo.slug}`}
           >
             <img
               style={{ width: '15px' }}

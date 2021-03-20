@@ -1,7 +1,6 @@
 import { memo } from 'react'
-
-import useOnChange from '@components/generic/dynamic-field/hooks/useOnChange'
 import useFieldLength from '@components/generic/dynamic-field/hooks/useFieldLength'
+import useOnChange from '@components/generic/dynamic-field/hooks/useOnChange'
 
 function InputText(props) {
   const { onChange, touched } = useOnChange({ onChangeHandler: props.onChange })
@@ -12,7 +11,7 @@ function InputText(props) {
       type={props?.field.type || 'text'}
       name={props.field.name}
       placeholder={props.field.placeholder}
-      defaultValue={props.value}
+      value={props.value}
       disabled={props.disabled}
       data-testid={props['data-testid']}
       required={!!props.field.required}
@@ -21,6 +20,7 @@ function InputText(props) {
       pattern={props.pattern || null}
       className={`${touched ? 'touched' : ''}`}
       onChange={onChange}
+      onBlur={props.onBlur}
     />
   )
 }

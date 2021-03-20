@@ -1,6 +1,6 @@
-import { EdgeUserProvider } from '../../../../lib/client/contexts/edge-user'
 import Index from '../../../../components/layout/header/header'
 import React from 'react'
+import { UserProvider } from '../../../../lib/client/contexts/edge-user'
 import { render } from '@testing-library/react'
 
 describe('header test suite', () => {
@@ -20,9 +20,9 @@ describe('header test suite', () => {
 
   test('renders login link in header', () => {
     const { getByText } = render(
-      <EdgeUserProvider>
+      <UserProvider>
         <Index />
-      </EdgeUserProvider>
+      </UserProvider>
     )
     const linkElement = getByText(/Login/)
     expect(linkElement).toBeInTheDocument()

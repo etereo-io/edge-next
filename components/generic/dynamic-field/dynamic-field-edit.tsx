@@ -36,6 +36,13 @@ function Field(props) {
     [setError, onChangeHandler]
   )
 
+  const { onBlur : onBlurHandler } = props
+  const onBlur = () => {
+    if (onBlurHandler) {
+      onBlurHandler()
+    }
+  }
+
   const getInput = (field) => {
     const datatestId = `${field.type}-${field.name}`
     switch (field.type) {
@@ -47,6 +54,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -58,6 +66,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -69,6 +78,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -80,6 +90,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -91,6 +102,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -102,6 +114,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
       case FIELDS.TIME:
@@ -112,6 +125,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
       case FIELDS.DATETIME:
@@ -122,6 +136,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -134,6 +149,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -144,6 +160,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -155,6 +172,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -166,6 +184,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
       case FIELDS.EMAILS:
@@ -176,6 +195,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
       case FIELDS.SELECT:
@@ -186,6 +206,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -197,6 +218,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
@@ -208,6 +230,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
             pattern={'https?://.+'}
           />
         )
@@ -217,6 +240,7 @@ function Field(props) {
           <textarea
             name={field.name}
             onChange={onChange}
+            onBlur={onBlur}
             disabled={props.disabled}
             value={JSON.stringify(props.value)}
             data-testid={datatestId}
@@ -231,12 +255,14 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
           />
         )
 
       case FIELDS.RICH_TEXT:
         return (
           <RichEditor field={field} value={props.value} onChange={onChange} />
+          
         )
 
       default:
@@ -247,6 +273,7 @@ function Field(props) {
             disabled={props.disabled}
             data-testid={datatestId}
             onChange={onChange}
+            onBlur={onBlur}
             pattern={field.pattern ? field.pattern : null}
           />
         )
