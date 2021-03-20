@@ -10,7 +10,7 @@ import { ContentEntityType } from '@lib/types'
 import ContentSummaryView from '../content-summary-view/content-summary-view'
 import { ContentTypeDefinition } from '@lib/types/contentTypeDefinition'
 import { Interaction } from '@components/generic/interactions'
-import PurchasingProductForm from './purchasing-product-form'
+import PurchasingProductForm from '../purchasing-product-form'
 import SocialShare from '@components/generic/social-share/social-share'
 import { format } from 'timeago.js'
 import { purchasingPermission } from '@lib/permissions'
@@ -88,148 +88,177 @@ function ContentDetailView(props: Props) {
   return (
     <>
       <article className="edge-item-card">
-        {contentIsMonetized && props.summary && (
-          <div className="monetization-layer">
-            <div className="monetization-layer-content">
-              <p>
-                This content is monetized, to see the full content please
-                navigate to the detail.
-              </p>
+        <div className="content-wrapper">
 
-              <Button
-                href={`/content/${props.type.slug}/${props.content.seo.slug}`}
-              >
-                See full content
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {contentIsMonetized && !props.summary && !monetizedState.state && (
-          <div className="monetization-layer">
-            <div className="monetization-layer-content">
-              This content is monetized, to see the full content please, sign up
-              for Coil to support the author
-            </div>
-          </div>
-        )}
-
-        {contentIsMonetized &&
-          !props.summary &&
-          monetizedState.state === 'started' && (
+          {contentIsMonetized && props.summary && (
             <div className="monetization-layer">
-              <p>Thanks for supporting this author</p>
-            </div>
-          )}
+              <div className="monetization-layer-content">
+                <p>
+                  This content is monetized, to see the full content please
+                  navigate to the detail.
+                </p>
 
-        <div className="edge-item-card-header">
-          {props.content.draft && <div className="status">Draft</div>}
-
-          {!props.content.draft && (
-            <div className="author-info">
-              <AuthorBox user={props.content ? props.content.user : null} />
-            </div>
-          )}
-
-          <div className="edge-item-card-actions">
-            {(canEditComment.available || isContentOwner) && (
-              <div className="header-item-action">
                 <Button
-                  href={`/edit/content/${props.content.type}/${props.content.seo.slug}`}
-                  round
-                  aria-label="round button"
+                  href={`/content/${props.type.slug}/${props.content.seo.slug}`}
                 >
-                  <img
-                    style={{ width: '15px' }}
-                    src="/icons/icon-edit.svg"
-                    alt="edit"
-                  />
+                  See full content
                 </Button>
               </div>
-            )}
-          </div>
-        </div>
-        <div className="edge-item-card-content">
-          <ContentSummaryView
-            content={props.content}
-            summary={!!props.summary}
-            type={props.type}
-            user={user}
-          />
-        </div>
-              
-        {purchasingPermission(user, 'buy', props.type.slug) && props.content.purchasingOptions && <PurchasingProductForm value={props.content.purchasingOptions} /> }
-
-        <footer className="edge-item-card-footer">
-          <ul className="edge-item-card-stats">
-            <li className="edge-item-card-stats-item">
-              <b>{format(props.content.createdAt)}</b>
-            </li>
-
-            <li className="edge-item-card-stats-item">
-              <b>
-                {props.type.comments.enabled &&
-                canReadComments.available &&
-                typeof props.content.comments !== 'undefined' &&
-                addComments ? (
-                  <span className="comment-count" onClick={onClickComments}>
-                    {props.content.comments === 0 && canWriteComments.available
-                      ? 'Add a comment'
-                      : `${props.content.comments} comments`}
-                  </span>
-                ) : null}
-              </b>
-            </li>
-          </ul>
-
-          <SocialShare shareUrl={shareUrl} />
-        </footer>
-
-        {props.type.comments.enabled &&
-          canWriteComments.available &&
-          showComments && (
-            <div className="comment-form-wrapper">
-              <CommentForm
-                onSave={onCommentAdded}
-                type={props.type}
-                contentId={props.content.id}
-                onCancel={() => setShowComments(!showComments)}
-              />
             </div>
           )}
-        <div className="interactions">
-          {interactionsConfig.map((interaction) => (
-            <Interaction
-              key={interaction.type}
-              interactions={props.content.interactions}
-              interactionConfig={interaction}
-              entity="content"
-              entityType={props.type.slug}
-              entityId={props.content.id}
-            />
-          ))}
-        </div>
-        {props.type.comments.enabled &&
-          canReadComments.available &&
-          showComments && (
-            <CommentsFeed
-              type={props.type}
-              contentId={props.content.id}
-              newComments={newComments}
-            />
+
+          {contentIsMonetized && !props.summary && !monetizedState.state && (
+            <div className="monetization-layer">
+              <div className="monetization-layer-content">
+                This content is monetized, to see the full content please, sign up
+                for Coil to support the author
+              </div>
+            </div>
           )}
 
-        {props.showActions && (
-          <ContentActions
-            className={'content-actions'}
-            content={props.content}
-          />
-        )}
+          {contentIsMonetized &&
+            !props.summary &&
+            monetizedState.state === 'started' && (
+              <div className="monetization-layer">
+                <p>Thanks for supporting this author</p>
+              </div>
+            )}
+
+          <div className="edge-item-card-header">
+            {props.content.draft && <div className="status">Draft</div>}
+
+            {!props.content.draft && (
+              <div className="author-info">
+                <AuthorBox user={props.content ? props.content.user : null} />
+              </div>
+            )}
+
+            <div className="edge-item-card-actions">
+              {(canEditComment.available || isContentOwner) && (
+                <div className="header-item-action">
+                  <Button
+                    href={`/edit/content/${props.content.type}/${props.content.seo.slug}`}
+                    round
+                    aria-label="round button"
+                  >
+                    <img
+                      style={{ width: '15px' }}
+                      src="/icons/icon-edit.svg"
+                      alt="edit"
+                    />
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="edge-item-card-content">
+            <ContentSummaryView
+              content={props.content}
+              summary={!!props.summary}
+              type={props.type}
+              user={user}
+            />
+          </div>
+                
+
+          <footer className="edge-item-card-footer">
+            <ul className="edge-item-card-stats">
+              <li className="edge-item-card-stats-item">
+                <b>{format(props.content.createdAt)}</b>
+              </li>
+
+              <li className="edge-item-card-stats-item">
+                <b>
+                  {props.type.comments.enabled &&
+                  canReadComments.available &&
+                  typeof props.content.comments !== 'undefined' &&
+                  addComments ? (
+                    <span className="comment-count" onClick={onClickComments}>
+                      {props.content.comments === 0 && canWriteComments.available
+                        ? 'Add a comment'
+                        : `${props.content.comments} comments`}
+                    </span>
+                  ) : null}
+                </b>
+              </li>
+            </ul>
+
+            <SocialShare shareUrl={shareUrl} />
+          </footer>
+
+          {props.type.comments.enabled &&
+            canWriteComments.available &&
+            showComments && (
+              <div className="comment-form-wrapper">
+                <CommentForm
+                  onSave={onCommentAdded}
+                  type={props.type}
+                  contentId={props.content.id}
+                  onCancel={() => setShowComments(!showComments)}
+                />
+              </div>
+            )}
+          <div className="interactions">
+            {interactionsConfig.map((interaction) => (
+              <Interaction
+                key={interaction.type}
+                interactions={props.content.interactions}
+                interactionConfig={interaction}
+                entity="content"
+                entityType={props.type.slug}
+                entityId={props.content.id}
+              />
+            ))}
+          </div>
+          {props.type.comments.enabled &&
+            canReadComments.available &&
+            showComments && (
+              <CommentsFeed
+                type={props.type}
+                contentId={props.content.id}
+                newComments={newComments}
+              />
+            )}
+
+          {props.showActions && (
+            <ContentActions
+              className={'content-actions'}
+              content={props.content}
+            />
+          )}
+        </div>
+
+        {purchasingPermission(user, 'buy', props.type.slug) && props.content.purchasingOptions &&  (
+          <div className="purchasing-options-wrapper">
+            <PurchasingProductForm value={props.content.purchasingOptions} />
+          </div>
+        ) }
+
       </article>
       <style jsx>{`
-      .comment-count{
+        
+        .edge-item-card {
+          background-color: var(--edge-background);
+          border-radius: var(--edge-gap-half);
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+          margin-bottom: var(--edge-gap);
+          position: relative;
+          display: flex;
+          flex-wrap: wrap;
+        }
+
+        .content-wrapper {
+          padding: var(--edge-gap-medium);
+        }
+
+        .purchasing-options-wrapper {
+          padding: var(--edge-gap-medium);
+        }
+
+        .comment-count{
           cursor: pointer;
         }
+
         .interactions {
           margin-top: var(--edge-gap);
           display: inline-flex;
@@ -254,22 +283,11 @@ function ContentDetailView(props: Props) {
           margin-right: var(--edge-gap);
         }
 
-        .edge-item-card {
-          background-color: var(--edge-background);
-          border-radius: var(--edge-gap-half);
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-          margin-bottom: var(--edge-gap);
-          padding: var(--edge-gap-medium);
-          position: relative;
-        }
+
         @media all and (max-width: 720px) {
           .edge-item-card-footer {
             display: flex;
             flex-flow: column;
-          }
-
-          .edge-item-card {
-            padding: var(--edge-gap);
           }
 
           .edge-item-card-stats {
@@ -298,12 +316,6 @@ function ContentDetailView(props: Props) {
           width: 100%;
         }
 
-        @media all and (max-width: 460px) {
-          .edge-item-card {
-            padding: var(--edge-gap);
-          }
-        }
-
         .edge-item-card-actions {
           align-items: center;
           display: flex;
@@ -311,12 +323,6 @@ function ContentDetailView(props: Props) {
 
         .edge-item-card-actions .header-item-action {
           margin-left: var(--edge-gap-half);
-        }
-
-        @media all and (max-width: 600px) {
-          .edge-item-card-actions .header-item-action.follow-button {
-            display: none;
-          }
         }
 
         .edge-item-card-content {

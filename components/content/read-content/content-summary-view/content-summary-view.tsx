@@ -54,7 +54,7 @@ function ContentSummaryView(props) {
                 >
                   {links && (
                     <Link
-                      href={`/content/${props.type.slug}/${props.content.slug}`}
+                      href={`/content/${props.type.slug}/${props.content.seo.slug}`}
                     >
                       <a>{props.content[field.name]}</a>
                     </Link>
@@ -72,7 +72,7 @@ function ContentSummaryView(props) {
                 <div key={`${field.name}-${props.content.id}`}>
                   {shouldAddLink(field) && (
                     <Link
-                      href={`/content/${props.type.slug}/${props.content.slug}`}
+                      href={`/content/${props.type.slug}/${props.content.seo.slug}`}
                     >
                       <a title="Go to content detail">
                         <DynamicFieldView
