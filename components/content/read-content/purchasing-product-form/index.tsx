@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import Button from '@components/generic/button/button'
 import DynamicFieldEdit from '@components/generic/dynamic-field/dynamic-field-edit'
+import ProductPrice from './product-price'
 import { ShoppingCartContext } from '@lib/client/contexts/shopping-cart-context'
 import { useTranslation } from 'react-i18next'
 
@@ -27,10 +28,7 @@ export default function PurchasingProductForm({
     }
   }, [value])
 
-  const variant = selectedVariant ? value.variants.find(i => i.name === name) : null
 
-  const totalPrice = variant ? variant.price * amount : value.price * amount
-  const currency = '€'
 
   const addToCart = () => {
     addProduct({
@@ -81,7 +79,10 @@ export default function PurchasingProductForm({
 
         
         <div className="price">
-          {totalPrice} {currency}
+          <ProductPrice
+            options={value}
+            amount={amount}
+            variant={selectedVariant} />
         </div>
 
 

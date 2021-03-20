@@ -9,16 +9,13 @@ export type ContentEntityType = {
   type: string
   title: string
   description: string
-  city?: string
-  remote?: string
   tags?: Array<{ label: string; slug: string }>
   image?: Array<{ path: string; createdAt: number; name: string }>
+  images?: Array<{ path: string; createdAt: number; name: string }>
   dateStart?: string
   timeStart?: string
   featured?: boolean
   paymentPointer?: string
-  dateEnd?: string
-  timeEnd?: string
   draft: boolean
   author: string
   user: UserType

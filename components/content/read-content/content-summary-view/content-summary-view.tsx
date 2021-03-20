@@ -56,7 +56,7 @@ function ContentSummaryView(props) {
                     <Link
                       href={`/content/${props.type.slug}/${props.content.seo.slug}`}
                     >
-                      <a>{props.content[field.name]}</a>
+                      <a title="See content detail">{props.content[field.name]}</a>
                     </Link>
                   )}
                   {!links && props.content[field.name]}

@@ -15,7 +15,7 @@ function ProductListView({
   type
 }: Props) {
   
-  const limit = 5
+  const limit = 3
   const from = 0
   const sortBy = 'createdAt'
   const sortOrder = 'DESC'
@@ -49,6 +49,8 @@ function ProductListView({
         .product-list-view {
           display: flex;
           flex-wrap: wrap;
+          align-items: top;
+          justify-content: center;
         }
       `}</style>
     </>

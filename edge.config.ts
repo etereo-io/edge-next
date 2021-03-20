@@ -302,6 +302,7 @@ export const getConfig = (config: any) => {
         label: 'Image',
         placeholder: 'Image',
         multiple: true,
+        required: true,
         errorMessage: 'Only images are supported',
       },
       {
