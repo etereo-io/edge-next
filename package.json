@@ -18,7 +18,7 @@
     "cookie": "0.4.0",
     "deepmerge": "^4.2.2",
     "email-validator": "^2.0.4",
-    "express": "4.17.1",
+    "express": "4.17.3",
     "firebase-admin": "^8.10.0",
     "formidable-serverless": "^1.0.3",
     "gray-matter": "^4.0.2",
